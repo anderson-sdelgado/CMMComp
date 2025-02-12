@@ -116,7 +116,7 @@ fun AlertDialogSimpleDesign(
         confirmButton = {
             Button(
                 onClick = setCloseDialog,
-                modifier = Modifier.testTag("button_ok_alert_dialog_simple")
+                modifier = Modifier.testTag(BUTTON_OK_ALERT_DIALOG_SIMPLE)
             ) {
                 Text("OK")
             }

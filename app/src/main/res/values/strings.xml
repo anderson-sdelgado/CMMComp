@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">CMM</string>
+    <string name="text_status_started">Aparelho sem número</string>
+    <string name="text_status_send">Existe dados para serem enviado</string>
+    <string name="text_status_sending">Dados estão sendo enviados</string>
+    <string name="text_status_sent">Não existe dados para serens enviados</string>
+    <string name="text_title_password">SENHA</string>
+    <string name="text_pattern_ok">OK</string>
+    <string name="text_pattern_save_update">SALVAR/ATUALIZAR DADOS</string>
+    <string name="text_pattern_save">SALVAR</string>
+    <string name="text_pattern_cancel">CANCELAR</string>
+    <string name="text_password_invalid">SENHA INVÁLIDA!</string>
+    <string name="text_failure">FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_blocked_access_app">ACESSO NEGADO! POR FAVOR, CONFIGURE O APLICATIVO ANTES DO USO DO MESMO!</string>
+    <string name="text_title_nro_aparelho">NRO APARELHO</string>
+    <string name="text_title_nro_equip">NRO EQUIPAMENTO</string>
+    <string name="text_field_empty_config">CAMPO VAZIO! POR FAVOR, PREENCHA TODOS OS CAMPOS PARA SALVAR AS CONFIGURAÇÕES E ATUALIZAR TODAS AS BASES DE DADOS.</string>
+    <string name="text_recover_token">FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_update_failure">FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. %1$s</string>
+    <string name="text_config_success">CONFIGURAÇÃO REALIZADA COM SUCESSO!</string>
 </resources>
