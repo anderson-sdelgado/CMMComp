@@ -24,7 +24,7 @@ class IGetConfigInternal @Inject constructor(
             if (!hasConfig)
                 return Result.success(null)
 
-            val resultConfig = configRepository.getConfig()
+            val resultConfig = configRepository.get()
             if (resultConfig.isFailure)
                 return Result.failure(resultConfig.exceptionOrNull()!!)
 

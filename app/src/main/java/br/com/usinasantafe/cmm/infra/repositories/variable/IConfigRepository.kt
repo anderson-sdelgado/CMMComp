@@ -16,7 +16,7 @@ class IConfigRepository @Inject constructor(
     private val configRetrofitDatasource: ConfigRetrofitDatasource,
 ): ConfigRepository {
 
-    override suspend fun getConfig(): Result<Config> {
+    override suspend fun get(): Result<Config> {
         try {
             val resultConfig = configSharedPreferencesDatasource.get()
             if (resultConfig.isFailure)

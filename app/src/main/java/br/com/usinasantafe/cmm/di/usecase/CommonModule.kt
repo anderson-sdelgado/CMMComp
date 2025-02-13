@@ -19,4 +19,8 @@ interface CommonModule {
     @Singleton
     fun bindGetStatusSend(usecase: IGetStatusSend): GetStatusSend
 
+    @Binds
+    @Singleton
+    fun bindGetToken(usecase: IGetToken): GetToken
+
 }

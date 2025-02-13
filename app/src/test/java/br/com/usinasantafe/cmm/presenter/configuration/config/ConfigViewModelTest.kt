@@ -7,27 +7,27 @@ import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateAtividade
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateBocal
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateColab
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateComponente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateEquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateEquipSeg
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateFrente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateItemOSMecan
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateLeira
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateMotoMec
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateOS
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateParada
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdatePressaoBocal
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdatePropriedade
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateRAtivParada
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateRFuncaoAtiv
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateROSAtiv
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateServico
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateTurno
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableAtividade
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableBocal
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableComponente
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipPneu
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipSeg
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableFrente
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemCheckList
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMecan
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableLeira
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableOS
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBocal
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableROSAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableServico
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurno
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.percentage
@@ -51,27 +51,27 @@ class ConfigViewModelTest {
     private val getConfigInternal = mock<GetConfigInternal>()
     private val sendDataConfig = mock<SendDataConfig>()
     private val saveDataConfig = mock<SaveDataConfig>()
-    private val updateAtividade = mock<UpdateAtividade>()
-    private val updateBocal = mock<UpdateBocal>()
-    private val updateColab = mock<UpdateColab>()
-    private val updateComponente = mock<UpdateComponente>()
-    private val updateEquipPneu = mock<UpdateEquipPneu>()
-    private val updateEquipSeg = mock<UpdateEquipSeg>()
-    private val updateFrente = mock<UpdateFrente>()
-    private val updateItemCheckList = mock<UpdateItemCheckList>()
-    private val updateItemOSMecan = mock<UpdateItemOSMecan>()
-    private val updateLeira = mock<UpdateLeira>()
-    private val updateMotoMec = mock<UpdateMotoMec>()
-    private val updateOS = mock<UpdateOS>()
-    private val updateParada = mock<UpdateParada>()
-    private val updatePressaoBocal = mock<UpdatePressaoBocal>()
-    private val updatePropriedade = mock<UpdatePropriedade>()
-    private val updateRAtivParada = mock<UpdateRAtivParada>()
-    private val updateREquipPneu = mock<UpdateREquipPneu>()
-    private val updateRFuncaoAtiv = mock<UpdateRFuncaoAtiv>()
-    private val updateROSAtiv = mock<UpdateROSAtiv>()
-    private val updateServico = mock<UpdateServico>()
-    private val updateTurno = mock<UpdateTurno>()
+    private val updateTableAtividade = mock<UpdateTableAtividade>()
+    private val updateTableBocal = mock<UpdateTableBocal>()
+    private val updateTableColab = mock<UpdateTableColab>()
+    private val updateTableComponente = mock<UpdateTableComponente>()
+    private val updateTableEquipPneu = mock<UpdateTableEquipPneu>()
+    private val updateTableEquipSeg = mock<UpdateTableEquipSeg>()
+    private val updateTableFrente = mock<UpdateTableFrente>()
+    private val updateTableItemCheckList = mock<UpdateTableItemCheckList>()
+    private val updateTableItemOSMecan = mock<UpdateTableItemOSMecan>()
+    private val updateTableLeira = mock<UpdateTableLeira>()
+    private val updateTableMotoMec = mock<UpdateTableMotoMec>()
+    private val updateTableOS = mock<UpdateTableOS>()
+    private val updateTableParada = mock<UpdateTableParada>()
+    private val updateTablePressaoBocal = mock<UpdateTablePressaoBocal>()
+    private val updateTablePropriedade = mock<UpdateTablePropriedade>()
+    private val updateTableRAtivParada = mock<UpdateTableRAtivParada>()
+    private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
+    private val updateTableRFuncaoAtiv = mock<UpdateTableRFuncaoAtiv>()
+    private val updateTableROSAtiv = mock<UpdateTableROSAtiv>()
+    private val updateTableServico = mock<UpdateTableServico>()
+    private val updateTableTurno = mock<UpdateTableTurno>()
     private val setCheckUpdateAllTable = mock<SetCheckUpdateAllTable>()
     private val sizeAll = 64f
     private var contWhenever = 0f
@@ -82,27 +82,27 @@ class ConfigViewModelTest {
         getConfigInternal = getConfigInternal,
         sendDataConfig = sendDataConfig,
         saveDataConfig = saveDataConfig,
-        updateAtividade = updateAtividade,
-        updateBocal = updateBocal,
-        updateColab = updateColab,
-        updateComponente = updateComponente,
-        updateEquipPneu = updateEquipPneu,
-        updateEquipSeg = updateEquipSeg,
-        updateFrente = updateFrente,
-        updateItemCheckList = updateItemCheckList,
-        updateItemOSMecan = updateItemOSMecan,
-        updateLeira = updateLeira,
-        updateMotoMec = updateMotoMec,
-        updateOS = updateOS,
-        updateParada = updateParada,
-        updatePressaoBocal = updatePressaoBocal,
-        updatePropriedade = updatePropriedade,
-        updateRAtivParada = updateRAtivParada,
-        updateREquipPneu = updateREquipPneu,
-        updateRFuncaoAtiv = updateRFuncaoAtiv,
-        updateROSAtiv = updateROSAtiv,
-        updateServico = updateServico,
-        updateTurno = updateTurno,
+        updateTableAtividade = updateTableAtividade,
+        updateTableBocal = updateTableBocal,
+        updateTableColab = updateTableColab,
+        updateTableComponente = updateTableComponente,
+        updateTableEquipPneu = updateTableEquipPneu,
+        updateTableEquipSeg = updateTableEquipSeg,
+        updateTableFrente = updateTableFrente,
+        updateTableItemCheckList = updateTableItemCheckList,
+        updateTableItemOSMecan = updateTableItemOSMecan,
+        updateTableLeira = updateTableLeira,
+        updateTableMotoMec = updateTableMotoMec,
+        updateTableOS = updateTableOS,
+        updateTableParada = updateTableParada,
+        updateTablePressaoBocal = updateTablePressaoBocal,
+        updateTablePropriedade = updateTablePropriedade,
+        updateTableRAtivParada = updateTableRAtivParada,
+        updateTableREquipPneu = updateTableREquipPneu,
+        updateTableRFuncaoAtiv = updateTableRFuncaoAtiv,
+        updateTableROSAtiv = updateTableROSAtiv,
+        updateTableServico = updateTableServico,
+        updateTableTurno = updateTableTurno,
         setCheckUpdateAllTable = setCheckUpdateAllTable
     )
 
@@ -454,7 +454,7 @@ class ConfigViewModelTest {
                 Result.success(true)
             )
             whenever(
-                updateAtividade(
+                updateTableAtividade(
                     sizeAll = sizeAll,
                     count = 1f
                 )
@@ -503,7 +503,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateAtividade`() =
         runTest {
             whenever(
-                updateAtividade(
+                updateTableAtividade(
                     sizeAll = sizeAll,
                     count = 1f
                 )
@@ -551,7 +551,7 @@ class ConfigViewModelTest {
             val qtdBefore = 1f
             wheneverSuccessAtividade()
             whenever(
-                updateBocal(
+                updateTableBocal(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -601,7 +601,7 @@ class ConfigViewModelTest {
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             whenever(
-                updateColab(
+                updateTableColab(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -653,7 +653,7 @@ class ConfigViewModelTest {
             wheneverSuccessBocal()
             wheneverSuccessColab()
             whenever(
-                updateComponente(
+                updateTableComponente(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -707,7 +707,7 @@ class ConfigViewModelTest {
             wheneverSuccessColab()
             wheneverSuccessComponente()
             whenever(
-                updateEquipPneu(
+                updateTableEquipPneu(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -754,7 +754,7 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateEquipSeg`() =
+    fun `updateTable - Check return failure if have error in UpdateEquipSeg`() =
         runTest {
             val qtdBefore = 5f
             wheneverSuccessAtividade()
@@ -763,7 +763,7 @@ class ConfigViewModelTest {
             wheneverSuccessComponente()
             wheneverSuccessEquipPneu()
             whenever(
-                updateEquipSeg(
+                updateTableEquipSeg(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -821,7 +821,7 @@ class ConfigViewModelTest {
             wheneverSuccessEquipPneu()
             wheneverSuccessEquipSeg()
             whenever(
-                updateFrente(
+                updateTableFrente(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -881,7 +881,7 @@ class ConfigViewModelTest {
             wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             whenever(
-                updateItemCheckList(
+                updateTableItemCheckList(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -943,7 +943,7 @@ class ConfigViewModelTest {
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             whenever(
-                updateItemOSMecan(
+                updateTableItemOSMecan(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1007,7 +1007,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
             whenever(
-                updateLeira(
+                updateTableLeira(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1097,7 +1097,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemOSMecan()
             wheneverSuccessLeira()
             whenever(
-                updateMotoMec(
+                updateTableMotoMec(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1157,7 +1157,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemOSMecan()
             wheneverSuccessLeira()
             whenever(
-                updateMotoMec(
+                updateTableMotoMec(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1225,7 +1225,7 @@ class ConfigViewModelTest {
             wheneverSuccessLeira()
             wheneverSuccessMotoMec()
             whenever(
-                updateOS(
+                updateTableOS(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1295,7 +1295,7 @@ class ConfigViewModelTest {
             wheneverSuccessMotoMec()
             wheneverSuccessOS()
             whenever(
-                updateParada(
+                updateTableParada(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1367,7 +1367,7 @@ class ConfigViewModelTest {
             wheneverSuccessOS()
             wheneverSuccessParada()
             whenever(
-                updatePressaoBocal(
+                updateTablePressaoBocal(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1441,7 +1441,7 @@ class ConfigViewModelTest {
             wheneverSuccessParada()
             wheneverSuccessPressaoBocal()
             whenever(
-                updatePropriedade(
+                updateTablePropriedade(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1517,7 +1517,7 @@ class ConfigViewModelTest {
             wheneverSuccessPressaoBocal()
             wheneverSuccessPropriedade()
             whenever(
-                updateRAtivParada(
+                updateTableRAtivParada(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1595,7 +1595,7 @@ class ConfigViewModelTest {
             wheneverSuccessPropriedade()
             wheneverSuccessRAtivParada()
             whenever(
-                updateREquipPneu(
+                updateTableREquipPneu(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1675,7 +1675,7 @@ class ConfigViewModelTest {
             wheneverSuccessRAtivParada()
             wheneverSuccessREquipPneu()
             whenever(
-                updateRFuncaoAtiv(
+                updateTableRFuncaoAtiv(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1757,7 +1757,7 @@ class ConfigViewModelTest {
             wheneverSuccessREquipPneu()
             wheneverSuccessRFuncaoAtiv()
             whenever(
-                updateROSAtiv(
+                updateTableROSAtiv(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1841,7 +1841,7 @@ class ConfigViewModelTest {
             wheneverSuccessRFuncaoAtiv()
             wheneverSuccessROSAtiv()
             whenever(
-                updateServico(
+                updateTableServico(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1928,7 +1928,7 @@ class ConfigViewModelTest {
             wheneverSuccessServico()
             wheneverSuccessTurno()
             whenever(
-                updateTurno(
+                updateTableTurno(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -2040,7 +2040,7 @@ class ConfigViewModelTest {
             wheneverSuccessServico()
             wheneverSuccessTurno()
             whenever(
-                updateTurno(
+                updateTableTurno(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -2317,7 +2317,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessAtividade() =
         runTest {
             whenever(
-                updateAtividade(
+                updateTableAtividade(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2373,7 +2373,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessBocal() =
         runTest {
             whenever(
-                updateBocal(
+                updateTableBocal(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2429,7 +2429,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessColab() =
         runTest {
             whenever(
-                updateColab(
+                updateTableColab(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2485,7 +2485,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessComponente() =
         runTest {
             whenever(
-                updateComponente(
+                updateTableComponente(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2541,7 +2541,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessEquipPneu() =
         runTest {
             whenever(
-                updateEquipPneu(
+                updateTableEquipPneu(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2597,7 +2597,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessEquipSeg() =
         runTest {
             whenever(
-                updateEquipSeg(
+                updateTableEquipSeg(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2653,7 +2653,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessFrente() =
         runTest {
             whenever(
-                updateFrente(
+                updateTableFrente(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2709,7 +2709,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessItemCheckList() =
         runTest {
             whenever(
-                updateItemCheckList(
+                updateTableItemCheckList(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2765,7 +2765,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessItemOSMecan() =
         runTest {
             whenever(
-                updateItemOSMecan(
+                updateTableItemOSMecan(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2821,7 +2821,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessLeira() =
         runTest {
             whenever(
-                updateLeira(
+                updateTableLeira(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2877,7 +2877,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessMotoMec() =
         runTest {
             whenever(
-                updateMotoMec(
+                updateTableMotoMec(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2933,7 +2933,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessOS() =
         runTest {
             whenever(
-                updateOS(
+                updateTableOS(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -2989,7 +2989,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessParada() =
         runTest {
             whenever(
-                updateParada(
+                updateTableParada(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3045,7 +3045,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessPressaoBocal() =
         runTest {
             whenever(
-                updatePressaoBocal(
+                updateTablePressaoBocal(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3101,7 +3101,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessPropriedade() =
         runTest {
             whenever(
-                updatePropriedade(
+                updateTablePropriedade(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3157,7 +3157,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessRAtivParada() =
         runTest {
             whenever(
-                updateRAtivParada(
+                updateTableRAtivParada(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3213,7 +3213,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessREquipPneu() =
         runTest {
             whenever(
-                updateREquipPneu(
+                updateTableREquipPneu(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3269,7 +3269,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessRFuncaoAtiv() =
         runTest {
             whenever(
-                updateRFuncaoAtiv(
+                updateTableRFuncaoAtiv(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3325,7 +3325,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessROSAtiv() =
         runTest {
             whenever(
-                updateROSAtiv(
+                updateTableROSAtiv(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3381,7 +3381,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessServico() =
         runTest {
             whenever(
-                updateServico(
+                updateTableServico(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -3437,7 +3437,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessTurno() =
         runTest {
             whenever(
-                updateTurno(
+                updateTableTurno(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )

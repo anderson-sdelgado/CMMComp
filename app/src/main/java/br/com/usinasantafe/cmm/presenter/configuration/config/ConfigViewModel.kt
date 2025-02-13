@@ -7,27 +7,27 @@ import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateAtividade
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateBocal
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateColab
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateComponente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateEquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateEquipSeg
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateFrente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateItemOSMecan
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateLeira
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateMotoMec
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateOS
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateParada
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdatePressaoBocal
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdatePropriedade
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateRAtivParada
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateRFuncaoAtiv
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateROSAtiv
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateServico
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.UpdateTurno
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableAtividade
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableBocal
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableComponente
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipPneu
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipSeg
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableFrente
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemCheckList
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMecan
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableLeira
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableOS
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBocal
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableROSAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableServico
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurno
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.percentage
@@ -76,27 +76,27 @@ class ConfigViewModel @Inject constructor(
     private val getConfigInternal: GetConfigInternal,
     private val sendDataConfig: SendDataConfig,
     private val saveDataConfig: SaveDataConfig,
-    private val updateAtividade: UpdateAtividade,
-    private val updateBocal: UpdateBocal,
-    private val updateColab: UpdateColab,
-    private val updateComponente: UpdateComponente,
-    private val updateEquipPneu: UpdateEquipPneu,
-    private val updateEquipSeg: UpdateEquipSeg,
-    private val updateFrente: UpdateFrente,
-    private val updateItemCheckList: UpdateItemCheckList,
-    private val updateItemOSMecan: UpdateItemOSMecan,
-    private val updateLeira: UpdateLeira,
-    private val updateMotoMec: UpdateMotoMec,
-    private val updateOS: UpdateOS,
-    private val updateParada: UpdateParada,
-    private val updatePressaoBocal: UpdatePressaoBocal,
-    private val updatePropriedade: UpdatePropriedade,
-    private val updateRAtivParada: UpdateRAtivParada,
-    private val updateREquipPneu: UpdateREquipPneu,
-    private val updateRFuncaoAtiv: UpdateRFuncaoAtiv,
-    private val updateROSAtiv: UpdateROSAtiv,
-    private val updateServico: UpdateServico,
-    private val updateTurno: UpdateTurno,
+    private val updateTableAtividade: UpdateTableAtividade,
+    private val updateTableBocal: UpdateTableBocal,
+    private val updateTableColab: UpdateTableColab,
+    private val updateTableComponente: UpdateTableComponente,
+    private val updateTableEquipPneu: UpdateTableEquipPneu,
+    private val updateTableEquipSeg: UpdateTableEquipSeg,
+    private val updateTableFrente: UpdateTableFrente,
+    private val updateTableItemCheckList: UpdateTableItemCheckList,
+    private val updateTableItemOSMecan: UpdateTableItemOSMecan,
+    private val updateTableLeira: UpdateTableLeira,
+    private val updateTableMotoMec: UpdateTableMotoMec,
+    private val updateTableOS: UpdateTableOS,
+    private val updateTableParada: UpdateTableParada,
+    private val updateTablePressaoBocal: UpdateTablePressaoBocal,
+    private val updateTablePropriedade: UpdateTablePropriedade,
+    private val updateTableRAtivParada: UpdateTableRAtivParada,
+    private val updateTableREquipPneu: UpdateTableREquipPneu,
+    private val updateTableRFuncaoAtiv: UpdateTableRFuncaoAtiv,
+    private val updateTableROSAtiv: UpdateTableROSAtiv,
+    private val updateTableServico: UpdateTableServico,
+    private val updateTableTurno: UpdateTableTurno,
     private val setCheckUpdateAllTable: SetCheckUpdateAllTable
 ) : ViewModel() {
 
@@ -292,7 +292,7 @@ class ConfigViewModel @Inject constructor(
         var pos = 0f
         val sizeAllUpdate = sizeUpdate(qtdTable)
         var configState = ConfigState()
-        updateAtividade(
+        updateTableAtividade(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -300,7 +300,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateBocal(
+        updateTableBocal(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -308,7 +308,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateColab(
+        updateTableColab(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -316,7 +316,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateComponente(
+        updateTableComponente(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -324,7 +324,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateEquipPneu(
+        updateTableEquipPneu(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -332,7 +332,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateEquipSeg(
+        updateTableEquipSeg(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -340,7 +340,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateFrente(
+        updateTableFrente(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -348,7 +348,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateItemCheckList(
+        updateTableItemCheckList(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -356,7 +356,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateItemOSMecan(
+        updateTableItemOSMecan(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -364,7 +364,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateLeira(
+        updateTableLeira(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -372,7 +372,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateMotoMec(
+        updateTableMotoMec(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -380,7 +380,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateOS(
+        updateTableOS(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -388,7 +388,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateParada(
+        updateTableParada(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -396,7 +396,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updatePressaoBocal(
+        updateTablePressaoBocal(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -404,7 +404,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updatePropriedade(
+        updateTablePropriedade(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -412,7 +412,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateRAtivParada(
+        updateTableRAtivParada(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -420,7 +420,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateREquipPneu(
+        updateTableREquipPneu(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -428,7 +428,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateRFuncaoAtiv(
+        updateTableRFuncaoAtiv(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -436,7 +436,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateROSAtiv(
+        updateTableROSAtiv(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -444,7 +444,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateServico(
+        updateTableServico(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -452,7 +452,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateTurno(
+        updateTableTurno(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {

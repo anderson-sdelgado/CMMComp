@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.usecase
 
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.update.*
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,86 +13,86 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateAtividade(usecase: IUpdateAtividade): UpdateAtividade
+    fun bindUpdateAtividade(usecase: IUpdateTableAtividade): UpdateTableAtividade
 
     @Binds
     @Singleton
-    fun bindUpdateBocal(usecase: IUpdateBocal): UpdateBocal
+    fun bindUpdateTableBocal(usecase: IUpdateTableBocal): UpdateTableBocal
 
     @Binds
     @Singleton
-    fun bindUpdateColab(usecase: IUpdateColab): UpdateColab
+    fun bindUpdateTableColab(usecase: IUpdateTableColab): UpdateTableColab
 
     @Binds
     @Singleton
-    fun bindUpdateComponente(usecase: IUpdateComponente): UpdateComponente
+    fun bindUpdateTableComponente(usecase: IUpdateTableComponente): UpdateTableComponente
 
     @Binds
     @Singleton
-    fun bindUpdateEquipPneu(usecase: IUpdateEquipPneu): UpdateEquipPneu
+    fun bindUpdateTableEquipPneu(usecase: IUpdateTableEquipPneu): UpdateTableEquipPneu
 
     @Binds
     @Singleton
-    fun bindUpdateEquipSeg(usecase: IUpdateEquipSeg): UpdateEquipSeg
+    fun bindUpdateTableEquipSeg(usecase: IUpdateTableEquipSeg): UpdateTableEquipSeg
 
     @Binds
     @Singleton
-    fun bindUpdateFrente(usecase: IUpdateFrente): UpdateFrente
+    fun bindUpdateTableFrente(usecase: IUpdateTableFrente): UpdateTableFrente
 
     @Binds
     @Singleton
-    fun bindUpdateItemCheckList(usecase: IUpdateItemCheckList): UpdateItemCheckList
+    fun bindUpdateTableItemCheckList(usecase: IUpdateTableItemCheckList): UpdateTableItemCheckList
 
     @Binds
     @Singleton
-    fun bindUpdateItemOSMecan(usecase: IUpdateItemOSMecan): UpdateItemOSMecan
+    fun bindUpdateTableItemOSMecan(usecase: IUpdateTableItemOSMecan): UpdateTableItemOSMecan
 
     @Binds
     @Singleton
-    fun bindUpdateLeira(usecase: IUpdateLeira): UpdateLeira
+    fun bindUpdateTableLeira(usecase: IUpdateTableLeira): UpdateTableLeira
 
     @Binds
     @Singleton
-    fun bindUpdateMotoMec(usecase: IUpdateMotoMec): UpdateMotoMec
+    fun bindUpdateTableMotoMec(usecase: IUpdateTableMotoMec): UpdateTableMotoMec
 
     @Binds
     @Singleton
-    fun bindUpdateOS(usecase: IUpdateOS): UpdateOS
+    fun bindUpdateTableOS(usecase: IUpdateTableOS): UpdateTableOS
 
     @Binds
     @Singleton
-    fun bindUpdateParada(usecase: IUpdateParada): UpdateParada
+    fun bindUpdateTableParada(usecase: IUpdateTableParada): UpdateTableParada
 
     @Binds
     @Singleton
-    fun bindUpdatePressaoBocal(usecase: IUpdatePressaoBocal): UpdatePressaoBocal
+    fun bindUpdateTablePressaoBocal(usecase: IUpdateTablePressaoBocal): UpdateTablePressaoBocal
 
     @Binds
     @Singleton
-    fun bindUpdatePropriedade(usecase: IUpdatePropriedade): UpdatePropriedade
+    fun bindUpdateTablePropriedade(usecase: IUpdateTablePropriedade): UpdateTablePropriedade
 
     @Binds
     @Singleton
-    fun bindUpdateRAtivParada(usecase: IUpdateRAtivParada): UpdateRAtivParada
+    fun bindUpdateTableRAtivParada(usecase: IUpdateTableRAtivParada): UpdateTableRAtivParada
 
     @Binds
     @Singleton
-    fun bindUpdateREquipPneu(usecase: IUpdateREquipPneu): UpdateREquipPneu
+    fun bindUpdateTableREquipPneu(usecase: IUpdateTableREquipPneu): UpdateTableREquipPneu
 
     @Binds
     @Singleton
-    fun bindUpdateRFuncaoAtiv(usecase: IUpdateRFuncaoAtiv): UpdateRFuncaoAtiv
+    fun bindUpdateTableRFuncaoAtiv(usecase: IUpdateTableRFuncaoAtiv): UpdateTableRFuncaoAtiv
 
     @Binds
     @Singleton
-    fun bindUpdateROSAtiv(usecase: IUpdateROSAtiv): UpdateROSAtiv
+    fun bindUpdateTableROSAtiv(usecase: IUpdateTableROSAtiv): UpdateTableROSAtiv
 
     @Binds
     @Singleton
-    fun bindUpdateServico(usecase: IUpdateServico): UpdateServico
+    fun bindUpdateTableServico(usecase: IUpdateTableServico): UpdateTableServico
 
     @Binds
     @Singleton
-    fun bindUpdateTurno(usecase: IUpdateTurno): UpdateTurno
+    fun bindUpdateTableTurno(usecase: IUpdateTableTurno): UpdateTableTurno
 
 }

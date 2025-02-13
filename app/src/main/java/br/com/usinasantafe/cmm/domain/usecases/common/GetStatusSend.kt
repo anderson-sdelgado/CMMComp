@@ -15,7 +15,7 @@ class IGetStatusSend @Inject constructor(
 
     override suspend fun invoke(): Result<StatusSend> {
         try {
-            val result = configRepository.getConfig()
+            val result = configRepository.get()
             if (result.isFailure)
                 return Result.failure(result.exceptionOrNull()!!)
             val config = result.getOrNull()!!

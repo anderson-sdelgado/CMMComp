@@ -21,7 +21,7 @@ class IGetStatusSendTest {
     fun `Check return failure if have error in ConfigRepository getConfig`() =
         runTest {
             whenever(
-                configRepository.getConfig()
+                configRepository.get()
             ).thenReturn(
                 Result.failure(
                     RepositoryException(
@@ -45,7 +45,7 @@ class IGetStatusSendTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                configRepository.getConfig()
+                configRepository.get()
             ).thenReturn(
                 Result.success(
                     Config(

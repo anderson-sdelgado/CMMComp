@@ -37,7 +37,7 @@ class IConfigRepositoryTest {
                     )
                 )
             )
-            val result = repository.getConfig()
+            val result = repository.get()
             assertEquals(
                 result.isFailure,
                 true
@@ -60,7 +60,7 @@ class IConfigRepositoryTest {
                     )
                 )
             )
-            val result = repository.getConfig()
+            val result = repository.get()
             assertEquals(
                 result.isSuccess,
                 true

@@ -9,9 +9,11 @@ import java.util.Locale
 fun token(
     number: Long,
     version: String,
-    idBD: Int
+    nroEquip: Long,
+    app: String,
+    idBD: Int,
 ): String {
-    var token = "CMM-${version}-$number-$idBD"
+    var token = "$app-$version-$number-$nroEquip-$idBD"
     val messageDigest = MessageDigest.getInstance("MD5")
     messageDigest.update(token.toByteArray(), 0, token.length)
     val bigInteger = BigInteger(1, messageDigest.digest())

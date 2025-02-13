@@ -72,7 +72,7 @@ class IGetConfigInternalTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getConfig()
+                configRepository.get()
             ).thenReturn(
                 Result.failure(
                     RepositoryException(
@@ -105,7 +105,7 @@ class IGetConfigInternalTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getConfig()
+                configRepository.get()
             ).thenReturn(
                 Result.success(
                     Config(
