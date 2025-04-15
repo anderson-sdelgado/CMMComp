@@ -15,7 +15,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IUpdateTableItemOSMecanTest {
+class IUpdateTableItemOSMecanDaoTest {
 
     private val getToken = mock<GetToken>()
     private val itemOSMecanRepository = mock<ItemOSMecanRepository>()
