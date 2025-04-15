@@ -1,12 +1,10 @@
-package br.com.usinasantafe.cmm.domain.usecases.updatetable.update
+package br.com.usinasantafe.cmm.domain.usecases.updatetable
 
 import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
-import br.com.usinasantafe.cmm.domain.entities.stable.Atividade
-import br.com.usinasantafe.cmm.domain.errors.RepositoryException
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
-import br.com.usinasantafe.cmm.domain.repositories.stable.AtividadeRepository
+import br.com.usinasantafe.cmm.domain.entities.stable.Componente
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.ComponenteRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.IUpdateTableAtividade
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
@@ -17,13 +15,13 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IUpdateTableAtividadeTest {
+class IUpdateTableComponenteTest {
 
     private val getToken = mock<GetToken>()
-    private val atividadeRepository = mock<AtividadeRepository>()
-    private val updateTableAtividade = IUpdateTableAtividade(
+    private val componenteRepository = mock<ComponenteRepository>()
+    private val updateTableComponente = IUpdateTableComponente(
         getToken = getToken,
-        atividadeRepository = atividadeRepository
+        componenteRepository = componenteRepository
     )
 
     @Test
@@ -32,14 +30,13 @@ class IUpdateTableAtividadeTest {
             whenever(
                 getToken()
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "GetToken",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableComponente(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -52,7 +49,7 @@ class IUpdateTableAtividadeTest {
                 list[0],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -62,15 +59,15 @@ class IUpdateTableAtividadeTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Failure Usecase -> GetToken -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Failure Usecase -> GetToken -> java.lang.Exception",
+                    failure = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository recoverAll`() =
+    fun `Check return failure if have error in ComponenteRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -78,16 +75,15 @@ class IUpdateTableAtividadeTest {
                 Result.success("token")
             )
             whenever(
-                atividadeRepository.recoverAll("token")
+                componenteRepository.recoverAll("token")
             ).thenReturn(
-                Result.failure(
-                    RepositoryException(
-                        function = "AtividadeRepository.recoverAll",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableComponente(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -100,7 +96,7 @@ class IUpdateTableAtividadeTest {
                 list[0],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -110,21 +106,21 @@ class IUpdateTableAtividadeTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.recoverAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.recoverAll -> java.lang.Exception",
+                    failure = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository deleteAll`() =
+    fun `Check return failure if have error in ComponenteRepository deleteAll`() =
         runTest {
             val list = listOf(
-                Atividade(
-                    idAtiv = 1,
-                    codAtiv = 1,
-                    descrAtiv = "descrAtiv"
+                Componente(
+                    idComponente = 1,
+                    codComponente = 1,
+                    descrComponente = "descrComponente"
                 )
             )
             whenever(
@@ -133,23 +129,22 @@ class IUpdateTableAtividadeTest {
                 Result.success("token")
             )
             whenever(
-                atividadeRepository.recoverAll("token")
+                componenteRepository.recoverAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                atividadeRepository.deleteAll()
+                componenteRepository.deleteAll()
             ).thenReturn(
-                Result.failure(
-                    RepositoryException(
-                        function = "AtividadeRepository.deleteAll",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableComponente(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -162,7 +157,7 @@ class IUpdateTableAtividadeTest {
                 resultList[0],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -170,7 +165,7 @@ class IUpdateTableAtividadeTest {
                 resultList[1],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_atividade",
+                    msgProgress = "Limpando a tabela tb_componente",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -180,21 +175,21 @@ class IUpdateTableAtividadeTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.deleteAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.deleteAll -> java.lang.Exception",
+                    failure = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository addAll`() =
+    fun `Check return failure if have error in ComponenteRepository addAll`() =
         runTest {
             val list = listOf(
-                Atividade(
-                    idAtiv = 1,
-                    codAtiv = 1,
-                    descrAtiv = "descrAtiv"
+                Componente(
+                    idComponente = 1,
+                    codComponente = 1,
+                    descrComponente = "descrComponente"
                 )
             )
             whenever(
@@ -203,28 +198,27 @@ class IUpdateTableAtividadeTest {
                 Result.success("token")
             )
             whenever(
-                atividadeRepository.recoverAll("token")
+                componenteRepository.recoverAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                atividadeRepository.deleteAll()
+                componenteRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                atividadeRepository.addAll(list)
+                componenteRepository.addAll(list)
             ).thenReturn(
-                Result.failure(
-                    RepositoryException(
-                        function = "AtividadeRepository.addAll",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableComponente(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -237,7 +231,7 @@ class IUpdateTableAtividadeTest {
                 resultList[0],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -245,7 +239,7 @@ class IUpdateTableAtividadeTest {
                 resultList[1],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_atividade",
+                    msgProgress = "Limpando a tabela tb_componente",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -253,7 +247,7 @@ class IUpdateTableAtividadeTest {
                 resultList[2],
                 ResultUpdate(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_atividade",
+                    msgProgress = "Salvando dados na tabela tb_componente",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
@@ -263,8 +257,8 @@ class IUpdateTableAtividadeTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.addAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Failure Repository -> AtividadeRepository.addAll -> java.lang.Exception",
+                    failure = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "UpdateTableComponente -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

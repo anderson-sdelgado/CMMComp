@@ -1,7 +1,8 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.domain.errors.DatasourceException
+import br.com.usinasantafe.cmm.domain.errors.AppError
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_CONFIG
@@ -27,11 +28,10 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return Result.failure(
-                DatasourceException(
-                    function = "IConfigSharedPreferencesDatasource.getConfig",
-                    cause = e
-                )
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.get",
+                message = "-",
+                cause = e
             )
         }
     }
@@ -44,11 +44,10 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             )
             return Result.success(result != null)
         } catch (e: Exception){
-            return Result.failure(
-                DatasourceException(
-                    function = "ConfigSharedPreferencesDatasourceImpl.hasConfig",
-                    cause = e
-                )
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.has",
+                message = "-",
+                cause = e
             )
         }
     }
@@ -63,11 +62,10 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             editor.apply()
             return Result.success(true)
         } catch (e: Exception){
-            return Result.failure(
-                DatasourceException(
-                    function = "ConfigSharedPreferencesDatasourceImpl.saveConfig",
-                    cause = e
-                )
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.save",
+                message = "-",
+                cause = e
             )
         }
     }

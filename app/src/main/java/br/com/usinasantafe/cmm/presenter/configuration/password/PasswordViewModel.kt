@@ -3,11 +3,13 @@ package br.com.usinasantafe.cmm.presenter.configuration.password
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.config.CheckPassword
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class PasswordState(
@@ -47,7 +49,8 @@ class PasswordViewModel @Inject constructor(
             if(resultCheck.isFailure) {
                 val error = resultCheck.exceptionOrNull()!!
                 val failure =
-                    "${tag}.checkAccess -> CheckPassword -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                Timber.e(failure)
                 _uiState.update {
                     it.copy(
                         flagDialog = true,

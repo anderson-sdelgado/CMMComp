@@ -1,7 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.domain.errors.RepositoryException
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -23,10 +21,7 @@ class ICheckPasswordTest {
                 configRepository.hasConfig()
             ).thenReturn(
                 Result.failure(
-                    RepositoryException(
-                        function = "ConfigRepository.hasConfig",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = usecase("12345")
@@ -36,7 +31,7 @@ class ICheckPasswordTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Repository -> ConfigRepository.hasConfig"
+                "ICheckPassword -> Unknown Error"
             )
         }
 
@@ -71,10 +66,7 @@ class ICheckPasswordTest {
                 configRepository.getPassword()
             ).thenReturn(
                 Result.failure(
-                    RepositoryException(
-                        function = "ConfigRepository.getPassword",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = usecase("12345")
@@ -84,7 +76,7 @@ class ICheckPasswordTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Repository -> ConfigRepository.getPassword"
+                "ICheckPassword -> Unknown Error"
             )
         }
 

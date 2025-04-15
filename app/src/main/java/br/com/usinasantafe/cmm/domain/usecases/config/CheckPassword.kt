@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import javax.inject.Inject
 
@@ -15,24 +15,35 @@ class ICheckPassword @Inject constructor(
     override suspend fun invoke(password: String): Result<Boolean> {
         try {
             val resultHasConfig = configRepository.hasConfig()
-            if (resultHasConfig.isFailure)
-                return Result.failure(resultHasConfig.exceptionOrNull()!!)
+            if (resultHasConfig.isFailure) {
+                val e = resultHasConfig.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ICheckPassword",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
             val hasConfig = resultHasConfig.getOrNull()!!
             if (!hasConfig)
                 return Result.success(true)
             val resultPassword = configRepository.getPassword()
-            if (resultPassword.isFailure)
-                return Result.failure(resultPassword.exceptionOrNull()!!)
+            if (resultPassword.isFailure){
+                val e = resultPassword.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ICheckPassword",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
             val passwordConfig = resultPassword.getOrNull()!!
             if (passwordConfig == password)
                 return Result.success(true)
             return Result.success(false)
         } catch (e: Exception) {
-            return Result.failure(
-                UsecaseException(
-                    function = "CheckPassword",
-                    cause = e
-                )
+            return resultFailure(
+                context = "ICheckPassword",
+                message = "-",
+                cause = e
             )
         }
     }

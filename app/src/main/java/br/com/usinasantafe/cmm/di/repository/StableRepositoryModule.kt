@@ -70,6 +70,10 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
+    fun bindREquipAtivRepository(repository: IREquipAtivRepository): REquipAtivRepository
+
+    @Binds
+    @Singleton
     fun bindREquipPneuRepository(repository: IREquipPneuRepository): REquipPneuRepository
 
     @Binds

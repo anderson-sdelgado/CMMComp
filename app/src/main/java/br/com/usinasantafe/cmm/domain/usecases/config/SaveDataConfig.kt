@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import javax.inject.Inject
 
@@ -40,13 +40,21 @@ class ISaveDataConfig @Inject constructor(
                 checkMotoMec = checkMotoMec,
                 idBD = idBD
             )
-            return configRepository.save(config)
-        } catch (e: Exception) {
-            return Result.failure(
-                UsecaseException(
-                    function = "SaveDataConfig",
-                    cause = e
+            val configResult = configRepository.save(config)
+            if (configResult.isFailure) {
+                val e = configResult.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ISaveDataConfig",
+                    message = e.message,
+                    cause = e.cause
                 )
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "ISaveDataConfig",
+                message = "-",
+                cause = e
             )
         }
     }

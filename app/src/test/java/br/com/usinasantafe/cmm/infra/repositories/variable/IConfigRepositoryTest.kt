@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.DatasourceException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
@@ -30,11 +30,10 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.get()
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigSharedPreferencesDatasource.get",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.get()
@@ -44,7 +43,11 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigSharedPreferencesDatasource.get"
+                "IConfigRepository.get -> Error -> Exception"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
@@ -78,11 +81,10 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.get()
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigSharedPreferencesDatasource.get",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.getFlagUpdate()
@@ -92,7 +94,11 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigSharedPreferencesDatasource.get"
+                "IConfigRepository.getFlagUpdate -> Error -> Exception",
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
@@ -125,11 +131,10 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.has()
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigSharedPreferencesDatasource.has",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.hasConfig()
@@ -139,7 +144,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigSharedPreferencesDatasource.has"
+                "Error -> Exception"
             )
         }
 
@@ -170,11 +175,10 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.get()
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigSharedPreferencesDatasource.get",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.getPassword()
@@ -184,7 +188,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigSharedPreferencesDatasource.get"
+                "IConfigRepository.getPassword -> Error -> Exception"
             )
         }
 
@@ -231,11 +235,10 @@ class IConfigRepositoryTest {
                     retrofitModelOutput = retrofitModelOutput
                 )
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigRetrofitDatasource.recoverToken",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.send(entity)
@@ -245,7 +248,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigRetrofitDatasource.recoverToken"
+                "IConfigRepository.send -> Error -> Exception"
             )
         }
 
@@ -301,11 +304,10 @@ class IConfigRepositoryTest {
                     )
                 )
             ).thenReturn(
-                Result.failure(
-                    DatasourceException(
-                        function = "ConfigSharedPreferencesDatasource.save",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             val result = repository.save(
@@ -325,7 +327,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigSharedPreferencesDatasource.save"
+                "Error -> Exception"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

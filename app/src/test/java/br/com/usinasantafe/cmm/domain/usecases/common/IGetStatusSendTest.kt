@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.RepositoryException
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -24,10 +23,7 @@ class IGetStatusSendTest {
                 configRepository.get()
             ).thenReturn(
                 Result.failure(
-                    RepositoryException(
-                        function = "ConfigRepository.getConfig",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = usecase()
@@ -37,7 +33,7 @@ class IGetStatusSendTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Repository -> ConfigRepository.getConfig"
+                "IGetStatusSend -> Unknown Error"
             )
         }
 

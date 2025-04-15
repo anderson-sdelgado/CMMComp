@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.RepositoryException
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -32,7 +31,7 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> SendDataConfig"
+                "ISendDataConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -55,10 +54,7 @@ class ISendDataConfigTest {
                 )
             ).thenReturn(
                 Result.failure(
-                    RepositoryException(
-                        function = "ConfigRepository.send",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = sendDataConfig(
@@ -74,7 +70,7 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Repository -> ConfigRepository.send"
+                "ISendDataConfig -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

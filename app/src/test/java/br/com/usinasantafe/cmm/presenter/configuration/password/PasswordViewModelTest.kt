@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.configuration.password
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.CheckPassword
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -31,11 +31,10 @@ class PasswordViewModelTest {
                     password = viewModel.uiState.value.password
                 )
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "CheckPassword",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.checkAccess()
@@ -54,7 +53,7 @@ class PasswordViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "PasswordViewModel.checkAccess -> CheckPassword -> Failure Usecase -> CheckPassword -> java.lang.Exception"
+                "PasswordViewModel.checkAccess -> Error -> Exception -> java.lang.Exception",
             )
         }
 

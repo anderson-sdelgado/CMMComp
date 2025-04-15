@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.configuration.config
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
@@ -11,8 +11,6 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableAtividade
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableBocal
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableComponente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipSeg
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableFrente
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMecan
@@ -24,7 +22,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBoc
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableROSAtiv
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableServico
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurno
@@ -55,8 +53,6 @@ class ConfigViewModelTest {
     private val updateTableBocal = mock<UpdateTableBocal>()
     private val updateTableColab = mock<UpdateTableColab>()
     private val updateTableComponente = mock<UpdateTableComponente>()
-    private val updateTableEquipPneu = mock<UpdateTableEquipPneu>()
-    private val updateTableEquipSeg = mock<UpdateTableEquipSeg>()
     private val updateTableFrente = mock<UpdateTableFrente>()
     private val updateTableItemCheckList = mock<UpdateTableItemCheckList>()
     private val updateTableItemOSMecan = mock<UpdateTableItemOSMecan>()
@@ -68,7 +64,7 @@ class ConfigViewModelTest {
     private val updateTablePropriedade = mock<UpdateTablePropriedade>()
     private val updateTableRAtivParada = mock<UpdateTableRAtivParada>()
     private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
-    private val updateTableRFuncaoAtiv = mock<UpdateTableRFuncaoAtiv>()
+    private val updateTableRFuncaoAtivParada = mock<UpdateTableRFuncaoAtivParada>()
     private val updateTableROSAtiv = mock<UpdateTableROSAtiv>()
     private val updateTableServico = mock<UpdateTableServico>()
     private val updateTableTurno = mock<UpdateTableTurno>()
@@ -86,8 +82,6 @@ class ConfigViewModelTest {
         updateTableBocal = updateTableBocal,
         updateTableColab = updateTableColab,
         updateTableComponente = updateTableComponente,
-        updateTableEquipPneu = updateTableEquipPneu,
-        updateTableEquipSeg = updateTableEquipSeg,
         updateTableFrente = updateTableFrente,
         updateTableItemCheckList = updateTableItemCheckList,
         updateTableItemOSMecan = updateTableItemOSMecan,
@@ -99,7 +93,7 @@ class ConfigViewModelTest {
         updateTablePropriedade = updateTablePropriedade,
         updateTableRAtivParada = updateTableRAtivParada,
         updateTableREquipPneu = updateTableREquipPneu,
-        updateTableRFuncaoAtiv = updateTableRFuncaoAtiv,
+        updateTableRFuncaoAtivParada = updateTableRFuncaoAtivParada,
         updateTableROSAtiv = updateTableROSAtiv,
         updateTableServico = updateTableServico,
         updateTableTurno = updateTableTurno,
@@ -112,11 +106,10 @@ class ConfigViewModelTest {
             whenever(
                 getConfigInternal()
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "GetConfigInternal",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.returnDataConfig()
@@ -131,7 +124,7 @@ class ConfigViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "ConfigViewModel.returnDataConfig -> GetConfigInternal -> Failure Usecase -> GetConfigInternal -> java.lang.Exception"
+                "ConfigViewModel.returnDataConfig -> GetConfigInternal -> Error -> Exception -> java.lang.Exception",
             )
         }
 
@@ -247,11 +240,10 @@ class ConfigViewModelTest {
                     version = "1.00"
                 )
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "GetConfigInternal",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.onNumberChanged("16997417840")
@@ -277,15 +269,15 @@ class ConfigViewModelTest {
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "ConfigViewModel.token -> SendDataConfig -> Failure Usecase -> GetConfigInternal -> java.lang.Exception",
-                    msgProgress = "ConfigViewModel.token -> SendDataConfig -> Failure Usecase -> GetConfigInternal -> java.lang.Exception",
+                    failure = "ConfigViewModel.token -> SendDataConfig -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "ConfigViewModel.token -> SendDataConfig -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
             viewModel.saveTokenAndUpdate()
             assertEquals(
                 viewModel.uiState.value.msgProgress,
-                "ConfigViewModel.token -> SendDataConfig -> Failure Usecase -> GetConfigInternal -> java.lang.Exception"
+                "ConfigViewModel.token -> SendDataConfig -> Error -> Exception -> java.lang.Exception"
             )
         }
     
@@ -314,11 +306,10 @@ class ConfigViewModelTest {
                     idBD = 1
                 )
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "SaveDataConfig",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.onNumberChanged("16997417840")
@@ -352,15 +343,15 @@ class ConfigViewModelTest {
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "ConfigViewModel.token -> SaveDataConfig -> Failure Usecase -> SaveDataConfig -> java.lang.Exception",
-                    msgProgress = "ConfigViewModel.token -> SaveDataConfig -> Failure Usecase -> SaveDataConfig -> java.lang.Exception",
+                    failure = "ConfigViewModel.token -> SaveDataConfig -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "ConfigViewModel.token -> SaveDataConfig -> Error -> Exception -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
             viewModel.saveTokenAndUpdate()
             assertEquals(
                 viewModel.uiState.value.msgProgress,
-                "ConfigViewModel.token -> SaveDataConfig -> Failure Usecase -> SaveDataConfig -> java.lang.Exception"
+                "ConfigViewModel.token -> SaveDataConfig -> Error -> Exception -> java.lang.Exception"
             )
         }
 
@@ -471,8 +462,8 @@ class ConfigViewModelTest {
                         flagFailure = true,
                         flagProgress = true,
                         currentProgress = 1f,
-                        failure = "Failure Usecase -> CleanAtividade -> java.lang.NullPointerException",
-                        msgProgress = "Failure Usecase -> CleanAtividade -> java.lang.NullPointerException",
+                        failure = "Exception -> java.lang.Exception",
+                        msgProgress = "Exception -> java.lang.Exception",
                     )
                 )
             )
@@ -490,11 +481,11 @@ class ConfigViewModelTest {
                 ConfigState(
                     errors = Errors.UPDATE,
                     flagProgress = true,
-                    msgProgress = "Failure Usecase -> CleanAtividade -> java.lang.NullPointerException",
+                    msgProgress = "Exception -> java.lang.Exception",
                     currentProgress = 1f,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "ConfigViewModel.update -> Failure Usecase -> CleanAtividade -> java.lang.NullPointerException"
+                    failure = "ConfigViewModel.update -> Exception -> java.lang.Exception"
                 )
             )
         }
@@ -699,127 +690,13 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateEquipPneu`() =
+    fun `update - Check return failure if have error in UpdateFrente`() =
         runTest {
             val qtdBefore = 4f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            whenever(
-                updateTableEquipPneu(
-                    sizeAll = sizeAll,
-                    count = (qtdBefore + 1)
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_equip_pneu",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                    ),
-                    ResultUpdate(
-                        errors = Errors.UPDATE,
-                        flagDialog = true,
-                        flagFailure = true,
-                        failure = "Failure Usecase -> CleanEquipPneu -> java.lang.NullPointerException",
-                        msgProgress = "Failure Usecase -> CleanEquipPneu -> java.lang.NullPointerException",
-                    )
-                )
-            )
-            val result = viewModel.updateAllDatabase().toList()
-            assertEquals(result.count(), ((qtdBefore * 3) + 2).toInt())
-            checkResultUpdateAtividade(result)
-            checkResultUpdateBocal(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateComponente(result)
-            assertEquals(
-                result[(qtdBefore * 3).toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_equip_pneu",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                )
-            )
-            assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
-                ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.update -> Failure Usecase -> CleanEquipPneu -> java.lang.NullPointerException",
-                    msgProgress = "Failure Usecase -> CleanEquipPneu -> java.lang.NullPointerException",
-                )
-            )
-        }
-
-    @Test
-    fun `updateTable - Check return failure if have error in UpdateEquipSeg`() =
-        runTest {
-            val qtdBefore = 5f
-            wheneverSuccessAtividade()
-            wheneverSuccessBocal()
-            wheneverSuccessColab()
-            wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            whenever(
-                updateTableEquipSeg(
-                    sizeAll = sizeAll,
-                    count = (qtdBefore + 1)
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_equip_seg",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                    ),
-                    ResultUpdate(
-                        errors = Errors.UPDATE,
-                        flagDialog = true,
-                        flagFailure = true,
-                        failure = "Failure Usecase -> CleanEquipSeg -> java.lang.NullPointerException",
-                        msgProgress = "Failure Usecase -> CleanEquipSeg -> java.lang.NullPointerException",
-                    )
-                )
-            )
-            val result = viewModel.updateAllDatabase().toList()
-            assertEquals(result.count(), ((qtdBefore * 3) + 2).toInt())
-            checkResultUpdateAtividade(result)
-            checkResultUpdateBocal(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            assertEquals(
-                result[(qtdBefore * 3).toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_equip_seg",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
-                )
-            )
-            assertEquals(
-                result[((qtdBefore * 3) + 1).toInt()],
-                ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.update -> Failure Usecase -> CleanEquipSeg -> java.lang.NullPointerException",
-                    msgProgress = "Failure Usecase -> CleanEquipSeg -> java.lang.NullPointerException",
-                )
-            )
-        }
-
-    @Test
-    fun `update - Check return failure if have error in UpdateFrente`() =
-        runTest {
-            val qtdBefore = 6f
-            wheneverSuccessAtividade()
-            wheneverSuccessBocal()
-            wheneverSuccessColab()
-            wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             whenever(
                 updateTableFrente(
                     sizeAll = sizeAll,
@@ -847,8 +724,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -872,13 +747,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateItemCheckList`() =
         runTest {
-            val qtdBefore = 7f
+            val qtdBefore = 5f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             whenever(
                 updateTableItemCheckList(
@@ -907,8 +780,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
@@ -933,13 +804,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateItemOSMecan`() =
         runTest {
-            val qtdBefore = 8f
+            val qtdBefore = 6f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             whenever(
@@ -969,8 +838,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             assertEquals(
@@ -996,13 +863,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateLeira`() =
         runTest {
-            val qtdBefore = 9f
+            val qtdBefore = 7f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1033,8 +898,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1061,7 +924,7 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return configState main if have error in UpdateMotoMec`() =
         runTest {
-            val qtdBefore = 10f
+            val qtdBefore = 8f
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -1090,8 +953,6 @@ class ConfigViewModelTest {
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1145,13 +1006,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateMotoMec`() =
         runTest {
-            val qtdBefore = 10f
+            val qtdBefore = 8f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1183,8 +1042,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1212,13 +1069,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateOS`() =
         runTest {
-            val qtdBefore = 11f
+            val qtdBefore = 9f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1251,8 +1106,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1281,13 +1134,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateParada`() =
         runTest {
-            val qtdBefore = 12f
+            val qtdBefore = 10f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1321,8 +1172,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1352,13 +1201,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdatePressaoBocal`() =
         runTest {
-            val qtdBefore = 13f
+            val qtdBefore = 11f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1393,8 +1240,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1425,13 +1270,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdatePropriedade`() =
         runTest {
-            val qtdBefore = 14f
+            val qtdBefore = 12f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1467,8 +1310,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1500,13 +1341,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateRAtivParada`() =
         runTest {
-            val qtdBefore = 15f
+            val qtdBefore = 13f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1543,8 +1382,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1577,13 +1414,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateREquipPneu`() =
         runTest {
-            val qtdBefore = 16f
+            val qtdBefore = 14f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1621,8 +1456,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1656,13 +1489,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateRFuncaoAtiv`() =
         runTest {
-            val qtdBefore = 17f
+            val qtdBefore = 15f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1675,7 +1506,7 @@ class ConfigViewModelTest {
             wheneverSuccessRAtivParada()
             wheneverSuccessREquipPneu()
             whenever(
-                updateTableRFuncaoAtiv(
+                updateTableRFuncaoAtivParada(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1701,8 +1532,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1737,13 +1566,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateROSAtiv`() =
         runTest {
-            val qtdBefore = 18f
+            val qtdBefore = 16f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1783,8 +1610,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1820,13 +1645,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateServico`() =
         runTest {
-            val qtdBefore = 19f
+            val qtdBefore = 17f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1867,8 +1690,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -1905,13 +1726,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTurno`() =
         runTest {
-            val qtdBefore = 20f
+            val qtdBefore = 18f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -1954,8 +1773,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -2017,13 +1834,11 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val qtdBefore = 20f
+            val qtdBefore = 18f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -2112,13 +1927,11 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val qtdBefore = 21f
+            val qtdBefore = 19f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -2139,11 +1952,10 @@ class ConfigViewModelTest {
                     FlagUpdate.UPDATED
                 )
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "SetCheckUpdateAllTable",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.onNumberChanged("16997417840")
@@ -2159,8 +1971,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -2184,8 +1994,8 @@ class ConfigViewModelTest {
                     flagDialog = true,
                     flagProgress = true,
                     currentProgress = 1f,
-                    failure = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Failure Usecase -> SetCheckUpdateAllTable -> java.lang.Exception",
-                    msgProgress = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Failure Usecase -> SetCheckUpdateAllTable -> java.lang.Exception",
+                    failure = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Error -> Exception -> java.lang.Exception",
+                    msgProgress = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Error -> Exception -> java.lang.Exception",
                 )
             )
             viewModel.saveTokenAndUpdate()
@@ -2198,8 +2008,8 @@ class ConfigViewModelTest {
                     flagDialog = true,
                     flagProgress = true,
                     currentProgress = 1f,
-                    msgProgress = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Failure Usecase -> SetCheckUpdateAllTable -> java.lang.Exception",
-                    failure = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Failure Usecase -> SetCheckUpdateAllTable -> java.lang.Exception"
+                    msgProgress = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Error -> Exception -> java.lang.Exception",
+                    failure = "ConfigViewModel.update -> SetCheckUpdateAllTable -> Error -> Exception -> java.lang.Exception",
                 )
             )
         }
@@ -2231,13 +2041,11 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val qtdBefore = 21f
+            val qtdBefore = 19f
             wheneverSuccessAtividade()
             wheneverSuccessBocal()
             wheneverSuccessColab()
             wheneverSuccessComponente()
-            wheneverSuccessEquipPneu()
-            wheneverSuccessEquipSeg()
             wheneverSuccessFrente()
             wheneverSuccessItemCheckList()
             wheneverSuccessItemOSMecan()
@@ -2273,8 +2081,6 @@ class ConfigViewModelTest {
             checkResultUpdateBocal(result)
             checkResultUpdateColab(result)
             checkResultUpdateComponente(result)
-            checkResultUpdateEquipPneu(result)
-            checkResultUpdateEquipSeg(result)
             checkResultUpdateFrente(result)
             checkResultUpdateItemCheckList(result)
             checkResultUpdateItemOSMecan(result)
@@ -2533,118 +2339,6 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     msgProgress = "Salvando dados na tabela tb_componente",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-        }
-
-    private fun wheneverSuccessEquipPneu() =
-        runTest {
-            whenever(
-                updateTableEquipPneu(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_equip_pneu",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_equip_pneu do Web Service",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_equip_pneu",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateEquipPneu(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_equip_pneu",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_equip_pneu do Web Service",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_equip_pneu",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-        }
-
-    private fun wheneverSuccessEquipSeg() =
-        runTest {
-            whenever(
-                updateTableEquipSeg(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_equip_seg",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_equip_seg do Web Service",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    ResultUpdate(
-                        flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_equip_seg",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateEquipSeg(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_equip_seg",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_equip_seg do Web Service",
-                    currentProgress = percentage(++contResult, sizeAll)
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_equip_seg",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -3269,7 +2963,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessRFuncaoAtiv() =
         runTest {
             whenever(
-                updateTableRFuncaoAtiv(
+                updateTableRFuncaoAtivParada(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )

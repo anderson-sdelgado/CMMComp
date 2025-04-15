@@ -11,8 +11,6 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableAtividade
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableBocal
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableComponente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipSeg
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableFrente
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMecan
@@ -24,12 +22,13 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBoc
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtiv
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableROSAtiv
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableServico
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurno
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +38,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class ConfigState(
@@ -58,17 +58,27 @@ data class ConfigState(
 )
 
 fun ResultUpdate.resultUpdateToConfig(): ConfigState {
-    return with(this) {
-        ConfigState(
-            flagDialog = this.flagDialog,
-            flagFailure = this.flagFailure,
-            errors = this.errors,
-            failure = if(this.failure == "") "" else "ConfigViewModel.update -> ${this.failure}",
-            flagProgress = this.flagProgress,
-            msgProgress = this.msgProgress,
-            currentProgress = this.currentProgress,
-        )
+    val fail = if(failure.isNotEmpty()){
+        val ret = "ConfigViewModel.updateAllDatabase -> ${this.failure}"
+        Timber.e(ret)
+        ret
+    } else {
+        this.failure
     }
+    val msg = if(failure.isNotEmpty()){
+        "ConfigViewModel.updateAllDatabase -> ${this.failure}"
+    } else {
+        this.msgProgress
+    }
+    return ConfigState(
+        flagDialog = this.flagDialog,
+        flagFailure = this.flagFailure,
+        errors = this.errors,
+        failure = fail,
+        flagProgress = this.flagProgress,
+        msgProgress = msg,
+        currentProgress = this.currentProgress,
+    )
 }
 
 @HiltViewModel
@@ -80,8 +90,6 @@ class ConfigViewModel @Inject constructor(
     private val updateTableBocal: UpdateTableBocal,
     private val updateTableColab: UpdateTableColab,
     private val updateTableComponente: UpdateTableComponente,
-    private val updateTableEquipPneu: UpdateTableEquipPneu,
-    private val updateTableEquipSeg: UpdateTableEquipSeg,
     private val updateTableFrente: UpdateTableFrente,
     private val updateTableItemCheckList: UpdateTableItemCheckList,
     private val updateTableItemOSMecan: UpdateTableItemOSMecan,
@@ -93,7 +101,7 @@ class ConfigViewModel @Inject constructor(
     private val updateTablePropriedade: UpdateTablePropriedade,
     private val updateTableRAtivParada: UpdateTableRAtivParada,
     private val updateTableREquipPneu: UpdateTableREquipPneu,
-    private val updateTableRFuncaoAtiv: UpdateTableRFuncaoAtiv,
+    private val updateTableRFuncaoAtivParada: UpdateTableRFuncaoAtivParada,
     private val updateTableROSAtiv: UpdateTableROSAtiv,
     private val updateTableServico: UpdateTableServico,
     private val updateTableTurno: UpdateTableTurno,
@@ -233,7 +241,7 @@ class ConfigViewModel @Inject constructor(
         if (resultSendDataConfig.isFailure) {
             val error = resultSendDataConfig.exceptionOrNull()!!
             val failure =
-                "${tag}.token -> SendDataConfig -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> SendDataConfig -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ConfigState(
                     errors = Errors.TOKEN,
@@ -266,7 +274,7 @@ class ConfigViewModel @Inject constructor(
         if (resultSave.isFailure) {
             val error = resultSave.exceptionOrNull()!!
             val failure =
-                "${tag}.token -> SaveDataConfig -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> SaveDataConfig -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ConfigState(
                     errors = Errors.TOKEN,
@@ -317,22 +325,6 @@ class ConfigViewModel @Inject constructor(
         }
         if (configState.flagFailure) return@flow
         updateTableComponente(
-            sizeAll = sizeAllUpdate,
-            count = ++pos
-        ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
-        }
-        if (configState.flagFailure) return@flow
-        updateTableEquipPneu(
-            sizeAll = sizeAllUpdate,
-            count = ++pos
-        ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
-        }
-        if (configState.flagFailure) return@flow
-        updateTableEquipSeg(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -428,7 +420,7 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateTableRFuncaoAtiv(
+        updateTableRFuncaoAtivParada(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -464,7 +456,7 @@ class ConfigViewModel @Inject constructor(
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${tag}.update -> SetCheckUpdateAllTable -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} > SetCheckUpdateAllTable -> ${error.message} -> ${error.cause.toString()}"
             emit(
                 ConfigState(
                     errors = Errors.EXCEPTION,

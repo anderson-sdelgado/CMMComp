@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.datasource.retrofit
 
-import br.com.usinasantafe.cmm.external.retrofit.datasource.*
+import br.com.usinasantafe.cmm.external.retrofit.datasource.variable.IConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.*
 import dagger.Binds
 import dagger.Module

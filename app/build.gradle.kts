@@ -159,6 +159,7 @@ dependencies {
     implementation(libs.hilt.ext.work)
     kapt(libs.hilt.ext.compiler)
     annotationProcessor(libs.hilt.ext.compiler)
+    implementation(libs.timber)
 }
 
 // Allow references to generated code

@@ -27,6 +27,7 @@ import br.com.usinasantafe.cmm.ui.theme.CMMTheme
 import br.com.usinasantafe.cmm.ui.theme.ItemListDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.StatusSend
+import timber.log.Timber
 
 @Composable
 fun InitialMenuScreen(
@@ -66,11 +67,11 @@ fun InitialMenuContent(
     onNavPassword: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val activity = (LocalContext.current as? Activity)
     Column(
         modifier = modifier
             .padding(16.dp)
     ) {
-        val activity = (LocalContext.current as? Activity)
         TitleDesign(text = "MENU INICIAL - V ${BuildConfig.VERSION_NAME}")
         LazyColumn(
             modifier = Modifier

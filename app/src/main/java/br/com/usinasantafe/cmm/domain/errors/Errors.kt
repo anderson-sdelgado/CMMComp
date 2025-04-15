@@ -1,28 +1,21 @@
 package br.com.usinasantafe.cmm.domain.errors
 
-class UsecaseException(
-    message: String = "Failure Usecase",
-    function: String = "",
+fun resultFailure(
+    context: String,
+    message: String?,
     cause: Throwable? = null
-) : Exception(
-    "$message -> $function",
-    cause
-)
+): Result<Nothing>  {
+    return Result.failure(
+        AppError(
+            context = context,
+            message = message,
+            cause = cause
+        )
+    )
+}
 
-class RepositoryException(
-    message: String = "Failure Repository",
-    function: String = "",
+class AppError(
+    context: String,
+    message: String?,
     cause: Throwable? = null
-) : Exception(
-    "$message -> $function",
-    cause
-)
-
-class DatasourceException(
-    message: String = "Failure Datasource",
-    function: String = "",
-    cause: Throwable? = null
-) : Exception(
-    "$message -> $function",
-    cause
-)
+) : Exception("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}", cause)

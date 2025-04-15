@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.RepositoryException
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.token
 import kotlinx.coroutines.test.runTest
@@ -24,10 +23,7 @@ class IGetTokenTest {
                 configRepository.get()
             ).thenReturn(
                 Result.failure(
-                    RepositoryException(
-                        function = "ConfigRepository.get",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = usecase()
@@ -37,7 +33,7 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Repository -> ConfigRepository.get"
+                "IGetToken -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -66,7 +62,7 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> IGetToken"
+                "IGetToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

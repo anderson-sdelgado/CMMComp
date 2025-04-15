@@ -1,7 +1,6 @@
-package br.com.usinasantafe.cmm.external.retrofit.datasource
+package br.com.usinasantafe.cmm.external.retrofit.datasource.variable
 
-import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.domain.errors.DatasourceException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.retrofit.api.variable.ConfigApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
@@ -20,12 +19,11 @@ class IConfigRetrofitDatasource @Inject constructor(
                 retrofitModelOutput
             )
             return Result.success(response.body()!!)
-        } catch (e: Exception) {
-            return Result.failure(
-                DatasourceException(
-                    function = "ConfigRetrofitDatasource.recoverToken",
-                    cause = e
-                )
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IConfigRetrofitDatasource.recoverToken",
+                message = "-",
+                cause = e
             )
         }
     }

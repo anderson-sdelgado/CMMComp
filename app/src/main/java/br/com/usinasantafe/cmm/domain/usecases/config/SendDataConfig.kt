@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import javax.inject.Inject
 
@@ -34,13 +34,21 @@ class ISendDataConfig @Inject constructor(
                 app = app.uppercase(),
                 version = version
             )
-            return configRepository.send(config)
-        } catch (e: Exception) {
-            return Result.failure(
-                UsecaseException(
-                    function = "SendDataConfig",
-                    cause = e
+            val result = configRepository.send(config)
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ISendDataConfig",
+                    message = e.message,
+                    cause = e.cause
                 )
+            }
+            return Result.success(result.getOrNull()!!)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "ISendDataConfig",
+                message = "-",
+                cause = e
             )
         }
     }

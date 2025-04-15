@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.configuration.initial
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.common.GetStatusSend
 import br.com.usinasantafe.cmm.utils.StatusSend
@@ -33,18 +33,17 @@ class InitialMenuViewModelTest {
             whenever(
                 getStatusSend()
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "GetStatusSend",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.recoverStatusSend()
             val uiState = viewModel.uiState.value
             assertEquals(
                 uiState.failureStatus,
-                "InitialMenuViewModel.recoverStatusSend -> GetStatusSend -> Failure Usecase -> GetStatusSend -> java.lang.Exception"
+                "InitialMenuViewModel.recoverStatusSend -> Error -> Exception -> java.lang.Exception",
             )
         }
 
@@ -76,11 +75,10 @@ class InitialMenuViewModelTest {
             whenever(
                 checkAccessInitial()
             ).thenReturn(
-                Result.failure(
-                    UsecaseException(
-                        function = "CheckAccessInitial",
-                        cause = Exception()
-                    )
+                resultFailure(
+                    "Error",
+                    "Exception",
+                    Exception()
                 )
             )
             viewModel.checkAccess()
@@ -99,7 +97,7 @@ class InitialMenuViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "InitialMenuViewModel.checkAccess -> CheckAccessInitial -> Failure Usecase -> CheckAccessInitial -> java.lang.Exception"
+                "InitialMenuViewModel.checkAccess -> Error -> Exception -> java.lang.Exception",
             )
         }
 

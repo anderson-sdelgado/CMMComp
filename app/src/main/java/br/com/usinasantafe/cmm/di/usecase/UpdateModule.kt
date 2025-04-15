@@ -29,14 +29,6 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableEquipPneu(usecase: IUpdateTableEquipPneu): UpdateTableEquipPneu
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableEquipSeg(usecase: IUpdateTableEquipSeg): UpdateTableEquipSeg
-
-    @Binds
-    @Singleton
     fun bindUpdateTableFrente(usecase: IUpdateTableFrente): UpdateTableFrente
 
     @Binds
@@ -81,7 +73,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableRFuncaoAtiv(usecase: IUpdateTableRFuncaoAtiv): UpdateTableRFuncaoAtiv
+    fun bindUpdateTableRFuncaoAtivParada(usecase: IUpdateTableRFuncaoAtivParada): UpdateTableRFuncaoAtivParada
 
     @Binds
     @Singleton

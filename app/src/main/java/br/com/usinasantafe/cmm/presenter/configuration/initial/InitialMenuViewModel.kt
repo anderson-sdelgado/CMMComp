@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.common.GetStatusSend
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 data class InitialMenuState(
@@ -27,8 +29,6 @@ class InitialMenuViewModel @Inject constructor(
     private val checkAccessInitial: CheckAccessInitial,
 ) : ViewModel() {
 
-    private val tag = javaClass.simpleName
-
     private val _uiState = MutableStateFlow(InitialMenuState())
     val uiState = _uiState.asStateFlow()
 
@@ -44,7 +44,8 @@ class InitialMenuViewModel @Inject constructor(
             if(resultGetStatus.isFailure){
                 val error = resultGetStatus.exceptionOrNull()!!
                 val failure =
-                    "${tag}.recoverStatusSend -> GetStatusSend -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                Timber.e(failure)
                 _uiState.update {
                     it.copy(
                         failureStatus = failure
@@ -67,7 +68,8 @@ class InitialMenuViewModel @Inject constructor(
             if(resultCheck.isFailure){
                 val error = resultCheck.exceptionOrNull()!!
                 val failure =
-                    "${tag}.checkAccess -> CheckAccessInitial -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                Timber.e(failure)
                 _uiState.update {
                     it.copy(
                         flagDialog = true,

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.presenter.configuration.config.ConfigModel
 import br.com.usinasantafe.cmm.presenter.configuration.config.toConfigModel
@@ -17,25 +17,35 @@ class IGetConfigInternal @Inject constructor(
     override suspend fun invoke(): Result<ConfigModel?> {
         try {
             val resultHasConfig = configRepository.hasConfig()
-            if (resultHasConfig.isFailure)
-                return Result.failure(resultHasConfig.exceptionOrNull()!!)
-
+            if (resultHasConfig.isFailure) {
+                val e = resultHasConfig.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IGetConfigInternal",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
             val hasConfig = resultHasConfig.getOrNull()!!
             if (!hasConfig)
                 return Result.success(null)
 
             val resultConfig = configRepository.get()
-            if (resultConfig.isFailure)
-                return Result.failure(resultConfig.exceptionOrNull()!!)
+            if (resultConfig.isFailure) {
+                val e = resultConfig.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IGetConfigInternal",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
 
             val config = resultConfig.getOrNull()!!.toConfigModel()
             return Result.success(config)
         } catch (e: Exception) {
-            return Result.failure(
-                UsecaseException(
-                    function = "GetConfigInternal",
-                    cause = e
-                )
+            return resultFailure(
+                context = "IGetConfigInternal",
+                message = "-",
+                cause = e
             )
         }
     }

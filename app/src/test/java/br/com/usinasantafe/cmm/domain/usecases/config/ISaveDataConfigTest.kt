@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.UsecaseException
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -34,7 +33,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> SaveDataConfig"
+                "ISaveDataConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -59,10 +58,7 @@ class ISaveDataConfigTest {
                 )
             ).thenReturn(
                 Result.failure(
-                    UsecaseException(
-                        function = "SaveDataConfig",
-                        cause = Exception()
-                    )
+                    Exception()
                 )
             )
             val result = usecase(
@@ -80,7 +76,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> SaveDataConfig"
+                "ISaveDataConfig -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
