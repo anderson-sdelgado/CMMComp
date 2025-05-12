@@ -15,4 +15,7 @@ interface RFuncaoAtivParadaDao {
     @Query("DELETE FROM $TB_R_FUNCAO_ATIV_PARADA")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_R_FUNCAO_ATIV_PARADA")
+    suspend fun listAll(): List<RFuncaoAtivParadaRoomModel>
+
 }

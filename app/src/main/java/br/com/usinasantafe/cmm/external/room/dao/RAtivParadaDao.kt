@@ -15,4 +15,7 @@ interface RAtivParadaDao {
     @Query("DELETE FROM $TB_R_ATIV_PARADA")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_R_ATIV_PARADA")
+    suspend fun listAll(): List<RAtivParadaRoomModel>
+
 }

@@ -36,7 +36,7 @@ class ICheckAccessInitialTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "null"
             )
         }
 
@@ -85,7 +85,7 @@ class ICheckAccessInitialTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "null"
             )
         }
 

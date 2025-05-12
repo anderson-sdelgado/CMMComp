@@ -14,7 +14,7 @@ data class ServicoRoomModel (
 )
 
 // Função de extensão para converter ServicoRoomModel para a entidade de domínio Servico
-fun ServicoRoomModel.roomToEntity(): Servico {
+fun ServicoRoomModel.roomModelToEntity(): Servico {
     return with(this){
         Servico(
             idServico = this.idServico,

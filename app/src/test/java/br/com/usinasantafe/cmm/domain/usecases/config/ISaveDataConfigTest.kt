@@ -25,7 +25,8 @@ class ISaveDataConfigTest {
                 app = "PMM",
                 nroEquip = "310",
                 checkMotoMec = false,
-                idBD = 1
+                idBD = 1,
+                idEquip = 1
             )
             assertEquals(
                 result.isFailure,
@@ -53,7 +54,8 @@ class ISaveDataConfigTest {
                         app = "PMM",
                         nroEquip = 310,
                         checkMotoMec = false,
-                        idBD = 1
+                        idBD = 1,
+                        idEquip = 1
                     )
                 )
             ).thenReturn(
@@ -68,7 +70,8 @@ class ISaveDataConfigTest {
                 app = "PMM",
                 nroEquip = "310",
                 checkMotoMec = false,
-                idBD = 1
+                idBD = 1,
+                idEquip = 1
             )
             assertEquals(
                 result.isFailure,
@@ -80,7 +83,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "null"
             )
         }
 
@@ -109,7 +112,8 @@ class ISaveDataConfigTest {
                 app = "PMM",
                 nroEquip = "310",
                 checkMotoMec = false,
-                idBD = 1
+                idBD = 1,
+                idEquip = 1
             )
             assertEquals(
                 result.isSuccess,

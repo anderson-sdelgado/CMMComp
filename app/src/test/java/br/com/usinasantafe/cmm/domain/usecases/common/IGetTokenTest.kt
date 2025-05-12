@@ -37,7 +37,7 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                "null"
             )
         }
 

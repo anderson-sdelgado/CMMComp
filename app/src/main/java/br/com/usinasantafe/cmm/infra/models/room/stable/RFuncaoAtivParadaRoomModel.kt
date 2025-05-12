@@ -18,7 +18,7 @@ data class RFuncaoAtivParadaRoomModel(
     val tipoFuncao: Int
 )
 
-fun RFuncaoAtivParadaRoomModel.roomToEntity(): RFuncaoAtivParada {
+fun RFuncaoAtivParadaRoomModel.roomModelToEntity(): RFuncaoAtivParada {
     return RFuncaoAtivParada(
         idRFuncaoAtivPar = this.idRFuncaoAtivPar,
         idAtivPar = this.idAtivPar,

@@ -15,4 +15,7 @@ interface ComponenteDao {
     @Query("DELETE FROM $TB_COMPONENTE")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_COMPONENTE")
+    suspend fun listAll(): List<ComponenteRoomModel>
+
 }

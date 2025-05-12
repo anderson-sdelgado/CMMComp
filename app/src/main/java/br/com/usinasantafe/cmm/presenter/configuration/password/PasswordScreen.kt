@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.presenter.configuration.password
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -76,7 +78,11 @@ fun PasswordContent(
         modifier = modifier
             .padding(16.dp)
     ) {
-        TitleDesign(text = stringResource(id = R.string.text_title_password))
+        TitleDesign(
+            text = stringResource(
+                id = R.string.text_title_password
+            )
+        )
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password
@@ -99,30 +105,39 @@ fun PasswordContent(
                 onClick = onCheckAccess,
                 modifier = Modifier.weight(1f),
             ) {
-                TextButtonDesign(text = stringResource(id = R.string.text_pattern_ok))
+                TextButtonDesign(
+                    text = stringResource(id = R.string.text_pattern_ok)
+                )
             }
             Button(
                 onClick = onNavInitialMenu,
                 modifier = Modifier.weight(1f)
             ) {
-                TextButtonDesign(text = stringResource(id = R.string.text_pattern_cancel))
+                TextButtonDesign(
+                    text = stringResource(id = R.string.text_pattern_cancel)
+                )
             }
         }
         BackHandler {}
+    }
 
-        if(flagDialog) {
-            val text =
-                if(!flagFailure) {
-                    stringResource(id = R.string.text_password_invalid)
-                } else {
-                    stringResource(id = R.string.text_failure, failure)
-                }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        }
+    if(flagDialog) {
+        val text =
+            if(!flagFailure) {
+                stringResource(id = R.string.text_password_invalid)
+            } else {
+                stringResource(
+                    id = R.string.text_failure,
+                    failure
+                )
+            }
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
+    }
 
+    LaunchedEffect(flagAccess) {
         if(flagAccess) {
             onNavConfig()
         }

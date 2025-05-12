@@ -12,7 +12,7 @@ interface SendDataConfig {
         nroEquip: String,
         app: String,
         version: String,
-    ): Result<Int>
+    ): Result<Config>
 }
 
 class ISendDataConfig @Inject constructor(
@@ -25,7 +25,7 @@ class ISendDataConfig @Inject constructor(
         nroEquip: String,
         app: String,
         version: String,
-    ): Result<Int> {
+    ): Result<Config> {
         try {
             val config = Config(
                 number = number.toLong(),

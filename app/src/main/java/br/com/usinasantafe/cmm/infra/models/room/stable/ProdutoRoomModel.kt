@@ -14,7 +14,7 @@ data class ProdutoRoomModel (
 )
 
 // Função de extensão para converter ProdutoRoomModel para a entidade de domínio Produto
-fun ProdutoRoomModel.roomToEntity(): Produto {
+fun ProdutoRoomModel.roomModelToEntity(): Produto {
     return with(this){
         Produto(
             idProduto = this.idProduto,

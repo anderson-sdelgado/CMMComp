@@ -14,7 +14,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindAtividadeRoomDatasource(dataSource: IAtividadeRoomDatasource): AtividadeRoomDatasource
+    fun bindAtividadeRoomDatasource(dataSource: IActivityRoomDatasource): ActivityRoomDatasource
 
     @Binds
     @Singleton
@@ -27,6 +27,10 @@ interface StableRoomDatasourceModule {
     @Binds
     @Singleton
     fun bindComponenteRoomDatasource(dataSource: IComponenteRoomDatasource): ComponenteRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindEquipRoomDatasource(dataSource: IEquipRoomDatasource): EquipRoomDatasource
 
     @Binds
     @Singleton
@@ -82,7 +86,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindROSAtivRoomDatasource(dataSource: IROSAtivRoomDatasource): ROSAtivRoomDatasource
+    fun bindROSAtivRoomDatasource(dataSource: IROSActivityRoomDatasource): ROSActivityRoomDatasource
 
     @Binds
     @Singleton
@@ -90,6 +94,6 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindTurnoRoomDatasource(dataSource: ITurnoRoomDatasource): TurnoRoomDatasource
+    fun bindTurnoRoomDatasource(dataSource: ITurnRoomDatasource): TurnRoomDatasource
 
 }

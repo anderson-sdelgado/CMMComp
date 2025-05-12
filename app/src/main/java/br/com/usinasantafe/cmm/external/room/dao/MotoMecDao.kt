@@ -15,4 +15,7 @@ interface MotoMecDao {
     @Query("DELETE FROM $TB_MOTOMEC")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_MOTOMEC")
+    suspend fun listAll(): List<MotoMecRoomModel>
+
 }

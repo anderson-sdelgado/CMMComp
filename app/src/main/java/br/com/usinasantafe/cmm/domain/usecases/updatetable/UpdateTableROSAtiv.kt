@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.updatetable
 
 import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
-import br.com.usinasantafe.cmm.domain.repositories.stable.ROSAtivRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.TB_R_OS_ATIV
+import br.com.usinasantafe.cmm.utils.TB_R_OS_ACTIVITY
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -19,7 +19,7 @@ interface UpdateTableROSAtiv {
 
 class IUpdateTableROSAtiv @Inject constructor(
     private val getToken: GetToken,
-    private val rOSAtivRepository: ROSAtivRepository
+    private val rOSActivityRepository: ROSActivityRepository
 ): UpdateTableROSAtiv {
 
     override suspend fun invoke(
@@ -29,7 +29,7 @@ class IUpdateTableROSAtiv @Inject constructor(
         emit(
             ResultUpdate(
                 flagProgress = true,
-                msgProgress = "Recuperando dados da tabela $TB_R_OS_ATIV do Web Service",
+                msgProgress = "Recuperando dados da tabela $TB_R_OS_ACTIVITY do Web Service",
                 currentProgress = updatePercentage(1f, count, sizeAll)
             )
         )
@@ -51,7 +51,7 @@ class IUpdateTableROSAtiv @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultRecoverAll = rOSAtivRepository.recoverAll(token)
+        val resultRecoverAll = rOSActivityRepository.recoverAll(token)
         if (resultRecoverAll.isFailure) {
             val error = resultRecoverAll.exceptionOrNull()!!
             val failure =
@@ -71,11 +71,11 @@ class IUpdateTableROSAtiv @Inject constructor(
         emit(
             ResultUpdate(
                 flagProgress = true,
-                msgProgress = "Limpando a tabela $TB_R_OS_ATIV",
+                msgProgress = "Limpando a tabela $TB_R_OS_ACTIVITY",
                 currentProgress = updatePercentage(2f, count, sizeAll)
             )
         )
-        val resultDeleteAll = rOSAtivRepository.deleteAll()
+        val resultDeleteAll = rOSActivityRepository.deleteAll()
         if (resultDeleteAll.isFailure) {
             val error = resultDeleteAll.exceptionOrNull()!!
             val failure =
@@ -95,12 +95,12 @@ class IUpdateTableROSAtiv @Inject constructor(
         emit(
             ResultUpdate(
                 flagProgress = true,
-                msgProgress = "Salvando dados na tabela $TB_R_OS_ATIV",
+                msgProgress = "Salvando dados na tabela $TB_R_OS_ACTIVITY",
                 currentProgress = updatePercentage(3f, count, sizeAll)
             )
         )
         val entityList = resultRecoverAll.getOrNull()!!
-        val resultAddAll = rOSAtivRepository.addAll(entityList)
+        val resultAddAll = rOSActivityRepository.addAll(entityList)
         if (resultAddAll.isFailure) {
             val error = resultAddAll.exceptionOrNull()!!
             val failure =

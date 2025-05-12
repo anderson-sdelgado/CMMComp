@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -30,7 +31,9 @@ class ISendDataConfigTest {
         runTest {
             val server = MockWebServer()
             server.start(8080)
-            server.enqueue(MockResponse().setBody("""{"idBD":1}"""))
+            server.enqueue(
+                MockResponse().setBody("""{"idBD":1,"idEquip":1}""")
+            )
             val result = usecase(
                 number = "16997417840",
                 password = "12345",
@@ -44,17 +47,22 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                1
+                Config(
+                    idBD = 1,
+                    idEquip = 1
+                )
             )
             server.shutdown()
         }
 
     @Test
-    fun check_return_failure_if_response_is_404() =
+    fun check_return_failure_if_return_web_service_missing_fields() =
         runTest {
             val server = MockWebServer()
             server.start(8080)
-            server.enqueue(MockResponse().setResponseCode(404))
+            server.enqueue(
+                MockResponse().setBody("""{"idBD":1}""")
+            )
             val result = usecase(
                 number = "16997417840",
                 password = "12345",
@@ -68,7 +76,37 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Datasource -> ConfigRetrofitDatasource.recoverToken"
+                "ISendDataConfig -> IConfigRepository.send"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception: idEquip is 0"
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun check_return_failure_if_response_is_404() =
+        runTest {
+            val server = MockWebServer()
+            server.start(8080)
+            server.enqueue(
+                MockResponse().setResponseCode(404)
+            )
+            val result = usecase(
+                number = "16997417840",
+                password = "12345",
+                nroEquip = "310",
+                app = "PMM",
+                version = "1.00"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISendDataConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -82,7 +120,9 @@ class ISendDataConfigTest {
         runTest {
             val server = MockWebServer()
             server.start(8080)
-            server.enqueue(MockResponse().setBody("""{"idBD":1}"""))
+            server.enqueue(
+                MockResponse().setBody("""{"idBD":1}""")
+            )
             val result = usecase(
                 number = "16997417840a",
                 password = "12345",
@@ -96,7 +136,7 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> SendDataConfig"
+                "ISendDataConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

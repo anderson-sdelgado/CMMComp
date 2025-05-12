@@ -14,6 +14,7 @@ interface SaveDataConfig {
         nroEquip: String,
         checkMotoMec: Boolean,
         idBD: Int,
+        idEquip: Int,
     ): Result<Boolean>
 }
 
@@ -29,6 +30,7 @@ class ISaveDataConfig @Inject constructor(
         nroEquip: String,
         checkMotoMec: Boolean,
         idBD: Int,
+        idEquip: Int
     ): Result<Boolean> {
         try {
             val config = Config(
@@ -38,7 +40,8 @@ class ISaveDataConfig @Inject constructor(
                 app = app.uppercase(),
                 nroEquip = nroEquip.toLong(),
                 checkMotoMec = checkMotoMec,
-                idBD = idBD
+                idBD = idBD,
+                idEquip = idEquip
             )
             val configResult = configRepository.save(config)
             if (configResult.isFailure) {

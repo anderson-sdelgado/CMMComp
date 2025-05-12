@@ -13,7 +13,7 @@ data class BocalRoomModel (
     val descrBocal: String,
 )
 
-fun BocalRoomModel.roomToEntity(): Bocal {
+fun BocalRoomModel.roomModelToEntity(): Bocal {
     return with(this){
         Bocal(
             idBocal = this.idBocal,
@@ -23,7 +23,6 @@ fun BocalRoomModel.roomToEntity(): Bocal {
     }
 }
 
-// Função de extensão para converter a entidade de domínio Bocal para BocalRoomModel
 fun Bocal.entityToRoomModel(): BocalRoomModel {
     return with(this){
         BocalRoomModel(

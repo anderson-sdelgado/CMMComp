@@ -16,7 +16,7 @@ data class ItemOSMecanRoomModel (
 )
 
 // Função de extensão para converter ItemOSMecanRoomModel para a entidade de domínio ItemOSMecan
-fun ItemOSMecanRoomModel.roomToEntity(): ItemOSMecan {
+fun ItemOSMecanRoomModel.roomModelToEntity(): ItemOSMecan {
     return with(this){
         ItemOSMecan(
             idItemOS = this.idItemOS,

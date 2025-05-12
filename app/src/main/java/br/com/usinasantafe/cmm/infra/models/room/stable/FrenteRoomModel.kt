@@ -14,7 +14,7 @@ data class FrenteRoomModel (
 )
 
 // Função de extensão para converter FrenteRoomModel para a entidade de domínio Frente
-fun FrenteRoomModel.roomToEntity(): Frente {
+fun FrenteRoomModel.roomModelToEntity(): Frente {
     return with(this){
         Frente(
             idFrente = this.idFrente,

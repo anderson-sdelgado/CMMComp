@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,12 +28,12 @@ import br.com.usinasantafe.cmm.ui.theme.CMMTheme
 import br.com.usinasantafe.cmm.ui.theme.ItemListDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.StatusSend
-import timber.log.Timber
 
 @Composable
 fun InitialMenuScreen(
     viewModel: InitialMenuViewModel = hiltViewModel(),
-    onNavPassword: () -> Unit
+    onNavPassword: () -> Unit,
+    onNavOperator: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -47,6 +48,7 @@ fun InitialMenuScreen(
                 flagAccess = uiState.flagAccess,
                 onCheckAccess = viewModel::checkAccess,
                 onNavPassword = onNavPassword,
+                onNavOperator = onNavOperator,
                 modifier = Modifier.padding(innerPadding)
             )
             viewModel.recoverStatusSend()
@@ -65,6 +67,7 @@ fun InitialMenuContent(
     flagAccess: Boolean,
     onCheckAccess: () -> Unit,
     onNavPassword: () -> Unit,
+    onNavOperator: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val activity = (LocalContext.current as? Activity)
@@ -72,7 +75,9 @@ fun InitialMenuContent(
         modifier = modifier
             .padding(16.dp)
     ) {
-        TitleDesign(text = "MENU INICIAL - V ${BuildConfig.VERSION_NAME}")
+        TitleDesign(
+            text = "MENU INICIAL - V ${BuildConfig.VERSION_NAME}"
+        )
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
@@ -128,8 +133,7 @@ fun InitialMenuContent(
             } else {
                 Color.Red
             }
-            ,
-            modifier = Modifier
+            , modifier = Modifier
                 .padding(vertical = 8.dp)
                 .fillMaxWidth()
         )
@@ -150,11 +154,12 @@ fun InitialMenuContent(
                 setCloseDialog = setCloseDialog,
             )
         }
+    }
 
-        if (flagAccess) {
-            onNavPassword()
+    LaunchedEffect(flagAccess) {
+        if(flagAccess) {
+            onNavOperator()
         }
-
     }
 }
 
@@ -173,6 +178,7 @@ fun InitialMenuPagePreview() {
                 failureStatus = "",
                 onCheckAccess = {},
                 onNavPassword = {},
+                onNavOperator = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

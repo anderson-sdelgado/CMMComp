@@ -15,7 +15,7 @@ data class LeiraRoomModel (
 )
 
 // Função de extensão para converter LeiraRoomModel para a entidade de domínio Leira
-fun LeiraRoomModel.roomToEntity(): Leira {
+fun LeiraRoomModel.roomModelToEntity(): Leira {
     return with(this){
         Leira(
             idLeira = this.idLeira,

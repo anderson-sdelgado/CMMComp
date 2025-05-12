@@ -25,8 +25,6 @@ class PasswordViewModel @Inject constructor(
     private val checkPassword: CheckPassword
 ) : ViewModel() {
 
-    private val tag = javaClass.simpleName
-
     private val _uiState = MutableStateFlow(PasswordState())
     val uiState = _uiState.asStateFlow()
 

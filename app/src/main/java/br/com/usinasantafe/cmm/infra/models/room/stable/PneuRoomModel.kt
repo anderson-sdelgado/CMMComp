@@ -13,7 +13,7 @@ data class PneuRoomModel (
 )
 
 // Função de extensão para converter PneuRoomModel para a entidade de domínio Pneu
-fun PneuRoomModel.roomToEntity(): Pneu {
+fun PneuRoomModel.roomModelToEntity(): Pneu {
     return with(this){
         Pneu(
             idPneu = this.idPneu,

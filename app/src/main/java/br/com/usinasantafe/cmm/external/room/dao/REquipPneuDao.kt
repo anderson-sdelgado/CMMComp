@@ -15,4 +15,7 @@ interface REquipPneuDao {
     @Query("DELETE FROM $TB_R_EQUIP_PNEU")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_R_EQUIP_PNEU")
+    suspend fun listAll(): List<REquipPneuRoomModel>
+
 }

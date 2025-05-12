@@ -15,7 +15,7 @@ data class PressaoBocalRoomModel (
 )
 
 // Função de extensão para converter PressaoBocalRoomModel para a entidade de domínio PressaoBocal
-fun PressaoBocalRoomModel.roomToEntity(): PressaoBocal {
+fun PressaoBocalRoomModel.roomModelToEntity(): PressaoBocal {
     return with(this){
         PressaoBocal(
             idPressaoBocal = this.idPressaoBocal,

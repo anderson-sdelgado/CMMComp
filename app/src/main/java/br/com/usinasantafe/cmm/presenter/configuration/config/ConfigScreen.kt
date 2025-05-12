@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.presenter.configuration.config
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -40,8 +42,8 @@ import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
 
-const val TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN = "tag_nro_equip_text_field_config_screen"
 const val TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN = "tag_number_text_field_config_screen"
+const val TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN = "tag_nro_equip_text_field_config_screen"
 const val TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN = "tag_password_text_field_config_screen"
 
 @Composable
@@ -50,7 +52,9 @@ fun ConfigScreen(
     onNavInitialMenu: () -> Unit
 ) {
     CMMTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize()
+        ) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
             ConfigContent(
                 number = uiState.number,
@@ -104,32 +108,16 @@ fun ConfigContent(
     onNavInitialMenu: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Column(
         modifier = modifier
             .padding(16.dp)
     ) {
         TitleDesign(
-            text = stringResource(id = R.string.text_title_nro_aparelho)
-        )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 24.sp
-            ),
-            value = nroEquip,
-            onValueChange = onNroEquipChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
-        )
-        TitleDesign(
-            text = stringResource(id = R.string.text_title_nro_equip)
+            text = stringResource(
+                id = R.string.text_title_nro_aparelho
+            )
         )
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
@@ -147,6 +135,26 @@ fun ConfigContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .testTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+        )
+        TitleDesign(
+            text = stringResource(id = R.string.text_title_nro_equip)
+        )
+        OutlinedTextField(
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.None,
+                autoCorrectEnabled = true,
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Next
+            ),
+            textStyle = TextStyle(
+                textAlign = TextAlign.Right,
+                fontSize = 24.sp
+            ),
+            value = nroEquip,
+            onValueChange = onNroEquipChanged,
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         TitleDesign(
@@ -182,7 +190,10 @@ fun ConfigContent(
             horizontalArrangement = Arrangement.Center,
         )  {
             Button(
-                onClick = onSaveAndUpdate,
+                onClick = {
+                    keyboardController?.hide()
+                    onSaveAndUpdate()
+                },
                 modifier = Modifier.weight(1f),
             ) {
                 TextButtonDesign(
@@ -198,8 +209,6 @@ fun ConfigContent(
                 )
             }
         }
-        BackHandler {}
-
         if (flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
             LinearProgressIndicator(
@@ -216,29 +225,31 @@ fun ConfigContent(
                     .fillMaxWidth()
             )
         }
+        BackHandler {}
+    }
 
-        if(flagDialog) {
-            if(flagFailure){
-                val text = when(errors){
-                    Errors.FIELDEMPTY -> stringResource(id = R.string.text_field_empty_config)
-                    Errors.TOKEN -> stringResource(id = R.string.text_recover_token, failure)
-                    Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
-                    Errors.EXCEPTION,
-                    Errors.INVALID -> stringResource(id = R.string.text_failure, failure)
-                }
-                AlertDialogSimpleDesign(
-                    text = text,
-                    setCloseDialog = setCloseDialog,
-                )
-            } else {
-                AlertDialogSimpleDesign(
-                    text = stringResource(id = R.string.text_config_success),
-                    setCloseDialog = setCloseDialog,
-                    setActionButtonOK = onNavInitialMenu,
-                )
+    if(flagDialog) {
+        if(flagFailure){
+            val text = when(errors){
+                Errors.FIELDEMPTY -> stringResource(id = R.string.text_field_empty_config)
+                Errors.TOKEN -> stringResource(id = R.string.text_recover_token, failure)
+                Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
+                Errors.EXCEPTION,
+                Errors.INVALID -> stringResource(id = R.string.text_failure, failure)
             }
+            AlertDialogSimpleDesign(
+                text = text,
+                setCloseDialog = setCloseDialog,
+            )
+        } else {
+            AlertDialogSimpleDesign(
+                text = stringResource(id = R.string.text_config_success),
+                setCloseDialog = setCloseDialog,
+                setActionButtonOK = onNavInitialMenu,
+            )
         }
     }
+
 }
 
 @Preview(showBackground = true)

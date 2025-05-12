@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.ROSAtiv
+import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 
 data class ROSAtivRetrofitModel(
     val idROSAtiv: Int,
@@ -8,10 +8,10 @@ data class ROSAtivRetrofitModel(
     val idAtiv: Int,
 )
 
-fun ROSAtivRetrofitModel.retrofitModelToEntity(): ROSAtiv {
-    return ROSAtiv(
-        idROSAtiv = this.idROSAtiv,
+fun ROSAtivRetrofitModel.retrofitModelToEntity(): ROSActivity {
+    return ROSActivity(
+        idROSActivity = this.idROSAtiv,
         idOS = this.idOS,
-        idAtiv = this.idAtiv
+        idActivity = this.idAtiv
     )
 }

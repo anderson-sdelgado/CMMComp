@@ -14,7 +14,7 @@ data class RAtivParadaRoomModel (
 )
 
 // Função de extensão para converter RAtivParadaRoomModel para a entidade de domínio RAtivParada
-fun RAtivParadaRoomModel.roomToEntity(): RAtivParada {
+fun RAtivParadaRoomModel.roomModelToEntity(): RAtivParada {
     return with(this){
         RAtivParada(
             idRAtivParada = this.idRAtivParada,

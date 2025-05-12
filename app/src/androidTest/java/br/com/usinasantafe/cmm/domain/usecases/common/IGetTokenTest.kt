@@ -39,7 +39,7 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> IGetToken"
+                "IGetToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -65,7 +65,7 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> IGetToken"
+                "IGetToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

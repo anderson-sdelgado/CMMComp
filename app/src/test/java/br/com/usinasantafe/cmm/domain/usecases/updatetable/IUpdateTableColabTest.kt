@@ -118,8 +118,8 @@ class IUpdateTableColabTest {
         runTest {
             val list = listOf(
                 Colab(
-                    matricColab = 19759,
-                    nomeColab = "ANDERSON"
+                    regColab = 19759,
+                    nameColab = "ANDERSON"
                 )
             )
             whenever(
@@ -186,8 +186,8 @@ class IUpdateTableColabTest {
         runTest {
             val list = listOf(
                 Colab(
-                    matricColab = 19759,
-                    nomeColab = "ANDERSON"
+                    regColab = 19759,
+                    nameColab = "ANDERSON"
                 )
             )
             whenever(

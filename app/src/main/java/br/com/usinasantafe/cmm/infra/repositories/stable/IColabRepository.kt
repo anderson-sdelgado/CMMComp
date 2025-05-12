@@ -10,8 +10,8 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Imp
 import javax.inject.Inject
 
 class IColabRepository @Inject constructor(
-    private val colabRetrofitDatasource: ColabRetrofitDatasource, // Injeção da datasource Retrofit
-    private val colabRoomDatasource: ColabRoomDatasource // Injeção da datasource Room
+    private val colabRetrofitDatasource: ColabRetrofitDatasource,
+    private val colabRoomDatasource: ColabRoomDatasource
 ) : ColabRepository {
 
     override suspend fun addAll(list: List<Colab>): Result<Boolean> {
@@ -71,5 +71,18 @@ class IColabRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun checkByReg(reg: Int): Result<Boolean> {
+        val result = colabRoomDatasource.checkByReg(reg)
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IColabRepository.checkReg",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
     }
 }

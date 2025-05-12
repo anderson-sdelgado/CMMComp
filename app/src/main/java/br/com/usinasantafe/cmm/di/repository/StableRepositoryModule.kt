@@ -14,7 +14,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindAtividadeRepository(repository: IAtividadeRepository): AtividadeRepository
+    fun bindAtividadeRepository(repository: IActivityRepository): ActivityRepository
 
     @Binds
     @Singleton
@@ -27,6 +27,10 @@ interface StableRepositoryModule {
     @Binds
     @Singleton
     fun bindComponenteRepository(repository: IComponenteRepository): ComponenteRepository
+
+    @Binds
+    @Singleton
+    fun bindEquipRepository(repository: IEquipRepository): EquipRepository
 
     @Binds
     @Singleton
@@ -82,7 +86,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindROSAtivRepository(repository: IROSAtivRepository): ROSAtivRepository
+    fun bindROSAtivRepository(repository: IROSActivityRepository): ROSActivityRepository
 
     @Binds
     @Singleton
@@ -90,6 +94,6 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindTurnoRepository(repository: ITurnoRepository): TurnoRepository
+    fun bindTurnRepository(repository: ITurnRepository): TurnRepository
 
 }

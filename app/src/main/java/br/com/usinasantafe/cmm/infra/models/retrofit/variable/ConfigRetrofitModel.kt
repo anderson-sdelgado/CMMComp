@@ -11,24 +11,30 @@ data class ConfigRetrofitModelOutput(
 )
 
 data class ConfigRetrofitModelInput(
-    var idBD: Int,
+    val idBD: Int,
+    val idEquip: Int
 )
 
 fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
-    return with(this){
-        ConfigRetrofitModelOutput(
-            number = this.number!!,
-            version = this.version!!,
-            app = this.app!!,
-            nroEquip = this.nroEquip!!
+
+    require(number != 0L) { "The field 'number' cannot is null." }
+    require(nroEquip != 0L) { "The field 'nroEquip' cannot is null." }
+
+    return ConfigRetrofitModelOutput(
+            number = number!!,
+            version = version!!,
+            app = app!!,
+            nroEquip = nroEquip!!
         )
-    }
 }
 
 fun ConfigRetrofitModelInput.retrofitToEntity(): Config {
-    return with(this){
-        Config(
-            idBD = this.idBD
+
+    require(idBD != 0) { "The field 'idBD' cannot is null." }
+    require(idEquip != 0) { "The field 'idEquip' cannot is null." }
+
+    return Config(
+            idBD = idBD,
+            idEquip = idEquip
         )
-    }
 }

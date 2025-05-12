@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.OS
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
@@ -238,4 +239,296 @@ class IOSRepositoryTest {
             )
         }
 
+    @Test
+    fun `checkNroOS - Check return failure if have error in OSRoomDatasource checkNroOS`() =
+        runTest {
+            whenever(
+                osRoomDatasource.checkNroOS(123456)
+            ).thenReturn(
+                resultFailure(
+                    "IOSRoomDatasource.checkNroOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkNroOS(123456)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.checkNroOS -> IOSRoomDatasource.checkNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkNroOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                osRoomDatasource.checkNroOS(123456)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkNroOS(123456)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return failure if have error in OSRetrofitDatasource getListByNroOS`() =
+        runTest {
+            whenever(
+                osRetrofitDatasource.getListByNroOS(
+                    token = "token",
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IOSRetrofitDatasource.getListByNroOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getListByNroOS(
+                token = "token",
+                nroOS = 123456
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.getListByNroOS -> IOSRetrofitDatasource.getListByNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
+        runTest {
+            whenever(
+                osRetrofitDatasource.getListByNroOS(
+                    token = "token",
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(emptyList())
+            )
+            val result = repository.getListByNroOS(
+                token = "token",
+                nroOS = 123456
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList<OS>()
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return list if OSRetrofitDatasource getListByNroOS return list`() =
+        runTest {
+            whenever(
+                osRetrofitDatasource.getListByNroOS(
+                    token = "token",
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        OSRetrofitModel(
+                            idOS = 1,
+                            nroOS = 12345,
+                            idLibOS = 10,
+                            idProprAgr = 20,
+                            areaProgrOS = 50.5,
+                            tipoOS = 1,
+                            idEquip = 30
+                        ),
+                        OSRetrofitModel(
+                            idOS = 2,
+                            nroOS = 67890,
+                            idLibOS = 11,
+                            idProprAgr = 21,
+                            areaProgrOS = 100.0,
+                            tipoOS = 2,
+                            idEquip = 31
+                        ),
+                    )
+                )
+            )
+            val result = repository.getListByNroOS(
+                token = "token",
+                nroOS = 123456
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idOS,
+                1
+            )
+            assertEquals(
+                entity1.nroOS,
+                12345
+            )
+            assertEquals(
+                entity1.idLibOS,
+                10
+            )
+            assertEquals(
+                entity1.idProprAgr,
+                20
+                )
+            assertEquals(
+                entity1.areaProgrOS,
+                50.5,
+                0.0
+            )
+            assertEquals(
+                entity1.tipoOS,
+                1
+            )
+            assertEquals(
+                entity1.idEquip,
+                30
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.idOS,
+                2
+            )
+            assertEquals(
+                entity2.nroOS,
+                67890
+            )
+            assertEquals(
+                entity2.idLibOS,
+                11
+            )
+            assertEquals(
+                entity2.idProprAgr,
+                21
+                )
+            assertEquals(
+                entity2.areaProgrOS,
+                100.0,
+                0.0
+                )
+            assertEquals(
+                entity2.tipoOS,
+                2
+            )
+        }
+
+    @Test
+    fun `add - Check return failure if have error in OSRoomDatasource add`() =
+        runTest {
+            whenever(
+                osRoomDatasource.add(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 12345,
+                        idLibOS = 10,
+                        idProprAgr = 20,
+                        areaProgrOS = 50.5,
+                        tipoOS = 1,
+                        idEquip = 30
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IOSRoomDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.add(
+                OS(
+                    idOS = 1,
+                    nroOS = 12345,
+                    idLibOS = 10,
+                    idProprAgr = 20,
+                    areaProgrOS = 50.5,
+                    tipoOS = 1,
+                    idEquip = 30
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.add -> IOSRoomDatasource.add"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `add - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                osRoomDatasource.add(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 12345,
+                        idLibOS = 10,
+                        idProprAgr = 20,
+                        areaProgrOS = 50.5,
+                        tipoOS = 1,
+                        idEquip = 30
+                    )
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.add(
+                OS(
+                    idOS = 1,
+                    nroOS = 12345,
+                    idLibOS = 10,
+                    idProprAgr = 20,
+                    areaProgrOS = 50.5,
+                    tipoOS = 1,
+                    idEquip = 30
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 }

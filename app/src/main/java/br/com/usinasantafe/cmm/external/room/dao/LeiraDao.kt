@@ -15,4 +15,7 @@ interface LeiraDao {
     @Query("DELETE FROM $TB_LEIRA")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_LEIRA")
+    suspend fun listAll(): List<LeiraRoomModel>
+
 }

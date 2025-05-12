@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Colab
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ColabRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ColabRetrofitModel
@@ -25,14 +26,14 @@ class IColabRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 ColabRoomModel(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 )
             )
             val entityList = listOf(
                 Colab(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 )
             )
             whenever(
@@ -62,14 +63,14 @@ class IColabRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 ColabRoomModel(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 )
             )
             val entityList = listOf(
                 Colab(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 )
             )
             whenever(
@@ -162,22 +163,22 @@ class IColabRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 ColabRetrofitModel(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 ),
                 ColabRetrofitModel(
-                    matricColab = 67890L,
-                    nomeColab = "JOSE APARECIDO"
+                    regColab = 67890L,
+                    nameColab = "JOSE APARECIDO"
                 )
             )
             val entityList = listOf(
                 Colab(
-                    matricColab = 12345L,
-                    nomeColab = "ANDERSON DA SILVA"
+                    regColab = 12345L,
+                    nameColab = "ANDERSON DA SILVA"
                 ),
                 Colab(
-                    matricColab = 67890L,
-                    nomeColab = "JOSE APARECIDO"
+                    regColab = 67890L,
+                    nameColab = "JOSE APARECIDO"
                 )
             )
             whenever(
@@ -195,6 +196,52 @@ class IColabRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `checkMatric - Check return failure if have error in ColabRoomDatasource checkMatric`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.checkByReg(19759)
+            ).thenReturn(
+                resultFailure(
+                    "ColabRoomDatasource.checkReg",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkByReg(19759)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IColabRepository.checkReg -> ColabRoomDatasource.checkReg"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkMatric - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                colabRoomDatasource.checkByReg(19759)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkByReg(19759)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

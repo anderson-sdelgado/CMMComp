@@ -15,4 +15,7 @@ interface REquipAtivDao {
     @Query("DELETE FROM $TB_R_EQUIP_ATIV")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_R_EQUIP_ATIV")
+    suspend fun listAll(): List<REquipAtivRoomModel>
+
 }

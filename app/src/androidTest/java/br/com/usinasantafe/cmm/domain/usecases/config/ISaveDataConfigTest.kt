@@ -60,7 +60,8 @@ class ISaveDataConfigTest {
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1
+                idBD = 1,
+                idEquip = 20
             )
             assertEquals(
                 result.isSuccess,
@@ -117,7 +118,8 @@ class ISaveDataConfigTest {
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1
+                idBD = 1,
+                idEquip = 20
             )
             assertEquals(
                 result.isFailure,
@@ -125,13 +127,12 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> SaveDataConfig"
+                "ISaveDataConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NumberFormatException: For input string: \"16997417840a\""
             )
         }
-
 
 }

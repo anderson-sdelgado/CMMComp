@@ -5,33 +5,33 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 data class EquipRetrofitModel(
     val idEquip: Int,
     val nroEquip: Long,
-    val codClasse: Int,
-    val descrClasse: String,
-    val codTurno: Int,
+    val codClass: Int,
+    val descrClass: String,
+    val codTurnEquip: Int,
     val idCheckList: Int,
-    val tipoFert: Int,
-    val horimetro: Double,
-    val medicao: Double,
-    val tipo: Int,
-    val classif: Int,
-    val flagApontMecan: Boolean,
-    val flagApontPneu: Boolean,
+    val typeFert: Int,
+    val hourmeter: Double,
+    val measurement: Double,
+    val type: Int,
+    val classify: Int,
+    val flagApontMecan: Int,
+    val flagApontPneu: Int,
 )
 
 fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
     return Equip(
         idEquip = this.idEquip,
         nroEquip = this.nroEquip,
-        codClasse = this.codClasse,
-        descrClasse = this.descrClasse,
-        codTurno = this.codTurno,
+        codClass = this.codClass,
+        descrClass = this.descrClass,
+        codTurnEquip = this.codTurnEquip,
         idCheckList = this.idCheckList,
-        tipoFert = this.tipoFert,
-        horimetro = this.horimetro,
-        medicao = this.medicao,
-        tipo = this.tipo,
-        classif = this.classif,
-        flagApontMecan = this.flagApontMecan,
-        flagApontPneu = this.flagApontPneu
+        typeFert = this.typeFert,
+        hourmeter = this.hourmeter,
+        measurement = this.measurement,
+        type = this.type,
+        classify = this.classify,
+        flagApontMecan = this.flagApontMecan != 0,
+        flagApontPneu = this.flagApontPneu != 0
     )
 }

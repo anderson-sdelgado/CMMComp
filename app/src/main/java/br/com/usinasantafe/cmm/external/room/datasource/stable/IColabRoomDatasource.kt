@@ -34,4 +34,17 @@ class IColabRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun checkByReg(reg: Int): Result<Boolean> {
+        try {
+            val result = colabDao.checkReg(reg) > 0
+            return Result.success(result)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IColabRoomDatasource.checkReg",
+                message = "-",
+                cause = e
+            )
+        }
+    }
 }

@@ -15,4 +15,7 @@ interface FrenteDao {
     @Query("DELETE FROM $TB_FRENTE")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_FRENTE")
+    suspend fun listAll(): List<FrenteRoomModel>
+
 }

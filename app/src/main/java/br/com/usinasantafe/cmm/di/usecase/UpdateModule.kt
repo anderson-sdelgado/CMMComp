@@ -13,7 +13,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateAtividade(usecase: IUpdateTableAtividade): UpdateTableAtividade
+    fun bindUpdateActivity(usecase: IUpdateTableActivity): UpdateTableActivity
 
     @Binds
     @Singleton
@@ -26,6 +26,10 @@ interface UpdateModule {
     @Binds
     @Singleton
     fun bindUpdateTableComponente(usecase: IUpdateTableComponente): UpdateTableComponente
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableEquip(usecase: IUpdateTableEquip): UpdateTableEquip
 
     @Binds
     @Singleton
@@ -85,6 +89,6 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableTurno(usecase: IUpdateTableTurno): UpdateTableTurno
+    fun bindUpdateTableTurno(usecase: IUpdateTableTurn): UpdateTableTurn
 
 }

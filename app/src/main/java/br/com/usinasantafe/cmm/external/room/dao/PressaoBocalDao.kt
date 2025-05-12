@@ -15,4 +15,7 @@ interface PressaoBocalDao {
     @Query("DELETE FROM $TB_PRESSAO_BOCAL")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_PRESSAO_BOCAL")
+    suspend fun listAll(): List<PressaoBocalRoomModel>
+
 }

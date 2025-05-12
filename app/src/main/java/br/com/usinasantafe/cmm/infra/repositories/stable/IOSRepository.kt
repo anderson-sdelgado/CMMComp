@@ -10,8 +10,8 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Imp
 import javax.inject.Inject
 
 class IOSRepository @Inject constructor(
-    private val osRetrofitDatasource: OSRetrofitDatasource, // Injeção da datasource Retrofit
-    private val osRoomDatasource: OSRoomDatasource // Injeção da datasource Room
+    private val osRetrofitDatasource: OSRetrofitDatasource,
+    private val osRoomDatasource: OSRoomDatasource
 ) : OSRepository {
 
     override suspend fun addAll(list: List<OS>): Result<Boolean> {
@@ -67,6 +67,68 @@ class IOSRepository @Inject constructor(
         } catch (e: Exception) {
             return resultFailure(
                 context = "IOSRepository.recoverAll",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun checkNroOS(nroOS: Int): Result<Boolean> {
+        val result = osRoomDatasource.checkNroOS(nroOS)
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IOSRepository.checkNroOS",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getListByNroOS(
+        token: String,
+        nroOS: Int
+    ): Result<List<OS>> {
+        try {
+            val result = osRetrofitDatasource.getListByNroOS(
+                token,
+                nroOS
+            )
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IOSRepository.getListByNroOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IOSRepository.getListByNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun add(os: OS): Result<Boolean> {
+        try {
+            val result = osRoomDatasource.add(os.entityToRoomModel())
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IOSRepository.add",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return result
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IOSRepository.add",
                 message = "-",
                 cause = e
             )

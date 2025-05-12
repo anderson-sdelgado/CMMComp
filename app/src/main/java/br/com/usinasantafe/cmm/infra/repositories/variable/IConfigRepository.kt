@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.entityToRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.variable.retrofitToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.FlagUpdate
@@ -94,7 +95,7 @@ class IConfigRepository @Inject constructor(
         }
     }
 
-    override suspend fun send(config: Config): Result<Int> {
+    override suspend fun send(config: Config): Result<Config> {
         try {
             val resultRecoverToken = configRetrofitDatasource.recoverToken(
                 config.entityToRetrofitModel()
@@ -108,7 +109,8 @@ class IConfigRepository @Inject constructor(
                 )
             }
             val configRetrofitModel = resultRecoverToken.getOrNull()!!
-            return Result.success(configRetrofitModel.idBD)
+            val entity = configRetrofitModel.retrofitToEntity()
+            return Result.success(entity)
         } catch (e: Exception) {
             return resultFailure(
                 context = "IConfigRepository.send",
@@ -129,5 +131,18 @@ class IConfigRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
+        val result = configSharedPreferencesDatasource.setFlagUpdate(flagUpdate)
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.setFlagUpdate",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return Result.success(true)
     }
 }

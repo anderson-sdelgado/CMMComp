@@ -1,0 +1,440 @@
+package br.com.usinasantafe.cmm
+
+import android.util.Log
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
+import br.com.usinasantafe.cmm.external.room.dao.ActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.OSDao
+import br.com.usinasantafe.cmm.external.room.dao.ROSActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.presenter.MainActivity
+import br.com.usinasantafe.cmm.ui.theme.BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.WEB_GET_OS_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.waitUntilTimeout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.test.runTest
+import okhttp3.mockwebserver.Dispatcher
+import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.MockWebServer
+import okhttp3.mockwebserver.RecordedRequest
+import org.junit.AfterClass
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Rule
+import org.junit.Test
+import javax.inject.Inject
+import kotlin.time.Duration.Companion.minutes
+
+
+@HiltAndroidTest
+class HeaderFlowTest {
+
+    companion object {
+
+        private lateinit var mockWebServer: MockWebServer
+
+        val resultActivityRetrofit = """
+                [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
+            """.trimIndent()
+
+        val resultColabRetrofit = """
+                [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
+            """.trimIndent()
+
+        val resultEquipRetrofit = """
+                [
+                  {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+                ]
+            """.trimIndent()
+
+        val resultTurnRetrofit = """
+                [
+                  {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
+                ]
+            """.trimIndent()
+
+        val resultOSRetrofitOne = """
+                [
+                  {"idOS":1,"nroOS":123456,"idLibOS":10,"idProprAgr":20,"areaProgrOS":150.75,"tipoOS":1,"idEquip":30}
+                ]
+            """.trimIndent()
+
+        val resultROSActivityRetrofitOne = """
+            [
+              {"idROSAtiv":1,"idOS":12345,"idAtiv":10}
+            ]
+        """.trimIndent()
+
+        @BeforeClass
+        @JvmStatic
+        fun setupClass() {
+
+            val dispatcherSuccessFlow: Dispatcher = object : Dispatcher() {
+
+                @Throws(InterruptedException::class)
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.path) {
+                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(resultOSRetrofitOne)
+                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(resultROSActivityRetrofitOne)
+                        else -> MockResponse().setResponseCode(404)
+                    }
+                }
+            }
+
+            mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherSuccessFlow
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun tearDownClass() {
+            mockWebServer.shutdown()
+        }
+    }
+
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @Inject
+    lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
+
+    @Inject
+    lateinit var activityDao: ActivityDao
+
+    @Inject
+    lateinit var colabDao: ColabDao
+
+    @Inject
+    lateinit var equipDao: EquipDao
+    
+    @Inject
+    lateinit var turnDao: TurnDao
+
+    @Inject
+    lateinit var osDao: OSDao
+
+    @Inject
+    lateinit var rOSActivityDao: ROSActivityDao
+
+    @Before
+    fun setUp() {
+        hiltRule.inject()
+    }
+
+    @Test
+    fun header_flow() = runTest(
+        timeout = 10.minutes
+    ) {
+
+        initialRegister()
+
+        Log.d("TestDebug", "Position 1")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("APONTAMENTO")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("CONFIGURAÇÃO")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("SAIR")
+            .assertIsDisplayed()
+
+        Log.d("TestDebug", "Position 2")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("APONTAMENTO")
+            .performClick()
+
+        Log.d("TestDebug", "Position 3")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.activityRule.scenario.onActivity { activity ->
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        Log.d("TestDebug", "Position 4")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("APONTAMENTO")
+            .performClick()
+
+        Log.d("TestDebug", "Position 5")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("7")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 6")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("CANCELAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 7")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("7")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("9")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 8")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val resultEntityWithRegColab = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithRegColab.isSuccess,
+            true
+        )
+        val entityWithRegColab = resultEntityWithRegColab.getOrNull()!!
+        assertEquals(
+            entityWithRegColab.regOperator,
+            19759
+        )
+        composeTestRule.onNodeWithText("2200 - TRATOR")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 9")
+
+        val resultEntityWithIdEquip = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithIdEquip.isSuccess,
+            true
+        )
+        val entityWithIdEquip = resultEntityWithIdEquip.getOrNull()!!
+        assertEquals(
+            entityWithIdEquip.idEquip,
+            1
+        )
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 10")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("2200 - TRATOR")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 11")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("TURNO 1")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("TURNO 1")
+            .performClick()
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        Log.d("TestDebug", "Position 12")
+
+        val resultEntityWithIdTurn = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithIdTurn.isSuccess,
+            true
+        )
+        val entityWithIdTurn = resultEntityWithIdTurn.getOrNull()!!
+        assertEquals(
+            entityWithIdTurn.idTurn,
+            1
+        )
+
+        composeTestRule.activityRule.scenario.onActivity { activity ->
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        Log.d("TestDebug", "Position 13")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("TURNO 1")
+            .performClick()
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 14")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithTag(BUTTON_OK_ALERT_DIALOG_SIMPLE)
+            .performClick()
+
+        Log.d("TestDebug", "Position 15")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("2")
+            .performClick()
+        composeTestRule.onNodeWithText("3")
+            .performClick()
+        composeTestRule.onNodeWithText("4")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("6")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 16")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("TURNO 1")
+            .assertIsDisplayed()
+
+        val osList = osDao.listAll()
+        assertEquals(
+            osList.size,
+            1
+        )
+        val os = osList[0]
+        assertEquals(
+            os.nroOS,
+            123456
+        )
+        assertEquals(
+            os.idLibOS,
+            10
+        )
+        assertEquals(
+            os.idProprAgr,
+            20
+        )
+        assertEquals(
+            os.areaProgrOS,
+            150.75,
+            0.0
+        )
+        assertEquals(
+            os.tipoOS,
+            1
+        )
+        assertEquals(
+            os.idEquip,
+            30
+        )
+        val rOSActivityList = rOSActivityDao.listAll()
+        assertEquals(
+            rOSActivityList.size,
+            1
+        )
+        val rOSActivity = rOSActivityList[0]
+        assertEquals(
+            rOSActivity.idOS,
+            12345
+        )
+        assertEquals(
+            rOSActivity.idActivity,
+            10
+        )
+
+        Log.d("TestDebug", "Position 17")
+
+        composeTestRule.waitUntilTimeout(10_000)
+
+
+    }
+
+    private suspend fun initialRegister() {
+
+        val gson = Gson()
+
+        configSharedPreferencesDatasource.save(
+            ConfigSharedPreferencesModel(
+                number = 16997417840,
+                nroEquip = 2200,
+                password = "12345",
+                idEquip = 1,
+                checkMotoMec = true,
+                idBD = 1,
+                version = "1.0",
+                app = "PMM",
+                flagUpdate = FlagUpdate.UPDATED
+            )
+        )
+
+        val itemTypeActivity = object : TypeToken<List<ActivityRoomModel>>() {}.type
+        val activityList = gson.fromJson<List<ActivityRoomModel>>(resultActivityRetrofit, itemTypeActivity)
+        activityDao.insertAll(activityList)
+
+        val itemTypeColab = object : TypeToken<List<ColabRoomModel>>() {}.type
+        val colabList = gson.fromJson<List<ColabRoomModel>>(resultColabRetrofit, itemTypeColab)
+        colabDao.insertAll(colabList)
+
+        val itemTypeEquip = object : TypeToken<List<EquipRoomModel>>() {}.type
+        val equipList = gson.fromJson<List<EquipRoomModel>>(resultEquipRetrofit, itemTypeEquip)
+        equipDao.insertAll(equipList)
+
+        val itemTypeTurn = object : TypeToken<List<TurnRoomModel>>() {}.type
+        val turnList = gson.fromJson<List<TurnRoomModel>>(resultTurnRetrofit, itemTypeTurn)
+        turnDao.insertAll(turnList)
+
+    }
+}

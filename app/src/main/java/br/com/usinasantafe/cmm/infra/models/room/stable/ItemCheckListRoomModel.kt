@@ -14,7 +14,7 @@ data class ItemCheckListRoomModel (
 )
 
 // Função de extensão para converter ItemCheckListRoomModel para a entidade de domínio ItemCheckList
-fun ItemCheckListRoomModel.roomToEntity(): ItemCheckList {
+fun ItemCheckListRoomModel.roomModelToEntity(): ItemCheckList {
     return with(this){
         ItemCheckList(
             idItemCheckList = this.idItemCheckList,

@@ -14,7 +14,7 @@ data class ParadaRoomModel (
 )
 
 // Função de extensão para converter ParadaRoomModel para a entidade de domínio Parada
-fun ParadaRoomModel.roomToEntity(): Parada {
+fun ParadaRoomModel.roomModelToEntity(): Parada {
     return with(this){
         Parada(
             idParada = this.idParada,

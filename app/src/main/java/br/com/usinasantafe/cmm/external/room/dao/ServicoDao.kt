@@ -15,4 +15,7 @@ interface ServicoDao {
     @Query("DELETE FROM $TB_SERVICO")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_SERVICO")
+    suspend fun listAll(): List<ServicoRoomModel>
+
 }

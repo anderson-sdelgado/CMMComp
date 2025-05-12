@@ -5,8 +5,11 @@ const val BASE_DB = "cmm.db"
 const val VERSION_DB = 1
 
 const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
+const val BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
 
-const val TB_ATIVIDADE = "tb_atividade"
+const val qtdTable = 4f
+
+const val TB_ACTIVITY = "tb_activity"
 const val TB_BOCAL = "tb_bocal"
 const val TB_COLAB = "tb_colab"
 const val TB_COMPONENTE = "tb_componente"
@@ -26,13 +29,13 @@ const val TB_R_ATIV_PARADA = "tb_r_ativ_parada"
 const val TB_R_EQUIP_ATIV = "tb_r_equip_ativ"
 const val TB_R_EQUIP_PNEU = "tb_r_equip_pneu"
 const val TB_R_FUNCAO_ATIV_PARADA = "tb_r_funcao_ativ_parada"
-const val TB_R_OS_ATIV = "tb_r_os_ativ"
+const val TB_R_OS_ACTIVITY = "tb_r_os_ativ"
 const val TB_SERVICO = "tb_servico"
-const val TB_TURNO = "tb_turno"
+const val TB_TURN = "tb_turn"
 
 const val TB_MOV_CHAVE = "tb_mov_chave"
 
-const val WEB_ALL_ATIVIDADE = "atividade.php"
+const val WEB_ALL_ACTIVITY = "activity.php"
 const val WEB_ALL_BOCAL = "bocal.php"
 const val WEB_ALL_COLAB = "colab.php"
 const val WEB_ALL_COMPONENTE = "componente.php"
@@ -54,9 +57,13 @@ const val WEB_ALL_R_EQUIP_PNEU = "r-equip-pneu.php"
 const val WEB_ALL_R_FUNCAO_ATIV_PARADA = "r-funcao-ativ-parada.php"
 const val WEB_ALL_R_OS_ATIV = "r-os-ativ.php"
 const val WEB_ALL_SERVICO = "servico.php"
-const val WEB_ALL_TURNO = "turno.php"
+const val WEB_ALL_TURN = "turn.php"
+
+const val WEB_SAVE_TOKEN = "find-token.php"
+const val WEB_GET_OS_LIST_BY_NRO_OS = "os-list-by-nro-os.php"
+const val WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS = "r-os-activity-list-by-nro-os.php"
 
 const val WEB_SAVE_MOV_CHAVE = "save-mov-chave.php"
 
-const val WEB_SAVE_TOKEN = "find-token.php"
+
 

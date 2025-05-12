@@ -262,7 +262,8 @@ class IConfigRepositoryTest {
                 app = "PMM"
             )
             val retrofitModelInput = ConfigRetrofitModelInput(
-                idBD = 1
+                idBD = 1,
+                idEquip = 10
             )
             val entity = Config(
                 number = 16997417840,
@@ -284,7 +285,10 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                1
+                Config(
+                    idBD = 1,
+                    idEquip = 10
+                )
             )
         }
 
@@ -374,4 +378,47 @@ class IConfigRepositoryTest {
             )
         }
 
+    @Test
+    fun `setFlagUpdate - Check return failure if have failure in execution ConfigSharedPreferencesDatasource get`() = runTest {
+        whenever(
+            configSharedPreferencesDatasource.setFlagUpdate(FlagUpdate.UPDATED)
+        ).thenReturn(
+            resultFailure(
+                "IConfigSharedPreferencesDatasource.setFlagUpdate",
+                "-",
+                Exception()
+            )
+        )
+        val result = repository.setFlagUpdate(FlagUpdate.UPDATED)
+        assertEquals(
+            result.isFailure,
+            true
+        )
+        assertEquals(
+            result.exceptionOrNull()!!.message,
+            "IConfigRepository.setFlagUpdate -> IConfigSharedPreferencesDatasource.setFlagUpdate"
+        )
+        assertEquals(
+            result.exceptionOrNull()!!.cause.toString(),
+            "java.lang.Exception"
+        )
+    }
+
+    @Test
+    fun `setFlagUpdate - Check return true is execution successfully`() = runTest {
+        whenever(
+            configSharedPreferencesDatasource.setFlagUpdate(FlagUpdate.UPDATED)
+        ).thenReturn(
+            Result.success(true)
+        )
+        val result = repository.setFlagUpdate(FlagUpdate.UPDATED)
+        assertEquals(
+            result.isSuccess,
+            true
+        )
+        assertEquals(
+            result.getOrNull()!!,
+            true
+        )
+    }
 }

@@ -15,7 +15,7 @@ data class REquipPneuRoomModel (
     val statusPneu: Int,
 )
 
-fun REquipPneuRoomModel.roomToEntity(): REquipPneu {
+fun REquipPneuRoomModel.roomModelToEntity(): REquipPneu {
     return REquipPneu(
         idREquipPneu = this.idREquipPneu,
         idEquip = this.idEquip,

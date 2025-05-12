@@ -233,6 +233,42 @@ fun AlertDialogProgressDesign(
 }
 
 @Composable
+fun AlertDialogProgressIndeterminateDesign(
+    msgProgress: String,
+) {
+    return Dialog(
+        onDismissRequest = {}
+    ) {
+        Card {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "ATENÇÃO",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(30.dp),
+                )
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                Text(
+                    text = msgProgress,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        }
+    }
+}
+
+@Composable
 fun ButtonNumericDesign(
     text: @Composable () -> Unit,
     setActionButton: () -> Unit,

@@ -15,4 +15,7 @@ interface ItemOSMecanDao {
     @Query("DELETE FROM $TB_ITEM_OS_MECAN")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_ITEM_OS_MECAN")
+    suspend fun listAll(): List<ItemOSMecanRoomModel>
+
 }

@@ -20,7 +20,7 @@ data class MotoMecRoomModel (
 )
 
 // Função de extensão para converter MotoMecRoomModel para a entidade de domínio MotoMec
-fun MotoMecRoomModel.roomToEntity(): MotoMec {
+fun MotoMecRoomModel.roomModelToEntity(): MotoMec {
     return with(this){
         MotoMec(
             idMotoMec = this.idMotoMec,

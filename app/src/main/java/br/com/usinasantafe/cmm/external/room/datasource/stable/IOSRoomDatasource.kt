@@ -9,6 +9,7 @@ import javax.inject.Inject
 class IOSRoomDatasource @Inject constructor(
     private val osDao: OSDao
 ) : OSRoomDatasource {
+
     override suspend fun addAll(list: List<OSRoomModel>): Result<Boolean> {
         try {
             osDao.insertAll(list)
@@ -34,4 +35,31 @@ class IOSRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun checkNroOS(nroOS: Int): Result<Boolean> {
+        try {
+            val result = osDao.checkNroOS(nroOS) > 0
+            return Result.success(result)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IOSRoomDatasource.checkNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun add(model: OSRoomModel): Result<Boolean> {
+        try {
+            osDao.insert(model)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IOSRoomDatasource.add",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
 }

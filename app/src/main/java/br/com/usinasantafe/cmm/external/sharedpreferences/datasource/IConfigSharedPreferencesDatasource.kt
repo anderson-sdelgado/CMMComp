@@ -1,11 +1,13 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
+import android.util.Log
 import br.com.usinasantafe.cmm.domain.errors.AppError
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_CONFIG
+import br.com.usinasantafe.cmm.utils.FlagUpdate
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -20,7 +22,9 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 null
             )
             if(config.isNullOrEmpty())
-                return Result.success(ConfigSharedPreferencesModel())
+                return Result.success(
+                    ConfigSharedPreferencesModel()
+                )
             return Result.success(
                 Gson().fromJson(
                     config,
@@ -64,6 +68,38 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         } catch (e: Exception){
             return resultFailure(
                 context = "IConfigSharedPreferencesDatasource.save",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
+        try {
+            val resultConfig = get()
+            if (resultConfig.isFailure) {
+                val e = resultConfig.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IConfigSharedPreferencesDatasource.setFlagUpdate",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val config = resultConfig.getOrNull()!!
+            config.flagUpdate = flagUpdate
+            val resultSave = save(config)
+            if (resultSave.isFailure) {
+                val e = resultSave.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IConfigSharedPreferencesDatasource.setFlagUpdate",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.setFlagUpdate",
                 message = "-",
                 cause = e
             )

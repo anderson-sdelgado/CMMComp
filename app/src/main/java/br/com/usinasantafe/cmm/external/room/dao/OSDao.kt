@@ -10,9 +10,18 @@ import br.com.usinasantafe.cmm.utils.TB_OS
 interface OSDao {
 
     @Insert
-    fun insertAll(list: List<OSRoomModel>)
+    suspend fun insertAll(list: List<OSRoomModel>)
+
+    @Insert
+    suspend fun insert(model: OSRoomModel)
 
     @Query("DELETE FROM $TB_OS")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM $TB_OS")
+    suspend fun listAll(): List<OSRoomModel>
+
+    @Query("SELECT count(*) FROM $TB_OS WHERE nroOS = :nroOS")
+    suspend fun checkNroOS(nroOS: Int): Int
 
 }

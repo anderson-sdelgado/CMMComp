@@ -18,7 +18,7 @@ data class OSRoomModel (
 )
 
 // Função de extensão para converter OSRoomModel para a entidade de domínio OS
-fun OSRoomModel.roomToEntity(): OS {
+fun OSRoomModel.roomModelToEntity(): OS {
     return with(this){
         OS(
             idOS = this.idOS,

@@ -14,7 +14,7 @@ data class PropriedadeRoomModel (
 )
 
 // Função de extensão para converter PropriedadeRoomModel para a entidade de domínio Propriedade
-fun PropriedadeRoomModel.roomToEntity(): Propriedade {
+fun PropriedadeRoomModel.roomModelToEntity(): Propriedade {
     return with(this){
         Propriedade(
             idPropriedade = this.idPropriedade,

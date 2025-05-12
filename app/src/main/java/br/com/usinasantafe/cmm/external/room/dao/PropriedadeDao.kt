@@ -15,4 +15,7 @@ interface PropriedadeDao {
     @Query("DELETE FROM $TB_PROPRIEDADE")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_PROPRIEDADE")
+    suspend fun listAll(): List<PropriedadeRoomModel>
+
 }

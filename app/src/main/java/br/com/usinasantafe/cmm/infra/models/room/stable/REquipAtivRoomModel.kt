@@ -13,7 +13,7 @@ data class REquipAtivRoomModel (
     val idAtiv: Int
 )
 
-fun REquipAtivRoomModel.roomToEntity(): REquipAtiv {
+fun REquipAtivRoomModel.roomModelToEntity(): REquipAtiv {
     return with(this){
         REquipAtiv(
             idREquipAtiv = this.idREquipAtiv,

@@ -58,7 +58,7 @@ class IGetConfigInternalTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Failure Usecase -> GetConfigInternal"
+                "IGetConfigInternal"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

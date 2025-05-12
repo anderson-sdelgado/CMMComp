@@ -14,7 +14,7 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindAtividadeRetrofitDatasource(dataSource: IAtividadeRetrofitDatasource): AtividadeRetrofitDatasource
+    fun bindAtividadeRetrofitDatasource(dataSource: IActivityRetrofitDatasource): ActivityRetrofitDatasource
 
     @Binds
     @Singleton
@@ -27,6 +27,10 @@ interface StableRetrofitDatasourceModule {
     @Binds
     @Singleton
     fun bindComponenteRetrofitDatasource(dataSource: IComponenteRetrofitDatasource): ComponenteRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindEquipRetrofitDatasource(dataSource: IEquipRetrofitDatasource): EquipRetrofitDatasource
 
     @Binds
     @Singleton
@@ -82,7 +86,7 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindROSAtivRetrofitDatasource(dataSource: IROSAtivRetrofitDatasource): ROSAtivRetrofitDatasource
+    fun bindROSAtivRetrofitDatasource(dataSource: IROSActivityRetrofitDatasource): ROSActivityRetrofitDatasource
 
     @Binds
     @Singleton
@@ -90,6 +94,6 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindTurnoRetrofitDatasource(dataSource: ITurnoRetrofitDatasource): TurnoRetrofitDatasource
+    fun bindTurnoRetrofitDatasource(dataSource: ITurnRetrofitDatasource): TurnoRetrofitDatasource
 
 }

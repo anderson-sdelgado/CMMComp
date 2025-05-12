@@ -22,7 +22,7 @@ class IConfigSharedPreferencesDatasourceTest {
     private lateinit var datasource: IConfigSharedPreferencesDatasource
 
     @Before
-    fun before() {
+    fun setUp() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
         datasource = IConfigSharedPreferencesDatasource(sharedPreferences)

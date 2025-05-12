@@ -15,4 +15,7 @@ interface ParadaDao {
     @Query("DELETE FROM $TB_PARADA")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM $TB_PARADA")
+    suspend fun listAll(): List<ParadaRoomModel>
+
 }
