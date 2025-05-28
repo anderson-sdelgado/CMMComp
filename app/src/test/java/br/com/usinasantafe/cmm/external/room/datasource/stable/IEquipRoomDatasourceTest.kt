@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,18 +21,20 @@ class IEquipRoomDatasourceTest {
 
     private lateinit var equipDao: EquipDao
     private lateinit var db: DatabaseRoom
+    private lateinit var datasource: IEquipRoomDatasource
 
     @Before
-    fun before() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
         equipDao = db.equipDao()
+        datasource = IEquipRoomDatasource(equipDao)
     }
 
     @After
-    fun after() {
+    fun tearDown() {
         db.close()
     }
 
@@ -44,7 +46,6 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IEquipRoomDatasource(equipDao)
             val result = datasource.addAll(
                 listOf(
                     EquipRoomModel(
@@ -106,7 +107,6 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IEquipRoomDatasource(equipDao)
             val result = datasource.addAll(
                 listOf(
                     EquipRoomModel(
@@ -234,7 +234,6 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IEquipRoomDatasource(equipDao)
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
@@ -252,22 +251,25 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `getById - Check return null if not have data in table`() =
+    fun `getDescrByIdEquip - Check return failure if not have data`() =
         runTest {
-            val datasource = IEquipRoomDatasource(equipDao)
-            val result = datasource.getByIdEquip(1)
+            val result = datasource.getDescrByIdEquip(1)
             assertEquals(
-                result.isSuccess,
+                result.isFailure,
                 true
             )
             assertEquals(
-                result.getOrNull(),
-                null
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getDescrByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getDescrClass()\" because \"model\" is null"
             )
         }
 
     @Test
-    fun `getById - Check execution correct`() =
+    fun `getDescrByIdEquip - Check return correct if function execute successfully`() =
         runTest {
             equipDao.insertAll(
                 listOf(
@@ -288,27 +290,191 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val datasource = IEquipRoomDatasource(equipDao)
-            val result = datasource.getByIdEquip(1)
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getDescrByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true
-                )
-            assertEquals(
-                result.getOrNull()!!.idEquip,
-                1
             )
             assertEquals(
-                result.getOrNull()!!.nroEquip,
-                10
-            )
-            assertEquals(
-                result.getOrNull()!!.codClass,
-                20
-            )
-            assertEquals(
-                result.getOrNull()!!.descrClass,
-                "TRATOR"
+                result.getOrNull()!!,
+                "10 - TRATOR"
             )
         }
+
+    @Test
+    fun `getCodTurnEquipByIdEquip- Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getCodTurnEquipByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getCodTurnEquipByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getCodTurnEquip()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getCodTurnEquipByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 1,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 1,
+                        hourmeter = 0.0,
+                        measurement = 0.0,
+                        type = 1,
+                        classify = 1,
+                        flagApontMecan = true,
+                        flagApontPneu = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getCodTurnEquipByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `getMeasureByIdEquip - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getMeasureByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getMeasureByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getMeasurement()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getMeasureByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 1,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 1,
+                        hourmeter = 0.0,
+                        measurement = 10000.0,
+                        type = 1,
+                        classify = 1,
+                        flagApontMecan = true,
+                        flagApontPneu = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getMeasureByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                10000.0,
+                0.0
+            )
+        }
+
+    @Test
+    fun `updateMeasureByIdEquip - Check alter data`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 1,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 1,
+                        hourmeter = 0.0,
+                        measurement = 10000.0,
+                        type = 1,
+                        classify = 1,
+                        flagApontMecan = true,
+                        flagApontPneu = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val modelBefore =    equipDao.getByIdEquip(1)
+            assertEquals(
+                modelBefore.measurement,
+                10000.0,
+                0.0
+            )
+            val result = datasource.updateMeasureByIdEquip(
+                measure = 20000.0,
+                idEquip = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val qtdAfter = equipDao.listAll().size
+            assertEquals(
+                qtdAfter,
+                1
+            )
+            val modelAfter = equipDao.getByIdEquip(1)
+            assertEquals(
+                modelAfter.measurement,
+                20000.0,
+                0.0
+            )
+        }
+
 }

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel

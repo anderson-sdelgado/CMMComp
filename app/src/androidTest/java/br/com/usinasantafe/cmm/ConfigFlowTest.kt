@@ -15,8 +15,9 @@ import br.com.usinasantafe.cmm.presenter.configuration.config.TAG_PASSWORD_TEXT_
 import br.com.usinasantafe.cmm.ui.theme.BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
-import br.com.usinasantafe.cmm.utils.WEB_ALL_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_GET_EQUIP_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
+import br.com.usinasantafe.cmm.utils.WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -44,23 +45,29 @@ class ConfigFlowTest {
         @JvmStatic
         fun setupClass() {
 
-            val resultTokenRetrofit = """{"idBD":1,"idEquip":1}""".trimIndent()
+            val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
 
-            val resultActivityRetrofit = """
+            val resultActivity = """
                 [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
             """.trimIndent()
 
-            val resultColabRetrofit = """
+            val resultColab = """
                 [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
             """.trimIndent()
 
-            val resultEquipRetrofit = """
+            val resultEquip = """
                 [
                   {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
                 ]
             """.trimIndent()
 
-            val resultTurnRetrofit = """
+            val resultREquipActivity = """
+                [
+                  {"idREquipActivity":1,"idEquip":30,"idActivity":10}
+                ]
+            """.trimIndent()
+
+            val resultTurn = """
                 [
                   {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
                 ]
@@ -71,11 +78,12 @@ class ConfigFlowTest {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
-                        "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultTokenRetrofit)
-                        "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivityRetrofit)
-                        "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabRetrofit)
-                        "/$WEB_ALL_EQUIP" -> MockResponse().setBody(resultEquipRetrofit)
-                        "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnRetrofit)
+                        "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                        "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                        "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                        "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                        "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                        "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -231,7 +239,7 @@ class ConfigFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        composeTestRule.onNodeWithText("MATRIC. OPERADOR:").assertIsDisplayed()
+        composeTestRule.onNodeWithText("MATRICULA OPERADOR").assertIsDisplayed()
 
         Log.d("TestDebug", "Position 17")
 

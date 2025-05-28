@@ -10,4 +10,7 @@ interface ROSActivityRepository {
         token: String,
         nroOS: Int
     ): Result<List<ROSActivity>>
+    suspend fun listByIdOS(
+        idOS: Int
+    ): Result<List<ROSActivity>>
 }

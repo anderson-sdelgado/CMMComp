@@ -74,7 +74,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindREquipAtivRoomDatasource(dataSource: IREquipAtivRoomDatasource): REquipAtivRoomDatasource
+    fun bindREquipAtivRoomDatasource(dataSource: IREquipActivityRoomDatasource): REquipActivityRoomDatasource
 
     @Binds
     @Singleton

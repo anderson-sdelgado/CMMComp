@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSAtivRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -15,11 +15,11 @@ import org.mockito.kotlin.whenever
 
 class IROSActivityRepositoryTest {
 
-    private val rosActivityRoomDatasource = mock<ROSActivityRoomDatasource>()
-    private val rosActivityRetrofitDatasource = mock<ROSActivityRetrofitDatasource>()
+    private val rOSActivityRoomDatasource = mock<ROSActivityRoomDatasource>()
+    private val rOSActivityRetrofitDatasource = mock<ROSActivityRetrofitDatasource>()
     private val repository = IROSActivityRepository(
-        rosActivityRetrofitDatasource = rosActivityRetrofitDatasource,
-        rosActivityRoomDatasource = rosActivityRoomDatasource
+        rOSActivityRetrofitDatasource = rOSActivityRetrofitDatasource,
+        rOSActivityRoomDatasource = rOSActivityRoomDatasource
     )
 
     @Test
@@ -40,7 +40,7 @@ class IROSActivityRepositoryTest {
                 )
             )
             whenever(
-                rosActivityRoomDatasource.addAll(roomModelList)
+                rOSActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
                 Result.failure(
                     Exception()
@@ -53,7 +53,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSAtivRepository.addAll -> Unknown Error"
+                "IROSActivityRepository.addAll -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -79,7 +79,7 @@ class IROSActivityRepositoryTest {
                 )
             )
             whenever(
-                rosActivityRoomDatasource.addAll(roomModelList)
+                rOSActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
                 Result.success(true)
             )
@@ -98,7 +98,7 @@ class IROSActivityRepositoryTest {
     fun `deleteAll - Check return failure if have error`() =
         runTest {
             whenever(
-                rosActivityRoomDatasource.deleteAll()
+                rOSActivityRoomDatasource.deleteAll()
             ).thenReturn(
                 Result.failure(
                     Exception()
@@ -111,7 +111,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSAtivRepository.deleteAll -> Unknown Error"
+                "IROSActivityRepository.deleteAll -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -123,7 +123,7 @@ class IROSActivityRepositoryTest {
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
             whenever(
-                rosActivityRoomDatasource.deleteAll()
+                rOSActivityRoomDatasource.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
@@ -142,7 +142,7 @@ class IROSActivityRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                rosActivityRetrofitDatasource.recoverAll("token")
+                rOSActivityRetrofitDatasource.recoverAll("token")
             ).thenReturn(
                 Result.failure(
                     Exception()
@@ -155,7 +155,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSAtivRepository.recoverAll -> Unknown Error"
+                "IROSActivityRepository.recoverAll -> Unknown Error"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -167,15 +167,15 @@ class IROSActivityRepositoryTest {
     fun `recoverAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
-                ROSAtivRetrofitModel(
-                    idROSAtiv = 1,
+                ROSActivityRetrofitModel(
+                    idROSActivity = 1,
                     idOS = 10,
-                    idAtiv = 20
+                    idActivity = 20
                 ),
-                ROSAtivRetrofitModel(
-                    idROSAtiv = 2,
+                ROSActivityRetrofitModel(
+                    idROSActivity = 2,
                     idOS = 11,
-                    idAtiv = 21
+                    idActivity = 21
                 )
             )
             val entityList = listOf(
@@ -191,7 +191,7 @@ class IROSActivityRepositoryTest {
                 )
             )
             whenever(
-                rosActivityRetrofitDatasource.recoverAll("token")
+                rOSActivityRetrofitDatasource.recoverAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
@@ -212,13 +212,13 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return failure if have error in ROSActivityRetrofitDatasource getListByNroOS`() =
         runTest {
             whenever(
-                rosActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.getListByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
             ).thenReturn(
                 resultFailure(
-                    "IROSAtivRetrofitDatasource.getListByNroOS",
+                    "IROSActivityRetrofitDatasource.getListByNroOS",
                     "-",
                     Exception()
                 )
@@ -233,7 +233,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSAtivRepository.getListByNroOS -> IROSAtivRetrofitDatasource.getListByNroOS"
+                "IROSActivityRepository.getListByNroOS -> IROSActivityRetrofitDatasource.getListByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -244,7 +244,7 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
         runTest {
             whenever(
-                rosActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.getListByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -268,22 +268,22 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                rosActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.getListByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
-                        ROSAtivRetrofitModel(
-                            idROSAtiv = 1,
+                        ROSActivityRetrofitModel(
+                            idROSActivity = 1,
                             idOS = 1,
-                            idAtiv = 10
+                            idActivity = 10
                         ),
-                        ROSAtivRetrofitModel(
-                            idROSAtiv = 2,
+                        ROSActivityRetrofitModel(
+                            idROSActivity = 2,
                             idOS = 2,
-                            idAtiv = 11
+                            idActivity = 11
                         )
                     )
                 )
@@ -327,6 +327,75 @@ class IROSActivityRepositoryTest {
                 entity2.idActivity,
                 11
             )
+        }
+
+    @Test
+    fun `getListByIdOS - Check return failure if have error in rOSActivityRoomDatasource getListByIdOS`() =
+        runTest {
+            whenever(
+                rOSActivityRoomDatasource.listByIdOS(1)
+            ).thenReturn(
+                resultFailure(
+                    "IROSActivityRoomDatasource.getListByIdOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdOS(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IROSActivityRepository.getListByIdOS -> IROSActivityRoomDatasource.getListByIdOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getListByIdOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                rOSActivityRoomDatasource.listByIdOS(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ROSActivityRoomModel(
+                            idROSActivity = 1,
+                            idOS = 1,
+                            idActivity = 10
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdOS(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idROSActivity,
+                1
+            )
+            assertEquals(
+                entity1.idOS,
+                1
+            )
+            assertEquals(
+                entity1.idActivity,
+                10
+            )
+
         }
 
 }

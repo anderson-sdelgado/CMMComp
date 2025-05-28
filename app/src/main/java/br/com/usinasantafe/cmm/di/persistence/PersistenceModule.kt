@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.di.persistence
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.room.Room
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom

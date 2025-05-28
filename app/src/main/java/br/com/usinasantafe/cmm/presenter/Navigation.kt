@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.presenter
 import androidx.navigation.NavHostController
 import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.MEASURE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OPERATOR_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OS_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TURN_LIST_ROUTE
@@ -10,6 +11,7 @@ import br.com.usinasantafe.cmm.presenter.Screens.ACTIVITY_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.EQUIP_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.INITIAL_MENU_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.MEASURE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.OPERATOR_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.OS_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.PASSWORD_SCREEN
@@ -24,6 +26,7 @@ object Screens {
     const val TURN_LIST_SCREEN = "turnListScreen"
     const val OS_SCREEN = "osScreen"
     const val ACTIVITY_LIST_SCREEN = "activityListScreen"
+    const val MEASURE_SCREEN = "measureScreen"
 }
 
 object Args {
@@ -39,6 +42,7 @@ object Routes {
     const val TURN_LIST_ROUTE = TURN_LIST_SCREEN
     const val OS_ROUTE = OS_SCREEN
     const val ACTIVITY_LIST_ROUTE = ACTIVITY_LIST_SCREEN
+    const val MEASURE_ROUTE = MEASURE_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -79,6 +83,10 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToActivityList() {
         navController.navigate(ACTIVITY_LIST_ROUTE)
+    }
+
+    fun navigateToMeasure() {
+        navController.navigate(MEASURE_ROUTE)
     }
 
     ////////////////////////////////////////////////////////////////////

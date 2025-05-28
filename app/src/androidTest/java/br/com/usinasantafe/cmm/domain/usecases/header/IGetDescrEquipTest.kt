@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -29,7 +29,7 @@ class IGetDescrEquipTest {
     lateinit var equipDao: EquipDao
 
     @Before
-    fun setUp() {
+    fun setup() {
         hiltRule.inject()
     }
 

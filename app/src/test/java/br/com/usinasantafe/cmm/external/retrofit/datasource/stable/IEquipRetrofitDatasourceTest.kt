@@ -23,7 +23,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.recoverAll(
+            val result = datasource.getListByIdEquip(
                 token = "TOKEN",
                 idEquip = 10
             )
@@ -55,7 +55,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.recoverAll(
+            val result = datasource.getListByIdEquip(
                 token = "TOKEN",
                 idEquip = 10
             )
@@ -88,7 +88,7 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.recoverAll(
+            val result = datasource.getListByIdEquip(
                 token = "TOKEN",
                 idEquip = 10
             )

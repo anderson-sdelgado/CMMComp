@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ActivityRetrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import javax.inject.Inject
 
 class IActivityRepository @Inject constructor(
@@ -67,6 +68,29 @@ class IActivityRepository @Inject constructor(
         } catch (e: Exception) {
             return resultFailure(
                 context = "IActivityRepository.recoverAll",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdList(idList: List<Int>): Result<List<Activity>> {
+        try {
+            val result = activityRoomDatasource.listByIdList(idList)
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IActivityRepository.listByListId",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val roomModelList = result.getOrNull()!!
+            val entityList = roomModelList.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IActivityRepository.listByListId",
                 message = "-",
                 cause = e
             )

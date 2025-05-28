@@ -29,9 +29,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -40,9 +40,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -76,9 +76,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -87,9 +87,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -186,18 +186,18 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 ),
                 OSRetrofitModel(
                     idOS = 2,
                     nroOS = 67890,
                     idLibOS = 11,
-                    idProprAgr = 21,
-                    areaProgrOS = 100.0,
-                    tipoOS = 2,
+                    idPropAgr = 21,
+                    areaOS = 100.0,
+                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -206,18 +206,18 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 ),
                 OS(
                     idOS = 2,
                     nroOS = 67890,
                     idLibOS = 11,
-                    idProprAgr = 21,
-                    areaProgrOS = 100.0,
-                    tipoOS = 2,
+                    idPropAgr = 21,
+                    areaOS = 100.0,
+                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -358,18 +358,18 @@ class IOSRepositoryTest {
                             idOS = 1,
                             nroOS = 12345,
                             idLibOS = 10,
-                            idProprAgr = 20,
-                            areaProgrOS = 50.5,
-                            tipoOS = 1,
+                            idPropAgr = 20,
+                            areaOS = 50.5,
+                            typeOS = 1,
                             idEquip = 30
                         ),
                         OSRetrofitModel(
                             idOS = 2,
                             nroOS = 67890,
                             idLibOS = 11,
-                            idProprAgr = 21,
-                            areaProgrOS = 100.0,
-                            tipoOS = 2,
+                            idPropAgr = 21,
+                            areaOS = 100.0,
+                            typeOS = 2,
                             idEquip = 31
                         ),
                     )
@@ -402,16 +402,16 @@ class IOSRepositoryTest {
                 10
             )
             assertEquals(
-                entity1.idProprAgr,
+                entity1.idPropAgr,
                 20
                 )
             assertEquals(
-                entity1.areaProgrOS,
+                entity1.areaOS,
                 50.5,
                 0.0
             )
             assertEquals(
-                entity1.tipoOS,
+                entity1.typeOS,
                 1
             )
             assertEquals(
@@ -432,16 +432,16 @@ class IOSRepositoryTest {
                 11
             )
             assertEquals(
-                entity2.idProprAgr,
+                entity2.idPropAgr,
                 21
                 )
             assertEquals(
-                entity2.areaProgrOS,
+                entity2.areaOS,
                 100.0,
                 0.0
                 )
             assertEquals(
-                entity2.tipoOS,
+                entity2.typeOS,
                 2
             )
         }
@@ -455,9 +455,9 @@ class IOSRepositoryTest {
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -473,9 +473,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -502,9 +502,9 @@ class IOSRepositoryTest {
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -516,9 +516,9 @@ class IOSRepositoryTest {
                     idOS = 1,
                     nroOS = 12345,
                     idLibOS = 10,
-                    idProprAgr = 20,
-                    areaProgrOS = 50.5,
-                    tipoOS = 1,
+                    idPropAgr = 20,
+                    areaOS = 50.5,
+                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -531,4 +531,94 @@ class IOSRepositoryTest {
                 true
             )
         }
+
+    @Test
+    fun `getListByNroOS - Check return failure if have error in OSRoomDatasource getListByNroOS`() =
+        runTest {
+            whenever(
+                osRoomDatasource.listByNroOS(123456)
+            ).thenReturn(
+                resultFailure(
+                    "IOSRoomDatasource.getListByNroOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByNroOS(123456)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.getListByNroOS -> IOSRoomDatasource.getListByNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                osRoomDatasource.listByNroOS(123456)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        OSRoomModel(
+                            idOS = 1,
+                            nroOS = 123456,
+                            idLibOS = 10,
+                            idPropAgr = 20,
+                            areaOS = 50.5,
+                            typeOS = 1,
+                            idEquip = 3
+                        )
+                    )
+                )
+            )
+            val result = repository.listByNroOS(123456)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val entity = list[0]
+            assertEquals(
+                entity.idOS,
+                1
+            )
+            assertEquals(
+                entity.nroOS,
+                123456
+            )
+            assertEquals(
+                entity.idLibOS,
+                10
+            )
+            assertEquals(
+                entity.idPropAgr,
+                20
+            )
+            assertEquals(
+                entity.areaOS,
+                50.5,
+                0.0
+            )
+            assertEquals(
+                entity.typeOS,
+                1
+            )
+            assertEquals(
+                entity.idEquip,
+                3
+            )
+        }
+
 }

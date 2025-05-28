@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

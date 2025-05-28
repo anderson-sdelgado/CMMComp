@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ActivityRetrofitModel
@@ -193,6 +194,96 @@ class IActivityRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return failure if have error in ActivityRoomDatasource listByIdList`() =
+        runTest {
+            whenever(
+                activityRoomDatasource.listByIdList(
+                    listOf(1)
+                )
+            ).thenReturn(
+                resultFailure(
+                    context = "IActivityRoomDatasource.listByIdList",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = repository.listByIdList(listOf(1))
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IActivityRepository.listByListId -> IActivityRoomDatasource.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                activityRoomDatasource.listByIdList(
+                    listOf(1)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ActivityRoomModel(
+                            idActivity = 1,
+                            codActivity = 10,
+                            descrActivity = "ATIVIDADE"
+                        ),
+                        ActivityRoomModel(
+                            idActivity = 2,
+                            codActivity = 20,
+                            descrActivity = "ATIVIDADE 2"
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdList(listOf(1))
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idActivity,
+                1
+            )
+            assertEquals(
+                entity1.codActivity,
+                10
+            )
+            assertEquals(
+                entity1.descrActivity,
+                "ATIVIDADE"
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.idActivity,
+                2
+            )
+            assertEquals(
+                entity2.codActivity,
+                20
+            )
+            assertEquals(
+                entity2.descrActivity,
+                "ATIVIDADE 2"
             )
         }
 

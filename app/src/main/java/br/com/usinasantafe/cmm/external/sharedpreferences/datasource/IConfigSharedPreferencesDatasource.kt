@@ -106,4 +106,48 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getPassword(): Result<String> {
+        try {
+            val result = get()
+            if(result.isFailure){
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IConfigSharedPreferencesDatasource.getPassword",
+                    message = e.message,
+                    cause = e.cause
+                    )
+            }
+            val config = result.getOrNull()!!
+            return Result.success(config.password!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.getPassword",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getFlagUpdate(): Result<FlagUpdate> {
+        try {
+            val result = get()
+            if(result.isFailure){
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IConfigSharedPreferencesDatasource.getFlagUpdate",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val config = result.getOrNull()!!
+            return Result.success(config.flagUpdate)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.getFlagUpdate",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
 }

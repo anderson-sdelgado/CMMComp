@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel

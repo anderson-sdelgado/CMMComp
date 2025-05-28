@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "167007612c284e941cfb0c4d3b8e0cfb",
+    "identityHash": "3e070ad8955ec914efad80f42d090343",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -422,7 +422,7 @@
       },
       {
         "tableName": "tb_os",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idProprAgr` INTEGER NOT NULL, `areaProgrOS` REAL NOT NULL, `tipoOS` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idPropAgr` INTEGER NOT NULL, `areaOS` REAL NOT NULL, `typeOS` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
         "fields": [
           {
             "fieldPath": "idOS",
@@ -443,20 +443,20 @@
             "notNull": true
           },
           {
-            "fieldPath": "idProprAgr",
-            "columnName": "idProprAgr",
+            "fieldPath": "idPropAgr",
+            "columnName": "idPropAgr",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "areaProgrOS",
-            "columnName": "areaProgrOS",
+            "fieldPath": "areaOS",
+            "columnName": "areaOS",
             "affinity": "REAL",
             "notNull": true
           },
           {
-            "fieldPath": "tipoOS",
-            "columnName": "tipoOS",
+            "fieldPath": "typeOS",
+            "columnName": "typeOS",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -611,12 +611,12 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_r_equip_ativ",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idREquipAtiv` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idEquip` INTEGER NOT NULL, `idAtiv` INTEGER NOT NULL)",
+        "tableName": "tb_r_equip_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idREquipActivity` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idEquip` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
         "fields": [
           {
-            "fieldPath": "idREquipAtiv",
-            "columnName": "idREquipAtiv",
+            "fieldPath": "idREquipActivity",
+            "columnName": "idREquipActivity",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -627,8 +627,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "idAtiv",
-            "columnName": "idAtiv",
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -636,7 +636,7 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "idREquipAtiv"
+            "idREquipActivity"
           ]
         },
         "indices": [],
@@ -831,12 +831,86 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_header_moto_mec",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `measureInitial` REAL NOT NULL, `dateHourInitial` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "regOperator",
+            "columnName": "regOperator",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idEquip",
+            "columnName": "idEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idTurn",
+            "columnName": "idTurn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "measureInitial",
+            "columnName": "measureInitial",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHourInitial",
+            "columnName": "dateHourInitial",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '167007612c284e941cfb0c4d3b8e0cfb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e070ad8955ec914efad80f42d090343')"
     ]
   }
 }

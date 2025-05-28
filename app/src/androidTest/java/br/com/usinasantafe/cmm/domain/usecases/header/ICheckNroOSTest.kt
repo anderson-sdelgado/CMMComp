@@ -23,7 +23,6 @@ import javax.inject.Inject
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 class ICheckNroOSTest {
 

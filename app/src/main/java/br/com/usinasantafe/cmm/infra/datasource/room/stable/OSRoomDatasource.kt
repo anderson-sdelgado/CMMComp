@@ -7,4 +7,5 @@ interface OSRoomDatasource {
     suspend fun deleteAll(): Result<Boolean>
     suspend fun checkNroOS(nroOS: Int): Result<Boolean>
     suspend fun add(model: OSRoomModel): Result<Boolean>
+    suspend fun listByNroOS(nroOS: Int): Result<List<OSRoomModel>>
 }

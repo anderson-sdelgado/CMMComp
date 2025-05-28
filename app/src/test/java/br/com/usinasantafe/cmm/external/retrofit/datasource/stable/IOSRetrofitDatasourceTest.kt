@@ -94,18 +94,18 @@ class IOSRetrofitDatasourceTest {
                             idOS = 1,
                             nroOS = 12345,
                             idLibOS = 10,
-                            idProprAgr = 20,
-                            areaProgrOS = 150.75,
-                            tipoOS = 1,
+                            idPropAgr = 20,
+                            areaOS = 150.75,
+                            typeOS = 1,
                             idEquip = 30
                         ),
                         OSRetrofitModel(
                             idOS = 2,
                             nroOS = 67890,
                             idLibOS = 11,
-                            idProprAgr = 21,
-                            areaProgrOS = 200.0,
-                            tipoOS = 2,
+                            idPropAgr = 21,
+                            areaOS = 200.0,
+                            typeOS = 2,
                             idEquip = 31
                         )
                     )
@@ -237,9 +237,9 @@ class IOSRetrofitDatasourceTest {
                             idOS = 1,
                             nroOS = 12345,
                             idLibOS = 10,
-                            idProprAgr = 20,
-                            areaProgrOS = 150.75,
-                            tipoOS = 1,
+                            idPropAgr = 20,
+                            areaOS = 150.75,
+                            typeOS = 1,
                             idEquip = 30
                         )
                     )

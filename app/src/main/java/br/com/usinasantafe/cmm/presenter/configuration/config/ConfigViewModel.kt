@@ -9,7 +9,8 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquip
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
@@ -76,7 +77,7 @@ class ConfigViewModel @Inject constructor(
 //    private val updateTableBocal: UpdateTableBocal,
     private val updateTableColab: UpdateTableColab,
 //    private val updateTableComponente: UpdateTableComponente,
-    private val updateTableEquip: UpdateTableEquip,
+    private val updateTableEquipByIdEquip: UpdateTableEquipByIdEquip,
 //    private val updateTableFrente: UpdateTableFrente,
 //    private val updateTableItemCheckList: UpdateTableItemCheckList,
 //    private val updateTableItemOSMecan: UpdateTableItemOSMecan,
@@ -86,6 +87,7 @@ class ConfigViewModel @Inject constructor(
 //    private val updateTableParada: UpdateTableParada,
 //    private val updateTablePressaoBocal: UpdateTablePressaoBocal,
 //    private val updateTablePropriedade: UpdateTablePropriedade,
+    private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
 //    private val updateTableRAtivParada: UpdateTableRAtivParada,
 //    private val updateTableREquipPneu: UpdateTableREquipPneu,
 //    private val updateTableRFuncaoAtivParada: UpdateTableRFuncaoAtivParada,
@@ -146,6 +148,7 @@ class ConfigViewModel @Inject constructor(
             val error = resultGetConfig.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
             _uiState.update {
                 it.copy(
                     errors = Errors.EXCEPTION,
@@ -225,6 +228,7 @@ class ConfigViewModel @Inject constructor(
             val error = resultSendDataConfig.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
             emit(
                 ConfigState(
                     errors = Errors.TOKEN,
@@ -259,6 +263,7 @@ class ConfigViewModel @Inject constructor(
             val error = resultSave.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
             emit(
                 ConfigState(
                     errors = Errors.TOKEN,
@@ -300,7 +305,15 @@ class ConfigViewModel @Inject constructor(
             emit(it.resultUpdateToConfig())
         }
         if (configState.flagFailure) return@flow
-        updateTableEquip(
+        updateTableEquipByIdEquip(
+            sizeAll = sizeAllUpdate,
+            count = ++pos
+        ).collect {
+            configState = it.resultUpdateToConfig()
+            emit(it.resultUpdateToConfig())
+        }
+        if (configState.flagFailure) return@flow
+        updateTableREquipActivityByIdEquip(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
@@ -321,6 +334,7 @@ class ConfigViewModel @Inject constructor(
             val error = result.exceptionOrNull()!!
             val failure =
                 "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
             emit(
                 ConfigState(
                     errors = Errors.EXCEPTION,

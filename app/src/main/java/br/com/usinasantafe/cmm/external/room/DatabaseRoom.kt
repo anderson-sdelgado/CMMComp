@@ -2,9 +2,14 @@ package br.com.usinasantafe.cmm.external.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import br.com.usinasantafe.cmm.external.room.dao.*
+import androidx.room.TypeConverter
+import androidx.room.TypeConverters
+import br.com.usinasantafe.cmm.external.room.dao.stable.*
+import br.com.usinasantafe.cmm.external.room.dao.variable.*
 import br.com.usinasantafe.cmm.infra.models.room.stable.*
+import br.com.usinasantafe.cmm.infra.models.room.variable.*
 import br.com.usinasantafe.cmm.utils.VERSION_DB
+import java.util.Date
 
 @Database(
     entities = [
@@ -23,15 +28,17 @@ import br.com.usinasantafe.cmm.utils.VERSION_DB
         PressaoBocalRoomModel::class,
         PropriedadeRoomModel::class,
         RAtivParadaRoomModel::class,
-        REquipAtivRoomModel::class,
+        REquipActivityRoomModel::class,
         REquipPneuRoomModel::class,
         RFuncaoAtivParadaRoomModel::class,
         ROSActivityRoomModel::class,
         ServicoRoomModel::class,
         TurnRoomModel::class,
+        HeaderMotoMecRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
+@TypeConverters(Converters::class)
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun atividadeDao(): ActivityDao
     abstract fun bocalDao(): BocalDao
@@ -48,11 +55,25 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun pressaoBocalDao(): PressaoBocalDao
     abstract fun propriedadeDao(): PropriedadeDao
     abstract fun rAtivParadaDao(): RAtivParadaDao
-    abstract fun rEquipAtivDao(): REquipAtivDao
+    abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rEquipPneuDao(): REquipPneuDao
     abstract fun rFuncaoAtivParadaDao(): RFuncaoAtivParadaDao
     abstract fun rOSActivityDao(): ROSActivityDao
     abstract fun servicoDao(): ServicoDao
     abstract fun turnoDao(): TurnDao
+    abstract fun headerMotoMecDao(): HeaderMotoMecDao
 }
 
+class Converters {
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
+    }
+
+}

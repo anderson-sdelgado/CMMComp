@@ -74,7 +74,7 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindREquipAtivRetrofitDatasource(dataSource: IREquipAtivRetrofitDatasource): REquipAtivRetrofitDatasource
+    fun bindREquipAtivRetrofitDatasource(dataSource: IREquipActivityRetrofitDatasource): REquipActivityRetrofitDatasource
 
     @Binds
     @Singleton

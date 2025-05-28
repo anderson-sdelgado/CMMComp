@@ -6,4 +6,7 @@ interface ActivityRepository  {
     suspend fun addAll(list: List<Activity>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun recoverAll(token: String): Result<List<Activity>>
+    suspend fun listByIdList(
+        idList: List<Int>
+    ): Result<List<Activity>>
 }

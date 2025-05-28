@@ -163,5 +163,144 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `setIdActivity - Check alter data correct`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                idActivity = 1
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idActivity,
+                1
+            )
+            val result = datasource.setIdActivity(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.idActivity,
+                2
+            )
+        }
+
+    @Test
+    fun `getNroOS - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getNroOS()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getNroOS - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                nroOS = 123456
+            )
+            datasource.save(data)
+            val result = datasource.getNroOS()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                123456
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getIdEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                idEquip = 1
+            )
+            datasource.save(data)
+            val result = datasource.getIdEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `setMeasureInitial - Check alter data correct`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                measureInitial = 1.0
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.measureInitial,
+                1.0
+            )
+            val result = datasource.setMeasureInitial(2.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.measureInitial,
+                2.0
+            )
+        }
 
 }

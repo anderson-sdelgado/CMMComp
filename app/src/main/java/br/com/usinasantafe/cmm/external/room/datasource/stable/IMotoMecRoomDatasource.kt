@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.MotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.MotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.MotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.MotoMecRoomModel
 import javax.inject.Inject

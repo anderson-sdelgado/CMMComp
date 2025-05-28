@@ -9,13 +9,21 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
+import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
+import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
+import br.com.usinasantafe.cmm.utils.WEB_GET_EQUIP_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -42,13 +50,19 @@ class ConfigScreenTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
-    lateinit var colabDao: ColabDao
+    lateinit var activityDao: br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 
     @Inject
-    lateinit var equipDao: EquipDao
+    lateinit var colabDao: br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 
     @Inject
-    lateinit var turnDao: TurnDao
+    lateinit var equipDao: br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+
+    @Inject
+    lateinit var rEquipActivityDao: br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+
+    @Inject
+    lateinit var turnDao: br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 
     @Test
     fun verify_check_open_screen_config_and_service_without_connection() =
@@ -87,11 +101,11 @@ class ConfigScreenTest {
     }
 
     @Test
-    fun verify_check_return_colab_data_with_failure() =
+    fun verify_check_return_activity_data_with_failure() =
         runTest {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureColab
+            mockWebServer.dispatcher = dispatcherFailureActivity
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -112,7 +126,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout(2_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableColab -> IColabRepository.recoverAll -> IColabRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 17 path \$[0].matricColab")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableAtividade -> IActivityRepository.recoverAll -> IActivityRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 16 path \$[0].idActivity")
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
@@ -144,6 +158,86 @@ class ConfigScreenTest {
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.OUTDATED
                 )
+            )
+            composeTestRule.waitUntilTimeout(2_000)
+        }
+
+    @Test
+    fun verify_check_return_colab_data_with_failure() =
+        runTest {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherFailureColab
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(2_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableColab -> IColabRepository.recoverAll -> IColabRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 14 path \$[0].regColab")
+
+            val result = configSharedPreferencesDatasource.has()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+
+            val resultGet = configSharedPreferencesDatasource.get()
+            assertEquals(
+                resultGet.isSuccess,
+                true
+            )
+            val config = resultGet.getOrNull()!!
+            assertEquals(
+                config,
+                ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    nroEquip = 2200,
+                    password = "12345",
+                    idEquip = 1,
+                    checkMotoMec = true,
+                    idBD = 1,
+                    version = "1.0",
+                    app = "PMM",
+                    statusSend = StatusSend.STARTED,
+                    flagUpdate = FlagUpdate.OUTDATED
+                )
+            )
+            val activityRoomModelList = activityDao.listAll()
+            assertEquals(
+                activityRoomModelList.size,
+                1
+            )
+            val roomModel = activityRoomModelList[0]
+            assertEquals(
+                roomModel.idActivity,
+                1
+            )
+            assertEquals(
+                roomModel.codActivity,
+                10
+            )
+            assertEquals(
+                roomModel.descrActivity,
+                "Test"
             )
             composeTestRule.waitUntilTimeout(2_000)
     }
@@ -197,18 +291,36 @@ class ConfigScreenTest {
                     flagUpdate = FlagUpdate.OUTDATED
                 )
             )
+            val activityRoomModelList = activityDao.listAll()
+            assertEquals(
+                activityRoomModelList.size,
+                1
+            )
+            val activityRoomModel = activityRoomModelList[0]
+            assertEquals(
+                activityRoomModel.idActivity,
+                1
+            )
+            assertEquals(
+                activityRoomModel.codActivity,
+                10
+            )
+            assertEquals(
+                activityRoomModel.descrActivity,
+                "Test"
+            )
             val colabRoomModelList = colabDao.listAll()
             assertEquals(
                 colabRoomModelList.size,
                 1
             )
-            val roomModel = colabRoomModelList[0]
+            val colabRoomModel = colabRoomModelList[0]
             assertEquals(
-                roomModel.regColab,
+                colabRoomModel.regColab,
                 19759
             )
             assertEquals(
-                roomModel.nameColab,
+                colabRoomModel.nameColab,
                 "ANDERSON DA SILVA DELGADO"
             )
             val equipRoomModelList = equipDao.listAll()
@@ -216,17 +328,16 @@ class ConfigScreenTest {
                 equipRoomModelList.size,
                 0
             )
-
             composeTestRule.waitUntilTimeout(2_000)
 
     }
 
     @Test
-    fun verify_check_return_turn_data_with_failure() =
+    fun verify_check_return_r_equip_activity_data_with_failure() =
         runTest {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureTurn
+            mockWebServer.dispatcher = dispatcherFailureREquipActivity
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -247,7 +358,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout(2_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableTurn -> ITurnRepository.recoverAll -> ITurnRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 33 path \$[0].codTurnEquip")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableREquipActivity -> IREquipActivityRepository.getListByIdEquip -> IREquipActivityRetrofitDatasource.getListByIdEquip -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 23 path \$[0].idREquipActivity")
 
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(
@@ -269,6 +380,24 @@ class ConfigScreenTest {
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.OUTDATED
                 )
+            )
+            val activityRoomModelList = activityDao.listAll()
+            assertEquals(
+                activityRoomModelList.size,
+                1
+            )
+            val activityRoomModel = activityRoomModelList[0]
+            assertEquals(
+                activityRoomModel.idActivity,
+                1
+            )
+            assertEquals(
+                activityRoomModel.codActivity,
+                10
+            )
+            assertEquals(
+                activityRoomModel.descrActivity,
+                "Test"
             )
             val colabRoomModelList = colabDao.listAll()
             assertEquals(
@@ -343,6 +472,168 @@ class ConfigScreenTest {
             assertEquals(
                 equipRoomModel.flagApontPneu,
                 true
+            )
+            composeTestRule.waitUntilTimeout(2_000)
+        }
+
+    @Test
+    fun verify_check_return_turn_data_with_failure() =
+        runTest {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherFailureTurn
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout(2_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableTurn -> ITurnRepository.recoverAll -> ITurnRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 33 path \$[0].codTurnEquip")
+
+            val resultGet = configSharedPreferencesDatasource.get()
+            assertEquals(
+                resultGet.isSuccess,
+                true
+            )
+            val config = resultGet.getOrNull()!!
+            assertEquals(
+                config,
+                ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    nroEquip = 2200,
+                    password = "12345",
+                    idEquip = 1,
+                    checkMotoMec = true,
+                    idBD = 1,
+                    version = "1.0",
+                    app = "PMM",
+                    statusSend = StatusSend.STARTED,
+                    flagUpdate = FlagUpdate.OUTDATED
+                )
+            )
+            val activityRoomModelList = activityDao.listAll()
+            assertEquals(
+                activityRoomModelList.size,
+                1
+            )
+            val activityRoomModel = activityRoomModelList[0]
+            assertEquals(
+                activityRoomModel.idActivity,
+                1
+            )
+            assertEquals(
+                activityRoomModel.codActivity,
+                10
+            )
+            assertEquals(
+                activityRoomModel.descrActivity,
+                "Test"
+            )
+            val colabRoomModelList = colabDao.listAll()
+            assertEquals(
+                colabRoomModelList.size,
+                1
+            )
+            val roomModel = colabRoomModelList[0]
+            assertEquals(
+                roomModel.regColab,
+                19759
+            )
+            assertEquals(
+                roomModel.nameColab,
+                "ANDERSON DA SILVA DELGADO"
+            )
+            val equipRoomModelList = equipDao.listAll()
+            assertEquals(
+                equipRoomModelList.size,
+                1
+            )
+            val equipRoomModel = equipRoomModelList[0]
+            assertEquals(
+                equipRoomModel.idEquip,
+                1
+            )
+            assertEquals(
+                equipRoomModel.nroEquip,
+                1000001
+            )
+            assertEquals(
+                equipRoomModel.codClass,
+                1
+            )
+            assertEquals(
+                equipRoomModel.descrClass,
+                "Classe 1"
+            )
+            assertEquals(
+                equipRoomModel.codTurnEquip,
+                1
+            )
+            assertEquals(
+                equipRoomModel.idCheckList,
+                1
+            )
+            assertEquals(
+                equipRoomModel.typeFert,
+                1
+            )
+            assertEquals(
+                equipRoomModel.hourmeter,
+                100.0,
+                0.0
+            )
+            assertEquals(
+                equipRoomModel.measurement,
+                200.0,
+                0.0
+            )
+            assertEquals(
+                equipRoomModel.type,
+                1
+            )
+            assertEquals(
+                equipRoomModel.classify,
+                1
+            )
+            assertEquals(
+                equipRoomModel.flagApontMecan,
+                true
+            )
+            assertEquals(
+                equipRoomModel.flagApontPneu,
+                true
+            )
+            val rEquipActivityRoomModelList = rEquipActivityDao.listAll()
+            assertEquals(
+                rEquipActivityRoomModelList.size,
+                1
+            )
+            val rEquipActivityRoomModel = rEquipActivityRoomModelList[0]
+            assertEquals(
+                rEquipActivityRoomModel.idREquipActivity,
+                1
+            )
+            assertEquals(
+                rEquipActivityRoomModel.idEquip,
+                30
+            )
+            assertEquals(
+                rEquipActivityRoomModel.idActivity,
+                10
             )
             composeTestRule.waitUntilTimeout(2_000)
 
@@ -394,6 +685,24 @@ class ConfigScreenTest {
                     flagUpdate = FlagUpdate.UPDATED
                 )
             )
+            val activityRoomModelList = activityDao.listAll()
+            assertEquals(
+                activityRoomModelList.size,
+                1
+            )
+            val activityRoomModel = activityRoomModelList[0]
+            assertEquals(
+                activityRoomModel.idActivity,
+                1
+            )
+            assertEquals(
+                activityRoomModel.codActivity,
+                10
+            )
+            assertEquals(
+                activityRoomModel.descrActivity,
+                "Test"
+            )
             val colabRoomModelList = colabDao.listAll()
             assertEquals(
                 colabRoomModelList.size,
@@ -468,6 +777,24 @@ class ConfigScreenTest {
                 equipRoomModel.flagApontPneu,
                 true
             )
+            val rEquipActivityRoomModelList = rEquipActivityDao.listAll()
+            assertEquals(
+                rEquipActivityRoomModelList.size,
+                1
+            )
+            val rEquipActivityRoomModel = rEquipActivityRoomModelList[0]
+            assertEquals(
+                rEquipActivityRoomModel.idREquipActivity,
+                1
+            )
+            assertEquals(
+                rEquipActivityRoomModel.idEquip,
+                30
+            )
+            assertEquals(
+                rEquipActivityRoomModel.idActivity,
+                10
+            )
             val turnRoomModelList = turnDao.listAll()
             assertEquals(
                 turnRoomModelList.size,
@@ -501,13 +828,26 @@ class ConfigScreenTest {
         }
     }
 
+    private val dispatcherFailureActivity: Dispatcher = object : Dispatcher() {
+
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivityFailure)
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
     private val dispatcherFailureColab: Dispatcher = object : Dispatcher() {
 
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
-                "/find-token.php" -> MockResponse().setBody(resultTokenRetrofitScreen)
-                "/colab.php" -> MockResponse().setBody(resultColabFailureRetrofitScreen)
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -518,9 +858,25 @@ class ConfigScreenTest {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
-                "/find-token.php" -> MockResponse().setBody(resultTokenRetrofitScreen)
-                "/colab.php" -> MockResponse().setBody(resultColabRetrofitScreen)
-                "/equip.php" -> MockResponse().setBody(resultEquipFailureRetrofitScreen)
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipFailure)
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherFailureREquipActivity: Dispatcher = object : Dispatcher() {
+
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -531,10 +887,12 @@ class ConfigScreenTest {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
-                "/find-token.php" -> MockResponse().setBody(resultTokenRetrofitScreen)
-                "/colab.php" -> MockResponse().setBody(resultColabRetrofitScreen)
-                "/equip.php" -> MockResponse().setBody(resultEquipRetrofitScreen)
-                "/turn.php" -> MockResponse().setBody(resultTurnFailureRetrofitScreen)
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -545,51 +903,75 @@ class ConfigScreenTest {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
-                "/find-token.php" -> MockResponse().setBody(resultTokenRetrofitScreen)
-                "/colab.php" -> MockResponse().setBody(resultColabRetrofitScreen)
-                "/equip.php" -> MockResponse().setBody(resultEquipRetrofitScreen)
-                "/turn.php" -> MockResponse().setBody(resultTurnRetrofitScreen)
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                 else -> MockResponse().setResponseCode(404)
             }
         }
     }
 
+    private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
+
+
+    private val resultActivityFailure = """
+        [{"idActivity":1a,"codActivity":10,"descrActivity":"Test"}]
+    """.trimIndent()
+
+    private val resultActivity = """
+        [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
+    """.trimIndent()
+
+    private val resultColab = """
+        [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
+    """.trimIndent()
+
+    private val resultColabFailure = """
+        [{"regColab":19759a,"nameColab":"ANDERSON DA SILVA DELGADO"}]
+    """.trimIndent()
+
+    private val resultEquipFailure = """
+        [
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+        ]
+    """.trimIndent()
+
+    private val resultEquip = """
+        [
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+        ]
+    """.trimIndent()
+
+    private val resultREquipActivityFailure = """
+        [
+          {"idREquipActivity":1a,"idEquip":30,"idActivity":10}
+        ]
+    """.trimIndent()
+
+    private val resultREquipActivity = """
+        [
+          {"idREquipActivity":1,"idEquip":30,"idActivity":10}
+        ]
+    """.trimIndent()
+
+    private val resultTurnFailure = """
+        [
+          {"idTurn":1,"codTurnEquip":1,nroTurn":1,"descrTurn":"Turno 1"}
+        ]
+    """.trimIndent()
+
+    private val resultTurn = """
+        [
+          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
+        ]
+    """.trimIndent()
+
 }
 
-val resultTokenRetrofitScreen = """{"idBD":1,"idEquip":1}""".trimIndent()
-
-val resultColabRetrofitScreen = """
-    [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-""".trimIndent()
-
-val resultColabFailureRetrofitScreen = """
-    [{"regColab":19759a,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-""".trimIndent()
-
-val resultEquipFailureRetrofitScreen = """
-    [
-      {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
-      {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
-    ]
-""".trimIndent()
-
-val resultEquipRetrofitScreen = """
-    [
-      {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
-    ]
-""".trimIndent()
-
-val resultTurnFailureRetrofitScreen = """
-    [
-      {"idTurn":1,"codTurnEquip":1,nroTurn":1,"descrTurn":"Turno 1"}
-    ]
-""".trimIndent()
-
-val resultTurnRetrofitScreen = """
-    [
-      {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
-    ]
-""".trimIndent()
 
 
 

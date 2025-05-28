@@ -1,11 +1,11 @@
 package br.com.usinasantafe.cmm.infra.datasource.retrofit.stable
 
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSAtivRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
 
 interface ROSActivityRetrofitDatasource {
-    suspend fun recoverAll(token: String): Result<List<ROSAtivRetrofitModel>>
+    suspend fun recoverAll(token: String): Result<List<ROSActivityRetrofitModel>>
     suspend fun getListByNroOS(
         token: String,
         nroOS: Int
-    ): Result<List<ROSAtivRetrofitModel>>
+    ): Result<List<ROSActivityRetrofitModel>>
 }

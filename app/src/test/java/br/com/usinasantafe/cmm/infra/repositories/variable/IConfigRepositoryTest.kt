@@ -76,56 +76,6 @@ class IConfigRepositoryTest {
         }
 
     @Test
-    fun `getFlagUpdate - Check return failure if have error in ConfigSharedPreferences get`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.get()
-            ).thenReturn(
-                resultFailure(
-                    "Error",
-                    "Exception",
-                    Exception()
-                )
-            )
-            val result = repository.getFlagUpdate()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.getFlagUpdate -> Error -> Exception",
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `getFlagUpdate - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.get()
-            ).thenReturn(
-                Result.success(
-                    ConfigSharedPreferencesModel(
-                        flagUpdate = FlagUpdate.OUTDATED
-                    )
-                )
-            )
-            val result = repository.getFlagUpdate()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                FlagUpdate.OUTDATED
-            )
-        }
-
-    @Test
     fun `hasConfig - Check return failure if have error in ConfigSharedPreferencesDatasource has`() =
         runTest {
             whenever(
@@ -166,52 +116,6 @@ class IConfigRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 false
-            )
-        }
-
-    @Test
-    fun `getPassword - Check return failure if have error in ConfigSharedPreferencesDatasource get`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.get()
-            ).thenReturn(
-                resultFailure(
-                    "Error",
-                    "Exception",
-                    Exception()
-                )
-            )
-            val result = repository.getPassword()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.getPassword -> Error -> Exception"
-            )
-        }
-
-    @Test
-    fun `getPassword - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.get()
-            ).thenReturn(
-                Result.success(
-                    ConfigSharedPreferencesModel(
-                        password = "12345"
-                    )
-                )
-            )
-            val result = repository.getPassword()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                "12345"
             )
         }
 
@@ -421,4 +325,99 @@ class IConfigRepositoryTest {
             true
         )
     }
+
+    @Test
+    fun `getFlagUpdate - Check return failure if have error in ConfigSharedPreferences getFlagUpdate`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getFlagUpdate()
+            ).thenReturn(
+                resultFailure(
+                    "ConfigSharedPreferencesDatasource.getFlagUpdate",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getFlagUpdate()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getFlagUpdate -> ConfigSharedPreferencesDatasource.getFlagUpdate",
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getFlagUpdate()
+            ).thenReturn(
+                Result.success(
+                    FlagUpdate.OUTDATED
+                )
+            )
+            val result = repository.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.OUTDATED
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return failure if have error in ConfigSharedPreferencesDatasource getPassword`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getPassword()
+            ).thenReturn(
+                resultFailure(
+                    "ConfigSharedPreferencesDatasource.getPassword",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getPassword()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getPassword -> ConfigSharedPreferencesDatasource.getPassword"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getPassword()
+            ).thenReturn(
+                Result.success("12345")
+            )
+            val result = repository.getPassword()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                "12345"
+            )
+        }
+
 }

@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -76,6 +78,74 @@ class IConfigSharedPreferencesDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getPassword()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getPassword"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getPassword - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                password = "12345"
+            )
+            datasource.save(data)
+            val result = datasource.getPassword()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                "12345"
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return FlagUpdate OUTDATED if field is null`() =
+        runTest {
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.OUTDATED
+            )
+        }
+
+    @Test
+    fun `getFlagUpdate - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                flagUpdate = FlagUpdate.UPDATED
+            )
+            datasource.save(data)
+            val result = datasource.getFlagUpdate()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlagUpdate.UPDATED
             )
         }
 

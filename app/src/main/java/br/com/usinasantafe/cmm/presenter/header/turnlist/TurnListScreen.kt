@@ -94,7 +94,9 @@ fun TurnListContent(
             items(turnList) { turn ->
                 ItemListDesign(
                     text = turn.descrTurn,
-                    setActionItem = { setIdTurn(turn.idTurn) },
+                    setActionItem = {
+                        setIdTurn(turn.idTurn)
+                    },
                     font = 26
                 )
             }

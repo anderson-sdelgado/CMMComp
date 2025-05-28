@@ -4,9 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -20,14 +21,21 @@ class ITurnRoomDatasourceTest {
 
     private lateinit var turnDao: TurnDao
     private lateinit var db: DatabaseRoom
+    private lateinit var datasource: ITurnRoomDatasource
 
     @Before
-    fun before() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
         turnDao = db.turnoDao()
+        datasource = ITurnRoomDatasource(turnDao)
+    }
+
+    @After
+    fun tearDown() {
+        db.close()
     }
 
     @Test
@@ -38,7 +46,6 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = ITurnRoomDatasource(turnDao)
             val result = datasource.addAll(
                 listOf(
                     TurnRoomModel(
@@ -82,7 +89,6 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = ITurnRoomDatasource(turnDao)
             val result = datasource.addAll(
                 listOf(
                     TurnRoomModel(
@@ -165,7 +171,6 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = ITurnRoomDatasource(turnDao)
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
@@ -200,7 +205,6 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = ITurnRoomDatasource(turnDao)
             val result = datasource.getListByCodTurnEquip(102)
             assertEquals(
                 result.isSuccess,
@@ -230,7 +234,6 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = ITurnRoomDatasource(turnDao)
             val result = datasource.getListByCodTurnEquip(101)
             assertEquals(
                 result.isSuccess,

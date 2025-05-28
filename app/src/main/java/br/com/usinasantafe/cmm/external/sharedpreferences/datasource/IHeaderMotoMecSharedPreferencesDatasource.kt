@@ -183,4 +183,112 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun setIdActivity(idActivity: Int): Result<Boolean> {
+        try {
+            val resultGet = get()
+            if (resultGet.isFailure) {
+                val e = resultGet.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val headerMotoMec = resultGet.getOrNull()!!
+            headerMotoMec.idActivity = idActivity
+            val resultSave = save(headerMotoMec)
+            if (resultSave.isFailure) {
+                val e = resultSave.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getNroOS(): Result<Int> {
+        try {
+            val result = get()
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getNroOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val headerMotoMec = result.getOrNull()!!
+            return Result.success(headerMotoMec.nroOS!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.getNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdEquip(): Result<Int> {
+        try {
+            val result = get()
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val headerMotoMec = result.getOrNull()!!
+            return Result.success(headerMotoMec.idEquip!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setMeasureInitial(measure: Double): Result<Boolean> {
+        try {
+            val resultGet = get()
+            if (resultGet.isFailure) {
+                val e = resultGet.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val headerMotoMec = resultGet.getOrNull()!!
+            headerMotoMec.measureInitial = measure
+            val resultSave = save(headerMotoMec)
+            if (resultSave.isFailure) {
+                val e = resultSave.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
 }

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.ItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
 import javax.inject.Inject

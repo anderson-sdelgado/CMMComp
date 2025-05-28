@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,18 +21,20 @@ class IColabRoomDatasourceTest {
 
     private lateinit var colabDao: ColabDao
     private lateinit var db: DatabaseRoom
+    private lateinit var datasource: IColabRoomDatasource
 
     @Before
-    fun before() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
         colabDao = db.colabDao()
+        datasource = IColabRoomDatasource(colabDao)
     }
 
     @After
-    fun after() {
+    fun tearDown() {
         db.close()
     }
 
@@ -44,7 +46,6 @@ class IColabRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IColabRoomDatasource(colabDao)
             val result = datasource.addAll(
                 listOf(
                     ColabRoomModel(
@@ -84,7 +85,6 @@ class IColabRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IColabRoomDatasource(colabDao)
             val result = datasource.addAll(
                 listOf(
                     ColabRoomModel(
@@ -145,7 +145,6 @@ class IColabRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IColabRoomDatasource(colabDao)
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
@@ -178,7 +177,6 @@ class IColabRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IColabRoomDatasource(colabDao)
             val result = datasource.checkByReg(1)
             assertEquals(
                 result.isSuccess,
@@ -206,7 +204,6 @@ class IColabRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IColabRoomDatasource(colabDao)
             val result = datasource.checkByReg(2)
             assertEquals(
                 result.isSuccess,

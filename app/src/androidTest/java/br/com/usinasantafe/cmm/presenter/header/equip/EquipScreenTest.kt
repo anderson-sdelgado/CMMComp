@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -100,7 +100,21 @@ class EquipScreenTest {
 
         val resultEquipRetrofit = """
                 [
-                  {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+                    {
+                        "idEquip":1,
+                        "nroEquip":2200,
+                        "codClass":1,
+                        "descrClass":"TRATOR",
+                        "codTurnEquip":1,
+                        "idCheckList":1,
+                        "typeFert":1,
+                        "hourmeter":100.0,
+                        "measurement":20000.0,
+                        "type":1,
+                        "classify":1,
+                        "flagApontMecan":True,
+                        "flagApontPneu":True
+                    }
                 ]
             """.trimIndent()
 

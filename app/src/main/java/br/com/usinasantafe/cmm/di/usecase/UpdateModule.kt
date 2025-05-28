@@ -29,7 +29,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableEquip(usecase: IUpdateTableEquip): UpdateTableEquip
+    fun bindUpdateTableEquip(usecase: IUpdateTableEquipByIdEquip): UpdateTableEquipByIdEquip
 
     @Binds
     @Singleton
@@ -70,6 +70,10 @@ interface UpdateModule {
     @Binds
     @Singleton
     fun bindUpdateTableRAtivParada(usecase: IUpdateTableRAtivParada): UpdateTableRAtivParada
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableREquipActivity(usecase: IUpdateTableREquipActivityByIdEquip): UpdateTableREquipActivityByIdEquip
 
     @Binds
     @Singleton

@@ -40,47 +40,29 @@ class IConfigRepository @Inject constructor(
     }
 
     override suspend fun getFlagUpdate(): Result<FlagUpdate> {
-        try {
-            val resultConfig = configSharedPreferencesDatasource.get()
-            if (resultConfig.isFailure) {
-                val e = resultConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IConfigRepository.getFlagUpdate",
-                    message = e.message,
-                    cause = e.cause
-                )
-            }
-            val config = resultConfig.getOrNull()!!
-            return Result.success(config.flagUpdate)
-        } catch (e: Exception){
+        val result = configSharedPreferencesDatasource.getFlagUpdate()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
             return resultFailure(
                 context = "IConfigRepository.getFlagUpdate",
-                message = "-",
-                cause = e
+                message = e.message,
+                cause = e.cause
             )
         }
+        return result
     }
 
     override suspend fun getPassword(): Result<String> {
-        try {
-            val resultConfig = configSharedPreferencesDatasource.get()
-            if (resultConfig.isFailure) {
-                val e = resultConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IConfigRepository.getPassword",
-                    message = e.message,
-                    cause = e.cause
-                )
-            }
-            val config = resultConfig.getOrNull()!!
-            return Result.success(config.sharedPreferencesModelToEntity().password!!)
-        } catch (e: Exception){
+        val result = configSharedPreferencesDatasource.getPassword()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
             return resultFailure(
                 context = "IConfigRepository.getPassword",
-                message = "-",
-                cause = e
+                message = e.message,
+                cause = e.cause
             )
         }
+        return result
     }
 
     override suspend fun hasConfig(): Result<Boolean> {

@@ -8,4 +8,6 @@ interface ConfigSharedPreferencesDatasource {
     suspend fun has(): Result<Boolean>
     suspend fun save(model: ConfigSharedPreferencesModel): Result<Boolean>
     suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean>
+    suspend fun getPassword(): Result<String>
+    suspend fun getFlagUpdate(): Result<FlagUpdate>
 }

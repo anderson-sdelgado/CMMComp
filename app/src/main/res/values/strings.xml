@@ -29,6 +29,8 @@
     <string name="text_number_8">8</string>
     <string name="text_number_9">9</string>
     <string name="text_number_0">0</string>
+    <string name="text_number_00">00</string>
+    <string name="text_comma">,</string>
     <string name="text_pattern_clean">APAGAR</string>
     <string name="text_pattern_update">ATUALIZAR DADOS</string>
     <string name="text_field_empty">CAMPO VAZIO! POR FAVOR, PREENCHA O CAMPO \"%1$s\" PARA DAR CONTINUIDADE AO APONTAMENTO.</string>
@@ -38,4 +40,10 @@
     <string name="text_title_turn">TURNO</string>
     <string name="text_pattern_return">RETORNAR</string>
     <string name="text_title_os">ORDEM DE SERVIÇO</string>
+    <string name="text_title_activity">ATIVIDADE</string>
+    <string name="text_title_measure">HORÍMETRO</string>
+    <string name="text_input_measure_invalid">O HODÔMETRO REGISTRADO %1$s É MENOR QUE O ANTERIOR DE %2$s. DESEJA MANTÊ-LO?</string>
+    <string name="text_title_menu">MENU</string>
+    <string name="text_title_descr_equip">%1$s</string>
+    <string name="text_pattern_finish_header">FINALIZAR BOLETIM</string>
 </resources>

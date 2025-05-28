@@ -43,4 +43,24 @@ interface HeaderModule {
     @Singleton
     fun bindSetNroOS(usecase: ISetNroOS): SetNroOS
 
+    @Binds
+    @Singleton
+    fun bindGetActivityList(usecase: IGetActivityList): GetActivityList
+
+    @Binds
+    @Singleton
+    fun bindSetIdActivity(usecase: ISetIdActivity): SetIdActivity
+
+    @Binds
+    @Singleton
+    fun bindCheckMeasure(usecase: ICheckMeasure): CheckMeasure
+
+    @Binds
+    @Singleton
+    fun bindSetMeasureInitial(usecase: ISetMeasureInitial): SetMeasureInitial
+
+    @Binds
+    @Singleton
+    fun bindSaveHeaderOpen(usecase: ISaveHeaderOpen): SaveHeaderOpen
+
 }

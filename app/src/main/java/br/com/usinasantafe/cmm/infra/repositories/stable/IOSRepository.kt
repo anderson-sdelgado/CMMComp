@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDataso
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import javax.inject.Inject
 
 class IOSRepository @Inject constructor(
@@ -134,4 +135,27 @@ class IOSRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun listByNroOS(nroOS: Int): Result<List<OS>> {
+        try {
+            val result = osRoomDatasource.listByNroOS(nroOS)
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IOSRepository.listByNroOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IOSRepository.listByNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
 }

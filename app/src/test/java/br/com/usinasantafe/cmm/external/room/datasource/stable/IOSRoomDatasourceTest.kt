@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.OSDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,18 +21,20 @@ class IOSRoomDatasourceTest {
 
     private lateinit var osDao: OSDao
     private lateinit var db: DatabaseRoom
+    private lateinit var datasource: IOSRoomDatasource
 
     @Before
-    fun before() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
         osDao = db.osDao()
+        datasource = IOSRoomDatasource(osDao)
     }
 
     @After
-    fun after() {
+    fun tearDown() {
         db.close()
     }
 
@@ -44,25 +46,24 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.addAll(
                 listOf(
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     ),
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -94,25 +95,24 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.addAll(
                 listOf(
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     ),
                     OSRoomModel(
                         idOS = 2,
                         nroOS = 67890,
                         idLibOS = 11,
-                        idProprAgr = 21,
-                        areaProgrOS = 100.0,
-                        tipoOS = 2,
+                        idPropAgr = 21,
+                        areaOS = 100.0,
+                        typeOS = 2,
                         idEquip = 31
                     )
                 )
@@ -144,16 +144,16 @@ class IOSRoomDatasourceTest {
                 10
             )
             assertEquals(
-                entity1.idProprAgr,
+                entity1.idPropAgr,
                 20
             )
             assertEquals(
-                entity1.areaProgrOS,
+                entity1.areaOS,
                 50.5,
                 0.0
             )
             assertEquals(
-                entity1.tipoOS,
+                entity1.typeOS,
                 1
             )
             assertEquals(
@@ -174,16 +174,16 @@ class IOSRoomDatasourceTest {
                 11
             )
             assertEquals(
-                entity2.idProprAgr,
+                entity2.idPropAgr,
                 21
             )
             assertEquals(
-                entity2.areaProgrOS,
+                entity2.areaOS,
                 100.0,
                 0.0
             )
             assertEquals(
-                entity2.tipoOS,
+                entity2.typeOS,
                 2
             )
             assertEquals(
@@ -201,9 +201,9 @@ class IOSRoomDatasourceTest {
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -213,7 +213,6 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
@@ -239,9 +238,9 @@ class IOSRoomDatasourceTest {
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -251,7 +250,6 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.checkNroOS(234567)
             assertEquals(
                 result.isSuccess,
@@ -272,9 +270,9 @@ class IOSRoomDatasourceTest {
                         idOS = 1,
                         nroOS = 123456,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -284,7 +282,6 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.checkNroOS(123456)
             assertEquals(
                 result.isSuccess,
@@ -305,9 +302,9 @@ class IOSRoomDatasourceTest {
                         idOS = 1,
                         nroOS = 12345,
                         idLibOS = 10,
-                        idProprAgr = 20,
-                        areaProgrOS = 50.5,
-                        tipoOS = 1,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -317,15 +314,14 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IOSRoomDatasource(osDao)
             val result = datasource.add(
                 OSRoomModel(
                     idOS = 2,
                     nroOS = 67890,
                     idLibOS = 11,
-                    idProprAgr = 21,
-                    areaProgrOS = 100.0,
-                    tipoOS = 2,
+                    idPropAgr = 21,
+                    areaOS = 100.0,
+                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -356,16 +352,16 @@ class IOSRoomDatasourceTest {
                 10
             )
             assertEquals(
-                model1.idProprAgr,
+                model1.idPropAgr,
                 20
             )
             assertEquals(
-                model1.areaProgrOS,
+                model1.areaOS,
                 50.5,
                 0.0
             )
             assertEquals(
-                model1.tipoOS,
+                model1.typeOS,
                 1
             )
             assertEquals(
@@ -386,21 +382,102 @@ class IOSRoomDatasourceTest {
                 11
             )
             assertEquals(
-                model2.idProprAgr,
+                model2.idPropAgr,
                 21
             )
             assertEquals(
-                model2.areaProgrOS,
+                model2.areaOS,
                 100.0,
                 0.0
             )
             assertEquals(
-                model2.tipoOS,
+                model2.typeOS,
                 2
             )
             assertEquals(
                 model2.idEquip,
                 31
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return list empty if not have data research`() =
+        runTest {
+            val result = datasource.listByNroOS(12345)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!.size,
+                0
+            )
+        }
+
+    @Test
+    fun `getListByNroOS - Check return list if have data research`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 123456,
+                        idLibOS = 10,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        typeOS = 1,
+                        idEquip = 30
+                    ),
+                    OSRoomModel(
+                        idOS = 2,
+                        nroOS = 456789,
+                        idLibOS = 11,
+                        idPropAgr = 21,
+                        areaOS = 100.0,
+                        typeOS = 2,
+                        idEquip = 31
+                    )
+                )
+            )
+            val result = datasource.listByNroOS(123456)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.idOS,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.idLibOS,
+                10
+            )
+            assertEquals(
+                model.idPropAgr,
+                20
+            )
+            assertEquals(
+                model.areaOS,
+                50.5,
+                0.0
+            )
+            assertEquals(
+                model.typeOS,
+                1
+            )
+            assertEquals(
+                model.idEquip,
+                30
             )
         }
 }

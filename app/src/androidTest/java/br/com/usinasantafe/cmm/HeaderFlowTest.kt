@@ -7,17 +7,19 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.ActivityDao
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.OSDao
-import br.com.usinasantafe.cmm.external.room.dao.ROSActivityDao
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
@@ -52,35 +54,97 @@ class HeaderFlowTest {
 
         private lateinit var mockWebServer: MockWebServer
 
-        val resultActivityRetrofit = """
-                [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
-            """.trimIndent()
-
-        val resultColabRetrofit = """
-                [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-            """.trimIndent()
-
-        val resultEquipRetrofit = """
+        private val jsonUpdateActivity = """
                 [
-                  {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+                    {
+                        "idActivity":10,
+                        "codActivity":20,
+                        "descrActivity":"ATIVIDADE 1"
+                    },
+                    {
+                        "idActivity":20,
+                        "codActivity":30,
+                        "descrActivity":"ATIVIDADE 2"
+                    }
                 ]
             """.trimIndent()
 
-        val resultTurnRetrofit = """
+        private val jsonUpdateColab = """
                 [
-                  {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
+                    {
+                        "regColab":19759,
+                        "nameColab":"ANDERSON DA SILVA DELGADO"
+                    }
                 ]
             """.trimIndent()
 
-        val resultOSRetrofitOne = """
+        private val jsonUpdateEquip = """
                 [
-                  {"idOS":1,"nroOS":123456,"idLibOS":10,"idProprAgr":20,"areaProgrOS":150.75,"tipoOS":1,"idEquip":30}
+                    {
+                        "idEquip":30,
+                        "nroEquip":2200,
+                        "codClass":1,
+                        "descrClass":"TRATOR",
+                        "codTurnEquip":1,
+                        "idCheckList":1,
+                        "typeFert":1,
+                        "hourmeter":100.0,
+                        "measurement":200.0,
+                        "type":1,
+                        "classify":1,
+                        "flagApontMecan":True,
+                        "flagApontPneu":True
+                    }
                 ]
             """.trimIndent()
 
-        val resultROSActivityRetrofitOne = """
+        private val jsonUpdateREquipActivity = """
             [
-              {"idROSAtiv":1,"idOS":12345,"idAtiv":10}
+                {
+                    "idREquipActivity":1,
+                    "idEquip":30,
+                    "idActivity":10
+                },
+                {
+                    "idREquipActivity":2,
+                    "idEquip":30,
+                    "idActivity":20
+                }
+            ]
+        """.trimIndent()
+
+        private val jsonUpdateTurn = """
+                [
+                    {
+                        "idTurn":1,
+                        "codTurnEquip":1,
+                        "nroTurn":1,
+                        "descrTurn":"TURNO 1"
+                    }
+                ]
+            """.trimIndent()
+
+        private val jsonRetrofitOS = """
+                [
+                    {
+                        "idOS":1,
+                        "nroOS":123456,
+                        "idLibOS":10,
+                        "idPropAgr":20,
+                        "areaOS":150.75,
+                        "typeOS":1,
+                        "idEquip":30
+                    }
+                ]
+            """.trimIndent()
+
+        private val jsonRetrofitROSActivity = """
+            [
+                {
+                    "idROSActivity":1,
+                    "idOS":1,
+                    "idActivity":10
+                }
             ]
         """.trimIndent()
 
@@ -93,8 +157,8 @@ class HeaderFlowTest {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
-                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(resultOSRetrofitOne)
-                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(resultROSActivityRetrofitOne)
+                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
+                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -134,7 +198,10 @@ class HeaderFlowTest {
 
     @Inject
     lateinit var equipDao: EquipDao
-    
+
+    @Inject
+    lateinit var rEquipActivityDao: REquipActivityDao
+
     @Inject
     lateinit var turnDao: TurnDao
 
@@ -259,7 +326,7 @@ class HeaderFlowTest {
         val entityWithIdEquip = resultEntityWithIdEquip.getOrNull()!!
         assertEquals(
             entityWithIdEquip.idEquip,
-            1
+            30
         )
 
         composeTestRule.waitUntilTimeout(3_000)
@@ -346,7 +413,7 @@ class HeaderFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        composeTestRule.onNodeWithText("TURNO 1")
+        composeTestRule.onNodeWithText("ATIVIDADE")
             .assertIsDisplayed()
 
         val osList = osDao.listAll()
@@ -364,16 +431,16 @@ class HeaderFlowTest {
             10
         )
         assertEquals(
-            os.idProprAgr,
+            os.idPropAgr,
             20
         )
         assertEquals(
-            os.areaProgrOS,
+            os.areaOS,
             150.75,
             0.0
         )
         assertEquals(
-            os.tipoOS,
+            os.typeOS,
             1
         )
         assertEquals(
@@ -387,18 +454,90 @@ class HeaderFlowTest {
         )
         val rOSActivity = rOSActivityList[0]
         assertEquals(
+            rOSActivity.idROSActivity,
+            1
+        )
+        assertEquals(
             rOSActivity.idOS,
-            12345
+            1
         )
         assertEquals(
             rOSActivity.idActivity,
             10
         )
 
+        val resultEntityWithNroOS = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithNroOS.isSuccess,
+            true
+        )
+        val entityWithNroOS = resultEntityWithNroOS.getOrNull()!!
+        assertEquals(
+            entityWithNroOS.nroOS,
+            123456
+        )
+
         Log.d("TestDebug", "Position 17")
 
-        composeTestRule.waitUntilTimeout(10_000)
+        composeTestRule.waitUntilTimeout(3_000)
 
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 18")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("2")
+            .performClick()
+        composeTestRule.onNodeWithText("3")
+            .performClick()
+        composeTestRule.onNodeWithText("4")
+            .performClick()
+        composeTestRule.onNodeWithText("5")
+            .performClick()
+        composeTestRule.onNodeWithText("6")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 16")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("ATIVIDADE 1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 17")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val resultEntityWithIdActivity = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithIdActivity.isSuccess,
+            true
+        )
+        val entityWithIdActivity = resultEntityWithIdActivity.getOrNull()!!
+        assertEquals(
+            entityWithIdActivity.idActivity,
+            10
+        )
+        composeTestRule.activityRule.scenario.onActivity { activity ->
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        Log.d("TestDebug", "Position 18")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("ATIVIDADE 1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 19")
+
+        composeTestRule.waitUntilTimeout(3_000)
 
     }
 
@@ -411,7 +550,7 @@ class HeaderFlowTest {
                 number = 16997417840,
                 nroEquip = 2200,
                 password = "12345",
-                idEquip = 1,
+                idEquip = 30,
                 checkMotoMec = true,
                 idBD = 1,
                 version = "1.0",
@@ -421,19 +560,23 @@ class HeaderFlowTest {
         )
 
         val itemTypeActivity = object : TypeToken<List<ActivityRoomModel>>() {}.type
-        val activityList = gson.fromJson<List<ActivityRoomModel>>(resultActivityRetrofit, itemTypeActivity)
+        val activityList = gson.fromJson<List<ActivityRoomModel>>(jsonUpdateActivity, itemTypeActivity)
         activityDao.insertAll(activityList)
 
         val itemTypeColab = object : TypeToken<List<ColabRoomModel>>() {}.type
-        val colabList = gson.fromJson<List<ColabRoomModel>>(resultColabRetrofit, itemTypeColab)
+        val colabList = gson.fromJson<List<ColabRoomModel>>(jsonUpdateColab, itemTypeColab)
         colabDao.insertAll(colabList)
 
         val itemTypeEquip = object : TypeToken<List<EquipRoomModel>>() {}.type
-        val equipList = gson.fromJson<List<EquipRoomModel>>(resultEquipRetrofit, itemTypeEquip)
+        val equipList = gson.fromJson<List<EquipRoomModel>>(jsonUpdateEquip, itemTypeEquip)
         equipDao.insertAll(equipList)
 
+        val itemTypeREquipActivity = object : TypeToken<List<REquipActivityRoomModel>>() {}.type
+        val rEquipActivityList = gson.fromJson<List<REquipActivityRoomModel>>(jsonUpdateREquipActivity, itemTypeREquipActivity)
+        rEquipActivityDao.insertAll(rEquipActivityList)
+
         val itemTypeTurn = object : TypeToken<List<TurnRoomModel>>() {}.type
-        val turnList = gson.fromJson<List<TurnRoomModel>>(resultTurnRetrofit, itemTypeTurn)
+        val turnList = gson.fromJson<List<TurnRoomModel>>(jsonUpdateTurn, itemTypeTurn)
         turnDao.insertAll(turnList)
 
     }

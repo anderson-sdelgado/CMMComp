@@ -9,7 +9,7 @@ data class Equip(
     val idCheckList: Int,
     val typeFert: Int,
     val hourmeter: Double,
-    val measurement: Double,
+    val measure: Double,
     val type: Int,
     val classify: Int,
     val flagApontMecan: Boolean,

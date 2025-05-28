@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import javax.inject.Inject

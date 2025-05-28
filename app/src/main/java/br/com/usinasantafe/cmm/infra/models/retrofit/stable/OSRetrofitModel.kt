@@ -6,9 +6,9 @@ data class OSRetrofitModel(
     val idOS: Int,
     val nroOS: Int,
     val idLibOS: Int,
-    val idProprAgr: Int,
-    val areaProgrOS: Double,
-    val tipoOS: Int,
+    val idPropAgr: Int,
+    val areaOS: Double,
+    val typeOS: Int,
     val idEquip: Int,
 )
 
@@ -17,9 +17,9 @@ fun OSRetrofitModel.retrofitModelToEntity(): OS {
         idOS = this.idOS,
         nroOS = this.nroOS,
         idLibOS = this.idLibOS,
-        idProprAgr = this.idProprAgr,
-        areaProgrOS = this.areaProgrOS,
-        tipoOS = this.tipoOS,
+        idPropAgr = this.idPropAgr,
+        areaOS = this.areaOS,
+        typeOS = this.typeOS,
         idEquip = this.idEquip
     )
 }

@@ -118,7 +118,7 @@ object StableRetrofitModule {
     @Singleton
     fun rEquipAtivApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
-    ): REquipAtivApi = retrofit.create(REquipAtivApi::class.java)
+    ): REquipActivityApi = retrofit.create(REquipActivityApi::class.java)
 
     @Provides
     @Singleton

@@ -12,4 +12,5 @@ interface OSRepository {
         nroOS: Int
     ): Result<List<OS>>
     suspend fun add(os: OS): Result<Boolean>
+    suspend fun listByNroOS(nroOS: Int): Result<List<OS>>
 }

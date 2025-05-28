@@ -25,8 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 
-const val TAG_BUTTON_YES_ALERT_DIALOG_CHECK = "tag_button_yes_alert_dialog_check"
-
 @Composable
 fun ItemListDesign(
     id: Int = 0,
@@ -66,6 +64,7 @@ fun TitleDesign(
     )
 }
 
+
 @Composable
 fun TextButtonDesign(text: String) {
     return Text(
@@ -76,19 +75,6 @@ fun TextButtonDesign(text: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-    )
-}
-
-@Composable
-fun TextSmallDesign(text: String) {
-    return Text(
-        text = text,
-        color = Color.White,
-        fontWeight = FontWeight.Bold,
-        fontSize = 10.sp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Black),
     )
 }
 
@@ -178,7 +164,7 @@ fun AlertDialogCheckDesign(
         confirmButton = {
             Button(
                 onClick = setActionButtonOK,
-                modifier = Modifier.testTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
+                modifier = Modifier.testTag("tag_button_yes_alert_dialog_check")
             ) {
                 Text("SIM")
             }

@@ -1,0 +1,7 @@
+package br.com.usinasantafe.cmm.infra.datasource.room.variable
+
+import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+
+interface HeaderMotoMecRoomDatasource {
+    suspend fun save(headerMotoMecRoomModel: HeaderMotoMecRoomModel): Result<Boolean>
+}

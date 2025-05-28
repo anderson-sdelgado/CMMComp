@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.di.external.room
 
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.*
+import br.com.usinasantafe.cmm.external.room.dao.stable.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideAtividadeDao(database: DatabaseRoom): ActivityDao {
+    fun provideActivityDao(database: DatabaseRoom): ActivityDao {
         return database.atividadeDao()
     }
 
@@ -104,8 +104,8 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideREquipAtivDao(database: DatabaseRoom): REquipAtivDao {
-        return database.rEquipAtivDao()
+    fun provideREquipActivityDao(database: DatabaseRoom): REquipActivityDao {
+        return database.rEquipActivityDao()
     }
 
     @Provides
@@ -134,7 +134,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideTurnoDao(database: DatabaseRoom): TurnDao {
+    fun provideTurnDao(database: DatabaseRoom): TurnDao {
         return database.turnoDao()
     }
 

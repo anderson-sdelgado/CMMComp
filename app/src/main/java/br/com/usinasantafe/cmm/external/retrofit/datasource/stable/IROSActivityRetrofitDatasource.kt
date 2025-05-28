@@ -3,13 +3,13 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.ROSActivityApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSAtivRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
 import javax.inject.Inject
 
 class IROSActivityRetrofitDatasource @Inject constructor(
     private val rosActivityApi: ROSActivityApi
 ) : ROSActivityRetrofitDatasource {
-    override suspend fun recoverAll(token: String): Result<List<ROSAtivRetrofitModel>> {
+    override suspend fun recoverAll(token: String): Result<List<ROSActivityRetrofitModel>> {
         try {
             val response = rosActivityApi.all(token)
             return Result.success(response.body()!!)
@@ -25,7 +25,7 @@ class IROSActivityRetrofitDatasource @Inject constructor(
     override suspend fun getListByNroOS(
         token: String,
         nroOS: Int
-    ): Result<List<ROSAtivRetrofitModel>> {
+    ): Result<List<ROSActivityRetrofitModel>> {
         try {
             val response = rosActivityApi.getListByNroOS(
                 auth = token,

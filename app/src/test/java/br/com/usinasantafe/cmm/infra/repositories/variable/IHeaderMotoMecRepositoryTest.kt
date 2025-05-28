@@ -1,18 +1,31 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.capture
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.whenever
+import java.util.Date
 
 class IHeaderMotoMecRepositoryTest {
 
     private val headerMotoMecSharedPreferencesDatasource = mock<HeaderMotoMecSharedPreferencesDatasource>()
+    private val headerMotoMecRoomDatasource = mock<HeaderMotoMecRoomDatasource>()
     private val usecase = IHeaderMotoMecRepository(
-        headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource
+        headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource,
+        headerMotoMecRoomDatasource = headerMotoMecRoomDatasource
     )
 
     @Test
@@ -196,6 +209,355 @@ class IHeaderMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `setIdActivity - Check return failure if have error in HeaderMotoMecSharePreferenceDatasource setIdActivity`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.setIdActivity(1)
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.setIdActivity(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.setIdActivity -> IHeaderMotoMecSharedPreferencesDatasource.setIdActivity"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroOS - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource getNroOS`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getNroOS()
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getNroOS",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.getNroOS()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.getNroOS -> IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getNroOS()
+            ).thenReturn(
+                Result.success(123456)
+            )
+            val result = usecase.getNroOS()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                123456
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource getIdEquip`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getIdEquip()
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.getIdEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.getIdEquip -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getIdEquip()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = usecase.getIdEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `setMeasureInitial - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource setMeasureInitial`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.setMeasureInitial(1.0)
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.setMeasureInitial(1.0)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.setMeasureInitial -> IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setMeasureInitial - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.setMeasureInitial(1.0)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase.setMeasureInitial(1.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `save - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource get`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.get",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.save()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.save -> IHeaderMotoMecSharedPreferencesDatasource.get"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `save - Check return failure if HeaderMotoMecSharedPreferencesModel have field empty`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    HeaderMotoMecSharedPreferencesModel()
+                )
+            )
+            val result = usecase.save()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `save - Check return failure if have error in HeaderMotoMecRoomDatasource save`() =
+        runTest {
+            val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
+                regOperator = 12345,
+                idEquip = 1,
+                idTurn = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                measureInitial = 1.0
+            )
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(modelSharedPreferences)
+            )
+            val modelCaptor = argumentCaptor<HeaderMotoMecRoomModel>().apply {
+                whenever(
+                    headerMotoMecRoomDatasource.save(
+                        capture()
+                    )
+                ).thenReturn(
+                    resultFailure(
+                        context = "IHeaderMotoMecRoomDatasource.save",
+                        message = "-",
+                        cause = Exception()
+                    )
+                )
+            }
+            val result = usecase.save()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.save -> IHeaderMotoMecRoomDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.regOperator,
+                12345
+            )
+            assertEquals(
+                model.idEquip,
+                1
+            )
+            assertEquals(
+                model.idTurn,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.idActivity,
+                1
+            )
+            assertEquals(
+                model.measureInitial,
+                1.0,
+                0.0
+            )
+        }
+
+    @Test
+    fun `save - Check return correct if function execute successfully`() =
+        runTest {
+            val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
+                regOperator = 12345,
+                idEquip = 1,
+                idTurn = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                measureInitial = 1.0
+            )
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(modelSharedPreferences)
+            )
+            val modelCaptor = argumentCaptor<HeaderMotoMecRoomModel>().apply {
+                whenever(
+                    headerMotoMecRoomDatasource.save(
+                        capture()
+                    )
+                ).thenReturn(
+                    Result.success(true)
+                )
+            }
+            val result = usecase.save()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.regOperator,
+                12345
+            )
+            assertEquals(
+                model.idEquip,
+                1
+            )
+            assertEquals(
+                model.idTurn,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.idActivity,
+                1
+            )
+            assertEquals(
+                model.measureInitial,
+                1.0,
+                0.0
             )
         }
 }

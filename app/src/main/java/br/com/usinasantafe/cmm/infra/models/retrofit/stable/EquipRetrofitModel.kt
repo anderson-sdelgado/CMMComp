@@ -28,7 +28,7 @@ fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
         idCheckList = this.idCheckList,
         typeFert = this.typeFert,
         hourmeter = this.hourmeter,
-        measurement = this.measurement,
+        measure = this.measurement,
         type = this.type,
         classify = this.classify,
         flagApontMecan = this.flagApontMecan != 0,

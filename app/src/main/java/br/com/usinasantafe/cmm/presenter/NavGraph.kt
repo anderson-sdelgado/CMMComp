@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.INITIAL_MENU_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.MEASURE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OPERATOR_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OS_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PASSWORD_ROUTE
@@ -19,6 +20,7 @@ import br.com.usinasantafe.cmm.presenter.configuration.config.ConfigScreen
 import br.com.usinasantafe.cmm.presenter.configuration.password.PasswordScreen
 import br.com.usinasantafe.cmm.presenter.header.activityList.ActivityListScreen
 import br.com.usinasantafe.cmm.presenter.header.equip.EquipScreen
+import br.com.usinasantafe.cmm.presenter.header.measure.MeasureScreen
 import br.com.usinasantafe.cmm.presenter.header.operator.OperatorScreen
 import br.com.usinasantafe.cmm.presenter.header.os.OSScreen
 import br.com.usinasantafe.cmm.presenter.header.turnlist.TurnListScreen
@@ -120,7 +122,18 @@ fun NavigationGraph(
         composable(ACTIVITY_LIST_ROUTE) {
             ActivityListScreen(
                 onNavOS = {
-                    navActions.navigateToTurnList()
+                    navActions.navigateToOS()
+                },
+                onNavMeasure = {
+                    navActions.navigateToMeasure()
+                }
+            )
+        }
+
+        composable(MEASURE_ROUTE) {
+            MeasureScreen(
+                onNavActivityList = {
+                    navActions.navigateToActivityList()
                 }
             )
         }

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.ActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import javax.inject.Inject
@@ -29,6 +29,19 @@ class IActivityRoomDatasource @Inject constructor(
         } catch (e: Exception) {
             return resultFailure(
                 context = "IActivityRoomDatasource.deleteAll",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdList(idList: List<Int>): Result<List<ActivityRoomModel>> {
+        try {
+            val list = activityDao.listByIdList(idList)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IActivityRoomDatasource.listByIdList",
                 message = "-",
                 cause = e
             )

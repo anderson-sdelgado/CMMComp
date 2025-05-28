@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.RFuncaoAtivParadaDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.RFuncaoAtivParadaDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.RFuncaoAtivParadaRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RFuncaoAtivParadaRoomModel
 import javax.inject.Inject

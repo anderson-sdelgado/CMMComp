@@ -76,7 +76,8 @@ class TurnListViewModel @Inject constructor(
         val result = getTurnList()
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
-            val failure = "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -99,7 +100,8 @@ class TurnListViewModel @Inject constructor(
         val result = setIdTurn(id)
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
-            val failure = "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

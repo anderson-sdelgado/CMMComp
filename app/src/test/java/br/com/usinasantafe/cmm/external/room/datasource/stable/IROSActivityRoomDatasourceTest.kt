@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.ROSActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,18 +21,20 @@ class IROSActivityRoomDatasourceTest {
 
     private lateinit var rOSActivityDao: ROSActivityDao
     private lateinit var db: DatabaseRoom
+    private lateinit var datasource: IROSActivityRoomDatasource
 
     @Before
-    fun before() {
+    fun setup() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
         rOSActivityDao = db.rOSActivityDao()
+        datasource = IROSActivityRoomDatasource(rOSActivityDao)
     }
 
     @After
-    fun after() {
+    fun tearDown() {
         db.close()
     }
 
@@ -44,7 +46,6 @@ class IROSActivityRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IROSActivityRoomDatasource(rOSActivityDao)
             val result = datasource.addAll(
                 listOf(
                     ROSActivityRoomModel(
@@ -81,7 +82,6 @@ class IROSActivityRoomDatasourceTest {
                 qtdBefore,
                 0
             )
-            val datasource = IROSActivityRoomDatasource(rOSActivityDao)
             val result = datasource.addAll(
                 listOf(
                     ROSActivityRoomModel(
@@ -154,7 +154,6 @@ class IROSActivityRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val datasource = IROSActivityRoomDatasource(rOSActivityDao)
             val result = datasource.deleteAll()
             assertEquals(
                 result.isSuccess,
@@ -168,6 +167,67 @@ class IROSActivityRoomDatasourceTest {
             assertEquals(
                 qtdAfter,
                 0
+            )
+        }
+
+    @Test
+    fun `getListByIdOS - Check return list empty if not have data research`() =
+        runTest {
+            val result = datasource.listByIdOS(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList<ROSActivityRoomModel>()
+            )
+        }
+
+    @Test
+    fun `getListByIdOS - Check return list if have data research`() =
+        runTest {
+            rOSActivityDao.insertAll(
+                listOf(
+                    ROSActivityRoomModel(
+                        idROSActivity = 1,
+                        idOS = 1,
+                        idActivity = 10
+                    ),
+                    ROSActivityRoomModel(
+                        idROSActivity = 2,
+                        idOS = 2,
+                        idActivity = 20
+                    )
+                )
+            )
+            val qtdAll = rOSActivityDao.listAll().size
+            assertEquals(
+                qtdAll,
+                2
+            )
+            val result = datasource.listByIdOS(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idROSActivity,
+                1
+            )
+            assertEquals(
+                entity1.idOS,
+                1
+            )
+            assertEquals(
+                entity1.idActivity,
+                10
             )
         }
 }

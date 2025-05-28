@@ -12,7 +12,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableBocal
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableComponente
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquip
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableFrente
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMecan
@@ -23,6 +23,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBocal
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableROSAtiv
@@ -56,7 +57,7 @@ class ConfigViewModelTest {
     private val updateTableBocal = mock<UpdateTableBocal>()
     private val updateTableColab = mock<UpdateTableColab>()
     private val updateTableComponente = mock<UpdateTableComponente>()
-    private val updateTableEquip = mock<UpdateTableEquip>()
+    private val updateTableEquipByIdEquip = mock<UpdateTableEquipByIdEquip>()
     private val updateTableFrente = mock<UpdateTableFrente>()
     private val updateTableItemCheckList = mock<UpdateTableItemCheckList>()
     private val updateTableItemOSMecan = mock<UpdateTableItemOSMecan>()
@@ -67,6 +68,7 @@ class ConfigViewModelTest {
     private val updateTablePressaoBocal = mock<UpdateTablePressaoBocal>()
     private val updateTablePropriedade = mock<UpdateTablePropriedade>()
     private val updateTableRAtivParada = mock<UpdateTableRAtivParada>()
+    private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
     private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
     private val updateTableRFuncaoAtivParada = mock<UpdateTableRFuncaoAtivParada>()
     private val updateTableROSAtiv = mock<UpdateTableROSAtiv>()
@@ -86,7 +88,7 @@ class ConfigViewModelTest {
 //        updateTableBocal = updateTableBocal,
         updateTableColab = updateTableColab,
 //        updateTableComponente = updateTableComponente,
-        updateTableEquip = updateTableEquip,
+        updateTableEquipByIdEquip = updateTableEquipByIdEquip,
 //        updateTableFrente = updateTableFrente,
 //        updateTableItemCheckList = updateTableItemCheckList,
 //        updateTableItemOSMecan = updateTableItemOSMecan,
@@ -97,6 +99,7 @@ class ConfigViewModelTest {
 //        updateTablePressaoBocal = updateTablePressaoBocal,
 //        updateTablePropriedade = updateTablePropriedade,
 //        updateTableRAtivParada = updateTableRAtivParada,
+        updateTableREquipActivityByIdEquip = updateTableREquipActivityByIdEquip,
 //        updateTableREquipPneu = updateTableREquipPneu,
 //        updateTableRFuncaoAtivParada = updateTableRFuncaoAtivParada,
 //        updateTableROSAtiv = updateTableROSAtiv,
@@ -543,7 +546,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             whenever(
-                updateTableEquip(
+                updateTableEquipByIdEquip(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -591,12 +594,69 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableTurn`() =
+    fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
         runTest {
             val qtdBefore = 3f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            whenever(
+                updateTableREquipActivityByIdEquip(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdate(
+                        flagProgress = true,
+                        msgProgress = "Limpando a tabela tb_r_equip_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdate(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanREquipActivity -> java.lang.NullPointerException",
+                        msgProgress = "CleanREquipActivity -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    msgProgress = "Limpando a tabela tb_r_equip_activity",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanREquipActivity -> java.lang.NullPointerException",
+                    msgProgress = "ConfigViewModel.updateAllDatabase -> CleanREquipActivity -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableTurn`() =
+        runTest {
+            val qtdBefore = 4f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessREquipActivity()
             whenever(
                 updateTableTurn(
                     sizeAll = sizeAll,
@@ -626,6 +686,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateREquipActivity(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -682,6 +743,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessREquipActivity()
             wheneverSuccessTurn()
             whenever(
                 setCheckUpdateAllTable(
@@ -709,6 +771,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateREquipActivity(result)
             checkResultUpdateTurn(result)
             assertEquals(
                 result[(qtdTable * 3).toInt()],
@@ -774,6 +837,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessREquipActivity()
             wheneverSuccessTurn()
             whenever(
                 setCheckUpdateAllTable(
@@ -794,6 +858,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateREquipActivity(result)
             checkResultUpdateTurn(result)
             assertEquals(
                 result[(qtdTable * 3).toInt()],
@@ -1046,7 +1111,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessEquip() =
         runTest {
             whenever(
-                updateTableEquip(
+                updateTableEquipByIdEquip(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -1654,6 +1719,62 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     msgProgress = "Salvando dados na tabela tb_r_ativ_parada",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun wheneverSuccessREquipActivity() =
+        runTest {
+            whenever(
+                updateTableREquipActivityByIdEquip(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdate(
+                        flagProgress = true,
+                        msgProgress = "Limpando a tabela tb_r_equip_activity",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdate(
+                        flagProgress = true,
+                        msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdate(
+                        flagProgress = true,
+                        msgProgress = "Salvando dados na tabela tb_r_equip_activity",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+    private fun checkResultUpdateREquipActivity(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    msgProgress = "Limpando a tabela tb_r_equip_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    msgProgress = "Salvando dados na tabela tb_r_equip_activity",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )

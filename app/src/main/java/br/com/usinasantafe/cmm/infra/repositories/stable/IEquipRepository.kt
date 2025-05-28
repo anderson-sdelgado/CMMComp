@@ -49,12 +49,12 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun recoverAll(
+    override suspend fun getListByIdEquip(
         token: String,
         idEquip: Int
     ): Result<List<Equip>> {
         try {
-            val result = equipRetrofitDatasource.recoverAll(
+            val result = equipRetrofitDatasource.getListByIdEquip(
                 token = token,
                 idEquip = idEquip
             )
@@ -80,52 +80,63 @@ class IEquipRepository @Inject constructor(
     override suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String> {
-        try {
-            val result = equipRoomDatasource.getByIdEquip(idEquip)
-            if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IEquipRepository.getDescrByIdEquip",
-                    message = e.message,
-                    cause = e.cause
-                )
-            }
-            val model = result.getOrNull()!!
-            val description = "${model.nroEquip} - ${model.descrClass}"
-            return Result.success(description)
-        } catch (e: Exception) {
+        val result = equipRoomDatasource.getDescrByIdEquip(idEquip)
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
             return resultFailure(
                 context = "IEquipRepository.getDescrByIdEquip",
-                message = "-",
-                cause = e
+                message = e.message,
+                cause = e.cause
             )
         }
+        return result
     }
 
     override suspend fun getCodTurnEquipByIdEquip(
         idEquip: Int
     ): Result<Int> {
-        try {
-            val result = equipRoomDatasource.getByIdEquip(idEquip)
-            if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IEquipRepository.getCodTurnEquipByIdEquip",
-                    message = e.message,
-                    cause = e.cause
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(
-                model.codTurnEquip
-            )
-        } catch (e: Exception) {
+        val result = equipRoomDatasource.getCodTurnEquipByIdEquip(idEquip)
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
             return resultFailure(
                 context = "IEquipRepository.getCodTurnEquipByIdEquip",
-                message = "-",
-                cause = e
+                message = e.message,
+                cause = e.cause
             )
         }
+        return result
+    }
+
+    override suspend fun getMeasureByIdEquip(idEquip: Int): Result<Double> {
+        val result = equipRoomDatasource.getMeasureByIdEquip(idEquip)
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IEquipRepository.getMeasureByIdEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun updateMeasureByIdEquip(
+        measure: Double,
+        idEquip: Int
+    ): Result<Boolean> {
+        val result = equipRoomDatasource.updateMeasureByIdEquip(
+            measure = measure,
+            idEquip = idEquip
+        )
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IEquipRepository.updateMeasureByIdEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
     }
 
 }

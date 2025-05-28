@@ -7,21 +7,22 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetro
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import javax.inject.Inject
 
 class IROSActivityRepository @Inject constructor(
-    private val rosActivityRetrofitDatasource: ROSActivityRetrofitDatasource,
-    private val rosActivityRoomDatasource: ROSActivityRoomDatasource
+    private val rOSActivityRetrofitDatasource: ROSActivityRetrofitDatasource,
+    private val rOSActivityRoomDatasource: ROSActivityRoomDatasource
 ) : ROSActivityRepository {
 
     override suspend fun addAll(list: List<ROSActivity>): Result<Boolean> {
         try {
             val roomModelList = list.map { it.entityToRoomModel() }
-            val result = rosActivityRoomDatasource.addAll(roomModelList)
+            val result = rOSActivityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IROSAtivRepository.addAll",
+                    context = "IROSActivityRepository.addAll",
                     message = e.message,
                     cause = e.cause
                 )
@@ -29,7 +30,7 @@ class IROSActivityRepository @Inject constructor(
             return result
         } catch (e: Exception){
             return resultFailure(
-                context = "IROSAtivRepository.addAll",
+                context = "IROSActivityRepository.addAll",
                 message = "-",
                 cause = e
             )
@@ -37,11 +38,11 @@ class IROSActivityRepository @Inject constructor(
     }
 
     override suspend fun deleteAll(): Result<Boolean> {
-        val result = rosActivityRoomDatasource.deleteAll()
+        val result = rOSActivityRoomDatasource.deleteAll()
         if (result.isFailure) {
             val e = result.exceptionOrNull()!!
             return resultFailure(
-                context = "IROSAtivRepository.deleteAll",
+                context = "IROSActivityRepository.deleteAll",
                 message = e.message,
                 cause = e.cause
             )
@@ -53,11 +54,11 @@ class IROSActivityRepository @Inject constructor(
         token: String
     ): Result<List<ROSActivity>> {
         try {
-            val result = rosActivityRetrofitDatasource.recoverAll(token)
+            val result = rOSActivityRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IROSAtivRepository.recoverAll",
+                    context = "IROSActivityRepository.recoverAll",
                     message = e.message,
                     cause = e.cause
                 )
@@ -66,7 +67,7 @@ class IROSActivityRepository @Inject constructor(
             return Result.success(entityList)
         } catch (e: Exception) {
             return resultFailure(
-                context = "IROSAtivRepository.recoverAll",
+                context = "IROSActivityRepository.recoverAll",
                 message = "-",
                 cause = e
             )
@@ -78,14 +79,14 @@ class IROSActivityRepository @Inject constructor(
         nroOS: Int
     ): Result<List<ROSActivity>> {
         try {
-            val result = rosActivityRetrofitDatasource.getListByNroOS(
+            val result = rOSActivityRetrofitDatasource.getListByNroOS(
                 token = token,
                 nroOS = nroOS
             )
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IROSAtivRepository.getListByNroOS",
+                    context = "IROSActivityRepository.getListByNroOS",
                     message = e.message,
                     cause = e.cause
                 )
@@ -94,7 +95,29 @@ class IROSActivityRepository @Inject constructor(
             return Result.success(entityList)
         } catch (e: Exception) {
             return resultFailure(
-                context = "IROSAtivRepository.getListByNroOS",
+                context = "IROSActivityRepository.getListByNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdOS(idOS: Int): Result<List<ROSActivity>> {
+        try {
+            val result = rOSActivityRoomDatasource.listByIdOS(idOS)
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IROSActivityRepository.listByIdOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IROSActivityRepository.listByIdOS",
                 message = "-",
                 cause = e
             )

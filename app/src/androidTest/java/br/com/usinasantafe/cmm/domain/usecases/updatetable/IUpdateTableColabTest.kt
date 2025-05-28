@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.updatetable
 
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
-import br.com.usinasantafe.cmm.external.room.dao.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.updatePercentage

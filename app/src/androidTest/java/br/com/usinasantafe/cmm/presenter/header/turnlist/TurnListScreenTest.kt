@@ -9,8 +9,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
@@ -24,7 +24,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -42,10 +41,10 @@ class TurnListScreenTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
-    lateinit var equipDao: EquipDao
+    lateinit var equipDao: br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 
     @Inject
-    lateinit var turnDao: TurnDao
+    lateinit var turnDao: br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 
     @Test
     fun check_return_failure_if_not_have_data() =
@@ -128,7 +127,7 @@ class TurnListScreenTest {
             val mockWebServer = MockWebServer()
             mockWebServer.start()
             mockWebServer.enqueue(
-                MockResponse().setBody(resultTurnFailureRetrofitScreen)
+                MockResponse().setBody(resultTurnFailure)
             )
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -162,7 +161,7 @@ class TurnListScreenTest {
             val mockWebServer = MockWebServer()
             mockWebServer.start()
             mockWebServer.enqueue(
-                MockResponse().setBody(resultTurnRetrofitScreen)
+                MockResponse().setBody(resultTurn)
             )
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -242,13 +241,13 @@ class TurnListScreenTest {
 
     }
 
-    private val resultTurnFailureRetrofitScreen = """
+    private val resultTurnFailure = """
         [
           {"idTurn":1,"codTurnoEquip":1,"nroTurn":1,"descrTurn":"TURNO A"}
         ]
     """.trimIndent()
 
-    private val resultTurnRetrofitScreen = """
+    private val resultTurn = """
         [
           {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"TURNO A"}
         ]

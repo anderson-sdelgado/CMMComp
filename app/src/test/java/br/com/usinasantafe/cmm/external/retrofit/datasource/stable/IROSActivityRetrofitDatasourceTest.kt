@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.ROSActivityApi
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSAtivRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -94,15 +94,15 @@ class IROSActivityRetrofitDatasourceTest {
             assertEquals(
                 Result.success(
                     listOf(
-                        ROSAtivRetrofitModel(
-                            idROSAtiv = 1,
+                        ROSActivityRetrofitModel(
+                            idROSActivity = 1,
                             idOS = 12345,
-                            idAtiv = 10
+                            idActivity = 10
                         ),
-                        ROSAtivRetrofitModel(
-                            idROSAtiv = 2,
+                        ROSActivityRetrofitModel(
+                            idROSActivity = 2,
                             idOS = 67890,
-                            idAtiv = 11
+                            idActivity = 11
                         )
                     )
                 ),
@@ -199,10 +199,10 @@ class IROSActivityRetrofitDatasourceTest {
             assertEquals(
                 Result.success(
                     listOf(
-                        ROSAtivRetrofitModel(
-                            idROSAtiv = 1,
+                        ROSActivityRetrofitModel(
+                            idROSActivity = 1,
                             idOS = 12345,
-                            idAtiv = 10
+                            idActivity = 10
                         )
                     )
                 ),

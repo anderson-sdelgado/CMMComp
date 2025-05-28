@@ -120,10 +120,10 @@ class IUpdateTableOSTest {
                 OS(
                     idOS = 1,
                     idEquip = 1,
-                    idProprAgr = 1,
-                    areaProgrOS = 0.0,
+                    idPropAgr = 1,
+                    areaOS = 0.0,
                     nroOS = 1,
-                    tipoOS = 1,
+                    typeOS = 1,
                     idLibOS = 1,
                 )
             )
@@ -193,10 +193,10 @@ class IUpdateTableOSTest {
                 OS(
                     idOS = 1,
                     idEquip = 1,
-                    idProprAgr = 1,
-                    areaProgrOS = 0.0,
+                    idPropAgr = 1,
+                    areaOS = 0.0,
                     nroOS = 1,
-                    tipoOS = 1,
+                    typeOS = 1,
                     idLibOS = 1,
                 )
             )

@@ -5,5 +5,11 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 interface EquipRoomDatasource {
     suspend fun addAll(list: List<EquipRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun getByIdEquip(id: Int): Result<EquipRoomModel>
+    suspend fun getDescrByIdEquip(id: Int): Result<String>
+    suspend fun getCodTurnEquipByIdEquip(id: Int): Result<Int>
+    suspend fun getMeasureByIdEquip(id: Int): Result<Double>
+    suspend fun updateMeasureByIdEquip(
+        measure: Double,
+        idEquip: Int
+    ): Result<Boolean>
 }

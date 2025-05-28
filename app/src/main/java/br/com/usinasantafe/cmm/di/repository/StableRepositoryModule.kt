@@ -74,7 +74,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindREquipAtivRepository(repository: IREquipAtivRepository): REquipAtivRepository
+    fun bindREquipActivityRepository(repository: IREquipActivityRepository): REquipActivityRepository
 
     @Binds
     @Singleton
