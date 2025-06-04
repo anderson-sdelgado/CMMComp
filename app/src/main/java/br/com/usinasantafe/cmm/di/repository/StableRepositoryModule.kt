@@ -58,7 +58,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindParadaRepository(repository: IParadaRepository): ParadaRepository
+    fun bindParadaRepository(repository: IStopRepository): StopRepository
 
     @Binds
     @Singleton
@@ -70,7 +70,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindRAtivParadaRepository(repository: IRAtivParadaRepository): RAtivParadaRepository
+    fun bindRAtivParadaRepository(repository: IRActivityStopRepository): RActivityStopRepository
 
     @Binds
     @Singleton

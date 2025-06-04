@@ -4,31 +4,40 @@ import InitialMenuScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_ROUTE
+import androidx.navigation.navArgument
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_COMMON_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.CONFIG_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_HEADER_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.INITIAL_MENU_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.MEASURE_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.OPERATOR_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.OS_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.MEASURE_HEADER_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.MENU_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.OPERATOR_HEADER_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.OS_COMMON_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PASSWORD_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.TURN_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.SPLASH_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.STOP_LIST_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.TURN_LIST_HEADER_ROUTE
 import br.com.usinasantafe.cmm.presenter.configuration.config.ConfigScreen
 import br.com.usinasantafe.cmm.presenter.configuration.password.PasswordScreen
-import br.com.usinasantafe.cmm.presenter.header.activityList.ActivityListScreen
-import br.com.usinasantafe.cmm.presenter.header.equip.EquipScreen
-import br.com.usinasantafe.cmm.presenter.header.measure.MeasureScreen
-import br.com.usinasantafe.cmm.presenter.header.operator.OperatorScreen
-import br.com.usinasantafe.cmm.presenter.header.os.OSScreen
-import br.com.usinasantafe.cmm.presenter.header.turnlist.TurnListScreen
+import br.com.usinasantafe.cmm.presenter.common.activityList.ActivityListCommonScreen
+import br.com.usinasantafe.cmm.presenter.header.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.header.measure.MeasureHeaderScreen
+import br.com.usinasantafe.cmm.presenter.header.operator.OperatorHeaderScreen
+import br.com.usinasantafe.cmm.presenter.common.os.OSCommonScreen
+import br.com.usinasantafe.cmm.presenter.header.turnlist.TurnListHeaderScreen
+import br.com.usinasantafe.cmm.presenter.note.menu.MenuNoteScreen
+import br.com.usinasantafe.cmm.presenter.splash.SplashScreen
+import br.com.usinasantafe.cmm.utils.FlowApp
 
 @Composable
 fun NavigationGraph(
     navHostController: NavHostController = rememberNavController(),
-    startDestination: String = INITIAL_MENU_ROUTE,
+    startDestination: String = SPLASH_ROUTE,
     navActions: NavigationActions = remember(navHostController) {
         NavigationActions(navHostController)
     }
@@ -39,6 +48,22 @@ fun NavigationGraph(
         startDestination = startDestination
     ) {
 
+
+        ///////////////////////// Splash //////////////////////////////////
+
+        composable(SPLASH_ROUTE) {
+            SplashScreen(
+                onNavInitialMenu = {
+                    navActions.navigateToInitialMenu()
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                }
+            )
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
         ///////////////////////// Config //////////////////////////////////
 
         composable(INITIAL_MENU_ROUTE) {
@@ -47,7 +72,7 @@ fun NavigationGraph(
                     navActions.navigateToPassword()
                 },
                 onNavOperator = {
-                    navActions.navigateToOperator()
+                    navActions.navigateToOperatorHeader()
                 }
             )
         }
@@ -75,67 +100,115 @@ fun NavigationGraph(
 
         ////////////////////////// Header //////////////////////////////////
 
-        composable(OPERATOR_ROUTE) {
-            OperatorScreen(
+        composable(OPERATOR_HEADER_ROUTE) {
+            OperatorHeaderScreen(
                 onNavInitialMenu = {
                     navActions.navigateToInitialMenu()
                 },
                 onNavEquip = {
-                    navActions.navigateToEquip()
+                    navActions.navigateToEquipHeader()
                 }
             )
         }
 
-        composable(EQUIP_ROUTE) {
-            EquipScreen(
+        composable(EQUIP_HEADER_ROUTE) {
+            EquipHeaderScreen(
                 onNavOperator = {
-                    navActions.navigateToOperator()
+                    navActions.navigateToOperatorHeader()
                 },
                 onNavTurnList = {
-                    navActions.navigateToTurnList()
+                    navActions.navigateToTurnListHeader()
                 }
             )
         }
 
-        composable(TURN_LIST_ROUTE) {
-            TurnListScreen(
+        composable(TURN_LIST_HEADER_ROUTE) {
+            TurnListHeaderScreen(
                 onNavEquip = {
-                    navActions.navigateToEquip()
+                    navActions.navigateToEquipHeader()
                 },
                 onNavOS = {
-                    navActions.navigateToOS()
+                    navActions.navigateToOSCommon()
                 }
             )
         }
 
-        composable(OS_ROUTE) {
-            OSScreen(
+        composable(
+            OS_COMMON_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+            )
+        ) { entry ->
+            OSCommonScreen(
                 onNavTurn = {
-                    navActions.navigateToTurnList()
+                    navActions.navigateToTurnListHeader()
                 },
                 onNavActivityList = {
-                    navActions.navigateToActivityList()
+                    navActions.navigateToActivityListCommon(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARGS)!!,
+                    )
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
                 }
             )
         }
 
-        composable(ACTIVITY_LIST_ROUTE) {
-            ActivityListScreen(
+        composable(
+            ACTIVITY_LIST_COMMON_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+            )
+        ) { entry ->
+            ActivityListCommonScreen(
                 onNavOS = {
-                    navActions.navigateToOS()
+                    navActions.navigateToOSCommon(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARGS)!!
+                    )
                 },
                 onNavMeasure = {
-                    navActions.navigateToMeasure()
+                    navActions.navigateToMeasureHeader()
+                },
+                onNavStopList = {
+                    navActions.navigateToStopListNote()
+                },
+                onMenuNote = {
+                    navActions.navigateToMenuNote()
                 }
             )
         }
 
-        composable(MEASURE_ROUTE) {
-            MeasureScreen(
+        composable(MEASURE_HEADER_ROUTE) {
+            MeasureHeaderScreen(
                 onNavActivityList = {
-                    navActions.navigateToActivityList()
+                    navActions.navigateToActivityListCommon()
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
                 }
             )
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        /////////////////////////// Note ///////////////////////////////////
+
+        composable(MENU_NOTE_ROUTE) {
+            MenuNoteScreen(
+                onNavOS = {
+                    navActions.navigateToOSCommon(
+                        flowApp = FlowApp.NOTE_WORK.ordinal
+                    )
+                },
+                onNavActivityList = {
+                    navActions.navigateToActivityListCommon(
+                        flowApp = FlowApp.NOTE_STOP.ordinal
+                    )
+                }
+            )
+        }
+
+        composable(STOP_LIST_NOTE_ROUTE) {
         }
 
         ////////////////////////////////////////////////////////////////////

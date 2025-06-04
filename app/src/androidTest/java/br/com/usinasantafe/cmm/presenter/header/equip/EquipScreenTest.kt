@@ -73,7 +73,7 @@ class EquipScreenTest {
 
     private fun setContent() {
         composeTestRule.setContent {
-            EquipScreen(
+            EquipHeaderScreen(
                 onNavOperator = {},
                 onNavTurnList = {}
             )

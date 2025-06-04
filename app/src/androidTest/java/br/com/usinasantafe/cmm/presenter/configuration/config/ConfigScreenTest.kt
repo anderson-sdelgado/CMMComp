@@ -9,11 +9,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlagUpdate
@@ -453,7 +448,7 @@ class ConfigScreenTest {
                 0.0
             )
             assertEquals(
-                equipRoomModel.measurement,
+                equipRoomModel.measure,
                 200.0,
                 0.0
             )
@@ -597,7 +592,7 @@ class ConfigScreenTest {
                 0.0
             )
             assertEquals(
-                equipRoomModel.measurement,
+                equipRoomModel.measure,
                 200.0,
                 0.0
             )
@@ -757,7 +752,7 @@ class ConfigScreenTest {
                 0.0
             )
             assertEquals(
-                equipRoomModel.measurement,
+                equipRoomModel.measure,
                 200.0,
                 0.0
             )

@@ -94,7 +94,7 @@ object StableRetrofitModule {
     @Singleton
     fun paradaApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
-    ): ParadaApi = retrofit.create(ParadaApi::class.java)
+    ): StopApi = retrofit.create(StopApi::class.java)
 
     @Provides
     @Singleton
@@ -112,7 +112,7 @@ object StableRetrofitModule {
     @Singleton
     fun rAtivParadaApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
-    ): RAtivParadaApi = retrofit.create(RAtivParadaApi::class.java)
+    ): RActivityStopApi = retrofit.create(RActivityStopApi::class.java)
 
     @Provides
     @Singleton

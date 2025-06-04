@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3e070ad8955ec914efad80f42d090343",
+    "identityHash": "ba7a4d6e51746391458d1ce69f28a2f1",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -128,7 +128,7 @@
       },
       {
         "tableName": "tb_equip",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEquip` INTEGER NOT NULL, `nroEquip` INTEGER NOT NULL, `codClass` INTEGER NOT NULL, `descrClass` TEXT NOT NULL, `codTurnEquip` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `typeFert` INTEGER NOT NULL, `hourmeter` REAL NOT NULL, `measurement` REAL NOT NULL, `type` INTEGER NOT NULL, `classify` INTEGER NOT NULL, `flagApontMecan` INTEGER NOT NULL, `flagApontPneu` INTEGER NOT NULL, PRIMARY KEY(`idEquip`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEquip` INTEGER NOT NULL, `nroEquip` INTEGER NOT NULL, `codClass` INTEGER NOT NULL, `descrClass` TEXT NOT NULL, `codTurnEquip` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `typeFert` INTEGER NOT NULL, `hourmeter` REAL NOT NULL, `measure` REAL NOT NULL, `type` INTEGER NOT NULL, `classify` INTEGER NOT NULL, `flagApontMecan` INTEGER NOT NULL, `flagApontPneu` INTEGER NOT NULL, PRIMARY KEY(`idEquip`))",
         "fields": [
           {
             "fieldPath": "idEquip",
@@ -179,8 +179,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "measurement",
-            "columnName": "measurement",
+            "fieldPath": "measure",
+            "columnName": "measure",
             "affinity": "REAL",
             "notNull": true
           },
@@ -905,12 +905,74 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_note_moto_mec",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e070ad8955ec914efad80f42d090343')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ba7a4d6e51746391458d1ce69f28a2f1')"
     ]
   }
 }

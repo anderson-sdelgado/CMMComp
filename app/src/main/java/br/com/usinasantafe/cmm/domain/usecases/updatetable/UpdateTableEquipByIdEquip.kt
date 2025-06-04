@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.updatetable
 
-import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
+import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken

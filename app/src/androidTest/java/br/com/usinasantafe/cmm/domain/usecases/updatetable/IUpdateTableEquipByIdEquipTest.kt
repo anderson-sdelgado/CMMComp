@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.updatetable
 
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
+import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -120,7 +120,7 @@ class IUpdateTableEquipByIdEquipTest {
                 0.0
             )
             assertEquals(
-                roomModel.measurement,
+                roomModel.measure,
                 200.0,
                 0.0
             )

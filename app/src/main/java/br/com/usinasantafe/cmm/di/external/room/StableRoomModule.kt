@@ -80,7 +80,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideParadaDao(database: DatabaseRoom): ParadaDao {
+    fun provideParadaDao(database: DatabaseRoom): StopDao {
         return database.paradaDao()
     }
 
@@ -98,7 +98,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideRAtivParadaDao(database: DatabaseRoom): RAtivParadaDao {
+    fun provideRAtivParadaDao(database: DatabaseRoom): RActivityStopDao {
         return database.rAtivParadaDao()
     }
 

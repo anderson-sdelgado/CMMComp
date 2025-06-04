@@ -21,7 +21,7 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
     private lateinit var datasource: IHeaderMotoMecSharedPreferencesDatasource
 
     @Before
-    fun setUp() {
+    fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
         datasource = IHeaderMotoMecSharedPreferencesDatasource(sharedPreferences)

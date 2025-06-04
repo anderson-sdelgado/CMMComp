@@ -1,5 +1,11 @@
 package br.com.usinasantafe.cmm.di.usecase
 
+import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.common.IGetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.common.ISetIdActivityCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.ISetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.domain.usecases.header.*
 import dagger.Binds
 import dagger.Module
@@ -41,7 +47,7 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindSetNroOS(usecase: ISetNroOS): SetNroOS
+    fun bindSetNroOS(usecase: ISetNroOSCommon): SetNroOSCommon
 
     @Binds
     @Singleton
@@ -49,7 +55,7 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindSetIdActivity(usecase: ISetIdActivity): SetIdActivity
+    fun bindSetIdActivity(usecase: ISetIdActivityCommon): SetIdActivityCommon
 
     @Binds
     @Singleton
@@ -62,5 +68,14 @@ interface HeaderModule {
     @Binds
     @Singleton
     fun bindSaveHeaderOpen(usecase: ISaveHeaderOpen): SaveHeaderOpen
+
+    @Binds
+    @Singleton
+    fun bindCheckHeaderOpen(usecase: ICheckHeaderOpen): CheckHeaderOpen
+
+    @Binds
+    @Singleton
+    fun bindGetNroOSHeader(usecase: IGetNroOSHeader): GetNroOSHeader
+
 
 }

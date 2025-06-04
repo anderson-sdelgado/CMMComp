@@ -1,110 +1,82 @@
 package br.com.usinasantafe.cmm.utils
 
 
-val itemMenu = """
+val itemMenuDatabase = """
 [
     {
         "id": 1,
-        "descr": "TRABALHANDO"
+        "title": "TRABALHANDO",
+        "type": 1
     },
     {
         "id": 2,
-        "descr": "PARADO"
+        "title": "PARADO",
+        "type": 1
     },
     {
         "id": 3,
-        "descr": "RENDIMENTO"
+        "title": "RENDIMENTO",
+        "type": 0
     },
     {
         "id": 4,
-        "descr": "NOVO TRANSBORDO"
+        "title": "NOVO TRANSBORDO",
+        "type": 0
     },
     {
         "id": 5,
-        "descr": "TROCAR IMPLEMENTO"
+        "title": "TROCAR IMPLEMENTO",
+        "type": 0
     },
     {
         "id": 6,
-        "descr": "RECOLHIMENTO MANGUEIRA"
+        "title": "RECOLHIMENTO MANGUEIRA",
+        "type": 0
     },
     {
         "id": 7,
-        "descr": "CALIBRAGEM DE PNEU"
+        "title": "CALIBRAGEM DE PNEU",
+        "type": 0
     },
     {
         "id": 8,
-        "descr": "TROCA DE PNEU"
+        "title": "TROCA DE PNEU",
+        "type": 0
     },
     {
         "id": 9,
-        "descr": "APONTAR CARRETEL"
+        "title": "APONTAR CARRETEL",
+        "type": 0
     },
     {
         "id": 10,
-        "descr": "FINALIZAR BOLETIM"
+        "title": "FINALIZAR BOLETIM",
+        "type": 2
     },
     {
         "id": 11,
-        "descr": "RETORNAR PRA LISTA"
+        "title": "RETORNAR PRA LISTA",
+        "type": 0
+    },
     {
         "id": 12,
-        "descr": "HISTORICO"
+        "title": "HISTORICO",
+        "type": 1
     },
     {
         "id": 13,
-        "descr": "REENVIO DE DADOS"
+        "title": "REENVIO DE DADOS",
+        "type": 0
     },
     {
         "id": 14,
-        "descr": "DATA/HORA"
+        "title": "DATA/HORA",
+        "type": 1
     },
     {
         "id": 15,
-        "descr": "LOG"
-    }
-]
-""".trimIndent()
-
-val rItemMenuType = """
-[
-    {
-        "id": 1,
-        "idItemMenu": 1,
-        "idType": 1
-    },
-    {
-        "id": 1,
-        "idItemMenu": 2,
-        "idType": 1
-    },
-    {
-        "id": 1,
-        "idItemMenu": 10,
-        "idType": 1
-    },
-    {
-        "id": 1,
-        "idItemMenu": 12,
-        "idType": 1
-    },
-    {
-        "id": 1,
-        "idItemMenu": 14,
-        "idType": 1
-    },
-    {
-        "id": 1,
-        "idItemMenu": 15,
-        "idType": 1
-    },
-]
-""".trimIndent()
-
-val typeMenu = """
-[
-    {
-        "id": 1,
-        "descr": "NORMAL"
+        "title": "LOG",
+        "type": 1
     }
 ]
 """.trimIndent()

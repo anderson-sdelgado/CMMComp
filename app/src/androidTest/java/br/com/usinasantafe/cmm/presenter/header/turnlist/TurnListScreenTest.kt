@@ -9,8 +9,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
@@ -190,7 +188,7 @@ class TurnListScreenTest {
 
     private fun setContent() {
         composeTestRule.setContent {
-            TurnListScreen(
+            TurnListHeaderScreen(
                 onNavEquip = {},
                 onNavOS = {}
             )

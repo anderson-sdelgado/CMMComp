@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.configuration.config
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
+import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
@@ -19,10 +19,10 @@ import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableItemOSMeca
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableLeira
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableOS
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePressaoBocal
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTablePropriedade
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRAtivParada
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipPneu
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRFuncaoAtivParada
@@ -64,10 +64,10 @@ class ConfigViewModelTest {
     private val updateTableLeira = mock<UpdateTableLeira>()
     private val updateTableMotoMec = mock<UpdateTableMotoMec>()
     private val updateTableOS = mock<UpdateTableOS>()
-    private val updateTableParada = mock<UpdateTableParada>()
+    private val updateTableStop = mock<UpdateTableStop>()
     private val updateTablePressaoBocal = mock<UpdateTablePressaoBocal>()
     private val updateTablePropriedade = mock<UpdateTablePropriedade>()
-    private val updateTableRAtivParada = mock<UpdateTableRAtivParada>()
+    private val updateTableRActivityStop = mock<UpdateTableRActivityStop>()
     private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
     private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
     private val updateTableRFuncaoAtivParada = mock<UpdateTableRFuncaoAtivParada>()
@@ -1503,7 +1503,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessParada() =
         runTest {
             whenever(
-                updateTableParada(
+                updateTableStop(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -1671,7 +1671,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessRAtivParada() =
         runTest {
             whenever(
-                updateTableRAtivParada(
+                updateTableRActivityStop(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )

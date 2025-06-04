@@ -24,10 +24,10 @@ import java.util.Date
         LeiraRoomModel::class,
         MotoMecRoomModel::class,
         OSRoomModel::class,
-        ParadaRoomModel::class,
+        StopRoomModel::class,
         PressaoBocalRoomModel::class,
         PropriedadeRoomModel::class,
-        RAtivParadaRoomModel::class,
+        RActivityStopRoomModel::class,
         REquipActivityRoomModel::class,
         REquipPneuRoomModel::class,
         RFuncaoAtivParadaRoomModel::class,
@@ -35,6 +35,7 @@ import java.util.Date
         ServicoRoomModel::class,
         TurnRoomModel::class,
         HeaderMotoMecRoomModel::class,
+        NoteMotoMecRoomModel::class
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -51,10 +52,10 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun leiraDao(): LeiraDao
     abstract fun motoMecDao(): MotoMecDao
     abstract fun osDao(): OSDao
-    abstract fun paradaDao(): ParadaDao
+    abstract fun paradaDao(): StopDao
     abstract fun pressaoBocalDao(): PressaoBocalDao
     abstract fun propriedadeDao(): PropriedadeDao
-    abstract fun rAtivParadaDao(): RAtivParadaDao
+    abstract fun rAtivParadaDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rEquipPneuDao(): REquipPneuDao
     abstract fun rFuncaoAtivParadaDao(): RFuncaoAtivParadaDao
@@ -62,6 +63,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun servicoDao(): ServicoDao
     abstract fun turnoDao(): TurnDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao
+    abstract fun noteMotoMecDao(): NoteMotoMecDao
 }
 
 class Converters {

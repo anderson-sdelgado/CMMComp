@@ -65,7 +65,7 @@ class IEquipRoomDatasource @Inject constructor(
     override suspend fun getMeasureByIdEquip(id: Int): Result<Double> {
         try {
             val model = equipDao.getByIdEquip(id)
-            return Result.success(model.measurement)
+            return Result.success(model.measure)
         } catch (e: Exception){
             return resultFailure(
                 context = "IEquipRoomDatasource.getMeasureByIdEquip",
@@ -81,7 +81,7 @@ class IEquipRoomDatasource @Inject constructor(
     ): Result<Boolean> {
         try {
             val model = equipDao.getByIdEquip(idEquip)
-            model.measurement = measure
+            model.measure = measure
             equipDao.update(model)
             return Result.success(true)
         } catch (e: Exception){

@@ -135,7 +135,7 @@ class IEquipRetrofitDatasourceTest {
                 0.0
             )
             assertEquals(
-                list[0].measurement,
+                list[0].measure,
                 200.0,
                 0.0
             )
@@ -189,7 +189,7 @@ class IEquipRetrofitDatasourceTest {
                 0.0
             )
             assertEquals(
-                list[1].measurement,
+                list[1].measure,
                 300.0,
                 0.0
             )

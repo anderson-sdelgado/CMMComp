@@ -58,7 +58,7 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindParadaRetrofitDatasource(dataSource: IParadaRetrofitDatasource): ParadaRetrofitDatasource
+    fun bindParadaRetrofitDatasource(dataSource: IStopRetrofitDatasource): StopRetrofitDatasource
 
     @Binds
     @Singleton
@@ -70,7 +70,7 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindRAtivParadaRetrofitDatasource(dataSource: IRAtivParadaRetrofitDatasource): RAtivParadaRetrofitDatasource
+    fun bindRAtivParadaRetrofitDatasource(dataSource: IRActivityStopRetrofitDatasource): RActivityStopRetrofitDatasource
 
     @Binds
     @Singleton

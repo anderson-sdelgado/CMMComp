@@ -560,4 +560,96 @@ class IHeaderMotoMecRepositoryTest {
                 0.0
             )
         }
+
+    @Test
+    fun `checkHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderOpen`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.checkHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecRoomDatasource.checkHeaderOpen",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.checkHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.checkHeaderOpen -> IHeaderMotoMecRoomDatasource.checkHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.checkHeaderOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase.checkHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `getIdByHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByHeaderOpen`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    context = "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase.getIdByHeaderOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdByHeaderOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = usecase.getIdByHeaderOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
 }

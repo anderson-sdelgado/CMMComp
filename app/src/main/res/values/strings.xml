@@ -46,4 +46,7 @@
     <string name="text_title_menu">MENU</string>
     <string name="text_title_descr_equip">%1$s</string>
     <string name="text_pattern_finish_header">FINALIZAR BOLETIM</string>
+    <string name="text_selection_option_invalid">OPÇÃO SELECIONADO INVÁLIDA! POR FAVOR, ENTRE EM CONTATO COM TI.</string>
+    <string name="text_title_stop">PARADA</string>
+    <string name="text_placeholder_field">Pesquisa</string>
 </resources>

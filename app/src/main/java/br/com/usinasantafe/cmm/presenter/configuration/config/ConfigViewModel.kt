@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.configuration.config
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.entities.ResultUpdate
+import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
@@ -10,7 +10,9 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableREquipActivityByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.updatetable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
@@ -84,15 +86,15 @@ class ConfigViewModel @Inject constructor(
 //    private val updateTableLeira: UpdateTableLeira,
 //    private val updateTableMotoMec: UpdateTableMotoMec,
 //    private val updateTableOS: UpdateTableOS,
-//    private val updateTableParada: UpdateTableParada,
 //    private val updateTablePressaoBocal: UpdateTablePressaoBocal,
 //    private val updateTablePropriedade: UpdateTablePropriedade,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
-//    private val updateTableRAtivParada: UpdateTableRAtivParada,
+    private val updateTableRActivityStop: UpdateTableRActivityStop,
 //    private val updateTableREquipPneu: UpdateTableREquipPneu,
 //    private val updateTableRFuncaoAtivParada: UpdateTableRFuncaoAtivParada,
 //    private val updateTableROSAtiv: UpdateTableROSAtiv,
 //    private val updateTableServico: UpdateTableServico,
+    private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
     private val setCheckUpdateAllTable: SetCheckUpdateAllTable
 ) : ViewModel() {

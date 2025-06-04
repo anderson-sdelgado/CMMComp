@@ -57,7 +57,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableParada(usecase: IUpdateTableParada): UpdateTableParada
+    fun bindUpdateTableParada(usecase: IUpdateTableStop): UpdateTableStop
 
     @Binds
     @Singleton
@@ -69,7 +69,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableRAtivParada(usecase: IUpdateTableRAtivParada): UpdateTableRAtivParada
+    fun bindUpdateTableRAtivParada(usecase: IUpdateTableRActivityStop): UpdateTableRActivityStop
 
     @Binds
     @Singleton

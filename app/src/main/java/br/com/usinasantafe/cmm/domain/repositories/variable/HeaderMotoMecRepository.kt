@@ -1,7 +1,5 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
-
 interface HeaderMotoMecRepository {
     suspend fun setRegOperator(regOperator: Int): Result<Boolean>
     suspend fun setIdEquip(idEquip: Int): Result<Boolean>
@@ -12,4 +10,6 @@ interface HeaderMotoMecRepository {
     suspend fun getIdEquip(): Result<Int>
     suspend fun setMeasureInitial(measure: Double): Result<Boolean>
     suspend fun save(): Result<Boolean>
+    suspend fun checkHeaderOpen(): Result<Boolean>
+    suspend fun getIdByHeaderOpen(): Result<Int>
 }

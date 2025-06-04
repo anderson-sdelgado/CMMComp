@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
@@ -89,7 +90,7 @@ class HeaderFlowTest {
                         "idCheckList":1,
                         "typeFert":1,
                         "hourmeter":100.0,
-                        "measurement":200.0,
+                        "measure":200.0,
                         "type":1,
                         "classify":1,
                         "flagApontMecan":True,
@@ -191,6 +192,9 @@ class HeaderFlowTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
+    lateinit var headerMotoMecDao: HeaderMotoMecDao
+
+    @Inject
     lateinit var activityDao: ActivityDao
 
     @Inject
@@ -212,13 +216,13 @@ class HeaderFlowTest {
     lateinit var rOSActivityDao: ROSActivityDao
 
     @Before
-    fun setUp() {
+    fun setup() {
         hiltRule.inject()
     }
 
     @Test
     fun header_flow() = runTest(
-        timeout = 10.minutes
+        timeout = 2.minutes
     ) {
 
         initialRegister()
@@ -524,6 +528,7 @@ class HeaderFlowTest {
             entityWithIdActivity.idActivity,
             10
         )
+
         composeTestRule.activityRule.scenario.onActivity { activity ->
             activity.onBackPressedDispatcher.onBackPressed()
         }
@@ -536,6 +541,77 @@ class HeaderFlowTest {
             .performClick()
 
         Log.d("TestDebug", "Position 19")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("1")
+            .performClick()
+        composeTestRule.onNodeWithText("0")
+            .performClick()
+        composeTestRule.onNodeWithText("0")
+            .performClick()
+        composeTestRule.onNodeWithText("0")
+            .performClick()
+        composeTestRule.onNodeWithText("0")
+            .performClick()
+        composeTestRule.onNodeWithText("0")
+            .performClick()
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 20")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val resultEntityWithMeasure = headerMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithIdActivity.isSuccess,
+            true
+        )
+        val entityWithMeasure = resultEntityWithMeasure.getOrNull()!!
+        assertEquals(
+            entityWithMeasure.measureInitial,
+            10000.0
+        )
+
+        val equip = equipDao.getByIdEquip(30)
+        assertEquals(
+            equip.measure,
+            10000.0,
+            0.0
+        )
+
+        val headerMotoMecList = headerMotoMecDao.listAll()
+        assertEquals(
+            headerMotoMecList.size,
+            1
+        )
+        val headerMotoMec = headerMotoMecList[0]
+        assertEquals(
+            headerMotoMec.regOperator,
+            19759
+        )
+        assertEquals(
+            headerMotoMec.idEquip,
+            30
+        )
+        assertEquals(
+            headerMotoMec.idTurn,
+            1
+        )
+        assertEquals(
+            headerMotoMec.nroOS,
+            123456
+        )
+        assertEquals(
+            headerMotoMec.idActivity,
+            10
+        )
+        assertEquals(
+            headerMotoMec.measureInitial,
+            10000.0,
+            0.0
+        )
 
         composeTestRule.waitUntilTimeout(3_000)
 

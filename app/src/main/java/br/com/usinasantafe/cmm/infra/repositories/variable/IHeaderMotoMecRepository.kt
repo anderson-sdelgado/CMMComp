@@ -150,4 +150,30 @@ class IHeaderMotoMecRepository @Inject constructor(
         }
     }
 
+    override suspend fun checkHeaderOpen(): Result<Boolean> {
+        val result = headerMotoMecRoomDatasource.checkHeaderOpen()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IHeaderMotoMecRepository.checkHeaderOpen",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getIdByHeaderOpen(): Result<Int> {
+        val result = headerMotoMecRoomDatasource.getIdByHeaderOpen()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IHeaderMotoMecRepository.getIdByHeaderOpen",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
 }

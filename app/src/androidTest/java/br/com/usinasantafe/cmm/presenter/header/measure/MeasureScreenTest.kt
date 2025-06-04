@@ -246,8 +246,9 @@ class MeasureScreenTest {
 
     private fun setContent() {
         composeTestRule.setContent {
-            MeasureScreen(
-                onNavActivityList = {}
+            MeasureHeaderScreen(
+                onNavActivityList = {},
+                onNavMenuNote = {}
             )
         }
     }

@@ -57,7 +57,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -72,7 +72,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -118,7 +118,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -133,7 +133,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -177,7 +177,7 @@ class IEquipRoomDatasourceTest {
                 0.0
             )
             assertEquals(
-                list[0].measurement,
+                list[0].measure,
                 0.0,
                 0.0
             )
@@ -221,7 +221,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -282,7 +282,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -338,7 +338,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 0.0,
+                        measure = 0.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -394,7 +394,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 10000.0,
+                        measure = 10000.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -433,7 +433,7 @@ class IEquipRoomDatasourceTest {
                         idCheckList = 1,
                         typeFert = 1,
                         hourmeter = 0.0,
-                        measurement = 10000.0,
+                        measure = 10000.0,
                         type = 1,
                         classify = 1,
                         flagApontMecan = true,
@@ -448,7 +448,7 @@ class IEquipRoomDatasourceTest {
             )
             val modelBefore =    equipDao.getByIdEquip(1)
             assertEquals(
-                modelBefore.measurement,
+                modelBefore.measure,
                 10000.0,
                 0.0
             )
@@ -471,7 +471,7 @@ class IEquipRoomDatasourceTest {
             )
             val modelAfter = equipDao.getByIdEquip(1)
             assertEquals(
-                modelAfter.measurement,
+                modelAfter.measure,
                 20000.0,
                 0.0
             )

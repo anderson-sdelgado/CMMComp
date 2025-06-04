@@ -1,10 +1,11 @@
 package br.com.usinasantafe.cmm.utils
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
+import androidx.compose.ui.test.junit4.ComposeTestRule
 import java.util.Timer
 import kotlin.concurrent.schedule
 
-fun ComposeContentTestRule.waitUntilTimeout(
+fun ComposeTestRule.waitUntilTimeout(
     timeoutMillis: Long
 ) {
     AsyncTimer.start(timeoutMillis)

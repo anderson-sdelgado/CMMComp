@@ -206,7 +206,7 @@ class OperatorScreenTest {
 
     private fun setContent() {
         composeTestRule.setContent {
-            OperatorScreen(
+            OperatorHeaderScreen(
                 onNavInitialMenu = {},
                 onNavEquip = {}
             )

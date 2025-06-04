@@ -18,4 +18,10 @@ object VariableRoomModule {
         return database.headerMotoMecDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideNoteMotoMecDao(database: DatabaseRoom): NoteMotoMecDao {
+        return database.noteMotoMecDao()
+    }
+
 }
