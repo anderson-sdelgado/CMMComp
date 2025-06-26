@@ -100,12 +100,9 @@ class IGetDescrEquipTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )

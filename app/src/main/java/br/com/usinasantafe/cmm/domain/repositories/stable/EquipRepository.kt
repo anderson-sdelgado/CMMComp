@@ -15,11 +15,17 @@ interface EquipRepository {
     suspend fun getCodTurnEquipByIdEquip(
         idEquip: Int
     ): Result<Int>
-    suspend fun getMeasureByIdEquip(
+    suspend fun getHourMeterByIdEquip(
         idEquip: Int
     ): Result<Double>
-    suspend fun updateMeasureByIdEquip(
-        measure: Double,
+    suspend fun updateHourMeterByIdEquip(
+        hourMeter: Double,
         idEquip: Int
     ): Result<Boolean>
+    suspend fun getTypeFertByIdEquip(
+        idEquip: Int
+    ): Result<Int>
+    suspend fun getIdCheckListByIdEquip(
+        idEquip: Int
+    ): Result<Int>
 }

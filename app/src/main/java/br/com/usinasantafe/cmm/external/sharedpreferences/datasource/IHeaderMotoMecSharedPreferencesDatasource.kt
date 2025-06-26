@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import com.google.gson.Gson
 import javax.inject.Inject
 
@@ -48,9 +49,9 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.regOperator = regOperator
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.regOperator = regOperator
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -87,7 +88,10 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdEquip(idEquip: Int): Result<Boolean> {
+    override suspend fun setDataEquip(
+        idEquip: Int,
+        typeEquip: TypeEquip
+    ): Result<Boolean> {
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
@@ -98,9 +102,10 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.idEquip = idEquip
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.idEquip = idEquip
+            model.typeEquip = typeEquip
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -130,9 +135,9 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.idTurn = idTurn
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.idTurn = idTurn
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -162,9 +167,9 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.nroOS = nroOS
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.nroOS = nroOS
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -259,24 +264,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setMeasureInitial(measure: Double): Result<Boolean> {
+    override suspend fun setHourMeter(hourMeter: Double): Result<Boolean> {
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
                 val e = resultGet.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial",
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
                     message = e.message,
                     cause = e.cause
                 )
             }
             val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.measureInitial = measure
+            headerMotoMec.hourMeter = hourMeter
             val resultSave = save(headerMotoMec)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setMeasureInitial",
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
                     message = e.message,
                     cause = e.cause
                 )
@@ -284,7 +289,57 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
+                context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun clean(): Result<Boolean> {
+        try {
+            val editor = sharedPreferences.edit()
+            editor.putString(
+                BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                null
+            )
+            editor.apply()
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.save",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setStatusCon(status: Boolean): Result<Boolean> {
+        try {
+            val resultGet = get()
+            if (resultGet.isFailure) {
+                val e = resultGet.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val headerMotoMec = resultGet.getOrNull()!!
+            headerMotoMec.statusCon = status
+            val resultSave = save(headerMotoMec)
+            if (resultSave.isFailure) {
+                val e = resultSave.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IHeaderMotoMecSharedPreferencesDatasource.setStatusCon",
                 message = "-",
                 cause = e
             )

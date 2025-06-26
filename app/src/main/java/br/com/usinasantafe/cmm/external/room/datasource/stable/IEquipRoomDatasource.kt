@@ -62,10 +62,10 @@ class IEquipRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getMeasureByIdEquip(id: Int): Result<Double> {
+    override suspend fun getHourMeterByIdEquip(id: Int): Result<Double> {
         try {
             val model = equipDao.getByIdEquip(id)
-            return Result.success(model.measure)
+            return Result.success(model.hourMeter)
         } catch (e: Exception){
             return resultFailure(
                 context = "IEquipRoomDatasource.getMeasureByIdEquip",
@@ -75,18 +75,44 @@ class IEquipRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun updateMeasureByIdEquip(
-        measure: Double,
+    override suspend fun updateHourMeterByIdEquip(
+        hourMeter: Double,
         idEquip: Int
     ): Result<Boolean> {
         try {
             val model = equipDao.getByIdEquip(idEquip)
-            model.measure = measure
+            model.hourMeter = hourMeter
             equipDao.update(model)
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
                 context = "IEquipRoomDatasource.updateMeasureByIdEquip",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getTypeFertByIdEquip(id: Int): Result<Int> {
+        try {
+            val model = equipDao.getByIdEquip(id)
+            return Result.success(model.typeFert)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IEquipRoomDatasource.getTypeFertByIdEquip",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdCheckListByIdEquip(id: Int): Result<Int> {
+        try {
+            val model = equipDao.getByIdEquip(id)
+            return Result.success(model.idCheckList)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IEquipRoomDatasource.getIdCheckListByIdEquip",
                 message = "-",
                 cause = e
             )

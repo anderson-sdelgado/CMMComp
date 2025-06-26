@@ -95,12 +95,10 @@ class IROSActivityRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         ROSActivityRetrofitModel(
-                            idROSActivity = 1,
                             idOS = 12345,
                             idActivity = 10
                         ),
                         ROSActivityRetrofitModel(
-                            idROSActivity = 2,
                             idOS = 67890,
                             idActivity = 11
                         )
@@ -124,7 +122,7 @@ class IROSActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ROSActivityApi::class.java)
             val datasource = IROSActivityRetrofitDatasource(service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -156,7 +154,7 @@ class IROSActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ROSActivityApi::class.java)
             val datasource = IROSActivityRetrofitDatasource(service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -188,7 +186,7 @@ class IROSActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ROSActivityApi::class.java)
             val datasource = IROSActivityRetrofitDatasource(service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -200,7 +198,6 @@ class IROSActivityRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         ROSActivityRetrofitModel(
-                            idROSActivity = 1,
                             idOS = 12345,
                             idActivity = 10
                         )

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import javax.inject.Inject
 
 interface SetRegOperator {
@@ -11,14 +11,14 @@ interface SetRegOperator {
 }
 
 class ISetRegOperator @Inject constructor(
-    private val headerMotoMecRepository: HeaderMotoMecRepository
+    private val motoMecRepository: MotoMecRepository
 ): SetRegOperator {
 
     override suspend fun invoke(
         regOperator: String
     ): Result<Boolean> {
         try {
-            val result = headerMotoMecRepository.setRegOperator(
+            val result = motoMecRepository.setRegOperatorHeader(
                 regOperator.toInt()
             )
             if (result.isFailure) {

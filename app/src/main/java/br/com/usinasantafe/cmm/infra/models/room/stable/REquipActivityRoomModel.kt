@@ -8,7 +8,7 @@ import br.com.usinasantafe.cmm.utils.TB_R_EQUIP_ACTIVITY
 @Entity(tableName = TB_R_EQUIP_ACTIVITY)
 data class REquipActivityRoomModel (
     @PrimaryKey(autoGenerate = true)
-    val idREquipActivity: Int,
+    val idREquipActivity: Int? = null,
     val idEquip: Int,
     val idActivity: Int
 )

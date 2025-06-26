@@ -9,6 +9,7 @@ import javax.inject.Inject
 class IRActivityStopRoomDatasource @Inject constructor(
     private val rActivityStopDao: RActivityStopDao
 ) : RActivityStopRoomDatasource {
+
     override suspend fun addAll(list: List<RActivityStopRoomModel>): Result<Boolean> {
         try {
             rActivityStopDao.insertAll(list)
@@ -29,6 +30,19 @@ class IRActivityStopRoomDatasource @Inject constructor(
         } catch (e: Exception) {
             return resultFailure(
                 context = "IRActivityStopRoomDatasource.deleteAll",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdActivity(idActivity: Int): Result<List<RActivityStopRoomModel>> {
+        try {
+            val list = rActivityStopDao.listByIdActivity(idActivity)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IRActivityStopRoomDatasource.listByIdActivity",
                 message = "-",
                 cause = e
             )

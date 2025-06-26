@@ -56,7 +56,10 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     }
 
 
-    override suspend fun setNroOS(nroOS: Int): Result<Boolean> {
+    override suspend fun setNroOSAndStatusCon(
+        nroOS: Int,
+        statusCon: Boolean
+    ): Result<Boolean> {
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
@@ -67,9 +70,10 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.nroOS = nroOS
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.nroOS = nroOS
+            model.statusCon = statusCon
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -99,9 +103,9 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = e.cause
                 )
             }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.idActivity = id
-            val resultSave = save(headerMotoMec)
+            val model = resultGet.getOrNull()!!
+            model.idActivity = id
+            val resultSave = save(model)
             if (resultSave.isFailure) {
                 val e = resultSave.exceptionOrNull()!!
                 return resultFailure(
@@ -114,6 +118,78 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         } catch (e: Exception){
             return resultFailure(
                 context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdActivity(): Result<Int> {
+        try {
+            val resultGet = get()
+            if (resultGet.isFailure) {
+                val e = resultGet.exceptionOrNull()!!
+                return resultFailure(
+                    context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            return Result.success(model.idActivity!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setIdStop(id: Int): Result<Boolean> {
+        try {
+            val resultGet = get()
+            if (resultGet.isFailure) {
+                val e = resultGet.exceptionOrNull()!!
+                return resultFailure(
+                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            model.idStop = id
+            val resultSave = save(model)
+            if (resultSave.isFailure) {
+                val e = resultSave.exceptionOrNull()!!
+                return resultFailure(
+                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun clean(): Result<Boolean> {
+        try {
+            val editor = sharedPreferences.edit()
+            editor.putString(
+                BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                null
+            )
+            editor.apply()
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "INoteMotoMecSharedPreferencesDatasource.clean",
                 message = "-",
                 cause = e
             )

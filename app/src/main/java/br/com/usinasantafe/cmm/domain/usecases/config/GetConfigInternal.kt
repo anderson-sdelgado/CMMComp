@@ -2,8 +2,8 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.presenter.configuration.config.ConfigModel
-import br.com.usinasantafe.cmm.presenter.configuration.config.toConfigModel
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigModel
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.toConfigModel
 import javax.inject.Inject
 
 interface GetConfigInternal {

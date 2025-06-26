@@ -34,4 +34,17 @@ class IStopRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun listByIdList(idList: List<Int>): Result<List<StopRoomModel>> {
+        try {
+            val list = stopDao.listByIdList(idList)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IStopRoomDatasource.listByIdList",
+                message = "-",
+                cause = e
+            )
+        }
+    }
 }

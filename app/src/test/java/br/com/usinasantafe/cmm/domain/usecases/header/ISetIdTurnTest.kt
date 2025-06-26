@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -10,16 +10,16 @@ import org.mockito.kotlin.whenever
 
 class ISetIdTurnTest  {
 
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = ISetIdTurn(
-        headerMotoMecRepository = headerMotoMecRepository
+        motoMecRepository = motoMecRepository
     )
 
     @Test
     fun `Check return failure if have error in HeaderMotoMecRepository setIdTurn`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setIdTurn(1)
+                motoMecRepository.setIdTurnHeader(1)
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRepository.setIdTurn",
@@ -46,7 +46,7 @@ class ISetIdTurnTest  {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setIdTurn(1)
+                motoMecRepository.setIdTurnHeader(1)
             ).thenReturn(
                 Result.success(true)
             )

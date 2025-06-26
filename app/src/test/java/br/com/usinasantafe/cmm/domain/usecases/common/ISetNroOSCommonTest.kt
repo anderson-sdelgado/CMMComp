@@ -1,8 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.NoteMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.FlowApp
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -12,11 +11,9 @@ import org.mockito.kotlin.whenever
 
 class ISetNroOSCommonTest {
 
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
-    private val noteMotoMecRepository = mock<NoteMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = ISetNroOSCommon(
-        headerMotoMecRepository = headerMotoMecRepository,
-        noteMotoMecRepository = noteMotoMecRepository
+        motoMecRepository = motoMecRepository
     )
 
     @Test
@@ -24,7 +21,7 @@ class ISetNroOSCommonTest {
         runTest {
             val result = usecase(
                 nroOS = "19759a",
-                flowApp = FlowApp.HEADER_DEFAULT
+                flowApp = FlowApp.HEADER_INITIAL
             )
             assertEquals(
                 result.isFailure,
@@ -44,7 +41,7 @@ class ISetNroOSCommonTest {
     fun `Check return failure if have error in HeaderMotoMecRepository setNroOS - FlowApp HEADER_DEFAULT`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
                 resultFailure(
                     "HeaderMotoMecRepository.setNroOS",
@@ -54,7 +51,7 @@ class ISetNroOSCommonTest {
             )
             val result = usecase(
                 nroOS = "123456",
-                flowApp = FlowApp.HEADER_DEFAULT
+                flowApp = FlowApp.HEADER_INITIAL
             )
             assertEquals(
                 result.isFailure,
@@ -74,13 +71,13 @@ class ISetNroOSCommonTest {
     fun `Check return correct if function execute successfully - FlowApp HEADER_DEFAULT`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
                 Result.success(true)
             )
             val result = usecase(
                 nroOS = "123456",
-                flowApp = FlowApp.HEADER_DEFAULT
+                flowApp = FlowApp.HEADER_INITIAL
             )
             assertEquals(
                 result.isSuccess,
@@ -96,7 +93,7 @@ class ISetNroOSCommonTest {
     fun `Check return failure if have error in HeaderMotoMecRepository setNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
                 resultFailure(
                     "HeaderMotoMecRepository.setNroOS",
@@ -126,12 +123,12 @@ class ISetNroOSCommonTest {
     fun `Check return failure if have error in NoteMotoMecRepository setNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                noteMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSNote(123456)
             ).thenReturn(
                 resultFailure(
                     "NoteMotoMecRepository.setNroOS",
@@ -161,12 +158,12 @@ class ISetNroOSCommonTest {
     fun `Check return correct if function execute successfully - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                noteMotoMecRepository.setNroOS(123456)
+                motoMecRepository.setNroOSNote(123456)
             ).thenReturn(
                 Result.success(true)
             )

@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.entities.variable
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
+import java.util.Date
 
 data class Config(
     var number: Long? = null,
@@ -16,4 +17,6 @@ data class Config(
     var statusSend: StatusSend = StatusSend.STARTED,
     val flagUpdate: FlagUpdate = FlagUpdate.OUTDATED,
     val equip: Equip? = null,
+    var idTurnLastCheckList: Int? = null,
+    var dateLastCheckList: Date? = null,
 )

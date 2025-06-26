@@ -3,10 +3,11 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource // Import da datasource Retrofit
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource // Import da datasource Room
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import javax.inject.Inject
 
 class IStopRepository @Inject constructor(
@@ -67,6 +68,28 @@ class IStopRepository @Inject constructor(
         } catch (e: Exception) {
             return resultFailure(
                 context = "IStopRepository.recoverAll",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdList(idList: List<Int>): Result<List<Stop>> {
+        try {
+            val result = stopRoomDatasource.listByIdList(idList)
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IStopRepository.listByIdList",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IStopRepository.listByIdList",
                 message = "-",
                 cause = e
             )

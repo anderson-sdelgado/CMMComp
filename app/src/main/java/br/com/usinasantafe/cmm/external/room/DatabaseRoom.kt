@@ -52,16 +52,16 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun leiraDao(): LeiraDao
     abstract fun motoMecDao(): MotoMecDao
     abstract fun osDao(): OSDao
-    abstract fun paradaDao(): StopDao
     abstract fun pressaoBocalDao(): PressaoBocalDao
     abstract fun propriedadeDao(): PropriedadeDao
-    abstract fun rAtivParadaDao(): RActivityStopDao
+    abstract fun rActivityStopDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rEquipPneuDao(): REquipPneuDao
     abstract fun rFuncaoAtivParadaDao(): RFuncaoAtivParadaDao
     abstract fun rOSActivityDao(): ROSActivityDao
     abstract fun servicoDao(): ServicoDao
-    abstract fun turnoDao(): TurnDao
+    abstract fun stopDao(): StopDao
+    abstract fun turnDao(): TurnDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao
     abstract fun noteMotoMecDao(): NoteMotoMecDao
 }

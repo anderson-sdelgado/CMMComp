@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.di.external.retrofit
 
-import br.com.usinasantafe.cmm.di.persistence.DefaultRetrofit
-import br.com.usinasantafe.cmm.external.retrofit.api.variable.ConfigApi
+import br.com.usinasantafe.cmm.di.provider.DefaultRetrofit
+import br.com.usinasantafe.cmm.external.retrofit.api.variable.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,5 +18,11 @@ object VariableRetrofitModule {
     fun configApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ConfigApi = retrofit.create(ConfigApi::class.java)
+
+    @Provides
+    @Singleton
+    fun motoMecApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): MotoMecApi = retrofit.create(MotoMecApi::class.java)
 
 }

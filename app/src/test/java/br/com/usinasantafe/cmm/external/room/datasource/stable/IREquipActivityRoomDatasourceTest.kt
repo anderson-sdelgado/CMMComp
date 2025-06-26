@@ -176,9 +176,9 @@ class IREquipActivityRoomDatasourceTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return list empty if not have idEquip researched`() =
+    fun `listByIdEquip - Check return list empty if not have idEquip researched`() =
         runTest {
-            val result = datasource.getListByIdEquip(1)
+            val result = datasource.listByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -190,7 +190,7 @@ class IREquipActivityRoomDatasourceTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return list if have idEquip researched`() =
+    fun `listByIdEquip - Check return list if have idEquip researched`() =
         runTest {
             rEquipActivityDao.insertAll(
                 listOf(
@@ -206,7 +206,7 @@ class IREquipActivityRoomDatasourceTest {
                     )
                 )
             )
-            val result = datasource.getListByIdEquip(1)
+            val result = datasource.listByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true

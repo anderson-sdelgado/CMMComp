@@ -35,7 +35,7 @@ class IREquipActivityRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getListByIdEquip(idEquip: Int): Result<List<REquipActivityRoomModel>> {
+    override suspend fun listByIdEquip(idEquip: Int): Result<List<REquipActivityRoomModel>> {
         try {
             val list = rEquipActivityDao.listByIdEquip(idEquip)
             return Result.success(list)

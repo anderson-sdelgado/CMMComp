@@ -2,6 +2,8 @@ package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.StatusSend
+import java.util.Date
 
 interface ConfigRepository {
     suspend fun get(): Result<Config>
@@ -11,4 +13,9 @@ interface ConfigRepository {
     suspend fun send(config: Config): Result<Config>
     suspend fun save(config: Config): Result<Boolean>
     suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean>
+    suspend fun getNumber(): Result<Long>
+    suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean>
+    suspend fun getIdEquip(): Result<Int>
+    suspend fun getIdTurnCheckListLast(): Result<Int?>
+    suspend fun getDateCheckListLast(): Result<Date>
 }

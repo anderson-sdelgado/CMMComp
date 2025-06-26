@@ -8,7 +8,6 @@ data class OSRetrofitModel(
     val idLibOS: Int,
     val idPropAgr: Int,
     val areaOS: Double,
-    val typeOS: Int,
     val idEquip: Int,
 )
 
@@ -19,7 +18,6 @@ fun OSRetrofitModel.retrofitModelToEntity(): OS {
         idLibOS = this.idLibOS,
         idPropAgr = this.idPropAgr,
         areaOS = this.areaOS,
-        typeOS = this.typeOS,
         idEquip = this.idEquip
     )
 }

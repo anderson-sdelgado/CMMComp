@@ -10,6 +10,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.retrofitToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.StatusSend
+import java.util.Date
 import javax.inject.Inject
 
 class IConfigRepository @Inject constructor(
@@ -126,5 +128,70 @@ class IConfigRepository @Inject constructor(
             )
         }
         return Result.success(true)
+    }
+
+    override suspend fun getNumber(): Result<Long> {
+        val result = configSharedPreferencesDatasource.getNumber()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.getNumber",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean> {
+        val result = configSharedPreferencesDatasource.setStatusSend(statusSend)
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.setStatusSend",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getIdEquip(): Result<Int> {
+        val result = configSharedPreferencesDatasource.getIdEquip()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.getIdEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getIdTurnCheckListLast(): Result<Int?> {
+        val result = configSharedPreferencesDatasource.getIdTurnCheckListLast()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.getIdTurnCheckListLast",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getDateCheckListLast(): Result<Date> {
+        val result = configSharedPreferencesDatasource.getDateCheckListLast()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.getDateCheckListLast",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
     }
 }

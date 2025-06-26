@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.StopRetrofitModel
@@ -40,7 +41,9 @@ class IStopRepositoryTest {
             whenever(
                 stopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    context = "IStopRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -51,11 +54,11 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IParadaRepository.addAll -> Unknown Error"
+                "IStopRepository.addAll -> IStopRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -98,7 +101,9 @@ class IStopRepositoryTest {
             whenever(
                 stopRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    context = "IStopRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -109,11 +114,11 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IParadaRepository.deleteAll -> Unknown Error"
+                "IStopRepository.deleteAll -> IStopRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -142,7 +147,9 @@ class IStopRepositoryTest {
             whenever(
                 stopRetrofitDatasource.recoverAll("token")
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    context = "IStopRetrofitDatasource.recoverAll",
+                    "-",
                     Exception()
                 )
             )
@@ -153,11 +160,11 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IParadaRepository.recoverAll -> Unknown Error"
+                "IStopRepository.recoverAll -> IStopRetrofitDatasource.recoverAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -203,6 +210,98 @@ class IStopRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return failure if have error in StopRoomDatasource listByIdList`() =
+        runTest {
+            whenever(
+                stopRoomDatasource.listByIdList(
+                    listOf(1)
+                )
+            ).thenReturn(
+                resultFailure(
+                    context = "IStopRoomDatasource.listByIdList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdList(listOf(1))
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IStopRepository.listByIdList -> IStopRoomDatasource.listByIdList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdList - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                stopRoomDatasource.listByIdList(
+                    listOf(1, 2)
+                )
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        StopRoomModel(
+                            idStop = 1,
+                            codStop = 101,
+                            descrStop = "MANUTENCAO MECANICA"
+                        ),
+                        StopRoomModel(
+                            idStop = 2,
+                            codStop = 102,
+                            descrStop = "ABASTECIMENTO"
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdList(
+                listOf(1, 2)
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                2
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.idStop,
+                1
+            )
+            assertEquals(
+                entity1.codStop,
+                101
+            )
+            assertEquals(
+                entity1.descrStop,
+                "MANUTENCAO MECANICA"
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.idStop,
+                2
+            )
+            assertEquals(
+                entity2.codStop,
+                102
+            )
+            assertEquals(
+                entity2.descrStop,
+                "ABASTECIMENTO"
             )
         }
 

@@ -2,8 +2,8 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import br.com.usinasantafe.cmm.domain.entities.stable.Stop // Import da entidade de domínio Parada
-import br.com.usinasantafe.cmm.utils.TB_STOP // Import da constante do nome da tabela (suposição)
+import br.com.usinasantafe.cmm.domain.entities.stable.Stop
+import br.com.usinasantafe.cmm.utils.TB_STOP
 
 @Entity(tableName = TB_STOP)
 data class StopRoomModel (

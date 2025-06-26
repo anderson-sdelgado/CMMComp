@@ -130,29 +130,16 @@ class IEquipRetrofitDatasourceTest {
                 1
             )
             assertEquals(
-                list[0].hourmeter,
+                list[0].hourMeter,
                 100.0,
                 0.0
-            )
-            assertEquals(
-                list[0].measure,
-                200.0,
-                0.0
-            )
-            assertEquals(
-                list[0].type,
-                1
             )
             assertEquals(
                 list[0].classify,
                 1
             )
             assertEquals(
-                list[0].flagApontMecan,
-                1
-            )
-            assertEquals(
-                list[0].flagApontPneu,
+                list[0].flagMechanic,
                 1
             )
             assertEquals(
@@ -184,29 +171,16 @@ class IEquipRetrofitDatasourceTest {
                 2
             )
             assertEquals(
-                list[1].hourmeter,
+                list[1].hourMeter,
                 200.0,
                 0.0
-            )
-            assertEquals(
-                list[1].measure,
-                300.0,
-                0.0
-            )
-            assertEquals(
-                list[1].type,
-                2
             )
             assertEquals(
                 list[1].classify,
                 2
             )
             assertEquals(
-                list[1].flagApontMecan,
-                0
-            )
-            assertEquals(
-                list[1].flagApontPneu,
+                list[1].flagMechanic,
                 0
             )
             server.shutdown()

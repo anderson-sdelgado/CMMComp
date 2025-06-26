@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import javax.inject.Inject
 
 interface CheckHeaderOpen {
@@ -9,11 +9,11 @@ interface CheckHeaderOpen {
 }
 
 class ICheckHeaderOpen @Inject constructor(
-    private val headerMotoMecRepository: HeaderMotoMecRepository
+    private val motoMecRepository: MotoMecRepository
 ): CheckHeaderOpen {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = headerMotoMecRepository.checkHeaderOpen()
+        val result = motoMecRepository.checkOpenHeader()
         if(result.isFailure) {
             val e = result.exceptionOrNull()!!
             return resultFailure(

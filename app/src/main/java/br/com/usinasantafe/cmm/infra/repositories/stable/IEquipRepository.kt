@@ -107,8 +107,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getMeasureByIdEquip(idEquip: Int): Result<Double> {
-        val result = equipRoomDatasource.getMeasureByIdEquip(idEquip)
+    override suspend fun getHourMeterByIdEquip(idEquip: Int): Result<Double> {
+        val result = equipRoomDatasource.getHourMeterByIdEquip(idEquip)
         if(result.isFailure){
             val e = result.exceptionOrNull()!!
             return resultFailure(
@@ -120,18 +120,44 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun updateMeasureByIdEquip(
-        measure: Double,
+    override suspend fun updateHourMeterByIdEquip(
+        hourMeter: Double,
         idEquip: Int
     ): Result<Boolean> {
-        val result = equipRoomDatasource.updateMeasureByIdEquip(
-            measure = measure,
+        val result = equipRoomDatasource.updateHourMeterByIdEquip(
+            hourMeter = hourMeter,
             idEquip = idEquip
         )
         if(result.isFailure){
             val e = result.exceptionOrNull()!!
             return resultFailure(
                 context = "IEquipRepository.updateMeasureByIdEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getTypeFertByIdEquip(idEquip: Int): Result<Int> {
+        val result = equipRoomDatasource.getTypeFertByIdEquip(idEquip)
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IEquipRepository.getTypeFertByIdEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
+    }
+
+    override suspend fun getIdCheckListByIdEquip(idEquip: Int): Result<Int> {
+        val result = equipRoomDatasource.getIdCheckListByIdEquip(idEquip)
+        if(result.isFailure){
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IEquipRepository.getIdCheckListByIdEquip",
                 message = e.message,
                 cause = e.cause
             )

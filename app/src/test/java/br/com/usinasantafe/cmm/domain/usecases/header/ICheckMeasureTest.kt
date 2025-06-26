@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -11,10 +11,10 @@ import org.mockito.kotlin.whenever
 
 class ICheckMeasureTest {
 
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = ICheckMeasure(
-        headerMotoMecRepository = headerMotoMecRepository,
+    private val usecase = ICheckHourMeter(
+        motoMecRepository = motoMecRepository,
         equipRepository = equipRepository
     )
 
@@ -22,7 +22,7 @@ class ICheckMeasureTest {
     fun `Check return failure if have error in HeaderMotoMecRepository getIdEquip`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getIdEquip()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 resultFailure(
                     context = "HeaderMotoMecRepository.getIdEquip",
@@ -49,12 +49,12 @@ class ICheckMeasureTest {
     fun `Check return failure if have error in EquipRepository getMeasureByIdEquip`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getIdEquip()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(10)
             )
             whenever(
-                equipRepository.getMeasureByIdEquip(10)
+                equipRepository.getHourMeterByIdEquip(10)
             ).thenReturn(
                 resultFailure(
                     context = "EquipRepository.getMeasureByIdEquip",
@@ -81,12 +81,12 @@ class ICheckMeasureTest {
     fun `Check return false if measure database is bigger than measure input`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getIdEquip()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(10)
             )
             whenever(
-                equipRepository.getMeasureByIdEquip(10)
+                equipRepository.getHourMeterByIdEquip(10)
             ).thenReturn(
                 Result.success(20000.0)
             )
@@ -110,12 +110,12 @@ class ICheckMeasureTest {
     fun `Check return true if measure database is less than measure input`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getIdEquip()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(10)
             )
             whenever(
-                equipRepository.getMeasureByIdEquip(10)
+                equipRepository.getHourMeterByIdEquip(10)
             ).thenReturn(
                 Result.success(5000.0)
             )

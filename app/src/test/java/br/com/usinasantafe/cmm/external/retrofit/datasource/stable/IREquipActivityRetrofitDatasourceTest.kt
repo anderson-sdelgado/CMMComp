@@ -24,7 +24,7 @@ class IREquipActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(REquipActivityApi::class.java)
             val datasource = IREquipActivityRetrofitDatasource(service)
-            val result = datasource.getListByIdEquip(
+            val result = datasource.listByIdEquip(
                 token = "token",
                 idEquip = 1
             )
@@ -56,7 +56,7 @@ class IREquipActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(REquipActivityApi::class.java)
             val datasource = IREquipActivityRetrofitDatasource(service)
-            val result = datasource.getListByIdEquip(
+            val result = datasource.listByIdEquip(
                 token = "token",
                 idEquip = 1
             )
@@ -88,7 +88,7 @@ class IREquipActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(REquipActivityApi::class.java)
             val datasource = IREquipActivityRetrofitDatasource(service)
-            val result = datasource.getListByIdEquip(
+            val result = datasource.listByIdEquip(
                 token = "token",
                 idEquip = 1
             )
@@ -100,12 +100,10 @@ class IREquipActivityRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         REquipActivityRetrofitModel(
-                            idREquipActivity = 1,
                             idEquip = 30,
                             idActivity = 10
                         ),
                         REquipActivityRetrofitModel(
-                            idREquipActivity = 2,
                             idEquip = 31,
                             idActivity = 11
                         )

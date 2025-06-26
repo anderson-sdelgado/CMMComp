@@ -1,9 +1,15 @@
 package br.com.usinasantafe.cmm.di.usecase
 
+import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.common.ICheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.common.IListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.IGetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.common.IListTurn
 import br.com.usinasantafe.cmm.domain.usecases.common.ISetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.common.ISetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.domain.usecases.header.*
@@ -35,7 +41,7 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindGetTurnList(usecase: IGetTurnList): GetTurnList
+    fun bindGetTurnList(usecase: IListTurn): ListTurn
 
     @Binds
     @Singleton
@@ -51,7 +57,7 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindGetActivityList(usecase: IGetActivityList): GetActivityList
+    fun bindGetActivityList(usecase: IListActivity): ListActivity
 
     @Binds
     @Singleton
@@ -59,15 +65,11 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindCheckMeasure(usecase: ICheckMeasure): CheckMeasure
+    fun bindCheckMeasure(usecase: ICheckHourMeter): CheckHourMeter
 
     @Binds
     @Singleton
-    fun bindSetMeasureInitial(usecase: ISetMeasureInitial): SetMeasureInitial
-
-    @Binds
-    @Singleton
-    fun bindSaveHeaderOpen(usecase: ISaveHeaderOpen): SaveHeaderOpen
+    fun bindSetMeasureInitial(usecase: ISetHourMeter): SetHourMeter
 
     @Binds
     @Singleton
@@ -77,5 +79,12 @@ interface HeaderModule {
     @Singleton
     fun bindGetNroOSHeader(usecase: IGetNroOSHeader): GetNroOSHeader
 
+    @Binds
+    @Singleton
+    fun bindCheckHeaderSend(usecase: ICheckHeaderSend): CheckHeaderSend
+
+    @Binds
+    @Singleton
+    fun bindSendHeader(usecase: ISendHeader): SendHeader
 
 }

@@ -168,24 +168,20 @@ class IROSActivityRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 ROSActivityRetrofitModel(
-                    idROSActivity = 1,
                     idOS = 10,
                     idActivity = 20
                 ),
                 ROSActivityRetrofitModel(
-                    idROSActivity = 2,
                     idOS = 11,
                     idActivity = 21
                 )
             )
             val entityList = listOf(
                 ROSActivity(
-                    idROSActivity = 1,
                     idOS = 10,
                     idActivity = 20
                 ),
                 ROSActivity(
-                    idROSActivity = 2,
                     idOS = 11,
                     idActivity = 21
                 )
@@ -212,7 +208,7 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return failure if have error in ROSActivityRetrofitDatasource getListByNroOS`() =
         runTest {
             whenever(
-                rOSActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -223,7 +219,7 @@ class IROSActivityRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -244,14 +240,14 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
         runTest {
             whenever(
-                rOSActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
             ).thenReturn(
                 Result.success(emptyList())
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -268,7 +264,7 @@ class IROSActivityRepositoryTest {
     fun `getListByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                rOSActivityRetrofitDatasource.getListByNroOS(
+                rOSActivityRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -276,19 +272,17 @@ class IROSActivityRepositoryTest {
                 Result.success(
                     listOf(
                         ROSActivityRetrofitModel(
-                            idROSActivity = 1,
                             idOS = 1,
                             idActivity = 10
                         ),
                         ROSActivityRetrofitModel(
-                            idROSActivity = 2,
                             idOS = 2,
                             idActivity = 11
                         )
                     )
                 )
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -303,10 +297,6 @@ class IROSActivityRepositoryTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idROSActivity,
-                1
-            )
-            assertEquals(
                 entity1.idOS,
                 1
             )
@@ -315,10 +305,6 @@ class IROSActivityRepositoryTest {
                 10
             )
             val entity2 = list[1]
-            assertEquals(
-                entity2.idROSActivity,
-                2
-            )
             assertEquals(
                 entity2.idOS,
                 2

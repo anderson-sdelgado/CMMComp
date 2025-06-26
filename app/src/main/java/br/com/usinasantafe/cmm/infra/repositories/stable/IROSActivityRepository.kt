@@ -74,12 +74,12 @@ class IROSActivityRepository @Inject constructor(
         }
     }
 
-    override suspend fun getListByNroOS(
+    override suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<ROSActivity>> {
         try {
-            val result = rOSActivityRetrofitDatasource.getListByNroOS(
+            val result = rOSActivityRetrofitDatasource.listByNroOS(
                 token = token,
                 nroOS = nroOS
             )

@@ -22,7 +22,7 @@ class IROSActivityRetrofitDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getListByNroOS(
+    override suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<ROSActivityRetrofitModel>> {

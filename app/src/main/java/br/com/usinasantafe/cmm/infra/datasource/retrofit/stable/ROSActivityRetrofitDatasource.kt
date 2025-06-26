@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitM
 
 interface ROSActivityRetrofitDatasource {
     suspend fun recoverAll(token: String): Result<List<ROSActivityRetrofitModel>>
-    suspend fun getListByNroOS(
+    suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<ROSActivityRetrofitModel>>

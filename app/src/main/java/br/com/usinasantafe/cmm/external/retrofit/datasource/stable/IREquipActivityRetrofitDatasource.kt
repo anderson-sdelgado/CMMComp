@@ -9,7 +9,7 @@ import javax.inject.Inject
 class IREquipActivityRetrofitDatasource @Inject constructor(
     private val rEquipActivityApi: REquipActivityApi
 ) : REquipActivityRetrofitDatasource {
-    override suspend fun getListByIdEquip(
+    override suspend fun listByIdEquip(
         token: String,
         idEquip: Int
     ): Result<List<REquipActivityRetrofitModel>> {

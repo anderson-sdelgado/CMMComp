@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import javax.inject.Inject
 
 interface GetNroOSHeader {
@@ -9,12 +9,12 @@ interface GetNroOSHeader {
 }
 
 class IGetNroOSHeader @Inject constructor(
-    private val headerMotoMecRepository: HeaderMotoMecRepository
+    private val motoMecRepository: MotoMecRepository
 ): GetNroOSHeader {
 
     override suspend fun invoke(): Result<String> {
         try {
-            val result = headerMotoMecRepository.getNroOS()
+            val result = motoMecRepository.getNroOSHeader()
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(

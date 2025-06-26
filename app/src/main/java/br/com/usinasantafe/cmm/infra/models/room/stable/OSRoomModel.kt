@@ -13,8 +13,7 @@ data class OSRoomModel (
     val idLibOS: Int,
     val idPropAgr: Int,
     val areaOS: Double,
-    val typeOS: Int,
-    val idEquip: Int
+    val idEquip: Int,
 )
 
 fun OSRoomModel.roomModelToEntity(): OS {
@@ -25,7 +24,6 @@ fun OSRoomModel.roomModelToEntity(): OS {
             idLibOS = this.idLibOS,
             idPropAgr = this.idPropAgr,
             areaOS = this.areaOS,
-            typeOS = this.typeOS,
             idEquip = this.idEquip
         )
     }
@@ -39,7 +37,6 @@ fun OS.entityToRoomModel(): OSRoomModel {
             idLibOS = this.idLibOS,
             idPropAgr = this.idPropAgr,
             areaOS = this.areaOS,
-            typeOS = this.typeOS,
             idEquip = this.idEquip
         )
     }

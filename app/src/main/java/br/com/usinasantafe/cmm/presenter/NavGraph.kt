@@ -14,24 +14,29 @@ import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_COMMON_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_HEADER_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.INITIAL_MENU_ROUTE
-import br.com.usinasantafe.cmm.presenter.Routes.MEASURE_HEADER_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.HOUR_METER_HEADER_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.ITEM_CHECK_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.MENU_NOTE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OPERATOR_HEADER_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.OS_COMMON_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PASSWORD_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.QUESTION_UPDATE_CHECK_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.SPLASH_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.STOP_LIST_NOTE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TURN_LIST_HEADER_ROUTE
-import br.com.usinasantafe.cmm.presenter.configuration.config.ConfigScreen
-import br.com.usinasantafe.cmm.presenter.configuration.password.PasswordScreen
-import br.com.usinasantafe.cmm.presenter.common.activityList.ActivityListCommonScreen
-import br.com.usinasantafe.cmm.presenter.header.equip.EquipHeaderScreen
-import br.com.usinasantafe.cmm.presenter.header.measure.MeasureHeaderScreen
-import br.com.usinasantafe.cmm.presenter.header.operator.OperatorHeaderScreen
-import br.com.usinasantafe.cmm.presenter.common.os.OSCommonScreen
-import br.com.usinasantafe.cmm.presenter.header.turnlist.TurnListHeaderScreen
-import br.com.usinasantafe.cmm.presenter.note.menu.MenuNoteScreen
-import br.com.usinasantafe.cmm.presenter.splash.SplashScreen
+import br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList.ItemCheckListScreen
+import br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate.QuestionUpdateCheckListScreen
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigScreen
+import br.com.usinasantafe.cmm.presenter.view.configuration.password.PasswordScreen
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.header.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.header.hourMeter.HourMeterHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.header.turnList.TurnListHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.note.menu.MenuNoteScreen
+import br.com.usinasantafe.cmm.presenter.view.note.stopList.StopListNoteScreen
+import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
 import br.com.usinasantafe.cmm.utils.FlowApp
 
 @Composable
@@ -178,13 +183,24 @@ fun NavigationGraph(
             )
         }
 
-        composable(MEASURE_HEADER_ROUTE) {
-            MeasureHeaderScreen(
+        composable(
+            HOUR_METER_HEADER_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+            )
+        ) {
+            HourMeterHeaderScreen(
                 onNavActivityList = {
                     navActions.navigateToActivityListCommon()
                 },
                 onNavMenuNote = {
                     navActions.navigateToMenuNote()
+                },
+                onNavInitialMenu = {
+                    navActions.navigateToInitialMenu()
+                },
+                onNavQuestionUpdateCheckList = {
+                    navActions.navigateToQuestionUpdateCheckList()
                 }
             )
         }
@@ -204,11 +220,38 @@ fun NavigationGraph(
                     navActions.navigateToActivityListCommon(
                         flowApp = FlowApp.NOTE_STOP.ordinal
                     )
+                },
+                onNavMeasure = {
+                    navActions.navigateToMeasureHeader(
+                        flowApp = FlowApp.HEADER_FINISH.ordinal
+                    )
                 }
             )
         }
 
         composable(STOP_LIST_NOTE_ROUTE) {
+            StopListNoteScreen(
+                onNavActivityList = {
+                    navActions.navigateToActivityListCommon(
+                        flowApp = FlowApp.NOTE_STOP.ordinal
+                    )
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                }
+            )
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        ///////////////////////// Check List ///////////////////////////////
+
+        composable(QUESTION_UPDATE_CHECK_LIST_ROUTE){
+            QuestionUpdateCheckListScreen()
+        }
+
+        composable(ITEM_CHECK_LIST_ROUTE){
+            ItemCheckListScreen()
         }
 
         ////////////////////////////////////////////////////////////////////

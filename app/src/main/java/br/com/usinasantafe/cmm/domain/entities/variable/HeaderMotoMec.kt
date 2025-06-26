@@ -1,11 +1,15 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
+import br.com.usinasantafe.cmm.utils.TypeEquip
+
 data class HeaderMotoMec(
     var id: Int? = null,
     var regOperator: Int? = null,
     var idEquip: Int? = null,
+    var typeEquip: TypeEquip? = null,
     var idTurn: Int? = null,
     var nroOS: Int? = null,
     var idActivity: Int? = null,
-    var measureInitial: Double? = null,
+    var hourMeter: Double? = null,
+    var statusCon: Boolean = true
 )

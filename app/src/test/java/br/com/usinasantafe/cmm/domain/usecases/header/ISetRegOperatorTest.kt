@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -10,9 +10,9 @@ import org.mockito.kotlin.whenever
 
 class ISetRegOperatorTest {
 
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = ISetRegOperator(
-        headerMotoMecRepository = headerMotoMecRepository
+        motoMecRepository = motoMecRepository
     )
 
     @Test
@@ -37,7 +37,7 @@ class ISetRegOperatorTest {
     fun `Check return failure if have error in HeaderMotoMecRepository setRegOperator`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setRegOperator(19759)
+                motoMecRepository.setRegOperatorHeader(19759)
             ).thenReturn(
                 resultFailure(
                     "HeaderMotoMecRepository.setRegOperator",
@@ -64,7 +64,7 @@ class ISetRegOperatorTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRepository.setRegOperator(19759)
+                motoMecRepository.setRegOperatorHeader(19759)
             ).thenReturn(
                 Result.success(true)
             )

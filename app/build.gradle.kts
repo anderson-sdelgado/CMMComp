@@ -19,6 +19,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "br.com.usinasantafe.cmm.CustomTestRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -85,19 +87,27 @@ android {
             dimension = "version"
             applicationIdSuffix = ".dev"
             manifestPlaceholders["appName"] = "-DEV"
-            resValue("string", "base_url", "https://www.usinasantafe.com.br/cmmdev/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/cmmdev/view/")
         }
         create("qa") {
             dimension = "version"
             applicationIdSuffix = ".qa"
             manifestPlaceholders["appName"] = "-QA"
-            resValue("string", "base_url", "https://www.usinasantafe.com.br/cmmqa/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/cmmqa/view/")
         }
         create("prod") {
             dimension = "version"
             applicationIdSuffix = ".prod"
             manifestPlaceholders["appName"] = ""
-            resValue("string", "base_url", "https://www.usinasantafe.com.br/cmmprod/versao_1_00/view/")
+            resValue("string", "base_url", "https://app.usinasantafe.com.br/cmmprod/versao_1_00/view/")
+        }
+    }
+
+    sourceSets {
+        getByName("androidTest") {
+            java.srcDirs("src/androidTest/java")
+            res.srcDirs("src/androidTest/res")
+            manifest.srcFile("src/androidTest/AndroidManifest.xml")
         }
     }
 }
@@ -162,7 +172,6 @@ dependencies {
     implementation(libs.timber)
 }
 
-// Allow references to generated code
 kapt {
     correctErrorTypes = true
 }

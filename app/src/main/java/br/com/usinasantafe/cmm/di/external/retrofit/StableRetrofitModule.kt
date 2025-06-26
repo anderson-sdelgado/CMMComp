@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.di.external.retrofit
 
-import br.com.usinasantafe.cmm.di.persistence.DefaultRetrofit
-import br.com.usinasantafe.cmm.di.persistence.OSApiDefault
-import br.com.usinasantafe.cmm.di.persistence.OSApiShortTimeout
-import br.com.usinasantafe.cmm.di.persistence.ShortTimeoutRetrofit
+import br.com.usinasantafe.cmm.di.provider.DefaultRetrofit
+import br.com.usinasantafe.cmm.di.provider.OSApiDefault
+import br.com.usinasantafe.cmm.di.provider.OSApiShortTimeout
+import br.com.usinasantafe.cmm.di.provider.ShortTimeoutRetrofit
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.*
 import dagger.Module
 import dagger.Provides

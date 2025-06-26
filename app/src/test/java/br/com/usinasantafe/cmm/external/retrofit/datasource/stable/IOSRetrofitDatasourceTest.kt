@@ -96,7 +96,6 @@ class IOSRetrofitDatasourceTest {
                             idLibOS = 10,
                             idPropAgr = 20,
                             areaOS = 150.75,
-                            typeOS = 1,
                             idEquip = 30
                         ),
                         OSRetrofitModel(
@@ -105,7 +104,6 @@ class IOSRetrofitDatasourceTest {
                             idLibOS = 11,
                             idPropAgr = 21,
                             areaOS = 200.0,
-                            typeOS = 2,
                             idEquip = 31
                         )
                     )
@@ -239,7 +237,6 @@ class IOSRetrofitDatasourceTest {
                             idLibOS = 10,
                             idPropAgr = 20,
                             areaOS = 150.75,
-                            typeOS = 1,
                             idEquip = 30
                         )
                     )

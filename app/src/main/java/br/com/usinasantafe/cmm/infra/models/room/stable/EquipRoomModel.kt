@@ -15,12 +15,9 @@ data class EquipRoomModel (
     val codTurnEquip: Int,
     val idCheckList: Int,
     val typeFert: Int,
-    val hourmeter: Double,
-    var measure: Double,
-    val type: Int,
+    var hourMeter: Double,
     val classify: Int,
-    val flagApontMecan: Boolean,
-    val flagApontPneu: Boolean
+    val flagMechanic: Boolean
 )
 
 fun EquipRoomModel.roomModelToEntity(): Equip {
@@ -33,12 +30,9 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
             codTurnEquip = this.codTurnEquip,
             idCheckList = this.idCheckList,
             typeFert = this.typeFert,
-            hourmeter = this.hourmeter,
-            measure = this.measure,
-            type = this.type,
+            hourMeter = this.hourMeter,
             classify = this.classify,
-            flagApontMecan = this.flagApontMecan,
-            flagApontPneu = this.flagApontPneu
+            flagMechanic = this.flagMechanic
         )
     }
 }
@@ -53,12 +47,9 @@ fun Equip.entityToRoomModel(): EquipRoomModel {
             codTurnEquip = this.codTurnEquip,
             idCheckList = this.idCheckList,
             typeFert = this.typeFert,
-            hourmeter = this.hourmeter,
-            measure = this.measure,
-            type = this.type,
+            hourMeter = this.hourMeter,
             classify = this.classify,
-            flagApontMecan = this.flagApontMecan,
-            flagApontPneu = this.flagApontPneu
+            flagMechanic = this.flagMechanic
         )
     }
 }

@@ -50,19 +50,19 @@ class IREquipActivityRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getListByIdEquip(
+    override suspend fun listByIdEquip(
         token: String,
         idEquip: Int
     ): Result<List<REquipActivity>> {
         try {
-            val result = rEquipActivityRetrofitDatasource.getListByIdEquip(
+            val result = rEquipActivityRetrofitDatasource.listByIdEquip(
                 token = token,
                 idEquip = idEquip
             )
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IREquipActivityRepository.getListByIdEquip",
+                    context = "IREquipActivityRepository.listByIdEquip",
                     message = e.message,
                     cause = e.cause
                 )
@@ -78,13 +78,13 @@ class IREquipActivityRepository @Inject constructor(
         }
     }
 
-    override suspend fun getListByIdEquip(idEquip: Int): Result<List<REquipActivity>> {
+    override suspend fun listByIdEquip(idEquip: Int): Result<List<REquipActivity>> {
         try {
-            val result = rEquipActivityRoomDatasource.getListByIdEquip(idEquip)
+            val result = rEquipActivityRoomDatasource.listByIdEquip(idEquip)
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IREquipActivityRepository.getListByIdEquip",
+                    context = "IREquipActivityRepository.listByIdEquip",
                     message = e.message,
                     cause = e.cause
                 )

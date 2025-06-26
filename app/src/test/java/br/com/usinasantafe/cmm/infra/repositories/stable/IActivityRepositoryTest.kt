@@ -231,7 +231,7 @@ class IActivityRepositoryTest {
         runTest {
             whenever(
                 activityRoomDatasource.listByIdList(
-                    listOf(1)
+                    listOf(1, 2)
                 )
             ).thenReturn(
                 Result.success(
@@ -249,7 +249,9 @@ class IActivityRepositoryTest {
                     )
                 )
             )
-            val result = repository.listByIdList(listOf(1))
+            val result = repository.listByIdList(
+                listOf(1, 2)
+            )
             assertEquals(
                 result.isSuccess,
                 true

@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
+import java.util.Date
 
 data class ConfigSharedPreferencesModel(
     var number: Long? = null,
@@ -14,7 +15,9 @@ data class ConfigSharedPreferencesModel(
     var version: String? = null,
     var app: String? = null,
     var statusSend: StatusSend = StatusSend.STARTED,
-    var flagUpdate: FlagUpdate = FlagUpdate.OUTDATED
+    var flagUpdate: FlagUpdate = FlagUpdate.OUTDATED,
+    var idTurnCheckListLast: Int? = null,
+    var dateLastCheckList: Date? = null,
 )
 
 fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
@@ -29,7 +32,9 @@ fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
             version = version,
             app = app,
             statusSend = statusSend,
-            flagUpdate = flagUpdate
+            flagUpdate = flagUpdate,
+            idTurnLastCheckList = idTurnCheckListLast,
+            dateLastCheckList = dateLastCheckList
         )
     }
 }
@@ -46,7 +51,9 @@ fun Config.entityToSharedPreferencesModel(): ConfigSharedPreferencesModel {
             version = version,
             app = app,
             statusSend = statusSend,
-            flagUpdate = flagUpdate
+            flagUpdate = flagUpdate,
+            idTurnCheckListLast = idTurnLastCheckList,
+            dateLastCheckList = dateLastCheckList
         )
     }
 }

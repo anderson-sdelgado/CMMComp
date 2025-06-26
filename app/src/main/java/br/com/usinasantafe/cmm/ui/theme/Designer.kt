@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.ui.theme
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +16,6 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -78,7 +76,9 @@ fun TextButtonDesign(text: String) {
     )
 }
 
-const val BUTTON_OK_ALERT_DIALOG_SIMPLE = "button_ok_alert_dialog_simple"
+const val TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE = "tag_button_ok_alert_dialog_simple"
+const val TAG_BUTTON_YES_ALERT_DIALOG_CHECK = "tag_button_yes_alert_dialog_check"
+const val TAG_BUTTON_NO_ALERT_DIALOG_CHECK = "tag_button_no_alert_dialog_check"
 
 @Composable
 fun AlertDialogSimpleDesign(
@@ -102,7 +102,7 @@ fun AlertDialogSimpleDesign(
         confirmButton = {
             Button(
                 onClick = setCloseDialog,
-                modifier = Modifier.testTag(BUTTON_OK_ALERT_DIALOG_SIMPLE)
+                modifier = Modifier.testTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
             ) {
                 Text("OK")
             }
@@ -164,7 +164,7 @@ fun AlertDialogCheckDesign(
         confirmButton = {
             Button(
                 onClick = setActionButtonOK,
-                modifier = Modifier.testTag("tag_button_yes_alert_dialog_check")
+                modifier = Modifier.testTag(TAG_BUTTON_YES_ALERT_DIALOG_CHECK)
             ) {
                 Text("SIM")
             }
@@ -172,7 +172,7 @@ fun AlertDialogCheckDesign(
         dismissButton = {
             Button(
                 onClick = setCloseDialog,
-                modifier = Modifier.testTag("button_no_alert_dialog_check")
+                modifier = Modifier.testTag(TAG_BUTTON_NO_ALERT_DIALOG_CHECK)
             ) {
                 Text("NÃO")
             }

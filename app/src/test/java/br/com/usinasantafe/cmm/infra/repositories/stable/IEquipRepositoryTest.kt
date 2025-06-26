@@ -33,12 +33,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true,
+                    flagMechanic = true
                 )
             )
             val entityList = listOf(
@@ -50,12 +47,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true,
+                    flagMechanic = true
                 )
             )
             whenever(
@@ -92,12 +86,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true,
+                    flagMechanic = true
                 )
             )
             val entityList = listOf(
@@ -109,12 +100,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true,
+                    flagMechanic = true
                 )
             )
             whenever(
@@ -220,12 +208,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = 1,
-                    flagApontPneu = 1,
+                    flagMechanic = 1
                 )
             )
             val entityList = listOf(
@@ -237,12 +222,9 @@ class IEquipRepositoryTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 10000.0,
-                    measure = 10.0,
-                    type = 1,
+                    hourMeter = 10000.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true,
+                    flagMechanic = true
                 )
             )
             whenever(
@@ -365,7 +347,7 @@ class IEquipRepositoryTest {
     fun `getMeasureByIdEquip - Check return failure if have error in EquipRoomDatasource getMeasureByIdEquip`() =
         runTest {
             whenever(
-                equipRoomDatasource.getMeasureByIdEquip(1)
+                equipRoomDatasource.getHourMeterByIdEquip(1)
             ).thenReturn(
                 resultFailure(
                     "EquipRoomDatasource.getMeasureByIdEquip",
@@ -373,7 +355,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getMeasureByIdEquip(1)
+            val result = repository.getHourMeterByIdEquip(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -392,11 +374,11 @@ class IEquipRepositoryTest {
     fun `getMeasureByIdEquip - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                equipRoomDatasource.getMeasureByIdEquip(1)
+                equipRoomDatasource.getHourMeterByIdEquip(1)
             ).thenReturn(
                 Result.success(1.0)
             )
-            val result = repository.getMeasureByIdEquip(1)
+            val result = repository.getHourMeterByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -412,8 +394,8 @@ class IEquipRepositoryTest {
     fun `updateMeasureByIdEquip - Check return failure if have error in EquipRoomDatasource updateMeasureByIdEquip`() =
         runTest {
             whenever(
-                equipRoomDatasource.updateMeasureByIdEquip(
-                    measure = 1.0,
+                equipRoomDatasource.updateHourMeterByIdEquip(
+                    hourMeter = 1.0,
                     idEquip = 1
                 )
             ).thenReturn(
@@ -423,8 +405,8 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.updateMeasureByIdEquip(
-                measure = 1.0,
+            val result = repository.updateHourMeterByIdEquip(
+                hourMeter = 1.0,
                 idEquip = 1
             )
             assertEquals(
@@ -438,6 +420,98 @@ class IEquipRepositoryTest {
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getTypeFertByIdEquip - Check return failure if have error in EquipRoomDatasource getTypeFertByIdEquip`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getTypeFertByIdEquip(1)
+            ).thenReturn(
+                resultFailure(
+                    "EquipRoomDatasource.getTypeFertByIdEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getTypeFertByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.getTypeFertByIdEquip -> EquipRoomDatasource.getTypeFertByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception",
+            )
+        }
+
+    @Test
+    fun `getTypeFertByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getTypeFertByIdEquip(1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getTypeFertByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `getIdCheckListByIdEquip - Check return failure if have error in EquipRoomDatasource getIdCheckListByIdEquip`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getIdCheckListByIdEquip(1)
+            ).thenReturn(
+                resultFailure(
+                    "EquipRoomDatasource.getIdCheckListByIdEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdCheckListByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.getIdCheckListByIdEquip -> EquipRoomDatasource.getIdCheckListByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception",
+            )
+        }
+
+    @Test
+    fun `getIdCheckListByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getIdCheckListByIdEquip(1)
+            ).thenReturn(
+                Result.success(10)
+            )
+            val result = repository.getIdCheckListByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                10
             )
         }
 

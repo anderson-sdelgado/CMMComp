@@ -2,13 +2,13 @@ package br.com.usinasantafe.cmm.utils
 
 const val BASE_SHARE_PREFERENCES = "cmm"
 const val BASE_DB = "cmm.db"
-const val VERSION_DB = 1
+const val VERSION_DB = 999
 
 const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
 const val BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC = "note_moto_mec"
 
-const val qtdTable = 5f
+const val qtdTable = 7f
 
 const val TB_ACTIVITY = "tb_activity"
 const val TB_BOCAL = "tb_bocal"
@@ -47,16 +47,16 @@ const val WEB_ALL_ITEM_OS_MECAN = "item-os-mecan.php"
 const val WEB_ALL_LEIRA = "leira.php"
 const val WEB_ALL_MOTOMEC = "motomec.php"
 const val WEB_ALL_OS = "os.php"
-const val WEB_ALL_STOP = "stop.php"
 const val WEB_ALL_PNEU = "pneu.php"
 const val WEB_ALL_PRESSAO_BOCAL = "pressao-bocal.php"
 const val WEB_ALL_PRODUTO = "produto.php"
 const val WEB_ALL_PROPRIEDADE = "propriedade.php"
-const val WEB_ALL_R_ATIV_PARADA = "r-ativ-parada.php"
+const val WEB_ALL_R_ACTIVITY_STOP = "r-activity-stop.php"
 const val WEB_ALL_R_EQUIP_PNEU = "r-equip-pneu.php"
 const val WEB_ALL_R_FUNCAO_ATIV_PARADA = "r-funcao-ativ-parada.php"
 const val WEB_ALL_R_OS_ATIV = "r-os-ativ.php"
 const val WEB_ALL_SERVICO = "servico.php"
+const val WEB_ALL_STOP = "stop.php"
 const val WEB_ALL_TURN = "turn.php"
 
 const val WEB_SAVE_TOKEN = "find-token.php"
@@ -65,7 +65,4 @@ const val WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS = "r-os-activity-list-by-nro-os.p
 const val WEB_GET_EQUIP_LIST_BY_ID_EQUIP = "equip-list-by-id-equip.php"
 const val WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP = "r-equip-activity-list-by-id-equip.php"
 
-const val WEB_SAVE_MOV_CHAVE = "save-mov-chave.php"
-
-
-
+const val WEB_SAVE_MOTO_MEC = "save-moto-mec.php"

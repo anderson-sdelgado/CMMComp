@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -308,10 +309,12 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
-                    measureInitial = 10.0,
+                    hourMeterInitial = 10.0,
+                    statusCon = true
                 )
             )
             val result = usecase(
@@ -339,10 +342,12 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
-                    measureInitial = 10.0,
+                    hourMeterInitial = 10.0,
+                    statusCon = true
                 )
             )
             noteMotoMecSharedPreferencesDatasource.save(
@@ -428,10 +433,12 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
-                    measureInitial = 10.0,
+                    hourMeterInitial = 10.0,
+                    statusCon = true
                 )
             )
             noteMotoMecSharedPreferencesDatasource.save(

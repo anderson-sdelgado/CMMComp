@@ -25,13 +25,12 @@ class IStopRetrofitDatasourceTest {
             val service = retrofit.create(StopApi::class.java)
             val datasource = IStopRetrofitDatasource(service)
             val result = datasource.recoverAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IParadaRetrofitDatasource.recoverAll",
+                "IStopRetrofitDatasource.recoverAll",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -55,13 +54,12 @@ class IStopRetrofitDatasourceTest {
             val service = retrofit.create(StopApi::class.java)
             val datasource = IStopRetrofitDatasource(service)
             val result = datasource.recoverAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IParadaRetrofitDatasource.recoverAll",
+                "IStopRetrofitDatasource.recoverAll",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -78,7 +76,7 @@ class IStopRetrofitDatasourceTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultParadaRetrofit)
+                MockResponse().setBody(resultStopRetrofit)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
@@ -86,7 +84,6 @@ class IStopRetrofitDatasourceTest {
             val service = retrofit.create(StopApi::class.java)
             val datasource = IStopRetrofitDatasource(service)
             val result = datasource.recoverAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isSuccess
@@ -110,11 +107,13 @@ class IStopRetrofitDatasourceTest {
             )
             server.shutdown()
         }
+
+    private val resultStopRetrofit = """
+        [
+          {"idStop":1,"codStop":401,"descrStop":"MANUTENCAO MECANICA"},
+          {"idStop":2,"codStop":402,"descrStop":"ABASTECIMENTO"}
+        ]
+    """.trimIndent()
 }
 
-val resultParadaRetrofit = """
-    [
-      {"idParada":1,"codParada":401,"descrParada":"MANUTENCAO MECANICA"},
-      {"idParada":2,"codParada":402,"descrParada":"ABASTECIMENTO"}
-    ]
-""".trimIndent()
+

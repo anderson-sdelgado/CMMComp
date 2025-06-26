@@ -1,8 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import javax.inject.Inject
 
 interface SetIdEquip {
@@ -11,30 +13,53 @@ interface SetIdEquip {
 
 class ISetIdEquip @Inject constructor(
     private val configRepository: ConfigRepository,
-    private val headerMotoMecRepository: HeaderMotoMecRepository
+    private val motoMecRepository: MotoMecRepository,
+    private val equipRepository: EquipRepository
 ): SetIdEquip {
 
     override suspend fun invoke(): Result<Boolean> {
-        val resultGetConfig = configRepository.get()
-        if (resultGetConfig.isFailure) {
-            val e = resultGetConfig.exceptionOrNull()!!
-            return resultFailure(
-                context = "IGetDescrEquip",
-                message = e.message,
-                cause = e.cause
+        try {
+            val resultGetConfig = configRepository.get()
+            if (resultGetConfig.isFailure) {
+                val e = resultGetConfig.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ISetIdEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val config = resultGetConfig.getOrNull()!!
+            val resultGetTypeEquip = equipRepository.getTypeFertByIdEquip(config.idEquip!!)
+            if (resultGetTypeEquip.isFailure) {
+                val e = resultGetTypeEquip.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ISetIdEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val typeEquipBD = resultGetTypeEquip.getOrNull()!!
+            val typeEquip = if(typeEquipBD <= 2) TypeEquip.NORMAL else TypeEquip.FERT
+            val resultSetIdEquip = motoMecRepository.setDataEquipHeader(
+                idEquip = config.idEquip,
+                typeEquip = typeEquip
             )
-        }
-        val config = resultGetConfig.getOrNull()!!
-        val result = headerMotoMecRepository.setIdEquip(config.idEquip!!)
-        if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
+            if (resultSetIdEquip.isFailure) {
+                val e = resultSetIdEquip.exceptionOrNull()!!
+                return resultFailure(
+                    context = "ISetIdEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
             return resultFailure(
                 context = "ISetIdEquip",
-                message = e.message,
-                cause = e.cause
+                message = "-",
+                cause = e
             )
         }
-        return Result.success(true)
     }
 
 }

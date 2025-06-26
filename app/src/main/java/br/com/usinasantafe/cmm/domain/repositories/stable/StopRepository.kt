@@ -6,4 +6,7 @@ interface StopRepository {
     suspend fun addAll(list: List<Stop>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun recoverAll(token: String): Result<List<Stop>>
+    suspend fun listByIdList(
+        idList: List<Int>
+    ): Result<List<Stop>>
 }

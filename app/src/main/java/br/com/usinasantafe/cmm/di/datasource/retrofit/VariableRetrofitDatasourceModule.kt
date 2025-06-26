@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.datasource.retrofit
 
-import br.com.usinasantafe.cmm.external.retrofit.datasource.variable.IConfigRetrofitDatasource
+import br.com.usinasantafe.cmm.external.retrofit.datasource.variable.*
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.*
 import dagger.Binds
 import dagger.Module
@@ -15,5 +15,9 @@ interface VariableRetrofitDatasourceModule {
     @Binds
     @Singleton
     fun bindConfigRetrofitDatasource(dataSource: IConfigRetrofitDatasource): ConfigRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindMotoMecRetrofitDatasource(dataSource: IMotoMecRetrofitDatasource): MotoMecRetrofitDatasource
 
 }

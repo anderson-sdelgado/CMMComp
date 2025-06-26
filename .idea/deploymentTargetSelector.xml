@@ -5,19 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_data_if_data_header_is_empty_note_work()">
+      <SelectionState runConfigName="check_return_true_if_web_service_return_timeout_flow_app_note_work()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_data_if_data_note_is_empty_note_work()">
+      <SelectionState runConfigName="check_return_false_if_web_service_return_list_empty_flow_app_note_work()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_data_note_is_empty_note_work()">
+      <SelectionState runConfigName="check_return_true_if_web_service_return_list_not_empty_flow_app_note_work()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_data_change_if_table_has_data_note_work()">
+      <SelectionState runConfigName="check_return_failure_if_web_service_return_list_not_empty_flow_app_note_work_but_return_incorrect_r_os_activity()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="note_flow()">
+      <SelectionState runConfigName="check_return_true_if_web_service_return_correct()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

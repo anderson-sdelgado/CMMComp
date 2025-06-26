@@ -8,7 +8,7 @@ import br.com.usinasantafe.cmm.utils.TB_R_OS_ACTIVITY
 @Entity(tableName = TB_R_OS_ACTIVITY)
 data class ROSActivityRoomModel (
     @PrimaryKey(autoGenerate = true)
-    val idROSActivity: Int,
+    val idROSActivity: Int? = null,
     val idOS: Int,
     val idActivity: Int
 )

@@ -2,8 +2,10 @@ package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -13,10 +15,12 @@ import org.mockito.kotlin.whenever
 class ISetIdEquipTest {
 
     private val configRepository = mock<ConfigRepository>()
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val usecase = ISetIdEquip(
-        headerMotoMecRepository = headerMotoMecRepository,
-        configRepository = configRepository
+        motoMecRepository = motoMecRepository,
+        configRepository = configRepository,
+        equipRepository = equipRepository
     )
 
     @Test
@@ -38,7 +42,45 @@ class ISetIdEquipTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetDescrEquip -> ConfigRepository.get"
+                "ISetIdEquip -> ConfigRepository.get"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in EquipRepository getTypeByIdEquip`() =
+        runTest {
+            whenever(
+                configRepository.get()
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        idEquip = 10
+                    )
+                )
+            )
+            whenever(
+                equipRepository.getTypeFertByIdEquip(
+                    idEquip = 10
+                )
+            ).thenReturn(
+                resultFailure(
+                    "EquipRepository.getTypeByIdEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdEquip -> EquipRepository.getTypeByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -54,12 +96,22 @@ class ISetIdEquipTest {
             ).thenReturn(
                 Result.success(
                     Config(
-                        idEquip = 10,
+                        idEquip = 10
                     )
                 )
             )
             whenever(
-                headerMotoMecRepository.setIdEquip(10)
+                equipRepository.getTypeFertByIdEquip(
+                    idEquip = 10
+                )
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.setDataEquipHeader(
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL
+                )
             ).thenReturn(
                 resultFailure(
                     "HeaderMotoMecRepository.setIdEquip",
@@ -83,19 +135,29 @@ class ISetIdEquipTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully`() =
+    fun `Check return correct if function execute successfully and typeEquip is 1`() =
         runTest {
             whenever(
                 configRepository.get()
             ).thenReturn(
                 Result.success(
                     Config(
-                        idEquip = 1,
+                        idEquip = 10,
                     )
                 )
             )
             whenever(
-                headerMotoMecRepository.setIdEquip(10)
+                equipRepository.getTypeFertByIdEquip(
+                    idEquip = 10
+                )
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.setDataEquipHeader(
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL
+                )
             ).thenReturn(
                 Result.success(true)
             )
@@ -110,4 +172,41 @@ class ISetIdEquipTest {
             )
         }
 
+    @Test
+    fun `Check return correct if function execute successfully and typeEquip is 3`() =
+        runTest {
+            whenever(
+                configRepository.get()
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        idEquip = 10,
+                    )
+                )
+            )
+            whenever(
+                equipRepository.getTypeFertByIdEquip(
+                    idEquip = 10
+                )
+            ).thenReturn(
+                Result.success(3)
+            )
+            whenever(
+                motoMecRepository.setDataEquipHeader(
+                    idEquip = 10,
+                    typeEquip = TypeEquip.FERT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 }

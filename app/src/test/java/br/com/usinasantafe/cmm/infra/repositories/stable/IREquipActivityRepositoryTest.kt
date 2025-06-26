@@ -141,7 +141,7 @@ class IREquipActivityRepositoryTest {
     fun `getListByIdEquip - Check return failure if have error`() =
         runTest {
             whenever(
-                rEquipActivityRetrofitDatasource.getListByIdEquip(
+                rEquipActivityRetrofitDatasource.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
@@ -150,7 +150,7 @@ class IREquipActivityRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 token = "token",
                 idEquip = 10
             )
@@ -173,30 +173,26 @@ class IREquipActivityRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 REquipActivityRetrofitModel(
-                    idREquipActivity = 1,
                     idEquip = 10,
                     idActivity = 20
                 ),
                 REquipActivityRetrofitModel(
-                    idREquipActivity = 2,
                     idEquip = 11,
                     idActivity = 21
                 )
             )
             val entityList = listOf(
                 REquipActivity(
-                    idREquipActivity = 1,
                     idEquip = 10,
                     idActivity = 20
                 ),
                 REquipActivity(
-                    idREquipActivity = 2,
                     idEquip = 11,
                     idActivity = 21
                 )
             )
             whenever(
-                rEquipActivityRetrofitDatasource.getListByIdEquip(
+                rEquipActivityRetrofitDatasource.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
@@ -205,7 +201,7 @@ class IREquipActivityRepositoryTest {
                     retrofitModelList
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 token = "token",
                 idEquip = 10
             )
@@ -220,20 +216,20 @@ class IREquipActivityRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return failure if have error in REquipActivityRoomDatasource getListByIdEquip`() =
+    fun `listByIdEquip - Check return failure if have error in REquipActivityRoomDatasource getListByIdEquip`() =
         runTest {
             whenever(
-                rEquipActivityRoomDatasource.getListByIdEquip(
+                rEquipActivityRoomDatasource.listByIdEquip(
                     10
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IREquipActivityRoomDatasource.getListByIdEquip",
+                    context = "IREquipActivityRoomDatasource.listByIdEquip",
                     message = "-",
                     cause = Exception()
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 idEquip = 10
             )
             assertEquals(
@@ -242,7 +238,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipActivityRepository.getListByIdEquip -> IREquipActivityRoomDatasource.getListByIdEquip"
+                "IREquipActivityRepository.listByIdEquip -> IREquipActivityRoomDatasource.listByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -251,10 +247,10 @@ class IREquipActivityRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return correct if function execute successfully`() =
+    fun `listByIdEquip - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                rEquipActivityRoomDatasource.getListByIdEquip(
+                rEquipActivityRoomDatasource.listByIdEquip(
                     10
                 )
             ).thenReturn(
@@ -268,7 +264,7 @@ class IREquipActivityRepositoryTest {
                     )
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 idEquip = 10
             )
             assertEquals(

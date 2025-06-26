@@ -18,4 +18,7 @@ interface RActivityStopDao {
     @Query("SELECT * FROM $TB_R_ACTIVITY_STOP")
     suspend fun listAll(): List<RActivityStopRoomModel>
 
+    @Query("SELECT * FROM $TB_R_ACTIVITY_STOP WHERE idActivity = :idActivity")
+    suspend fun listByIdActivity(idActivity: Int): List<RActivityStopRoomModel>
+
 }

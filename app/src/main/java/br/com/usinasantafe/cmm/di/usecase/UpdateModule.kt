@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.usecase
 
-import br.com.usinasantafe.cmm.domain.usecases.updatetable.*
+import br.com.usinasantafe.cmm.domain.usecases.updateTable.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -57,7 +57,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableParada(usecase: IUpdateTableStop): UpdateTableStop
+    fun bindUpdateTableStop(usecase: IUpdateTableStop): UpdateTableStop
 
     @Binds
     @Singleton
@@ -69,7 +69,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableRAtivParada(usecase: IUpdateTableRActivityStop): UpdateTableRActivityStop
+    fun bindUpdateTableRActivityStop(usecase: IUpdateTableRActivityStop): UpdateTableRActivityStop
 
     @Binds
     @Singleton

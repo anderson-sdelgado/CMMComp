@@ -20,7 +20,6 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var datasource: INoteMotoMecSharedPreferencesDatasource
 
-
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
@@ -32,7 +31,8 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
     fun `setNroOS - Check alter data correct`() =
         runTest {
             val data = NoteMotoMecSharedPreferencesModel(
-                nroOS = 123456
+                nroOS = 123456,
+                statusCon = false
             )
             datasource.save(data)
             val resultGetBefore = datasource.get()
@@ -45,7 +45,14 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
                 modelBefore.nroOS,
                 123456
             )
-            val result = datasource.setNroOS(456789)
+            assertEquals(
+                modelBefore.statusCon,
+                false
+            )
+            val result = datasource.setNroOSAndStatusCon(
+                nroOS = 456789,
+                statusCon = true
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -60,13 +67,17 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
                 modelAfter.nroOS,
                 456789
             )
+            assertEquals(
+                modelAfter.statusCon,
+                true
+            )
         }
 
     @Test
     fun `setIdActivity - Check alter data correct`() =
         runTest {
             val data = NoteMotoMecSharedPreferencesModel(
-                idActivity = 1
+                idActivity = 1,
             )
             datasource.save(data)
             val resultGetBefore = datasource.get()
@@ -93,6 +104,120 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
             assertEquals(
                 modelAfter.idActivity,
                 2
+            )
+        }
+
+    @Test
+    fun `getIdActivity - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getIdActivity()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "INoteMotoMecSharedPreferencesDatasource.getIdActivity"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdActivity - Check return correct if function execute successfully`() =
+        runTest {
+            val data = NoteMotoMecSharedPreferencesModel(
+                idActivity = 1
+            )
+            datasource.save(data)
+            val result = datasource.getIdActivity()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `setIdStop - Check alter data correct`() =
+        runTest {
+            val data = NoteMotoMecSharedPreferencesModel(
+                idStop = 1
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idStop,
+                1
+            )
+            val result = datasource.setIdStop(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.idStop,
+                2
+            )
+        }
+
+    @Test
+    fun `clean - Check clean table`() =
+        runTest {
+            val data = NoteMotoMecSharedPreferencesModel(
+                nroOS = 123456,
+                idActivity = 1,
+                idStop = 1
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idStop,
+                1
+            )
+            assertEquals(
+                modelBefore.idActivity,
+                1
+            )
+            assertEquals(
+                modelBefore.nroOS,
+                123456
+            )
+            val result = datasource.clean()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter,
+                NoteMotoMecSharedPreferencesModel()
             )
         }
 }

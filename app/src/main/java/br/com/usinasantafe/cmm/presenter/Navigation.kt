@@ -6,11 +6,13 @@ import br.com.usinasantafe.cmm.presenter.Screens.ACTIVITY_LIST_COMMON_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.EQUIP_HEADER_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.INITIAL_MENU_SCREEN
-import br.com.usinasantafe.cmm.presenter.Screens.MEASURE_HEADER_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.HOUR_METER_HEADER_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.ITEM_CHECK_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.MENU_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.OPERATOR_HEADER_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.OS_COMMON_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.PASSWORD_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.QUESTION_UPDATE_CHECK_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.SPLASH_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.STOP_LIST_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TURN_LIST_HEADER_SCREEN
@@ -26,9 +28,11 @@ object Screens {
     const val TURN_LIST_HEADER_SCREEN = "turnListHeaderScreen"
     const val OS_COMMON_SCREEN = "osCommonScreen"
     const val ACTIVITY_LIST_COMMON_SCREEN = "activityListCommonScreen"
-    const val MEASURE_HEADER_SCREEN = "measureHeaderScreen"
+    const val HOUR_METER_HEADER_SCREEN = "hourMeterHeaderScreen"
     const val MENU_NOTE_SCREEN = "menuNoteScreen"
     const val STOP_LIST_NOTE_SCREEN = "stopListNoteScreen"
+    const val QUESTION_UPDATE_CHECK_LIST_SCREEN = "questionUpdateCheckListScreen"
+    const val ITEM_CHECK_LIST_SCREEN = "itemCheckListScreen"
 }
 
 object Args {
@@ -45,9 +49,11 @@ object Routes {
     const val TURN_LIST_HEADER_ROUTE = TURN_LIST_HEADER_SCREEN
     const val OS_COMMON_ROUTE = "$OS_COMMON_SCREEN/{$FLOW_APP_ARGS}"
     const val ACTIVITY_LIST_COMMON_ROUTE = "$ACTIVITY_LIST_COMMON_SCREEN/{$FLOW_APP_ARGS}"
-    const val MEASURE_HEADER_ROUTE = MEASURE_HEADER_SCREEN
+    const val HOUR_METER_HEADER_ROUTE = "$HOUR_METER_HEADER_SCREEN/{$FLOW_APP_ARGS}"
     const val MENU_NOTE_ROUTE = MENU_NOTE_SCREEN
     const val STOP_LIST_NOTE_ROUTE = STOP_LIST_NOTE_SCREEN
+    const val QUESTION_UPDATE_CHECK_LIST_ROUTE = QUESTION_UPDATE_CHECK_LIST_SCREEN
+    const val ITEM_CHECK_LIST_ROUTE = ITEM_CHECK_LIST_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -79,13 +85,13 @@ class NavigationActions(private val navController: NavHostController) {
     ////////////////////////// Common //////////////////////////////////
 
     fun navigateToOSCommon(
-        flowApp: Int = FlowApp.HEADER_DEFAULT.ordinal
+        flowApp: Int = FlowApp.HEADER_INITIAL.ordinal
     ) {
         navController.navigate("${OS_COMMON_SCREEN}/${flowApp}")
     }
 
     fun navigateToActivityListCommon(
-        flowApp: Int = FlowApp.HEADER_DEFAULT.ordinal
+        flowApp: Int = FlowApp.HEADER_INITIAL.ordinal
     ) {
         navController.navigate("${ACTIVITY_LIST_COMMON_SCREEN}/${flowApp}")
     }
@@ -106,8 +112,10 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(TURN_LIST_HEADER_SCREEN)
     }
 
-    fun navigateToMeasureHeader() {
-        navController.navigate(MEASURE_HEADER_SCREEN)
+    fun navigateToMeasureHeader(
+        flowApp: Int = FlowApp.HEADER_INITIAL.ordinal
+    ) {
+        navController.navigate("${HOUR_METER_HEADER_SCREEN}/${flowApp}")
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -120,6 +128,18 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToStopListNote() {
         navController.navigate(STOP_LIST_NOTE_SCREEN)
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    ///////////////////////// Check List ///////////////////////////////
+
+    fun navigateToQuestionUpdateCheckList() {
+        navController.navigate(QUESTION_UPDATE_CHECK_LIST_SCREEN)
+    }
+
+    fun navigateToItemCheckList() {
+        navController.navigate(ITEM_CHECK_LIST_SCREEN)
     }
 
     ////////////////////////////////////////////////////////////////////

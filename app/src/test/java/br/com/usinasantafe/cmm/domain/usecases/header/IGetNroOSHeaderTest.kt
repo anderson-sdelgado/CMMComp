@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.HeaderMotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -10,16 +10,16 @@ import org.mockito.kotlin.whenever
 
 class IGetNroOSHeaderTest {
 
-    private val headerMotoMecRepository = mock<HeaderMotoMecRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = IGetNroOSHeader(
-        headerMotoMecRepository = headerMotoMecRepository
+        motoMecRepository = motoMecRepository
     )
 
     @Test
     fun `Check return failure if have error in headerMotoMecRepository getNroOS`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getNroOS()
+                motoMecRepository.getNroOSHeader()
             ).thenReturn(
                 resultFailure(
                     context = "HeaderMotoMecRepository.getNroOS",
@@ -46,7 +46,7 @@ class IGetNroOSHeaderTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRepository.getNroOS()
+                motoMecRepository.getNroOSHeader()
             ).thenReturn(
                 Result.success(10000)
             )

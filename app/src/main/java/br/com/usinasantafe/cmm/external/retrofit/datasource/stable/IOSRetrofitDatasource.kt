@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
-import br.com.usinasantafe.cmm.di.persistence.OSApiDefault
-import br.com.usinasantafe.cmm.di.persistence.OSApiShortTimeout
+import br.com.usinasantafe.cmm.di.provider.OSApiDefault
+import br.com.usinasantafe.cmm.di.provider.OSApiShortTimeout
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.OSApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource

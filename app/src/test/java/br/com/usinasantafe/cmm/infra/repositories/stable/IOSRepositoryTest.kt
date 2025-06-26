@@ -31,7 +31,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -42,7 +41,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -78,7 +76,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -89,7 +86,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -188,7 +184,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 ),
                 OSRetrofitModel(
@@ -197,7 +192,6 @@ class IOSRepositoryTest {
                     idLibOS = 11,
                     idPropAgr = 21,
                     areaOS = 100.0,
-                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -208,7 +202,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 ),
                 OS(
@@ -217,7 +210,6 @@ class IOSRepositoryTest {
                     idLibOS = 11,
                     idPropAgr = 21,
                     areaOS = 100.0,
-                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -360,7 +352,6 @@ class IOSRepositoryTest {
                             idLibOS = 10,
                             idPropAgr = 20,
                             areaOS = 50.5,
-                            typeOS = 1,
                             idEquip = 30
                         ),
                         OSRetrofitModel(
@@ -369,7 +360,6 @@ class IOSRepositoryTest {
                             idLibOS = 11,
                             idPropAgr = 21,
                             areaOS = 100.0,
-                            typeOS = 2,
                             idEquip = 31
                         ),
                     )
@@ -411,10 +401,6 @@ class IOSRepositoryTest {
                 0.0
             )
             assertEquals(
-                entity1.typeOS,
-                1
-            )
-            assertEquals(
                 entity1.idEquip,
                 30
             )
@@ -434,15 +420,11 @@ class IOSRepositoryTest {
             assertEquals(
                 entity2.idPropAgr,
                 21
-                )
+            )
             assertEquals(
                 entity2.areaOS,
                 100.0,
                 0.0
-                )
-            assertEquals(
-                entity2.typeOS,
-                2
             )
         }
 
@@ -457,7 +439,6 @@ class IOSRepositoryTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -475,7 +456,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -504,7 +484,6 @@ class IOSRepositoryTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -518,7 +497,6 @@ class IOSRepositoryTest {
                     idLibOS = 10,
                     idPropAgr = 20,
                     areaOS = 50.5,
-                    typeOS = 1,
                     idEquip = 30
                 )
             )
@@ -573,7 +551,6 @@ class IOSRepositoryTest {
                             idLibOS = 10,
                             idPropAgr = 20,
                             areaOS = 50.5,
-                            typeOS = 1,
                             idEquip = 3
                         )
                     )
@@ -610,10 +587,6 @@ class IOSRepositoryTest {
                 entity.areaOS,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                entity.typeOS,
-                1
             )
             assertEquals(
                 entity.idEquip,

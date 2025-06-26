@@ -56,12 +56,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     ),
                     EquipRoomModel(
                         idEquip = 1,
@@ -71,12 +68,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -117,12 +111,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     ),
                     EquipRoomModel(
                         idEquip = 2,
@@ -132,12 +123,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -172,21 +160,12 @@ class IEquipRoomDatasourceTest {
                 "TRATOR"
             )
             assertEquals(
-                list[0].hourmeter,
+                list[0].hourMeter,
                 0.0,
                 0.0
             )
             assertEquals(
-                list[0].measure,
-                0.0,
-                0.0
-            )
-            assertEquals(
-                list[0].flagApontMecan,
-                true
-            )
-            assertEquals(
-                list[0].flagApontPneu,
+                list[0].flagMechanic,
                 true
             )
             assertEquals(
@@ -220,12 +199,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -281,12 +257,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -337,12 +310,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 0.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -365,7 +335,7 @@ class IEquipRoomDatasourceTest {
     @Test
     fun `getMeasureByIdEquip - Check return failure if not have data`() =
         runTest {
-            val result = datasource.getMeasureByIdEquip(1)
+            val result = datasource.getHourMeterByIdEquip(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -393,12 +363,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 10000.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -407,7 +374,7 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.getMeasureByIdEquip(1)
+            val result = datasource.getHourMeterByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -420,7 +387,7 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `updateMeasureByIdEquip - Check alter data`() =
+    fun `updateHourMeterByIdEquip - Check alter data`() =
         runTest {
             equipDao.insertAll(
                 listOf(
@@ -432,12 +399,9 @@ class IEquipRoomDatasourceTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourmeter = 0.0,
-                        measure = 10000.0,
-                        type = 1,
+                        hourMeter = 0.0,
                         classify = 1,
-                        flagApontMecan = true,
-                        flagApontPneu = true
+                        flagMechanic = true
                     )
                 )
             )
@@ -446,14 +410,8 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val modelBefore =    equipDao.getByIdEquip(1)
-            assertEquals(
-                modelBefore.measure,
-                10000.0,
-                0.0
-            )
-            val result = datasource.updateMeasureByIdEquip(
-                measure = 20000.0,
+            val result = datasource.updateHourMeterByIdEquip(
+                hourMeter = 20000.0,
                 idEquip = 1
             )
             assertEquals(
@@ -469,12 +427,111 @@ class IEquipRoomDatasourceTest {
                 qtdAfter,
                 1
             )
-            val modelAfter = equipDao.getByIdEquip(1)
+        }
+
+    @Test
+    fun `getTypeFertByIdEquip - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getTypeFertByIdEquip(1)
             assertEquals(
-                modelAfter.measure,
-                20000.0,
-                0.0
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getTypeFertByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getTypeFert()\" because \"model\" is null"
             )
         }
 
+    @Test
+    fun `getTypeFertByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 1,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 3,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getTypeFertByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                3
+            )
+        }
+
+    @Test
+    fun `getIdCheckListByIdEquip - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getIdCheckListByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getIdCheckListByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getIdCheckList()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getIdCheckListByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 1,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 3,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.listAll().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getIdCheckListByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
 }

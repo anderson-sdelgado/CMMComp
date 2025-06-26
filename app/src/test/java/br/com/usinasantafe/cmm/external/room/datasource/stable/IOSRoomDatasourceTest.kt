@@ -54,7 +54,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     ),
                     OSRoomModel(
@@ -63,7 +62,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -103,7 +101,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     ),
                     OSRoomModel(
@@ -112,7 +109,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 11,
                         idPropAgr = 21,
                         areaOS = 100.0,
-                        typeOS = 2,
                         idEquip = 31
                     )
                 )
@@ -153,10 +149,6 @@ class IOSRoomDatasourceTest {
                 0.0
             )
             assertEquals(
-                entity1.typeOS,
-                1
-            )
-            assertEquals(
                 entity1.idEquip,
                 30
             )
@@ -183,10 +175,6 @@ class IOSRoomDatasourceTest {
                 0.0
             )
             assertEquals(
-                entity2.typeOS,
-                2
-            )
-            assertEquals(
                 entity2.idEquip,
                 31
             )
@@ -203,7 +191,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -240,7 +227,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -272,7 +258,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -304,7 +289,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     )
                 )
@@ -321,7 +305,6 @@ class IOSRoomDatasourceTest {
                     idLibOS = 11,
                     idPropAgr = 21,
                     areaOS = 100.0,
-                    typeOS = 2,
                     idEquip = 31
                 )
             )
@@ -361,10 +344,6 @@ class IOSRoomDatasourceTest {
                 0.0
             )
             assertEquals(
-                model1.typeOS,
-                1
-            )
-            assertEquals(
                 model1.idEquip,
                 30
             )
@@ -389,10 +368,6 @@ class IOSRoomDatasourceTest {
                 model2.areaOS,
                 100.0,
                 0.0
-            )
-            assertEquals(
-                model2.typeOS,
-                2
             )
             assertEquals(
                 model2.idEquip,
@@ -425,7 +400,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 10,
                         idPropAgr = 20,
                         areaOS = 50.5,
-                        typeOS = 1,
                         idEquip = 30
                     ),
                     OSRoomModel(
@@ -434,7 +408,6 @@ class IOSRoomDatasourceTest {
                         idLibOS = 11,
                         idPropAgr = 21,
                         areaOS = 100.0,
-                        typeOS = 2,
                         idEquip = 31
                     )
                 )
@@ -470,10 +443,6 @@ class IOSRoomDatasourceTest {
                 model.areaOS,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                model.typeOS,
-                1
             )
             assertEquals(
                 model.idEquip,

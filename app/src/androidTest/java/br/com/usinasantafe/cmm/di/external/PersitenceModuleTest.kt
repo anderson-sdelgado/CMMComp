@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.room.Room
-import br.com.usinasantafe.cmm.di.persistence.BaseUrlModule
-import br.com.usinasantafe.cmm.di.persistence.DefaultHttpClient
-import br.com.usinasantafe.cmm.di.persistence.DefaultRetrofit
-import br.com.usinasantafe.cmm.di.persistence.PersistenceModule
-import br.com.usinasantafe.cmm.di.persistence.ShortTimeoutHttpClient
-import br.com.usinasantafe.cmm.di.persistence.ShortTimeoutRetrofit
+import androidx.work.WorkManager
+import br.com.usinasantafe.cmm.di.provider.BaseUrlModule
+import br.com.usinasantafe.cmm.di.provider.DefaultHttpClient
+import br.com.usinasantafe.cmm.di.provider.DefaultRetrofit
+import br.com.usinasantafe.cmm.di.provider.PersistenceModule
+import br.com.usinasantafe.cmm.di.provider.ShortTimeoutHttpClient
+import br.com.usinasantafe.cmm.di.provider.ShortTimeoutRetrofit
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import dagger.Module
 import dagger.Provides
@@ -98,6 +99,11 @@ object PersitenceModuleTest {
         return appContext.getSharedPreferences("test", Context.MODE_PRIVATE)
     }
 
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
+    }
 }
 
 @Module

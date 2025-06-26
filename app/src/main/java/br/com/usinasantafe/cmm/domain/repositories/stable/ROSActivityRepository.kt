@@ -6,7 +6,7 @@ interface ROSActivityRepository {
     suspend fun addAll(list: List<ROSActivity>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun recoverAll(token: String): Result<List<ROSActivity>>
-    suspend fun getListByNroOS(
+    suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<ROSActivity>>

@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -28,13 +30,16 @@ class ISetIdEquipTest {
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
+    @Inject
+    lateinit var equipDao: EquipDao
+
     @Before
     fun setUp() {
         hiltRule.inject()
     }
 
     @Test
-    fun check_set_id_if_table_has_data() =
+    fun check_return_failure_if_table_equip_is_empty() =
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
@@ -49,6 +54,59 @@ class ISetIdEquipTest {
             val modelBefore = resultGetBefore.getOrNull()!!
             assertEquals(
                 modelBefore.idEquip,
+                null
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdEquip -> IEquipRepository.getTypeFertByIdEquip -> IEquipRoomDatasource.getTypeFertByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Attempt to invoke virtual method 'int br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getTypeFert()' on a null object reference"
+            )
+        }
+
+    @Test
+    fun check_return_true_if_process_execute_successfully() =
+        runTest {
+            configSharedPreferencesDatasource.save(
+                ConfigSharedPreferencesModel(
+                    idEquip = 10
+                )
+            )
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        idEquip = 10,
+                        nroEquip = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeFert = 1,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = true
+                    ),
+                )
+            )
+            val resultGetBefore = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idEquip,
+                null
+            )
+            assertEquals(
+                modelBefore.typeEquip,
                 null
             )
             val result = usecase()
@@ -68,7 +126,11 @@ class ISetIdEquipTest {
             val modelAfter = resultGetAfter.getOrNull()!!
             assertEquals(
                 modelAfter.idEquip,
-                200
+                10
+            )
+            assertEquals(
+                modelAfter.typeEquip,
+                TypeEquip.NORMAL
             )
         }
 

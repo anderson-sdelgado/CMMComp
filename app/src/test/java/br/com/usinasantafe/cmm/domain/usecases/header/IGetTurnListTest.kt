@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.domain.usecases.common.IListTurn
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -17,7 +18,7 @@ class IGetTurnListTest {
     private val configRepository = mock<ConfigRepository>()
     private val turnRepository = mock<TurnRepository>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = IGetTurnList(
+    private val usecase = IListTurn(
         configRepository = configRepository,
         turnRepository = turnRepository,
         equipRepository = equipRepository

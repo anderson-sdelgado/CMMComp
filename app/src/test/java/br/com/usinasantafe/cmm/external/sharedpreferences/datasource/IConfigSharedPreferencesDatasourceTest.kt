@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import java.util.Date
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -149,4 +150,129 @@ class IConfigSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `getNumber - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getNumber()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getNumber"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getNumber - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840
+            )
+            datasource.save(data)
+            val result = datasource.getNumber()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                16997417840
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getIdEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                idEquip = 1
+            )
+            datasource.save(data)
+            val result = datasource.getIdEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+    fun `getIdTurnCheckListLast - Check return null if idTurnCheckListLast not is null`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                idTurnCheckListLast = 1
+            )
+            datasource.save(data)
+            val result = datasource.getIdTurnCheckListLast()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                1
+            )
+        }
+
+    @Test
+    fun `getDateCheckListLast - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getDateCheckListLast()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getDateCheckListLast"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getDateCheckListLast - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                dateLastCheckList = Date(1750857777000)
+            )
+            datasource.save(data)
+            val result = datasource.getDateCheckListLast()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Date(1750857777000)
+            )
+        }
 }

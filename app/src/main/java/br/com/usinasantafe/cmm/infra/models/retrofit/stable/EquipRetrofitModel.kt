@@ -10,12 +10,9 @@ data class EquipRetrofitModel(
     val codTurnEquip: Int,
     val idCheckList: Int,
     val typeFert: Int,
-    val hourmeter: Double,
-    val measure: Double,
-    val type: Int,
+    val hourMeter: Double,
     val classify: Int,
-    val flagApontMecan: Int,
-    val flagApontPneu: Int,
+    val flagMechanic: Int,
 )
 
 fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
@@ -27,11 +24,8 @@ fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
         codTurnEquip = this.codTurnEquip,
         idCheckList = this.idCheckList,
         typeFert = this.typeFert,
-        hourmeter = this.hourmeter,
-        measure = this.measure,
-        type = this.type,
+        hourMeter = this.hourMeter,
         classify = this.classify,
-        flagApontMecan = this.flagApontMecan != 0,
-        flagApontPneu = this.flagApontPneu != 0
+        flagMechanic = this.flagMechanic != 0
     )
 }

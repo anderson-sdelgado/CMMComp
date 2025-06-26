@@ -29,7 +29,7 @@ class ITurnRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        turnDao = db.turnoDao()
+        turnDao = db.turnDao()
         datasource = ITurnRoomDatasource(turnDao)
     }
 

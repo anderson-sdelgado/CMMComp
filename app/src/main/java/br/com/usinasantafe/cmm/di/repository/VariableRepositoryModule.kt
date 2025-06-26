@@ -18,14 +18,10 @@ interface VariableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindHeaderMotoMecRepository(repository: IHeaderMotoMecRepository): HeaderMotoMecRepository
+    fun bindMotoMecRepository(repository: IMotoMecRepository): MotoMecRepository
 
     @Binds
     @Singleton
     fun bindMenuRepository(repository: IMenuRepository): MenuRepository
-
-    @Binds
-    @Singleton
-    fun bindNoteMotoMecRepository(repository: INoteMotoMecRepository): NoteMotoMecRepository
 
 }

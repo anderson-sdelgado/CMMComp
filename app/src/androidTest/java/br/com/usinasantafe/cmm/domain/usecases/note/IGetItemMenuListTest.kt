@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
+import br.com.usinasantafe.cmm.domain.usecases.common.IListItemMenu
 import br.com.usinasantafe.cmm.utils.TypeView
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -16,7 +17,7 @@ class IGetItemMenuListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: IGetItemMenuList
+    lateinit var usecase: IListItemMenu
 
     @Test
     fun check_return_true_and_data_returned() =

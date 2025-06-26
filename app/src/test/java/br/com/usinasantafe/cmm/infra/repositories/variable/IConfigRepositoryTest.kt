@@ -14,6 +14,7 @@ import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import java.util.Date
 
 class IConfigRepositoryTest {
 
@@ -419,5 +420,257 @@ class IConfigRepositoryTest {
                 "12345"
             )
         }
+    
+    @Test
+    fun `getNumber - Check return failure if have error in configSharedPreferencesDatasource getNumber`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getNumber()
+            ).thenReturn(
+                resultFailure(
+                    "ConfigSharedPreferencesDatasource.getNumber",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNumber()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getNumber -> ConfigSharedPreferencesDatasource.getNumber"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
 
+    @Test
+    fun `getNumber - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getNumber()
+            ).thenReturn(
+                Result.success(
+                    16997417840
+                )
+            )
+            val result = repository.getNumber()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                16997417840
+            )
+        }
+
+    @Test
+    fun `setStatusSend - Check return failure if have error in ConfigSharedPreferencesDatasource setStatusSend`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setStatusSend(StatusSend.SEND)
+            ).thenReturn(
+                resultFailure(
+                    "ConfigSharedPreferencesDatasource.setStatusSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setStatusSend(StatusSend.SEND)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.setStatusSend -> ConfigSharedPreferencesDatasource.setStatusSend"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setStatusSend - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.setStatusSend(StatusSend.SEND)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.setStatusSend(StatusSend.SEND)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return failure if have error in ConfigSharedPreferencesDatasource getIdEquip`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getIdEquip()
+            ).thenReturn(
+                resultFailure(
+                    "ConfigSharedPreferencesDatasource.getIdEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getIdEquip -> ConfigSharedPreferencesDatasource.getIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getIdEquip()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
+    @Test
+        fun `getIdTurnCheckListLast - Check return failure if have error in ConfigSharedPreferencesDatasource getIdTurnCheckListLast`() =
+            runTest {
+                whenever(
+                    configSharedPreferencesDatasource.getIdTurnCheckListLast()
+                ).thenReturn(
+                    resultFailure(
+                        "IConfigSharedPreferencesDatasource.getIdTurnCheckListLast",
+                        "-",
+                        Exception()
+                    )
+                )
+                val result = repository.getIdTurnCheckListLast()
+                assertEquals(
+                    result.isFailure,
+                    true
+                )
+                assertEquals(
+                    result.exceptionOrNull()!!.message,
+                    "IConfigRepository.getIdTurnCheckListLast -> IConfigSharedPreferencesDatasource.getIdTurnCheckListLast"
+                )
+                assertEquals(
+                    result.exceptionOrNull()!!.cause.toString(),
+                    "java.lang.Exception",
+                )
+            }
+
+        @Test
+        fun `getIdTurnCheckListLast - Check return correct if function execute successfully`() =
+            runTest {
+                whenever(
+                    configSharedPreferencesDatasource.getIdTurnCheckListLast()
+                ).thenReturn(
+                    Result.success(null)
+                )
+                val result = repository.getIdTurnCheckListLast()
+                assertEquals(
+                    result.isSuccess,
+                    true
+                )
+                assertEquals(
+                    result.getOrNull(),
+                    null
+                )
+            }
+
+    @Test
+    fun `getIdTurnCheckListLast - Check return correct if function execute successfully with value`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getIdTurnCheckListLast()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdTurnCheckListLast()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                1
+            )
+        }
+
+    @Test
+    fun `getDateCheckListLast - Check return failure if have error in ConfigSharedPreferencesDatasource getDateCheckListLast`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getDateCheckListLast()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.getDateCheckListLast",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getDateCheckListLast()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getDateCheckListLast -> IConfigSharedPreferencesDatasource.getDateCheckListLast"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception",
+            )
+        }
+
+    @Test
+    fun `getDateCheckListLast - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getDateCheckListLast()
+            ).thenReturn(
+                Result.success(
+                    Date(1750857777000)
+                )
+            )
+            val result = repository.getDateCheckListLast()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Date(1750857777000)
+            )
+        }
 }

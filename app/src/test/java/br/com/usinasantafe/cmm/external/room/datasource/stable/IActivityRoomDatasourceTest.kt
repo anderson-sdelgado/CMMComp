@@ -148,7 +148,9 @@ class IActivityRoomDatasourceTest {
     @Test
     fun `listByIdList - Check return list empty if not have data research`() =
         runTest {
-            val result = datasource.listByIdList(listOf(1))
+            val result = datasource.listByIdList(
+                listOf(1)
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -192,7 +194,9 @@ class IActivityRoomDatasourceTest {
                 qtdAll,
                 4
             )
-            val result = datasource.listByIdList(listOf(1, 2, 3))
+            val result = datasource.listByIdList(
+                listOf(1, 2, 3)
+            )
             assertEquals(
                 result.isSuccess,
                 true

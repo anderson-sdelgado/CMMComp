@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
+import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -12,6 +15,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.util.Date
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -28,6 +32,9 @@ class ISetNroOSCommonTest {
 
     @Inject
     lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+
+    @Inject
+    lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Before
     fun setUp() {
@@ -108,8 +115,62 @@ class ISetNroOSCommonTest {
         }
 
     @Test
+    fun check_return_failure_if_not_have_data_in_header_room() =
+        runTest {
+            val resultHeaderGetBefore = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetBefore.isSuccess,
+                true
+            )
+            val modelHeaderBefore = resultHeaderGetBefore.getOrNull()!!
+            assertEquals(
+                modelHeaderBefore,
+                HeaderMotoMecSharedPreferencesModel()
+            )
+            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetBefore.isSuccess,
+                true
+            )
+            val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
+            assertEquals(
+                modelNoteBefore,
+                NoteMotoMecSharedPreferencesModel()
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.NOTE_WORK
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetNroOSCommon -> IMotoMecRepository.setNroOS -> IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0"
+            )
+        }
+
+    @Test
     fun check_return_data_if_data_is_empty_note_work() =
         runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 123465,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
             val resultHeaderGetBefore = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultHeaderGetBefore.isSuccess,
@@ -162,15 +223,32 @@ class ISetNroOSCommonTest {
                 modelNoteAfter.nroOS,
                 123456
             )
-
+            assertEquals(
+                modelNoteAfter.statusCon,
+                true
+            )
         }
 
     @Test
     fun check_data_change_if_table_has_data_note_work() =
         runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 123465,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = false
+                )
+            )
             headerMotoMecSharedPreferencesDatasource.save(
                 HeaderMotoMecSharedPreferencesModel(
-                    nroOS = 123456
+                    nroOS = 123456,
+                    statusCon = false
                 )
             )
             val resultHeaderGetBefore = headerMotoMecSharedPreferencesDatasource.get()
@@ -185,7 +263,8 @@ class ISetNroOSCommonTest {
             )
             noteMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
-                    nroOS = 123456
+                    nroOS = 123456,
+                    statusCon = true
                 )
             )
             val resultNoteGetBefore = headerMotoMecSharedPreferencesDatasource.get()
@@ -220,6 +299,10 @@ class ISetNroOSCommonTest {
                 modelHeaderAfter.nroOS,
                 456789
             )
+            assertEquals(
+                modelHeaderAfter.statusCon,
+                false
+            )
             val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
@@ -229,6 +312,10 @@ class ISetNroOSCommonTest {
             assertEquals(
                 modelNoteAfter.nroOS,
                 456789
+            )
+            assertEquals(
+                modelNoteAfter.statusCon,
+                false
             )
         }
 

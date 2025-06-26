@@ -9,7 +9,9 @@ import androidx.test.core.app.ActivityScenario
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -17,12 +19,15 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecS
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.WEB_GET_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -74,13 +79,19 @@ class NoteFlowTest {
     @Inject
     lateinit var rEquipActivityDao: REquipActivityDao
 
+    @Inject
+    lateinit var rActivityStopDao: RActivityStopDao
+
+    @Inject
+    lateinit var stopDao: StopDao
+
     @Before
     fun setup() {
         hiltRule.inject()
     }
 
     @Test
-    fun note_flow() = runTest(
+    fun flow() = runTest(
         timeout = 2.minutes
     ) {
 
@@ -166,7 +177,7 @@ class NoteFlowTest {
         )
         val entityWithIdActivity = resultEntityWithIdActivity.getOrNull()!!
         assertEquals(
-            entityWithNroOS.nroOS,
+            entityWithIdActivity.nroOS,
             123456
         )
         assertEquals(
@@ -241,7 +252,7 @@ class NoteFlowTest {
         )
         val entityWithIdActivityStop = resultEntityWithIdActivityStop.getOrNull()!!
         assertEquals(
-            entityWithNroOS.nroOS,
+            entityWithIdActivityStop.nroOS,
             123456
         )
         assertEquals(
@@ -253,6 +264,88 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
+        composeTestRule.onNodeWithText("RETORNAR")
+            .performClick()
+
+        Log.d("TestDebug", "Position 16")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("ATIVIDADE 1")
+            .performClick()
+
+        Log.d("TestDebug", "Position 17")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("200 - PARADA PARA REFEICAO")
+            .performClick()
+
+        Log.d("TestDebug", "Position 18")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        val resultEntityWithIdStop = noteMotoMecSharedPreferencesDatasource.get()
+        assertEquals(
+            resultEntityWithIdStop.isSuccess,
+            true
+        )
+        val entityWithIdStop = resultEntityWithIdStop.getOrNull()!!
+        assertEquals(
+            entityWithIdStop.nroOS,
+            123456
+        )
+        assertEquals(
+            entityWithIdStop.idActivity,
+            10
+        )
+        assertEquals(
+            entityWithIdStop.idStop,
+            1
+        )
+        val listNoteStop = noteMotoMecDao.listAll()
+        assertEquals(
+            listNote.size,
+            1
+        )
+        val entityActivity = listNoteStop[0]
+        assertEquals(
+            entityActivity.idHeader,
+            1
+        )
+        assertEquals(
+            entityActivity.nroOS,
+            123456
+        )
+        assertEquals(
+            entityActivity.idActivity,
+            10
+        )
+        assertEquals(
+            entityActivity.idStop,
+            null
+        )
+        val entityStop = listNoteStop[1]
+        assertEquals(
+            entityStop.idHeader,
+            1
+        )
+        assertEquals(
+            entityStop.nroOS,
+            123456
+        )
+        assertEquals(
+            entityStop.idActivity,
+            10
+        )
+        assertEquals(
+            entityStop.idStop,
+            1
+        )
+
+        Log.d("TestDebug", "Position 19")
+
+        composeTestRule.waitUntilTimeout(3_000)
 
     }
 
@@ -268,11 +361,13 @@ class NoteFlowTest {
             HeaderMotoMecRoomModel(
                 regOperator = 123465,
                 idEquip = 1,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                measureInitial = 10.0,
-                dateHourInitial = Date(1748359002)
+                hourMeterInitial = 10.0,
+                dateHourInitial = Date(1748359002),
+                statusCon = true
             )
         )
 
@@ -300,12 +395,9 @@ class NoteFlowTest {
                     codTurnEquip = 1,
                     idCheckList = 1,
                     typeFert = 1,
-                    hourmeter = 100.0,
-                    measure = 200.0,
-                    type = 1,
+                    hourMeter = 100.0,
                     classify = 1,
-                    flagApontMecan = true,
-                    flagApontPneu = true
+                    flagMechanic = true
                 )
             )
         )
@@ -370,6 +462,26 @@ class NoteFlowTest {
                     idREquipActivity = 1,
                     idEquip = 30,
                     idActivity = 10
+                )
+            )
+        )
+
+        rActivityStopDao.insertAll(
+            listOf(
+                RActivityStopRoomModel(
+                    idRActivityStop= 1,
+                    idActivity = 10,
+                    idStop = 1
+                )
+            )
+        )
+
+        stopDao.insertAll(
+            listOf(
+                StopRoomModel(
+                    idStop = 1,
+                    codStop = 200,
+                    descrStop = "PARADA PARA REFEICAO"
                 )
             )
         )
