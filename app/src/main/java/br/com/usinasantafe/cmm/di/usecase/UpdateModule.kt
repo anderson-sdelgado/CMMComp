@@ -81,7 +81,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableRFuncaoAtivParada(usecase: IUpdateTableRFuncaoAtivParada): UpdateTableRFuncaoAtivParada
+    fun bindUpdateTableFunctionActivityStop(usecase: IUpdateTableFunctionActivityStop): UpdateTableFunctionActivityStop
 
     @Binds
     @Singleton

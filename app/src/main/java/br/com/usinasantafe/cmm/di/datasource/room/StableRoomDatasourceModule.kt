@@ -82,7 +82,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindRFuncaoAtivParadaRoomDatasource(dataSource: IRFuncaoAtivParadaRoomDatasource): RFuncaoAtivParadaRoomDatasource
+    fun bindFunctionActivityStopRoomDatasource(dataSource: IFunctionActivityStopRoomDatasource): FunctionActivityStopRoomDatasource
 
     @Binds
     @Singleton

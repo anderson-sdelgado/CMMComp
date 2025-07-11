@@ -4,20 +4,20 @@ import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.RFuncaoAtivParadaRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RFuncaoAtivParadaRetrofitDatasource // Import da datasource Retrofit
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.RFuncaoAtivParadaRoomDatasource // Import da datasource Room
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityStopRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
 import javax.inject.Inject
 
 class IRFuncaoAtivParadaRepository @Inject constructor(
     private val rFuncaoAtivParadaRetrofitDatasource: RFuncaoAtivParadaRetrofitDatasource, // Injeção da datasource Retrofit
-    private val rFuncaoAtivParadaRoomDatasource: RFuncaoAtivParadaRoomDatasource // Injeção da datasource Room
+    private val functionActivityStopRoomDatasource: FunctionActivityStopRoomDatasource // Injeção da datasource Room
 ) : RFuncaoAtivParadaRepository {
 
     override suspend fun addAll(list: List<RFuncaoAtivParada>): Result<Boolean> {
         try {
             val roomModelList = list.map { it.entityToRoomModel() }
-            val result = rFuncaoAtivParadaRoomDatasource.addAll(roomModelList)
+            val result = functionActivityStopRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
@@ -37,7 +37,7 @@ class IRFuncaoAtivParadaRepository @Inject constructor(
     }
 
     override suspend fun deleteAll(): Result<Boolean> {
-        val result = rFuncaoAtivParadaRoomDatasource.deleteAll()
+        val result = functionActivityStopRoomDatasource.deleteAll()
         if (result.isFailure) {
             val e = result.exceptionOrNull()!!
             return resultFailure(

@@ -22,7 +22,7 @@ class IUpdateTableRFuncaoAtivStopTest {
 
     private val getToken = mock<GetToken>()
     private val rFuncaoAtivParadaRepository = mock<RFuncaoAtivParadaRepository>()
-    private val updateTableRFuncaoAtivParada = IUpdateTableRFuncaoAtivParada(
+    private val updateTableRFuncaoAtivParada = IUpdateTableFunctionActivityStop(
         getToken = getToken,
         rFuncaoAtivParadaRepository = rFuncaoAtivParadaRepository
     )

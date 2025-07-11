@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RFuncaoAtivParadaRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.RFuncaoAtivParadaRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RFuncaoAtivParadaRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.RFuncaoAtivParadaRoomModel
 import br.com.usinasantafe.cmm.utils.FuncAtividade
@@ -16,11 +16,11 @@ import org.mockito.kotlin.whenever
 
 class IRFuncaoAtivStopRepositoryTest {
 
-    private val rFuncaoAtivParadaRoomDatasource = mock<RFuncaoAtivParadaRoomDatasource>()
+    private val functionActivityStopRoomDatasource = mock<FunctionActivityStopRoomDatasource>()
     private val rFuncaoAtivParadaRetrofitDatasource = mock<RFuncaoAtivParadaRetrofitDatasource>()
     private val repository = IRFuncaoAtivParadaRepository(
         rFuncaoAtivParadaRetrofitDatasource = rFuncaoAtivParadaRetrofitDatasource,
-        rFuncaoAtivParadaRoomDatasource = rFuncaoAtivParadaRoomDatasource
+        functionActivityStopRoomDatasource = functionActivityStopRoomDatasource
     )
 
     @Test
@@ -45,7 +45,7 @@ class IRFuncaoAtivStopRepositoryTest {
                 )
             )
             whenever(
-                rFuncaoAtivParadaRoomDatasource.addAll(roomModelList)
+                functionActivityStopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
                 Result.failure(
                     Exception()
@@ -88,7 +88,7 @@ class IRFuncaoAtivStopRepositoryTest {
                 )
             )
             whenever(
-                rFuncaoAtivParadaRoomDatasource.addAll(roomModelList)
+                functionActivityStopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
                 Result.success(true)
             )
@@ -107,7 +107,7 @@ class IRFuncaoAtivStopRepositoryTest {
     fun `deleteAll - Check return failure if have error`() =
         runTest {
             whenever(
-                rFuncaoAtivParadaRoomDatasource.deleteAll()
+                functionActivityStopRoomDatasource.deleteAll()
             ).thenReturn(
                 Result.failure(
                     Exception()
@@ -132,7 +132,7 @@ class IRFuncaoAtivStopRepositoryTest {
     fun `deleteAll - Check return true if function execute successfully`() =
         runTest {
             whenever(
-                rFuncaoAtivParadaRoomDatasource.deleteAll()
+                functionActivityStopRoomDatasource.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )

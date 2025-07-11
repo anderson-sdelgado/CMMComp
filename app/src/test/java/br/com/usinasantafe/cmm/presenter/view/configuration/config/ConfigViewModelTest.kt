@@ -25,7 +25,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTablePropriedad
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRFuncaoAtivParada
+import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableFunctionActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableROSAtiv
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableServico
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
@@ -69,7 +69,7 @@ class ConfigViewModelTest {
     private val updateTableRActivityStop = mock<UpdateTableRActivityStop>()
     private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
     private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
-    private val updateTableRFuncaoAtivParada = mock<UpdateTableRFuncaoAtivParada>()
+    private val updateTableFunctionActivityStop = mock<UpdateTableFunctionActivityStop>()
     private val updateTableROSAtiv = mock<UpdateTableROSAtiv>()
     private val updateTableServico = mock<UpdateTableServico>()
     private val updateTableStop = mock<UpdateTableStop>()
@@ -1969,7 +1969,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessRFuncaoAtiv() =
         runTest {
             whenever(
-                updateTableRFuncaoAtivParada(
+                updateTableFunctionActivityStop(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
