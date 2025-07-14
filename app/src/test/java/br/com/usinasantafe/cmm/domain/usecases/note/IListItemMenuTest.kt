@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
-import br.com.usinasantafe.cmm.domain.entities.view.ItemMenu
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.IListItemMenu

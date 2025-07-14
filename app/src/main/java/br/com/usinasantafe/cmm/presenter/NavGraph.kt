@@ -247,7 +247,11 @@ fun NavigationGraph(
         ///////////////////////// Check List ///////////////////////////////
 
         composable(QUESTION_UPDATE_CHECK_LIST_ROUTE){
-            QuestionUpdateCheckListScreen()
+            QuestionUpdateCheckListScreen(
+                onNavItemCheckList = {
+                    navActions.navigateToItemCheckList()
+                }
+            )
         }
 
         composable(ITEM_CHECK_LIST_ROUTE){

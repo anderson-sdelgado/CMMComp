@@ -82,7 +82,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindRFuncaoAtivRepository(repository: IRFuncaoAtivParadaRepository): RFuncaoAtivParadaRepository
+    fun bindRFuncaoAtivRepository(repository: IRFuncaoAtivParadaRepository): FunctionActivityStopRepository
 
     @Binds
     @Singleton

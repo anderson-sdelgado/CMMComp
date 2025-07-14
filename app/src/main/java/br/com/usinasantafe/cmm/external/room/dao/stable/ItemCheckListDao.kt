@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.TB_ITEM_CHECKLIST
+import br.com.usinasantafe.cmm.utils.TB_ITEM_CHECK_LIST
 
 @Dao
 interface ItemCheckListDao {
@@ -12,10 +12,10 @@ interface ItemCheckListDao {
     @Insert
     fun insertAll(list: List<ItemCheckListRoomModel>)
 
-    @Query("DELETE FROM $TB_ITEM_CHECKLIST")
+    @Query("DELETE FROM $TB_ITEM_CHECK_LIST")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM $TB_ITEM_CHECKLIST")
+    @Query("SELECT * FROM $TB_ITEM_CHECK_LIST")
     suspend fun listAll(): List<ItemCheckListRoomModel>
 
 }

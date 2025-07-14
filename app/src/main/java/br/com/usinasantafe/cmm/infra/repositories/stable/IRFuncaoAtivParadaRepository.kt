@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.RFuncaoAtivParadaRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityStopRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RFuncaoAtivParadaRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityStopRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class IRFuncaoAtivParadaRepository @Inject constructor(
     private val rFuncaoAtivParadaRetrofitDatasource: RFuncaoAtivParadaRetrofitDatasource, // Injeção da datasource Retrofit
     private val functionActivityStopRoomDatasource: FunctionActivityStopRoomDatasource // Injeção da datasource Room
-) : RFuncaoAtivParadaRepository {
+) : FunctionActivityStopRepository {
 
     override suspend fun addAll(list: List<RFuncaoAtivParada>): Result<Boolean> {
         try {

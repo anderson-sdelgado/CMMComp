@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.utils.TB_STOP
 import br.com.usinasantafe.cmm.utils.TB_TURN
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -14,7 +17,7 @@ interface UpdateTableTurn {
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdate>
+    ): Flow<ResultUpdateModel>
 }
 
 class IUpdateTableTurn @Inject constructor(
@@ -25,26 +28,27 @@ class IUpdateTableTurn @Inject constructor(
     override suspend fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdate> = flow {
+    ): Flow<ResultUpdateModel> = flow {
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Recuperando dados da tabela $TB_TURN do Web Service",
-                currentProgress = updatePercentage(1f, count, sizeAll)
+                currentProgress = updatePercentage(1f, count, sizeAll),
+                tableUpdate = TB_TURN,
+                levelUpdate = LevelUpdate.RECOVERY
             )
         )
         val resultGetToken = getToken()
         if (resultGetToken.isFailure) {
             val error = resultGetToken.exceptionOrNull()!!
             val failure =
-                "UpdateTableTurn -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
@@ -55,48 +59,50 @@ class IUpdateTableTurn @Inject constructor(
         if (resultRecoverAll.isFailure) {
             val error = resultRecoverAll.exceptionOrNull()!!
             val failure =
-                "UpdateTableTurn -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
             return@flow
         }
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Limpando a tabela $TB_TURN",
-                currentProgress = updatePercentage(2f, count, sizeAll)
+                currentProgress = updatePercentage(2f, count, sizeAll),
+                tableUpdate = TB_TURN,
+                levelUpdate = LevelUpdate.CLEAN
             )
         )
         val resultDeleteAll = turnRepository.deleteAll()
         if (resultDeleteAll.isFailure) {
             val error = resultDeleteAll.exceptionOrNull()!!
             val failure =
-                "UpdateTableTurn -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
             return@flow
         }
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Salvando dados na tabela $TB_TURN",
-                currentProgress = updatePercentage(3f, count, sizeAll)
+                currentProgress = updatePercentage(3f, count, sizeAll),
+                tableUpdate = TB_TURN,
+                levelUpdate = LevelUpdate.SAVE
             )
         )
         val entityList = resultRecoverAll.getOrNull()!!
@@ -104,14 +110,14 @@ class IUpdateTableTurn @Inject constructor(
         if (resultAddAll.isFailure) {
             val error = resultAddAll.exceptionOrNull()!!
             val failure =
-                "UpdateTableTurn -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )

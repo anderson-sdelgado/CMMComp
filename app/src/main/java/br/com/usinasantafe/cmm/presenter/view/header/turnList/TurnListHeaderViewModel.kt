@@ -2,12 +2,13 @@ package br.com.usinasantafe.cmm.presenter.view.header.turnList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.header.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -27,11 +28,12 @@ data class TurnListHeaderState(
     val flagFailure: Boolean = false,
     val errors: Errors = Errors.FIELD_EMPTY,
     val flagProgress: Boolean = false,
-    val msgProgress: String = "",
     val currentProgress: Float = 0.0f,
+    val levelUpdate: LevelUpdate? = null,
+    val tableUpdate: String = "",
 )
 
-fun ResultUpdate.resultUpdateToTurnListState(): TurnListHeaderState {
+fun ResultUpdateModel.resultUpdateToTurnListState(): TurnListHeaderState {
     val fail = if(failure.isNotEmpty()){
         val ret = "TurnListHeaderViewModel.updateAllDatabase -> ${this.failure}"
         Timber.e(ret)
@@ -39,19 +41,15 @@ fun ResultUpdate.resultUpdateToTurnListState(): TurnListHeaderState {
     } else {
         this.failure
     }
-    val msg = if(failure.isNotEmpty()){
-        "TurnListHeaderViewModel.updateAllDatabase -> ${this.failure}"
-    } else {
-        this.msgProgress
-    }
     return TurnListHeaderState(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
         failure = fail,
         flagProgress = this.flagProgress,
-        msgProgress = msg,
         currentProgress = this.currentProgress,
+        levelUpdate = this.levelUpdate,
+        tableUpdate = this.tableUpdate
     )
 }
 
@@ -145,7 +143,7 @@ class TurnListHeaderViewModel @Inject constructor(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
-                msgProgress = "Atualização de dados realizado com sucesso!",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                 currentProgress = 1f,
             )
         )

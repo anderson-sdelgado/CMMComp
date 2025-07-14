@@ -29,6 +29,7 @@ import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 
 @Composable
 fun ActivityListCommonScreen(
@@ -41,6 +42,11 @@ fun ActivityListCommonScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.activityList()
+            }
+
             ActivityListCommonScreenContent(
                 flowApp = uiState.flowApp,
                 activityList = uiState.activityList,
@@ -51,7 +57,8 @@ fun ActivityListCommonScreen(
                 failure = uiState.failure,
                 flagProgress = uiState.flagProgress,
                 currentProgress = uiState.currentProgress,
-                msgProgress = uiState.msgProgress,
+                levelUpdate = uiState.levelUpdate,
+                tableUpdate = uiState.tableUpdate,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -61,7 +68,6 @@ fun ActivityListCommonScreen(
                 onMenuNote = onMenuNote,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.activityList()
         }
     }
 }
@@ -76,7 +82,8 @@ fun ActivityListCommonScreenContent(
     errors: Errors,
     failure: String,
     flagProgress: Boolean,
-    msgProgress: String,
+    levelUpdate: LevelUpdate?,
+    tableUpdate: String,
     currentProgress: Float,
     flagAccess: Boolean,
     flagDialog: Boolean,
@@ -153,7 +160,16 @@ fun ActivityListCommonScreenContent(
                     )
                 }
             } else {
-                msgProgress
+                when(levelUpdate){
+                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                    null -> failure
+                }
             }
             AlertDialogSimpleDesign(
                 text = text,
@@ -162,6 +178,16 @@ fun ActivityListCommonScreenContent(
         }
 
         if (flagProgress) {
+            val msgProgress = when(levelUpdate){
+                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                null -> failure
+            }
             AlertDialogProgressDesign(
                 currentProgress = currentProgress,
                 msgProgress = msgProgress
@@ -205,8 +231,9 @@ fun ActivityListCommonPagePreviewWithData() {
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagAccess = false,
                 flagDialog = false,
                 setCloseDialog = {},
@@ -243,8 +270,9 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                 errors = Errors.UPDATE,
                 failure = "Failure",
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagAccess = false,
                 flagDialog = true,
                 setCloseDialog = {},
@@ -281,7 +309,8 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
                 errors = Errors.UPDATE,
                 failure = "Failure",
                 flagProgress = true,
-                msgProgress = "Update",
+                levelUpdate = LevelUpdate.RECOVERY,
+                tableUpdate = "tb_activity",
                 currentProgress = 0.3333f,
                 flagAccess = false,
                 flagDialog = false,
@@ -319,8 +348,9 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
                 errors = Errors.EXCEPTION,
                 failure = "Failure",
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagAccess = false,
                 flagDialog = true,
                 setCloseDialog = {},

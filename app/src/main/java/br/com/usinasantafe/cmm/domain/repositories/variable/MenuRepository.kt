@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ItemMenu
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
 
 interface MenuRepository {

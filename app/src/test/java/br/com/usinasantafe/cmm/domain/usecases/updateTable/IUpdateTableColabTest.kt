@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Colab
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -31,8 +32,8 @@ class IUpdateTableColabTest {
                 getToken()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetToken",
+                    "-",
                     Exception()
                 )
             )
@@ -47,20 +48,20 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableColab -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -78,8 +79,8 @@ class IUpdateTableColabTest {
                 colabRepository.recoverAll("token")
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IColabRepository.recoverAll",
+                    "-",
                     Exception()
                 )
             )
@@ -94,20 +95,20 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableColab -> IColabRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -138,8 +139,8 @@ class IUpdateTableColabTest {
                 colabRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IColabRepository.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -154,28 +155,29 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_colab",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableColab -> IColabRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -211,8 +213,8 @@ class IUpdateTableColabTest {
                 colabRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IColabRepository.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -227,36 +229,38 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_colab",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_colab",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableColab -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableColab -> IColabRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

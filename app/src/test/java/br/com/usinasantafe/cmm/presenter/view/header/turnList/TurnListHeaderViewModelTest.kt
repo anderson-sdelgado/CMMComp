@@ -1,13 +1,14 @@
 package br.com.usinasantafe.cmm.presenter.view.header.turnList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.header.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -54,7 +55,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "TurnListViewModel.turnList -> GetTurnList -> java.lang.Exception"
+                "TurnListHeaderViewModel.turnList -> GetTurnList -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagFailure,
@@ -137,17 +138,17 @@ class TurnListHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_turn",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
                         failure = "UpdateTableTurn -> java.lang.NullPointerException",
-                        msgProgress = "UpdateTableTurn -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -158,7 +159,8 @@ class TurnListHeaderViewModelTest {
                 result[0],
                 TurnListHeaderState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_turn",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -168,8 +170,7 @@ class TurnListHeaderViewModelTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "TurnListViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
-                    msgProgress = "TurnListViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
+                    failure = "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -179,8 +180,8 @@ class TurnListHeaderViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "TurnListViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
+                viewModel.uiState.value.failure,
+                "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
             )
         }
 
@@ -194,19 +195,22 @@ class TurnListHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_turn",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_turn do Web Service",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_turn",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_turn",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_turn",
                         currentProgress = percentage(3f, 4f)
                     ),
                 )
@@ -217,7 +221,8 @@ class TurnListHeaderViewModelTest {
                 result[0],
                 TurnListHeaderState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_turn",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -225,7 +230,8 @@ class TurnListHeaderViewModelTest {
                 result[1],
                 TurnListHeaderState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turn do Web Service",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_turn",
                     currentProgress = percentage(2f, 4f),
                 )
             )
@@ -233,7 +239,8 @@ class TurnListHeaderViewModelTest {
                 result[2],
                 TurnListHeaderState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_turn",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_turn",
                     currentProgress = percentage(3f, 4f),
                     )
             )
@@ -243,7 +250,7 @@ class TurnListHeaderViewModelTest {
                     flagDialog = true,
                     flagProgress = false,
                     flagFailure = false,
-                    msgProgress = "Atualização de dados realizado com sucesso!",
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                     currentProgress = 1f,
                 )
             )
@@ -251,10 +258,6 @@ class TurnListHeaderViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
-            )
-            assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "Atualização de dados realizado com sucesso!"
             )
         }
 
@@ -279,7 +282,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "TurnListViewModel.setIdTurnHeader -> SetIdTurn -> java.lang.Exception"
+                "TurnListHeaderViewModel.setIdTurnHeader -> SetIdTurn -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagFailure,

@@ -1,13 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.RFuncaoAtivParadaRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityStopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FuncAtividade
 import br.com.usinasantafe.cmm.utils.FuncParada
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeOper
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
@@ -21,10 +22,10 @@ import org.mockito.kotlin.whenever
 class IUpdateTableRFuncaoAtivStopTest {
 
     private val getToken = mock<GetToken>()
-    private val rFuncaoAtivParadaRepository = mock<RFuncaoAtivParadaRepository>()
-    private val updateTableRFuncaoAtivParada = IUpdateTableFunctionActivityStop(
+    private val functionActivityStopRepository = mock<FunctionActivityStopRepository>()
+    private val updateTableFunctionActivityStop = IUpdateTableFunctionActivityStop(
         getToken = getToken,
-        rFuncaoAtivParadaRepository = rFuncaoAtivParadaRepository
+        functionActivityStopRepository = functionActivityStopRepository
     )
 
     @Test
@@ -34,12 +35,12 @@ class IUpdateTableRFuncaoAtivStopTest {
                 getToken()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetToken",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableRFuncaoAtivParada(
+            val result = updateTableFunctionActivityStop(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -50,27 +51,27 @@ class IUpdateTableRFuncaoAtivStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ_parada do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableFunctionActivityStop -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in RFuncaoAtivParadaRepository recoverAll`() =
+    fun `Check return failure if have error in FunctionActivityStopRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -78,15 +79,15 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                rFuncaoAtivParadaRepository.recoverAll("token")
+                functionActivityStopRepository.recoverAll("token")
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IFunctionActivityStopRepository.recoverAll",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableRFuncaoAtivParada(
+            val result = updateTableFunctionActivityStop(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -97,27 +98,27 @@ class IUpdateTableRFuncaoAtivStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ_parada do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in RFuncaoAtivParadaRepository deleteAll`() =
+    fun `Check return failure if have error in UpdateTableFunctionActivityStop deleteAll`() =
         runTest {
             val list = listOf(
                 RFuncaoAtivParada(
@@ -134,22 +135,22 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                rFuncaoAtivParadaRepository.recoverAll("token")
+                functionActivityStopRepository.recoverAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                rFuncaoAtivParadaRepository.deleteAll()
+                functionActivityStopRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IFunctionActivityStopRepository.deleteAll",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableRFuncaoAtivParada(
+            val result = updateTableFunctionActivityStop(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -160,35 +161,36 @@ class IUpdateTableRFuncaoAtivStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ_parada do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_funcao_ativ_parada",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in RFuncaoAtivParadaRepository addAll`() =
+    fun `Check return failure if have error in FunctionActivityStopRepository addAll`() =
         runTest {
             val list = listOf(
                 RFuncaoAtivParada(
@@ -205,27 +207,27 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                rFuncaoAtivParadaRepository.recoverAll("token")
+                functionActivityStopRepository.recoverAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                rFuncaoAtivParadaRepository.deleteAll()
+                functionActivityStopRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                rFuncaoAtivParadaRepository.addAll(list)
+                functionActivityStopRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IFunctionActivityStopRepository.addAll",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableRFuncaoAtivParada(
+            val result = updateTableFunctionActivityStop(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -236,36 +238,38 @@ class IUpdateTableRFuncaoAtivStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ_parada do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_funcao_ativ_parada",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_r_funcao_ativ_parada",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_function_activity_stop",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableRFuncaoAtivParada -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

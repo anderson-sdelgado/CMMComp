@@ -41,6 +41,11 @@ fun SplashScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.startApp()
+            }
+
             SplashContent(
                 flagHeaderOpen = uiState.flagHeaderOpen,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -51,7 +56,6 @@ fun SplashScreen(
                 onNavMenuNote = onNavMenuNote,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.startApp()
         }
     }
 }

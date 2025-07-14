@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
 import br.com.usinasantafe.cmm.utils.FuncAtividade
 import br.com.usinasantafe.cmm.utils.FuncParada
-import br.com.usinasantafe.cmm.utils.TB_R_FUNCAO_ATIV_PARADA
+import br.com.usinasantafe.cmm.utils.TB_FUNCTION_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.TypeOper
 
-@Entity(tableName = TB_R_FUNCAO_ATIV_PARADA)
+@Entity(tableName = TB_FUNCTION_ACTIVITY_STOP)
 data class RFuncaoAtivParadaRoomModel(
     @PrimaryKey
     val idRFuncaoAtivPar: Int,

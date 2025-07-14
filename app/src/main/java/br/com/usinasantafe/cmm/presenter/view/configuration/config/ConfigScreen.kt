@@ -17,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,6 +41,8 @@ import br.com.usinasantafe.cmm.ui.theme.CMMTheme
 import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
+import kotlin.String
 
 const val TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN = "tag_number_text_field_config_screen"
 const val TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN = "tag_nro_equip_text_field_config_screen"
@@ -55,6 +58,15 @@ fun ConfigScreen(
             modifier = Modifier.fillMaxSize()
         ) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.returnDataConfig()
+                viewModel.setConfigMain(
+                    BuildConfig.VERSION_NAME,
+                    BuildConfig.FLAVOR_app
+                )
+            }
+
             ConfigContent(
                 number = uiState.number,
                 onNumberChanged = viewModel::onNumberChanged,
@@ -66,8 +78,9 @@ fun ConfigScreen(
                 onCheckMotoMecChanged = viewModel::onCheckMotoMecChanged,
                 onSaveAndUpdate = viewModel::saveTokenAndUpdate,
                 flagProgress = uiState.flagProgress,
-                msgProgress = uiState.msgProgress,
                 currentProgress = uiState.currentProgress,
+                levelUpdate = uiState.levelUpdate,
+                tableUpdate = uiState.tableUpdate,
                 flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagFailure = uiState.flagFailure,
@@ -76,11 +89,7 @@ fun ConfigScreen(
                 onNavInitialMenu = onNavInitialMenu,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.returnDataConfig()
-            viewModel.setConfigMain(
-                BuildConfig.VERSION_NAME,
-                BuildConfig.FLAVOR_app
-            )
+
         }
     }
 }
@@ -96,9 +105,10 @@ fun ConfigContent(
     checkMotoMec: Boolean,
     onCheckMotoMecChanged: (Boolean) -> Unit,
     onSaveAndUpdate: () -> Unit,
-    msgProgress: String,
     currentProgress: Float,
     flagProgress: Boolean,
+    levelUpdate: LevelUpdate?,
+    tableUpdate: String,
     flagDialog: Boolean,
     setCloseDialog: () -> Unit,
     flagFailure: Boolean,
@@ -217,6 +227,16 @@ fun ConfigContent(
                     .height(30.dp),
             )
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
+            val msgProgress = when(levelUpdate){
+                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                null -> failure
+            }
             Text(
                 text = msgProgress,
                 textAlign = TextAlign.Center,
@@ -269,8 +289,9 @@ fun ConfigPagePreview() {
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0.0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagDialog = false,
                 setCloseDialog = {},
                 flagFailure = false,
@@ -299,8 +320,9 @@ fun ConfigPagePreviewWithData() {
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0.0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagDialog = false,
                 setCloseDialog = {},
                 flagFailure = false,
@@ -329,8 +351,9 @@ fun ConfigPagePreviewShowProgress() {
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
                 flagProgress = true,
-                msgProgress = "Update",
                 currentProgress = 0.2f,
+                levelUpdate = LevelUpdate.RECOVERY,
+                tableUpdate = "Colab",
                 flagDialog = false,
                 setCloseDialog = {},
                 flagFailure = false,
@@ -359,8 +382,9 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0.0f,
+                levelUpdate = null,
+                tableUpdate = "",
                 flagDialog = true,
                 setCloseDialog = {},
                 flagFailure = true,
@@ -389,8 +413,9 @@ fun ConfigPagePreviewShowMsgSuccess() {
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
                 flagProgress = false,
-                msgProgress = "",
                 currentProgress = 0.0f,
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                tableUpdate = "",
                 flagDialog = true,
                 setCloseDialog = {},
                 flagFailure = false,

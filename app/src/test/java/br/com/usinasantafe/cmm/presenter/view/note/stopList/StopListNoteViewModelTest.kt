@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.note.stopList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.note.SetIdStopNote
@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityS
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
 import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -48,17 +49,17 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_r_activity_stop",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
                         failure = "UpdateTableRActivityStop -> java.lang.NullPointerException",
-                        msgProgress = "UpdateTableRActivityStop -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -72,7 +73,8 @@ class StopListNoteViewModelTest {
                 result[0],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(1f, 7f)
                 )
             )
@@ -83,7 +85,6 @@ class StopListNoteViewModelTest {
                     flagDialog = true,
                     flagFailure = true,
                     failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException",
-                    msgProgress = "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -93,7 +94,7 @@ class StopListNoteViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
+                viewModel.uiState.value.failure,
                 "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException"
             )
         }
@@ -108,19 +109,22 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_r_activity_stop do Web Service",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_r_activity_stop",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(2f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_r_activity_stop",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(3f, 7f)
                     ),
                 )
@@ -132,17 +136,17 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_stop",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
                         currentProgress = percentage(4f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
                         failure = "UpdateTableStop -> java.lang.NullPointerException",
-                        msgProgress = "UpdateTableStop -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -156,7 +160,8 @@ class StopListNoteViewModelTest {
                 result[0],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_activity_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(1f, 7f)
                 )
             )
@@ -164,7 +169,8 @@ class StopListNoteViewModelTest {
                 result[1],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(2f, 7f)
                 )
             )
@@ -172,7 +178,8 @@ class StopListNoteViewModelTest {
                 result[2],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(3f, 7f)
                 )
             )
@@ -180,7 +187,8 @@ class StopListNoteViewModelTest {
                 result[3],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = percentage(4f, 7f)
                 )
             )
@@ -191,7 +199,6 @@ class StopListNoteViewModelTest {
                     flagDialog = true,
                     flagFailure = true,
                     failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException",
-                    msgProgress = "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -201,7 +208,7 @@ class StopListNoteViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
+                viewModel.uiState.value.failure,
                 "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException"
             )
         }
@@ -216,19 +223,22 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_r_activity_stop do Web Service",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_r_activity_stop",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(2f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_r_activity_stop",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(3f, 7f)
                     ),
                 )
@@ -240,19 +250,22 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_stop",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
                         currentProgress = percentage(4f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_stop",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_stop",
                         currentProgress = percentage(5f, 7f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_stop",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_stop",
                         currentProgress = percentage(6f, 7f)
                     )
                 )
@@ -266,7 +279,8 @@ class StopListNoteViewModelTest {
                 result[0],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_activity_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(1f, 7f)
                 )
             )
@@ -274,7 +288,8 @@ class StopListNoteViewModelTest {
                 result[1],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(2f, 7f)
                 )
             )
@@ -282,7 +297,8 @@ class StopListNoteViewModelTest {
                 result[2],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = percentage(3f, 7f)
                 )
             )
@@ -290,7 +306,8 @@ class StopListNoteViewModelTest {
                 result[3],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = percentage(4f, 7f)
                 )
             )
@@ -298,7 +315,8 @@ class StopListNoteViewModelTest {
                 result[4],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_stop",
                     currentProgress = percentage(5f, 7f)
                 )
             )
@@ -306,7 +324,8 @@ class StopListNoteViewModelTest {
                 result[5],
                 StopListNoteState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_stop",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_stop",
                     currentProgress = percentage(6f, 7f)
                 )
             )
@@ -316,7 +335,7 @@ class StopListNoteViewModelTest {
                     flagDialog = true,
                     flagProgress = false,
                     flagFailure = false,
-                    msgProgress = "Atualização de dados realizado com sucesso!",
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                     currentProgress = 1f,
                 )
             )
@@ -326,8 +345,8 @@ class StopListNoteViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "Atualização de dados realizado com sucesso!"
+                viewModel.uiState.value.levelUpdate,
+                LevelUpdate.FINISH_UPDATE_COMPLETED
             )
         }
 

@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -47,20 +48,20 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableStop -> GetToken -> java.lang.Exception",
-                    msgProgress = "UpdateTableStop -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableStop -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -94,20 +95,20 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableStop -> StopRepository.recoverAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableStop -> StopRepository.recoverAll -> java.lang.Exception",
+                    failure = "IUpdateTableStop -> StopRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -155,28 +156,29 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableStop -> StopRepository.deleteAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableStop -> StopRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableStop -> StopRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -229,36 +231,38 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_stop",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableStop -> StopRepository.addAll -> java.lang.Exception",
-                    msgProgress = "UpdateTableStop -> StopRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableStop -> StopRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

@@ -45,7 +45,7 @@ class SplashViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "SplashViewModel.checkOpen -> CheckHeaderOpen -> java.lang.Exception"
+                "SplashViewModel.startApp -> CheckHeaderOpen -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,

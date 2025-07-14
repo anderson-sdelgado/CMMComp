@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.domain.entities.view
+package br.com.usinasantafe.cmm.domain.entities.variable
 
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
 

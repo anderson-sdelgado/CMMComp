@@ -1,12 +1,13 @@
 package br.com.usinasantafe.cmm.presenter.view.header.operator
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -101,17 +102,17 @@ class OperatorHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_colab",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
                         failure = "CleanColab -> java.lang.NullPointerException",
-                        msgProgress = "CleanColab -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -122,7 +123,8 @@ class OperatorHeaderViewModelTest {
                 result[0],
                 OperatorHeaderState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_colab",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -132,8 +134,7 @@ class OperatorHeaderViewModelTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "OperatorViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
-                    msgProgress = "OperatorViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
+                    failure = "OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -146,8 +147,8 @@ class OperatorHeaderViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "OperatorViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
+                viewModel.uiState.value.failure,
+                "OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
             )
         }
 
@@ -161,19 +162,22 @@ class OperatorHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_colab",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_colab",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(3f, 4f)
                     ),
                 )
@@ -184,7 +188,8 @@ class OperatorHeaderViewModelTest {
                 result[0],
                 OperatorHeaderState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_colab",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -192,7 +197,8 @@ class OperatorHeaderViewModelTest {
                 result[1],
                 OperatorHeaderState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(2f, 4f),
                 )
             )
@@ -200,7 +206,8 @@ class OperatorHeaderViewModelTest {
                 result[2],
                 OperatorHeaderState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_colab",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(3f, 4f),
                 )
             )
@@ -210,7 +217,7 @@ class OperatorHeaderViewModelTest {
                     flagDialog = true,
                     flagProgress = false,
                     flagFailure = false,
-                    msgProgress = "Atualização de dados realizado com sucesso!",
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                     currentProgress = 1f,
                 )
             )
@@ -221,10 +228,6 @@ class OperatorHeaderViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
-            )
-            assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "Atualização de dados realizado com sucesso!"
             )
         }
 
@@ -249,7 +252,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorViewModel.setTextField.OK -> Field Empty!"
+                "OperatorHeaderViewModel.setTextField.OK -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -295,7 +298,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorViewModel.setRegistrationOperator -> ICheckRegOperator -> java.lang.Exception"
+                "OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -380,7 +383,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorViewModel.setRegistrationOperator -> ISetRegOperator -> java.lang.Exception"
+                "OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,

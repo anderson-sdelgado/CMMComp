@@ -13,6 +13,7 @@ fun getClassAndMethod(): String {
                 .substringAfter("$")
                 .substringBefore('$')
             val methodName = methodNameFromClass.ifBlank { element.methodName }
-            "$className.$methodName"
+            val method = if (methodName == "invoke") "" else ".$methodName"
+            "$className$method"
         } ?: "Classe.MétodoDesconhecido"
 }

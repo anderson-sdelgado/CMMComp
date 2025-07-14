@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.configuration.config
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
@@ -16,6 +16,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.qtdTable
@@ -40,13 +41,14 @@ data class ConfigState(
     val flagDialog: Boolean = false,
     val failure: String = "",
     val flagProgress: Boolean = false,
-    val msgProgress: String = "",
     val currentProgress: Float = 0.0f,
+    val levelUpdate: LevelUpdate? = null,
+    val tableUpdate: String = "",
     val flagFailure: Boolean = false,
     val errors: Errors = Errors.FIELD_EMPTY,
 )
 
-fun ResultUpdate.resultUpdateToConfig(): ConfigState {
+fun ResultUpdateModel.resultUpdateToConfig(): ConfigState {
     val fail = if(failure.isNotEmpty()){
         val ret = "ConfigViewModel.updateAllDatabase -> ${this.failure}"
         Timber.e(ret)
@@ -54,19 +56,15 @@ fun ResultUpdate.resultUpdateToConfig(): ConfigState {
     } else {
         this.failure
     }
-    val msg = if(failure.isNotEmpty()){
-        "ConfigViewModel.updateAllDatabase -> ${this.failure}"
-    } else {
-        this.msgProgress
-    }
     return ConfigState(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
         failure = fail,
         flagProgress = this.flagProgress,
-        msgProgress = msg,
         currentProgress = this.currentProgress,
+        levelUpdate = this.levelUpdate,
+        tableUpdate = this.tableUpdate,
     )
 }
 
@@ -215,7 +213,7 @@ class ConfigViewModel @Inject constructor(
         emit(
             ConfigState(
                 flagProgress = true,
-                msgProgress = "Enviando dados de Token",
+                levelUpdate = LevelUpdate.GET_TOKEN,
                 currentProgress = percentage(1f, sizeToken)
             )
         )
@@ -237,7 +235,6 @@ class ConfigViewModel @Inject constructor(
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
                     currentProgress = 1f,
                 )
             )
@@ -246,7 +243,7 @@ class ConfigViewModel @Inject constructor(
         emit(
             ConfigState(
                 flagProgress = true,
-                msgProgress = "Salvando dados de Token",
+                levelUpdate = LevelUpdate.SAVE_TOKEN,
                 currentProgress = percentage(2f, sizeToken),
             )
         )
@@ -272,7 +269,6 @@ class ConfigViewModel @Inject constructor(
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
                     currentProgress = 1f,
                 )
             )
@@ -281,8 +277,8 @@ class ConfigViewModel @Inject constructor(
         emit(
             ConfigState(
                 flagProgress = true,
-                msgProgress = "Ajuste iniciais finalizado com sucesso!",
                 currentProgress = 1f,
+                levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
             )
         )
     }
@@ -360,7 +356,6 @@ class ConfigViewModel @Inject constructor(
                     flagDialog = true,
                     failure = failure,
                     flagProgress = true,
-                    msgProgress = failure,
                     currentProgress = 1f,
                 )
             )
@@ -371,7 +366,7 @@ class ConfigViewModel @Inject constructor(
                 flagDialog = true,
                 flagProgress = true,
                 flagFailure = false,
-                msgProgress = "Atualização de dados realizado com sucesso!",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                 currentProgress = 1f,
             )
         )

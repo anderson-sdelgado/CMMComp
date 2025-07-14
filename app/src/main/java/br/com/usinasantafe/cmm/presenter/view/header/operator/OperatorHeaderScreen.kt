@@ -31,6 +31,7 @@ import br.com.usinasantafe.cmm.ui.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.ui.theme.CMMTheme
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton
 
 @Composable
@@ -52,7 +53,8 @@ fun OperatorHeaderScreen(
                 errors = uiState.errors,
                 failure = uiState.failure,
                 flagProgress = uiState.flagProgress,
-                msgProgress = uiState.msgProgress,
+                levelUpdate = uiState.levelUpdate,
+                tableUpdate = uiState.tableUpdate,
                 currentProgress = uiState.currentProgress,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavEquip = onNavEquip,
@@ -73,7 +75,8 @@ fun OperatorHeaderContent(
     errors: Errors,
     failure: String,
     flagProgress: Boolean,
-    msgProgress: String,
+    levelUpdate: LevelUpdate?,
+    tableUpdate: String,
     currentProgress: Float,
     onNavInitialMenu: () -> Unit,
     onNavEquip: () -> Unit,
@@ -132,7 +135,16 @@ fun OperatorHeaderContent(
                     else -> ""
                 }
             } else {
-                msgProgress
+                when(levelUpdate){
+                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                    null -> failure
+                }
             }
 
             AlertDialogSimpleDesign(
@@ -142,6 +154,16 @@ fun OperatorHeaderContent(
         }
 
         if (flagProgress) {
+            val msgProgress = when(levelUpdate){
+                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                null -> failure
+            }
             AlertDialogProgressDesign(
                 currentProgress = currentProgress,
                 msgProgress = msgProgress
@@ -172,7 +194,8 @@ fun OperatorHeaderPagePreview() {
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 onNavInitialMenu = {},
                 onNavEquip = {},
@@ -197,7 +220,8 @@ fun OperatorHeaderPagePreviewWithData() {
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 onNavInitialMenu = {},
                 onNavEquip = {},
@@ -222,7 +246,8 @@ fun OperatorHeaderPagePreviewWithMsgEmpty() {
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 onNavInitialMenu = {},
                 onNavEquip = {},
@@ -243,11 +268,12 @@ fun OperatorHeaderPagePreviewUpdate() {
                 flagAccess = false,
                 flagDialog = false,
                 setCloseDialog = {},
+                failure = "",
                 flagFailure = false,
                 errors = Errors.FIELD_EMPTY,
-                failure = "",
+                levelUpdate = LevelUpdate.RECOVERY,
+                tableUpdate = "colab",
                 flagProgress = true,
-                msgProgress = "Update Colab",
                 currentProgress = 0.3333334f,
                 onNavInitialMenu = {},
                 onNavEquip = {},

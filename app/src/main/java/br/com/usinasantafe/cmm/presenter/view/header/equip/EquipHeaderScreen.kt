@@ -37,6 +37,11 @@ fun EquipHeaderScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.getDescr()
+            }
+
             EquipHeaderContent(
                 description = uiState.description,
                 setEquip = viewModel::setIdEquipHeader,
@@ -48,7 +53,6 @@ fun EquipHeaderScreen(
                 onNavTurnList = onNavTurnList,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.getDescr()
         }
     }
 }

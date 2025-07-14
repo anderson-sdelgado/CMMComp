@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.activityList
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -55,17 +56,17 @@ class ActivityListCommonViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_activity",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
                         failure = "UpdateTableActivity -> java.lang.NullPointerException",
-                        msgProgress = "UpdateTableActivity -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -80,7 +81,8 @@ class ActivityListCommonViewModelTest {
                 result[0],
                 ActivityListCommonState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_activity",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -91,7 +93,6 @@ class ActivityListCommonViewModelTest {
                     flagDialog = true,
                     flagFailure = true,
                     failure = "ActivityListCommonViewModel.updateAllDatabase -> UpdateTableActivity -> java.lang.NullPointerException",
-                    msgProgress = "ActivityListCommonViewModel.updateAllDatabase -> UpdateTableActivity -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -101,7 +102,7 @@ class ActivityListCommonViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.msgProgress,
+                viewModel.uiState.value.failure,
                 "ActivityListCommonViewModel.updateAllDatabase -> UpdateTableActivity -> java.lang.NullPointerException"
             )
         }
@@ -116,19 +117,22 @@ class ActivityListCommonViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Limpando a tabela tb_activity",
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Recuperando dados da tabela tb_activity do Web Service",
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdate(
+                    ResultUpdateModel(
                         flagProgress = true,
-                        msgProgress = "Salvando dados na tabela tb_activity",
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(3f, 4f)
                     ),
                 )
@@ -143,7 +147,8 @@ class ActivityListCommonViewModelTest {
                 result[0],
                 ActivityListCommonState(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_activity",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(1f, 4f)
                 )
             )
@@ -151,7 +156,8 @@ class ActivityListCommonViewModelTest {
                 result[1],
                 ActivityListCommonState(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_activity do Web Service",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(2f, 4f),
                 )
             )
@@ -159,7 +165,8 @@ class ActivityListCommonViewModelTest {
                 result[2],
                 ActivityListCommonState(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_activity",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(3f, 4f),
                 )
             )
@@ -169,7 +176,7 @@ class ActivityListCommonViewModelTest {
                     flagDialog = true,
                     flagProgress = false,
                     flagFailure = false,
-                    msgProgress = "Atualização de dados realizado com sucesso!",
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                     currentProgress = 1f,
                 )
             )
@@ -177,10 +184,6 @@ class ActivityListCommonViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
-            )
-            assertEquals(
-                viewModel.uiState.value.msgProgress,
-                "Atualização de dados realizado com sucesso!"
             )
         }
 

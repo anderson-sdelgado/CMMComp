@@ -38,6 +38,12 @@ fun MenuNoteScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.menuList()
+                viewModel.descrEquip()
+            }
+
             MenuNoteContent(
                 descrEquip = uiState.descrEquip,
                 itemMenuModelList = uiState.menuList,
@@ -55,8 +61,6 @@ fun MenuNoteScreen(
                 onNavMeasure = onNavMeasure,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.menuList()
-            viewModel.descrEquip()
         }
     }
 }

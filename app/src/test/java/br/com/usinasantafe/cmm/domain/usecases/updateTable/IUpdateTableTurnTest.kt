@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -31,8 +32,8 @@ class IUpdateTableTurnTest {
                 getToken()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetToken",
+                    "-",
                     Exception()
                 )
             )
@@ -47,20 +48,20 @@ class IUpdateTableTurnTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turno do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableTurn -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -78,8 +79,8 @@ class IUpdateTableTurnTest {
                 turnRepository.recoverAll("token")
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "ITurnRepository.recoverAll",
+                    "-",
                     Exception()
                 )
             )
@@ -94,20 +95,20 @@ class IUpdateTableTurnTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turno do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableTurn -> ITurnRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -121,7 +122,7 @@ class IUpdateTableTurnTest {
                     idTurn = 1,
                     codTurnEquip = 1,
                     nroTurn = 1,
-                    descrTurn = "descrTurno"
+                    descrTurn = "descTurn"
                 )
             )
             whenever(
@@ -140,8 +141,8 @@ class IUpdateTableTurnTest {
                 turnRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "ITurnRepository.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -156,28 +157,29 @@ class IUpdateTableTurnTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turno do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_turno",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableTurn -> ITurnRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -215,8 +217,8 @@ class IUpdateTableTurnTest {
                 turnRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "ITurnRepository.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -231,36 +233,38 @@ class IUpdateTableTurnTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turno do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_turno",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_turno",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableTurno -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableTurn -> ITurnRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

@@ -44,6 +44,11 @@ fun OSCommonScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.getNroOS()
+            }
+
             OSCommonContent(
                 flowApp = uiState.flowApp,
                 nroOS = uiState.nroOS,
@@ -60,7 +65,7 @@ fun OSCommonScreen(
                 onNavMenuNote = onNavMenuNote,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.getNroOS()
+
         }
     }
 }

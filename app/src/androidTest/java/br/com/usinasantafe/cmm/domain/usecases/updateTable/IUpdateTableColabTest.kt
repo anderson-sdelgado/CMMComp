@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -69,7 +69,7 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
                     msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
@@ -77,7 +77,7 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
                     msgProgress = "Limpando a tabela tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
@@ -85,7 +85,7 @@ class IUpdateTableColabTest {
             )
             assertEquals(
                 list[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
                     msgProgress = "Salvando dados na tabela tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)

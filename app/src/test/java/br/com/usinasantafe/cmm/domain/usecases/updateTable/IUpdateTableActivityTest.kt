@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -31,8 +32,8 @@ class IUpdateTableActivityTest {
                 getToken()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetToken",
+                    "-",
                     Exception()
                 )
             )
@@ -47,20 +48,20 @@ class IUpdateTableActivityTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableActivity -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -78,8 +79,8 @@ class IUpdateTableActivityTest {
                 activityRepository.recoverAll("token")
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IActivityRepository.recoverAll",
+                    "-",
                     Exception()
                 )
             )
@@ -94,20 +95,20 @@ class IUpdateTableActivityTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableActivity -> IActivityRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -139,8 +140,8 @@ class IUpdateTableActivityTest {
                 activityRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IActivityRepository.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -155,28 +156,29 @@ class IUpdateTableActivityTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_atividade",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableActivity -> IActivityRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -213,8 +215,8 @@ class IUpdateTableActivityTest {
                 activityRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IActivityRepository.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -229,36 +231,38 @@ class IUpdateTableActivityTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_atividade do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_atividade",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_atividade",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_activity",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableAtividade -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableActivity -> IActivityRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

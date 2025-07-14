@@ -38,6 +38,11 @@ fun InitialMenuScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.recoverStatusSend()
+            }
+
             InitialMenuContent(
                 statusSend = uiState.statusSend,
                 flagDialog = uiState.flagDialog,
@@ -51,7 +56,6 @@ fun InitialMenuScreen(
                 onNavOperator = onNavOperator,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.recoverStatusSend()
         }
     }
 }

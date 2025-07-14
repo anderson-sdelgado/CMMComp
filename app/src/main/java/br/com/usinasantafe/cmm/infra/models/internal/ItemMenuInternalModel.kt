@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.internal
 
-import br.com.usinasantafe.cmm.domain.entities.view.ItemMenu
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
 
 data class ItemMenuInternalModel(

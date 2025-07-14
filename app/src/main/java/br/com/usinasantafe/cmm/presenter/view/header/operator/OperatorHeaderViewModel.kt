@@ -2,13 +2,14 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
 import br.com.usinasantafe.cmm.ui.theme.addTextField
 import br.com.usinasantafe.cmm.ui.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,11 +30,12 @@ data class OperatorHeaderState(
     val failure: String = "",
     val errors: Errors = Errors.FIELD_EMPTY,
     val flagProgress: Boolean = false,
-    val msgProgress: String = "",
     val currentProgress: Float = 0.0f,
+    val levelUpdate: LevelUpdate? = null,
+    val tableUpdate: String = "",
 )
 
-fun ResultUpdate.resultUpdateToOperatorState(): OperatorHeaderState {
+fun ResultUpdateModel.resultUpdateToOperatorState(): OperatorHeaderState {
     val fail = if(failure.isNotEmpty()){
         val ret = "OperatorHeaderViewModel.updateAllDatabase -> ${this.failure}"
         Timber.e(ret)
@@ -41,19 +43,15 @@ fun ResultUpdate.resultUpdateToOperatorState(): OperatorHeaderState {
     } else {
         this.failure
     }
-    val msg = if(failure.isNotEmpty()){
-        "OperatorHeaderViewModel.updateAllDatabase -> ${this.failure}"
-    } else {
-        this.msgProgress
-    }
     return OperatorHeaderState(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
         failure = fail,
         flagProgress = this.flagProgress,
-        msgProgress = msg,
         currentProgress = this.currentProgress,
+        levelUpdate = this.levelUpdate,
+        tableUpdate = this.tableUpdate
     )
 }
 
@@ -185,7 +183,7 @@ class OperatorHeaderViewModel @Inject constructor(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
-                msgProgress = "Atualização de dados realizado com sucesso!",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                 currentProgress = 1f,
             )
         )

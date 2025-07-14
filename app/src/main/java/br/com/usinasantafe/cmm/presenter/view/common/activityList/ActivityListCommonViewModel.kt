@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.activityList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -31,11 +32,12 @@ data class ActivityListCommonState(
     val flagFailure: Boolean = false,
     val errors: Errors = Errors.FIELD_EMPTY,
     val flagProgress: Boolean = false,
-    val msgProgress: String = "",
     val currentProgress: Float = 0.0f,
+    val levelUpdate: LevelUpdate? = null,
+    val tableUpdate: String = "",
 )
 
-fun ResultUpdate.resultUpdateToActivityListCommonState(): ActivityListCommonState {
+fun ResultUpdateModel.resultUpdateToActivityListCommonState(): ActivityListCommonState {
     val fail = if(failure.isNotEmpty()){
         val ret = "ActivityListCommonViewModel.updateAllDatabase -> ${this.failure}"
         Timber.e(ret)
@@ -43,19 +45,15 @@ fun ResultUpdate.resultUpdateToActivityListCommonState(): ActivityListCommonStat
     } else {
         this.failure
     }
-    val msg = if(failure.isNotEmpty()){
-        "ActivityListCommonViewModel.updateAllDatabase -> ${this.failure}"
-    } else {
-        this.msgProgress
-    }
     return ActivityListCommonState(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
         failure = fail,
         flagProgress = this.flagProgress,
-        msgProgress = msg,
         currentProgress = this.currentProgress,
+        levelUpdate = this.levelUpdate,
+        tableUpdate = this.tableUpdate
     )
 }
 
@@ -163,7 +161,7 @@ class ActivityListCommonViewModel @Inject constructor(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
-                msgProgress = "Atualização de dados realizado com sucesso!",
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
                 currentProgress = 1f,
             )
         )

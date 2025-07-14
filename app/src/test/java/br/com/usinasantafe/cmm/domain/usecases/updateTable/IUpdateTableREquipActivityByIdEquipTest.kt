@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityReposito
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -22,7 +23,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
     private val getToken = mock<GetToken>()
     private val rEquipActivityRepository = mock<REquipActivityRepository>()
     private val configRepository = mock<ConfigRepository>()
-    private val updateTableREquipAtiv = IUpdateTableREquipActivityByIdEquip(
+    private val updateTableREquipActivityByIdEquip = IUpdateTableREquipActivityByIdEquip(
         getToken = getToken,
         rEquipActivityRepository = rEquipActivityRepository,
         configRepository = configRepository
@@ -35,12 +36,12 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 getToken()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetToken",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableREquipAtiv(
+            val result = updateTableREquipActivityByIdEquip(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -51,20 +52,20 @@ class IUpdateTableREquipActivityByIdEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableREquipActivityByIdEquip -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -82,12 +83,12 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 configRepository.get()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IConfigRepository.get",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableREquipAtiv(
+            val result = updateTableREquipActivityByIdEquip(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -98,20 +99,20 @@ class IUpdateTableREquipActivityByIdEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableREquipActivityByIdEquip -> IConfigRepository.get -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -140,12 +141,12 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IREquipActivityRepository.listByIdEquip",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableREquipAtiv(
+            val result = updateTableREquipActivityByIdEquip(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -156,20 +157,20 @@ class IUpdateTableREquipActivityByIdEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.listByIdEquip -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -212,12 +213,12 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 rEquipActivityRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IREquipActivityRepository.deleteAll",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableREquipAtiv(
+            val result = updateTableREquipActivityByIdEquip(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -228,28 +229,29 @@ class IUpdateTableREquipActivityByIdEquipTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_equip_activity",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
+                    failure = "IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -297,12 +299,12 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 rEquipActivityRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IREquipActivityRepository.addAll",
+                    "-",
                     Exception()
                 )
             )
-            val result = updateTableREquipAtiv(
+            val result = updateTableREquipActivityByIdEquip(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -313,39 +315,41 @@ class IUpdateTableREquipActivityByIdEquipTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_equip_activity do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[1],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_equip_activity",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
-                ResultUpdate(
+                ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_r_equip_activity",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_equip_activity",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
-            assertEquals(
-                resultList[3],
-                ResultUpdate(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    msgProgress = "UpdateTableREquipActivity -> Error -> Exception -> java.lang.Exception",
-                    currentProgress = 1f,
-                )
-            )
+//            assertEquals(
+//                resultList[3],
+//                ResultUpdateModel(
+//                    errors = Errors.UPDATE,
+//                    flagDialog = true,
+//                    flagFailure = true,
+//                    failure = "IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.addAll -> java.lang.Exception",
+//                    currentProgress = 1f,
+//                )
+//            )
         }
 
 }

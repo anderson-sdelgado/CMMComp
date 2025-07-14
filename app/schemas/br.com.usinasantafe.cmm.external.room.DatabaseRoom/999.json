@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "246ebd81a221e22154e0372c43c051b8",
+    "identityHash": "74d9191bd33ec5a512820d4f86b2bb38",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -32,7 +32,9 @@
           "columnNames": [
             "idActivity"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_bocal",
@@ -62,7 +64,9 @@
           "columnNames": [
             "idBocal"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_colab",
@@ -86,7 +90,9 @@
           "columnNames": [
             "regColab"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_componente",
@@ -116,7 +122,9 @@
           "columnNames": [
             "idComponente"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_equip",
@@ -188,7 +196,9 @@
           "columnNames": [
             "idEquip"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_frente",
@@ -218,10 +228,12 @@
           "columnNames": [
             "idFrente"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
-        "tableName": "tb_item_checklist",
+        "tableName": "tb_item_check_list",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idItemCheckList` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `descrItemCheckList` TEXT NOT NULL, PRIMARY KEY(`idItemCheckList`))",
         "fields": [
           {
@@ -248,7 +260,9 @@
           "columnNames": [
             "idItemCheckList"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_item_os_mecan",
@@ -290,7 +304,9 @@
           "columnNames": [
             "idItemOS"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_leira",
@@ -320,7 +336,9 @@
           "columnNames": [
             "idLeira"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_motomec",
@@ -380,7 +398,9 @@
           "columnNames": [
             "idMotoMec"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_os",
@@ -428,7 +448,9 @@
           "columnNames": [
             "idOS"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_stop",
@@ -458,7 +480,9 @@
           "columnNames": [
             "idStop"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_pressao_bocal",
@@ -494,7 +518,9 @@
           "columnNames": [
             "idPressaoBocal"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_propriedade",
@@ -524,7 +550,9 @@
           "columnNames": [
             "idPropriedade"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_r_activity_stop",
@@ -533,7 +561,8 @@
           {
             "fieldPath": "idRActivityStop",
             "columnName": "idRActivityStop",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "idActivity",
@@ -553,7 +582,9 @@
           "columnNames": [
             "idRActivityStop"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_r_equip_activity",
@@ -562,7 +593,8 @@
           {
             "fieldPath": "idREquipActivity",
             "columnName": "idREquipActivity",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "idEquip",
@@ -582,7 +614,9 @@
           "columnNames": [
             "idREquipActivity"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_r_equip_pneu",
@@ -624,10 +658,12 @@
           "columnNames": [
             "idREquipPneu"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
-        "tableName": "tb_r_funcao_ativ_parada",
+        "tableName": "tb_function_activity_stop",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idRFuncaoAtivPar` INTEGER NOT NULL, `idAtivPar` INTEGER NOT NULL, `funcAtiv` INTEGER NOT NULL, `funcParada` INTEGER NOT NULL, `tipoFuncao` INTEGER NOT NULL, PRIMARY KEY(`idRFuncaoAtivPar`))",
         "fields": [
           {
@@ -666,16 +702,19 @@
           "columnNames": [
             "idRFuncaoAtivPar"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
-        "tableName": "tb_r_os_ativ",
+        "tableName": "tb_r_os_activity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idROSActivity` INTEGER PRIMARY KEY AUTOINCREMENT, `idOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "idROSActivity",
             "columnName": "idROSActivity",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "idOS",
@@ -695,7 +734,9 @@
           "columnNames": [
             "idROSActivity"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_servico",
@@ -725,7 +766,9 @@
           "columnNames": [
             "idServico"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_turn",
@@ -761,7 +804,9 @@
           "columnNames": [
             "idTurn"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_header_moto_mec",
@@ -770,7 +815,8 @@
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "regOperator",
@@ -817,7 +863,8 @@
           {
             "fieldPath": "hourMeterFinish",
             "columnName": "hourMeterFinish",
-            "affinity": "REAL"
+            "affinity": "REAL",
+            "notNull": false
           },
           {
             "fieldPath": "dateHourInitial",
@@ -828,7 +875,8 @@
           {
             "fieldPath": "dateHourFinish",
             "columnName": "dateHourFinish",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "statusCon",
@@ -851,7 +899,8 @@
           {
             "fieldPath": "idBD",
             "columnName": "idBD",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -859,7 +908,9 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       },
       {
         "tableName": "tb_note_moto_mec",
@@ -868,7 +919,8 @@
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "idHeader",
@@ -891,7 +943,8 @@
           {
             "fieldPath": "idStop",
             "columnName": "idStop",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           },
           {
             "fieldPath": "dateHour",
@@ -920,7 +973,8 @@
           {
             "fieldPath": "idBD",
             "columnName": "idBD",
-            "affinity": "INTEGER"
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -928,12 +982,15 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
+    "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '246ebd81a221e22154e0372c43c051b8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '74d9191bd33ec5a512820d4f86b2bb38')"
     ]
   }
 }

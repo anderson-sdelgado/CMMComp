@@ -50,4 +50,16 @@
     <string name="text_title_stop">PARADA</string>
     <string name="text_placeholder_field">Pesquisa</string>
     <string name="text_header_empty">POR FAVOR! INSIRA OS APONTAMENTOS EM TODOS O(S) BOLETIM(INS)!</string>
+    <string name="text_msg_recovery">Recuperando dados da tabela \"%1$s\" do Web Service.</string>
+    <string name="text_msg_clean">Limpando a tabela \"%1$s\".</string>
+    <string name="text_msg_save">Salvando dados na tabela \"%1$s\".</string>
+    <string name="text_msg_get_token">Enviando dados de Token</string>
+    <string name="text_msg_save_token">Salvando dados de Token</string>
+    <string name="text_msg_finish_update_initial">Ajuste iniciais finalizado com sucesso!</string>
+    <string name="text_msg_finish_update_completed">Atualização de dados realizado com sucesso!</string>
+    <string name="text_title_check_list">CHECKLIST</string>
+    <string name="text_msg_check_update_check_list">CHECANDO SE HÁ ATUALIZAÇÕES PARA QUESTÕES DE CHECKLIST.</string>
+    <string name="text_msg_update_check_list">ATENÇÃO! HÁ NOVAS ATUALIZAÇÕES PARA QUESTÕES DE CHECKLIST. DESEJA ATUALIZÁ-LAS?</string>
+    <string name="text_pattern_no">NÃO</string>
+    <string name="text_pattern_yes">SIM</string>
 </resources>

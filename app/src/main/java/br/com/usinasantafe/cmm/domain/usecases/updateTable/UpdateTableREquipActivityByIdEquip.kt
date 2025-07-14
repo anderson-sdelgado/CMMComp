@@ -1,11 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.updateTable
 
-import br.com.usinasantafe.cmm.domain.entities.view.ResultUpdate
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.utils.TB_ACTIVITY
 import br.com.usinasantafe.cmm.utils.TB_R_EQUIP_ACTIVITY
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,7 +18,7 @@ interface UpdateTableREquipActivityByIdEquip {
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdate>
+    ): Flow<ResultUpdateModel>
 }
 
 class IUpdateTableREquipActivityByIdEquip @Inject constructor(
@@ -27,26 +30,27 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
     override suspend fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdate> = flow {
+    ): Flow<ResultUpdateModel> = flow {
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Recuperando dados da tabela $TB_R_EQUIP_ACTIVITY do Web Service",
-                currentProgress = updatePercentage(1f, count, sizeAll)
+                currentProgress = updatePercentage(1f, count, sizeAll),
+                levelUpdate = LevelUpdate.RECOVERY,
+                tableUpdate = TB_R_EQUIP_ACTIVITY
             )
         )
         val resultGetToken = getToken()
         if (resultGetToken.isFailure) {
             val error = resultGetToken.exceptionOrNull()!!
             val failure =
-                "UpdateTableREquipActivity -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
@@ -57,14 +61,14 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         if (resultGetConfig.isFailure) {
             val error = resultGetConfig.exceptionOrNull()!!
             val failure =
-                "UpdateTableREquipActivity -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
@@ -78,48 +82,50 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         if (resultGetList.isFailure) {
             val error = resultGetList.exceptionOrNull()!!
             val failure =
-                "UpdateTableREquipActivity -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
             return@flow
         }
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Limpando a tabela $TB_R_EQUIP_ACTIVITY",
-                currentProgress = updatePercentage(2f, count, sizeAll)
+                currentProgress = updatePercentage(2f, count, sizeAll),
+                levelUpdate = LevelUpdate.CLEAN,
+                tableUpdate = TB_R_EQUIP_ACTIVITY
             )
         )
         val resultDeleteAll = rEquipActivityRepository.deleteAll()
         if (resultDeleteAll.isFailure) {
             val error = resultDeleteAll.exceptionOrNull()!!
             val failure =
-                "UpdateTableREquipActivity -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )
             return@flow
         }
         emit(
-            ResultUpdate(
+            ResultUpdateModel(
                 flagProgress = true,
-                msgProgress = "Salvando dados na tabela $TB_R_EQUIP_ACTIVITY",
-                currentProgress = updatePercentage(3f, count, sizeAll)
+                currentProgress = updatePercentage(3f, count, sizeAll),
+                levelUpdate = LevelUpdate.SAVE,
+                tableUpdate = TB_R_EQUIP_ACTIVITY
             )
         )
         val entityList = resultGetList.getOrNull()!!
@@ -127,14 +133,14 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         if (resultAddAll.isFailure) {
             val error = resultAddAll.exceptionOrNull()!!
             val failure =
-                "UpdateTableREquipActivity -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             emit(
-                ResultUpdate(
+                ResultUpdateModel(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = failure,
-                    msgProgress = failure,
+                    levelUpdate = null,
                     currentProgress = 1f,
                 )
             )

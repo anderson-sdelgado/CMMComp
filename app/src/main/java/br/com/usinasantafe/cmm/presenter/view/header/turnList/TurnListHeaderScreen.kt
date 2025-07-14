@@ -28,6 +28,7 @@ import br.com.usinasantafe.cmm.ui.theme.ItemListDesign
 import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.ui.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 
 @Composable
 fun TurnListHeaderScreen(
@@ -38,6 +39,11 @@ fun TurnListHeaderScreen(
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.turnList()
+            }
+
             TurnListHeaderContent(
                 turnList = uiState.turnList,
                 setIdTurn = viewModel::setIdTurnHeader,
@@ -47,7 +53,8 @@ fun TurnListHeaderScreen(
                 failure = uiState.failure,
                 flagProgress = uiState.flagProgress,
                 currentProgress = uiState.currentProgress,
-                msgProgress = uiState.msgProgress,
+                levelUpdate = uiState.levelUpdate,
+                tableUpdate = uiState.tableUpdate,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -55,7 +62,6 @@ fun TurnListHeaderScreen(
                 onNavOS = onNavOS,
                 modifier = Modifier.padding(innerPadding)
             )
-            viewModel.turnList()
         }
     }
 }
@@ -69,7 +75,8 @@ fun TurnListHeaderContent(
     errors: Errors,
     failure: String,
     flagProgress: Boolean,
-    msgProgress: String,
+    levelUpdate: LevelUpdate?,
+    tableUpdate: String,
     currentProgress: Float,
     flagAccess: Boolean,
     flagDialog: Boolean,
@@ -137,7 +144,16 @@ fun TurnListHeaderContent(
                     )
                 }
             } else {
-                msgProgress
+                when(levelUpdate){
+                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                    null -> failure
+                }
             }
             AlertDialogSimpleDesign(
                 text = text,
@@ -146,6 +162,16 @@ fun TurnListHeaderContent(
         }
 
         if (flagProgress) {
+            val msgProgress = when(levelUpdate){
+                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
+                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
+                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
+                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
+                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
+                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
+                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
+                null -> failure
+            }
             AlertDialogProgressDesign(
                 currentProgress = currentProgress,
                 msgProgress = msgProgress
@@ -182,7 +208,8 @@ fun TurnListHeaderPagePreviewWithData() {
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 flagAccess = false,
                 flagDialog = false,
@@ -208,7 +235,8 @@ fun TurnListHeaderPagePreviewWithFailureUpdate() {
                 errors = Errors.UPDATE,
                 failure = "Failure",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 flagAccess = false,
                 flagDialog = true,
@@ -234,7 +262,8 @@ fun TurnListHeaderPagePreviewProgressUpdate() {
                 errors = Errors.UPDATE,
                 failure = "Failure",
                 flagProgress = true,
-                msgProgress = "Update",
+                levelUpdate = LevelUpdate.RECOVERY,
+                tableUpdate = "tb_turn",
                 currentProgress = 0.3333f,
                 flagAccess = false,
                 flagDialog = false,
@@ -260,7 +289,8 @@ fun TurnListHeaderPagePreviewWithFailureError() {
                 errors = Errors.EXCEPTION,
                 failure = "Failure",
                 flagProgress = false,
-                msgProgress = "",
+                levelUpdate = null,
+                tableUpdate = "",
                 currentProgress = 0f,
                 flagAccess = false,
                 flagDialog = true,

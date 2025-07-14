@@ -45,7 +45,7 @@ class EquipHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "EquipViewModel.getDescr -> IGetDescrEquip -> java.lang.Exception"
+                "EquipHeaderViewModel.getDescr -> IGetDescrEquip -> java.lang.Exception"
             )
         }
 
@@ -83,7 +83,7 @@ class EquipHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "EquipViewModel.setEquip -> ISetIdEquip -> java.lang.Exception"
+                "EquipHeaderViewModel.setIdEquipHeader -> ISetIdEquip -> java.lang.Exception"
             )
         }
 
