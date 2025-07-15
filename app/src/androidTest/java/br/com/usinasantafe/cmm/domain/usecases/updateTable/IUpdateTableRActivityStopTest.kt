@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -70,7 +71,8 @@ class IUpdateTableRActivityStopTest {
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_r_activity_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -78,14 +80,16 @@ class IUpdateTableRActivityStopTest {
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
             assertEquals(
                 list[2],
                 ResultUpdateModel(flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_r_activity_stop",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_activity_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -97,16 +101,20 @@ class IUpdateTableRActivityStopTest {
             val roomModel = roomModelList[0]
             assertEquals(
                 roomModel.idRActivityStop,
-                201
+                1
             )
             assertEquals(
                 roomModel.idActivity,
                 101
             )
+            assertEquals(
+                roomModel.idStop,
+                301
+            )
         }
 
     private val resultRActivityStopRetrofit = """
-        [{"idRActivityStop":201,"idActivity":101,"idStop":301}]
+        [{"idActivity":101,"idStop":301}]
     """.trimIndent()
 
 }

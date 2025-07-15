@@ -90,12 +90,10 @@ class HeaderInitialFlowTest {
                         "codTurnEquip":1,
                         "idCheckList":0,
                         "typeFert":1,
-                        "hourmeter":100.0,
+                        "hourMeter":100.0,
                         "measure":200.0,
-                        "type":1,
                         "classify":1,
-                        "flagApontMecan":True,
-                        "flagApontPneu":True
+                        "flagMechanic":True
                     }
                 ]
             """.trimIndent()
@@ -103,12 +101,10 @@ class HeaderInitialFlowTest {
         private val jsonUpdateREquipActivity = """
             [
                 {
-                    "idREquipActivity":1,
                     "idEquip":30,
                     "idActivity":10
                 },
                 {
-                    "idREquipActivity":2,
                     "idEquip":30,
                     "idActivity":20
                 }
@@ -323,6 +319,8 @@ class HeaderInitialFlowTest {
 
         Log.d("TestDebug", "Position 9")
 
+        composeTestRule.waitUntilTimeout(3_000)
+
         val resultEntityWithIdEquip = headerMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultEntityWithIdEquip.isSuccess,
@@ -333,8 +331,6 @@ class HeaderInitialFlowTest {
             entityWithIdEquip.idEquip,
             30
         )
-
-        composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()

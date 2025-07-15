@@ -40,6 +40,7 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -155,7 +156,6 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var turnDao: TurnDao
-
 
     @Before
     fun setup() {

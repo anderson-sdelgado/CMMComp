@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -71,7 +72,8 @@ class IUpdateTableColabTest {
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_colab do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -79,7 +81,8 @@ class IUpdateTableColabTest {
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_colab",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -87,7 +90,8 @@ class IUpdateTableColabTest {
                 list[2],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_colab",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_colab",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )

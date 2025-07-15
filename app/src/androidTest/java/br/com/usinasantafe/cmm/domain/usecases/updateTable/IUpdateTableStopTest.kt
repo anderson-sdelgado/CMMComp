@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -72,7 +73,8 @@ class IUpdateTableStopTest {
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_stop do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -80,14 +82,17 @@ class IUpdateTableStopTest {
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_stop",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
             assertEquals(
                 list[2],
-                ResultUpdateModel(flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_stop",
+                ResultUpdateModel(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_stop",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )

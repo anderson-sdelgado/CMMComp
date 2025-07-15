@@ -18,4 +18,5 @@ interface ConfigRepository {
     suspend fun getIdEquip(): Result<Int>
     suspend fun getIdTurnCheckListLast(): Result<Int?>
     suspend fun getDateCheckListLast(): Result<Date>
+    suspend fun getNroEquip(): Result<Long>
 }

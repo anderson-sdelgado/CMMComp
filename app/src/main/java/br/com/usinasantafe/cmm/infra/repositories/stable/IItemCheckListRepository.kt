@@ -72,4 +72,8 @@ class IItemCheckListRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun checkUpdateByNroEquip(nroEquip: Long): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
 }

@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -72,7 +73,8 @@ class IUpdateTableEquipByIdEquipTest {
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_equip do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_equip",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -80,7 +82,8 @@ class IUpdateTableEquipByIdEquipTest {
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_equip",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_equip",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -88,7 +91,8 @@ class IUpdateTableEquipByIdEquipTest {
                 list[2],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_equip",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_equip",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -127,7 +131,7 @@ class IUpdateTableEquipByIdEquipTest {
 
     private val resultEquipRetrofit = """
         [
-          {"idEquip":1,"nroEquip":10,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
+          {"idEquip":1,"nroEquip":10,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1,"flagMechanic":1}
         ]
     """.trimIndent()
 

@@ -194,4 +194,8 @@ class IConfigRepository @Inject constructor(
         }
         return result
     }
+
+    override suspend fun getNroEquip(): Result<Long> {
+        TODO("Not yet implemented")
+    }
 }

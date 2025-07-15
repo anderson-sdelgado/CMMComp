@@ -19,8 +19,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-//        testInstrumentationRunner = "br.com.usinasantafe.cmm.CustomTestRunner"
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "br.com.usinasantafe.cmm.CustomTestRunner"
+//        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -175,6 +175,7 @@ dependencies {
     kapt(libs.hilt.ext.compiler)
     annotationProcessor(libs.hilt.ext.compiler)
     implementation(libs.timber)
+    testImplementation(kotlin("test"))
 }
 
 kapt {

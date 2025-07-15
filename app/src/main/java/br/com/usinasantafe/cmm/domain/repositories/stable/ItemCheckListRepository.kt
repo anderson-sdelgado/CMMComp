@@ -6,4 +6,5 @@ interface ItemCheckListRepository {
     suspend fun addAll(list: List<ItemCheckList>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun recoverAll(token: String): Result<List<ItemCheckList>>
+    suspend fun checkUpdateByNroEquip(nroEquip: Long): Result<Boolean>
 }

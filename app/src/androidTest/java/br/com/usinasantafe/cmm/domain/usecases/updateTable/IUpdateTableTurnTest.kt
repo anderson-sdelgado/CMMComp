@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -70,7 +71,8 @@ class IUpdateTableTurnTest {
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Recuperando dados da tabela tb_turno do Web Service",
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -78,7 +80,8 @@ class IUpdateTableTurnTest {
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Limpando a tabela tb_turno",
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
@@ -86,7 +89,8 @@ class IUpdateTableTurnTest {
                 list[2],
                 ResultUpdateModel(
                     flagProgress = true,
-                    msgProgress = "Salvando dados na tabela tb_turno",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_turn",
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
