@@ -5,10 +5,19 @@
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="flow() (1)">
+      <SelectionState runConfigName="check_return_failure_if_not_have_data()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="flow()">
+      <SelectionState runConfigName="check_return_failure_if_not_have_data_in_config_to_get_token()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_failure_if_not_have_data_without_return_web_service()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_true_if_return_web_service_is_qtd_is_greater_than_zero()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_false_if_return_web_service_is_qtd_is_zero()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

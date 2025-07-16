@@ -196,6 +196,15 @@ class IConfigRepository @Inject constructor(
     }
 
     override suspend fun getNroEquip(): Result<Long> {
-        TODO("Not yet implemented")
+        val result = configSharedPreferencesDatasource.getNroEquip()
+        if (result.isFailure) {
+            val e = result.exceptionOrNull()!!
+            return resultFailure(
+                context = "IConfigRepository.getNroEquip",
+                message = e.message,
+                cause = e.cause
+            )
+        }
+        return result
     }
 }

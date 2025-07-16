@@ -16,4 +16,9 @@ interface CheckListModule {
     @Singleton
     fun bindCheckOpenCheckList(usecase: ICheckOpenCheckList): CheckOpenCheckList
 
+    @Binds
+    @Singleton
+    fun bindCheckUpdateCheckList(usecase: ICheckUpdateCheckList): CheckUpdateCheckList
+
+
 }

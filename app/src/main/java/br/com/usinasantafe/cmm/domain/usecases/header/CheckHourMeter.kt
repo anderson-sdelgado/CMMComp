@@ -27,7 +27,7 @@ class ICheckHourMeter @Inject constructor(
         try {
             val measureBD: String
             var check = true
-            val locale = Locale("pt", "BR")
+            val locale = Locale.Builder().setLanguage("pt").setRegion("BR").build()
             val formatNumber = NumberFormat.getInstance(locale)
             val formatDecimal = DecimalFormat("#,##0.0")
             formatDecimal.decimalFormatSymbols = DecimalFormatSymbols(locale)

@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.checkList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -13,9 +14,11 @@ class ICheckUpdateCheckListTest {
 
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
     private val configRepository = mock<ConfigRepository>()
+    private val getToken = mock<GetToken>()
     private val usecase = ICheckUpdateCheckList(
         itemCheckListRepository = itemCheckListRepository,
-        configRepository = configRepository
+        configRepository = configRepository,
+        getToken = getToken
     )
 
     @Test
@@ -46,6 +49,38 @@ class ICheckUpdateCheckListTest {
         }
 
     @Test
+    fun `Check return failure if have error in GetToken `() =
+        runTest {
+            whenever(
+                configRepository.getNroEquip()
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                getToken()
+            ).thenReturn(
+                resultFailure(
+                    "IGetToken.",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckUpdateCheckList -> IGetToken."
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in CheckListRepository checkUpdateByNroEquip`() =
         runTest {
             whenever(
@@ -54,7 +89,15 @@ class ICheckUpdateCheckListTest {
                 Result.success(1L)
             )
             whenever(
-                itemCheckListRepository.checkUpdateByNroEquip(1L)
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                itemCheckListRepository.checkUpdateByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
             ).thenReturn(
                 resultFailure(
                     "ICheckListRepository.checkUpdateByNroEquip",
@@ -85,9 +128,16 @@ class ICheckUpdateCheckListTest {
             ).thenReturn(
                 Result.success(1L)
             )
-
             whenever(
-                itemCheckListRepository.checkUpdateByNroEquip(1L)
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                itemCheckListRepository.checkUpdateByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
             ).thenReturn(
                 Result.success(false)
             )

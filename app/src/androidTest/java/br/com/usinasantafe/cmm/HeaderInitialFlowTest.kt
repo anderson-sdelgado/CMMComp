@@ -27,8 +27,8 @@ import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.WEB_GET_OS_LIST_BY_NRO_OS
-import br.com.usinasantafe.cmm.utils.WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -155,8 +155,8 @@ class HeaderInitialFlowTest {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
-                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
-                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
+                        "/$WEB_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
+                        "/$WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }

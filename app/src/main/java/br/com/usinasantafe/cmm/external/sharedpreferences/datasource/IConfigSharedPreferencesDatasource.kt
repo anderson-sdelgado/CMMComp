@@ -272,4 +272,26 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getNroEquip(): Result<Long> {
+        try {
+            val result = get()
+            if(result.isFailure){
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IConfigSharedPreferencesDatasource.getNroEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val config = result.getOrNull()!!
+            return Result.success(config.nroEquip!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = "IConfigSharedPreferencesDatasource.getNroEquip",
+                message = "-",
+                cause = e
+            )
+        }
+    }
+
 }

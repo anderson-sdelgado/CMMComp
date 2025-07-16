@@ -673,4 +673,50 @@ class IConfigRepositoryTest {
                 Date(1750857777000)
             )
         }
+
+    @Test
+    fun `getNroEquip - Check return failure if have error in ConfigSharedPreferencesDatasource getNroEquip`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getNroEquip()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.getNroEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNroEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getNroEquip -> IConfigSharedPreferencesDatasource.getNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroEquip - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getNroEquip()
+            ).thenReturn(
+                Result.success(100L)
+            )
+            val result = repository.getNroEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                100L
+            )
+        }
 }

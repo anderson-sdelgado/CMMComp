@@ -73,7 +73,33 @@ class IItemCheckListRepository @Inject constructor(
         }
     }
 
-    override suspend fun checkUpdateByNroEquip(nroEquip: Long): Result<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun checkUpdateByNroEquip(
+        token: String,
+        nroEquip: Long
+    ): Result<Boolean> {
+        try {
+            val result = itemCheckListRetrofitDatasource.checkUpdateByNroEquip(
+                token = token,
+                nroEquip = nroEquip
+            )
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IItemCheckListRepository.checkUpdateByNroEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.qtd > 0)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IItemCheckListRepository.checkUpdateByNroEquip",
+                message = "-",
+                cause = e
+            )
+        }
+
     }
+
 }

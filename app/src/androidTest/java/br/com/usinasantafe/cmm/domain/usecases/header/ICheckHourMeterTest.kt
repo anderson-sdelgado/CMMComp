@@ -130,7 +130,7 @@ class ICheckHourMeterTest {
                         codTurnEquip = 1,
                         idCheckList = 1,
                         typeFert = 1,
-                        hourMeter = 0.0,
+                        hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = true,
                     )
