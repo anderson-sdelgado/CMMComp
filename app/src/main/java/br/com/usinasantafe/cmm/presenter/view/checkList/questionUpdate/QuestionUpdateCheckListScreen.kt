@@ -51,6 +51,7 @@ fun QuestionUpdateCheckListScreen(
 
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = uiState.flagCheckUpdate,
+                updateDatabase = viewModel::updateDatabase,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
@@ -71,6 +72,7 @@ fun QuestionUpdateCheckListScreen(
 @Composable
 fun QuestionUpdateCheckListContent(
     flagCheckUpdate: Boolean,
+    updateDatabase: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
@@ -179,7 +181,7 @@ fun QuestionUpdateCheckListContent(
                         )
                     }
                     Button(
-                        onClick = {},
+                        onClick = updateDatabase,
                         modifier = Modifier.weight(1f),
                     ) {
                         TextButtonDesign(
@@ -257,6 +259,7 @@ fun QuestionUpdateCheckListPagePreviewCheckUpdate() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = true,
+                updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
@@ -281,6 +284,7 @@ fun QuestionUpdateCheckListPagePreviewMsgUpdate() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = false,
+                updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
@@ -305,6 +309,7 @@ fun QuestionUpdateCheckListPagePreviewMsgFailure() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = false,
+                updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = true,
@@ -329,6 +334,7 @@ fun QuestionUpdateCheckListPagePreviewMsgFailureUpdate() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = false,
+                updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = true,
@@ -354,6 +360,7 @@ fun QuestionUpdateCheckListPagePreviewUpdate() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             QuestionUpdateCheckListContent(
                 flagCheckUpdate = false,
+                updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,

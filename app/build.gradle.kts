@@ -10,12 +10,12 @@ plugins {
 
 android {
     namespace = "br.com.usinasantafe.cmm"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "br.com.usinasantafe.cmm"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

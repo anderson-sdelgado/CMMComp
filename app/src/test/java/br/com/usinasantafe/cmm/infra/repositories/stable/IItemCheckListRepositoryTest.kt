@@ -1,8 +1,10 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemCheckList
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemCheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemCheckListRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.CheckUpdateCheckListRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemCheckListRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
 import kotlinx.coroutines.test.runTest
@@ -40,8 +42,10 @@ class IItemCheckListRepositoryTest {
             whenever(
                 itemCheckListRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    "IItemCheckListRoomDatasource.addAll",
+                    "-",
+                    null
                 )
             )
             val result = repository.addAll(entityList)
@@ -51,7 +55,7 @@ class IItemCheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IItemCheckListRepository.addAll -> Unknown Error"
+                "IItemCheckListRepository.addAll -> IItemCheckListRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -137,27 +141,35 @@ class IItemCheckListRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have error`() =
+    fun `listByNroEquip - Check return failure if have error`() =
         runTest {
             whenever(
-                itemCheckListRetrofitDatasource.recoverAll("token")
+                itemCheckListRetrofitDatasource.listByNroEquip(
+                    token = "token",
+                    nroEquip = 10L
+                )
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IItemCheckListRetrofitDatasource.listByNroEquip",
+                    "-",
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listByNroEquip(
+                token = "token",
+                nroEquip = 10L
+            )
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IItemCheckListRepository.recoverAll -> Unknown Error"
+                "IItemCheckListRepository.listByNroEquip -> IItemCheckListRetrofitDatasource.listByNroEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -189,13 +201,19 @@ class IItemCheckListRepositoryTest {
                 )
             )
             whenever(
-                itemCheckListRetrofitDatasource.recoverAll("token")
+                itemCheckListRetrofitDatasource.listByNroEquip(
+                    token = "token",
+                    nroEquip = 10L
+                )
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listByNroEquip(
+                token = "token",
+                nroEquip = 10L
+            )
             assertEquals(
                 result.isSuccess,
                 true
@@ -206,4 +224,94 @@ class IItemCheckListRepositoryTest {
             )
         }
 
+    @Test
+    fun `checkUpdateByNroEquip - Check return failure if have error in ItemCheckListRetrofitDatasource checkUpdateByNroEquip`() =
+        runTest {
+            whenever(
+                itemCheckListRetrofitDatasource.checkUpdateByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemCheckListRetrofitDatasource.checkUpdateByNroEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkUpdateByNroEquip(
+                token = "token",
+                nroEquip = 1L
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRepository.checkUpdateByNroEquip -> IItemCheckListRetrofitDatasource.checkUpdateByNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkUpdateByNroEquip - Check return true if function execute successfully and qtd is greater than zero`() =
+        runTest {
+            whenever(
+                itemCheckListRetrofitDatasource.checkUpdateByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
+            ).thenReturn(
+                Result.success(
+                    CheckUpdateCheckListRetrofitModel(
+                        qtd = 1
+                    )
+                )
+            )
+            val result = repository.checkUpdateByNroEquip(
+                token = "token",
+                nroEquip = 1L
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `checkUpdateByNroEquip - Check return false if function execute successfully and qtd is zero`() =
+        runTest {
+            whenever(
+                itemCheckListRetrofitDatasource.checkUpdateByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
+            ).thenReturn(
+                Result.success(
+                    CheckUpdateCheckListRetrofitModel(
+                        qtd = 0
+                    )
+                )
+            )
+            val result = repository.checkUpdateByNroEquip(
+                token = "token",
+                nroEquip = 1L
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
 }

@@ -8,6 +8,10 @@ data class ItemCheckListRetrofitModel(
     val descrItemCheckList: String
 )
 
+data class CheckUpdateCheckListRetrofitModel(
+    val qtd: Int,
+)
+
 fun ItemCheckListRetrofitModel.retrofitModelToEntity(): ItemCheckList {
     return ItemCheckList(
         idItemCheckList = this.idItemCheckList,

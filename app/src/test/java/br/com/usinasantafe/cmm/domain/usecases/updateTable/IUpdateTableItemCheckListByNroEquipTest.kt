@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
@@ -16,13 +17,15 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IUpdateTableItemCheckListTest {
+class IUpdateTableItemCheckListByNroEquipTest {
 
     private val getToken = mock<GetToken>()
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
-    private val updateTableItemCheckList = IUpdateTableItemCheckList(
+    private val configRepository = mock<ConfigRepository>()
+    private val updateTableItemCheckList = IUpdateTableItemCheckListByNroEquip(
         getToken = getToken,
-        itemCheckListRepository = itemCheckListRepository
+        itemCheckListRepository = itemCheckListRepository,
+        configRepository = configRepository
     )
 
     @Test
@@ -61,14 +64,14 @@ class IUpdateTableItemCheckListTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableItemCheckList -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableItemCheckListByNroEquip -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in ItemCheckListRepository recoverAll`() =
+    fun `Check return failure if have error in ConfigRepository getNroEquip`() =
         runTest {
             whenever(
                 getToken()
@@ -76,10 +79,10 @@ class IUpdateTableItemCheckListTest {
                 Result.success("token")
             )
             whenever(
-                itemCheckListRepository.recoverAll("token")
+                configRepository.getNroEquip()
             ).thenReturn(
                 resultFailure(
-                    "IItemCheckListRepository.recoverAll",
+                    "IConfigRepository.getNroEquip",
                     "-",
                     Exception()
                 )
@@ -108,7 +111,62 @@ class IUpdateTableItemCheckListTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableItemCheckList -> IItemCheckListRepository.recoverAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemCheckListByNroEquip -> IConfigRepository.getNroEquip -> java.lang.Exception",
+                    currentProgress = 1f,
+                )
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in ItemCheckListRepository listByNroEquip`() =
+        runTest {
+            whenever(
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                configRepository.getNroEquip()
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                itemCheckListRepository.listByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemCheckListRepository.listByNroEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = updateTableItemCheckList(
+                sizeAll = 7f,
+                count = 1f
+            )
+            val list = result.toList()
+            assertEquals(
+                result.count(),
+                2
+            )
+            assertEquals(
+                list[0],
+                ResultUpdateModel(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = updatePercentage(1f, 1f, 7f)
+                )
+            )
+            assertEquals(
+                list[1],
+                ResultUpdateModel(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.listByNroEquip -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -130,7 +188,15 @@ class IUpdateTableItemCheckListTest {
                 Result.success("token")
             )
             whenever(
-                itemCheckListRepository.recoverAll("token")
+                configRepository.getNroEquip()
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                itemCheckListRepository.listByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
             ).thenReturn(
                 Result.success(
                     list
@@ -178,7 +244,7 @@ class IUpdateTableItemCheckListTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableItemCheckList -> IItemCheckListRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -200,7 +266,15 @@ class IUpdateTableItemCheckListTest {
                 Result.success("token")
             )
             whenever(
-                itemCheckListRepository.recoverAll("token")
+                configRepository.getNroEquip()
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                itemCheckListRepository.listByNroEquip(
+                    token = "token",
+                    nroEquip = 1L
+                )
             ).thenReturn(
                 Result.success(
                     list
@@ -262,7 +336,7 @@ class IUpdateTableItemCheckListTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableItemCheckList -> IItemCheckListRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

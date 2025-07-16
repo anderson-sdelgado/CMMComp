@@ -8,8 +8,8 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecS
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlowApp
-import br.com.usinasantafe.cmm.utils.WEB_GET_OS_LIST_BY_NRO_OS
-import br.com.usinasantafe.cmm.utils.WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -297,8 +297,8 @@ class ICheckNroOSTest {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
-                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(resultOSRetrofitOne)
-                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(
+                        "/$WEB_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(resultOSRetrofitOne)
+                        "/$WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(
                             resultROSActivity
                         )
                         else -> MockResponse().setResponseCode(404)

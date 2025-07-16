@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableComponente
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableEquipByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableFrente
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckList
+import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemOSMecan
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableLeira
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableMotoMec
@@ -60,7 +60,7 @@ class ConfigViewModelTest {
     private val updateTableComponente = mock<UpdateTableComponente>()
     private val updateTableEquipByIdEquip = mock<UpdateTableEquipByIdEquip>()
     private val updateTableFrente = mock<UpdateTableFrente>()
-    private val updateTableItemCheckList = mock<UpdateTableItemCheckList>()
+    private val updateTableItemCheckListByNroEquip = mock<UpdateTableItemCheckListByNroEquip>()
     private val updateTableItemOSMecan = mock<UpdateTableItemOSMecan>()
     private val updateTableLeira = mock<UpdateTableLeira>()
     private val updateTableMotoMec = mock<UpdateTableMotoMec>()
@@ -1368,7 +1368,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessItemCheckList() =
         runTest {
             whenever(
-                updateTableItemCheckList(
+                updateTableItemCheckListByNroEquip(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )

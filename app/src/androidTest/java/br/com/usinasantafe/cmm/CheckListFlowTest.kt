@@ -3,16 +3,13 @@ package br.com.usinasantafe.cmm
 import android.util.Log
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -24,14 +21,11 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
-import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.WEB_GET_OS_LIST_BY_NRO_OS
-import br.com.usinasantafe.cmm.utils.WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -40,7 +34,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.AfterClass
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
@@ -89,8 +82,8 @@ class CheckListFlowTest {
                 @Throws(InterruptedException::class)
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     return when (request.path) {
-                        "/$WEB_GET_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
-                        "/$WEB_GET_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
+                        "/$WEB_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
+                        "/$WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -25,7 +24,7 @@ class IConfigSharedPreferencesDatasourceTest {
     private lateinit var datasource: IConfigSharedPreferencesDatasource
 
     @Before
-    fun setUp() {
+    fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
         datasource = IConfigSharedPreferencesDatasource(sharedPreferences)
@@ -275,4 +274,41 @@ class IConfigSharedPreferencesDatasourceTest {
                 Date(1750857777000)
             )
         }
+
+    @Test
+    fun `getNroEquip - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getNroEquip()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getNroEquip - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                nroEquip = 100L
+            )
+            datasource.save(data)
+            val result = datasource.getNroEquip()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                100L
+            )
+        }
+
 }

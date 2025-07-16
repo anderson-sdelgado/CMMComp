@@ -142,7 +142,7 @@ class ActivityListCommonViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
+    fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
         var pos = 0f
         val sizeAllUpdate = 4f
         var activityListState = ActivityListCommonState()

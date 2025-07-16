@@ -20,8 +20,8 @@ import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
-import br.com.usinasantafe.cmm.utils.WEB_GET_EQUIP_LIST_BY_ID_EQUIP
-import br.com.usinasantafe.cmm.utils.WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -821,7 +821,7 @@ class ConfigScreenTest {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                 "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                 "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipFailure)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -835,8 +835,8 @@ class ConfigScreenTest {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                 "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                 "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
                 else -> MockResponse().setResponseCode(404)
             }
         }
@@ -850,8 +850,8 @@ class ConfigScreenTest {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                 "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                 "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnFailure)
                 else -> MockResponse().setResponseCode(404)
             }
@@ -866,8 +866,8 @@ class ConfigScreenTest {
                 "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                 "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                 "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                 else -> MockResponse().setResponseCode(404)
             }

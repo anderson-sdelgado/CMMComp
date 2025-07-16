@@ -10,8 +10,8 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Imp
 import javax.inject.Inject
 
 class IItemCheckListRepository @Inject constructor(
-    private val itemCheckListRetrofitDatasource: ItemCheckListRetrofitDatasource, // Injeção da datasource Retrofit
-    private val itemCheckListRoomDatasource: ItemCheckListRoomDatasource // Injeção da datasource Room
+    private val itemCheckListRetrofitDatasource: ItemCheckListRetrofitDatasource,
+    private val itemCheckListRoomDatasource: ItemCheckListRoomDatasource
 ) : ItemCheckListRepository {
 
     override suspend fun addAll(list: List<ItemCheckList>): Result<Boolean> {
@@ -49,15 +49,19 @@ class IItemCheckListRepository @Inject constructor(
         return result
     }
 
-    override suspend fun recoverAll(
-        token: String
+    override suspend fun listByNroEquip(
+        token: String,
+        nroEquip: Long
     ): Result<List<ItemCheckList>> {
         try {
-            val result = itemCheckListRetrofitDatasource.recoverAll(token)
+            val result = itemCheckListRetrofitDatasource.listByNroEquip(
+                token = token,
+                nroEquip = nroEquip
+            )
             if (result.isFailure) {
                 val e = result.exceptionOrNull()!!
                 return resultFailure(
-                    context = "IItemCheckListRepository.recoverAll",
+                    context = "IItemCheckListRepository.listByNroEquip",
                     message = e.message,
                     cause = e.cause
                 )
@@ -66,14 +70,40 @@ class IItemCheckListRepository @Inject constructor(
             return Result.success(entityList)
         } catch (e: Exception) {
             return resultFailure(
-                context = "IItemCheckListRepository.recoverAll",
+                context = "IItemCheckListRepository.listByNroEquip",
                 message = "-",
                 cause = e
             )
         }
     }
 
-    override suspend fun checkUpdateByNroEquip(nroEquip: Long): Result<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun checkUpdateByNroEquip(
+        token: String,
+        nroEquip: Long
+    ): Result<Boolean> {
+        try {
+            val result = itemCheckListRetrofitDatasource.checkUpdateByNroEquip(
+                token = token,
+                nroEquip = nroEquip
+            )
+            if (result.isFailure) {
+                val e = result.exceptionOrNull()!!
+                return resultFailure(
+                    context = "IItemCheckListRepository.checkUpdateByNroEquip",
+                    message = e.message,
+                    cause = e.cause
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.qtd > 0)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = "IItemCheckListRepository.checkUpdateByNroEquip",
+                message = "-",
+                cause = e
+            )
+        }
+
     }
+
 }

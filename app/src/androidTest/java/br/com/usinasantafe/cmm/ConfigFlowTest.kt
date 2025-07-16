@@ -7,10 +7,6 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.hilt.work.HiltWorkerFactory
-import androidx.test.core.app.ApplicationProvider
-import androidx.work.Configuration
-import androidx.work.WorkManager
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
@@ -28,9 +24,9 @@ import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
-import br.com.usinasantafe.cmm.utils.WEB_GET_EQUIP_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
-import br.com.usinasantafe.cmm.utils.WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -40,7 +36,6 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -105,8 +100,8 @@ class ConfigFlowTest {
                         "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                         "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                         "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                        "/$WEB_GET_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                        "/$WEB_GET_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                        "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                        "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                         "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                         "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                         "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)

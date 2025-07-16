@@ -37,7 +37,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableItemCheckList(usecase: IUpdateTableItemCheckList): UpdateTableItemCheckList
+    fun bindUpdateTableItemCheckList(usecase: IUpdateTableItemCheckListByNroEquip): UpdateTableItemCheckListByNroEquip
 
     @Binds
     @Singleton
