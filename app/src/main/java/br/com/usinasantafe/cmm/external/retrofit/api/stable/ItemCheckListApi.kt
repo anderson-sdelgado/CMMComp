@@ -24,4 +24,10 @@ interface ItemCheckListApi {
         @Body nroEquip: Long
     ): Response<CheckUpdateCheckListRetrofitModel>
 
+    @POST(WEB_ALL_ITEM_CHECKLIST)
+    suspend fun checkByNroEquip(
+        @Header("Authorization") auth: String,
+        @Body nroEquip: Long
+    ): Response<CheckUpdateCheckListRetrofitModel>
+
 }
