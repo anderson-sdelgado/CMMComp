@@ -264,6 +264,10 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
+    override suspend fun getRegOperator(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun setNroOSNote(nroOS: Int): Result<Boolean> {
         val resultClean = noteMotoMecSharedPreferencesDatasource.clean()
         if(resultClean.isFailure) {

@@ -11,8 +11,15 @@ import org.junit.Test
 
 class IItemCheckListRetrofitDatasourceTest {
 
+    private val resultItemCheckListRetrofit = """
+        [
+          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+          {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
+        ]
+    """.trimIndent()
+
     @Test
-    fun `Check return failure if token is invalid`() =
+    fun `listBryNroEquip - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -24,25 +31,27 @@ class IItemCheckListRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemCheckListApi::class.java)
             val datasource = IItemCheckListRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
-
-            assertEquals(
-                true,
-                result.isFailure
+            val result = datasource.listByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
             )
             assertEquals(
-                "IItemCheckListRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.isFailure,
+                true
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRetrofitDatasource.listByNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
             server.shutdown()
         }
 
     @Test
-    fun `Check return failure if have Error 404`() =
+    fun `listBryNroEquip - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -54,26 +63,27 @@ class IItemCheckListRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemCheckListApi::class.java)
             val datasource = IItemCheckListRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
-
-            assertEquals(
-                true,
-                result.isFailure
+            val result = datasource.listByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
             )
             assertEquals(
-                "IItemCheckListRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.isFailure,
+                true
             )
             assertEquals(
-                NullPointerException().toString(),
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRetrofitDatasource.listByNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
             )
             server.shutdown()
         }
 
-
     @Test
-    fun `Check return correct`() =
+    fun `listBryNroEquip - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -85,13 +95,16 @@ class IItemCheckListRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemCheckListApi::class.java)
             val datasource = IItemCheckListRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
-
-            assertEquals(
-                true,
-                result.isSuccess
+            val result = datasource.listByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
             )
             assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result,
                 Result.success(
                     listOf(
                         ItemCheckListRetrofitModel(
@@ -105,16 +118,101 @@ class IItemCheckListRetrofitDatasourceTest {
                             descrItemCheckList = "Verificar Freios"
                         )
                     )
-                ),
-                result
+                )
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `checkUpdateByNroEquip - Check return failure if token is invalid`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody("{ error : Authorization header is missing }")
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("").toString()
+            )
+            val service = retrofit.create(ItemCheckListApi::class.java)
+            val datasource = IItemCheckListRetrofitDatasource(service)
+            val result = datasource.checkUpdateByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRetrofitDatasource.checkUpdateByNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 4 path \$."
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `checkUpdateByNroEquip - Check return failure if have Error 404`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setResponseCode(404)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("").toString()
+            )
+            val service = retrofit.create(ItemCheckListApi::class.java)
+            val datasource = IItemCheckListRetrofitDatasource(service)
+            val result = datasource.checkUpdateByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRetrofitDatasource.checkUpdateByNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `checkUpdateByNroEquip - Check return correct`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
+                MockResponse().setBody("""{"qtd":1}""")
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("").toString()
+            )
+            val service = retrofit.create(ItemCheckListApi::class.java)
+            val datasource = IItemCheckListRetrofitDatasource(service)
+            val result = datasource.checkUpdateByNroEquip(
+                token = "TOKEN",
+                nroEquip = 10L
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                model.qtd,
+                1
             )
             server.shutdown()
         }
 }
-
-val resultItemCheckListRetrofit = """
-    [
-      {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
-      {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
-    ]
-""".trimIndent()

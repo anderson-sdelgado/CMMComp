@@ -109,7 +109,7 @@ class IGetTurnListTest {
                 Result.success(10)
             )
             whenever(
-                turnRepository.getListByCodTurnEquip(
+                turnRepository.listByCodTurnEquip(
                     codTurnEquip = 10
                 )
             ).thenReturn(
@@ -154,7 +154,7 @@ class IGetTurnListTest {
                 Result.success(10)
             )
             whenever(
-                turnRepository.getListByCodTurnEquip(
+                turnRepository.listByCodTurnEquip(
                     codTurnEquip = 10
                 )
             ).thenReturn(

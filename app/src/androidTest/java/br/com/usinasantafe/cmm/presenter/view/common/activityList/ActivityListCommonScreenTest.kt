@@ -377,7 +377,6 @@ class ActivityListCommonScreenTest {
         if (level == 4) return
     }
 
-
     private val resultActivityFailure = """
                 [
                     {
@@ -407,6 +406,5 @@ class ActivityListCommonScreenTest {
                     }
                 ]
             """.trimIndent()
-
 
 }

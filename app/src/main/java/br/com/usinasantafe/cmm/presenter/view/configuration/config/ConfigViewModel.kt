@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
@@ -79,7 +80,7 @@ class ConfigViewModel @Inject constructor(
 //    private val updateTableComponente: UpdateTableComponente,
     private val updateTableEquipByIdEquip: UpdateTableEquipByIdEquip,
 //    private val updateTableFrente: UpdateTableFrente,
-//    private val updateTableItemCheckList: UpdateTableItemCheckList,
+    private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
 //    private val updateTableItemOSMecan: UpdateTableItemOSMecan,
 //    private val updateTableLeira: UpdateTableLeira,
 //    private val updateTableMotoMec: UpdateTableMotoMec,
@@ -202,7 +203,7 @@ class ConfigViewModel @Inject constructor(
         }
     }
 
-    suspend fun token(): Flow<ConfigState> = flow {
+    fun token(): Flow<ConfigState> = flow {
         val sizeToken = 3f
         val number = uiState.value.number
         val password = uiState.value.password
@@ -283,7 +284,7 @@ class ConfigViewModel @Inject constructor(
         )
     }
 
-    suspend fun updateAllDatabase(): Flow<ConfigState> = flow {
+    fun updateAllDatabase(): Flow<ConfigState> = flow {
         var pos = 0f
         val sizeAllUpdate = sizeUpdate(qtdTable)
         var configState = ConfigState()
@@ -304,6 +305,14 @@ class ConfigViewModel @Inject constructor(
         }
         if (configState.flagFailure) return@flow
         updateTableEquipByIdEquip(
+            sizeAll = sizeAllUpdate,
+            count = ++pos
+        ).collect {
+            configState = it.resultUpdateToConfig()
+            emit(it.resultUpdateToConfig())
+        }
+        if (configState.flagFailure) return@flow
+        updateTableItemCheckListByNroEquip(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {

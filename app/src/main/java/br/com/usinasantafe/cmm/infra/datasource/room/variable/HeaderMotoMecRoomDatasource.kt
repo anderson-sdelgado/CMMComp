@@ -19,4 +19,5 @@ interface HeaderMotoMecRoomDatasource {
         id: Int
     ): Result<Boolean>
     suspend fun getIdTurnByHeaderOpen(): Result<Int>
+    suspend fun getRegOperatorOpen(): Result<Int>
 }

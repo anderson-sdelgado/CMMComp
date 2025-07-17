@@ -233,7 +233,7 @@ class ITurnRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getListByCodTurnEquip(1)
+            val result = repository.listByCodTurnEquip(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -266,7 +266,7 @@ class ITurnRepositoryTest {
                     roomModelList
                 )
             )
-            val result = repository.getListByCodTurnEquip(1)
+            val result = repository.listByCodTurnEquip(1)
             assertEquals(
                 result.isSuccess,
                 true

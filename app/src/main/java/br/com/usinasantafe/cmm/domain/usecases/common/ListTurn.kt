@@ -41,7 +41,7 @@ class IListTurn @Inject constructor(
                 )
             }
             val codTurnEquip = resultGetCodTurnEquip.getOrNull()!!
-            val resultGetTurnList = turnRepository.getListByCodTurnEquip(
+            val resultGetTurnList = turnRepository.listByCodTurnEquip(
                 codTurnEquip = codTurnEquip
             )
             if (resultGetTurnList.isFailure) {

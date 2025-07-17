@@ -3,10 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
+import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonState
-import br.com.usinasantafe.cmm.presenter.view.common.activityList.resultUpdateToActivityListCommonState
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -33,7 +31,7 @@ data class QuestionUpdateCheckListState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToActivityListCommonState(): QuestionUpdateCheckListState {
+fun ResultUpdateModel.resultUpdateToQuestionUpdateCheckListState(): QuestionUpdateCheckListState {
     val fail = if(failure.isNotEmpty()){
         val ret = "QuestionUpdateCheckListViewModel.updateAllDatabase -> ${this.failure}"
         Timber.e(ret)
@@ -55,7 +53,8 @@ fun ResultUpdateModel.resultUpdateToActivityListCommonState(): QuestionUpdateChe
 
 @HiltViewModel
 class QuestionUpdateCheckListViewModel @Inject constructor(
-    private val checkUpdateCheckList: CheckUpdateCheckList
+    private val checkUpdateCheckList: CheckUpdateCheckList,
+    private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(QuestionUpdateCheckListState())
@@ -93,32 +92,34 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
     }
 
     fun updateDatabase() = viewModelScope.launch {
-
+        viewModelScope.launch {
+            updateAllDatabase().collect { stateUpdate ->
+                _uiState.value = stateUpdate
+            }
+        }
     }
 
-
-    fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
-//        var pos = 0f
-//        val sizeAllUpdate = 4f
-//        var activityListState = ActivityListCommonState()
-//        updateTableActivity(
-//            sizeAll = sizeAllUpdate,
-//            count = ++pos
-//        ).collect {
-//            activityListState = it.resultUpdateToActivityListCommonState()
-//            emit(
-//                it.resultUpdateToActivityListCommonState()
-//            )
-//        }
-//        if (activityListState.flagFailure) return@flow
-//        emit(
-//            ActivityListCommonState(
-//                flagDialog = true,
-//                flagProgress = false,
-//                flagFailure = false,
-//                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-//                currentProgress = 1f,
-//            )
-//        )
+    fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
+        val sizeAllUpdate = 4f
+        var state = QuestionUpdateCheckListState()
+        updateTableItemCheckListByNroEquip(
+            sizeAll = sizeAllUpdate,
+            count = 1f
+        ).collect {
+            state = it.resultUpdateToQuestionUpdateCheckListState()
+            emit(
+                it.resultUpdateToQuestionUpdateCheckListState()
+            )
+        }
+        if (state.flagFailure) return@flow
+        emit(
+            QuestionUpdateCheckListState(
+                flagDialog = true,
+                flagProgress = false,
+                flagFailure = false,
+                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                currentProgress = 1f,
+            )
+        )
     }
 }

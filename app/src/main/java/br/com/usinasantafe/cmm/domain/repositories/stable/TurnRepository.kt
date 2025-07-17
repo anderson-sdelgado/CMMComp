@@ -6,7 +6,10 @@ interface TurnRepository {
     suspend fun addAll(list: List<Turn>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun recoverAll(token: String): Result<List<Turn>>
-    suspend fun getListByCodTurnEquip(
+    suspend fun listByCodTurnEquip(
         codTurnEquip: Int
     ): Result<List<Turn>>
+    suspend fun geNroTurnByIdTurn(
+        idTurn: Int
+    ): Result<Int>
 }

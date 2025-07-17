@@ -169,4 +169,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getRegOperatorOpen(): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
 }

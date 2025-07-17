@@ -13,4 +13,7 @@ interface ItemCheckListRepository {
         token: String,
         nroEquip: Long
     ): Result<Boolean>
+    suspend fun listByIdCheckList(
+        idCheckList: Int
+    ): Result<List<ItemCheckList>>
 }

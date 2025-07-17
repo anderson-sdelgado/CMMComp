@@ -74,7 +74,7 @@ class ITurnRepository @Inject constructor(
         }
     }
 
-    override suspend fun getListByCodTurnEquip(
+    override suspend fun listByCodTurnEquip(
         codTurnEquip: Int
     ): Result<List<Turn>> {
         try {
@@ -96,5 +96,9 @@ class ITurnRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun geNroTurnByIdTurn(idTurn: Int): Result<Int> {
+        TODO("Not yet implemented")
     }
 }

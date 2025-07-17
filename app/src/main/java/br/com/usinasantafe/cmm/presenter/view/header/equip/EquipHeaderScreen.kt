@@ -119,7 +119,6 @@ fun EquipHeaderContent(
             }
         }
         BackHandler {
-            onNavRegOperator()
         }
 
         if(flagDialog) {

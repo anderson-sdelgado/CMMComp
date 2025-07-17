@@ -328,7 +328,7 @@ class ICheckOpenCheckListTest {
                     nroOS = 123456,
                     idActivity = 1,
                     hourMeterInitial = 10.0,
-                    dateHourInitial = Date(1748359002),
+                    dateHourInitial = Date(1748359002000),
                     statusCon = true
                 )
             )
@@ -350,7 +350,7 @@ class ICheckOpenCheckListTest {
                 ConfigSharedPreferencesModel(
                     idEquip = 1,
                     idTurnCheckListLast = 1,
-                    dateLastCheckList = Date(1750862003000)
+                    dateLastCheckList = Date()
                 )
             )
             equipDao.insertAll(
@@ -378,7 +378,7 @@ class ICheckOpenCheckListTest {
                     nroOS = 123456,
                     idActivity = 1,
                     hourMeterInitial = 10.0,
-                    dateHourInitial = Date(1748359002),
+                    dateHourInitial = Date(),
                     statusCon = true
                 )
             )

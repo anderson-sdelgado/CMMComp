@@ -91,7 +91,7 @@ class ConfigViewModelTest {
 //        updateTableComponente = updateTableComponente,
         updateTableEquipByIdEquip = updateTableEquipByIdEquip,
 //        updateTableFrente = updateTableFrente,
-//        updateTableItemCheckList = updateTableItemCheckList,
+        updateTableItemCheckListByNroEquip = updateTableItemCheckListByNroEquip,
 //        updateTableItemOSMecan = updateTableItemOSMecan,
 //        updateTableLeira = updateTableLeira,
 //        updateTableMotoMec = updateTableMotoMec,
@@ -593,12 +593,69 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+    fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
         runTest {
             val qtdBefore = 3f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            whenever(
+                updateTableItemCheckListByNroEquip(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanItemCheckList -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemCheckList -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+        runTest {
+            val qtdBefore = 4f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             whenever(
                 updateTableRActivityStop(
                     sizeAll = sizeAll,
@@ -628,6 +685,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -651,10 +709,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
         runTest {
-            val qtdBefore = 4f
+            val qtdBefore = 5f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             wheneverSuccessRActivityStop()
             whenever(
                 updateTableREquipActivityByIdEquip(
@@ -685,6 +744,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             checkResultUpdateRActivityStop(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
@@ -709,10 +769,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableStop`() =
         runTest {
-            val qtdBefore = 5f
+            val qtdBefore = 6f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             whenever(
@@ -744,6 +805,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             assertEquals(
@@ -769,10 +831,11 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableTurn`() =
         runTest {
-            val qtdBefore = 6f
+            val qtdBefore = 7f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -805,6 +868,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             checkResultUpdateStop(result)
@@ -864,6 +928,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -894,6 +959,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             checkResultUpdateStop(result)
@@ -960,6 +1026,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessItemCheckList()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -983,6 +1050,7 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateItemCheckList(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             checkResultUpdateStop(result)

@@ -22,6 +22,8 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -73,6 +75,13 @@ class CheckListFlowTest {
             ]
         """.trimIndent()
 
+        private val jsonRetrofitItemCheckList = """
+            [
+              {"idItemCheckList":1,"idCheckList":1,"descrItemCheckList":"Verificar Nível de Óleo"},
+              {"idItemCheckList":2,"idCheckList":1,"descrItemCheckList":"Verificar Freios"}
+            ]
+        """.trimIndent()
+
         @BeforeClass
         @JvmStatic
         fun setupClass() {
@@ -84,6 +93,8 @@ class CheckListFlowTest {
                     return when (request.path) {
                         "/$WEB_OS_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitOS)
                         "/$WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS" -> MockResponse().setBody(jsonRetrofitROSActivity)
+                        "/$WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("""{"qtd":1}""")
+                        "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(jsonRetrofitItemCheckList)
                         else -> MockResponse().setResponseCode(404)
                     }
                 }
@@ -245,11 +256,32 @@ class CheckListFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
+        composeTestRule.onNodeWithText("CHECKLIST")
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("ATENÇÃO! HÁ NOVAS ATUALIZAÇÕES PARA QUESTÕES DE CHECKLIST. DESEJA ATUALIZÁ-LAS?")
+            .assertIsDisplayed()
+
+        Log.d("TestDebug", "Position 21")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("SIM")
+            .performClick()
+
+        Log.d("TestDebug", "Position 22")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+        composeTestRule.onNodeWithText("OK")
+            .performClick()
+
+        Log.d("TestDebug", "Position 23")
+
+        composeTestRule.waitUntilTimeout(3_000)
+
     }
 
     private suspend fun initialRegister() {
-
-        val gson = Gson()
 
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(

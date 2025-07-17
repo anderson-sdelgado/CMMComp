@@ -255,7 +255,11 @@ fun NavigationGraph(
         }
 
         composable(ITEM_CHECK_LIST_ROUTE){
-            ItemCheckListScreen()
+            ItemCheckListScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                }
+            )
         }
 
         ////////////////////////////////////////////////////////////////////

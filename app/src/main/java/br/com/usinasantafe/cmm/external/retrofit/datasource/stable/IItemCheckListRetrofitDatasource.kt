@@ -23,7 +23,7 @@ class IItemCheckListRetrofitDatasource @Inject constructor(
             return Result.success(response.body()!!)
         } catch (e: Exception){
             return resultFailure(
-                context = "IItemCheckListRetrofitDatasource.recoverAll",
+                context = "IItemCheckListRetrofitDatasource.listByNroEquip",
                 message = "-",
                 cause = e
             )
