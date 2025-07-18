@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IROSActivityRoomDatasource @Inject constructor(
@@ -15,9 +17,8 @@ class IROSActivityRoomDatasource @Inject constructor(
             rOSActivityDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -28,9 +29,8 @@ class IROSActivityRoomDatasource @Inject constructor(
             rOSActivityDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -41,9 +41,8 @@ class IROSActivityRoomDatasource @Inject constructor(
             val list = rOSActivityDao.listByIdOS(idOS)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRoomDatasource.listByIdOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

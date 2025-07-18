@@ -529,7 +529,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.getListByNroOS -> IOSRoomDatasource.getListByNroOS"
+                "IOSRepository.listByNroOS -> IOSRoomDatasource.getListByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

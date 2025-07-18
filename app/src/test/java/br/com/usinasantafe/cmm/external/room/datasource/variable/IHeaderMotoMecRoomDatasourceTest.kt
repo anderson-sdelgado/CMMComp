@@ -700,4 +700,23 @@ class IHeaderMotoMecRoomDatasourceTest {
                 1
             )
         }
+
+    @Test
+    fun `getRegOperatorOpen - Check return failure if table is empty`() =
+        runTest {
+            val result = datasource.getRegOperatorOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getRegOperatorOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getRegOperator()\" because \"roomModel\" is null"
+            )
+        }
+
 }

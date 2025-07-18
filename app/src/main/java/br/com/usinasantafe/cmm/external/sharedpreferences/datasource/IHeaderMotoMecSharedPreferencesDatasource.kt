@@ -2,12 +2,16 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
 import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
+import androidx.core.content.edit
 
 class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -30,9 +34,8 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.get",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -42,29 +45,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setRegOperator",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
             model.regOperator = regOperator
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setRegOperator",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setRegOperator",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -72,17 +70,16 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): Result<Boolean> {
         try {
-            val editor = sharedPreferences.edit()
-            editor.putString(
-                BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
-                Gson().toJson(model)
-            )
-            editor.apply()
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                    Gson().toJson(model)
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.save",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -95,11 +92,9 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
@@ -107,18 +102,15 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
             model.typeEquip = typeEquip
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -128,29 +120,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdTurn",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
             model.idTurn = idTurn
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdTurn",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdTurn",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -160,29 +147,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
             model.nroOS = nroOS
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -192,29 +174,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val headerMotoMec = resultGet.getOrNull()!!
             headerMotoMec.idActivity = idActivity
             val resultSave = save(headerMotoMec)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setIdActivity",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -224,19 +201,16 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.getNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val headerMotoMec = result.getOrNull()!!
             return Result.success(headerMotoMec.nroOS!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.getNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -246,19 +220,16 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val headerMotoMec = result.getOrNull()!!
             return Result.success(headerMotoMec.idEquip!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.getIdEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -268,29 +239,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val headerMotoMec = resultGet.getOrNull()!!
             headerMotoMec.hourMeter = hourMeter
             val resultSave = save(headerMotoMec)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -298,17 +264,16 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun clean(): Result<Boolean> {
         try {
-            val editor = sharedPreferences.edit()
-            editor.putString(
-                BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
-                null
-            )
-            editor.apply()
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                    null
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.save",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -318,29 +283,24 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val headerMotoMec = resultGet.getOrNull()!!
             headerMotoMec.statusCon = status
             val resultSave = save(headerMotoMec)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IHeaderMotoMecSharedPreferencesDatasource.setStatusCon",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

@@ -218,7 +218,7 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.checkReg -> ColabRoomDatasource.checkReg"
+                "IColabRepository.checkByReg -> ColabRoomDatasource.checkReg"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

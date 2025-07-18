@@ -2,11 +2,14 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.MotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.MotoMecRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.MotoMecRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IMotoMecRepository @Inject constructor(
@@ -19,18 +22,15 @@ class IMotoMecRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = motoMecRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IMotoMecRepository.addAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailure(
-                context = "IMotoMecRepository.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -39,11 +39,9 @@ class IMotoMecRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = motoMecRoomDatasource.deleteAll()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "IMotoMecRepository.deleteAll",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -55,19 +53,16 @@ class IMotoMecRepository @Inject constructor(
         try {
             val result = motoMecRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IMotoMecRepository.recoverAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IMotoMecRepository.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

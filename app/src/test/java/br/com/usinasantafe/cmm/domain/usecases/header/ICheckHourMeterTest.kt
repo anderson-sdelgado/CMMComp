@@ -9,7 +9,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class ICheckMeasureTest {
+class ICheckHourMeterTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
@@ -37,7 +37,7 @@ class ICheckMeasureTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckMeasureInitial -> HeaderMotoMecRepository.getIdEquip"
+                "ICheckHourMeter -> HeaderMotoMecRepository.getIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -69,7 +69,7 @@ class ICheckMeasureTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckMeasureInitial -> EquipRepository.getMeasureByIdEquip"
+                "ICheckHourMeter -> EquipRepository.getMeasureByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

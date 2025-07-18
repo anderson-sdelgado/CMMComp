@@ -1,8 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetNroOSCommon {
@@ -25,11 +28,9 @@ class ISetNroOSCommon @Inject constructor(
                 nroOS.toInt()
             )
             if (resultSetNroOSHeader.isFailure) {
-                val e = resultSetNroOSHeader.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetNroOSCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSetNroOSHeader.exceptionOrNull()!!
                 )
             }
             if (flowApp == FlowApp.HEADER_INITIAL) return resultSetNroOSHeader
@@ -37,18 +38,15 @@ class ISetNroOSCommon @Inject constructor(
                 nroOS.toInt()
             )
             if (resultSetNroOSNote.isFailure) {
-                val e = resultSetNroOSNote.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetNroOSCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSetNroOSNote.exceptionOrNull()!!
                 )
             }
             return resultSetNroOSNote
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ISetNroOSCommon",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

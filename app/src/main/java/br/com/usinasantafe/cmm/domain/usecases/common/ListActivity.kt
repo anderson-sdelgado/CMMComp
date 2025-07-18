@@ -2,12 +2,15 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface ListActivity {
@@ -27,42 +30,34 @@ class IListActivity @Inject constructor(
         try {
             val resultGetConfig = configRepository.get()
             if (resultGetConfig.isFailure) {
-                val e = resultGetConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetActivityList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetConfig.exceptionOrNull()!!
                 )
             }
             val config = resultGetConfig.getOrNull()!!
             val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(config.idEquip!!)
             if(resultGetREquipActivityList.isFailure) {
-                val e = resultGetREquipActivityList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetActivityList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetREquipActivityList.exceptionOrNull()!!
                 )
             }
             val rEquipActivityList = resultGetREquipActivityList.getOrNull()!!
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
             val resultGetNroOS = motoMecRepository.getNroOSHeader()
             if (resultGetNroOS.isFailure) {
-                val e = resultGetNroOS.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetActivityList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetNroOS.exceptionOrNull()!!
                 )
             }
             val nroOS = resultGetNroOS.getOrNull()!!
             val resultGetListByNroOS = osRepository.listByNroOS(nroOS)
             if (resultGetListByNroOS.isFailure) {
-                val e = resultGetListByNroOS.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetActivityList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetListByNroOS.exceptionOrNull()!!
                 )
             }
             val list = resultGetListByNroOS.getOrNull()!!
@@ -72,11 +67,9 @@ class IListActivity @Inject constructor(
                     idOS = os.idOS
                 )
                 if (resultGetListByNroOSActivity.isFailure) {
-                    val e = resultGetListByNroOSActivity.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetActivityList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultGetListByNroOSActivity.exceptionOrNull()!!
                     )
                 }
                 val rOSActivityList = resultGetListByNroOSActivity.getOrNull()!!
@@ -85,18 +78,15 @@ class IListActivity @Inject constructor(
             }
             val resultGetActivityListByIdEquip = activityRepository.listByIdList(idActivityEquipList)
             if (resultGetActivityListByIdEquip.isFailure) {
-                val e = resultGetActivityListByIdEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetActivityList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetActivityListByIdEquip.exceptionOrNull()!!
                 )
             }
             return resultGetActivityListByIdEquip
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetActivityList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

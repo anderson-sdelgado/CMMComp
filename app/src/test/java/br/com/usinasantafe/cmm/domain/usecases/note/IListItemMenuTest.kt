@@ -41,7 +41,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetItemMenuList -> IGetItemMenuList"
+                "IListItemMenu -> IGetItemMenuList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

@@ -2,12 +2,15 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IActivityRepository @Inject constructor(
@@ -20,18 +23,15 @@ class IActivityRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = activityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IActivityRepository.addAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailure(
-                context = "IActivityRepository.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -40,11 +40,9 @@ class IActivityRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = activityRoomDatasource.deleteAll()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "IActivityRepository.deleteAll",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -56,19 +54,16 @@ class IActivityRepository @Inject constructor(
         try {
             val result = activityRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IActivityRepository.recoverAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IActivityRepository.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -78,20 +73,17 @@ class IActivityRepository @Inject constructor(
         try {
             val result = activityRoomDatasource.listByIdList(idList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IActivityRepository.listByListId",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val roomModelList = result.getOrNull()!!
             val entityList = roomModelList.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IActivityRepository.listByListId",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

@@ -23,7 +23,7 @@ class ISetHourMeterTest {
     )
 
     @Test
-    fun `Check return failure if have error in HeaderMotoMecRepository setMeasureInitial - FlowApp HEADER_INITIAL`() =
+    fun `Check return failure if have error in HeaderMotoMecRepository setHourMeterInitial - FlowApp HEADER_INITIAL`() =
         runTest {
             whenever(
                 motoMecRepository.setHourMeterInitialHeader(
@@ -31,7 +31,7 @@ class ISetHourMeterTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IHeaderMotoMecRepository.setMeasureInitial",
+                    context = "IHeaderMotoMecRepository.setHourMeterInitial",
                     message = "-",
                     cause = Exception()
                 )
@@ -43,7 +43,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.setMeasureInitial"
+                "ISetHourMeter -> IHeaderMotoMecRepository.setHourMeterInitial"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -77,7 +77,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.getIdEquip"
+                "ISetHourMeter -> IHeaderMotoMecRepository.getIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -86,7 +86,7 @@ class ISetHourMeterTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository updateMeasureByIdEquip - FlowApp HEADER_INITIAL`() =
+    fun `Check return failure if have error in EquipRepository updateHourMeterByIdEquip - FlowApp HEADER_INITIAL`() =
         runTest {
             whenever(
                 motoMecRepository.setHourMeterInitialHeader(
@@ -107,7 +107,7 @@ class ISetHourMeterTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IEquipRepository.updateMeasureByIdEquip",
+                    context = "IEquipRepository.updateHourMeterByIdEquip",
                     message = "-",
                     cause = Exception()
                 )
@@ -119,7 +119,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IEquipRepository.updateMeasureByIdEquip"
+                "ISetHourMeter -> IEquipRepository.updateHourMeterByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -166,7 +166,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.save"
+                "ISetHourMeter -> IHeaderMotoMecRepository.save"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -214,7 +214,7 @@ class ISetHourMeterTest {
         }
 
     @Test
-    fun `Check return failure if have error in HeaderMotoMecRepository setMeasureInitial - FlowApp HEADER_FINISH`() =
+    fun `Check return failure if have error in HeaderMotoMecRepository setHourMeterInitial - FlowApp HEADER_FINISH`() =
         runTest {
             whenever(
                 motoMecRepository.setHourMeterFinishHeader(
@@ -222,7 +222,7 @@ class ISetHourMeterTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IHeaderMotoMecRepository.setMeasureFinish",
+                    context = "IHeaderMotoMecRepository.setHourMeterFinish",
                     message = "-",
                     cause = Exception()
                 )
@@ -237,7 +237,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.setMeasureFinish"
+                "ISetHourMeter -> IHeaderMotoMecRepository.setHourMeterFinish"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -274,7 +274,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.getIdEquip"
+                "ISetHourMeter -> IHeaderMotoMecRepository.getIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -283,7 +283,7 @@ class ISetHourMeterTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository updateMeasureByIdEquip - FlowApp HEADER_FINISH`() =
+    fun `Check return failure if have error in EquipRepository updateHourMeterByIdEquip - FlowApp HEADER_FINISH`() =
         runTest {
             whenever(
                 motoMecRepository.setHourMeterFinishHeader(
@@ -304,7 +304,7 @@ class ISetHourMeterTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IEquipRepository.updateMeasureByIdEquip",
+                    context = "IEquipRepository.updateHourMeterByIdEquip",
                     message = "-",
                     cause = Exception()
                 )
@@ -319,7 +319,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IEquipRepository.updateMeasureByIdEquip"
+                "ISetHourMeter -> IEquipRepository.updateHourMeterByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -369,7 +369,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetMeasure -> IHeaderMotoMecRepository.close"
+                "ISetHourMeter -> IHeaderMotoMecRepository.close"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

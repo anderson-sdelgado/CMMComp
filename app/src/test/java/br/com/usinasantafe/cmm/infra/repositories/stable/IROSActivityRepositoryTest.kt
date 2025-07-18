@@ -214,7 +214,7 @@ class IROSActivityRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "IROSActivityRetrofitDatasource.getListByNroOS",
+                    "IROSActivityRetrofitDatasource.listByNroOS",
                     "-",
                     Exception()
                 )
@@ -229,7 +229,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.getListByNroOS -> IROSActivityRetrofitDatasource.getListByNroOS"
+                "IROSActivityRepository.listByNroOS -> IROSActivityRetrofitDatasource.listByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -322,7 +322,7 @@ class IROSActivityRepositoryTest {
                 rOSActivityRoomDatasource.listByIdOS(1)
             ).thenReturn(
                 resultFailure(
-                    "IROSActivityRoomDatasource.getListByIdOS",
+                    "IROSActivityRoomDatasource.listByIdOS",
                     "-",
                     Exception()
                 )
@@ -334,7 +334,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.getListByIdOS -> IROSActivityRoomDatasource.getListByIdOS"
+                "IROSActivityRepository.listByIdOS -> IROSActivityRoomDatasource.listByIdOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

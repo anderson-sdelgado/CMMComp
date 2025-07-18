@@ -2,7 +2,10 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SaveDataConfig {
@@ -43,20 +46,17 @@ class ISaveDataConfig @Inject constructor(
                 idBD = idBD,
                 idEquip = idEquip
             )
-            val configResult = configRepository.save(config)
-            if (configResult.isFailure) {
-                val e = configResult.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISaveDataConfig",
-                    message = e.message,
-                    cause = e.cause
+            val result = configRepository.save(config)
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ISaveDataConfig",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

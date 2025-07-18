@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckPassword {
@@ -16,33 +19,28 @@ class ICheckPassword @Inject constructor(
         try {
             val resultHasConfig = configRepository.hasConfig()
             if (resultHasConfig.isFailure) {
-                val e = resultHasConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckPassword",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultHasConfig.exceptionOrNull()!!
                 )
             }
             val hasConfig = resultHasConfig.getOrNull()!!
             if (!hasConfig)
                 return Result.success(true)
-            val resultPassword = configRepository.getPassword()
-            if (resultPassword.isFailure){
-                val e = resultPassword.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckPassword",
-                    message = e.message,
-                    cause = e.cause
+            val resultGetPassword = configRepository.getPassword()
+            if (resultGetPassword.isFailure){
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetPassword.exceptionOrNull()!!
                 )
             }
-            val passwordConfig = resultPassword.getOrNull()!!
+            val passwordConfig = resultGetPassword.getOrNull()!!
             if (passwordConfig == password)
                 return Result.success(true)
             return Result.success(false)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckPassword",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

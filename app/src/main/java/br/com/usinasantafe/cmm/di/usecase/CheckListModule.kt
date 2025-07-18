@@ -20,5 +20,16 @@ interface CheckListModule {
     @Singleton
     fun bindCheckUpdateCheckList(usecase: ICheckUpdateCheckList): CheckUpdateCheckList
 
+    @Binds
+    @Singleton
+    fun bindGetItemCheckList(usecase: IGetItemCheckList): GetItemCheckList
+
+    @Binds
+    @Singleton
+    fun bindSetRespItemCheckList(usecase: ISetRespItemCheckList): SetRespItemCheckList
+
+    @Binds
+    @Singleton
+    fun bindDelLastRespItemCheckList(usecase: IDelLastRespItemCheckList): DelLastRespItemCheckList
 
 }

@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.PressaoBocalApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PressaoBocalRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.PressaoBocalRetrofitModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IPressaoBocalRetrofitDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IPressaoBocalRetrofitDatasource @Inject constructor(
             val response = pressaoBocalApi.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IPressaoBocalRetrofitDatasource.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

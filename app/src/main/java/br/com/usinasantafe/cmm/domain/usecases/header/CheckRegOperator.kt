@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckRegOperator {
@@ -18,18 +21,15 @@ class ICheckRegOperator @Inject constructor(
                 regOperator.toInt()
             )
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckRegOperator",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckRegOperator",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

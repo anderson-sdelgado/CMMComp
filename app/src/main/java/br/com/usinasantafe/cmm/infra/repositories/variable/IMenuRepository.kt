@@ -2,11 +2,14 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.infra.datasource.internal.ItemMenuInternalDatasource
 import br.com.usinasantafe.cmm.infra.models.internal.ItemMenuInternalModel
 import br.com.usinasantafe.cmm.infra.models.internal.internalModelToEntity
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IMenuRepository @Inject constructor(
@@ -17,11 +20,9 @@ class IMenuRepository @Inject constructor(
         try{
             val result = itemMenuInternalDatasource.listAll()
             if(result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IMenuRepository.listMenu",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val modelList = result.getOrNull()!!
@@ -39,9 +40,8 @@ class IMenuRepository @Inject constructor(
                 }
             )
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IMenuRepository.listMenu",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

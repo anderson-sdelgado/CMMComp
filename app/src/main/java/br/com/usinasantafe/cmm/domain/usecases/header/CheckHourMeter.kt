@@ -1,9 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -35,21 +38,17 @@ class ICheckHourMeter @Inject constructor(
             val measureInputDouble = measureInput.toDouble()
             val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
             if(resultGetIdEquip.isFailure) {
-                val e = resultGetIdEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetIdEquip.exceptionOrNull()!!
                 )
             }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetHourMeterByIdEquip = equipRepository.getHourMeterByIdEquip(idEquip)
             if(resultGetHourMeterByIdEquip.isFailure) {
-                val e = resultGetHourMeterByIdEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckHourMeter",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetHourMeterByIdEquip.exceptionOrNull()!!
                 )
             }
             val measureBDDouble = resultGetHourMeterByIdEquip.getOrNull()!!
@@ -62,9 +61,8 @@ class ICheckHourMeter @Inject constructor(
                 )
             )
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckHourMeter",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

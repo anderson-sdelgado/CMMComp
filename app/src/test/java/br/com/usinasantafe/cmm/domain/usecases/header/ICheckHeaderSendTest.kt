@@ -19,7 +19,7 @@ class ICheckHeaderSendTest {
     fun `Check return failure if have error in `() =
         runTest {
             whenever(
-                motoMecRepository.checkSendHeader()
+                motoMecRepository.checkHeaderSend()
             ).thenReturn(
                 resultFailure(
                     context = "HeaderMotoMecRepository.checkHeaderOpen",
@@ -46,7 +46,7 @@ class ICheckHeaderSendTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.checkSendHeader()
+                motoMecRepository.checkHeaderSend()
             ).thenReturn(
                 Result.success(true)
             )

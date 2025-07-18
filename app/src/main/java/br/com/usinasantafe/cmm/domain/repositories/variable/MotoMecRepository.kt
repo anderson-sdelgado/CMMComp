@@ -15,11 +15,11 @@ interface MotoMecRepository {
     suspend fun getIdEquipHeader(): Result<Int>
     suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Boolean>
     suspend fun saveHeader(): Result<Boolean>
-    suspend fun checkOpenHeader(): Result<Boolean>
-    suspend fun getIdByOpenHeader(): Result<Int>
+    suspend fun checkHeaderOpen(): Result<Boolean>
+    suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean>
     suspend fun finishHeader(): Result<Boolean>
-    suspend fun checkSendHeader(): Result<Boolean>
+    suspend fun checkHeaderSend(): Result<Boolean>
     suspend fun setStatusConHeader(status: Boolean): Result<Boolean>
     suspend fun getIdTurnHeader(): Result<Int>
     suspend fun getRegOperator(): Result<Int>

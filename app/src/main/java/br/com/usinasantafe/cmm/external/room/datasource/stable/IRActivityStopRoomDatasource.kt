@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.RActivityStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IRActivityStopRoomDatasource @Inject constructor(
@@ -15,9 +17,8 @@ class IRActivityStopRoomDatasource @Inject constructor(
             rActivityStopDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IRActivityStopRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -28,9 +29,8 @@ class IRActivityStopRoomDatasource @Inject constructor(
             rActivityStopDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IRActivityStopRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -41,9 +41,8 @@ class IRActivityStopRoomDatasource @Inject constructor(
             val list = rActivityStopDao.listByIdActivity(idActivity)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IRActivityStopRoomDatasource.listByIdActivity",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

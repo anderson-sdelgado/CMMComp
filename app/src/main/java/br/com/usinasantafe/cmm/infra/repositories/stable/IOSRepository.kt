@@ -2,12 +2,15 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.OS
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IOSRepository @Inject constructor(
@@ -20,18 +23,15 @@ class IOSRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = osRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IOSRepository.addAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailure(
-                context = "IOSRepository.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -40,11 +40,9 @@ class IOSRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = osRoomDatasource.deleteAll()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "IOSRepository.deleteAll",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -56,19 +54,16 @@ class IOSRepository @Inject constructor(
         try {
             val result = osRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IOSRepository.recoverAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRepository.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -77,11 +72,9 @@ class IOSRepository @Inject constructor(
     override suspend fun checkNroOS(nroOS: Int): Result<Boolean> {
         val result = osRoomDatasource.checkNroOS(nroOS)
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "IOSRepository.checkNroOS",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -97,19 +90,16 @@ class IOSRepository @Inject constructor(
                 nroOS
             )
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IOSRepository.getListByNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRepository.getListByNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -119,18 +109,15 @@ class IOSRepository @Inject constructor(
         try {
             val result = osRoomDatasource.add(os.entityToRoomModel())
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IOSRepository.add",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRepository.add",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -140,19 +127,16 @@ class IOSRepository @Inject constructor(
         try {
             val result = osRoomDatasource.listByNroOS(nroOS)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IOSRepository.listByNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRepository.listByNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

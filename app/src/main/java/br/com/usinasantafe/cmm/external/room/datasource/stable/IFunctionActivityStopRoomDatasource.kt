@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.RFuncaoAtivParadaDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RFuncaoAtivParadaRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IFunctionActivityStopRoomDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IFunctionActivityStopRoomDatasource @Inject constructor(
             rFuncaoAtivParadaDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IRFuncaoAtivParadaRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +28,8 @@ class IFunctionActivityStopRoomDatasource @Inject constructor(
             rFuncaoAtivParadaDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IRFuncaoAtivParadaRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

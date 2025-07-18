@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.RFuncaoAtivParadaApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RFuncaoAtivParadaRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RFuncaoAtivParadaRetrofitModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IRFuncaoAtivParadaRetrofitDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IRFuncaoAtivParadaRetrofitDatasource @Inject constructor(
             val response = rFuncaoAtivParadaApi.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IRFuncaoAtivParadaRetrofitDatasource.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

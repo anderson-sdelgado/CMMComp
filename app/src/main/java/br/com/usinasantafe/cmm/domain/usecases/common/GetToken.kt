@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.token
 import javax.inject.Inject
 
@@ -17,11 +20,9 @@ class IGetToken @Inject constructor(
         try {
             val resultGet = configRepository.get()
             if (resultGet.isFailure){
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetToken",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val entity = resultGet.getOrNull()!!
@@ -34,9 +35,8 @@ class IGetToken @Inject constructor(
             )
             return Result.success(token)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetToken",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

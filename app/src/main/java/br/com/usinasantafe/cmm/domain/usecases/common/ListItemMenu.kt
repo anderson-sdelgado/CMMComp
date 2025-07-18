@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import br.com.usinasantafe.cmm.utils.TypeView
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface ListItemMenu {
@@ -22,11 +25,9 @@ class IListItemMenu @Inject constructor(
             list.add(TypeItemMenu.BUTTON_FINISH_HEADER)
             val resultList = menuRepository.listMenu(list)
             if(resultList.isFailure){
-                val e = resultList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetItemMenuList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultList.exceptionOrNull()!!
                 )
             }
             val listEntity = resultList.getOrNull()!!
@@ -50,9 +51,8 @@ class IListItemMenu @Inject constructor(
             }
             return Result.success(itemList + buttonItem)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetItemMenuList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

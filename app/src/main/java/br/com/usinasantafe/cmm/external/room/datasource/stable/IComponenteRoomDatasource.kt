@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ComponenteDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ComponenteRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ComponenteRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IComponenteRoomDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IComponenteRoomDatasource @Inject constructor(
             componenteDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IComponenteRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +28,8 @@ class IComponenteRoomDatasource @Inject constructor(
             componenteDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IComponenteRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

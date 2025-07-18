@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdEquip {
@@ -21,21 +24,17 @@ class ISetIdEquip @Inject constructor(
         try {
             val resultGetConfig = configRepository.get()
             if (resultGetConfig.isFailure) {
-                val e = resultGetConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetConfig.exceptionOrNull()!!
                 )
             }
             val config = resultGetConfig.getOrNull()!!
             val resultGetTypeEquip = equipRepository.getTypeFertByIdEquip(config.idEquip!!)
             if (resultGetTypeEquip.isFailure) {
-                val e = resultGetTypeEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetTypeEquip.exceptionOrNull()!!
                 )
             }
             val typeEquipBD = resultGetTypeEquip.getOrNull()!!
@@ -45,18 +44,15 @@ class ISetIdEquip @Inject constructor(
                 typeEquip = typeEquip
             )
             if (resultSetIdEquip.isFailure) {
-                val e = resultSetIdEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSetIdEquip.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ISetIdEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

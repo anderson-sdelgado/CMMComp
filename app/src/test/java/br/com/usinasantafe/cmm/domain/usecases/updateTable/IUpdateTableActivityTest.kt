@@ -20,7 +20,7 @@ class IUpdateTableActivityTest {
 
     private val getToken = mock<GetToken>()
     private val activityRepository = mock<ActivityRepository>()
-    private val updateTableAtividade = IUpdateTableActivity(
+    private val updateTableActivity = IUpdateTableActivity(
         getToken = getToken,
         activityRepository = activityRepository
     )
@@ -37,7 +37,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableActivity(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -84,7 +84,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableActivity(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -145,7 +145,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableActivity(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -220,7 +220,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableAtividade(
+            val result = updateTableActivity(
                 sizeAll = 7f,
                 count = 1f
             )

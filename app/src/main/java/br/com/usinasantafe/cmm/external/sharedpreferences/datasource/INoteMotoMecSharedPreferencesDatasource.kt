@@ -2,11 +2,15 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
+import androidx.core.content.edit
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 
 class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -29,9 +33,8 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.get",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -39,17 +42,16 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun save(model: NoteMotoMecSharedPreferencesModel): Result<Boolean> {
         try {
-            val editor = sharedPreferences.edit()
-            editor.putString(
-                BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
-                Gson().toJson(model)
-            )
-            editor.apply()
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                    Gson().toJson(model)
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.save",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -63,11 +65,9 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
@@ -75,18 +75,15 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             model.statusCon = statusCon
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -96,22 +93,18 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
             model.idActivity = id
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
@@ -126,16 +119,14 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getIdActivity(): Result<Int> {
         try {
-            val resultGet = get()
-            if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
-                    message = e.message,
-                    cause = e.cause
+            val result = get()
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
-            val model = resultGet.getOrNull()!!
+            val model = result.getOrNull()!!
             return Result.success(model.idActivity!!)
         } catch (e: Exception){
             return resultFailure(
@@ -150,29 +141,24 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val model = resultGet.getOrNull()!!
             model.idStop = id
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -180,17 +166,16 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun clean(): Result<Boolean> {
         try {
-            val editor = sharedPreferences.edit()
-            editor.putString(
-                BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
-                null
-            )
-            editor.apply()
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                    null
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.clean",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

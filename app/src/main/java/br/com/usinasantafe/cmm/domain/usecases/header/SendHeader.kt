@@ -1,9 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SendHeader {
@@ -20,21 +23,17 @@ class ISendHeader @Inject constructor(
         try {
             val resultGet = configRepository.getNumber()
             if (resultGet.isFailure) {
-                val e = resultGet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISendHeader",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGet.exceptionOrNull()!!
                 )
             }
             val number = resultGet.getOrNull()!!
             val resultToken = getToken()
             if(resultToken.isFailure){
-                val e = resultToken.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISendHeader",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultToken.exceptionOrNull()!!
                 )
             }
             val token = resultToken.getOrNull()!!
@@ -43,18 +42,15 @@ class ISendHeader @Inject constructor(
                 token = token
             )
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISendHeader",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ISendHeader",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

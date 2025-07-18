@@ -2,9 +2,12 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface ListTurn {
@@ -21,11 +24,9 @@ class IListTurn @Inject constructor(
         try {
             val resultGetConfig = configRepository.get()
             if (resultGetConfig.isFailure) {
-                val e = resultGetConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetTurnList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetConfig.exceptionOrNull()!!
                 )
             }
             val config = resultGetConfig.getOrNull()!!
@@ -33,11 +34,9 @@ class IListTurn @Inject constructor(
                 idEquip = config.idEquip!!
             )
             if (resultGetCodTurnEquip.isFailure) {
-                val e = resultGetCodTurnEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetTurnList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetCodTurnEquip.exceptionOrNull()!!
                 )
             }
             val codTurnEquip = resultGetCodTurnEquip.getOrNull()!!
@@ -45,18 +44,15 @@ class IListTurn @Inject constructor(
                 codTurnEquip = codTurnEquip
             )
             if (resultGetTurnList.isFailure) {
-                val e = resultGetTurnList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetTurnList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetTurnList.exceptionOrNull()!!
                 )
             }
             return resultGetTurnList
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetTurnList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

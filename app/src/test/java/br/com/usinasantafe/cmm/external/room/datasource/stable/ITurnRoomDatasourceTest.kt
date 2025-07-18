@@ -205,7 +205,7 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.getListByCodTurnEquip(102)
+            val result = datasource.listByCodTurnEquip(102)
             assertEquals(
                 result.isSuccess,
                 true
@@ -234,7 +234,7 @@ class ITurnRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.getListByCodTurnEquip(101)
+            val result = datasource.listByCodTurnEquip(101)
             assertEquals(
                 result.isSuccess,
                 true

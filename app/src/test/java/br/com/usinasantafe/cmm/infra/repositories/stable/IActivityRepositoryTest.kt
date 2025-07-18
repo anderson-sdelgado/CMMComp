@@ -218,7 +218,7 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRepository.listByListId -> IActivityRoomDatasource.listByIdList"
+                "IActivityRepository.listByIdList -> IActivityRoomDatasource.listByIdList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

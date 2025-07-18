@@ -135,7 +135,7 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success(config)
             )
             whenever(
-                equipRepository.getListByIdEquip(
+                equipRepository.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
@@ -207,7 +207,7 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success(config)
             )
             whenever(
-                equipRepository.getListByIdEquip(
+                equipRepository.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
@@ -296,7 +296,7 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success(config)
             )
             whenever(
-                equipRepository.getListByIdEquip(
+                equipRepository.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )

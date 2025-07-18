@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ServicoDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ServicoRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ServicoRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IServicoRoomDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IServicoRoomDatasource @Inject constructor(
             servicoDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IServicoRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +28,8 @@ class IServicoRoomDatasource @Inject constructor(
             servicoDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IServicoRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

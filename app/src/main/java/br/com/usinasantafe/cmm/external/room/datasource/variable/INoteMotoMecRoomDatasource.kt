@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.external.room.datasource.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class INoteMotoMecRoomDatasource @Inject constructor(
@@ -16,9 +18,8 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             noteMotoMecDao.insert(noteMotoMecRoomModel)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "INoteMotoMecRoomDatasource.insert",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -29,9 +30,8 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             val result = noteMotoMecDao.listByIdHeader(idHeader).isNotEmpty()
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "INoteMotoMecRoomDatasource.checkHasByIdHeader",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -45,9 +45,8 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             )
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "INoteMotoMecRoomDatasource.checkHasByIdHeader",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -64,9 +63,8 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             noteMotoMecDao.update(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "INoteMotoMecRoomDatasource.setSentNote",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

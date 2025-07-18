@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.RActivityStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface ListStop {
@@ -21,32 +24,26 @@ class IListStop @Inject constructor(
         try {
             val resultGetIdActivity = motoMecRepository.getIdActivity()
             if (resultGetIdActivity.isFailure) {
-                val e = resultGetIdActivity.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetStopList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetIdActivity.exceptionOrNull()!!
                 )
             }
             val idActivity = resultGetIdActivity.getOrNull()!!
             val resultListByIdActivity = rActivityStopRepository.listByIdActivity(idActivity)
             if (resultListByIdActivity.isFailure) {
-                val e = resultListByIdActivity.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetStopList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultListByIdActivity.exceptionOrNull()!!
                 )
             }
             val list = resultListByIdActivity.getOrNull()!!
             val idList = list.map { it.idStop }
             val resultListByIdList = stopRepository.listByIdList(idList)
             if (resultListByIdList.isFailure) {
-                val e = resultListByIdList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetStopList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultListByIdList.exceptionOrNull()!!
                 )
             }
             val stopList = resultListByIdList.getOrNull()!!
@@ -58,9 +55,8 @@ class IListStop @Inject constructor(
             }
             return Result.success(stopScreenModelList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetStopList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

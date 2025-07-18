@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.ItemCheckListApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemCheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.CheckUpdateCheckListRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemCheckListRetrofitModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IItemCheckListRetrofitDatasource @Inject constructor(
@@ -22,9 +24,8 @@ class IItemCheckListRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IItemCheckListRetrofitDatasource.listByNroEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -41,9 +42,8 @@ class IItemCheckListRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IItemCheckListRetrofitDatasource.checkUpdateByNroEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

@@ -12,7 +12,7 @@ import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,7 +89,7 @@ class ActivityListCommonViewModel @Inject constructor(
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -116,7 +116,7 @@ class ActivityListCommonViewModel @Inject constructor(
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

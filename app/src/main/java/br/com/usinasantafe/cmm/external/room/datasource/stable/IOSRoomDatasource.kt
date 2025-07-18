@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IOSRoomDatasource @Inject constructor(
@@ -15,9 +17,8 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -28,9 +29,8 @@ class IOSRoomDatasource @Inject constructor(
             osDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -41,9 +41,8 @@ class IOSRoomDatasource @Inject constructor(
             val result = osDao.checkNroOS(nroOS) > 0
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRoomDatasource.checkNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -54,9 +53,8 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insert(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRoomDatasource.add",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -67,9 +65,8 @@ class IOSRoomDatasource @Inject constructor(
             val list = osDao.listByNroOS(nroOS)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IOSRoomDatasource.listByNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

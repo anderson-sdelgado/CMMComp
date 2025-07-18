@@ -1,5 +1,29 @@
 package br.com.usinasantafe.cmm.domain.errors
 
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
+
+fun resultFailureMiddle(
+    context: String,
+    cause: Throwable
+): Result<Nothing>  {
+    return resultFailure(
+        context = context,
+        message = cause.message,
+        cause = cause.cause
+    )
+}
+
+fun resultFailureFinish(
+    context: String,
+    cause: Exception
+): Result<Nothing>  {
+    return resultFailure(
+        context = context,
+        message = "-",
+        cause = cause
+    )
+}
+
 fun resultFailure(
     context: String,
     message: String?,

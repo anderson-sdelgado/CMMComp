@@ -1,7 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdTurn {
@@ -15,14 +17,12 @@ class ISetIdTurn @Inject constructor(
     override suspend fun invoke(id: Int): Result<Boolean> {
         val result = motoMecRepository.setIdTurnHeader(id)
         if(result.isFailure){
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "ISetIdTurn",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
-        return Result.success(true)
+        return result
     }
 
 }

@@ -1,8 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface GetDescrEquip {
@@ -18,11 +21,9 @@ class IGetDescrEquip @Inject constructor(
         try {
             val resultGetConfig = configRepository.get()
             if (resultGetConfig.isFailure) {
-                val e = resultGetConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetDescrEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetConfig.exceptionOrNull()!!
                 )
             }
             val config = resultGetConfig.getOrNull()!!
@@ -30,19 +31,16 @@ class IGetDescrEquip @Inject constructor(
                 idEquip = config.idEquip!!
             )
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetDescrEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val description = result.getOrNull()!!
             return Result.success(description)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetDescrEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

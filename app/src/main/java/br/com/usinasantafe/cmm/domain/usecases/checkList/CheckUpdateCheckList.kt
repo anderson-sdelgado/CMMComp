@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckUpdateCheckList {
@@ -20,21 +23,17 @@ class ICheckUpdateCheckList @Inject constructor(
         try {
             val resultGetNroEquip = configRepository.getNroEquip()
             if (resultGetNroEquip.isFailure) {
-                val e = resultGetNroEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckUpdateCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetNroEquip.exceptionOrNull()!!
                 )
             }
             val nroEquip = resultGetNroEquip.getOrNull()!!
             val resultGetToken = getToken()
             if (resultGetToken.isFailure) {
-                val e = resultGetToken.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckUpdateCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetToken.exceptionOrNull()!!
                 )
             }
             val token = resultGetToken.getOrNull()!!
@@ -43,19 +42,16 @@ class ICheckUpdateCheckList @Inject constructor(
                 nroEquip
             )
             if (resultCheckUpdateByNroEquip.isFailure) {
-                val e = resultCheckUpdateByNroEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckUpdateCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultCheckUpdateByNroEquip.exceptionOrNull()!!
                 )
             }
             val check = resultCheckUpdateByNroEquip.getOrNull()!!
             return Result.success(check)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckUpdateCheckList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

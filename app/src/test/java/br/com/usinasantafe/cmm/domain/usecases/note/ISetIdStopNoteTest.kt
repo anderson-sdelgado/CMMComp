@@ -54,7 +54,7 @@ class ISetIdStopNoteTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRepository.getId",
@@ -86,7 +86,7 @@ class ISetIdStopNoteTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 Result.success(1)
             )
@@ -123,7 +123,7 @@ class ISetIdStopNoteTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 Result.success(1)
             )

@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 interface EquipRepository {
     suspend fun addAll(list: List<Equip>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun getListByIdEquip(
+    suspend fun listByIdEquip(
         token: String,
         idEquip: Int
     ): Result<List<Equip>>

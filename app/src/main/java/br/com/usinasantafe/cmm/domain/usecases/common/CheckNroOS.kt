@@ -1,11 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.CheckNetwork
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -32,20 +35,16 @@ class ICheckNroOS @Inject constructor(
             if(flowApp == FlowApp.HEADER_INITIAL){
                 val resultROSActivityDeleteAll = rOSActivityRepository.deleteAll()
                 if(resultROSActivityDeleteAll.isFailure) {
-                    val e = resultROSActivityDeleteAll.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "ICheckNroOS",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultROSActivityDeleteAll.exceptionOrNull()!!
                     )
                 }
                 val resultOSDeleteAll = osRepository.deleteAll()
                 if(resultOSDeleteAll.isFailure) {
-                    val e = resultOSDeleteAll.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "ICheckNroOS",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultOSDeleteAll.exceptionOrNull()!!
                     )
                 }
             }
@@ -53,11 +52,9 @@ class ICheckNroOS @Inject constructor(
                 nroOS = nroOS.toInt()
             )
             if(resultCheckNro.isFailure) {
-                val e = resultCheckNro.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultCheckNro.exceptionOrNull()!!
                 )
             }
             val checkNroOS = resultCheckNro.getOrNull()!!
@@ -65,22 +62,18 @@ class ICheckNroOS @Inject constructor(
             if(!checkNetwork.isConnected()) {
                 val resultSetStatusCon = motoMecRepository.setStatusConHeader(false)
                 if(resultSetStatusCon.isFailure) {
-                    val e = resultSetStatusCon.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "ICheckNroOS",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultSetStatusCon.exceptionOrNull()!!
                     )
                 }
                 return Result.success(true)
             }
             val resultGetToken = getToken()
             if(resultGetToken.isFailure) {
-                val e = resultGetToken.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetToken.exceptionOrNull()!!
                 )
             }
             val token = resultGetToken.getOrNull()!!
@@ -93,19 +86,16 @@ class ICheckNroOS @Inject constructor(
                 if (e.cause is SocketTimeoutException) {
                     val resultSetStatusCon = motoMecRepository.setStatusConHeader(false)
                     if(resultSetStatusCon.isFailure) {
-                        val error = resultSetStatusCon.exceptionOrNull()!!
-                        return resultFailure(
-                            context = "ICheckNroOS",
-                            message = error.message,
-                            cause = error.cause
+                        return resultFailureMiddle(
+                            context = getClassAndMethod(),
+                            cause = resultSetStatusCon.exceptionOrNull()!!
                         )
                     }
                     return Result.success(true)
                 }
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetListOSWeb.exceptionOrNull()!!
                 )
             }
             val osList = resultGetListOSWeb.getOrNull()!!
@@ -119,46 +109,38 @@ class ICheckNroOS @Inject constructor(
                 if (e.cause is SocketTimeoutException) {
                     val resultSetStatusCon = motoMecRepository.setStatusConHeader(false)
                     if(resultSetStatusCon.isFailure) {
-                        val error = resultSetStatusCon.exceptionOrNull()!!
-                        return resultFailure(
-                            context = "ICheckNroOS",
-                            message = error.message,
-                            cause = error.cause
+                        return resultFailureMiddle(
+                            context = getClassAndMethod(),
+                            cause = resultSetStatusCon.exceptionOrNull()!!
                         )
                     }
                     return Result.success(true)
                 }
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetListROSActivity.exceptionOrNull()!!
                 )
             }
             val rOSActivityList = resultGetListROSActivity.getOrNull()!!
             if(rOSActivityList.isEmpty()) return Result.success(false)
             val resultOSAdd = osRepository.add(osList[0])
             if(resultOSAdd.isFailure) {
-                val e = resultOSAdd.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultOSAdd.exceptionOrNull()!!
                 )
             }
             val resultROSAtivAddAll = rOSActivityRepository.addAll(rOSActivityList)
             if(resultROSAtivAddAll.isFailure) {
-                val e = resultROSAtivAddAll.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultROSAtivAddAll.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            resultFailure(
-                context = "ICheckNroOS",
-                message = "-",
+            resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

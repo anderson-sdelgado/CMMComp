@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IREquipActivityRoomDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IREquipActivityRoomDatasource @Inject constructor(
             rEquipActivityDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IREquipActivityRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +28,8 @@ class IREquipActivityRoomDatasource @Inject constructor(
             rEquipActivityDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IREquipActivityRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -40,9 +40,8 @@ class IREquipActivityRoomDatasource @Inject constructor(
             val list = rEquipActivityDao.listByIdEquip(idEquip)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IREquipActivityRoomDatasource.getListByIdEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

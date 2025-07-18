@@ -18,7 +18,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.qtdTable
 import br.com.usinasantafe.cmm.utils.sizeUpdate
@@ -148,7 +148,7 @@ class ConfigViewModel @Inject constructor(
         if (resultGetConfig.isFailure) {
             val error = resultGetConfig.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -228,7 +228,7 @@ class ConfigViewModel @Inject constructor(
         if (resultSendDataConfig.isFailure) {
             val error = resultSendDataConfig.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             emit(
                 ConfigState(
@@ -262,7 +262,7 @@ class ConfigViewModel @Inject constructor(
         if (resultSave.isFailure) {
             val error = resultSave.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             emit(
                 ConfigState(
@@ -356,7 +356,7 @@ class ConfigViewModel @Inject constructor(
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             emit(
                 ConfigState(

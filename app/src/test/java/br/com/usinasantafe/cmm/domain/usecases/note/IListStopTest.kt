@@ -43,7 +43,7 @@ class IListStopTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStopList -> INoteMotoMecRepository.getIdActivity"
+                "IListStop -> INoteMotoMecRepository.getIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -75,7 +75,7 @@ class IListStopTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStopList -> IRActivityStopRepository.listByIdActivity"
+                "IListStop -> IRActivityStopRepository.listByIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -120,7 +120,7 @@ class IListStopTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStopList -> IStopRepository.listByIdList"
+                "IListStop -> IStopRepository.listByIdList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

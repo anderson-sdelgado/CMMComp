@@ -2,6 +2,8 @@ package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
@@ -9,6 +11,8 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import java.util.Date
 import javax.inject.Inject
 
 interface GetItemCheckList {
@@ -27,89 +31,73 @@ class IGetItemCheckList @Inject constructor(
     override suspend fun invoke(pos: Int): Result<ItemCheckListModel> {
         try {
             if(pos == 1) {
-                val resultGetNroEquip = configRepository.getNroEquip()
+                val resultGetNroEquip = configRepository.getNroEquip() // ok
                 if (resultGetNroEquip.isFailure) {
-                    val e = resultGetNroEquip.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetItemCheckList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultGetNroEquip.exceptionOrNull()!!
                     )
                 }
                 val nroEquip = resultGetNroEquip.getOrNull()!!
                 val resultGetRegOperator = motoMecRepository.getRegOperator()
                 if (resultGetRegOperator.isFailure) {
-                    val e = resultGetRegOperator.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetItemCheckList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultGetRegOperator.exceptionOrNull()!!
                     )
                 }
                 val regOperator = resultGetRegOperator.getOrNull()!!
                 val resultGetIdTurn = motoMecRepository.getIdTurnHeader()
                 if (resultGetIdTurn.isFailure) {
-                    val e = resultGetIdTurn.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetItemCheckList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultGetIdTurn.exceptionOrNull()!!
                     )
                 }
                 val idTurn = resultGetIdTurn.getOrNull()!!
                 val resultGetNroTurn = turnRepository.geNroTurnByIdTurn(idTurn)
                 if (resultGetNroTurn.isFailure) {
-                    val e = resultGetNroTurn.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetItemCheckList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultGetNroTurn.exceptionOrNull()!!
                     )
                 }
                 val nroTurn = resultGetNroTurn.getOrNull()!!
                 val resultSaveHeader = checkListRepository.saveHeader(
-                    header = HeaderCheckList(
+                    HeaderCheckList(
                         nroEquip = nroEquip,
                         regOperator = regOperator,
                         nroTurn = nroTurn
                     )
                 )
                 if (resultSaveHeader.isFailure) {
-                    val e = resultSaveHeader.exceptionOrNull()!!
-                    return resultFailure(
-                        context = "IGetItemCheckList",
-                        message = e.message,
-                        cause = e.cause
+                    return resultFailureMiddle(
+                        context = getClassAndMethod(),
+                        cause = resultSaveHeader.exceptionOrNull()!!
                     )
                 }
             }
             val resultGetIdEquip = configRepository.getIdEquip()
             if (resultGetIdEquip.isFailure) {
-                val e = resultGetIdEquip.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetItemCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetIdEquip.exceptionOrNull()!!
                 )
             }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
             if (resultGetIdCheckList.isFailure) {
-                val e = resultGetIdCheckList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetItemCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetIdCheckList.exceptionOrNull()!!
                 )
             }
             val idCheckList = resultGetIdCheckList.getOrNull()!!
             val resultListCheckList = itemCheckListRepository.listByIdCheckList(idCheckList)
             if (resultListCheckList.isFailure) {
-                val e = resultListCheckList.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IGetItemCheckList",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultListCheckList.exceptionOrNull()!!
                 )
             }
             val list = resultListCheckList.getOrNull()!!
@@ -120,9 +108,8 @@ class IGetItemCheckList @Inject constructor(
             )
             return Result.success(model)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IGetItemCheckList",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

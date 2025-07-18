@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IItemCheckListRoomDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IItemCheckListRoomDatasource @Inject constructor(
             itemCheckListDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IItemCheckListRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +28,8 @@ class IItemCheckListRoomDatasource @Inject constructor(
             itemCheckListDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IItemCheckListRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

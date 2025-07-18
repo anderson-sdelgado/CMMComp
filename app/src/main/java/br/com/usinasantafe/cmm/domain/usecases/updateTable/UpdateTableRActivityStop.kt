@@ -5,7 +5,6 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.RActivityStopRepositor
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.TB_ACTIVITY
 import br.com.usinasantafe.cmm.utils.TB_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage

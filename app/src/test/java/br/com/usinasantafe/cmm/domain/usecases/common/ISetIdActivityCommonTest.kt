@@ -38,7 +38,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> IHeaderMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> IHeaderMotoMecRepository.setIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -87,7 +87,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> IHeaderMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> IHeaderMotoMecRepository.setIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -122,7 +122,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> INoteMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> INoteMotoMecRepository.setIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -179,7 +179,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> IHeaderMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> IHeaderMotoMecRepository.setIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -214,7 +214,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> INoteMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> INoteMotoMecRepository.setIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -236,7 +236,7 @@ class ISetIdActivityCommonTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRepository.getId",
@@ -254,7 +254,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> IHeaderMotoMecRepository.getId"
+                "ISetIdActivityCommon -> IHeaderMotoMecRepository.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -276,7 +276,7 @@ class ISetIdActivityCommonTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 Result.success(1)
             )
@@ -299,7 +299,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> INoteMotoMecRepository.save"
+                "ISetIdActivityCommon -> INoteMotoMecRepository.save"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -321,7 +321,7 @@ class ISetIdActivityCommonTest {
                 Result.success(true)
             )
             whenever(
-                motoMecRepository.getIdByOpenHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
                 Result.success(1)
             )

@@ -3,9 +3,11 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 import br.com.usinasantafe.cmm.di.provider.OSApiDefault
 import br.com.usinasantafe.cmm.di.provider.OSApiShortTimeout
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.OSApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IOSRetrofitDatasource @Inject constructor(
@@ -20,9 +22,8 @@ class IOSRetrofitDatasource @Inject constructor(
             val response = osApiDefault.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IOSRetrofitDatasource.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -39,9 +40,8 @@ class IOSRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IOSRetrofitDatasource.getListByNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

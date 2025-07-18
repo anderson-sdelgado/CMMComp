@@ -1,8 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.FlagUpdate
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckAccessInitial {
@@ -17,11 +20,9 @@ class ICheckAccessInitial @Inject constructor(
         try {
             val resultCheckHasConfig = configRepository.hasConfig()
             if (resultCheckHasConfig.isFailure){
-                val e = resultCheckHasConfig.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckAccessInitial",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultCheckHasConfig.exceptionOrNull()!!
                 )
             }
             val hasConfig = resultCheckHasConfig.getOrNull()!!
@@ -29,11 +30,9 @@ class ICheckAccessInitial @Inject constructor(
                 return Result.success(false)
             val resultGetFlagUpdate = configRepository.getFlagUpdate()
             if (resultGetFlagUpdate.isFailure) {
-                val e = resultGetFlagUpdate.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckAccessInitial",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetFlagUpdate.exceptionOrNull()!!
                 )
             }
             val flagUpdate = resultGetFlagUpdate.getOrNull()!!
@@ -41,9 +40,8 @@ class ICheckAccessInitial @Inject constructor(
                 return Result.success(false)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckAccessInitial",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

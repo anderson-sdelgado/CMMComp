@@ -41,8 +41,10 @@ class IREquipActivityRepositoryTest {
             whenever(
                 rEquipActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IREquipActivityRepository.addAll",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.addAll(entityList)
@@ -52,11 +54,11 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipAtivRepository.addAll -> Unknown Error"
+                "IREquipActivityRepository.addAll -> IREquipActivityRepository.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -99,8 +101,10 @@ class IREquipActivityRepositoryTest {
             whenever(
                 rEquipActivityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IREquipActivityRepository.deleteAll",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.deleteAll()
@@ -110,11 +114,11 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipAtivRepository.deleteAll -> Unknown Error"
+                "IREquipActivityRepository.deleteAll -> IREquipActivityRepository.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -146,8 +150,10 @@ class IREquipActivityRepositoryTest {
                     idEquip = 10
                 )
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IREquipActivityRepository.listByIdEquip",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.listByIdEquip(
@@ -160,11 +166,11 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipActivityRepository.getListByIdEquip -> Unknown Error"
+                "IREquipActivityRepository.listByIdEquip -> IREquipActivityRepository.listByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

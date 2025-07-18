@@ -1,11 +1,14 @@
 package br.com.usinasantafe.cmm.external.room.datasource.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import java.util.Date
 import javax.inject.Inject
 
@@ -20,9 +23,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.insert(headerMotoMecRoomModel)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.insert",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -32,9 +34,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         return try {
             Result.success(headerMotoMecDao.countByStatus(Status.OPEN) > 0)
         } catch (e: Exception) {
-            resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.checkHeaderOpen",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -45,9 +46,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
             return Result.success(roomModel.id!!)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -60,9 +60,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.update(roomModel)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.setHourMeterFinish",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -77,9 +76,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.update(roomModel)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.finish",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -89,9 +87,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         return try {
             Result.success(headerMotoMecDao.listByStatusSend(StatusSend.SEND).isNotEmpty())
         } catch (e: Exception) {
-            resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.checkHeaderSend",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -101,9 +98,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         return try {
             Result.success(headerMotoMecDao.listByStatusSend(StatusSend.SEND))
         } catch (e: Exception) {
-            resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.checkHeaderSend",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -114,9 +110,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
             return Result.success(roomModel.statusCon)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -133,9 +128,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.update(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.setSentHeader",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -148,9 +142,8 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.update(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.setSentHeader",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -161,16 +154,23 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
             return Result.success(roomModel.idTurn)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IHeaderMotoMecRoomDatasource.getIdTurnByHeaderOpen",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
     }
 
     override suspend fun getRegOperatorOpen(): Result<Int> {
-        TODO("Not yet implemented")
+        try {
+            val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            return Result.success(roomModel.regOperator)
+        } catch (e: Exception) {
+            return resultFailureFinish(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

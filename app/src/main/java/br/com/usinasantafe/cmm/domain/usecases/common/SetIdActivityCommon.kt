@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdActivityCommon {
@@ -25,49 +27,40 @@ class ISetIdActivityCommon @Inject constructor(
         try {
             val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
             if(resultHeaderSetId.isFailure){
-                val e = resultHeaderSetId.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdActivityCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultHeaderSetId.exceptionOrNull()!!
                 )
             }
             if(flowApp == FlowApp.HEADER_INITIAL) return resultHeaderSetId
             val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
             if(resultNoteSetId.isFailure){
-                val e = resultNoteSetId.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdActivityCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultNoteSetId.exceptionOrNull()!!
                 )
             }
             if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
-            val resultGetId = motoMecRepository.getIdByOpenHeader()
+            val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if(resultGetId.isFailure){
-                val e = resultGetId.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdActivityCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetId.exceptionOrNull()!!
                 )
             }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
             if(resultSave.isFailure){
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdActivityCommon",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             startWorkManager()
             return resultSave
         } catch (e: Exception){
-            return resultFailure(
-                context = "ISetIdActivityCommon",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

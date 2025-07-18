@@ -2,12 +2,15 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IROSActivityRepository @Inject constructor(
@@ -20,18 +23,15 @@ class IROSActivityRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = rOSActivityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IROSActivityRepository.addAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailure(
-                context = "IROSActivityRepository.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -40,11 +40,9 @@ class IROSActivityRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = rOSActivityRoomDatasource.deleteAll()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "IROSActivityRepository.deleteAll",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -56,19 +54,16 @@ class IROSActivityRepository @Inject constructor(
         try {
             val result = rOSActivityRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IROSActivityRepository.recoverAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRepository.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -84,19 +79,16 @@ class IROSActivityRepository @Inject constructor(
                 nroOS = nroOS
             )
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IROSActivityRepository.getListByNroOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRepository.getListByNroOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -106,19 +98,16 @@ class IROSActivityRepository @Inject constructor(
         try {
             val result = rOSActivityRoomDatasource.listByIdOS(idOS)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "IROSActivityRepository.listByIdOS",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IROSActivityRepository.listByIdOS",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

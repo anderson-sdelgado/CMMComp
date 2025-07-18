@@ -225,10 +225,10 @@ class ITurnRepositoryTest {
     fun `getListByCodTurnEquip - Check return failure if have error in TurnRoomDatasource getListByCodTurnEquip`() =
         runTest {
             whenever(
-                turnRoomDatasource.getListByCodTurnEquip(1)
+                turnRoomDatasource.listByCodTurnEquip(1)
             ).thenReturn(
                 resultFailure(
-                    context = "ITurnRoomDatasource.getListByCodTurnEquip",
+                    context = "ITurnRoomDatasource.listByCodTurnEquip",
                     "-",
                     Exception()
                 )
@@ -240,7 +240,7 @@ class ITurnRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ITurnRepository.getListByCodTurnEquip -> ITurnRoomDatasource.getListByCodTurnEquip"
+                "ITurnRepository.listByCodTurnEquip -> ITurnRoomDatasource.listByCodTurnEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -260,7 +260,7 @@ class ITurnRepositoryTest {
                 )
             )
             whenever(
-                turnRoomDatasource.getListByCodTurnEquip(1)
+                turnRoomDatasource.listByCodTurnEquip(1)
             ).thenReturn(
                 Result.success(
                     roomModelList

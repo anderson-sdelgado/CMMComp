@@ -1,8 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdStopNote {
@@ -22,38 +24,31 @@ class ISetIdStopNote @Inject constructor(
         try {
             val resultSet = motoMecRepository.setIdStop(id)
             if (resultSet.isFailure) {
-                val e = resultSet.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdStopNote",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSet.exceptionOrNull()!!
                 )
             }
-            val resultGetId = motoMecRepository.getIdByOpenHeader()
+            val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if(resultGetId.isFailure){
-                val e = resultGetId.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdStopNote",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetId.exceptionOrNull()!!
                 )
             }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
             if(resultSave.isFailure){
-                val e = resultSave.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ISetIdStopNote",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultSave.exceptionOrNull()!!
                 )
             }
             startWorkManager()
             return resultSave
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ISetIdStopNote",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

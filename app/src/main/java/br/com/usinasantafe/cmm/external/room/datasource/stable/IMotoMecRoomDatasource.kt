@@ -1,22 +1,24 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.MotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.MotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.MotoMecRoomModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IMotoMecRoomDatasource @Inject constructor(
     private val motoMecDao: MotoMecDao
 ) : MotoMecRoomDatasource {
+
     override suspend fun addAll(list: List<MotoMecRoomModel>): Result<Boolean> {
         try {
             motoMecDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IMotoMecRoomDatasource.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -27,9 +29,8 @@ class IMotoMecRoomDatasource @Inject constructor(
             motoMecDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "IMotoMecRoomDatasource.deleteAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

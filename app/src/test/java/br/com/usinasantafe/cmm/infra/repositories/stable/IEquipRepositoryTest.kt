@@ -169,16 +169,18 @@ class IEquipRepositoryTest {
     fun `getListByIdEquip - Check return failure if have error`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.getListByIdEquip(
+                equipRetrofitDatasource.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "EquipRetrofitDatasource.listByIdEquip",
+                    "-",
                     Exception()
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 token = "token",
                 idEquip = 10
             )
@@ -188,11 +190,11 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.recoverAll -> Unknown Error"
+                "IEquipRepository.listByIdEquip -> EquipRetrofitDatasource.listByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -228,7 +230,7 @@ class IEquipRepositoryTest {
                 )
             )
             whenever(
-                equipRetrofitDatasource.getListByIdEquip(
+                equipRetrofitDatasource.listByIdEquip(
                     token = "token",
                     idEquip = 10
                 )
@@ -237,7 +239,7 @@ class IEquipRepositoryTest {
                     retrofitModelList
                 )
             )
-            val result = repository.getListByIdEquip(
+            val result = repository.listByIdEquip(
                 token = "token",
                 idEquip = 10
             )
@@ -350,7 +352,7 @@ class IEquipRepositoryTest {
                 equipRoomDatasource.getHourMeterByIdEquip(1)
             ).thenReturn(
                 resultFailure(
-                    "EquipRoomDatasource.getMeasureByIdEquip",
+                    "EquipRoomDatasource.getHourMeterByIdEquip",
                     "-",
                     Exception()
                 )
@@ -362,7 +364,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.getMeasureByIdEquip -> EquipRoomDatasource.getMeasureByIdEquip"
+                "IEquipRepository.getHourMeterByIdEquip -> EquipRoomDatasource.getHourMeterByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -400,7 +402,7 @@ class IEquipRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "EquipRoomDatasource.updateMeasureByIdEquip",
+                    "EquipRoomDatasource.updateHourMeterByIdEquip",
                     "-",
                     Exception()
                 )
@@ -415,7 +417,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.updateMeasureByIdEquip -> EquipRoomDatasource.updateMeasureByIdEquip"
+                "IEquipRepository.updateHourMeterByIdEquip -> EquipRoomDatasource.updateHourMeterByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

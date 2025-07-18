@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.ServicoApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ServicoRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ServicoRetrofitModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IServicoRetrofitDatasource @Inject constructor(
@@ -14,9 +16,8 @@ class IServicoRetrofitDatasource @Inject constructor(
             val response = servicoApi.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IServicoRetrofitDatasource.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

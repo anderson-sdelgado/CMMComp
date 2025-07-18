@@ -43,7 +43,7 @@ class IGetTurnListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetTurnList -> ConfigRepository.get"
+                "IListTurn -> ConfigRepository.get"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -81,7 +81,7 @@ class IGetTurnListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetTurnList -> EquipRepository.getCodTurnEquipByIdEquip"
+                "IListTurn -> EquipRepository.getCodTurnEquipByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -126,7 +126,7 @@ class IGetTurnListTest {
                 )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetTurnList -> TurnRepository.getListByCodTurnEquip"
+                "IListTurn -> TurnRepository.getListByCodTurnEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

@@ -1,13 +1,15 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.TurnoRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class ITurnRepository @Inject constructor(
@@ -20,18 +22,15 @@ class ITurnRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = turnRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ITurnRepository.addAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailure(
-                context = "ITurnRepository.addAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -40,11 +39,9 @@ class ITurnRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = turnRoomDatasource.deleteAll()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "ITurnRepository.deleteAll",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result
@@ -56,19 +53,16 @@ class ITurnRepository @Inject constructor(
         try {
             val result = turnoRetrofitDatasource.recoverAll(token)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ITurnRepository.recoverAll",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ITurnRepository.recoverAll",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -78,21 +72,18 @@ class ITurnRepository @Inject constructor(
         codTurnEquip: Int
     ): Result<List<Turn>> {
         try {
-            val result = turnRoomDatasource.getListByCodTurnEquip(codTurnEquip)
+            val result = turnRoomDatasource.listByCodTurnEquip(codTurnEquip)
             if (result.isFailure) {
-                val e = result.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ITurnRepository.getListByCodTurnEquip",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
                 )
             }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ITurnRepository.getListByCodTurnEquip",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

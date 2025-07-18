@@ -6,7 +6,6 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.TB_ACTIVITY
 import br.com.usinasantafe.cmm.utils.TB_EQUIP
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
@@ -75,7 +74,7 @@ class IUpdateTableEquipByIdEquip @Inject constructor(
             return@flow
         }
         val config = resultGetConfig.getOrNull()!!
-        val resultGetList = equipRepository.getListByIdEquip(
+        val resultGetList = equipRepository.listByIdEquip(
             token = token,
             idEquip = config.idEquip!!
         )

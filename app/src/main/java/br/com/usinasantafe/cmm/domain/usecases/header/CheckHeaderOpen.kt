@@ -1,7 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckHeaderOpen {
@@ -13,13 +14,11 @@ class ICheckHeaderOpen @Inject constructor(
 ): CheckHeaderOpen {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = motoMecRepository.checkOpenHeader()
+        val result = motoMecRepository.checkHeaderOpen()
         if(result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "ICheckHeaderOpen",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result

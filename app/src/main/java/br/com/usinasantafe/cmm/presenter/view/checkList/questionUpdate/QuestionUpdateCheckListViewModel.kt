@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckL
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,7 +71,7 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

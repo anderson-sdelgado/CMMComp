@@ -18,7 +18,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IGetActivityListTest {
+class IListActivityTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val osRepository = mock<OSRepository>()
@@ -95,7 +95,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> ConfigRepository.get"
+                "IListActivity -> ConfigRepository.get"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -131,7 +131,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> REquipActivityRepository.getListByIdEquip"
+                "IListActivity -> REquipActivityRepository.getListByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -172,7 +172,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> HeaderMotoMecRepository.getNroOS"
+                "IListActivity -> HeaderMotoMecRepository.getNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -220,7 +220,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> OSRepository.getListByNroOS"
+                "IListActivity -> OSRepository.getListByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -276,7 +276,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> ActivityRepository.getListByListId"
+                "IListActivity -> ActivityRepository.getListByListId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -434,7 +434,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> ROSActivityRepository.getListByIdOS"
+                "IListActivity -> ROSActivityRepository.getListByIdOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -510,7 +510,7 @@ class IGetActivityListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetActivityList -> ActivityRepository.getListByListId"
+                "IListActivity -> ActivityRepository.getListByListId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

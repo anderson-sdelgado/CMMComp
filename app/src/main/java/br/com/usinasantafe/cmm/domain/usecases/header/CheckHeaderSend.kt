@@ -1,7 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckHeaderSend {
@@ -13,13 +14,11 @@ class ICheckHeaderSend @Inject constructor(
 ): CheckHeaderSend {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = motoMecRepository.checkSendHeader()
+        val result = motoMecRepository.checkHeaderSend()
         if (result.isFailure) {
-            val e = result.exceptionOrNull()!!
-            return resultFailure(
-                context = "ICheckHeaderSend",
-                message = e.message,
-                cause = e.cause
+            return resultFailureMiddle(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
             )
         }
         return result

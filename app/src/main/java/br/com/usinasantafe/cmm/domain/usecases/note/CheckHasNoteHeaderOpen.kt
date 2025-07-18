@@ -1,7 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface CheckHasNoteHeaderOpen {
@@ -14,30 +16,25 @@ class ICheckHasNoteHeaderOpen @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         try {
-            val resultGetId = motoMecRepository.getIdByOpenHeader()
+            val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if (resultGetId.isFailure) {
-                val e = resultGetId.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNoteHeaderOpen",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultGetId.exceptionOrNull()!!
                 )
             }
             val id = resultGetId.getOrNull()!!
             val resultCheck = motoMecRepository.checkNoteHasByIdHeader(id)
             if (resultCheck.isFailure) {
-                val e = resultCheck.exceptionOrNull()!!
-                return resultFailure(
-                    context = "ICheckNoteHeaderOpen",
-                    message = e.message,
-                    cause = e.cause
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = resultCheck.exceptionOrNull()!!
                 )
             }
             return resultCheck
         } catch (e: Exception) {
-            return resultFailure(
-                context = "ICheckNoteHeaderOpen",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }
