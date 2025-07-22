@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
@@ -30,14 +29,14 @@ class ISendDataConfig @Inject constructor(
         version: String,
     ): Result<Config> {
         try {
-            val config = Config(
+            val entity = Config(
                 number = number.toLong(),
                 password = password,
                 nroEquip = nroEquip.toLong(),
                 app = app.uppercase(),
                 version = version
             )
-            val result = configRepository.send(config)
+            val result = configRepository.send(entity)
             if (result.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),

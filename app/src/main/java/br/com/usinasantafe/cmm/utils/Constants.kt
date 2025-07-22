@@ -8,7 +8,7 @@ const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
 const val BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC = "note_moto_mec"
 
-const val qtdTable = 8f
+const val QTD_TABLE = 8f
 
 const val TB_ACTIVITY = "tb_activity"
 const val TB_BOCAL = "tb_bocal"

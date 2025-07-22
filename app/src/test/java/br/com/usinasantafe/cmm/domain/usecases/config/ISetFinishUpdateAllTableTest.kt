@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import kotlinx.coroutines.test.runTest
@@ -8,10 +9,10 @@ import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
-class ISetCheckUpdateAllTableTest {
+class ISetFinishUpdateAllTableTest {
 
     private val configRepository = mock<ConfigRepository>()
-    private val usecase = ISetCheckUpdateAllTable(
+    private val usecase = ISetFinishUpdateAllTable(
         configRepository
     )
 
@@ -23,27 +24,29 @@ class ISetCheckUpdateAllTableTest {
                     FlagUpdate.UPDATED
                 )
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IConfigRepository.setFlagUpdate",
+                    message = "-",
+                    cause = Exception()
                 )
             )
-            val result = usecase(FlagUpdate.UPDATED)
+            val result = usecase()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetCheckUpdateAllTable -> Unknown Error"
+                "ISetFinishUpdateAllTable -> IConfigRepository.setFlagUpdate"
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause,
-                null
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
     @Test
-    fun `Chech return true if usecase is success`() =
+    fun `Check return true if usecase is success`() =
         runTest {
             whenever(
                 configRepository.setFlagUpdate(
@@ -52,7 +55,7 @@ class ISetCheckUpdateAllTableTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = usecase(FlagUpdate.UPDATED)
+            val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true

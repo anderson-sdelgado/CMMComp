@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
-import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
+import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableEquipByIdEquip
@@ -16,12 +16,11 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipActi
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import br.com.usinasantafe.cmm.utils.percentage
-import br.com.usinasantafe.cmm.utils.qtdTable
+import br.com.usinasantafe.cmm.utils.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -96,7 +95,7 @@ class ConfigViewModel @Inject constructor(
 //    private val updateTableServico: UpdateTableServico,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
-    private val setCheckUpdateAllTable: SetCheckUpdateAllTable
+    private val setFinishUpdateAllTable: SetFinishUpdateAllTable
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ConfigState())
@@ -174,7 +173,7 @@ class ConfigViewModel @Inject constructor(
         }
     }
 
-    fun saveTokenAndUpdate() {
+    fun onSaveAndUpdate() {
         if (
             uiState.value.number.isEmpty() ||
             uiState.value.password.isEmpty() ||
@@ -287,7 +286,7 @@ class ConfigViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<ConfigState> = flow {
         var pos = 0f
-        val sizeAllUpdate = sizeUpdate(qtdTable)
+        val sizeAllUpdate = sizeUpdate(QTD_TABLE)
         var configState = ConfigState()
         val classAndMethod = getClassAndMethod()
         updateTableActivity(
@@ -366,7 +365,7 @@ class ConfigViewModel @Inject constructor(
             )
         }
         if (configState.flagFailure) return@flow
-        val result = setCheckUpdateAllTable(FlagUpdate.UPDATED)
+        val result = setFinishUpdateAllTable()
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =

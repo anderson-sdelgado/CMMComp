@@ -307,7 +307,7 @@ class ConfigFlowTest {
                 "Test"
             )
 
-            val listColab = colabDao.listAll()
+            val listColab = colabDao.all()
             assertEquals(
                 listColab.size,
                 1

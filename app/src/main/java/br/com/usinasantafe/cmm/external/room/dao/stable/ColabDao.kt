@@ -16,7 +16,7 @@ interface ColabDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_COLAB")
-    suspend fun listAll(): List<ColabRoomModel>
+    suspend fun all(): List<ColabRoomModel>
 
     @Query("SELECT count(*) FROM $TB_COLAB WHERE regColab = :reg")
     suspend fun checkReg(reg: Int): Int

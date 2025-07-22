@@ -14,11 +14,11 @@ import javax.inject.Inject
 @HiltAndroidTest
 class ISetCheckUpdateAllTableTest {
 
-        @get:Rule
-        val hiltRule = HiltAndroidRule(this)
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ISetCheckUpdateAllTable
+    lateinit var usecase: ISetFinishUpdateAllTable
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -31,7 +31,7 @@ class ISetCheckUpdateAllTableTest {
     @Test
     fun check_add_if_not_have_data() =
         runTest {
-            val result = usecase(FlagUpdate.UPDATED)
+            val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true

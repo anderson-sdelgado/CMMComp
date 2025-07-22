@@ -95,7 +95,7 @@ class IUpdateTableColabTest {
                     currentProgress = updatePercentage(++pos, 1f, 16f)
                 )
             )
-            val roomModelList = colabDao.listAll()
+            val roomModelList = colabDao.all()
             assertEquals(
                 roomModelList.size,
                 1

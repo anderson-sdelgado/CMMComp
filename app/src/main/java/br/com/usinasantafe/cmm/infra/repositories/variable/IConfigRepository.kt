@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
@@ -74,10 +73,10 @@ class IConfigRepository @Inject constructor(
         }
     }
 
-    override suspend fun send(config: Config): Result<Config> {
+    override suspend fun send(entity: Config): Result<Config> {
         try {
             val result = configRetrofitDatasource.recoverToken(
-                config.entityToRetrofitModel()
+                entity.entityToRetrofitModel()
             )
             if(result.isFailure) {
                 return resultFailureMiddle(
@@ -96,10 +95,17 @@ class IConfigRepository @Inject constructor(
         }
     }
 
-    override suspend fun save(config: Config): Result<Boolean> {
+    override suspend fun save(entity: Config): Result<Boolean> {
         try {
-            val sharedPreferencesModel = config.entityToSharedPreferencesModel()
-            return configSharedPreferencesDatasource.save(sharedPreferencesModel)
+            val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
+            val result = configSharedPreferencesDatasource.save(sharedPreferencesModel)
+            if (result.isFailure) {
+                return resultFailureMiddle(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            return result
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

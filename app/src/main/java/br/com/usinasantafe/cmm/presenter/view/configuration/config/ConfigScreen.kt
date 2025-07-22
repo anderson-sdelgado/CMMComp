@@ -76,7 +76,7 @@ fun ConfigScreen(
                 onNroEquipChanged = viewModel::onNroEquipChanged,
                 checkMotoMec = uiState.checkMotoMec,
                 onCheckMotoMecChanged = viewModel::onCheckMotoMecChanged,
-                onSaveAndUpdate = viewModel::saveTokenAndUpdate,
+                onSaveAndUpdate = viewModel::onSaveAndUpdate,
                 flagProgress = uiState.flagProgress,
                 currentProgress = uiState.currentProgress,
                 levelUpdate = uiState.levelUpdate,

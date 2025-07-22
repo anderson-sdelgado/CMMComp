@@ -313,7 +313,7 @@ class ConfigScreenTest {
                 activityRoomModel.descrActivity,
                 "Test"
             )
-            val colabRoomModelList = colabDao.listAll()
+            val colabRoomModelList = colabDao.all()
             assertEquals(
                 colabRoomModelList.size,
                 1
@@ -403,7 +403,7 @@ class ConfigScreenTest {
                 activityRoomModel.descrActivity,
                 "Test"
             )
-            val colabRoomModelList = colabDao.listAll()
+            val colabRoomModelList = colabDao.all()
             assertEquals(
                 colabRoomModelList.size,
                 1
@@ -534,7 +534,7 @@ class ConfigScreenTest {
                 activityRoomModel.descrActivity,
                 "Test"
             )
-            val colabRoomModelList = colabDao.listAll()
+            val colabRoomModelList = colabDao.all()
             assertEquals(
                 colabRoomModelList.size,
                 1
@@ -681,7 +681,7 @@ class ConfigScreenTest {
                 activityRoomModel.descrActivity,
                 "Test"
             )
-            val colabRoomModelList = colabDao.listAll()
+            val colabRoomModelList = colabDao.all()
             assertEquals(
                 colabRoomModelList.size,
                 1

@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
@@ -36,7 +35,7 @@ class ISaveDataConfig @Inject constructor(
         idEquip: Int
     ): Result<Boolean> {
         try {
-            val config = Config(
+            val entity = Config(
                 number = number.toLong(),
                 password = password,
                 version = version,
@@ -46,14 +45,14 @@ class ISaveDataConfig @Inject constructor(
                 idBD = idBD,
                 idEquip = idEquip
             )
-            val result = configRepository.save(config)
+            val result = configRepository.save(entity)
             if (result.isFailure) {
                 return resultFailureMiddle(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
-            return Result.success(true)
+            return result
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

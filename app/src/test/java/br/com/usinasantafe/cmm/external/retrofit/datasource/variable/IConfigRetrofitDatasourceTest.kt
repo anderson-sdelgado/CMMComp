@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.variable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cmm.external.retrofit.api.variable.ConfigApi
-import br.com.usinasantafe.cmm.external.retrofit.datasource.variable.IConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse

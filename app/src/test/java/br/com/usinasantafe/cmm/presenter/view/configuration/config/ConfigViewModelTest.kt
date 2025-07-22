@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
-import br.com.usinasantafe.cmm.domain.usecases.config.SetCheckUpdateAllTable
+import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableBocal
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
@@ -31,10 +31,9 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableServico
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
-import br.com.usinasantafe.cmm.utils.qtdTable
+import br.com.usinasantafe.cmm.utils.QTD_TABLE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -76,8 +75,8 @@ class ConfigViewModelTest {
     private val updateTableServico = mock<UpdateTableServico>()
     private val updateTableStop = mock<UpdateTableStop>()
     private val updateTableTurn = mock<UpdateTableTurn>()
-    private val setCheckUpdateAllTable = mock<SetCheckUpdateAllTable>()
-    private val sizeAll = (qtdTable * 3) + 1f
+    private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
+    private val sizeAll = (QTD_TABLE * 3) + 1f
     private var contWhenever = 0f
     private var contResult = 0f
     private var contUpdate = 0f
@@ -107,7 +106,7 @@ class ConfigViewModelTest {
 //        updateTableServico = updateTableServico,
         updateTableStop = updateTableStop,
         updateTableTurn = updateTableTurn,
-        setCheckUpdateAllTable = setCheckUpdateAllTable
+        setFinishUpdateAllTable = setFinishUpdateAllTable
     )
 
     @Test
@@ -222,7 +221,7 @@ class ConfigViewModelTest {
     @Test
     fun `saveTokenAndUpdate - Check return failure if number, password or nroEquip is empty`() =
         runTest {
-            viewModel.saveTokenAndUpdate()
+            viewModel.onSaveAndUpdate()
             val uiState = viewModel.uiState.value
             assertEquals(
                 uiState.flagDialog,
@@ -283,7 +282,7 @@ class ConfigViewModelTest {
                     currentProgress = 1f,
                 )
             )
-            viewModel.saveTokenAndUpdate()
+            viewModel.onSaveAndUpdate()
             assertEquals(
                 viewModel.uiState.value.failure,
                 "ConfigViewModel.token -> SendDataConfig -> java.lang.Exception"
@@ -362,7 +361,7 @@ class ConfigViewModelTest {
                     currentProgress = 1f,
                 )
             )
-            viewModel.saveTokenAndUpdate()
+            viewModel.onSaveAndUpdate()
             assertEquals(
                 viewModel.uiState.value.failure,
                 "ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception"
@@ -935,9 +934,7 @@ class ConfigViewModelTest {
             wheneverSuccessStop()
             wheneverSuccessTurn()
             whenever(
-                setCheckUpdateAllTable(
-                    FlagUpdate.UPDATED
-                )
+                setFinishUpdateAllTable()
             ).thenReturn(
                 resultFailure(
                     "Error",
@@ -955,7 +952,7 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((qtdTable * 3) + 1).toInt()
+                ((QTD_TABLE * 3) + 1).toInt()
             )
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
@@ -966,7 +963,7 @@ class ConfigViewModelTest {
             checkResultUpdateStop(result)
             checkResultUpdateTurn(result)
             assertEquals(
-                result[(qtdTable * 3).toInt()],
+                result[(QTD_TABLE * 3).toInt()],
                 ConfigState(
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
@@ -976,7 +973,7 @@ class ConfigViewModelTest {
                     failure = "ConfigViewModel.updateAllDatabase -> Error -> Exception -> java.lang.Exception",
                 )
             )
-            viewModel.saveTokenAndUpdate()
+            viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
                 configState,
@@ -1033,9 +1030,7 @@ class ConfigViewModelTest {
             wheneverSuccessStop()
             wheneverSuccessTurn()
             whenever(
-                setCheckUpdateAllTable(
-                    FlagUpdate.UPDATED
-                )
+                setFinishUpdateAllTable()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1047,7 +1042,7 @@ class ConfigViewModelTest {
                 app = "pmm"
             )
             val result = viewModel.updateAllDatabase().toList()
-            assertEquals(result.count(), ((qtdTable * 3) + 1).toInt())
+            assertEquals(result.count(), ((QTD_TABLE * 3) + 1).toInt())
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
@@ -1057,7 +1052,7 @@ class ConfigViewModelTest {
             checkResultUpdateStop(result)
             checkResultUpdateTurn(result)
             assertEquals(
-                result[(qtdTable * 3).toInt()],
+                result[(QTD_TABLE * 3).toInt()],
                 ConfigState(
                     flagDialog = true,
                     flagProgress = true,
@@ -1066,7 +1061,7 @@ class ConfigViewModelTest {
                     currentProgress = 1f,
                 )
             )
-            viewModel.saveTokenAndUpdate()
+            viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
                 configState,

@@ -29,7 +29,7 @@ interface ConfigModule {
 
     @Binds
     @Singleton
-    fun bindSetCheckUpdateAllTable(usecase: ISetCheckUpdateAllTable): SetCheckUpdateAllTable
+    fun bindSetCheckUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
 
     @Binds
     @Singleton

@@ -214,8 +214,8 @@ class IConfigRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IConfigSharedPreferencesDatasource.save",
+                    "-",
                     Exception()
                 )
             )
@@ -236,7 +236,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Error -> Exception"
+                "IConfigRepository.save -> IConfigSharedPreferencesDatasource.save"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

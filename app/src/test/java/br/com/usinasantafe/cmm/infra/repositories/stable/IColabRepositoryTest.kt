@@ -16,7 +16,7 @@ class IColabRepositoryTest {
 
     private val colabRoomDatasource = mock<ColabRoomDatasource>()
     private val colabRetrofitDatasource = mock<ColabRetrofitDatasource>()
-    private val repository = IColabRepository( // Assume IColabRepository exists
+    private val repository = IColabRepository(
         colabRetrofitDatasource = colabRetrofitDatasource,
         colabRoomDatasource = colabRoomDatasource
     )

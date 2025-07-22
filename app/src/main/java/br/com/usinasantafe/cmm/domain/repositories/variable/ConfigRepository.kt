@@ -10,8 +10,8 @@ interface ConfigRepository {
     suspend fun getFlagUpdate(): Result<FlagUpdate>
     suspend fun getPassword(): Result<String>
     suspend fun hasConfig(): Result<Boolean>
-    suspend fun send(config: Config): Result<Config>
-    suspend fun save(config: Config): Result<Boolean>
+    suspend fun send(entity: Config): Result<Config>
+    suspend fun save(entity: Config): Result<Boolean>
     suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean>
     suspend fun getNumber(): Result<Long>
     suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean>

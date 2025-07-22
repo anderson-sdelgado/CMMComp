@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.variable.ConfigApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IConfigRetrofitDatasource @Inject constructor(
@@ -20,9 +22,8 @@ class IConfigRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailure(
-                context = "IConfigRetrofitDatasource.recoverToken",
-                message = "-",
+            return resultFailureFinish(
+                context = getClassAndMethod(),
                 cause = e
             )
         }

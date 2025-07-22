@@ -10,6 +10,12 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class IColabRetrofitDatasourceTest {
+    private val resultColabRetrofit = """
+        [
+          {"regColab":12345,"nameColab":"João da Silva"},
+          {"regColab":67890,"nameColab":"Maria Oliveira"}
+        ]
+    """.trimIndent()
 
     @Test
     fun `Check return failure if token is invalid`() =
@@ -110,9 +116,4 @@ class IColabRetrofitDatasourceTest {
         }
 }
 
-val resultColabRetrofit = """
-    [
-      {"regColab":12345,"nameColab":"João da Silva"},
-      {"regColab":67890,"nameColab":"Maria Oliveira"}
-    ]
-""".trimIndent()
+

@@ -41,7 +41,7 @@ class IColabRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = colabDao.listAll().size
+            val qtdBefore = colabDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -70,7 +70,7 @@ class IColabRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = colabDao.listAll().size
+            val qtdAfter = colabDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -80,7 +80,7 @@ class IColabRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = colabDao.listAll().size
+            val qtdBefore = colabDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -105,12 +105,12 @@ class IColabRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = colabDao.listAll().size
+            val qtdAfter = colabDao.all().size
             assertEquals(
                 qtdAfter,
                 2
             )
-            val list = colabDao.listAll()
+            val list = colabDao.all()
             assertEquals(
                 list[0].regColab,
                 1
@@ -140,7 +140,7 @@ class IColabRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = colabDao.listAll().size
+            val qtdBefore = colabDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -154,7 +154,7 @@ class IColabRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = colabDao.listAll().size
+            val qtdAfter = colabDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -172,7 +172,7 @@ class IColabRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = colabDao.listAll().size
+            val qtdBefore = colabDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -199,7 +199,7 @@ class IColabRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = colabDao.listAll().size
+            val qtdBefore = colabDao.all().size
             assertEquals(
                 qtdBefore,
                 1
