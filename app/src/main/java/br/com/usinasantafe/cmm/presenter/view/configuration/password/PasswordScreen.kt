@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.presenter.view.configuration.password
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.ui.theme.AlertDialogSimpleDesign
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
-import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.ui.theme.TitleDesign
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 
-const val TAG_PASSWORD_TEXT_FIELD_SENHA_SCREEN = "tag_password_text_field_senha_screen"
+const val TAG_PASSWORD_TEXT_FIELD_SCREEN = "tag_password_text_field_screen"
 
 @Composable
 fun PasswordScreen(
@@ -46,12 +45,12 @@ fun PasswordScreen(
             PasswordContent(
                 password = uiState.password,
                 onPasswordChanged =  viewModel::updatePassword,
-                flagDialog = uiState.flagDialog,
+                onCheckAccess = viewModel::checkAccess,
                 setCloseDialog = viewModel::setCloseDialog,
+                flagDialog = uiState.flagDialog,
                 flagFailure = uiState.flagFailure,
                 failure = uiState.failure,
                 flagAccess = uiState.flagAccess,
-                onCheckAccess = viewModel::checkAccess,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavConfig = onNavConfig,
                 modifier = Modifier.padding(innerPadding)
@@ -64,12 +63,12 @@ fun PasswordScreen(
 fun PasswordContent(
     password: String,
     onPasswordChanged: (String) -> Unit,
-    flagDialog: Boolean,
+    onCheckAccess: () -> Unit,
     setCloseDialog: () -> Unit,
+    flagDialog: Boolean,
     flagFailure: Boolean,
     failure: String,
     flagAccess: Boolean,
-    onCheckAccess: () -> Unit,
     onNavInitialMenu: () -> Unit,
     onNavConfig: () -> Unit,
     modifier: Modifier = Modifier
@@ -93,7 +92,7 @@ fun PasswordContent(
             visualTransformation = PasswordVisualTransformation(),
             value = password,
             onValueChange = onPasswordChanged,
-            modifier = Modifier.fillMaxWidth().testTag(TAG_PASSWORD_TEXT_FIELD_SENHA_SCREEN)
+            modifier = Modifier.fillMaxWidth().testTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
         )
         Row(
             modifier = Modifier

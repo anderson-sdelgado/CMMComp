@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.configuration.config
+package br.com.usinasantafe.cmm.presenter.model
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 

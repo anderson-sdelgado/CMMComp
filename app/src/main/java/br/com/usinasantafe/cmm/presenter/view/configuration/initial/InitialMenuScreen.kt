@@ -23,10 +23,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.BuildConfig
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.view.configuration.initial.InitialMenuViewModel
-import br.com.usinasantafe.cmm.ui.theme.AlertDialogSimpleDesign
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
-import br.com.usinasantafe.cmm.ui.theme.ItemListDesign
-import br.com.usinasantafe.cmm.ui.theme.TitleDesign
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.StatusSend
 
 @Composable
@@ -80,7 +80,10 @@ fun InitialMenuContent(
             .padding(16.dp)
     ) {
         TitleDesign(
-            text = "MENU INICIAL - V ${BuildConfig.VERSION_NAME}"
+            text = stringResource(
+                id = R.string.text_title_initial_menu,
+                BuildConfig.VERSION_NAME
+            )
         )
         LazyColumn(
             modifier = Modifier
@@ -89,21 +92,27 @@ fun InitialMenuContent(
         ) {
             item {
                 ItemListDesign(
-                    text = "APONTAMENTO",
+                    text = stringResource(
+                        id = R.string.text_item_note
+                    ),
                     setActionItem = onCheckAccess,
                     font = 26
                 )
             }
             item {
                 ItemListDesign(
-                    text = "CONFIGURAÇÃO",
+                    text = stringResource(
+                        id = R.string.text_item_config
+                    ),
                     setActionItem = onNavPassword,
                     font = 26
                 )
             }
             item {
                 ItemListDesign(
-                    text = "SAIR",
+                    text = stringResource(
+                        id = R.string.text_item_out
+                    ),
                     setActionItem = {
                         activity?.finish()
                     },

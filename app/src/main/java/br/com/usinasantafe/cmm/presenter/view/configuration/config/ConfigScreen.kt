@@ -36,10 +36,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.BuildConfig
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.ui.theme.AlertDialogSimpleDesign
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
-import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.ui.theme.TitleDesign
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import kotlin.String
@@ -246,7 +246,6 @@ fun ConfigContent(
         }
         BackHandler {}
     }
-
     if(flagDialog) {
         if(flagFailure){
             val text = when(errors){
@@ -287,7 +286,6 @@ fun ConfigPagePreview() {
                 checkMotoMec = true,
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
-                onNavInitialMenu = {},
                 flagProgress = false,
                 currentProgress = 0.0f,
                 levelUpdate = null,
@@ -297,6 +295,7 @@ fun ConfigPagePreview() {
                 flagFailure = false,
                 errors = Errors.FIELD_EMPTY,
                 failure = "",
+                onNavInitialMenu = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

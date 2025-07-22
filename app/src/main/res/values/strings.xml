@@ -65,4 +65,8 @@
     <string name="text_button_according">CONFORME (OK)</string>
     <string name="text_button_analyze">NÃO CONFORME (ANALISAR)</string>
     <string name="text_button_repair">NÃO CONFORME (REPARO)</string>
+    <string name="text_title_initial_menu">MENU INICIAL - V %1$s</string>
+    <string name="text_item_note">APONTAMENTO</string>
+    <string name="text_item_config">CONFIGURAÇÃO</string>
+    <string name="text_item_out">SAIR</string>
 </resources>

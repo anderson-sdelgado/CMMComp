@@ -18,6 +18,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.qtdTable
@@ -49,9 +50,9 @@ data class ConfigState(
     val errors: Errors = Errors.FIELD_EMPTY,
 )
 
-fun ResultUpdateModel.resultUpdateToConfig(): ConfigState {
+fun ResultUpdateModel.resultUpdateToConfig(classAndMethod: String): ConfigState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "ConfigViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
@@ -288,68 +289,81 @@ class ConfigViewModel @Inject constructor(
         var pos = 0f
         val sizeAllUpdate = sizeUpdate(qtdTable)
         var configState = ConfigState()
+        val classAndMethod = getClassAndMethod()
         updateTableActivity(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(it.resultUpdateToConfig(classAndMethod))
         }
         if (configState.flagFailure) return@flow
         updateTableColab(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(it.resultUpdateToConfig(classAndMethod))
         }
         if (configState.flagFailure) return@flow
         updateTableEquipByIdEquip(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         updateTableItemCheckListByNroEquip(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         updateTableRActivityStop(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         updateTableREquipActivityByIdEquip(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         updateTableStop(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         updateTableTurn(
             sizeAll = sizeAllUpdate,
             count = ++pos
         ).collect {
-            configState = it.resultUpdateToConfig()
-            emit(it.resultUpdateToConfig())
+            configState = it.resultUpdateToConfig(classAndMethod)
+            emit(
+                it.resultUpdateToConfig(classAndMethod)
+            )
         }
         if (configState.flagFailure) return@flow
         val result = setCheckUpdateAllTable(FlagUpdate.UPDATED)

@@ -1,7 +1,5 @@
 package br.com.usinasantafe.cmm.domain.errors
 
-import br.com.usinasantafe.cmm.utils.getClassAndMethod
-
 fun resultFailureMiddle(
     context: String,
     cause: Throwable

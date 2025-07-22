@@ -19,7 +19,7 @@
 
     <application>
         <activity
-            android:name=".br.com.usinasantafe.cmm.HiltTestActivity"
+            android:name=".HiltTestActivity"
             android:exported="true" />
         <provider
             android:name="androidx.startup.InitializationProvider"

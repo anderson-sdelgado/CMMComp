@@ -7,8 +7,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
+import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
+import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigScreen
@@ -49,19 +54,19 @@ class ConfigScreenTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
-    lateinit var activityDao: br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
+    lateinit var activityDao: ActivityDao
 
     @Inject
-    lateinit var colabDao: br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
+    lateinit var colabDao: ColabDao
 
     @Inject
-    lateinit var equipDao: br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+    lateinit var equipDao: EquipDao
 
     @Inject
-    lateinit var rEquipActivityDao: br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+    lateinit var rEquipActivityDao: REquipActivityDao
 
     @Inject
-    lateinit var turnDao: br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
+    lateinit var turnDao: TurnDao
 
     @Test
     fun verify_check_open_screen_config_and_service_without_connection() =

@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.ui.theme
+package br.com.usinasantafe.cmm.presenter.theme
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.utils.TypeButton
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-import java.text.NumberFormat
 import java.util.Locale
 
 fun addTextField(text: String, char: String): String {

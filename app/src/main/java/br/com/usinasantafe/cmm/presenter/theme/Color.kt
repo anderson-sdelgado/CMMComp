@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.ui.theme
+package br.com.usinasantafe.cmm.presenter.theme
 
 import androidx.compose.ui.graphics.Color
 

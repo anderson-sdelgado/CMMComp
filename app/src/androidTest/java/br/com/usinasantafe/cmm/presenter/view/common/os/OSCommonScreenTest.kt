@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
-import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
+import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader

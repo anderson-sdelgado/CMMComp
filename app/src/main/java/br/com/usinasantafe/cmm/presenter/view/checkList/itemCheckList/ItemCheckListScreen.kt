@@ -3,7 +3,6 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,10 +23,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.ui.theme.AlertDialogSimpleDesign
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
-import br.com.usinasantafe.cmm.ui.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.ui.theme.TitleDesign
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 
 @Composable

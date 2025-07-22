@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import br.com.usinasantafe.cmm.br.com.usinasantafe.cmm.HiltTestActivity
+import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
@@ -19,7 +19,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
@@ -31,7 +31,6 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject

@@ -18,8 +18,8 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
-import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
-import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
+import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.TypeEquip

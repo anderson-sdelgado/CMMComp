@@ -1,6 +1,5 @@
-package br.com.usinasantafe.cmm.ui.theme
+package br.com.usinasantafe.cmm.presenter.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

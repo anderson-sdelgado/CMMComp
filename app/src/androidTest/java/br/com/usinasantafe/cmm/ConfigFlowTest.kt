@@ -1,14 +1,12 @@
 package br.com.usinasantafe.cmm
 
 import android.util.Log
-import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.navigation.compose.rememberNavController
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
@@ -18,15 +16,10 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.presenter.MainActivity
-import br.com.usinasantafe.cmm.presenter.NavigationActions
-import br.com.usinasantafe.cmm.presenter.NavigationGraph
-import br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate.QuestionUpdateCheckListScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
-import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
-import br.com.usinasantafe.cmm.ui.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP

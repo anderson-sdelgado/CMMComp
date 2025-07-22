@@ -29,6 +29,7 @@ import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableFunctionAc
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableROSAtiv
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableServico
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
+import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.LevelUpdate

@@ -39,6 +39,7 @@ class PasswordViewModel @Inject constructor(
             it.copy(password = password)
         }
     }
+
     fun checkAccess() =
         viewModelScope.launch {
             val resultCheck = checkPassword(

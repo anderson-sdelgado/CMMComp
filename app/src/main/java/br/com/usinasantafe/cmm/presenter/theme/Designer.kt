@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.ui.theme
+package br.com.usinasantafe.cmm.presenter.theme
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column

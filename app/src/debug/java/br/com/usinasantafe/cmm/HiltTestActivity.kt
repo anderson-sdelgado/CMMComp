@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.usinasantafe.cmm.br.com.usinasantafe.cmm
+package br.com.usinasantafe.cmm
 
 import androidx.activity.ComponentActivity
 import dagger.hilt.android.AndroidEntryPoint

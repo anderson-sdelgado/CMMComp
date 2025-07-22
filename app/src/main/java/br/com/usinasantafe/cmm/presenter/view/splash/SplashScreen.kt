@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.ui.theme.AlertDialogSimpleDesign
-import br.com.usinasantafe.cmm.ui.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

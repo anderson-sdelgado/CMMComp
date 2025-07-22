@@ -1,11 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigModel
-import br.com.usinasantafe.cmm.presenter.view.configuration.config.toConfigModel
+import br.com.usinasantafe.cmm.presenter.model.ConfigModel
+import br.com.usinasantafe.cmm.presenter.model.toConfigModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

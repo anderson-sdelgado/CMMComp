@@ -7,8 +7,8 @@ import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckOpenCheckList
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckHourMeter
 import br.com.usinasantafe.cmm.domain.usecases.header.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
-import br.com.usinasantafe.cmm.ui.theme.addTextFieldComma
-import br.com.usinasantafe.cmm.ui.theme.clearTextFieldComma
+import br.com.usinasantafe.cmm.presenter.theme.addTextFieldComma
+import br.com.usinasantafe.cmm.presenter.theme.clearTextFieldComma
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.TypeButton

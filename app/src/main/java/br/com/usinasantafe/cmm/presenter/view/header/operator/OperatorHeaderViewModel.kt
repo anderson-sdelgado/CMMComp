@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
-import br.com.usinasantafe.cmm.ui.theme.addTextField
-import br.com.usinasantafe.cmm.ui.theme.clearTextField
+import br.com.usinasantafe.cmm.presenter.theme.addTextField
+import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton

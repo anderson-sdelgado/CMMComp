@@ -7,8 +7,8 @@ import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
-import br.com.usinasantafe.cmm.ui.theme.addTextField
-import br.com.usinasantafe.cmm.ui.theme.clearTextField
+import br.com.usinasantafe.cmm.presenter.theme.addTextField
+import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.TypeButton
