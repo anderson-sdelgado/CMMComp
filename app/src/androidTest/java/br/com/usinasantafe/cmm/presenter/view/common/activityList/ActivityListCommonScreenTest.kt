@@ -170,13 +170,13 @@ class ActivityListCommonScreenTest {
             timeout = 10.minutes
         ) {
 
-            val mockWebServer = MockWebServer()
-            mockWebServer.start()
-            mockWebServer.enqueue(
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
                 MockResponse().setBody(resultActivityFailure)
             )
 
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
 
             hiltRule.inject()
 
@@ -206,13 +206,13 @@ class ActivityListCommonScreenTest {
             timeout = 10.minutes
         ) {
 
-            val mockWebServer = MockWebServer()
-            mockWebServer.start()
-            mockWebServer.enqueue(
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(
                 MockResponse().setBody(resultActivity)
             )
 
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
 
             hiltRule.inject()
 

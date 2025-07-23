@@ -127,7 +127,6 @@ fun OSCommonContent(
         }
 
         if(flagDialog) {
-
             val text = when (errors) {
                 Errors.FIELD_EMPTY -> stringResource(
                     id = R.string.text_field_empty,
@@ -135,14 +134,16 @@ fun OSCommonContent(
                 )
                 Errors.UPDATE,
                 Errors.TOKEN,
-                Errors.EXCEPTION -> stringResource(id = R.string.text_failure, failure)
+                Errors.EXCEPTION -> stringResource(
+                    id = R.string.text_failure,
+                    failure
+                )
                 Errors.INVALID -> stringResource(
                     id = R.string.text_input_data_non_existent,
                     stringResource(id = R.string.text_title_os)
                 )
                 else -> ""
             }
-
             AlertDialogSimpleDesign(
                 text = text,
                 setCloseDialog = setCloseDialog,

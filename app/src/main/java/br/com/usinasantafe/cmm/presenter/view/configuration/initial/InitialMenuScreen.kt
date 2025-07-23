@@ -45,13 +45,12 @@ fun InitialMenuScreen(
 
             InitialMenuContent(
                 statusSend = uiState.statusSend,
+                onCheckAccess = viewModel::checkAccess,
                 flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagFailure = uiState.flagFailure,
                 failure = uiState.failure,
-                failureStatus = uiState.failureStatus,
                 flagAccess = uiState.flagAccess,
-                onCheckAccess = viewModel::checkAccess,
                 onNavPassword = onNavPassword,
                 onNavOperator = onNavOperator,
                 modifier = Modifier.padding(innerPadding)
@@ -63,13 +62,12 @@ fun InitialMenuScreen(
 @Composable
 fun InitialMenuContent(
     statusSend: StatusSend,
+    onCheckAccess: () -> Unit,
     flagDialog: Boolean,
     setCloseDialog: () -> Unit,
     flagFailure: Boolean,
     failure: String,
-    failureStatus: String,
     flagAccess: Boolean,
-    onCheckAccess: () -> Unit,
     onNavPassword: () -> Unit,
     onNavOperator: () -> Unit,
     modifier: Modifier = Modifier
@@ -123,19 +121,19 @@ fun InitialMenuContent(
         Text(
             textAlign = TextAlign.Left,
             text =
-            if(failureStatus.isEmpty()) {
+            if(failure.isEmpty()) {
                 when (statusSend) {
                     StatusSend.STARTED -> stringResource(id = R.string.text_status_started)
                     StatusSend.SEND -> stringResource(id = R.string.text_status_send)
                     StatusSend.SENT -> stringResource(id = R.string.text_status_sent)
                 }
             } else {
-                "Failure: $failureStatus"
+                "Failure: $failure"
             }
             ,
             fontSize = 22.sp,
             color =
-            if(failureStatus.isEmpty()) {
+            if(failure.isEmpty()) {
                 when (statusSend) {
                     StatusSend.STARTED -> Color.Red
                     StatusSend.SEND -> Color.Red
@@ -186,7 +184,6 @@ fun InitialMenuPagePreview() {
                 flagFailure = false,
                 flagAccess = false,
                 failure = "",
-                failureStatus = "",
                 onCheckAccess = {},
                 onNavPassword = {},
                 onNavOperator = {},
@@ -208,7 +205,6 @@ fun InitialMenuPagePreviewSend() {
                 flagFailure = false,
                 flagAccess = false,
                 failure = "",
-                failureStatus = "",
                 onCheckAccess = {},
                 onNavPassword = {},
                 onNavOperator = {},

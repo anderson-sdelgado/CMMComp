@@ -19,7 +19,6 @@ data class InitialMenuState(
     val flagAccess: Boolean = false,
     val flagFailure: Boolean = false,
     val failure: String = "",
-    val failureStatus: String = "",
     val statusSend: StatusSend = StatusSend.STARTED
 )
 
@@ -48,7 +47,7 @@ class InitialMenuViewModel @Inject constructor(
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(
-                        failureStatus = failure
+                        failure = failure
                     )
                 }
                 return@launch

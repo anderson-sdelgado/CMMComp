@@ -54,7 +54,7 @@ class HeaderInitialFlowTest {
 
     companion object {
 
-        private lateinit var mockWebServer: MockWebServer
+        private lateinit var server: MockWebServer
 
         private val jsonUpdateActivity = """
                 [
@@ -162,17 +162,17 @@ class HeaderInitialFlowTest {
                 }
             }
 
-            mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherSuccessFlow
-            mockWebServer.start()
+            server = MockWebServer()
+            server.dispatcher = dispatcherSuccessFlow
+            server.start()
 
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
         }
 
         @AfterClass
         @JvmStatic
         fun tearDownClass() {
-            mockWebServer.shutdown()
+            server.shutdown()
         }
     }
 

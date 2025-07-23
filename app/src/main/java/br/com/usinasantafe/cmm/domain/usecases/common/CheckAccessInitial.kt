@@ -36,9 +36,8 @@ class ICheckAccessInitial @Inject constructor(
                 )
             }
             val flagUpdate = resultGetFlagUpdate.getOrNull()!!
-            if (flagUpdate == FlagUpdate.OUTDATED)
-                return Result.success(false)
-            return Result.success(true)
+            val check = flagUpdate == FlagUpdate.UPDATED
+            return Result.success(check)
         } catch (e: Exception) {
             return resultFailureFinish(
                 context = getClassAndMethod(),

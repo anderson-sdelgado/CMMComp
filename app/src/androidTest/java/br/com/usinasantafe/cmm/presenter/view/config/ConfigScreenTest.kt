@@ -471,11 +471,11 @@ class ConfigScreenTest {
     fun verify_check_return_turn_data_with_failure() =
         runTest {
 
-            val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureTurn
-            mockWebServer.start()
+            val server = MockWebServer()
+            server.dispatcher = dispatcherFailureTurn
+            server.start()
 
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
 
             hiltRule.inject()
 
@@ -621,11 +621,11 @@ class ConfigScreenTest {
     fun verify_check_success_update() =
         runTest {
 
-            val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherSuccess
-            mockWebServer.start()
+            val server = MockWebServer()
+            server.dispatcher = dispatcherSuccess
+            server.start()
 
-            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+            BaseUrlModuleTest.url = server.url("/").toString()
 
             hiltRule.inject()
 
