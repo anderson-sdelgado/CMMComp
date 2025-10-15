@@ -46,6 +46,22 @@ class ICheckNroOSTest {
     @Inject
     lateinit var rOSActivityDao: ROSActivityDao
 
+    private val resultOSRetrofitEmptyList = """
+        []
+    """.trimIndent()
+
+    private val resultOSRetrofitOne = """
+        [
+          {"idOS":1,"nroOS":123456,"idLibOS":10,"idPropAgr":20,"areaOS":150.75,"typoOS":1,"idEquip":30}
+        ]
+    """.trimIndent()
+
+    private val resultROSActivity = """
+        [
+          {"idOS":1,"idActivity":10}
+        ]
+    """.trimIndent()
+
     @Test
     fun check_return_true_if_have_os_digit_flow_app_note_work() =
         runTest {
@@ -379,21 +395,5 @@ class ICheckNroOSTest {
                 10
             )
         }
-
-    private val resultOSRetrofitEmptyList = """
-        []
-    """.trimIndent()
-
-    private val resultOSRetrofitOne = """
-        [
-          {"idOS":1,"nroOS":123456,"idLibOS":10,"idPropAgr":20,"areaOS":150.75,"typoOS":1,"idEquip":30}
-        ]
-    """.trimIndent()
-
-    private val resultROSActivity = """
-        [
-          {"idOS":1,"idActivity":10}
-        ]
-    """.trimIndent()
 
 }

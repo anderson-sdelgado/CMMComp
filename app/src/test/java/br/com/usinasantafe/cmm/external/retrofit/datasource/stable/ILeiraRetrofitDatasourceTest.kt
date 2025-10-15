@@ -3,7 +3,6 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.LeiraApi
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.LeiraRetrofitModel
-import br.com.usinasantafe.cmm.utils.StatusLeira
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -25,7 +24,7 @@ class ILeiraRetrofitDatasourceTest {
             )
             val service = retrofit.create(LeiraApi::class.java)
             val datasource = ILeiraRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -55,7 +54,7 @@ class ILeiraRetrofitDatasourceTest {
             )
             val service = retrofit.create(LeiraApi::class.java)
             val datasource = ILeiraRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -86,7 +85,7 @@ class ILeiraRetrofitDatasourceTest {
             )
             val service = retrofit.create(LeiraApi::class.java)
             val datasource = ILeiraRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

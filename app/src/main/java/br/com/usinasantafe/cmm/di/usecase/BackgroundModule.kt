@@ -13,6 +13,6 @@ interface BackgroundModule {
 
     @Binds
     @Singleton
-    fun bindCheckAccessInitial(usecase: IStartWorkManager): StartWorkManager
+    fun bindStartWorkInitial(usecase: IStartWorkManager): StartWorkManager
 
 }

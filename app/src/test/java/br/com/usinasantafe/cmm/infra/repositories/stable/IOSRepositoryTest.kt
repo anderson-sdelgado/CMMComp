@@ -153,13 +153,13 @@ class IOSRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                osRetrofitDatasource.recoverAll("token")
+                osRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.failure(
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -214,13 +214,13 @@ class IOSRepositoryTest {
                 )
             )
             whenever(
-                osRetrofitDatasource.recoverAll("token")
+                osRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true

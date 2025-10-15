@@ -24,7 +24,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
                 result.isFailure
@@ -53,7 +53,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
                 result.isFailure
@@ -82,7 +82,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
                 result.isSuccess

@@ -41,7 +41,7 @@ class IStopRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = stopDao.listAll().size
+            val qtdBefore = stopDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -77,7 +77,7 @@ class IStopRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = stopDao.listAll().size
+            val qtdBefore = stopDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -104,7 +104,7 @@ class IStopRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = stopDao.listAll()
+            val list = stopDao.all()
             assertEquals(
                 list.size,
                 2
@@ -149,7 +149,7 @@ class IStopRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = stopDao.listAll().size
+            val qtdBefore = stopDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -163,7 +163,7 @@ class IStopRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = stopDao.listAll().size
+            val qtdAfter = stopDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -214,7 +214,7 @@ class IStopRoomDatasourceTest {
                     )
                 )
             )
-            val qtdAll = stopDao.listAll().size
+            val qtdAll = stopDao.all().size
             assertEquals(
                 qtdAll,
                 4

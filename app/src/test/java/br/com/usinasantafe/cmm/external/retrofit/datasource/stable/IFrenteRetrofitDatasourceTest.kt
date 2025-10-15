@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.FrenteApi
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FrenteRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FrenteRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -25,7 +24,7 @@ class IFrenteRetrofitDatasourceTest {
             )
             val service = retrofit.create(FrenteApi::class.java)
             val datasource = IFrenteRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -55,7 +54,7 @@ class IFrenteRetrofitDatasourceTest {
             )
             val service = retrofit.create(FrenteApi::class.java)
             val datasource = IFrenteRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -86,7 +85,7 @@ class IFrenteRetrofitDatasourceTest {
             )
             val service = retrofit.create(FrenteApi::class.java)
             val datasource = IFrenteRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

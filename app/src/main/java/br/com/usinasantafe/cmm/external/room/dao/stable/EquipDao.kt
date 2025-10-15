@@ -20,7 +20,7 @@ interface EquipDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_EQUIP")
-    suspend fun listAll(): List<EquipRoomModel>
+    suspend fun all(): List<EquipRoomModel>
 
     @Query("SELECT * FROM $TB_EQUIP WHERE idEquip = :id")
     suspend fun getByIdEquip(id: Int): EquipRoomModel

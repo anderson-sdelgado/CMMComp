@@ -106,7 +106,7 @@ fun StopListNoteContent(
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
-                autoCorrect = true,
+                autoCorrectEnabled = true,
             ),
             textStyle = TextStyle(
                 textAlign = TextAlign.Center,

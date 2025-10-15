@@ -56,12 +56,12 @@ fun QuestionUpdateCheckListScreen(
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
                 flagProgress = uiState.flagProgress,
                 currentProgress = uiState.currentProgress,
                 levelUpdate = uiState.levelUpdate,
                 tableUpdate = uiState.tableUpdate,
+                flagFailure = uiState.flagFailure,
+                errors = uiState.errors,
                 onNavItemCheckList = onNavItemCheckList,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -77,12 +77,12 @@ fun QuestionUpdateCheckListContent(
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
-    flagFailure: Boolean,
-    errors: Errors,
     flagProgress: Boolean,
     currentProgress: Float,
     levelUpdate: LevelUpdate?,
     tableUpdate: String,
+    flagFailure: Boolean,
+    errors: Errors,
     onNavItemCheckList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -140,8 +140,7 @@ fun QuestionUpdateCheckListContent(
                     )
                 }
             }
-        }
-        if(!flagCheckUpdate){
+        } else {
             Column(
                 modifier = modifier
                     .align(Alignment.Center)
@@ -264,12 +263,12 @@ fun QuestionUpdateCheckListPagePreviewCheckUpdate() {
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
                 flagProgress = false,
                 levelUpdate = null,
                 tableUpdate = "",
                 currentProgress = 0.0f,
+                flagFailure = false,
+                errors = Errors.FIELD_EMPTY,
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )

@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -26,14 +24,14 @@ class ICheckOpenCheckList @Inject constructor(
         try {
             val resultGetIdEquip = configRepository.getIdEquip()
             if (resultGetIdEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdEquip.exceptionOrNull()!!
                 )
             }
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(resultGetIdEquip.getOrNull()!!)
             if (resultGetIdCheckList.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdCheckList.exceptionOrNull()!!
                 )
@@ -41,7 +39,7 @@ class ICheckOpenCheckList @Inject constructor(
             if (resultGetIdCheckList.getOrNull()!! == 0) return Result.success(false)
             val resultGetIdTurnCheckListLast = configRepository.getIdTurnCheckListLast()
             if (resultGetIdTurnCheckListLast.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdTurnCheckListLast.exceptionOrNull()!!
                 )
@@ -49,7 +47,7 @@ class ICheckOpenCheckList @Inject constructor(
             val idTurnCheckListLast = resultGetIdTurnCheckListLast.getOrNull() ?: return Result.success(true)
             val resultGetIdTurnHeader = motoMecRepository.getIdTurnHeader()
             if (resultGetIdTurnHeader.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdTurnHeader.exceptionOrNull()!!
                 )
@@ -58,7 +56,7 @@ class ICheckOpenCheckList @Inject constructor(
             if (idTurnHeader != idTurnCheckListLast) return Result.success(true)
             val resultGetDateCheckListLast = configRepository.getDateCheckListLast()
             if (resultGetDateCheckListLast.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetDateCheckListLast.exceptionOrNull()!!
                 )
@@ -69,7 +67,7 @@ class ICheckOpenCheckList @Inject constructor(
             if(dateFormat.format(dateNow) == dateFormat.format(dateCheckListLast)) return Result.success(false)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

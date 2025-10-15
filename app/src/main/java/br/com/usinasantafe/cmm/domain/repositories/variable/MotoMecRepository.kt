@@ -22,7 +22,7 @@ interface MotoMecRepository {
     suspend fun checkHeaderSend(): Result<Boolean>
     suspend fun setStatusConHeader(status: Boolean): Result<Boolean>
     suspend fun getIdTurnHeader(): Result<Int>
-    suspend fun getRegOperator(): Result<Int>
+    suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
     suspend fun setIdActivityNote(id: Int): Result<Boolean>
     suspend fun saveNote(

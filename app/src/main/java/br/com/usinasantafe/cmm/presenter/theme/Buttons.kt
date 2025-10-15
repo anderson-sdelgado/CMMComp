@@ -24,7 +24,7 @@ fun addTextFieldComma(text: String, digit: String): String {
     val value = valueInTenths / 10.0
 
     val format = DecimalFormat("#,##0.0")
-    format.decimalFormatSymbols = DecimalFormatSymbols(Locale("pt", "BR"))
+    format.decimalFormatSymbols = DecimalFormatSymbols(Locale.Builder().setLanguage("pt").setRegion("BR").build())
     return format.format(value)
 }
 
@@ -40,7 +40,7 @@ fun clearTextFieldComma(text: String): String {
     val value = valueInTenths / 10.0
 
     val format = DecimalFormat("#,##0.0")
-    format.decimalFormatSymbols = DecimalFormatSymbols(Locale("pt", "BR"))
+    format.decimalFormatSymbols = DecimalFormatSymbols(Locale.Builder().setLanguage("pt").setRegion("BR").build())
     return format.format(value)
 }
 

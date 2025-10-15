@@ -123,16 +123,20 @@ fun OperatorHeaderContent(
                         id = R.string.text_field_empty,
                         stringResource(id = R.string.text_title_operator)
                     )
-
-                    Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
-                    Errors.TOKEN,
-                    Errors.EXCEPTION -> stringResource(id = R.string.text_failure, failure)
-
+                    Errors.UPDATE -> stringResource(
+                        id = R.string.text_update_failure,
+                        failure
+                    )
                     Errors.INVALID -> stringResource(
                         id = R.string.text_input_data_invalid,
-                        stringResource(id = R.string.text_title_operator)
+                        stringResource(
+                            id = R.string.text_title_operator
+                        )
                     )
-                    else -> ""
+                    else -> stringResource(
+                        id = R.string.text_failure,
+                        failure
+                    )
                 }
             } else {
                 when(levelUpdate){
@@ -150,23 +154,6 @@ fun OperatorHeaderContent(
             AlertDialogSimpleDesign(
                 text = text,
                 setCloseDialog = setCloseDialog,
-            )
-        }
-
-        if (flagProgress) {
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
             )
         }
 

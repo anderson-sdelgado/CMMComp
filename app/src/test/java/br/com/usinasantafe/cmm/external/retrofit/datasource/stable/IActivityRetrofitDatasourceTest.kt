@@ -24,7 +24,7 @@ class IActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ActivityApi::class.java)
             val datasource = IActivityRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 result.isFailure,
                 true
@@ -52,7 +52,7 @@ class IActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ActivityApi::class.java)
             val datasource = IActivityRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 result.isFailure,
                 true
@@ -81,7 +81,7 @@ class IActivityRetrofitDatasourceTest {
             )
             val service = retrofit.create(ActivityApi::class.java)
             val datasource = IActivityRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
             assertEquals(
                 result.isSuccess,
                 true

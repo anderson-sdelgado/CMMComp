@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -18,7 +17,7 @@ class ICheckHasNoteHeaderOpen @Inject constructor(
         try {
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if (resultGetId.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetId.exceptionOrNull()!!
                 )
@@ -26,14 +25,14 @@ class ICheckHasNoteHeaderOpen @Inject constructor(
             val id = resultGetId.getOrNull()!!
             val resultCheck = motoMecRepository.checkNoteHasByIdHeader(id)
             if (resultCheck.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultCheck.exceptionOrNull()!!
                 )
             }
             return resultCheck
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

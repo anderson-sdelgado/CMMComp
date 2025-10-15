@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.usecase
 
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.*
+import br.com.usinasantafe.cmm.domain.usecases.update.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

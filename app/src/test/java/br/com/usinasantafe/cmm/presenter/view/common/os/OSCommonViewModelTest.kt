@@ -31,7 +31,7 @@ class OSCommonViewModelTest {
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_APP_ARGS to FlowApp.HEADER_INITIAL.ordinal,
+                Args.FLOW_APP_ARG to FlowApp.HEADER_INITIAL.ordinal,
             )
         )
     ) = OSCommonViewModel(
@@ -290,7 +290,7 @@ class OSCommonViewModelTest {
             val viewModel = createViewModel(
                 SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.NOTE_WORK.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
                     )
                 )
             )
@@ -331,7 +331,7 @@ class OSCommonViewModelTest {
             val viewModel = createViewModel(
                 SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.NOTE_WORK.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
                     )
                 )
             )
@@ -361,7 +361,7 @@ class OSCommonViewModelTest {
             val viewModel = createViewModel(
                 SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.NOTE_WORK.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
                     )
                 )
             )

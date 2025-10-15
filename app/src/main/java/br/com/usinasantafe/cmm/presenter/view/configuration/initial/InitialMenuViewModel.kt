@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -43,7 +43,7 @@ class InitialMenuViewModel @Inject constructor(
             if(resultGetStatus.isFailure){
                 val error = resultGetStatus.exceptionOrNull()!!
                 val failure =
-                    "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(
@@ -67,7 +67,7 @@ class InitialMenuViewModel @Inject constructor(
             if(resultCheck.isFailure){
                 val error = resultCheck.exceptionOrNull()!!
                 val failure =
-                    "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(

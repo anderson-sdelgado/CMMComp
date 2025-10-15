@@ -154,7 +154,7 @@ fun HourMeterHeaderContent(
                 AlertDialogCheckDesign(
                     text = text,
                     setCloseDialog = setCloseDialog,
-                    setActionButtonOK = setMeasure
+                    setActionButtonYes = setMeasure
                 )
             }
         }

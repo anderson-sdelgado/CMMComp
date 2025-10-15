@@ -2,8 +2,6 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.infra.datasource.internal.ItemMenuInternalDatasource
 import br.com.usinasantafe.cmm.infra.models.internal.ItemMenuInternalModel
@@ -20,7 +18,7 @@ class IMenuRepository @Inject constructor(
         try{
             val result = itemMenuInternalDatasource.listAll()
             if(result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -40,7 +38,7 @@ class IMenuRepository @Inject constructor(
                 }
             )
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

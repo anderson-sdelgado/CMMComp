@@ -2,8 +2,6 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipActivityRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipActivityRoomDatasource // Import da datasource Room
@@ -23,14 +21,14 @@ class IREquipActivityRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = rEquipActivityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +38,7 @@ class IREquipActivityRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = rEquipActivityRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -58,7 +56,7 @@ class IREquipActivityRepository @Inject constructor(
                 idEquip = idEquip
             )
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -66,7 +64,7 @@ class IREquipActivityRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -77,7 +75,7 @@ class IREquipActivityRepository @Inject constructor(
         try {
             val result = rEquipActivityRoomDatasource.listByIdEquip(idEquip)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -85,7 +83,7 @@ class IREquipActivityRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

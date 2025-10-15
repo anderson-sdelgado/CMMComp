@@ -1,10 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -23,7 +20,7 @@ class ICheckUpdateCheckList @Inject constructor(
         try {
             val resultGetNroEquip = configRepository.getNroEquip()
             if (resultGetNroEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetNroEquip.exceptionOrNull()!!
                 )
@@ -31,7 +28,7 @@ class ICheckUpdateCheckList @Inject constructor(
             val nroEquip = resultGetNroEquip.getOrNull()!!
             val resultGetToken = getToken()
             if (resultGetToken.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetToken.exceptionOrNull()!!
                 )
@@ -42,7 +39,7 @@ class ICheckUpdateCheckList @Inject constructor(
                 nroEquip
             )
             if (resultCheckUpdateByNroEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultCheckUpdateByNroEquip.exceptionOrNull()!!
                 )
@@ -50,7 +47,7 @@ class ICheckUpdateCheckList @Inject constructor(
             val check = resultCheckUpdateByNroEquip.getOrNull()!!
             return Result.success(check)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

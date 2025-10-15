@@ -16,7 +16,7 @@ interface StopDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_STOP")
-    suspend fun listAll(): List<StopRoomModel>
+    suspend fun all(): List<StopRoomModel>
 
     @Query("SELECT * FROM $TB_STOP WHERE idStop IN (:ids)")
     suspend fun listByIdList(ids: List<Int>): List<StopRoomModel>

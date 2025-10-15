@@ -16,9 +16,12 @@ interface TurnDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_TURN")
-    suspend fun listAll(): List<TurnRoomModel>
+    suspend fun all(): List<TurnRoomModel>
 
     @Query("SELECT * FROM $TB_TURN WHERE codTurnEquip = :codTurnEquip")
-    suspend fun getListByCodTurnEquip(codTurnEquip: Int): List<TurnRoomModel>
+    suspend fun listByCodTurnEquip(codTurnEquip: Int): List<TurnRoomModel>
+
+    @Query("SELECT * FROM $TB_TURN WHERE idTurn = :idTurn")
+    suspend fun getByIdTurn(idTurn: Int): TurnRoomModel
 
 }

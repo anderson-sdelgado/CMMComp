@@ -8,27 +8,14 @@ import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableBocal
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableComponente
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableEquipByIdEquip
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableFrente
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckListByNroEquip
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemOSMecan
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableLeira
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableMotoMec
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableOS
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTablePressaoBocal
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTablePropriedade
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityStop
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipActivityByIdEquip
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableREquipPneu
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableFunctionActivityStop
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableROSAtiv
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableServico
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
@@ -55,24 +42,11 @@ class ConfigViewModelTest {
     private val sendDataConfig = mock<SendDataConfig>()
     private val saveDataConfig = mock<SaveDataConfig>()
     private val updateTableActivity = mock<UpdateTableActivity>()
-    private val updateTableBocal = mock<UpdateTableBocal>()
     private val updateTableColab = mock<UpdateTableColab>()
-    private val updateTableComponente = mock<UpdateTableComponente>()
     private val updateTableEquipByIdEquip = mock<UpdateTableEquipByIdEquip>()
-    private val updateTableFrente = mock<UpdateTableFrente>()
     private val updateTableItemCheckListByNroEquip = mock<UpdateTableItemCheckListByNroEquip>()
-    private val updateTableItemOSMecan = mock<UpdateTableItemOSMecan>()
-    private val updateTableLeira = mock<UpdateTableLeira>()
-    private val updateTableMotoMec = mock<UpdateTableMotoMec>()
-    private val updateTableOS = mock<UpdateTableOS>()
-    private val updateTablePressaoBocal = mock<UpdateTablePressaoBocal>()
-    private val updateTablePropriedade = mock<UpdateTablePropriedade>()
     private val updateTableRActivityStop = mock<UpdateTableRActivityStop>()
     private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
-    private val updateTableREquipPneu = mock<UpdateTableREquipPneu>()
-    private val updateTableFunctionActivityStop = mock<UpdateTableFunctionActivityStop>()
-    private val updateTableROSAtiv = mock<UpdateTableROSAtiv>()
-    private val updateTableServico = mock<UpdateTableServico>()
     private val updateTableStop = mock<UpdateTableStop>()
     private val updateTableTurn = mock<UpdateTableTurn>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
@@ -86,24 +60,11 @@ class ConfigViewModelTest {
         sendDataConfig = sendDataConfig,
         saveDataConfig = saveDataConfig,
         updateTableActivity = updateTableActivity,
-//        updateTableBocal = updateTableBocal,
         updateTableColab = updateTableColab,
-//        updateTableComponente = updateTableComponente,
         updateTableEquipByIdEquip = updateTableEquipByIdEquip,
-//        updateTableFrente = updateTableFrente,
         updateTableItemCheckListByNroEquip = updateTableItemCheckListByNroEquip,
-//        updateTableItemOSMecan = updateTableItemOSMecan,
-//        updateTableLeira = updateTableLeira,
-//        updateTableMotoMec = updateTableMotoMec,
-//        updateTableOS = updateTableOS,
-//        updateTablePressaoBocal = updateTablePressaoBocal,
-//        updateTablePropriedade = updateTablePropriedade,
         updateTableRActivityStop = updateTableRActivityStop,
         updateTableREquipActivityByIdEquip = updateTableREquipActivityByIdEquip,
-//        updateTableREquipPneu = updateTableREquipPneu,
-//        updateTableRFuncaoAtivParada = updateTableRFuncaoAtivParada,
-//        updateTableROSAtiv = updateTableROSAtiv,
-//        updateTableServico = updateTableServico,
         updateTableStop = updateTableStop,
         updateTableTurn = updateTableTurn,
         setFinishUpdateAllTable = setFinishUpdateAllTable
@@ -116,8 +77,8 @@ class ConfigViewModelTest {
                 getConfigInternal()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetConfigInternal",
+                    "-",
                     Exception()
                 )
             )
@@ -133,7 +94,7 @@ class ConfigViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "ConfigViewModel.returnDataConfig -> Error -> Exception -> java.lang.Exception",
+                "ConfigViewModel.returnDataConfig -> GetConfigInternal -> java.lang.Exception",
             )
         }
 
@@ -1042,7 +1003,10 @@ class ConfigViewModelTest {
                 app = "pmm"
             )
             val result = viewModel.updateAllDatabase().toList()
-            assertEquals(result.count(), ((QTD_TABLE * 3) + 1).toInt())
+            assertEquals(
+                result.count(),
+                ((QTD_TABLE * 3) + 1).toInt()
+            )
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
@@ -1254,62 +1218,6 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessComponente() =
-//        runTest {
-//            whenever(
-//                updateTableComponente(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_componente",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_componente",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateComponente(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_componente",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_componente do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_componente",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
 
     private fun wheneverSuccessEquip() =
         runTest {
@@ -1372,62 +1280,6 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessFrente() =
-//        runTest {
-//            whenever(
-//                updateTableFrente(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_frente",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_frente do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_frente",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateFrente(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_frente",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_frente do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_frente",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
 
     private fun wheneverSuccessItemCheckList() =
         runTest {
@@ -1490,230 +1342,6 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessItemOSMecan() =
-//        runTest {
-//            whenever(
-//                updateTableItemOSMecan(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_item_os_mecan",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_item_os_mecan do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_item_os_mecan",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateItemOSMecan(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_item_os_mecan",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_item_os_mecan do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_item_os_mecan",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessLeira() =
-//        runTest {
-//            whenever(
-//                updateTableLeira(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_leira",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_leira do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_leira",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateLeira(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_leira",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_leira do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_leira",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessMotoMec() =
-//        runTest {
-//            whenever(
-//                updateTableMotoMec(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_motomec",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_motomec do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_motomec",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateMotoMec(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_motomec",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_motomec do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_motomec",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessOS() =
-//        runTest {
-//            whenever(
-//                updateTableOS(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_os",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_os do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_os",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateOS(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_os",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_os do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_os",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
 
     private fun wheneverSuccessStop() =
         runTest {
@@ -1776,118 +1404,6 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessPressaoBocal() =
-//        runTest {
-//            whenever(
-//                updateTablePressaoBocal(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_pressao_bocal",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_pressao_bocal do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_pressao_bocal",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdatePressaoBocal(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_pressao_bocal",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_pressao_bocal do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_pressao_bocal",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessPropriedade() =
-//        runTest {
-//            whenever(
-//                updateTablePropriedade(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_propriedade",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_propriedade do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_propriedade",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdatePropriedade(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_propriedade",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_propriedade do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_propriedade",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
 
     private fun wheneverSuccessRActivityStop() =
         runTest {
@@ -2012,230 +1528,6 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessREquipPneu() =
-//        runTest {
-//            whenever(
-//                updateTableREquipPneu(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_r_equip_pneu",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_r_equip_pneu do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_r_equip_pneu",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateREquipPneu(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_r_equip_pneu",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_r_equip_pneu do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_r_equip_pneu",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessRFuncaoAtiv() =
-//        runTest {
-//            whenever(
-//                updateTableFunctionActivityStop(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_r_funcao_ativ",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_r_funcao_ativ",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateRFuncaoAtiv(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_r_funcao_ativ",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_r_funcao_ativ do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_r_funcao_ativ",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessROSAtiv() =
-//        runTest {
-//            whenever(
-//                updateTableROSAtiv(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_r_os_ativ",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_r_os_ativ do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_r_os_ativ",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateROSAtiv(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_r_os_ativ",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_r_os_ativ do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_r_os_ativ",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
-//
-//    private fun wheneverSuccessServico() =
-//        runTest {
-//            whenever(
-//                updateTableServico(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_servico",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_servico do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdate(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_servico",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateServico(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_servico",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_servico do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_servico",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
 
     private fun wheneverSuccessTurn() =
         runTest {

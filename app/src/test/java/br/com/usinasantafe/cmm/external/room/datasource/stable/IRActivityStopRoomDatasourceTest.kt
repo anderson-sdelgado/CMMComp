@@ -40,7 +40,7 @@ class IRActivityStopRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = rActivityStopDao.listAll().size
+            val qtdBefore = rActivityStopDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -76,7 +76,7 @@ class IRActivityStopRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = rActivityStopDao.listAll().size
+            val qtdBefore = rActivityStopDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -103,7 +103,7 @@ class IRActivityStopRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = rActivityStopDao.listAll()
+            val list = rActivityStopDao.all()
             assertEquals(
                 list.size,
                 2
@@ -148,7 +148,7 @@ class IRActivityStopRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = rActivityStopDao.listAll().size
+            val qtdBefore = rActivityStopDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -162,7 +162,7 @@ class IRActivityStopRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = rActivityStopDao.listAll().size
+            val qtdAfter = rActivityStopDao.all().size
             assertEquals(
                 qtdAfter,
                 0

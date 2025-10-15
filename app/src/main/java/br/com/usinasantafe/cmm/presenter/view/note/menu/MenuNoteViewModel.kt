@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowMenu
 import br.com.usinasantafe.cmm.utils.TypeView
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,7 +50,7 @@ class MenuNoteViewModel @Inject constructor(
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -73,7 +73,7 @@ class MenuNoteViewModel @Inject constructor(
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -132,7 +132,7 @@ class MenuNoteViewModel @Inject constructor(
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

@@ -1,8 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.TurnoRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
@@ -22,14 +21,14 @@ class ITurnRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = turnRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +38,7 @@ class ITurnRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = turnRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -47,13 +46,13 @@ class ITurnRepository @Inject constructor(
         return result
     }
 
-    override suspend fun recoverAll(
+    override suspend fun listAll(
         token: String
     ): Result<List<Turn>> {
         try {
-            val result = turnoRetrofitDatasource.recoverAll(token)
+            val result = turnoRetrofitDatasource.listAll(token)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -61,7 +60,7 @@ class ITurnRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -74,7 +73,7 @@ class ITurnRepository @Inject constructor(
         try {
             val result = turnRoomDatasource.listByCodTurnEquip(codTurnEquip)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -82,14 +81,21 @@ class ITurnRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
         }
     }
 
-    override suspend fun geNroTurnByIdTurn(idTurn: Int): Result<Int> {
-        TODO("Not yet implemented")
+    override suspend fun getNroTurnByIdTurn(idTurn: Int): Result<Int> {
+        val result = turnRoomDatasource.getNroTurnByIdTurn(idTurn)
+        if (result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
     }
 }

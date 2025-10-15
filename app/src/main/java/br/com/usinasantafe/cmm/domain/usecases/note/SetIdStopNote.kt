@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.note
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -24,14 +23,14 @@ class ISetIdStopNote @Inject constructor(
         try {
             val resultSet = motoMecRepository.setIdStop(id)
             if (resultSet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSet.exceptionOrNull()!!
                 )
             }
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if(resultGetId.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetId.exceptionOrNull()!!
                 )
@@ -39,7 +38,7 @@ class ISetIdStopNote @Inject constructor(
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
             if(resultSave.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
@@ -47,7 +46,7 @@ class ISetIdStopNote @Inject constructor(
             startWorkManager()
             return resultSave
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

@@ -140,13 +140,13 @@ class IPropriedadeRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                propriedadeRetrofitDatasource.recoverAll("token")
+                propriedadeRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.failure(
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -189,13 +189,13 @@ class IPropriedadeRepositoryTest {
                 )
             )
             whenever(
-                propriedadeRetrofitDatasource.recoverAll("token")
+                propriedadeRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true

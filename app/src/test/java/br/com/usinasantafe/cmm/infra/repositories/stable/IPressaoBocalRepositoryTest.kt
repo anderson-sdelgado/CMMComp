@@ -144,13 +144,13 @@ class IPressaoBocalRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                pressaoBocalRetrofitDatasource.recoverAll("token")
+                pressaoBocalRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.failure(
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -197,13 +197,13 @@ class IPressaoBocalRepositoryTest {
                 )
             )
             whenever(
-                pressaoBocalRetrofitDatasource.recoverAll("token")
+                pressaoBocalRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true

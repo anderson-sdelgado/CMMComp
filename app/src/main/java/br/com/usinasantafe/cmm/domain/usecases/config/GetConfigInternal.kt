@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.presenter.model.toConfigModel
@@ -20,7 +19,7 @@ class IGetConfigInternal @Inject constructor(
         try {
             val resultHasConfig = configRepository.hasConfig()
             if (resultHasConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultHasConfig.exceptionOrNull()!!
                 )
@@ -30,7 +29,7 @@ class IGetConfigInternal @Inject constructor(
                 return Result.success(null)
             val resultConfig = configRepository.get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -38,7 +37,7 @@ class IGetConfigInternal @Inject constructor(
             val config = resultConfig.getOrNull()!!.toConfigModel()
             return Result.success(config)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

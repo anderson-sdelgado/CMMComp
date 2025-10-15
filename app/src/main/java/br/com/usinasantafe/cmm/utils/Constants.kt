@@ -7,6 +7,7 @@ const val VERSION_DB = 999
 const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
 const val BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC = "note_moto_mec"
+const val BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST = "header_check_list"
 
 const val QTD_TABLE = 8f
 

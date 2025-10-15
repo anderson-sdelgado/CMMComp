@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.header.SetIdTurn
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableTurn
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage

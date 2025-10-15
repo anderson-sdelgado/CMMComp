@@ -3,7 +3,6 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 import br.com.usinasantafe.cmm.di.provider.OSApiDefault
 import br.com.usinasantafe.cmm.di.provider.OSApiShortTimeout
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.OSApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
@@ -15,14 +14,14 @@ class IOSRetrofitDatasource @Inject constructor(
     @OSApiShortTimeout private val osApiShortTimeout: OSApi
 ) : OSRetrofitDatasource {
 
-    override suspend fun recoverAll(
+    override suspend fun listAll(
         token: String
     ): Result<List<OSRetrofitModel>> {
         try {
             val response = osApiDefault.all(token)
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +39,7 @@ class IOSRetrofitDatasource @Inject constructor(
             )
             return Result.success(response.body()!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

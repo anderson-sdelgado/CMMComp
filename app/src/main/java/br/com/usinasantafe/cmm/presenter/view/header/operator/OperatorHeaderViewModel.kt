@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -123,7 +123,7 @@ class OperatorHeaderViewModel @Inject constructor(
         if (resultCheck.isFailure) {
             val error = resultCheck.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -141,7 +141,7 @@ class OperatorHeaderViewModel @Inject constructor(
             if (resultSet.isFailure) {
                 val error = resultSet.exceptionOrNull()!!
                 val failure =
-                    "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(
@@ -164,7 +164,7 @@ class OperatorHeaderViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateAllDatabase(): Flow<OperatorHeaderState> = flow {
+    fun updateAllDatabase(): Flow<OperatorHeaderState> = flow {
         var pos = 0f
         val sizeAllUpdate = 4f
         var operatorHeaderState = OperatorHeaderState()

@@ -22,15 +22,6 @@ android {
         testInstrumentationRunner = "br.com.usinasantafe.cmm.CustomTestRunner"
 //        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += "room.incremental" to "true"
-            }
-        }
-
     }
 
     buildTypes {
@@ -52,9 +43,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -176,6 +164,8 @@ dependencies {
     annotationProcessor(libs.hilt.ext.compiler)
     implementation(libs.timber)
     testImplementation(kotlin("test"))
+    androidTestImplementation(kotlin("test"))
+    androidTestImplementation(libs.mockito)
 }
 
 kapt {

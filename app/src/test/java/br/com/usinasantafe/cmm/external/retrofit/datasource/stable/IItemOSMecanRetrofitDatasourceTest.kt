@@ -24,7 +24,7 @@ class IItemOSMecanRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemOSMecanApi::class.java)
             val datasource = IItemOSMecanRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -54,7 +54,7 @@ class IItemOSMecanRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemOSMecanApi::class.java)
             val datasource = IItemOSMecanRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -85,7 +85,7 @@ class IItemOSMecanRetrofitDatasourceTest {
             )
             val service = retrofit.create(ItemOSMecanApi::class.java)
             val datasource = IItemOSMecanRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

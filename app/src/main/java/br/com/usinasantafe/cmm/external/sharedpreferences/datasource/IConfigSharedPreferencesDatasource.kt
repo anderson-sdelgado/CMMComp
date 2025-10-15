@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_CONFIG
@@ -12,7 +12,6 @@ import com.google.gson.Gson
 import java.util.Date
 import javax.inject.Inject
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 
 class IConfigSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -35,7 +34,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -50,7 +49,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             )
             return Result.success(result != null)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -67,7 +66,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -78,7 +77,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -87,14 +86,14 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             config.flagUpdate = flagUpdate
             val resultSave = save(config)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -105,7 +104,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -113,7 +112,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.password!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -124,7 +123,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -132,7 +131,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.flagUpdate)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -143,7 +142,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -151,7 +150,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.number!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -162,7 +161,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val resultConfig = get()
             if (resultConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultConfig.exceptionOrNull()!!
                 )
@@ -171,14 +170,14 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             config.statusSend = statusSend
             val resultSave = save(config)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -189,7 +188,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -197,7 +196,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.idEquip!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -208,7 +207,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -216,7 +215,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.idTurnCheckListLast)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -227,7 +226,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -235,7 +234,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.dateLastCheckList!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -246,7 +245,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if(result.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -254,7 +253,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
             val config = result.getOrNull()!!
             return Result.success(config.nroEquip!!)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

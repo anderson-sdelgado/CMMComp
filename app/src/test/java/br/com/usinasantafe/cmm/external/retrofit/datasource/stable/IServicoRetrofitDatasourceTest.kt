@@ -24,7 +24,7 @@ class IServicoRetrofitDatasourceTest {
             )
             val service = retrofit.create(ServicoApi::class.java)
             val datasource = IServicoRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -54,7 +54,7 @@ class IServicoRetrofitDatasourceTest {
             )
             val service = retrofit.create(ServicoApi::class.java)
             val datasource = IServicoRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -85,7 +85,7 @@ class IServicoRetrofitDatasourceTest {
             )
             val service = retrofit.create(ServicoApi::class.java)
             val datasource = IServicoRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

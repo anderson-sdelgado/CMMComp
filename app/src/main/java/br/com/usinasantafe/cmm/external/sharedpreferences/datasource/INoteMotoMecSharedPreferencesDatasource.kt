@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
@@ -10,7 +9,6 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 
 class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -33,7 +31,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
                 )
             )
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -50,7 +48,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -65,7 +63,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -75,14 +73,14 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             model.statusCon = statusCon
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -93,7 +91,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -102,7 +100,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             model.idActivity = id
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
@@ -121,7 +119,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val result = get()
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -141,7 +139,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
         try {
             val resultGet = get()
             if (resultGet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -150,14 +148,14 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             model.idStop = id
             val resultSave = save(model)
             if (resultSave.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -174,7 +172,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             }
             return Result.success(true)
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

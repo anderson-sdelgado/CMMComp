@@ -1947,7 +1947,7 @@ class IMotoMecRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getRegOperator()
+            val result = repository.getRegOperatorHeader()
             assertEquals(
                 result.isFailure,
                 true
@@ -1970,7 +1970,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(19759)
             )
-            val result = repository.getRegOperator()
+            val result = repository.getRegOperatorHeader()
             assertEquals(
                 result.isSuccess,
                 true

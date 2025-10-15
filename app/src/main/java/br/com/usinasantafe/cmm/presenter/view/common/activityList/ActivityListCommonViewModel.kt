@@ -7,12 +7,12 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
-import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,7 +65,7 @@ class ActivityListCommonViewModel @Inject constructor(
     private val setIdActivityCommon: SetIdActivityCommon,
 ) : ViewModel() {
 
-    private val flowApp: Int = saveStateHandle[FLOW_APP_ARGS]!!
+    private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
 
     private val _uiState = MutableStateFlow(ActivityListCommonState())
     val uiState = _uiState.asStateFlow()
@@ -89,7 +89,7 @@ class ActivityListCommonViewModel @Inject constructor(
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -116,7 +116,7 @@ class ActivityListCommonViewModel @Inject constructor(
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

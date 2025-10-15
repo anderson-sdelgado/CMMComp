@@ -30,7 +30,7 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -60,7 +60,7 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -91,7 +91,7 @@ class IColabRetrofitDatasourceTest {
             )
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

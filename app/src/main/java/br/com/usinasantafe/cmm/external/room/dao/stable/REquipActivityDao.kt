@@ -16,7 +16,7 @@ interface REquipActivityDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_R_EQUIP_ACTIVITY")
-    suspend fun listAll(): List<REquipActivityRoomModel>
+    suspend fun all(): List<REquipActivityRoomModel>
 
     @Query("SELECT * FROM $TB_R_EQUIP_ACTIVITY WHERE idEquip = :idEquip")
     suspend fun listByIdEquip(idEquip: Int): List<REquipActivityRoomModel>

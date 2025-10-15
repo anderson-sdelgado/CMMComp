@@ -41,7 +41,7 @@ class IREquipActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = rEquipActivityDao.listAll().size
+            val qtdBefore = rEquipActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -72,7 +72,7 @@ class IREquipActivityRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = rEquipActivityDao.listAll().size
+            val qtdAfter = rEquipActivityDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -82,7 +82,7 @@ class IREquipActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = rEquipActivityDao.listAll().size
+            val qtdBefore = rEquipActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -109,7 +109,7 @@ class IREquipActivityRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = rEquipActivityDao.listAll()
+            val list = rEquipActivityDao.all()
             assertEquals(
                 list.size,
                 2
@@ -154,7 +154,7 @@ class IREquipActivityRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = rEquipActivityDao.listAll().size
+            val qtdBefore = rEquipActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -168,7 +168,7 @@ class IREquipActivityRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = rEquipActivityDao.listAll().size
+            val qtdAfter = rEquipActivityDao.all().size
             assertEquals(
                 qtdAfter,
                 0

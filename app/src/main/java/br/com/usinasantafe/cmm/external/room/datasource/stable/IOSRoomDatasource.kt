@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.OSDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
@@ -17,7 +16,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -29,7 +28,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -41,7 +40,7 @@ class IOSRoomDatasource @Inject constructor(
             val result = osDao.checkNroOS(nroOS) > 0
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -53,7 +52,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insert(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -65,7 +64,7 @@ class IOSRoomDatasource @Inject constructor(
             val list = osDao.listByNroOS(nroOS)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

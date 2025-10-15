@@ -122,7 +122,7 @@ class ISetHourMeterTest {
                     )
                 )
             )
-            val listEquipBefore = equipDao.listAll()
+            val listEquipBefore = equipDao.all()
             assertEquals(
                 listEquipBefore.size,
                 1
@@ -162,7 +162,7 @@ class ISetHourMeterTest {
                     hourMeter = 2000.0
                 )
             )
-            val listEquipAfter = equipDao.listAll()
+            val listEquipAfter = equipDao.all()
             assertEquals(
                 listEquipAfter.size,
                 1
@@ -245,7 +245,7 @@ class ISetHourMeterTest {
                     )
                 )
             )
-            val listEquipBefore = equipDao.listAll()
+            val listEquipBefore = equipDao.all()
             assertEquals(
                 listEquipBefore.size,
                 1
@@ -367,7 +367,7 @@ class ISetHourMeterTest {
                     )
                 )
             )
-            val listEquipBefore = equipDao.listAll()
+            val listEquipBefore = equipDao.all()
             assertEquals(
                 listEquipBefore.size,
                 1
@@ -426,7 +426,7 @@ class ISetHourMeterTest {
                 headerAfter.status,
                 Status.CLOSE
             )
-            val listEquipAfter = equipDao.listAll()
+            val listEquipAfter = equipDao.all()
             assertEquals(
                 listEquipAfter.size,
                 1

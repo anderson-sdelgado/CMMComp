@@ -32,7 +32,7 @@ class HourMeterHeaderViewModelTest {
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_APP_ARGS to FlowApp.HEADER_INITIAL.ordinal,
+                Args.FLOW_APP_ARG to FlowApp.HEADER_INITIAL.ordinal,
             )
         )
     ) = HourMeterHeaderViewModel(
@@ -357,7 +357,7 @@ class HourMeterHeaderViewModelTest {
             val viewModel = createViewModel(
                 savedStateHandle = SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.HEADER_FINISH.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.HEADER_FINISH.ordinal,
                     )
                 )
             )
@@ -410,7 +410,7 @@ class HourMeterHeaderViewModelTest {
             val viewModel = createViewModel(
                 savedStateHandle = SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.HEADER_FINISH.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.HEADER_FINISH.ordinal,
                     )
                 )
             )

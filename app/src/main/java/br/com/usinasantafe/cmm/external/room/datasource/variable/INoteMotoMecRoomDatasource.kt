@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
@@ -18,7 +17,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             noteMotoMecDao.insert(noteMotoMecRoomModel)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -30,7 +29,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             val result = noteMotoMecDao.listByIdHeader(idHeader).isNotEmpty()
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -45,7 +44,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             )
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -63,7 +62,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             noteMotoMecDao.update(model)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

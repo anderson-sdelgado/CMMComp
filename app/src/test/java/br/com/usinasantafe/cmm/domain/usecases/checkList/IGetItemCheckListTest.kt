@@ -14,7 +14,6 @@ import org.junit.Assert.*
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.whenever
-import java.util.Date
 import kotlin.test.Test
 
 class IGetItemCheckListTest {
@@ -70,7 +69,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getRegOperator",
@@ -102,7 +101,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -139,7 +138,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -149,7 +148,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 resultFailure(
                     "ITurnRepository.geNroTurnByIdTurn",
@@ -181,7 +180,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -191,7 +190,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -245,7 +244,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -255,7 +254,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -314,7 +313,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -324,7 +323,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -388,7 +387,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -398,7 +397,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -467,7 +466,7 @@ class IGetItemCheckListTest {
                 Result.success(2200L)
             )
             whenever(
-                motoMecRepository.getRegOperator()
+                motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -477,7 +476,7 @@ class IGetItemCheckListTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.geNroTurnByIdTurn(1)
+                turnRepository.getNroTurnByIdTurn(1)
             ).thenReturn(
                 Result.success(2)
             )

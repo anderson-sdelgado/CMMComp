@@ -1,8 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
@@ -21,14 +20,14 @@ class IEquipRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = equipRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -38,7 +37,7 @@ class IEquipRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = equipRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -56,7 +55,7 @@ class IEquipRepository @Inject constructor(
                 idEquip = idEquip
             )
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -64,7 +63,7 @@ class IEquipRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -76,7 +75,7 @@ class IEquipRepository @Inject constructor(
     ): Result<String> {
         val result = equipRoomDatasource.getDescrByIdEquip(idEquip)
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -89,7 +88,7 @@ class IEquipRepository @Inject constructor(
     ): Result<Int> {
         val result = equipRoomDatasource.getCodTurnEquipByIdEquip(idEquip)
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -100,7 +99,7 @@ class IEquipRepository @Inject constructor(
     override suspend fun getHourMeterByIdEquip(idEquip: Int): Result<Double> {
         val result = equipRoomDatasource.getHourMeterByIdEquip(idEquip)
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -117,7 +116,7 @@ class IEquipRepository @Inject constructor(
             idEquip = idEquip
         )
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -128,7 +127,7 @@ class IEquipRepository @Inject constructor(
     override suspend fun getTypeFertByIdEquip(idEquip: Int): Result<Int> {
         val result = equipRoomDatasource.getTypeFertByIdEquip(idEquip)
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -139,7 +138,7 @@ class IEquipRepository @Inject constructor(
     override suspend fun getIdCheckListByIdEquip(idEquip: Int): Result<Int> {
         val result = equipRoomDatasource.getIdCheckListByIdEquip(idEquip)
         if(result.isFailure){
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )

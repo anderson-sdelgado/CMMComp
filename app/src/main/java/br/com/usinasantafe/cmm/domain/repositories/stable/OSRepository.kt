@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.OS
 interface OSRepository {
     suspend fun addAll(list: List<OS>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun recoverAll(token: String): Result<List<OS>>
+    suspend fun listAll(token: String): Result<List<OS>>
     suspend fun checkNroOS(nroOS: Int): Result<Boolean>
     suspend fun getListByNroOS(
         token: String,

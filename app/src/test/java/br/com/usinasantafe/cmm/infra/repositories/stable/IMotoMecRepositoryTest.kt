@@ -161,13 +161,13 @@ class IMotoMecRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                motoMecRetrofitDatasource.recoverAll("token")
+                motoMecRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.failure(
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -230,13 +230,13 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                motoMecRetrofitDatasource.recoverAll("token")
+                motoMecRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true

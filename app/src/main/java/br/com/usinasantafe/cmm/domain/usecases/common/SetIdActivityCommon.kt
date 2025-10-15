@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
 import br.com.usinasantafe.cmm.utils.FlowApp
@@ -27,7 +26,7 @@ class ISetIdActivityCommon @Inject constructor(
         try {
             val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
             if(resultHeaderSetId.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultHeaderSetId.exceptionOrNull()!!
                 )
@@ -35,7 +34,7 @@ class ISetIdActivityCommon @Inject constructor(
             if(flowApp == FlowApp.HEADER_INITIAL) return resultHeaderSetId
             val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
             if(resultNoteSetId.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultNoteSetId.exceptionOrNull()!!
                 )
@@ -43,7 +42,7 @@ class ISetIdActivityCommon @Inject constructor(
             if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
             if(resultGetId.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetId.exceptionOrNull()!!
                 )
@@ -51,7 +50,7 @@ class ISetIdActivityCommon @Inject constructor(
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
             if(resultSave.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!
                 )
@@ -59,7 +58,7 @@ class ISetIdActivityCommon @Inject constructor(
             startWorkManager()
             return resultSave
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

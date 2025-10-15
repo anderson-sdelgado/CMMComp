@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
@@ -25,7 +23,7 @@ class IListItemMenu @Inject constructor(
             list.add(TypeItemMenu.BUTTON_FINISH_HEADER)
             val resultList = menuRepository.listMenu(list)
             if(resultList.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultList.exceptionOrNull()!!
                 )
@@ -51,7 +49,7 @@ class IListItemMenu @Inject constructor(
             }
             return Result.success(itemList + buttonItem)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

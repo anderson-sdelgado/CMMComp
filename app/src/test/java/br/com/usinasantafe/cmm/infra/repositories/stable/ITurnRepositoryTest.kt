@@ -149,7 +149,7 @@ class ITurnRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                turnoRetrofitDatasource.recoverAll("token")
+                turnoRetrofitDatasource.listAll("token")
             ).thenReturn(
                 resultFailure(
                     context = "ITurnRetrofitDatasource.recoverAll",
@@ -157,7 +157,7 @@ class ITurnRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -204,13 +204,13 @@ class ITurnRepositoryTest {
                 )
             )
             whenever(
-                turnoRetrofitDatasource.recoverAll("token")
+                turnoRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true
@@ -222,7 +222,7 @@ class ITurnRepositoryTest {
         }
 
     @Test
-    fun `getListByCodTurnEquip - Check return failure if have error in TurnRoomDatasource getListByCodTurnEquip`() =
+    fun `listByCodTurnEquip - Check return failure if have error in TurnRoomDatasource listByCodTurnEquip`() =
         runTest {
             whenever(
                 turnRoomDatasource.listByCodTurnEquip(1)
@@ -249,7 +249,7 @@ class ITurnRepositoryTest {
         }
 
     @Test
-    fun `getListByCodTurnEquip - Check return true if function execute successfully`() =
+    fun `listByCodTurnEquip - Check return true if function execute successfully`() =
         runTest {
             val roomModelList = listOf(
                 TurnRoomModel(
@@ -292,6 +292,52 @@ class ITurnRepositoryTest {
             assertEquals(
                 entity.descrTurn,
                 "TURNO 1"
+            )
+        }
+
+    @Test
+    fun `getNroTurnByIdTurn - Check return failure if have error in TurnRoomDatasource getNroTurnByIdTurn`() =
+        runTest {
+            whenever(
+                turnRoomDatasource.getNroTurnByIdTurn(1)
+            ).thenReturn(
+                resultFailure(
+                    "ITurnRoomDatasource.getNroTurnByIdTurn",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNroTurnByIdTurn(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ITurnRepository.getNroTurnByIdTurn -> ITurnRoomDatasource.getNroTurnByIdTurn"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroTurnByIdTurn - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                turnRoomDatasource.getNroTurnByIdTurn(1)
+            ).thenReturn(
+                Result.success(2)
+            )
+            val result = repository.getNroTurnByIdTurn(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                2
             )
         }
 

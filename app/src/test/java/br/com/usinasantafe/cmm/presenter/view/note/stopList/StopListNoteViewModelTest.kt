@@ -5,8 +5,8 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.note.SetIdStopNote
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityStop
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate

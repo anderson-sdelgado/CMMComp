@@ -145,7 +145,7 @@ class IRActivityStopRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                rActivityStopRetrofitDatasource.recoverAll("token")
+                rActivityStopRetrofitDatasource.listAll("token")
             ).thenReturn(
                 resultFailure(
                     context = "IRActivityStopRetrofitDatasource.recoverAll",
@@ -153,7 +153,7 @@ class IRActivityStopRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isFailure,
                 true
@@ -192,13 +192,13 @@ class IRActivityStopRepositoryTest {
                 )
             )
             whenever(
-                rActivityStopRetrofitDatasource.recoverAll("token")
+                rActivityStopRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.recoverAll("token")
+            val result = repository.listAll("token")
             assertEquals(
                 result.isSuccess,
                 true

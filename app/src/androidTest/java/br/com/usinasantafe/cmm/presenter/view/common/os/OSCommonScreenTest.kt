@@ -15,7 +15,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -142,7 +142,7 @@ class OSCommonScreenTest {
                 viewModel = OSCommonViewModel(
                     saveStateHandle = SavedStateHandle(
                         mapOf(
-                            FLOW_APP_ARGS to flowApp.ordinal
+                            FLOW_APP_ARG to flowApp.ordinal
                         )
                     ),
                     checkNroOS = checkNroOS,

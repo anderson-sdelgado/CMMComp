@@ -8,4 +8,6 @@ interface TurnRoomDatasource {
     suspend fun listByCodTurnEquip(
         codTurnEquip: Int
     ): Result<List<TurnRoomModel>>
+
+    suspend fun getNroTurnByIdTurn(idTurn: Int): Result<Int>
 }

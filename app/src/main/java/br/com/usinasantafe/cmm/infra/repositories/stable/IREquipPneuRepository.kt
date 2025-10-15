@@ -2,8 +2,6 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipPneu
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipPneuRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipPneuRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipPneuRoomDatasource // Import da datasource Room
@@ -22,14 +20,14 @@ class IREquipPneuRepository @Inject constructor(
             val roomModelList = list.map { it.entityToRoomModel() }
             val result = rEquipPneuRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception){
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -39,7 +37,7 @@ class IREquipPneuRepository @Inject constructor(
     override suspend fun deleteAll(): Result<Boolean> {
         val result = rEquipPneuRoomDatasource.deleteAll()
         if (result.isFailure) {
-            return resultFailureMiddle(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = result.exceptionOrNull()!!
             )
@@ -47,13 +45,13 @@ class IREquipPneuRepository @Inject constructor(
         return result
     }
 
-    override suspend fun recoverAll(
+    override suspend fun listAll(
         token: String
     ): Result<List<REquipPneu>> {
         try {
-            val result = rEquipPneuRetrofitDatasource.recoverAll(token)
+            val result = rEquipPneuRetrofitDatasource.listAll(token)
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
@@ -61,7 +59,7 @@ class IREquipPneuRepository @Inject constructor(
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

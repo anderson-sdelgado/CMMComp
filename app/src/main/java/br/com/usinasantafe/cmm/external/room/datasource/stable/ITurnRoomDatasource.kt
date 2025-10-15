@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
@@ -17,7 +16,7 @@ class ITurnRoomDatasource @Inject constructor(
             turnDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -29,7 +28,7 @@ class ITurnRoomDatasource @Inject constructor(
             turnDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,13 +39,25 @@ class ITurnRoomDatasource @Inject constructor(
         codTurnEquip: Int
     ): Result<List<TurnRoomModel>> {
         try {
-            val list = turnDao.getListByCodTurnEquip(codTurnEquip)
+            val list = turnDao.listByCodTurnEquip(codTurnEquip)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
+        }
+    }
+
+    override suspend fun getNroTurnByIdTurn(idTurn: Int): Result<Int> {
+        try {
+            val model = turnDao.getByIdTurn(idTurn)
+            return Result.success(model.nroTurn)
+            } catch (e: Exception) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = e
+                )
         }
     }
 

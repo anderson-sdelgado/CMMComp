@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
@@ -16,7 +15,7 @@ class IActivityRoomDatasource @Inject constructor(
             activityDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +27,7 @@ class IActivityRoomDatasource @Inject constructor(
             activityDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +39,7 @@ class IActivityRoomDatasource @Inject constructor(
             val list = activityDao.listByIdList(idList)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

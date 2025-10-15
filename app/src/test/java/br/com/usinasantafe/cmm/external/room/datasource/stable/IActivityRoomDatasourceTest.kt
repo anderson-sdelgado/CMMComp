@@ -8,12 +8,12 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -41,7 +41,7 @@ class IActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = activityDao.listAll().size
+            val qtdBefore = activityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -72,7 +72,7 @@ class IActivityRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = activityDao.listAll().size
+            val qtdAfter = activityDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -82,7 +82,7 @@ class IActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = activityDao.listAll().size
+            val qtdBefore = activityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -109,7 +109,7 @@ class IActivityRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = activityDao.listAll().size
+            val qtdAfter = activityDao.all().size
             assertEquals(
                 qtdAfter,
                 2
@@ -128,7 +128,7 @@ class IActivityRoomDatasourceTest {
                     ),
                 )
             )
-            val qtdBefore = activityDao.listAll().size
+            val qtdBefore = activityDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -138,7 +138,7 @@ class IActivityRoomDatasourceTest {
                 result.isSuccess,
                 true
             )
-            val qtdAfter = activityDao.listAll().size
+            val qtdAfter = activityDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -189,7 +189,7 @@ class IActivityRoomDatasourceTest {
                     ),
                 )
             )
-            val qtdAll = activityDao.listAll().size
+            val qtdAll = activityDao.all().size
             assertEquals(
                 qtdAll,
                 4

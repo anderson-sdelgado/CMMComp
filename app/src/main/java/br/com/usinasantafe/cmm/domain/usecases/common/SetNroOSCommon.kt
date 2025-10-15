@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -28,7 +26,7 @@ class ISetNroOSCommon @Inject constructor(
                 nroOS.toInt()
             )
             if (resultSetNroOSHeader.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSetNroOSHeader.exceptionOrNull()!!
                 )
@@ -38,14 +36,14 @@ class ISetNroOSCommon @Inject constructor(
                 nroOS.toInt()
             )
             if (resultSetNroOSNote.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSetNroOSNote.exceptionOrNull()!!
                 )
             }
             return resultSetNroOSNote
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

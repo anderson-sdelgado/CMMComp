@@ -24,7 +24,7 @@ class IBocalRetrofitDatasourceTest {
             )
             val service = retrofit.create(BocalApi::class.java)
             val datasource = IBocalRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -54,7 +54,7 @@ class IBocalRetrofitDatasourceTest {
             )
             val service = retrofit.create(BocalApi::class.java)
             val datasource = IBocalRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -85,7 +85,7 @@ class IBocalRetrofitDatasourceTest {
             )
             val service = retrofit.create(BocalApi::class.java)
             val datasource = IBocalRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

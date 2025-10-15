@@ -24,4 +24,8 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindNoteMotoMecSharedPreferencesDatasource(dataSource: INoteMotoMecSharedPreferencesDatasource): NoteMotoMecSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindHeaderCheckListSharedPreferencesDatasource(dataSource: IHeaderCheckListSharedPreferencesDatasource): HeaderCheckListSharedPreferencesDatasource
+
 }

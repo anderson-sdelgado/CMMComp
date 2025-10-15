@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -23,7 +21,7 @@ class ISendHeader @Inject constructor(
         try {
             val resultGet = configRepository.getNumber()
             if (resultGet.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGet.exceptionOrNull()!!
                 )
@@ -31,7 +29,7 @@ class ISendHeader @Inject constructor(
             val number = resultGet.getOrNull()!!
             val resultToken = getToken()
             if(resultToken.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultToken.exceptionOrNull()!!
                 )
@@ -42,14 +40,14 @@ class ISendHeader @Inject constructor(
                 token = token
             )
             if (result.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = result.exceptionOrNull()!!
                 )
             }
             return result
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

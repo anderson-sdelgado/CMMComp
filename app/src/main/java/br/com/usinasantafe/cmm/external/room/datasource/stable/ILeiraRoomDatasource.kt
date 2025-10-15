@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.LeiraDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.LeiraRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.LeiraRoomModel
@@ -16,7 +15,7 @@ class ILeiraRoomDatasource @Inject constructor(
             leiraDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +27,7 @@ class ILeiraRoomDatasource @Inject constructor(
             leiraDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

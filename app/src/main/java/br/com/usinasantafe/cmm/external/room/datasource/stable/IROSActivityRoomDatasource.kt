@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
@@ -17,7 +16,7 @@ class IROSActivityRoomDatasource @Inject constructor(
             rOSActivityDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -29,7 +28,7 @@ class IROSActivityRoomDatasource @Inject constructor(
             rOSActivityDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -41,7 +40,7 @@ class IROSActivityRoomDatasource @Inject constructor(
             val list = rOSActivityDao.listByIdOS(idOS)
             return Result.success(list)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

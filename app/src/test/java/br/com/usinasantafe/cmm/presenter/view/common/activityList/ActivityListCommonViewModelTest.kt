@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableActivity
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
@@ -36,7 +36,7 @@ class ActivityListCommonViewModelTest {
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_APP_ARGS to FlowApp.HEADER_INITIAL.ordinal,
+                Args.FLOW_APP_ARG to FlowApp.HEADER_INITIAL.ordinal,
             )
         )
     ) = ActivityListCommonViewModel(
@@ -317,7 +317,7 @@ class ActivityListCommonViewModelTest {
             val viewModel = createViewModel(
                 SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.NOTE_WORK.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
                     )
                 )
             )
@@ -352,7 +352,7 @@ class ActivityListCommonViewModelTest {
             val viewModel = createViewModel(
                 SavedStateHandle(
                     mapOf(
-                        Args.FLOW_APP_ARGS to FlowApp.NOTE_WORK.ordinal,
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
                     )
                 )
             )

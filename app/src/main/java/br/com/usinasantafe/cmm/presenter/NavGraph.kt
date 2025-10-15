@@ -9,7 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.Routes.ACTIVITY_LIST_COMMON_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.CONFIG_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.EQUIP_HEADER_ROUTE
@@ -141,7 +141,7 @@ fun NavigationGraph(
         composable(
             OS_COMMON_ROUTE,
             arguments = listOf(
-                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
             )
         ) { entry ->
             OSCommonScreen(
@@ -150,7 +150,7 @@ fun NavigationGraph(
                 },
                 onNavActivityList = {
                     navActions.navigateToActivityListCommon(
-                        flowApp = entry.arguments?.getInt(FLOW_APP_ARGS)!!,
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
                     )
                 },
                 onNavMenuNote = {
@@ -162,13 +162,13 @@ fun NavigationGraph(
         composable(
             ACTIVITY_LIST_COMMON_ROUTE,
             arguments = listOf(
-                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
             )
         ) { entry ->
             ActivityListCommonScreen(
                 onNavOS = {
                     navActions.navigateToOSCommon(
-                        flowApp = entry.arguments?.getInt(FLOW_APP_ARGS)!!
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
                     )
                 },
                 onNavMeasure = {
@@ -186,7 +186,7 @@ fun NavigationGraph(
         composable(
             HOUR_METER_HEADER_ROUTE,
             arguments = listOf(
-                navArgument(FLOW_APP_ARGS) { type = NavType.IntType }
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
             )
         ) {
             HourMeterHeaderScreen(

@@ -5,5 +5,5 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Componente
 interface ComponenteRepository {
     suspend fun addAll(list: List<Componente>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun recoverAll(token: String): Result<List<Componente>>
+    suspend fun listAll(token: String): Result<List<Componente>>
 }

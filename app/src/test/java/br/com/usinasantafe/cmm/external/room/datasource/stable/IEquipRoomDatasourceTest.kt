@@ -41,7 +41,7 @@ class IEquipRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -86,7 +86,7 @@ class IEquipRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = equipDao.listAll().size
+            val qtdAfter = equipDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -96,7 +96,7 @@ class IEquipRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -137,12 +137,12 @@ class IEquipRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = equipDao.listAll().size
+            val qtdAfter = equipDao.all().size
             assertEquals(
                 qtdAfter,
                 2
             )
-            val list = equipDao.listAll()
+            val list = equipDao.all()
             assertEquals(
                 list[0].idEquip,
                 1
@@ -205,7 +205,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -219,7 +219,7 @@ class IEquipRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = equipDao.listAll().size
+            val qtdAfter = equipDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -263,7 +263,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -316,7 +316,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -369,7 +369,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -405,7 +405,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -422,7 +422,7 @@ class IEquipRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = equipDao.listAll().size
+            val qtdAfter = equipDao.all().size
             assertEquals(
                 qtdAfter,
                 1
@@ -466,7 +466,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -519,7 +519,7 @@ class IEquipRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = equipDao.listAll().size
+            val qtdBefore = equipDao.all().size
             assertEquals(
                 qtdBefore,
                 1

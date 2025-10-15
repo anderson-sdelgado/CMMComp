@@ -16,7 +16,7 @@ interface ActivityDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_ACTIVITY")
-    suspend fun listAll(): List<ActivityRoomModel>
+    suspend fun all(): List<ActivityRoomModel>
 
     @Query("SELECT * FROM $TB_ACTIVITY WHERE idActivity IN (:ids)")
     suspend fun listByIdList(ids: List<Int>): List<ActivityRoomModel>

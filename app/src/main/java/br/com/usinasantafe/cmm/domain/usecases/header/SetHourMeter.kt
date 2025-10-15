@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
@@ -30,7 +28,7 @@ class ISetHourMeter @Inject constructor(
         flowApp: FlowApp
     ): Result<Boolean> {
         try {
-            val locale = Locale("pt", "BR")
+            val locale = Locale.Builder().setLanguage("pt").setRegion("BR").build()
             val formatNumber = NumberFormat.getInstance(locale)
             val hourMeterInput = formatNumber.parse(hourMeter)!!
             val hourMeterInputDouble = hourMeterInput.toDouble()
@@ -40,14 +38,14 @@ class ISetHourMeter @Inject constructor(
                 motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble)
             }
             if(resultSetHourMeter.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSetHourMeter.exceptionOrNull()!!
                 )
             }
             val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
             if(resultGetIdEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdEquip.exceptionOrNull()!!
                 )
@@ -58,7 +56,7 @@ class ISetHourMeter @Inject constructor(
                 idEquip = idEquip
             )
             if(resultUpdateHourMeterByIdEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultUpdateHourMeterByIdEquip.exceptionOrNull()!!
                 )
@@ -66,7 +64,7 @@ class ISetHourMeter @Inject constructor(
             if(flowApp == FlowApp.HEADER_INITIAL) {
                 val resultSaveHeader = motoMecRepository.saveHeader()
                 if(resultSaveHeader.isFailure) {
-                    return resultFailureMiddle(
+                    return resultFailure(
                         context = getClassAndMethod(),
                         cause = resultSaveHeader.exceptionOrNull()!!
                     )
@@ -76,7 +74,7 @@ class ISetHourMeter @Inject constructor(
             }
             val resultFinishHeader = motoMecRepository.finishHeader()
             if(resultFinishHeader.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultFinishHeader.exceptionOrNull()!!
                 )
@@ -84,7 +82,7 @@ class ISetHourMeter @Inject constructor(
             startWorkManager()
             return resultFinishHeader
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

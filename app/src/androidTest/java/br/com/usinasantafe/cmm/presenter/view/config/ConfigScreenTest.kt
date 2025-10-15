@@ -12,7 +12,10 @@ import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -24,8 +27,11 @@ import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
+import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
+import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -36,10 +42,11 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
+import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
 class ConfigScreenTest {
@@ -63,10 +70,646 @@ class ConfigScreenTest {
     lateinit var equipDao: EquipDao
 
     @Inject
+    lateinit var itemCheckListDao: ItemCheckListDao
+
+    @Inject
+    lateinit var rActivityStopDao: RActivityStopDao
+
+    @Inject
     lateinit var rEquipActivityDao: REquipActivityDao
 
     @Inject
+    lateinit var stopDao: StopDao
+
+    @Inject
     lateinit var turnDao: TurnDao
+
+    private val resultTokenFailure = """{"idBD":1a,"idEquip":1}""".trimIndent()
+
+    private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
+
+    private val resultActivityFailure = """
+        [
+            {"idActivity":1a,"codActivity":10,"descrActivity":"Test"},
+            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+        ]
+    """.trimIndent()
+
+    private val resultActivityRepeated = """
+        [
+            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
+            {"idActivity":1,"codActivity":10,"descrActivity":"Test"}
+        ]
+    """.trimIndent()
+
+    private val resultActivity = """
+        [
+            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
+            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+        ]
+    """.trimIndent()
+
+    private val resultColabFailure = """
+        [
+            {"regColab":19759a,"nameColab":"ANDERSON DA SILVA DELGADO"},
+            {"regColab":18017,"nameColab":"RONALDO"}
+        ]
+    """.trimIndent()
+
+    private val resultColabRepeated = """
+        [
+            {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"},
+            {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}
+        ]
+    """.trimIndent()
+
+    private val resultColab = """
+        [
+            {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"},
+            {"regColab":18017,"nameColab":"RONALDO"}
+        ]
+    """.trimIndent()
+
+    private val resultEquipFailure = """
+        [
+          {"idEquip":"1a","nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1},
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1}
+        ]
+    """.trimIndent()
+
+    private val resultEquipRepeated = """
+        [
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1},
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1}
+        ]
+    """.trimIndent()
+
+    private val resultEquip = """
+        [
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1},
+          {"idEquip":2,"nroEquip":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1}
+        ]
+    """.trimIndent()
+
+    private val resultItemCheckListFailure = """
+        [
+          {"idItemCheckList":"1a","idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+          {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
+        ]
+    """.trimIndent()
+
+    private val resultItemCheckListRepeated = """
+        [
+          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"}
+        ]
+    """.trimIndent()
+
+    private val resultItemCheckList = """
+        [
+          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+          {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
+        ]
+    """.trimIndent()
+
+    private val resultRActivityStopFailure = """
+        [
+            {"idActivity":"101a","idStop":301},
+            {"idActivity":102,"idStop":303}
+        ]
+    """.trimIndent()
+
+    private val resultRActivityStop = """
+        [
+            {"idActivity":101,"idStop":301},
+            {"idActivity":102,"idStop":303}
+        ]
+    """.trimIndent()
+
+    private val resultREquipActivityFailure = """
+        [
+          {"idREquipActivity":1a,"idEquip":30,"idActivity":10},
+          {"idREquipActivity":2,"idEquip":40,"idActivity":10}
+        ]
+    """.trimIndent()
+
+    private val resultREquipActivityRepeated = """
+        [
+          {"idREquipActivity":1,"idEquip":30,"idActivity":10},
+          {"idREquipActivity":1,"idEquip":30,"idActivity":10}
+        ]
+    """.trimIndent()
+
+    private val resultREquipActivity = """
+        [
+          {"idREquipActivity":1,"idEquip":30,"idActivity":10},
+          {"idREquipActivity":2,"idEquip":40,"idActivity":10}
+        ]
+    """.trimIndent()
+
+    private val resultStopFailure = """
+        [
+            {"idStop":"1a","codStop":10,"descrStop":"PARADA PARA ALMOCO"},
+            {"idStop":2,"codStop":20,"descrStop":"CHUVA"}
+        ]
+    """.trimIndent()
+
+    private val resultStopRepeated = """
+        [
+            {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"},
+            {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"}
+        ]
+    """.trimIndent()
+
+    private val resultStop = """
+        [
+            {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"},
+            {"idStop":2,"codStop":20,"descrStop":"CHUVA"}
+        ]
+    """.trimIndent()
+
+    private val resultTurnFailure = """
+        [
+          {"idTurn":1a,"codTurnEquip":1,nroTurn":1,"descrTurn":"Turno 1"},
+          {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
+        ]
+    """.trimIndent()
+
+    private val resultTurnRepeated = """
+        [
+          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
+          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
+        ]
+    """.trimIndent()
+
+    private val resultTurn = """
+        [
+          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
+          {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
+        ]
+    """.trimIndent()
+
+    private val dispatcherTokenFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultTokenFailure)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody("")
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherToken: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody("")
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherActivityFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivityFailure)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherActivityRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivityRepeated)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherActivity: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody("")
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherColabFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabFailure)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherColabRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabRepeated)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherColab: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherEquipFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipFailure)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherEquipRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipRepeated)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherEquip: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherItemCheckListFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckListFailure)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherItemCheckListRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckListRepeated)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherItemCheckList: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherRActivityStopFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStopFailure)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherRActivityStop: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherREquipActivityFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherREquipActivityRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityRepeated)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherREquipActivity: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherStopFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopFailure)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherStopRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopRepeated)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherStop: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherTurnFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnFailure)
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherTurnRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnRepeated)
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherSuccess: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
+                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    @Test
+    fun check_open_screen() =
+        runTest {
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
 
     @Test
     fun verify_check_open_screen_config_and_service_without_connection() =
@@ -85,7 +728,7 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.token -> ISendDataConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080")
@@ -100,16 +743,18 @@ class ConfigScreenTest {
                 false
             )
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
     }
 
     @Test
-    fun verify_check_return_activity_data_with_failure() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_token_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureActivity
+            mockWebServer.dispatcher = dispatcherTokenFailure
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -127,10 +772,53 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableAtividade -> IActivityRepository.recoverAll -> IActivityRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 16 path \$[0].idActivity")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE RECUPERACAO DE TOKEN! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.token -> ISendDataConfig -> IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 9 path \$.idBD")
+
+            val result = configSharedPreferencesDatasource.has()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_token_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherToken
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableActivity -> IActivityRepository.listAll -> IActivityRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             val result = configSharedPreferencesDatasource.has()
             assertEquals(
@@ -163,15 +851,18 @@ class ConfigScreenTest {
                     flagUpdate = FlagUpdate.OUTDATED
                 )
             )
-            composeTestRule.waitUntilTimeout(2_000)
+
+            composeTestRule.waitUntilTimeout()
         }
 
     @Test
-    fun verify_check_return_colab_data_with_failure() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_activity_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureColab
+            mockWebServer.dispatcher = dispatcherActivityFailure
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -189,69 +880,22 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableColab -> IColabRepository.recoverAll -> IColabRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 1 column 14 path \$[0].regColab")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableActivity -> IActivityRepository.listAll -> IActivityRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 19 path \$[0].idActivity")
 
-            val result = configSharedPreferencesDatasource.has()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                true
-            )
-
-            val resultGet = configSharedPreferencesDatasource.get()
-            assertEquals(
-                resultGet.isSuccess,
-                true
-            )
-            val config = resultGet.getOrNull()!!
-            assertEquals(
-                config,
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 1,
-                    checkMotoMec = true,
-                    idBD = 1,
-                    version = "1.0",
-                    app = "PMM",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = FlagUpdate.OUTDATED
-                )
-            )
-            val activityRoomModelList = activityDao.listAll()
-            assertEquals(
-                activityRoomModelList.size,
-                1
-            )
-            val roomModel = activityRoomModelList[0]
-            assertEquals(
-                roomModel.idActivity,
-                1
-            )
-            assertEquals(
-                roomModel.codActivity,
-                10
-            )
-            assertEquals(
-                roomModel.descrActivity,
-                "Test"
-            )
-            composeTestRule.waitUntilTimeout(2_000)
-    }
+            composeTestRule.waitUntilTimeout()
+        }
 
     @Test
-    fun verify_check_return_equip_data_with_failure() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_activity_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureEquip
+            mockWebServer.dispatcher = dispatcherActivityRepeated
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -269,79 +913,22 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableEquip -> IEquipRepository.addAll -> IEquipRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.idEquip (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableActivity -> IActivityRepository.addAll -> IActivityRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_activity.idActivity (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
 
-            val resultGet = configSharedPreferencesDatasource.get()
-            assertEquals(
-                resultGet.isSuccess,
-                true
-            )
-            val config = resultGet.getOrNull()!!
-            assertEquals(
-                config,
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 1,
-                    checkMotoMec = true,
-                    idBD = 1,
-                    version = "1.0",
-                    app = "PMM",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = FlagUpdate.OUTDATED
-                )
-            )
-            val activityRoomModelList = activityDao.listAll()
-            assertEquals(
-                activityRoomModelList.size,
-                1
-            )
-            val activityRoomModel = activityRoomModelList[0]
-            assertEquals(
-                activityRoomModel.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel.descrActivity,
-                "Test"
-            )
-            val colabRoomModelList = colabDao.all()
-            assertEquals(
-                colabRoomModelList.size,
-                1
-            )
-            val colabRoomModel = colabRoomModelList[0]
-            assertEquals(
-                colabRoomModel.regColab,
-                19759
-            )
-            assertEquals(
-                colabRoomModel.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            val equipRoomModelList = equipDao.listAll()
-            assertEquals(
-                equipRoomModelList.size,
-                0
-            )
-            composeTestRule.waitUntilTimeout(2_000)
-
-    }
+            composeTestRule.waitUntilTimeout()
+        }
 
     @Test
-    fun verify_check_return_r_equip_activity_data_with_failure() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_activity_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherFailureREquipActivity
+            mockWebServer.dispatcher = dispatcherActivity
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -359,123 +946,29 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableREquipActivity -> IREquipActivityRepository.getListByIdEquip -> IREquipActivityRetrofitDatasource.getListByIdEquip -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 23 path \$[0].idREquipActivity")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
-            val resultGet = configSharedPreferencesDatasource.get()
-            assertEquals(
-                resultGet.isSuccess,
-                true
-            )
-            val config = resultGet.getOrNull()!!
-            assertEquals(
-                config,
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 1,
-                    checkMotoMec = true,
-                    idBD = 1,
-                    version = "1.0",
-                    app = "PMM",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = FlagUpdate.OUTDATED
-                )
-            )
-            val activityRoomModelList = activityDao.listAll()
-            assertEquals(
-                activityRoomModelList.size,
-                1
-            )
-            val activityRoomModel = activityRoomModelList[0]
-            assertEquals(
-                activityRoomModel.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel.descrActivity,
-                "Test"
-            )
-            val colabRoomModelList = colabDao.all()
-            assertEquals(
-                colabRoomModelList.size,
-                1
-            )
-            val roomModel = colabRoomModelList[0]
-            assertEquals(
-                roomModel.regColab,
-                19759
-            )
-            assertEquals(
-                roomModel.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            val equipRoomModelList = equipDao.listAll()
-            assertEquals(
-                equipRoomModelList.size,
-                1
-            )
-            val equipRoomModel = equipRoomModelList[0]
-            assertEquals(
-                equipRoomModel.idEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.nroEquip,
-                1000001
-            )
-            assertEquals(
-                equipRoomModel.codClass,
-                1
-            )
-            assertEquals(
-                equipRoomModel.descrClass,
-                "Classe 1"
-            )
-            assertEquals(
-                equipRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel.typeFert,
-                1
-            )
-            assertEquals(
-                equipRoomModel.hourMeter,
-                100.0,
-                0.0
-            )
-            assertEquals(
-                equipRoomModel.classify,
-                1
-            )
-            assertEquals(
-                equipRoomModel.flagMechanic,
-                true
-            )
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
+
+            asserts(1)
+
+            composeTestRule.waitUntilTimeout()
         }
 
     @Test
-    fun verify_check_return_turn_data_with_failure() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_colab_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
-            val server = MockWebServer()
-            server.dispatcher = dispatcherFailureTurn
-            server.start()
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherColabFailure
+            mockWebServer.start()
 
-            BaseUrlModuleTest.url = server.url("/").toString()
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
 
             hiltRule.inject()
 
@@ -490,142 +983,25 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> UpdateTableTurn -> ITurnRepository.recoverAll -> ITurnRetrofitDatasource.recoverAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 33 path \$[0].codTurnEquip")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableColab -> IColabRepository.listAll -> IColabRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 17 path \$[0].regColab")
 
-            val resultGet = configSharedPreferencesDatasource.get()
-            assertEquals(
-                resultGet.isSuccess,
-                true
-            )
-            val config = resultGet.getOrNull()!!
-            assertEquals(
-                config,
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 1,
-                    checkMotoMec = true,
-                    idBD = 1,
-                    version = "1.0",
-                    app = "PMM",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = FlagUpdate.OUTDATED
-                )
-            )
-            val activityRoomModelList = activityDao.listAll()
-            assertEquals(
-                activityRoomModelList.size,
-                1
-            )
-            val activityRoomModel = activityRoomModelList[0]
-            assertEquals(
-                activityRoomModel.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel.descrActivity,
-                "Test"
-            )
-            val colabRoomModelList = colabDao.all()
-            assertEquals(
-                colabRoomModelList.size,
-                1
-            )
-            val roomModel = colabRoomModelList[0]
-            assertEquals(
-                roomModel.regColab,
-                19759
-            )
-            assertEquals(
-                roomModel.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            val equipRoomModelList = equipDao.listAll()
-            assertEquals(
-                equipRoomModelList.size,
-                1
-            )
-            val equipRoomModel = equipRoomModelList[0]
-            assertEquals(
-                equipRoomModel.idEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.nroEquip,
-                1000001
-            )
-            assertEquals(
-                equipRoomModel.codClass,
-                1
-            )
-            assertEquals(
-                equipRoomModel.descrClass,
-                "Classe 1"
-            )
-            assertEquals(
-                equipRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel.typeFert,
-                1
-            )
-            assertEquals(
-                equipRoomModel.hourMeter,
-                100.0,
-                0.0
-            )
-            assertEquals(
-                equipRoomModel.classify,
-                1
-            )
-            assertEquals(
-                equipRoomModel.flagMechanic,
-                true
-            )
-            val rEquipActivityRoomModelList = rEquipActivityDao.listAll()
-            assertEquals(
-                rEquipActivityRoomModelList.size,
-                1
-            )
-            val rEquipActivityRoomModel = rEquipActivityRoomModelList[0]
-            assertEquals(
-                rEquipActivityRoomModel.idREquipActivity,
-                1
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idEquip,
-                30
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idActivity,
-                10
-            )
-            composeTestRule.waitUntilTimeout(2_000)
-
+            composeTestRule.waitUntilTimeout()
         }
 
     @Test
-    fun verify_check_success_update() =
-        runTest {
+    fun check_open_screen_and_msg_if_web_service_return_data_colab_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
 
-            val server = MockWebServer()
-            server.dispatcher = dispatcherSuccess
-            server.start()
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherColabRepeated
+            mockWebServer.start()
 
-            BaseUrlModuleTest.url = server.url("/").toString()
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
 
             hiltRule.inject()
 
@@ -640,150 +1016,636 @@ class ConfigScreenTest {
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
-            composeTestRule.waitUntilTimeout(2_000)
+            composeTestRule.waitUntilTimeout()
 
-            val resultGet = configSharedPreferencesDatasource.get()
-            assertEquals(
-                resultGet.isSuccess,
-                true
-            )
-            val config = resultGet.getOrNull()!!
-            assertEquals(
-                config,
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 1,
-                    checkMotoMec = true,
-                    idBD = 1,
-                    version = "1.0",
-                    app = "PMM",
-                    statusSend = StatusSend.STARTED,
-                    flagUpdate = FlagUpdate.UPDATED
-                )
-            )
-            val activityRoomModelList = activityDao.listAll()
-            assertEquals(
-                activityRoomModelList.size,
-                1
-            )
-            val activityRoomModel = activityRoomModelList[0]
-            assertEquals(
-                activityRoomModel.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel.descrActivity,
-                "Test"
-            )
-            val colabRoomModelList = colabDao.all()
-            assertEquals(
-                colabRoomModelList.size,
-                1
-            )
-            val roomModel = colabRoomModelList[0]
-            assertEquals(
-                roomModel.regColab,
-                19759
-            )
-            assertEquals(
-                roomModel.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-            val equipRoomModelList = equipDao.listAll()
-            assertEquals(
-                equipRoomModelList.size,
-                1
-            )
-            val equipRoomModel = equipRoomModelList[0]
-            assertEquals(
-                equipRoomModel.idEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.nroEquip,
-                1000001
-            )
-            assertEquals(
-                equipRoomModel.codClass,
-                1
-            )
-            assertEquals(
-                equipRoomModel.descrClass,
-                "Classe 1"
-            )
-            assertEquals(
-                equipRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel.typeFert,
-                1
-            )
-            assertEquals(
-                equipRoomModel.hourMeter,
-                100.0,
-                0.0
-            )
-            assertEquals(
-                equipRoomModel.classify,
-                1
-            )
-            assertEquals(
-                equipRoomModel.flagMechanic,
-                true
-            )
-            val rEquipActivityRoomModelList = rEquipActivityDao.listAll()
-            assertEquals(
-                rEquipActivityRoomModelList.size,
-                1
-            )
-            val rEquipActivityRoomModel = rEquipActivityRoomModelList[0]
-            assertEquals(
-                rEquipActivityRoomModel.idREquipActivity,
-                1
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idEquip,
-                30
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idActivity,
-                10
-            )
-            val turnRoomModelList = turnDao.listAll()
-            assertEquals(
-                turnRoomModelList.size,
-                1
-            )
-            val turnRoomModel = turnRoomModelList[0]
-            assertEquals(
-                turnRoomModel.idTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                turnRoomModel.nroTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel.descrTurn,
-                "Turno 1"
-            )
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableColab -> IColabRepository.addAll -> IColabRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_colab.regColab (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
 
-    }
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_colab_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherColab
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableEquipByIdEquip -> IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(2)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_equip_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherEquipFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableEquipByIdEquip -> IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_equip_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherEquipRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableEquipByIdEquip -> IEquipRepository.addAll -> IEquipRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.idEquip (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_equip_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherEquip
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.listByNroEquip -> IItemCheckListRetrofitDatasource.listByNroEquip -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(3)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_item_check_list_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherItemCheckListFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.listByNroEquip -> IItemCheckListRetrofitDatasource.listByNroEquip -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_item_check_list_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherItemCheckListRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.addAll -> IItemCheckListRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_item_check_list.idItemCheckList (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_item_check_list_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherItemCheckList
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableRActivityStop -> IRActivityStopRepository.listAll -> IRActivityStopRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(4)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_activity_stop_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherRActivityStopFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableRActivityStop -> IRActivityStopRepository.listAll -> IRActivityStopRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"101a\"")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_activity_stop_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherRActivityStop
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.listByIdEquip -> IREquipActivityRetrofitDatasource.listByIdEquip -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(5)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_equip_activity_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherREquipActivityFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.listByIdEquip -> IREquipActivityRetrofitDatasource.listByIdEquip -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 23 path $[0].idREquipActivity")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_equip_activity_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherREquipActivityRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemCheckListByNroEquip -> IItemCheckListRepository.addAll -> IItemCheckListRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_item_check_list.idItemCheckList (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_equip_activity_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherREquipActivity
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableStop -> IStopRepository.listAll -> IStopRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(6)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_stop_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherStopFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableStop -> IStopRepository.listAll -> IStopRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_stop_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherStopRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableStop -> IStopRepository.addAll -> IStopRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_stop.idStop (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_stop_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherStop
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableTurn -> ITurnRepository.listAll -> ITurnRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(7)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_turn_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherTurnFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableTurn -> ITurnRepository.listAll -> ITurnRetrofitDatasource.listAll -> com.google.gson.stream.MalformedJsonException: Use JsonReader.setLenient(true) to accept malformed JSON at line 2 column 13 path \$[0].idTurn")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_turn_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherTurnRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableTurn -> ITurnRepository.addAll -> ITurnRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_turn.idTurn (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_of_success_if_web_service_return_all_data_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherSuccess
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("CONFIGURAÇÃO REALIZADA COM SUCESSO!")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(8)
+
+            composeTestRule.waitUntilTimeout()
+
+        }
 
     private fun setContent() {
         composeTestRule.setContent {
@@ -793,147 +1655,329 @@ class ConfigScreenTest {
         }
     }
 
-    private val dispatcherFailureActivity: Dispatcher = object : Dispatcher() {
+    private suspend fun asserts(level: Int) {
 
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivityFailure)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
+        val activityRoomModelList = activityDao.all()
+        assertEquals(
+            activityRoomModelList.size,
+            2
+        )
+        val activityRoomModel1 = activityRoomModelList[0]
+        assertEquals(
+            activityRoomModel1.idActivity,
+            1
+        )
+        assertEquals(
+            activityRoomModel1.codActivity,
+            10
+        )
+        assertEquals(
+            activityRoomModel1.descrActivity,
+            "Test"
+        )
+        val activityRoomModel2 = activityRoomModelList[1]
+        assertEquals(
+            activityRoomModel2.idActivity,
+            2
+        )
+        assertEquals(
+            activityRoomModel2.codActivity,
+            20
+        )
+        assertEquals(
+            activityRoomModel2.descrActivity,
+            "Test2"
+        )
+
+        if(level == 1) return
+
+        val colabRoomModelList = colabDao.all()
+        assertEquals(
+            colabRoomModelList.size,
+            2
+        )
+        val colabRoomModel1 = colabRoomModelList[0]
+        assertEquals(
+            colabRoomModel1.regColab,
+            18017
+        )
+        assertEquals(
+            colabRoomModel1.nameColab,
+            "RONALDO"
+        )
+        val colabRoomModel2 = colabRoomModelList[1]
+        assertEquals(
+            colabRoomModel2.regColab,
+            19759
+        )
+        assertEquals(
+            colabRoomModel2.nameColab,
+            "ANDERSON DA SILVA DELGADO"
+        )
+
+        if(level == 2) return
+
+        val equipRoomModelList = equipDao.all()
+        assertEquals(
+            equipRoomModelList.size,
+            2
+            )
+        val equipRoomModel1 = equipRoomModelList[0]
+        assertEquals(
+            equipRoomModel1.idEquip,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.nroEquip,
+            1000001
+        )
+        assertEquals(
+            equipRoomModel1.codClass,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.descrClass,
+            "Classe 1"
+        )
+        assertEquals(
+            equipRoomModel1.codTurnEquip,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.idCheckList,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.typeFert,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.hourMeter,
+            100.0
+        )
+        assertEquals(
+            equipRoomModel1.classify,
+            1
+        )
+        val equipRoomModel2 = equipRoomModelList[1]
+        assertEquals(
+            equipRoomModel2.idEquip,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.nroEquip,
+            1000002
+        )
+        assertEquals(
+            equipRoomModel2.codClass,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.descrClass,
+            "Classe 2"
+        )
+        assertEquals(
+            equipRoomModel2.codTurnEquip,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.idCheckList,
+            1
+        )
+        assertEquals(
+            equipRoomModel2.typeFert,
+            1
+        )
+        assertEquals(
+            equipRoomModel2.hourMeter,
+            100.0
+        )
+        assertEquals(
+            equipRoomModel2.classify,
+            1
+        )
+
+        if(level == 3) return
+
+        val itemCheckListRoomModelList = itemCheckListDao.all()
+        assertEquals(
+            itemCheckListRoomModelList.size,
+            2
+        )
+        val itemCheckListRoomModel1 = itemCheckListRoomModelList[0]
+        assertEquals(
+            itemCheckListRoomModel1.idItemCheckList,
+            1
+        )
+        assertEquals(
+            itemCheckListRoomModel1.idCheckList,
+            101
+        )
+        assertEquals(
+            itemCheckListRoomModel1.descrItemCheckList,
+            "Verificar Nível de Óleo"
+        )
+        val itemCheckListRoomModel2 = itemCheckListRoomModelList[1]
+        assertEquals(
+            itemCheckListRoomModel2.idItemCheckList,
+            2
+        )
+        assertEquals(
+            itemCheckListRoomModel2.idCheckList,
+            101
+        )
+        assertEquals(
+            itemCheckListRoomModel2.descrItemCheckList,
+            "Verificar Freios"
+        )
+
+        if(level == 4) return
+
+        val rActivityStopRoomModelList = rActivityStopDao.all()
+        assertEquals(
+            rActivityStopRoomModelList.size,
+            2
+        )
+        val rActivityStopRoomModel1 = rActivityStopRoomModelList[0]
+        assertEquals(
+            rActivityStopRoomModel1.idRActivityStop,
+            1
+        )
+        assertEquals(
+            rActivityStopRoomModel1.idActivity,
+            101
+        )
+        assertEquals(
+            rActivityStopRoomModel1.idStop,
+            301
+        )
+        val rActivityStopRoomModel2 = rActivityStopRoomModelList[1]
+        assertEquals(
+            rActivityStopRoomModel2.idRActivityStop,
+            2
+        )
+        assertEquals(
+            rActivityStopRoomModel2.idActivity,
+            102
+        )
+        assertEquals(
+            rActivityStopRoomModel2.idStop,
+            303
+        )
+
+        if(level == 5) return
+
+        val rEquipActivityRoomModelList = rEquipActivityDao.all()
+        assertEquals(
+            rEquipActivityRoomModelList.size,
+            2
+        )
+        val rEquipActivityRoomModel1 = rEquipActivityRoomModelList[0]
+        assertEquals(
+            rEquipActivityRoomModel1.idREquipActivity,
+            1
+        )
+        assertEquals(
+            rEquipActivityRoomModel1.idEquip,
+            30
+        )
+        assertEquals(
+            rEquipActivityRoomModel1.idActivity,
+            10
+        )
+        val rEquipActivityRoomModel2 = rEquipActivityRoomModelList[1]
+        assertEquals(
+            rEquipActivityRoomModel2.idREquipActivity,
+            2
+        )
+        assertEquals(
+            rEquipActivityRoomModel2.idEquip,
+            40
+        )
+        assertEquals(
+            rEquipActivityRoomModel2.idActivity,
+            10
+        )
+
+        if(level == 6) return
+
+        val stopRoomModelList = stopDao.all()
+        assertEquals(
+            stopRoomModelList.size,
+            2
+        )
+        val stopRoomModel1 = stopRoomModelList[0]
+        assertEquals(
+            stopRoomModel1.idStop,
+            1
+            )
+        assertEquals(
+            stopRoomModel1.codStop,
+            10
+        )
+        assertEquals(
+            stopRoomModel1.descrStop,
+            "PARADA PARA ALMOCO"
+        )
+        val stopRoomModel2 = stopRoomModelList[1]
+        assertEquals(
+            stopRoomModel2.idStop,
+            2
+        )
+        assertEquals(
+            stopRoomModel2.codStop,
+            20
+        )
+        assertEquals(
+            stopRoomModel2.descrStop,
+            "CHUVA"
+        )
+
+        if(level == 7) return
+
+        val turnRoomModelList = turnDao.all()
+        assertEquals(
+            turnRoomModelList.size,
+            2
+        )
+        val turnRoomModel1 = turnRoomModelList[0]
+        assertEquals(
+            turnRoomModel1.idTurn,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.codTurnEquip,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.nroTurn,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.descrTurn,
+            "Turno 1"
+        )
+        val turnRoomModel2 = turnRoomModelList[1]
+        assertEquals(
+            turnRoomModel2.idTurn,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.codTurnEquip,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.nroTurn,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.descrTurn,
+            "Turno 2"
+        )
+
+        if(level == 8) return
+
     }
-
-    private val dispatcherFailureColab: Dispatcher = object : Dispatcher() {
-
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColabFailure)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
-    }
-
-    private val dispatcherFailureEquip: Dispatcher = object : Dispatcher() {
-
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquipFailure)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
-    }
-
-    private val dispatcherFailureREquipActivity: Dispatcher = object : Dispatcher() {
-
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
-    }
-
-    private val dispatcherFailureTurn: Dispatcher = object : Dispatcher() {
-
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
-                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnFailure)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
-    }
-
-    private val dispatcherSuccess: Dispatcher = object : Dispatcher() {
-
-        @Throws(InterruptedException::class)
-        override fun dispatch(request: RecordedRequest): MockResponse {
-            return when (request.path) {
-                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
-                "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
-                else -> MockResponse().setResponseCode(404)
-            }
-        }
-    }
-
-    private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
-
-
-    private val resultActivityFailure = """
-        [{"idActivity":1a,"codActivity":10,"descrActivity":"Test"}]
-    """.trimIndent()
-
-    private val resultActivity = """
-        [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
-    """.trimIndent()
-
-    private val resultColab = """
-        [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-    """.trimIndent()
-
-    private val resultColabFailure = """
-        [{"regColab":19759a,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-    """.trimIndent()
-
-    private val resultEquipFailure = """
-        [
-          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
-          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
-        ]
-    """.trimIndent()
-
-    private val resultEquip = """
-        [
-          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
-        ]
-    """.trimIndent()
-
-    private val resultREquipActivityFailure = """
-        [
-          {"idREquipActivity":1a,"idEquip":30,"idActivity":10}
-        ]
-    """.trimIndent()
-
-    private val resultREquipActivity = """
-        [
-          {"idREquipActivity":1,"idEquip":30,"idActivity":10}
-        ]
-    """.trimIndent()
-
-    private val resultTurnFailure = """
-        [
-          {"idTurn":1,"codTurnEquip":1,nroTurn":1,"descrTurn":"Turno 1"}
-        ]
-    """.trimIndent()
-
-    private val resultTurn = """
-        [
-          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
-        ]
-    """.trimIndent()
 
 }
 

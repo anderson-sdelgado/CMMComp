@@ -142,7 +142,7 @@ class IREquipActivityRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return failure if have error`() =
+    fun `listByIdEquip - Check return failure if have error`() =
         runTest {
             whenever(
                 rEquipActivityRetrofitDatasource.listByIdEquip(
@@ -175,7 +175,7 @@ class IREquipActivityRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return true if function execute successfully`() =
+    fun `listByIdEquip - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 REquipActivityRetrofitModel(

@@ -34,15 +34,15 @@ class InitialMenuNoteViewModelTest {
                 getStatusSend()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "GetStatusSend",
+                    "-",
                     Exception()
                 )
             )
             viewModel.recoverStatusSend()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.failureStatus,
+                uiState.failure,
                 "InitialMenuViewModel.recoverStatusSend -> Error -> Exception -> java.lang.Exception",
             )
         }
@@ -60,7 +60,7 @@ class InitialMenuNoteViewModelTest {
             viewModel.recoverStatusSend()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.failureStatus,
+                uiState.failure,
                 ""
             )
             assertEquals(

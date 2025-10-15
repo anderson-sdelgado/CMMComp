@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -19,7 +17,7 @@ class ICheckPassword @Inject constructor(
         try {
             val resultHasConfig = configRepository.hasConfig()
             if (resultHasConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultHasConfig.exceptionOrNull()!!
                 )
@@ -29,7 +27,7 @@ class ICheckPassword @Inject constructor(
                 return Result.success(true)
             val resultGetPassword = configRepository.getPassword()
             if (resultGetPassword.isFailure){
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetPassword.exceptionOrNull()!!
                 )
@@ -39,7 +37,7 @@ class ICheckPassword @Inject constructor(
                 return Result.success(true)
             return Result.success(false)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

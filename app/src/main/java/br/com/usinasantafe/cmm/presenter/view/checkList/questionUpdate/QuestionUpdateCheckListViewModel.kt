@@ -3,11 +3,12 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableItemCheckListByNroEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,7 +72,7 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
         if (result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -100,7 +101,7 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
-        val sizeAllUpdate = 4f
+        val sizeAllUpdate = sizeUpdate(1f)
         var state = QuestionUpdateCheckListState()
         updateTableItemCheckListByNroEquip(
             sizeAll = sizeAllUpdate,

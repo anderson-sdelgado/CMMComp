@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
-import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.TypeButton
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,7 +40,7 @@ class OSCommonViewModel @Inject constructor(
     private val getNroOSHeader: GetNroOSHeader
 ) : ViewModel() {
 
-    private val flowApp: Int = saveStateHandle[FLOW_APP_ARGS]!!
+    private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
 
     private val _uiState = MutableStateFlow(OSCommonState())
     val uiState = _uiState.asStateFlow()
@@ -102,7 +102,7 @@ class OSCommonViewModel @Inject constructor(
             if (result.isFailure) {
                 val error = result.exceptionOrNull()!!
                 val failure =
-                    "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(
@@ -137,7 +137,7 @@ class OSCommonViewModel @Inject constructor(
         if (resultCheck.isFailure) {
             val error = resultCheck.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -168,7 +168,7 @@ class OSCommonViewModel @Inject constructor(
         if(resultSet.isFailure){
             val error = resultSet.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

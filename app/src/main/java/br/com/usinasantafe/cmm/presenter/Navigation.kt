@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter
 
 import androidx.navigation.NavHostController
-import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARGS
+import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.Screens.ACTIVITY_LIST_COMMON_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.EQUIP_HEADER_SCREEN
@@ -36,7 +36,7 @@ object Screens {
 }
 
 object Args {
-    const val FLOW_APP_ARGS = "flowApp"
+    const val FLOW_APP_ARG = "flowApp"
 }
 
 object Routes {
@@ -47,9 +47,9 @@ object Routes {
     const val OPERATOR_HEADER_ROUTE = OPERATOR_HEADER_SCREEN
     const val EQUIP_HEADER_ROUTE = EQUIP_HEADER_SCREEN
     const val TURN_LIST_HEADER_ROUTE = TURN_LIST_HEADER_SCREEN
-    const val OS_COMMON_ROUTE = "$OS_COMMON_SCREEN/{$FLOW_APP_ARGS}"
-    const val ACTIVITY_LIST_COMMON_ROUTE = "$ACTIVITY_LIST_COMMON_SCREEN/{$FLOW_APP_ARGS}"
-    const val HOUR_METER_HEADER_ROUTE = "$HOUR_METER_HEADER_SCREEN/{$FLOW_APP_ARGS}"
+    const val OS_COMMON_ROUTE = "$OS_COMMON_SCREEN/{$FLOW_APP_ARG}"
+    const val ACTIVITY_LIST_COMMON_ROUTE = "$ACTIVITY_LIST_COMMON_SCREEN/{$FLOW_APP_ARG}"
+    const val HOUR_METER_HEADER_ROUTE = "$HOUR_METER_HEADER_SCREEN/{$FLOW_APP_ARG}"
     const val MENU_NOTE_ROUTE = MENU_NOTE_SCREEN
     const val STOP_LIST_NOTE_ROUTE = STOP_LIST_NOTE_SCREEN
     const val QUESTION_UPDATE_CHECK_LIST_ROUTE = QUESTION_UPDATE_CHECK_LIST_SCREEN

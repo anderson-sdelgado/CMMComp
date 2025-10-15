@@ -314,4 +314,89 @@ class IItemCheckListRepositoryTest {
                 false
             )
         }
+
+    @Test
+    fun `listByIdCheckList - Check return failure if have error in ItemCheckListRoomDatasource listByIdCheckList`() =
+        runTest {
+            whenever(
+                itemCheckListRoomDatasource.listByIdCheckList(1)
+            ).thenReturn(
+                resultFailure(
+                    "IItemCheckListRoomDatasource.listByIdCheckList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdCheckList(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRepository.listByIdCheckList -> IItemCheckListRoomDatasource.listByIdCheckList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdCheckList - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ItemCheckListRoomModel(
+                    idItemCheckList = 1,
+                    descrItemCheckList = "VERIFICAR NIVEL OLEO",
+                    idCheckList = 10
+                ),
+                ItemCheckListRoomModel(
+                    idItemCheckList = 2,
+                    descrItemCheckList = "VERIFICAR PNEUS",
+                    idCheckList = 10
+                )
+            )
+            whenever(
+                itemCheckListRoomDatasource.listByIdCheckList(10)
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByIdCheckList(10)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val entityList = result.getOrNull()!!
+            assertEquals(
+                entityList.size,
+                2
+            )
+            val entity1 = entityList[0]
+            assertEquals(
+                entity1.idItemCheckList,
+                1
+            )
+            assertEquals(
+                entity1.descrItemCheckList,
+                "VERIFICAR NIVEL OLEO"
+            )
+            assertEquals(
+                entity1.idCheckList,
+                10
+            )
+            val entity2 = entityList[1]
+            assertEquals(
+                entity2.idItemCheckList,
+                2
+            )
+            assertEquals(
+                entity2.descrItemCheckList,
+                "VERIFICAR PNEUS"
+            )
+            assertEquals(
+                entity2.idCheckList,
+                10
+            )
+        }
 }

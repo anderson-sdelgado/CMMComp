@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.header
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
@@ -38,7 +36,7 @@ class ICheckHourMeter @Inject constructor(
             val measureInputDouble = measureInput.toDouble()
             val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
             if(resultGetIdEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdEquip.exceptionOrNull()!!
                 )
@@ -46,7 +44,7 @@ class ICheckHourMeter @Inject constructor(
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetHourMeterByIdEquip = equipRepository.getHourMeterByIdEquip(idEquip)
             if(resultGetHourMeterByIdEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetHourMeterByIdEquip.exceptionOrNull()!!
                 )
@@ -61,7 +59,7 @@ class ICheckHourMeter @Inject constructor(
                 )
             )
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

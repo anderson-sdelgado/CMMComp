@@ -3,9 +3,6 @@ package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.RFuncaoAtivParadaApi
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RFuncaoAtivParadaRetrofitModel
-import br.com.usinasantafe.cmm.utils.FuncAtividade
-import br.com.usinasantafe.cmm.utils.FuncParada
-import br.com.usinasantafe.cmm.utils.TypeOper
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -27,7 +24,7 @@ class IRFuncaoAtivStopRetrofitDatasourceTest {
             )
             val service = retrofit.create(RFuncaoAtivParadaApi::class.java)
             val datasource = IRFuncaoAtivParadaRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -57,7 +54,7 @@ class IRFuncaoAtivStopRetrofitDatasourceTest {
             )
             val service = retrofit.create(RFuncaoAtivParadaApi::class.java)
             val datasource = IRFuncaoAtivParadaRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,
@@ -88,7 +85,7 @@ class IRFuncaoAtivStopRetrofitDatasourceTest {
             )
             val service = retrofit.create(RFuncaoAtivParadaApi::class.java)
             val datasource = IRFuncaoAtivParadaRetrofitDatasource(service)
-            val result = datasource.recoverAll("TOKEN")
+            val result = datasource.listAll("TOKEN")
 
             assertEquals(
                 true,

@@ -49,11 +49,11 @@ fun HeaderMotoMecRoomModel.roomModelToRetrofitModel(
             hourMeterFinish = this.hourMeterFinish,
             dateHourInitial = SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
-                Locale("pt", "BR")
+                Locale.Builder().setLanguage("pt").setRegion("BR").build()
             ).format(this.dateHourInitial),
             dateHourFinish = if(this.dateHourFinish == null) null else SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
-                Locale("pt", "BR")
+                Locale.Builder().setLanguage("pt").setRegion("BR").build()
             ).format(
                 this.dateHourFinish!!
             ),

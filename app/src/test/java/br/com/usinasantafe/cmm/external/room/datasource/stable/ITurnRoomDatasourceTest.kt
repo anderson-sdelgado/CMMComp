@@ -41,7 +41,7 @@ class ITurnRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = turnDao.listAll().size
+            val qtdBefore = turnDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -74,7 +74,7 @@ class ITurnRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = turnDao.listAll().size
+            val qtdAfter = turnDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -84,7 +84,7 @@ class ITurnRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = turnDao.listAll().size
+            val qtdBefore = turnDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -113,12 +113,12 @@ class ITurnRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = turnDao.listAll().size
+            val qtdAfter = turnDao.all().size
             assertEquals(
                 qtdAfter,
                 2
             )
-            val list = turnDao.listAll()
+            val list = turnDao.all()
             assertEquals(
                 list[0].idTurn,
                 1
@@ -166,7 +166,7 @@ class ITurnRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = turnDao.listAll().size
+            val qtdBefore = turnDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -180,7 +180,7 @@ class ITurnRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = turnDao.listAll().size
+            val qtdAfter = turnDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -188,7 +188,7 @@ class ITurnRoomDatasourceTest {
         }
 
     @Test
-    fun `getListByCodTurnEquip - Check return list empty if have no row in field`() =
+    fun `listByCodTurnEquip - Check return list empty if have no row in field`() =
         runTest {
             turnDao.insertAll(
                 listOf(
@@ -200,7 +200,7 @@ class ITurnRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = turnDao.listAll().size
+            val qtdBefore = turnDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -217,7 +217,7 @@ class ITurnRoomDatasourceTest {
         }
 
     @Test
-    fun `getListByCodTurnEquip - Check return list if have row in field`() =
+    fun `listByCodTurnEquip - Check return list if have row in field`() =
         runTest {
             turnDao.insertAll(
                 listOf(
@@ -229,7 +229,7 @@ class ITurnRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = turnDao.listAll().size
+            val qtdBefore = turnDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -263,4 +263,37 @@ class ITurnRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getByIdTurn - Check return if have row in field`() =
+        runTest {
+            turnDao.insertAll(
+                listOf(
+                    TurnRoomModel(
+                        idTurn = 1,
+                        codTurnEquip = 101,
+                        nroTurn = 1,
+                        descrTurn = "TURNO 1"
+                    )
+                )
+            )
+            turnDao.insertAll(
+                listOf(
+                    TurnRoomModel(
+                        idTurn = 2,
+                        codTurnEquip = 101,
+                        nroTurn = 3,
+                        descrTurn = "TURNO 3"
+                    )
+                )
+            )
+            val result = datasource.getNroTurnByIdTurn(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                3
+            )
+        }
 }

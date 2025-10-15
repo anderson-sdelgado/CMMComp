@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
@@ -16,7 +15,7 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -28,7 +27,7 @@ class IColabRoomDatasource @Inject constructor(
             colabDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )
@@ -40,7 +39,7 @@ class IColabRoomDatasource @Inject constructor(
             val result = colabDao.checkReg(reg) > 0
             return Result.success(result)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

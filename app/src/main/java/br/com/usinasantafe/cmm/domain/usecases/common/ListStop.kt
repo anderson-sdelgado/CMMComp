@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.RActivityStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -24,7 +22,7 @@ class IListStop @Inject constructor(
         try {
             val resultGetIdActivity = motoMecRepository.getIdActivity()
             if (resultGetIdActivity.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdActivity.exceptionOrNull()!!
                 )
@@ -32,7 +30,7 @@ class IListStop @Inject constructor(
             val idActivity = resultGetIdActivity.getOrNull()!!
             val resultListByIdActivity = rActivityStopRepository.listByIdActivity(idActivity)
             if (resultListByIdActivity.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultListByIdActivity.exceptionOrNull()!!
                 )
@@ -41,7 +39,7 @@ class IListStop @Inject constructor(
             val idList = list.map { it.idStop }
             val resultListByIdList = stopRepository.listByIdList(idList)
             if (resultListByIdList.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultListByIdList.exceptionOrNull()!!
                 )
@@ -55,7 +53,7 @@ class IListStop @Inject constructor(
             }
             return Result.success(stopScreenModelList)
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

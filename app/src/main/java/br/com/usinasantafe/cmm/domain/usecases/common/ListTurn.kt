@@ -2,8 +2,6 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.errors.resultFailureFinish
-import br.com.usinasantafe.cmm.domain.errors.resultFailureMiddle
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
@@ -24,7 +22,7 @@ class IListTurn @Inject constructor(
         try {
             val resultGetConfig = configRepository.get()
             if (resultGetConfig.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetConfig.exceptionOrNull()!!
                 )
@@ -34,7 +32,7 @@ class IListTurn @Inject constructor(
                 idEquip = config.idEquip!!
             )
             if (resultGetCodTurnEquip.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetCodTurnEquip.exceptionOrNull()!!
                 )
@@ -44,14 +42,14 @@ class IListTurn @Inject constructor(
                 codTurnEquip = codTurnEquip
             )
             if (resultGetTurnList.isFailure) {
-                return resultFailureMiddle(
+                return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetTurnList.exceptionOrNull()!!
                 )
             }
             return resultGetTurnList
         } catch (e: Exception) {
-            return resultFailureFinish(
+            return resultFailure(
                 context = getClassAndMethod(),
                 cause = e
             )

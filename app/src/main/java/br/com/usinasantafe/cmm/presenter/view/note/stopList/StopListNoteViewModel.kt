@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.usecases.common.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.note.SetIdStopNote
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableRActivityStop
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.getClassAndMethodViewModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -79,7 +79,7 @@ class StopListNoteViewModel @Inject constructor(
             if (result.isFailure) {
                 val error = result.exceptionOrNull()!!
                 val failure =
-                    "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
                 Timber.e(failure)
                 _uiState.update {
                     it.copy(
@@ -104,7 +104,7 @@ class StopListNoteViewModel @Inject constructor(
         if(result.isFailure){
             val error = result.exceptionOrNull()!!
             val failure =
-                "${getClassAndMethodViewModel()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
             Timber.e(failure)
             _uiState.update {
                 it.copy(

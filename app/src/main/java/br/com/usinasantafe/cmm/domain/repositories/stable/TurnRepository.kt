@@ -5,11 +5,11 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 interface TurnRepository {
     suspend fun addAll(list: List<Turn>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun recoverAll(token: String): Result<List<Turn>>
+    suspend fun listAll(token: String): Result<List<Turn>>
     suspend fun listByCodTurnEquip(
         codTurnEquip: Int
     ): Result<List<Turn>>
-    suspend fun geNroTurnByIdTurn(
+    suspend fun getNroTurnByIdTurn(
         idTurn: Int
     ): Result<Int>
 }

@@ -5,5 +5,5 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Frente
 interface FrenteRepository {
     suspend fun addAll(list: List<Frente>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun recoverAll(token: String): Result<List<Frente>>
+    suspend fun listAll(token: String): Result<List<Frente>>
 }

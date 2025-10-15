@@ -11,10 +11,12 @@ import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
@@ -26,6 +28,7 @@ import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
+import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_SAVE_TOKEN
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -37,99 +40,25 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.AfterClass
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
 class ConfigFlowTest {
-
-    companion object {
-
-        private lateinit var server: MockWebServer
-
-        @BeforeClass
-        @JvmStatic
-        fun setupClass() {
-
-            val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
-
-            val resultActivity = """
-                [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
-            """.trimIndent()
-
-            val resultColab = """
-                [{"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"}]
-            """.trimIndent()
-
-            val resultEquip = """
-                [
-                  {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1}
-                ]
-            """.trimIndent()
-
-            val resultREquipActivity = """
-                [
-                  {"idREquipActivity":1,"idEquip":30,"idActivity":10}
-                ]
-            """.trimIndent()
-
-            val resultTurn = """
-                [
-                  {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"}
-                ]
-            """.trimIndent()
-
-            val resultRActivityStop = """
-                [{"idRActivityStop":20,"idActivity":10,"idStop":1}]
-            """.trimIndent()
-
-            val resultStop = """
-                [{"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"}]
-            """.trimIndent()
-
-            val dispatcherSuccessFlow: Dispatcher = object : Dispatcher() {
-
-                @Throws(InterruptedException::class)
-                override fun dispatch(request: RecordedRequest): MockResponse {
-                    return when (request.path) {
-                        "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
-                        "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
-                        "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                        "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                        "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
-                        "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
-                        "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
-                        "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
-                        else -> MockResponse().setResponseCode(404)
-                    }
-                }
-            }
-
-            server = MockWebServer()
-            server.dispatcher = dispatcherSuccessFlow
-            server.start()
-
-            BaseUrlModuleTest.url = server.url("/").toString()
-
-        }
-
-        @AfterClass
-        @JvmStatic
-        fun tearDownClass() {
-            server.shutdown()
-        }
-    }
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    @Inject
+    lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
     lateinit var activityDao: ActivityDao
@@ -139,6 +68,9 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var equipDao: EquipDao
+
+    @Inject
+    lateinit var itemCheckListDao: ItemCheckListDao
 
     @Inject
     lateinit var rActivityStopDao: RActivityStopDao
@@ -151,6 +83,110 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var turnDao: TurnDao
+
+    companion object {
+
+        private lateinit var mockWebServer: MockWebServer
+
+        private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
+
+        private val resultActivity = """
+        [
+            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
+            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+        ]
+    """.trimIndent()
+
+        private val resultColab = """
+        [
+            {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"},
+            {"regColab":18017,"nameColab":"RONALDO"}
+        ]
+    """.trimIndent()
+
+        private val resultEquip = """
+        [
+          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1},
+          {"idEquip":2,"nroEquip":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1}
+        ]
+    """.trimIndent()
+
+        private val resultItemCheckList = """
+        [
+          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+          {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
+        ]
+    """.trimIndent()
+
+        private val resultRActivityStop = """
+        [
+            {"idActivity":101,"idStop":301},
+            {"idActivity":102,"idStop":303}
+        ]
+    """.trimIndent()
+
+        private val resultREquipActivity = """
+        [
+          {"idREquipActivity":1,"idEquip":30,"idActivity":10},
+          {"idREquipActivity":2,"idEquip":40,"idActivity":10}
+        ]
+    """.trimIndent()
+
+        private val resultStop = """
+        [
+            {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"},
+            {"idStop":2,"codStop":20,"descrStop":"CHUVA"}
+        ]
+    """.trimIndent()
+
+        private val resultTurn = """
+        [
+          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
+          {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
+        ]
+    """.trimIndent()
+
+        @BeforeClass
+        @JvmStatic
+        fun setupClass() {
+
+            val dispatcherSuccess: Dispatcher = object : Dispatcher() {
+                @Throws(InterruptedException::class)
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return when (request.path) {
+                        "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                        "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                        "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                        "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                        "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(
+                            resultItemCheckList
+                        )
+
+                        "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                        "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(
+                            resultREquipActivity
+                        )
+
+                        "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
+                        "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
+                        else -> MockResponse().setResponseCode(404)
+                    }
+                }
+            }
+
+            mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherSuccess
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun tearDownClass() {
+            mockWebServer.shutdown()
+        }
+    }
 
     @Before
     fun setup() {
@@ -165,7 +201,7 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 1")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO").assertIsDisplayed()
             composeTestRule.onNodeWithText("CONFIGURAÇÃO").assertIsDisplayed()
@@ -173,48 +209,48 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 2")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO")
                 .performClick()
 
             Log.d("TestDebug", "Position 3")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
                 .performClick()
 
             Log.d("TestDebug", "Position 4")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CONFIGURAÇÃO")
                 .performClick()
 
             Log.d("TestDebug", "Position 5")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SENHA").assertIsDisplayed()
 
             Log.d("TestDebug", "Position 6")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CANCELAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 7")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("CONFIGURAÇÃO")
                 .performClick()
 
             Log.d("TestDebug", "Position 8")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SENHA").assertIsDisplayed()
             composeTestRule.onNodeWithText("OK")
@@ -222,40 +258,40 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 9")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 10")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
                 .performClick()
 
             Log.d("TestDebug", "Position 11")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
                 .performTextInput("16997417840")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("SALVAR")
                 .performClick()
 
             Log.d("TestDebug", "Position 12")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE)
                 .performClick()
 
             Log.d("TestDebug", "Position 13")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
                 .performTextInput("2200")
@@ -266,178 +302,337 @@ class ConfigFlowTest {
 
             Log.d("TestDebug", "Position 14")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout(10_000)
+
+            val activityRoomModelList = activityDao.all()
+            assertEquals(
+                activityRoomModelList.size,
+                2
+            )
+            val activityRoomModel1 = activityRoomModelList[0]
+            assertEquals(
+                activityRoomModel1.idActivity,
+                1
+            )
+            assertEquals(
+                activityRoomModel1.codActivity,
+                10
+            )
+            assertEquals(
+                activityRoomModel1.descrActivity,
+                "Test"
+            )
+            val activityRoomModel2 = activityRoomModelList[1]
+            assertEquals(
+                activityRoomModel2.idActivity,
+                2
+            )
+            assertEquals(
+                activityRoomModel2.codActivity,
+                20
+            )
+            assertEquals(
+                activityRoomModel2.descrActivity,
+                "Test2"
+            )
+
+            val colabRoomModelList = colabDao.all()
+            assertEquals(
+                colabRoomModelList.size,
+                2
+            )
+            val colabRoomModel1 = colabRoomModelList[0]
+            assertEquals(
+                colabRoomModel1.regColab,
+                18017
+            )
+            assertEquals(
+                colabRoomModel1.nameColab,
+                "RONALDO"
+            )
+            val colabRoomModel2 = colabRoomModelList[1]
+            assertEquals(
+                colabRoomModel2.regColab,
+                19759
+            )
+            assertEquals(
+                colabRoomModel2.nameColab,
+                "ANDERSON DA SILVA DELGADO"
+            )
+
+            val equipRoomModelList = equipDao.all()
+            assertEquals(
+                equipRoomModelList.size,
+                2
+            )
+            val equipRoomModel1 = equipRoomModelList[0]
+            assertEquals(
+                equipRoomModel1.idEquip,
+                1
+            )
+            assertEquals(
+                equipRoomModel1.nroEquip,
+                1000001
+            )
+            assertEquals(
+                equipRoomModel1.codClass,
+                1
+            )
+            assertEquals(
+                equipRoomModel1.descrClass,
+                "Classe 1"
+            )
+            assertEquals(
+                equipRoomModel1.codTurnEquip,
+                1
+            )
+            assertEquals(
+                equipRoomModel1.idCheckList,
+                1
+            )
+            assertEquals(
+                equipRoomModel1.typeFert,
+                1
+            )
+            assertEquals(
+                equipRoomModel1.hourMeter,
+                100.0
+            )
+            assertEquals(
+                equipRoomModel1.classify,
+                1
+            )
+            val equipRoomModel2 = equipRoomModelList[1]
+            assertEquals(
+                equipRoomModel2.idEquip,
+                2
+            )
+            assertEquals(
+                equipRoomModel2.nroEquip,
+                1000002
+            )
+            assertEquals(
+                equipRoomModel2.codClass,
+                2
+            )
+            assertEquals(
+                equipRoomModel2.descrClass,
+                "Classe 2"
+            )
+            assertEquals(
+                equipRoomModel2.codTurnEquip,
+                2
+            )
+            assertEquals(
+                equipRoomModel2.idCheckList,
+                1
+            )
+            assertEquals(
+                equipRoomModel2.typeFert,
+                1
+            )
+            assertEquals(
+                equipRoomModel2.hourMeter,
+                100.0
+            )
+            assertEquals(
+                equipRoomModel2.classify,
+                1
+            )
+
+            val itemCheckListRoomModelList = itemCheckListDao.all()
+            assertEquals(
+                itemCheckListRoomModelList.size,
+                2
+            )
+            val itemCheckListRoomModel1 = itemCheckListRoomModelList[0]
+            assertEquals(
+                itemCheckListRoomModel1.idItemCheckList,
+                1
+            )
+            assertEquals(
+                itemCheckListRoomModel1.idCheckList,
+                101
+            )
+            assertEquals(
+                itemCheckListRoomModel1.descrItemCheckList,
+                "Verificar Nível de Óleo"
+            )
+            val itemCheckListRoomModel2 = itemCheckListRoomModelList[1]
+            assertEquals(
+                itemCheckListRoomModel2.idItemCheckList,
+                2
+            )
+            assertEquals(
+                itemCheckListRoomModel2.idCheckList,
+                101
+            )
+            assertEquals(
+                itemCheckListRoomModel2.descrItemCheckList,
+                "Verificar Freios"
+            )
+
+            val rActivityStopRoomModelList = rActivityStopDao.all()
+            assertEquals(
+                rActivityStopRoomModelList.size,
+                2
+            )
+            val rActivityStopRoomModel1 = rActivityStopRoomModelList[0]
+            assertEquals(
+                rActivityStopRoomModel1.idRActivityStop,
+                1
+            )
+            assertEquals(
+                rActivityStopRoomModel1.idActivity,
+                101
+            )
+            assertEquals(
+                rActivityStopRoomModel1.idStop,
+                301
+            )
+            val rActivityStopRoomModel2 = rActivityStopRoomModelList[1]
+            assertEquals(
+                rActivityStopRoomModel2.idRActivityStop,
+                2
+            )
+            assertEquals(
+                rActivityStopRoomModel2.idActivity,
+                102
+            )
+            assertEquals(
+                rActivityStopRoomModel2.idStop,
+                303
+            )
+
+            val rEquipActivityRoomModelList = rEquipActivityDao.all()
+            assertEquals(
+                rEquipActivityRoomModelList.size,
+                2
+            )
+            val rEquipActivityRoomModel1 = rEquipActivityRoomModelList[0]
+            assertEquals(
+                rEquipActivityRoomModel1.idREquipActivity,
+                1
+            )
+            assertEquals(
+                rEquipActivityRoomModel1.idEquip,
+                30
+            )
+            assertEquals(
+                rEquipActivityRoomModel1.idActivity,
+                10
+            )
+            val rEquipActivityRoomModel2 = rEquipActivityRoomModelList[1]
+            assertEquals(
+                rEquipActivityRoomModel2.idREquipActivity,
+                2
+            )
+            assertEquals(
+                rEquipActivityRoomModel2.idEquip,
+                40
+            )
+            assertEquals(
+                rEquipActivityRoomModel2.idActivity,
+                10
+            )
+
+            val stopRoomModelList = stopDao.all()
+            assertEquals(
+                stopRoomModelList.size,
+                2
+            )
+            val stopRoomModel1 = stopRoomModelList[0]
+            assertEquals(
+                stopRoomModel1.idStop,
+                1
+            )
+            assertEquals(
+                stopRoomModel1.codStop,
+                10
+            )
+            assertEquals(
+                stopRoomModel1.descrStop,
+                "PARADA PARA ALMOCO"
+            )
+            val stopRoomModel2 = stopRoomModelList[1]
+            assertEquals(
+                stopRoomModel2.idStop,
+                2
+            )
+            assertEquals(
+                stopRoomModel2.codStop,
+                20
+            )
+            assertEquals(
+                stopRoomModel2.descrStop,
+                "CHUVA"
+            )
+
+            val turnRoomModelList = turnDao.all()
+            assertEquals(
+                turnRoomModelList.size,
+                2
+            )
+            val turnRoomModel1 = turnRoomModelList[0]
+            assertEquals(
+                turnRoomModel1.idTurn,
+                1
+            )
+            assertEquals(
+                turnRoomModel1.codTurnEquip,
+                1
+            )
+            assertEquals(
+                turnRoomModel1.nroTurn,
+                1
+            )
+            assertEquals(
+                turnRoomModel1.descrTurn,
+                "Turno 1"
+            )
+            val turnRoomModel2 = turnRoomModelList[1]
+            assertEquals(
+                turnRoomModel2.idTurn,
+                2
+            )
+            assertEquals(
+                turnRoomModel2.codTurnEquip,
+                2
+            )
+            assertEquals(
+                turnRoomModel2.nroTurn,
+                2
+            )
+            assertEquals(
+                turnRoomModel2.descrTurn,
+                "Turno 2"
+            )
+
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("OK")
                 .performClick()
 
             Log.d("TestDebug", "Position 15")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("APONTAMENTO")
                 .performClick()
 
             Log.d("TestDebug", "Position 16")
 
-            composeTestRule.waitUntilTimeout(3_000)
+            composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithText("MATRICULA OPERADOR").assertIsDisplayed()
 
             Log.d("TestDebug", "Position 17")
 
-            composeTestRule.waitUntilTimeout(3_000)
-
-            val listActivity = activityDao.listAll()
-            assertEquals(
-                listActivity.size,
-                1
-            )
-            val activityRoomModel = listActivity[0]
-            assertEquals(
-                activityRoomModel.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel.descrActivity,
-                "Test"
-            )
-
-            val listColab = colabDao.all()
-            assertEquals(
-                listColab.size,
-                1
-            )
-            val colabRoomModel = listColab[0]
-            assertEquals(
-                colabRoomModel.regColab,
-                19759
-            )
-            assertEquals(
-                colabRoomModel.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-
-            val listEquip = equipDao.listAll()
-            assertEquals(
-                listEquip.size,
-                1
-            )
-            val equipRoomModel = listEquip[0]
-            assertEquals(
-                equipRoomModel.idEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.nroEquip,
-                1000001
-            )
-            assertEquals(
-                equipRoomModel.codClass,
-                1
-            )
-            assertEquals(
-                equipRoomModel.descrClass,
-                "Classe 1"
-            )
-            assertEquals(
-                equipRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel.typeFert,
-                1
-            )
-
-            val listRActivityStop = rActivityStopDao.listAll()
-            assertEquals(
-                listRActivityStop.size,
-                1
-            )
-            val rActivityStopRoomModel = listRActivityStop[0]
-            assertEquals(
-                rActivityStopRoomModel.idRActivityStop,
-                1
-            )
-            assertEquals(
-                rActivityStopRoomModel.idActivity,
-                10
-            )
-            assertEquals(
-                rActivityStopRoomModel.idStop,
-                1
-            )
-
-            val listREquipActivity = rEquipActivityDao.listAll()
-            assertEquals(
-                listREquipActivity.size,
-                1
-            )
-            val rEquipActivityRoomModel = listREquipActivity[0]
-            assertEquals(
-                rEquipActivityRoomModel.idREquipActivity,
-                1
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idEquip,
-                30
-            )
-            assertEquals(
-                rEquipActivityRoomModel.idActivity,
-                10
-            )
-
-            val listStop = stopDao.listAll()
-            assertEquals(
-                listStop.size,
-                1
-            )
-            val stopRoomModel = listStop[0]
-            assertEquals(
-                stopRoomModel.idStop,
-                1
-            )
-            assertEquals(
-                stopRoomModel.codStop,
-                10
-            )
-            assertEquals(
-                stopRoomModel.descrStop,
-                "PARADA PARA ALMOCO"
-            )
-
-            val listTurn = turnDao.listAll()
-            assertEquals(
-                listTurn.size,
-                1
-            )
-            val turnRoomModel = listTurn[0]
-            assertEquals(
-                turnRoomModel.idTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel.codTurnEquip,
-                1
-            )
-            assertEquals(
-                turnRoomModel.nroTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel.descrTurn,
-                "Turno 1"
-            )
+            composeTestRule.waitUntilTimeout()
 
             Log.d("TestDebug", "Position Finish")
+
+            composeTestRule.waitUntilTimeout()
 
     }
 

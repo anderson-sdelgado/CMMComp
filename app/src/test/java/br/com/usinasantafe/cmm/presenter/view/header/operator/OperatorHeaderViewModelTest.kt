@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
-import br.com.usinasantafe.cmm.domain.usecases.updateTable.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.TypeButton
