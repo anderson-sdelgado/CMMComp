@@ -16,4 +16,7 @@ interface ItemCheckListRepository {
     suspend fun listByIdCheckList(
         idCheckList: Int
     ): Result<List<ItemCheckList>>
+    suspend fun countByIdCheckList(
+        idCheckList: Int
+    ): Result<Int>
 }

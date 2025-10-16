@@ -28,4 +28,8 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindHeaderCheckListSharedPreferencesDatasource(dataSource: IHeaderCheckListSharedPreferencesDatasource): HeaderCheckListSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindRespItemCheckListSharedPreferencesDatasource(dataSource: IRespItemCheckListSharedPreferencesDatasource): RespItemCheckListSharedPreferencesDatasource
+
 }

@@ -115,4 +115,8 @@ class IItemCheckListRepository @Inject constructor(
         }
     }
 
+    override suspend fun countByIdCheckList(idCheckList: Int): Result<Int> {
+        TODO("Not yet implemented")
+    }
+
 }
