@@ -574,7 +574,7 @@ class HeaderInitialFlowTest {
             0.0
         )
 
-        val headerMotoMecList = headerMotoMecDao.listAll()
+        val headerMotoMecList = headerMotoMecDao.all()
         assertEquals(
             headerMotoMecList.size,
             1

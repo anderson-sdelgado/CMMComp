@@ -29,21 +29,6 @@ data class HeaderMotoMecRoomModel(
     var idBD: Long? = null
 )
 
-fun HeaderMotoMecRoomModel.roomModelToEntity(): HeaderMotoMec {
-    return with(this) {
-        HeaderMotoMec(
-            id = this.id,
-            regOperator = this.regOperator,
-            idEquip = this.idEquip,
-            typeEquip = this.typeEquip,
-            idTurn = this.idTurn,
-            nroOS = this.nroOS,
-            idActivity = this.idActivity,
-            hourMeter = this.hourMeterInitial
-        )
-    }
-}
-
 fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
     return with(this) {
         HeaderMotoMecRoomModel(

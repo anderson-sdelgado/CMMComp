@@ -3,7 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckHeaderOpen
+import br.com.usinasantafe.cmm.domain.usecases.common.FlowAppOpen
+import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class SplashState(
-    val flagHeaderOpen: Boolean = false,
+    val flowApp: FlowApp = FlowApp.HEADER_INITIAL,
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -23,7 +24,7 @@ data class SplashState(
 @HiltViewModel
 class SplashViewModel @Inject constructor(
     private val startWorkManager: StartWorkManager,
-    private val checkHeaderOpen: CheckHeaderOpen,
+    private val flowAppOpen: FlowAppOpen,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SplashState())
@@ -37,7 +38,7 @@ class SplashViewModel @Inject constructor(
 
     fun startApp() = viewModelScope.launch {
         startWorkManager()
-        val result = checkHeaderOpen()
+        val result = flowAppOpen()
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
@@ -52,11 +53,11 @@ class SplashViewModel @Inject constructor(
             }
             return@launch
         }
-        val check = result.getOrNull()!!
+        val flowApp = result.getOrNull()!!
         _uiState.update {
             it.copy(
                 flagAccess = true,
-                flagHeaderOpen = check
+                flowApp = flowApp
             )
         }
     }

@@ -106,4 +106,92 @@ class IRespItemCheckListSharedPreferencesDatasourceTest {
                 0
             )
         }
+
+
+    @Test
+    fun `Check delete last`() =
+        runTest {
+            val model1 = RespItemCheckListSharedPreferencesModel(
+                idItem = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            val model2 = RespItemCheckListSharedPreferencesModel(
+                idItem = 2,
+                option = OptionRespCheckList.ANALYZE
+            )
+            val resultSave1 = datasource.save(model1)
+            assertEquals(
+                resultSave1.isSuccess,
+                true
+            )
+            assertEquals(
+                resultSave1.getOrNull()!!,
+                true
+            )
+            val resultSave2 = datasource.save(model2)
+            assertEquals(
+                resultSave2.isSuccess,
+                true
+            )
+            assertEquals(
+                resultSave2.getOrNull()!!,
+                true
+            )
+            val resultListBefore = datasource.list()
+            assertEquals(
+                resultListBefore.isSuccess,
+                true
+            )
+            val listBefore = resultListBefore.getOrNull()!!
+            assertEquals(
+                listBefore.size,
+                2
+            )
+            val modelBefore1 = listBefore[0]
+            assertEquals(
+                modelBefore1.idItem,
+                1
+            )
+            assertEquals(
+                modelBefore1.option,
+                OptionRespCheckList.ACCORDING
+            )
+            val modelBefore2 = listBefore[1]
+            assertEquals(
+                modelBefore2.idItem,
+                2
+            )
+            assertEquals(
+                modelBefore2.option,
+                OptionRespCheckList.ANALYZE
+            )
+            val resultDeleteLast = datasource.delLast()
+            assertEquals(
+                resultDeleteLast.isSuccess,
+                true
+            )
+            assertEquals(
+                resultDeleteLast.getOrNull()!!,
+                true
+            )
+            val resultListAfter = datasource.list()
+            assertEquals(
+                resultListAfter.isSuccess,
+                true
+            )
+            val listAfter = resultListAfter.getOrNull()!!
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val modelAfter1 = listAfter[0]
+            assertEquals(
+                modelAfter1.idItem,
+                1
+            )
+            assertEquals(
+                modelAfter1.option,
+                OptionRespCheckList.ACCORDING
+            )
+        }
 }

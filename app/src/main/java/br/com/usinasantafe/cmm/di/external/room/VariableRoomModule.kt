@@ -24,4 +24,16 @@ object VariableRoomModule {
         return database.noteMotoMecDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideHeaderCheckListDao(database: DatabaseRoom): HeaderCheckListDao {
+        return database.headerCheckListDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoteCheckListDao(database: DatabaseRoom): RespItemCheckListDao {
+        return database.respItemCheckListDao()
+    }
+
 }

@@ -63,6 +63,9 @@ fun NavigationGraph(
                 },
                 onNavMenuNote = {
                     navActions.navigateToMenuNote()
+                },
+                onNavCheckList = {
+                    navActions.navigateToQuestionUpdateCheckList()
                 }
             )
         }

@@ -44,4 +44,15 @@ class IItemCheckListRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun countByIdCheckList(idCheckList: Int): Result<Int> {
+        return try {
+            Result.success(itemCheckListDao.countByIdCheckList(idCheckList))
+        } catch (e: Exception) {
+            resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

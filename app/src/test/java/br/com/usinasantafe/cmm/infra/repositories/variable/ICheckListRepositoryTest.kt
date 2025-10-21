@@ -3,8 +3,13 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.RespItemCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
@@ -19,9 +24,13 @@ class ICheckListRepositoryTest {
 
     private val headerCheckListSharedPreferencesDatasource = mock<HeaderCheckListSharedPreferencesDatasource>()
     private val respItemCheckListSharedPreferencesDatasource = mock<RespItemCheckListSharedPreferencesDatasource>()
+    private val headerCheckListRoomDatasource = mock<HeaderCheckListRoomDatasource>()
+    private val respItemCheckListRoomDatasource = mock<RespItemCheckListRoomDatasource>()
     private val repository = ICheckListRepository(
         headerCheckListSharedPreferencesDatasource = headerCheckListSharedPreferencesDatasource,
-        respItemCheckListSharedPreferencesDatasource = respItemCheckListSharedPreferencesDatasource
+        respItemCheckListSharedPreferencesDatasource = respItemCheckListSharedPreferencesDatasource,
+        headerCheckListRoomDatasource = headerCheckListRoomDatasource,
+        respItemCheckListRoomDatasource = respItemCheckListRoomDatasource
     )
 
     @Test
@@ -200,7 +209,7 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.clearResp()
+            val result = repository.cleanResp()
             assertEquals(
                 result.isFailure,
                 true
@@ -212,6 +221,530 @@ class ICheckListRepositoryTest {
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `clearResp - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.cleanResp()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in HeaderCheckListSharedPreferencesDatasource get`() =
+        runTest {
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListSharedPreferencesDatasource.get",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IHeaderCheckListSharedPreferencesDatasource.get"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in HeaderCheckListRoomDatasource save`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListRoomDatasource.save",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IHeaderCheckListRoomDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in RespItemCheckListSharedPreferencesDatasource list`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.list()
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListSharedPreferencesDatasource.list",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IRespItemCheckListSharedPreferencesDatasource.list"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in RespItemCheckListRoomDatasource save`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val respItemCheckListSharedPreferencesModelList = listOf(
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                ),
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 2,
+                    option = OptionRespCheckList.REPAIR
+                )
+            )
+            val respItemCheckListRoomModel = RespItemCheckListRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(respItemCheckListSharedPreferencesModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.save(respItemCheckListRoomModel)
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListRoomDatasource.save",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IRespItemCheckListRoomDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in HeaderCheckListSharedPreferencesDatasource clean`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val respItemCheckListSharedPreferencesModelList = listOf(
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                ),
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 2,
+                    option = OptionRespCheckList.REPAIR
+                )
+            )
+            val respItemCheckListRoomModel = RespItemCheckListRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(respItemCheckListSharedPreferencesModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.save(respItemCheckListRoomModel)
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IHeaderCheckListSharedPreferencesDatasource.clean"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return failure if have error in RespItemCheckListSharedPreferencesDatasource clean`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val respItemCheckListSharedPreferencesModelList = listOf(
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                ),
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 2,
+                    option = OptionRespCheckList.REPAIR
+                )
+            )
+            val respItemCheckListRoomModel = RespItemCheckListRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(respItemCheckListSharedPreferencesModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.save(respItemCheckListRoomModel)
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.saveCheckList -> IRespItemCheckListSharedPreferencesDatasource.clean"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveCheckList - Check return correct if function execute successfully`() =
+        runTest {
+            val headerSharedPreferencesModel = HeaderCheckListSharedPreferencesModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val headerCheckListRoomModel = HeaderCheckListRoomModel(
+                regOperator = 1,
+                nroTurn = 1,
+                nroEquip = 1,
+                dateHour = Date(1760708211)
+            )
+            val respItemCheckListSharedPreferencesModelList = listOf(
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                ),
+                RespItemCheckListSharedPreferencesModel(
+                    idItem = 2,
+                    option = OptionRespCheckList.REPAIR
+                )
+            )
+            val respItemCheckListRoomModel = RespItemCheckListRoomModel(
+                idHeader = 1,
+                idItem = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(headerSharedPreferencesModel)
+            )
+            whenever(
+                headerCheckListRoomDatasource.save(headerCheckListRoomModel)
+            ).thenReturn(
+                Result.success(1L)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(respItemCheckListSharedPreferencesModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.save(respItemCheckListRoomModel)
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.saveCheckList()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `delLastRespItem - Check return failure if have error in RespItemCheckListSharedPreferencesDatasource delLast`() =
+        runTest {
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.delLast()
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListSharedPreferencesDatasource.delLast",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.delLastRespItem()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.delLastRespItem -> IRespItemCheckListSharedPreferencesDatasource.delLast"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `delLastRespItem - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                respItemCheckListSharedPreferencesDatasource.delLast()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.delLastRespItem()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `checkOpen - Check return failure if have error in HeaderCheckListSharedPreferencesDatasource checkOpen`() =
+        runTest {
+            whenever(
+                headerCheckListSharedPreferencesDatasource.checkOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListSharedPreferencesDatasource.checkOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkOpen()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.checkOpen -> IHeaderCheckListSharedPreferencesDatasource.checkOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerCheckListSharedPreferencesDatasource.checkOpen()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

@@ -24,17 +24,6 @@ data class NoteMotoMecRoomModel(
     var idBD: Long? = null
 )
 
-fun NoteMotoMecRoomModel.roomModelToEntity(): NoteMotoMec {
-    return with(this){
-        NoteMotoMec(
-            id = this.id,
-            nroOS = this.nroOS,
-            idActivity = this.idActivity,
-            idStop = this.idStop
-        )
-    }
-}
-
 fun NoteMotoMec.entityToRoomModel(
     idHeader: Int
 ): NoteMotoMecRoomModel{

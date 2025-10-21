@@ -81,4 +81,34 @@ class IRespItemCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun delLast(): Result<Boolean> {
+        try {
+            val resultList = list()
+            if(resultList.isFailure){
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultList.exceptionOrNull()!!
+                )
+            }
+            val list = resultList.getOrNull()!!
+            var mutableList = list.toMutableList()
+            if(list.isNotEmpty()) mutableList = list.toMutableList()
+            val count = mutableList.count()
+            mutableList.removeAt(count - 1)
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST,
+                    Gson().toJson(mutableList, typeToken)
+                )
+            }
+            mutableList.clear()
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

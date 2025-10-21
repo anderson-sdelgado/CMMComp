@@ -9,4 +9,5 @@ interface ActivityRepository  {
     suspend fun listByIdList(
         idList: List<Int>
     ): Result<List<Activity>>
+    suspend fun getById(id: Int): Result<Activity>
 }

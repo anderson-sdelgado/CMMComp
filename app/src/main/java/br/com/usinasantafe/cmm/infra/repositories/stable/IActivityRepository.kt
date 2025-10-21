@@ -87,4 +87,8 @@ class IActivityRepository @Inject constructor(
         }
     }
 
+    override suspend fun getById(id: Int): Result<Activity> {
+        TODO("Not yet implemented")
+    }
+
 }

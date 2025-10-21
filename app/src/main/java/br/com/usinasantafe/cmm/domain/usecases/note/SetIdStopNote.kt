@@ -37,7 +37,7 @@ class ISetIdStopNote @Inject constructor(
             }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
-            if(resultSave.isFailure){
+            if(resultSave.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultSave.exceptionOrNull()!!

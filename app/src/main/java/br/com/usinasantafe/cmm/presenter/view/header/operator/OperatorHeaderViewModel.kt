@@ -35,15 +35,18 @@ data class OperatorHeaderState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToOperatorState(): OperatorHeaderState {
+fun ResultUpdateModel.resultUpdateToOperatorState(
+    classAndMethod: String,
+    currentState: OperatorHeaderState
+): OperatorHeaderState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "OperatorHeaderViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
         this.failure
     }
-    return OperatorHeaderState(
+    return currentState.copy(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
@@ -165,21 +168,25 @@ class OperatorHeaderViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<OperatorHeaderState> = flow {
-        var pos = 0f
         val sizeAllUpdate = 4f
-        var operatorHeaderState = OperatorHeaderState()
+        var lastEmittedState: OperatorHeaderState? = null
+        val classAndMethod = getClassAndMethod()
         updateTableColab(
             sizeAll = sizeAllUpdate,
-            count = ++pos
+            count = 1f
         ).collect {
-            operatorHeaderState = it.resultUpdateToOperatorState()
-            emit(
-                it.resultUpdateToOperatorState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToOperatorState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (operatorHeaderState.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
+        lastEmittedState = _uiState.value
         emit(
-            OperatorHeaderState(
+            lastEmittedState.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,

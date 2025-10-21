@@ -32,15 +32,18 @@ data class QuestionUpdateCheckListState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToQuestionUpdateCheckListState(): QuestionUpdateCheckListState {
+fun ResultUpdateModel.resultUpdateToQuestionUpdateCheckListState(
+    classAndMethod: String,
+    currentState: QuestionUpdateCheckListState
+): QuestionUpdateCheckListState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "QuestionUpdateCheckListViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
         this.failure
     }
-    return QuestionUpdateCheckListState(
+    return currentState.copy(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
@@ -102,19 +105,24 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
         val sizeAllUpdate = sizeUpdate(1f)
-        var state = QuestionUpdateCheckListState()
+        val classAndMethod = getClassAndMethod()
+        var lastEmittedState: QuestionUpdateCheckListState? = null
         updateTableItemCheckListByNroEquip(
             sizeAll = sizeAllUpdate,
             count = 1f
         ).collect {
-            state = it.resultUpdateToQuestionUpdateCheckListState()
-            emit(
-                it.resultUpdateToQuestionUpdateCheckListState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToQuestionUpdateCheckListState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (state.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
+        lastEmittedState = _uiState.value
         emit(
-            QuestionUpdateCheckListState(
+            lastEmittedState.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,

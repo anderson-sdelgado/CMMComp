@@ -36,15 +36,18 @@ data class StopListNoteState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToStopListNoteState(): StopListNoteState {
+fun ResultUpdateModel.resultUpdateToStopListNoteState(
+    classAndMethod: String,
+    currentState: StopListNoteState
+): StopListNoteState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "StopListNoteViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
         this.failure
     }
-    return StopListNoteState(
+    return currentState.copy(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
@@ -157,32 +160,39 @@ class StopListNoteViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateAllDatabase(): Flow<StopListNoteState> = flow {
-        var pos = 0f
+    fun updateAllDatabase(): Flow<StopListNoteState> = flow {
         val sizeAllUpdate = 7f
-        var stopListState = StopListNoteState()
+        var lastEmittedState: StopListNoteState? = null
+        val classAndMethod = getClassAndMethod()
         updateTableRActivityStop(
             sizeAll = sizeAllUpdate,
-            count = ++pos
+            count = 1f
         ).collect {
-            stopListState = it.resultUpdateToStopListNoteState()
-            emit(
-                it.resultUpdateToStopListNoteState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToStopListNoteState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (stopListState.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
         updateTableStop(
             sizeAll = sizeAllUpdate,
-            count = ++pos
+            count = 2f
         ).collect {
-            stopListState = it.resultUpdateToStopListNoteState()
-            emit(
-                it.resultUpdateToStopListNoteState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToStopListNoteState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (stopListState.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
+        lastEmittedState = _uiState.value
         emit(
-            StopListNoteState(
+            lastEmittedState.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,

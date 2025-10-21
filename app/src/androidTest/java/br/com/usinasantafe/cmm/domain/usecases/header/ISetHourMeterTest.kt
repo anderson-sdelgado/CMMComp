@@ -177,7 +177,7 @@ class ISetHourMeterTest {
                 2000.0,
                 0.0
             )
-            val listHeaderAfter = headerMotoMecDao.listAll()
+            val listHeaderAfter = headerMotoMecDao.all()
             assertEquals(
                 listHeaderAfter.size,
                 1
@@ -311,7 +311,7 @@ class ISetHourMeterTest {
                     statusCon = true
                 )
             )
-            val listHeaderBefore = headerMotoMecDao.listAll()
+            val listHeaderBefore = headerMotoMecDao.all()
             assertEquals(
                 listHeaderBefore.size,
                 1
@@ -394,7 +394,7 @@ class ISetHourMeterTest {
                 result.getOrNull()!!,
                 true
             )
-            val listHeaderAfter = headerMotoMecDao.listAll()
+            val listHeaderAfter = headerMotoMecDao.all()
             assertEquals(
                 listHeaderAfter.size,
                 1

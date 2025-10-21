@@ -33,15 +33,18 @@ data class TurnListHeaderState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToTurnListState(): TurnListHeaderState {
+fun ResultUpdateModel.resultUpdateToTurnListState(
+    classAndMethod: String,
+    currentState: TurnListHeaderState
+): TurnListHeaderState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "TurnListHeaderViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
         this.failure
     }
-    return TurnListHeaderState(
+    return currentState.copy(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
@@ -124,22 +127,26 @@ class TurnListHeaderViewModel @Inject constructor(
         }
     }
 
-    suspend fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
-        var pos = 0f
+    fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
         val sizeAllUpdate = 4f
-        var turnListHeaderState = TurnListHeaderState()
+        var lastEmittedState: TurnListHeaderState? = null
+        val classAndMethod = getClassAndMethod()
         updateTableTurn(
             sizeAll = sizeAllUpdate,
-            count = ++pos
+            count = 1f
         ).collect {
-            turnListHeaderState = it.resultUpdateToTurnListState()
-            emit(
-                it.resultUpdateToTurnListState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToTurnListState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (turnListHeaderState.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
+        lastEmittedState = _uiState.value
         emit(
-            TurnListHeaderState(
+            lastEmittedState.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,

@@ -19,7 +19,7 @@ interface HeaderMotoMecDao {
     suspend fun update(model: HeaderMotoMecRoomModel)
 
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC")
-    suspend fun listAll(): List<HeaderMotoMecRoomModel>
+    suspend fun all(): List<HeaderMotoMecRoomModel>
 
     @Query("SELECT COUNT(id) FROM $TB_HEADER_MOTO_MEC WHERE status = :status")
     suspend fun countByStatus(status: Status): Int

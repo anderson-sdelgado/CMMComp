@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.di.usecase
 
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.common.FlowAppOpen
 import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.common.ICheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.common.IFlowAppOpen
 import br.com.usinasantafe.cmm.domain.usecases.common.IListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.IGetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.common.IListTurn
@@ -73,7 +75,7 @@ interface HeaderModule {
 
     @Binds
     @Singleton
-    fun bindCheckHeaderOpen(usecase: ICheckHeaderOpen): CheckHeaderOpen
+    fun bindCheckFlowOpen(usecase: IFlowAppOpen): FlowAppOpen
 
     @Binds
     @Singleton

@@ -219,4 +219,42 @@ class IItemCheckListRoomDatasourceTest {
                 10
             )
         }
+
+    @Test
+    fun `countByIdList - Check return list if have data research`() =
+        runTest {
+            itemCheckListDao.insertAll(
+                listOf(
+                    ItemCheckListRoomModel(
+                        idItemCheckList = 1,
+                        descrItemCheckList = "Teste 1",
+                        idCheckList = 10
+                    ),
+                    ItemCheckListRoomModel(
+                        idItemCheckList = 2,
+                        descrItemCheckList = "Teste 2",
+                        idCheckList = 10
+                    ),
+                    ItemCheckListRoomModel(
+                        idItemCheckList = 3,
+                        descrItemCheckList = "Teste 3",
+                        idCheckList = 20
+                    )
+                )
+            )
+            val qtdBefore = itemCheckListDao.all().size
+            assertEquals(
+                qtdBefore,
+                3
+            )
+            val result = datasource.countByIdCheckList(10)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                2
+            )
+        }
 }

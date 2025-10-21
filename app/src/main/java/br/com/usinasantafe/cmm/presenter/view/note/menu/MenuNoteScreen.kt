@@ -26,7 +26,7 @@ import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowMenu
+import br.com.usinasantafe.cmm.utils.FlowNote
 
 @Composable
 fun MenuNoteScreen(
@@ -50,7 +50,7 @@ fun MenuNoteScreen(
                 setSelection = viewModel::setSelection,
                 textButtonReturn = uiState.textButtonReturn,
                 onButtonReturn = viewModel::onButtonReturn,
-                flowMenu = uiState.flowMenu,
+                flowNote = uiState.flowNote,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
@@ -72,7 +72,7 @@ fun MenuNoteContent(
     setSelection: (Int) -> Unit,
     textButtonReturn: String,
     onButtonReturn: () -> Unit,
-    flowMenu: FlowMenu,
+    flowNote: FlowNote,
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
@@ -145,10 +145,10 @@ fun MenuNoteContent(
 
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
-            when(flowMenu){
-                FlowMenu.WORK -> onNavOS()
-                FlowMenu.STOP -> onNavActivityList()
-                FlowMenu.FINISH -> onNavMeasure()
+            when(flowNote){
+                FlowNote.WORK -> onNavOS()
+                FlowNote.STOP -> onNavActivityList()
+                FlowNote.FINISH -> onNavMeasure()
                 else -> {}
             }
         }
@@ -176,7 +176,7 @@ fun MenuHeaderPagePreview() {
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowMenu = FlowMenu.INVALID,
+                flowNote = FlowNote.INVALID,
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
@@ -211,7 +211,7 @@ fun MenuHeaderPagePreviewFailure() {
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowMenu = FlowMenu.INVALID,
+                flowNote = FlowNote.INVALID,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -246,7 +246,7 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowMenu = FlowMenu.INVALID,
+                flowNote = FlowNote.INVALID,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -282,7 +282,7 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowMenu = FlowMenu.INVALID,
+                flowNote = FlowNote.INVALID,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",

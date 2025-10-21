@@ -11,11 +11,14 @@ data class HeaderCheckListSharedPreferencesModel(
 )
 
 fun HeaderCheckListSharedPreferencesModel.sharedPreferencesModelToEntity(): HeaderCheckList {
+    val nonNullNroEquip = requireNotNull(nroEquip) { "Field 'nroEquip' cannot be null." }
+    val nonNullRegOperator = requireNotNull(regOperator) { "Field 'regOperator' cannot be null." }
+    val nonNullNroTurn = requireNotNull(nroTurn) { "Field 'nroTurn' cannot be null." }
     return with(this) {
         HeaderCheckList(
-            nroEquip = nroEquip!!,
-            regOperator = regOperator!!,
-            nroTurn = nroTurn!!,
+            nroEquip = nonNullNroEquip,
+            regOperator = nonNullRegOperator,
+            nroTurn = nonNullNroTurn,
             dateHour = dateHour
         )
     }

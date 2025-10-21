@@ -72,4 +72,20 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun checkOpen(): Result<Boolean> {
+        try {
+            val model = sharedPreferences.getString(
+                BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,
+                null
+            )
+            val check = model.isNullOrEmpty()
+            return Result.success(!check)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

@@ -75,12 +75,12 @@ class ICheckHeaderSendTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = headerMotoMecDao.listAll().size
+            val qtdAfter = headerMotoMecDao.all().size
             assertEquals(
                 qtdAfter,
                 1
             )
-            val entity = headerMotoMecDao.listAll()[0]
+            val entity = headerMotoMecDao.all()[0]
             assertEquals(
                 entity.status,
                 Status.CLOSE

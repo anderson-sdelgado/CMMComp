@@ -116,7 +116,14 @@ class IItemCheckListRepository @Inject constructor(
     }
 
     override suspend fun countByIdCheckList(idCheckList: Int): Result<Int> {
-        TODO("Not yet implemented")
+        val result = itemCheckListRoomDatasource.countByIdCheckList(idCheckList)
+        if (result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
     }
 
 }

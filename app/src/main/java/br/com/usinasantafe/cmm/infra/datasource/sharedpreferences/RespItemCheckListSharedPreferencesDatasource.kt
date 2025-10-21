@@ -7,4 +7,5 @@ interface RespItemCheckListSharedPreferencesDatasource {
     suspend fun save(model: RespItemCheckListSharedPreferencesModel): Result<Boolean>
     suspend fun clean(): Result<Boolean>
     suspend fun list(): Result<List<RespItemCheckListSharedPreferencesModel>>
+    suspend fun delLast(): Result<Boolean>
 }

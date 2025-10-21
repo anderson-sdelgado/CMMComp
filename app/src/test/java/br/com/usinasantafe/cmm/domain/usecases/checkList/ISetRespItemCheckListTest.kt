@@ -30,11 +30,47 @@ class ISetRespItemCheckListTest {
     )
 
     @Test
+    fun `Check return failure if have error in CheckListRepository cleanResp and pos equals 1`() =
+        runTest {
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                resultFailure(
+                    "ICheckListRepository.cleanResp",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                pos = 1,
+                id = 1,
+                option = OptionRespCheckList.ACCORDING
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetRespItemCheckList -> ICheckListRepository.cleanResp"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in CheckListRepository saveResp`() =
         runTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -70,6 +106,11 @@ class ISetRespItemCheckListTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -110,6 +151,11 @@ class ISetRespItemCheckListTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -155,6 +201,11 @@ class ISetRespItemCheckListTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -205,6 +256,11 @@ class ISetRespItemCheckListTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -262,6 +318,11 @@ class ISetRespItemCheckListTest {
                 option = OptionRespCheckList.ACCORDING
             )
             whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
                 Result.success(true)
@@ -307,6 +368,11 @@ class ISetRespItemCheckListTest {
             val entity = RespItemCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
+            )
+            whenever(
+                checkListRepository.cleanResp()
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 checkListRepository.saveResp(entity)

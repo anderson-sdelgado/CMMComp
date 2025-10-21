@@ -38,6 +38,8 @@ const val TB_TURN = "tb_turn"
 
 const val TB_HEADER_MOTO_MEC = "tb_header_moto_mec"
 const val TB_NOTE_MOTO_MEC = "tb_note_moto_mec"
+const val TB_HEADER_CHECK_LIST = "tb_header_check_list"
+const val TB_RESP_ITEM_CHECK_LIST = "tb_resp_item_check_list"
 
 const val WEB_ALL_ACTIVITY = "activity.php"
 const val WEB_ALL_BOCAL = "bocal.php"

@@ -1,30 +1,30 @@
-package br.com.usinasantafe.cmm.domain.usecases.header
+package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
-class ICheckHeaderOpenTest {
+class IDelLastRespItemCheckListTest {
 
-    private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ICheckHeaderOpen(
-        motoMecRepository = motoMecRepository
+    private val checkListRepository = mock<CheckListRepository>()
+    private val usecase = IDelLastRespItemCheckList(
+        checkListRepository = checkListRepository
     )
 
     @Test
-    fun `Check return failure if have error in HeaderMotoMecRepository checkHeaderOpen`() =
+    fun `Check return failure if have error in CheckListRepository delLastRespItem`() =
         runTest {
             whenever(
-                motoMecRepository.checkHeaderOpen()
+                checkListRepository.delLastRespItem()
             ).thenReturn(
                 resultFailure(
-                    context = "HeaderMotoMecRepository.checkHeaderOpen",
-                    message = "-",
-                    cause = Exception()
+                    "ICheckListRepository.delLastRespItem",
+                    "-",
+                    Exception()
                 )
             )
             val result = usecase()
@@ -34,7 +34,7 @@ class ICheckHeaderOpenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHeaderOpen -> HeaderMotoMecRepository.checkHeaderOpen"
+                "IDelLastRespItemCheckList -> ICheckListRepository.delLastRespItem"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -46,7 +46,7 @@ class ICheckHeaderOpenTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.checkHeaderOpen()
+                checkListRepository.delLastRespItem()
             ).thenReturn(
                 Result.success(true)
             )
@@ -60,5 +60,5 @@ class ICheckHeaderOpenTest {
                 true
             )
         }
-    
+
 }

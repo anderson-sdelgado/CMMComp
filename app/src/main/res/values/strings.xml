@@ -69,4 +69,6 @@
     <string name="text_item_note">APONTAMENTO</string>
     <string name="text_item_config">CONFIGURAÇÃO</string>
     <string name="text_item_out">SAIR</string>
+    <string name="text_title_history">HISTÓRICO</string>
+    <string name="text_msg_no_data_history">NÃO CONTÉM APONTAMENTO NO BOLETIM.</string>">
 </resources>

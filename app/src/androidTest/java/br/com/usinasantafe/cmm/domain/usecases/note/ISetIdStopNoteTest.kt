@@ -116,7 +116,7 @@ class ISetIdStopNoteTest {
                 modelNoteBefore.idStop,
                 null
             )
-            val listHeaderBefore = headerMotoMecDao.listAll()
+            val listHeaderBefore = headerMotoMecDao.all()
             assertEquals(
                 listHeaderBefore.size,
                 1

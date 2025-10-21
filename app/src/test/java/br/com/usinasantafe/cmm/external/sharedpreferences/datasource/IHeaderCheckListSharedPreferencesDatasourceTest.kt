@@ -85,5 +85,40 @@ class IHeaderCheckListSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `Check return false if not have data in header check list`() =
+        runTest {
+            val result = datasource.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `Check return true if have data in header check list`() =
+        runTest {
+            val data = HeaderCheckListSharedPreferencesModel(
+                nroEquip = 1,
+                regOperator = 1,
+                nroTurn = 1,
+                dateHour = Date(1760546436)
+            )
+            datasource.save(data)
+            val result = datasource.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 
 }

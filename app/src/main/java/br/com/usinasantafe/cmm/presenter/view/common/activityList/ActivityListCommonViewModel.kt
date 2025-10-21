@@ -9,6 +9,8 @@ import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigState
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.resultUpdateToConfig
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.LevelUpdate
@@ -37,15 +39,18 @@ data class ActivityListCommonState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToActivityListCommonState(): ActivityListCommonState {
+fun ResultUpdateModel.resultUpdateToActivityListCommonState(
+    classAndMethod: String,
+    currentState: ActivityListCommonState
+): ActivityListCommonState {
     val fail = if(failure.isNotEmpty()){
-        val ret = "ActivityListCommonViewModel.updateAllDatabase -> ${this.failure}"
+        val ret = "$classAndMethod -> ${this.failure}"
         Timber.e(ret)
         ret
     } else {
         this.failure
     }
-    return ActivityListCommonState(
+    return currentState.copy(
         flagDialog = this.flagDialog,
         flagFailure = this.flagFailure,
         errors = this.errors,
@@ -143,21 +148,25 @@ class ActivityListCommonViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
-        var pos = 0f
         val sizeAllUpdate = 4f
-        var activityListState = ActivityListCommonState()
+        var lastEmittedState: ActivityListCommonState? = null
+        val classAndMethod = getClassAndMethod()
         updateTableActivity(
             sizeAll = sizeAllUpdate,
-            count = ++pos
+            count = 1f
         ).collect {
-            activityListState = it.resultUpdateToActivityListCommonState()
-            emit(
-                it.resultUpdateToActivityListCommonState()
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToActivityListCommonState(
+                classAndMethod,
+                currentState = currentGlobalState
             )
+            lastEmittedState = newState
+            emit(newState)
         }
-        if (activityListState.flagFailure) return@flow
+        if (lastEmittedState!!.flagFailure) return@flow
+        lastEmittedState = _uiState.value
         emit(
-            ActivityListCommonState(
+            lastEmittedState.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,

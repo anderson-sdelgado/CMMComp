@@ -45,7 +45,7 @@ class IHeaderMotoMecRoomDatasourceTest {
     @Test
     fun `save - Check save and data`() =
         runTest {
-            val listBefore = headerMotoMecDao.listAll()
+            val listBefore = headerMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -71,7 +71,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = headerMotoMecDao.listAll()
+            val listAfter = headerMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -151,12 +151,12 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = headerMotoMecDao.listAll().size
+            val qtdAfter = headerMotoMecDao.all().size
             assertEquals(
                 qtdAfter,
                 1
             )
-            val entity = headerMotoMecDao.listAll()[0]
+            val entity = headerMotoMecDao.all()[0]
             assertEquals(
                 entity.status,
                 Status.OPEN
@@ -242,7 +242,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val listBefore = headerMotoMecDao.listAll()
+            val listBefore = headerMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -261,7 +261,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = headerMotoMecDao.listAll()
+            val listAfter = headerMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -309,7 +309,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val listBefore = headerMotoMecDao.listAll()
+            val listBefore = headerMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -328,7 +328,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = headerMotoMecDao.listAll()
+            val listAfter = headerMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -382,12 +382,12 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = headerMotoMecDao.listAll().size
+            val qtdAfter = headerMotoMecDao.all().size
             assertEquals(
                 qtdAfter,
                 1
             )
-            val entity = headerMotoMecDao.listAll()[0]
+            val entity = headerMotoMecDao.all()[0]
             assertEquals(
                 entity.statusSend,
                 StatusSend.SEND
@@ -564,7 +564,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val listBefore = headerMotoMecDao.listAll()
+            val listBefore = headerMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -590,7 +590,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = headerMotoMecDao.listAll()
+            val listAfter = headerMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -623,7 +623,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusSend = StatusSend.SENT
                 )
             )
-            val listBefore = headerMotoMecDao.listAll()
+            val listBefore = headerMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -644,7 +644,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = headerMotoMecDao.listAll()
+            val listAfter = headerMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1

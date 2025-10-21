@@ -189,7 +189,7 @@ class ISendHeaderTest {
                     statusCon = true
                 )
             )
-            val headerListBefore = headerMotoMecDao.listAll()
+            val headerListBefore = headerMotoMecDao.all()
             assertEquals(
                 headerListBefore.size,
                 1
@@ -289,7 +289,7 @@ class ISendHeaderTest {
                 result.getOrNull()!!,
                 true
             )
-            val headerListAfter = headerMotoMecDao.listAll()
+            val headerListAfter = headerMotoMecDao.all()
             assertEquals(
                 headerListAfter.size,
                 1

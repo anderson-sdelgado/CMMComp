@@ -9,4 +9,8 @@ interface StopRepository {
     suspend fun listByIdList(
         idList: List<Int>
     ): Result<List<Stop>>
+    suspend fun getById(
+        id: Int
+    ): Result<Stop>
+
 }

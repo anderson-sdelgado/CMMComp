@@ -33,6 +33,15 @@ class ISetRespItemCheckList @Inject constructor(
         option: OptionRespCheckList
     ): Result<Boolean> {
         try {
+            if(pos == 1) {
+                val resultClean = checkListRepository.cleanResp()
+                if (resultClean.isFailure) {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = resultClean.exceptionOrNull()!!
+                    )
+                }
+            }
             val entity = RespItemCheckList(
                 idItem = id,
                 option = option

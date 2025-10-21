@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.usecases.note.CheckHasNoteHeaderOpen
 import br.com.usinasantafe.cmm.domain.usecases.common.ListItemMenu
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowMenu
+import br.com.usinasantafe.cmm.utils.FlowNote
 import br.com.usinasantafe.cmm.utils.TypeView
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -181,8 +181,8 @@ class MenuNoteViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flowMenu,
-                FlowMenu.WORK
+                viewModel.uiState.value.flowNote,
+                FlowNote.WORK
             )
         }
 
@@ -258,8 +258,8 @@ class MenuNoteViewModelTest {
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flowMenu,
-                FlowMenu.FINISH
+                viewModel.uiState.value.flowNote,
+                FlowNote.FINISH
             )
         }
 }

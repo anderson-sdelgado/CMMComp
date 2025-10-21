@@ -4,8 +4,8 @@ import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 
 data class RespItemCheckListSharedPreferencesModel(
-    val idItem: Int? = null,
-    val option: OptionRespCheckList? = null,
+    val idItem: Int,
+    val option: OptionRespCheckList,
 )
 
 fun RespItemCheckListSharedPreferencesModel.sharedPreferencesModelToEntity(): RespItemCheckList {

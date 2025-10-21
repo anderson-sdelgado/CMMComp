@@ -166,7 +166,7 @@ class HeaderFinishFlowTest {
             0.0
         )
 
-        val headerMotoMecList = headerMotoMecDao.listAll()
+        val headerMotoMecList = headerMotoMecDao.all()
         assertEquals(
             headerMotoMecList.size,
             1
@@ -204,7 +204,7 @@ class HeaderFinishFlowTest {
         )
         assertEquals(
             headerMotoMec.status,
-            Status.CLOSE
+            Status.FINISH
         )
 
         composeTestRule.waitUntilTimeout(3_000)

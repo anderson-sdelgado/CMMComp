@@ -365,7 +365,7 @@ class ISetIdActivityCommonTest {
                 modelNoteBefore.idActivity,
                 null
             )
-            val listHeaderBefore = headerMotoMecDao.listAll()
+            val listHeaderBefore = headerMotoMecDao.all()
             assertEquals(
                 listHeaderBefore.size,
                 1
@@ -466,7 +466,7 @@ class ISetIdActivityCommonTest {
                 listBefore.size,
                 0
             )
-            val listHeaderBefore = headerMotoMecDao.listAll()
+            val listHeaderBefore = headerMotoMecDao.all()
             assertEquals(
                 listHeaderBefore.size,
                 1

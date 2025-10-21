@@ -85,4 +85,8 @@ class IStopRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun getById(id: Int): Result<Stop> {
+        TODO("Not yet implemented")
+    }
 }

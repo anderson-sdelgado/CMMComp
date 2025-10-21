@@ -21,4 +21,7 @@ interface ItemCheckListDao {
     @Query("SELECT * FROM $TB_ITEM_CHECK_LIST WHERE idCheckList = :idCheckList")
     suspend fun listByIdCheckList(idCheckList: Int): List<ItemCheckListRoomModel>
 
+    @Query("SELECT COUNT(idItemCheckList) FROM $TB_ITEM_CHECK_LIST WHERE idCheckList = :idCheckList")
+    suspend fun countByIdCheckList(idCheckList: Int): Int
+
 }

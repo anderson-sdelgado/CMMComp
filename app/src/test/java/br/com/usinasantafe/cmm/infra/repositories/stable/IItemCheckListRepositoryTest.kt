@@ -399,4 +399,50 @@ class IItemCheckListRepositoryTest {
                 10
             )
         }
+
+    @Test
+    fun `countByIdCheckList - Check return failure if have error in ItemCheckListRoomDatasource countByIdCheckList`() =
+        runTest {
+            whenever(
+                itemCheckListRoomDatasource.countByIdCheckList(1)
+            ).thenReturn(
+                resultFailure(
+                    "IItemCheckListRoomDatasource.countByIdCheckList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.countByIdCheckList(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemCheckListRepository.countByIdCheckList -> IItemCheckListRoomDatasource.countByIdCheckList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `countByIdCheckList - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                itemCheckListRoomDatasource.countByIdCheckList(1)
+            ).thenReturn(
+                Result.success(10)
+            )
+            val result = repository.countByIdCheckList(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                10
+            )
+        }
 }

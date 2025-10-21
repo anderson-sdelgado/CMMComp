@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.usecases.note.CheckHasNoteHeaderOpen
 import br.com.usinasantafe.cmm.domain.usecases.common.ListItemMenu
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowMenu
+import br.com.usinasantafe.cmm.utils.FlowNote
 import br.com.usinasantafe.cmm.utils.TypeView
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,7 @@ data class MenuNoteState(
     val descrEquip: String = "",
     val menuList: List<ItemMenuModel> = listOf(),
     val textButtonReturn: String = "",
-    val flowMenu: FlowMenu = FlowMenu.INVALID,
+    val flowNote: FlowNote = FlowNote.INVALID,
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -101,12 +101,12 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     fun setSelection(id: Int)  = viewModelScope.launch {
-        val flowMenu = when(id) {
-            1 -> FlowMenu.WORK
-            2 -> FlowMenu.STOP
-            else -> FlowMenu.INVALID
+        val flowNote = when(id) {
+            1 -> FlowNote.WORK
+            2 -> FlowNote.STOP
+            else -> FlowNote.INVALID
         }
-        if(flowMenu == FlowMenu.INVALID){
+        if(flowNote == FlowNote.INVALID){
             val failure = "MenuNoteViewModel.setSelection -> Option Invalid!"
             Timber.e(failure)
             _uiState.update {
@@ -122,7 +122,7 @@ class MenuNoteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 flagAccess = true,
-                flowMenu = flowMenu
+                flowNote = flowNote
             )
         }
     }
@@ -161,7 +161,7 @@ class MenuNoteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 flagAccess = true,
-                flowMenu = FlowMenu.FINISH
+                flowNote = FlowNote.FINISH
             )
         }
     }

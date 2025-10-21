@@ -16,12 +16,15 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import br.com.usinasantafe.cmm.utils.FlowNote
 
 @Composable
 fun ItemListDesign(
@@ -43,6 +46,62 @@ fun ItemListDesign(
             }
             .testTag("item_list_$id")
     )
+}
+
+@Composable
+fun ItemHistoryListDesign(
+    id: Int = 0,
+    type: FlowNote,
+    descr: String,
+    dateHour: String,
+    detail: String,
+    font: Int = 22,
+    padding: Int = 8,
+    setActionItem: () -> Unit
+) {
+    val color = when(type){
+        FlowNote.WORK -> Color.Blue
+        FlowNote.STOP -> Color.Red
+        else -> Color.Black
+    }
+    return  Column(
+        modifier = Modifier
+            .testTag("item_list_$id")
+            .padding(vertical = padding.dp)
+            .clickable {
+                setActionItem()
+            }
+    ) {
+        Text(
+            textAlign = TextAlign.Left,
+            text = descr,
+            style = TextStyle(
+                fontSize = font.sp,
+                fontWeight = FontWeight.Bold,
+                color = color
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = dateHour,
+            style = TextStyle(
+                fontSize = font.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = detail,
+            style = TextStyle(
+                fontSize = font.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
 }
 
 @Composable

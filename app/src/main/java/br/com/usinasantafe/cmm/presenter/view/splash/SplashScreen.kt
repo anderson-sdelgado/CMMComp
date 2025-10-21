@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.utils.FlowApp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,7 +37,8 @@ import kotlinx.coroutines.launch
 fun SplashScreen(
     viewModel: SplashViewModel = hiltViewModel(),
     onNavInitialMenu: () -> Unit,
-    onNavMenuNote: () -> Unit
+    onNavMenuNote: () -> Unit,
+    onNavCheckList: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -47,13 +49,14 @@ fun SplashScreen(
             }
 
             SplashContent(
-                flagHeaderOpen = uiState.flagHeaderOpen,
+                flowApp = uiState.flowApp,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavMenuNote = onNavMenuNote,
+                onNavCheckList = onNavCheckList,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -62,13 +65,14 @@ fun SplashScreen(
 
 @Composable
 fun SplashContent(
-    flagHeaderOpen: Boolean,
+    flowApp: FlowApp,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
     onNavInitialMenu: () -> Unit,
     onNavMenuNote: () -> Unit,
+    onNavCheckList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var visibility by remember { mutableStateOf(true) }
@@ -110,7 +114,12 @@ fun SplashContent(
 
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
-            if(flagHeaderOpen) onNavMenuNote() else onNavInitialMenu()
+            when(flowApp) {
+                FlowApp.HEADER_INITIAL -> onNavInitialMenu()
+                FlowApp.NOTE_WORK -> onNavMenuNote()
+                FlowApp.CHECK_LIST -> onNavCheckList()
+                else -> {}
+            }
         }
     }
 }
@@ -121,13 +130,14 @@ fun SplashPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             SplashContent(
-                flagHeaderOpen = false,
+                flowApp = FlowApp.HEADER_INITIAL,
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 onNavInitialMenu = {},
                 onNavMenuNote = {},
+                onNavCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -140,13 +150,14 @@ fun SplashPagePreviewFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             SplashContent(
-                flagHeaderOpen = false,
+                flowApp = FlowApp.HEADER_INITIAL,
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
                 onNavInitialMenu = {},
                 onNavMenuNote = {},
+                onNavCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

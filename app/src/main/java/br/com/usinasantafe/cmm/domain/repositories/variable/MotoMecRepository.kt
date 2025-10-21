@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
 import br.com.usinasantafe.cmm.utils.TypeEquip
 
 interface MotoMecRepository {
@@ -35,4 +36,5 @@ interface MotoMecRepository {
         number: Long,
         token: String
     ): Result<Boolean>
+    suspend fun noteList(): Result<List<NoteMotoMec>>
 }

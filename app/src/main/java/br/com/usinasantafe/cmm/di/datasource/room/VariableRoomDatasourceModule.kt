@@ -20,4 +20,12 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindNoteMotoMecRoomDatasource(dataSource: INoteMotoMecRoomDatasource): NoteMotoMecRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindHeaderCheckListRoomDatasource(dataSource: IHeaderCheckListRoomDatasource): HeaderCheckListRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindRespItemCheckListRoomDatasource(dataSource: IRespItemCheckListRoomDatasource): RespItemCheckListRoomDatasource
+
 }

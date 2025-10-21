@@ -3,7 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.splash
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckHeaderOpen
+import br.com.usinasantafe.cmm.domain.usecases.common.FlowAppOpen
+import br.com.usinasantafe.cmm.utils.FlowApp
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -19,21 +20,21 @@ class SplashViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val checkHeaderOpen = mock<CheckHeaderOpen>()
+    private val flowAppOpen = mock<FlowAppOpen>()
     private val startWorkManager = mock<StartWorkManager>()
     private val viewModel = SplashViewModel(
-        checkHeaderOpen = checkHeaderOpen,
+        flowAppOpen = flowAppOpen,
         startWorkManager = startWorkManager
     )
 
     @Test
-    fun `checkOpen - Check return failure if have error in CheckHeaderOpen`() =
+    fun `flowAppOpen - Check return failure if have error in CheckFlowAppOpen`() =
         runTest {
             whenever(
-                checkHeaderOpen()
+                flowAppOpen()
             ).thenReturn(
                 resultFailure(
-                    "CheckHeaderOpen",
+                    "CheckFlowAppOpen",
                     "-",
                     Exception()
                 )
@@ -45,7 +46,7 @@ class SplashViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "SplashViewModel.startApp -> CheckHeaderOpen -> java.lang.Exception"
+                "SplashViewModel.startApp -> CheckFlowAppOpen -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -54,12 +55,12 @@ class SplashViewModelTest {
         }
 
     @Test
-    fun `checkOpen - Check return true if function execute successfully`() =
+    fun `checkOpen - Check return FlowApp HEADER_INITIAL if function execute successfully`() =
         runTest {
             whenever(
-                checkHeaderOpen()
+                flowAppOpen()
             ).thenReturn(
-                Result.success(true)
+                Result.success(FlowApp.HEADER_INITIAL)
             )
             viewModel.startApp()
             assertEquals(
@@ -75,35 +76,9 @@ class SplashViewModelTest {
                 ""
             )
             assertEquals(
-                viewModel.uiState.value.flagHeaderOpen,
-                true
+                viewModel.uiState.value.flowApp,
+                FlowApp.HEADER_INITIAL
             )
         }
 
-    @Test
-    fun `checkOpen - Check return false if function execute successfully`() =
-        runTest {
-            whenever(
-                checkHeaderOpen()
-            ).thenReturn(
-                Result.success(false)
-            )
-            viewModel.startApp()
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.flagDialog,
-                false
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                ""
-            )
-            assertEquals(
-                viewModel.uiState.value.flagHeaderOpen,
-                false
-            )
-        }
 }
