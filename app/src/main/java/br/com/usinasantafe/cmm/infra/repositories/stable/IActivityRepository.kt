@@ -88,7 +88,21 @@ class IActivityRepository @Inject constructor(
     }
 
     override suspend fun getById(id: Int): Result<Activity> {
-        TODO("Not yet implemented")
+        try {
+            val result = activityRoomDatasource.getById(id)
+            if (result.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            return Result.success(result.getOrNull()!!.roomModelToEntity())
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

@@ -26,7 +26,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun checkHasByIdHeader(idHeader: Int): Result<Boolean> {
         try {
-            val result = noteMotoMecDao.listByIdHeader(idHeader).isNotEmpty()
+            val result = noteMotoMecDao.countByIdHeader(idHeader) > 0
             return Result.success(result)
         } catch (e: Exception) {
             return resultFailure(
@@ -61,6 +61,18 @@ class INoteMotoMecRoomDatasource @Inject constructor(
             model.statusSend = StatusSend.SENT
             noteMotoMecDao.update(model)
             return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<NoteMotoMecRoomModel>> {
+        try {
+            val list = noteMotoMecDao.listByIdHeader(idHeader)
+            return Result.success(list)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

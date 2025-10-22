@@ -247,4 +247,50 @@ class IActivityRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check return model`() =
+        runTest {
+            activityDao.insertAll(
+                listOf(
+                    ActivityRoomModel(
+                        idActivity = 1,
+                        codActivity = 10,
+                        descrActivity = "ATIVIDADE 1",
+                    ),
+                    ActivityRoomModel(
+                        idActivity = 2,
+                        codActivity = 20,
+                        descrActivity = "ATIVIDADE 2",
+                    ),
+                    ActivityRoomModel(
+                        idActivity = 3,
+                        codActivity = 30,
+                        descrActivity = "ATIVIDADE 3",
+                    ),
+                    ActivityRoomModel(
+                        idActivity = 4,
+                        codActivity = 40,
+                        descrActivity = "ATIVIDADE 3",
+                    ),
+                )
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                model.idActivity,
+                1
+            )
+            assertEquals(
+                model.codActivity,
+                10
+            )
+            assertEquals(
+                model.descrActivity,
+                "ATIVIDADE 1"
+            )
+        }
 }

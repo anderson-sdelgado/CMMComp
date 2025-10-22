@@ -22,7 +22,10 @@ interface NoteMotoMecDao {
     suspend fun delete(model: NoteMotoMecRoomModel)
 
     @Query("SELECT * FROM $TB_NOTE_MOTO_MEC")
-    suspend fun listAll(): List<NoteMotoMecRoomModel>
+    suspend fun all(): List<NoteMotoMecRoomModel>
+
+    @Query("SELECT COUNT(id) FROM $TB_NOTE_MOTO_MEC WHERE idHeader = :idHeader")
+    suspend fun countByIdHeader(idHeader: Int): Int
 
     @Query("SELECT * FROM $TB_NOTE_MOTO_MEC WHERE idHeader = :idHeader")
     suspend fun listByIdHeader(idHeader: Int): List<NoteMotoMecRoomModel>

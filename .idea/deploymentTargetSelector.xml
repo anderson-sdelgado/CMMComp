@@ -13,16 +13,19 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_false_if_not_have_header_open()">
+      <SelectionState runConfigName="check_open_screen_and_msg_failure_if_not_have_data_in_header_moto_mec_room()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_CHECK_LISTif_have_header_open_and_check_list_open()">
+      <SelectionState runConfigName="check_open_screen_and_empty_list_if_not_have_note()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_NOTE_WORK_if_have_header_open()">
+      <SelectionState runConfigName="check_open_screen_and_msg_failure_if_not_have_data_in_stop_room()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_CHECK_LIST_if_have_header_open_and_check_list_open()">
+      <SelectionState runConfigName="check_open_screen_and_msg_failure_if_not_have_data_in_activity_room()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="check_open_screen_and_show_list_if_process_execute_successfully()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

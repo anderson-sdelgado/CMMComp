@@ -305,4 +305,59 @@ class IStopRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in StopRoomDatasource getById`() =
+        runTest {
+            whenever(
+                stopRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IStopRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IRepository.getById -> IStopRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                stopRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    StopRoomModel(
+                        idStop = 1,
+                        codStop = 101,
+                        descrStop = "TRANSPORTE DE CANA"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Stop(
+                    idStop = 1,
+                    codStop = 101,
+                    descrStop = "TRANSPORTE DE CANA"
+                )
+            )
+        }
 }

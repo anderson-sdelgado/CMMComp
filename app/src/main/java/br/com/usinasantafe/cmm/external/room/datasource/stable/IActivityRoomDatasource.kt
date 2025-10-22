@@ -45,4 +45,16 @@ class IActivityRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun getById(id: Int): Result<ActivityRoomModel> {
+        try {
+            val model = activityDao.getById(id)
+            return Result.success(model)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

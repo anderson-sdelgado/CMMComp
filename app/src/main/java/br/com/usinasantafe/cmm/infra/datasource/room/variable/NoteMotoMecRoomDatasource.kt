@@ -10,4 +10,5 @@ interface NoteMotoMecRoomDatasource {
         id: Int,
         idBD: Long
     ): Result<Boolean>
+    suspend fun listByIdHeader(idHeader: Int): Result<List<NoteMotoMecRoomModel>>
 }

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.note.CheckHasNoteHeaderOpen
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteHeaderOpen
 import br.com.usinasantafe.cmm.domain.usecases.common.ListItemMenu
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors

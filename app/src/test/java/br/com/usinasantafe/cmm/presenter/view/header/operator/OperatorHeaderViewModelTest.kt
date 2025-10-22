@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
-import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckRegOperator
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate

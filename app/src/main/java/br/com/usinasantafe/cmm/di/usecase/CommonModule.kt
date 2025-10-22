@@ -19,4 +19,12 @@ interface CommonModule {
     @Singleton
     fun bindGetToken(usecase: IGetToken): GetToken
 
+    @Binds
+    @Singleton
+    fun bindGetItemMenuList(usecase: IListItemMenu): ListItemMenu
+
+    @Binds
+    @Singleton
+    fun bindGetStopList(usecase: IListStop): ListStop
+
 }

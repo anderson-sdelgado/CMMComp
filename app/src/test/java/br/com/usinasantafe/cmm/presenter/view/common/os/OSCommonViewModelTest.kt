@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
-import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.Errors

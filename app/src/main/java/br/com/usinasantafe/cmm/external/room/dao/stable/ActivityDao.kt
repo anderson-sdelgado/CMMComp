@@ -21,4 +21,8 @@ interface ActivityDao {
     @Query("SELECT * FROM $TB_ACTIVITY WHERE idActivity IN (:ids)")
     suspend fun listByIdList(ids: List<Int>): List<ActivityRoomModel>
 
+    @Query("SELECT * FROM $TB_ACTIVITY WHERE idActivity = :id")
+    suspend fun getById(id: Int): ActivityRoomModel
+
+
 }

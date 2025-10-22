@@ -43,11 +43,11 @@ fun HistoryListScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-
+                viewModel.recoverHistoryList()
             }
 
             HistoryListContent(
-                itemList = listOf(),
+                historyList = uiState.historyList,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
@@ -59,7 +59,7 @@ fun HistoryListScreen(
 
 @Composable
 fun HistoryListContent(
-    itemList: List<ItemHistoryScreenModel>,
+    historyList: List<ItemHistoryScreenModel>,
     setCloseDialog: () -> Unit,
     flagDialog: Boolean,
     failure: String,
@@ -74,7 +74,7 @@ fun HistoryListContent(
                 id = R.string.text_title_history
             )
         )
-        if(itemList.isEmpty()){
+        if(historyList.isEmpty()){
             Column(
                 modifier = modifier
                     .fillMaxWidth()
@@ -100,7 +100,7 @@ fun HistoryListContent(
                 modifier = Modifier
                     .weight(1f),
             ) {
-                items(itemList) { item ->
+                items(historyList) { item ->
                     ItemHistoryListDesign(
                         type = item.type,
                         descr = item.descr,
@@ -143,14 +143,16 @@ fun HistoryListPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             HistoryListContent(
-                itemList = listOf(
+                historyList = listOf(
                     ItemHistoryScreenModel(
+                        id = 1,
                         type = FlowNote.WORK,
                         descr = "ATIVIDADE: TRANPORTE DE CANA",
                         dateHour = "21/10/2025 15:23",
                         detail = ""
                     ),
                     ItemHistoryScreenModel(
+                        id = 2,
                         type = FlowNote.STOP,
                         descr = "PARADA: CHUVA",
                         dateHour = "21/10/2025 15:23",
@@ -172,7 +174,7 @@ fun HistoryListPagePreviewNoData() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             HistoryListContent(
-                itemList = listOf(),
+                historyList = listOf(),
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
@@ -188,7 +190,7 @@ fun HistoryListPagePreviewFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             HistoryListContent(
-                itemList = listOf(),
+                historyList = listOf(),
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",

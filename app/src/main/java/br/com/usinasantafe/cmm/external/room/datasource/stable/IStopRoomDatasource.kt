@@ -45,4 +45,16 @@ class IStopRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun getById(id: Int): Result<StopRoomModel> {
+        try {
+            val model = stopDao.getById(id)
+            return Result.success(model)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

@@ -279,7 +279,7 @@ class ISetIdActivityCommonTest {
                 modelNoteBefore.idActivity,
                 null
             )
-            val listBefore = noteMotoMecDao.listAll()
+            val listBefore = noteMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -375,7 +375,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore.id,
                 1
             )
-            val listNoteBefore = noteMotoMecDao.listAll()
+            val listNoteBefore = noteMotoMecDao.all()
             assertEquals(
                 listNoteBefore.size,
                 0
@@ -402,7 +402,7 @@ class ISetIdActivityCommonTest {
                 modelNoteAfter.idActivity,
                 1
             )
-            val listAfter = noteMotoMecDao.listAll()
+            val listAfter = noteMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -461,7 +461,7 @@ class ISetIdActivityCommonTest {
                 modelNoteBefore.nroOS,
                 123456
             )
-            val listBefore = noteMotoMecDao.listAll()
+            val listBefore = noteMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -502,7 +502,7 @@ class ISetIdActivityCommonTest {
                 modelNoteAfter.nroOS,
                 123456
             )
-            val listAfter = noteMotoMecDao.listAll()
+            val listAfter = noteMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1

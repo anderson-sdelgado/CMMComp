@@ -10,7 +10,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
-import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel

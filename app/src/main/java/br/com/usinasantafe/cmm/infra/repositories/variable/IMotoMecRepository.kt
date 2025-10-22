@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecS
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -432,7 +433,30 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun noteList(): Result<List<NoteMotoMec>> {
-        TODO("Not yet implemented")
+        try {
+            val resultGetId = headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            if (resultGetId.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultGetId.exceptionOrNull()!!
+                )
+            }
+            val id = resultGetId.getOrNull()!!
+            val resultNoteList = noteMotoMecRoomDatasource.listByIdHeader(id)
+            if (resultNoteList.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultNoteList.exceptionOrNull()!!
+                )
+            }
+            val list = resultNoteList.getOrNull()!!
+            return Result.success(list.map { it.roomModelToEntity() })
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

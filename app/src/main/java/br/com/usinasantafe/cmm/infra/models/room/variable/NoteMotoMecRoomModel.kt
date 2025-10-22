@@ -34,7 +34,21 @@ fun NoteMotoMec.entityToRoomModel(
             nroOS = this.nroOS!!,
             idActivity = this.idActivity!!,
             idStop = this.idStop,
-            statusCon = this.statusCon!!
+            statusCon = this.statusCon!!,
+            dateHour = dateHour
+        )
+    }
+}
+
+fun NoteMotoMecRoomModel.roomModelToEntity(): NoteMotoMec {
+    return with(this){
+        NoteMotoMec(
+            id = this.id,
+            nroOS = this.nroOS,
+            idActivity = this.idActivity,
+            idStop = this.idStop,
+            statusCon = this.statusCon,
+            dateHour = this.dateHour
         )
     }
 }

@@ -271,4 +271,52 @@ class IStopRoomDatasourceTest {
                 "PARADA 3"
             )
         }
+
+    @Test
+    fun `getById - Check return model`() =
+        runTest {
+            stopDao.insertAll(
+                listOf(
+                    StopRoomModel(
+                        idStop = 1,
+                        codStop = 10,
+                        descrStop = "PARADA 1"
+                    ),
+                    StopRoomModel(
+                        idStop = 2,
+                        codStop = 20,
+                        descrStop = "PARADA 2"
+                    ),
+                    StopRoomModel(
+                        idStop = 3,
+                        codStop = 30,
+                        descrStop = "PARADA 3"
+                    ),
+                    StopRoomModel(
+                        idStop = 4,
+                        codStop = 40,
+                        descrStop = "PARADA 4"
+                    )
+                )
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = result.getOrNull()!!
+            assertEquals(
+                model.idStop,
+                1
+            )
+            assertEquals(
+                model.codStop,
+                10
+            )
+            assertEquals(
+                model.descrStop,
+                "PARADA 1"
+            )
+        }
+
 }

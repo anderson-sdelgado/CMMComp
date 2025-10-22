@@ -188,7 +188,7 @@ class NoteFlowTest {
             entityWithIdActivity.idStop,
             null
         )
-        val listNote = noteMotoMecDao.listAll()
+        val listNote = noteMotoMecDao.all()
         assertEquals(
             listNote.size,
             1
@@ -303,7 +303,7 @@ class NoteFlowTest {
             entityWithIdStop.idStop,
             1
         )
-        val listNoteStop = noteMotoMecDao.listAll()
+        val listNoteStop = noteMotoMecDao.all()
         assertEquals(
             listNote.size,
             1

@@ -32,4 +32,12 @@ interface CheckListModule {
     @Singleton
     fun bindDelLastRespItemCheckList(usecase: IDelLastRespItemCheckList): DelLastRespItemCheckList
 
+    @Binds
+    @Singleton
+    fun bindCheckSendCheckList(usecase: ICheckSendCheckList): CheckSendCheckList
+
+    @Binds
+    @Singleton
+    fun bindSendCheckList(usecase: ISendCheckList): SendCheckList
+
 }

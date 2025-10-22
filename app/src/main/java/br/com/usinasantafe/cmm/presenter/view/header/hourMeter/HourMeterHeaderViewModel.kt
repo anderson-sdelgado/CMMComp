@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckOpenCheckList
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckHourMeter
-import br.com.usinasantafe.cmm.domain.usecases.header.SetHourMeter
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextFieldComma
 import br.com.usinasantafe.cmm.presenter.theme.clearTextFieldComma

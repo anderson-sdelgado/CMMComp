@@ -289,4 +289,60 @@ class IActivityRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in ActivityRoomDatasource getById`() =
+        runTest {
+            whenever(
+                activityRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IActivityRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IActivityRepository.getById -> IActivityRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                activityRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ActivityRoomModel(
+                        idActivity = 1,
+                        codActivity = 10,
+                        descrActivity = "ATIVIDADE"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Activity(
+                    idActivity = 1,
+                    codActivity = 10,
+                    descrActivity = "ATIVIDADE"
+                )
+            )
+        }
+
 }

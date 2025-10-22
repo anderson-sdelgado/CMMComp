@@ -44,7 +44,7 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `save - Check save and data`() =
         runTest {
-            val listBefore = noteMotoMecDao.listAll()
+            val listBefore = noteMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -66,7 +66,7 @@ class INoteMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = noteMotoMecDao.listAll()
+            val listAfter = noteMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -239,7 +239,7 @@ class INoteMotoMecRoomDatasourceTest {
                     statusSend = StatusSend.SEND
                 ),
             )
-            val listBefore = noteMotoMecDao.listAll()
+            val listBefore = noteMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -265,7 +265,7 @@ class INoteMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = noteMotoMecDao.listAll()
+            val listAfter = noteMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -280,5 +280,63 @@ class INoteMotoMecRoomDatasourceTest {
                 1L
             )
         }
+
+    @Test
+    fun `listByIdHeader - Check return emptyList if not has data`() =
+        runTest {
+            val result = datasource.listByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!.size,
+                0
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return list if has data`() =
+        runTest {
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true,
+                    statusSend = StatusSend.SEND
+                ),
+            )
+            val result = datasource.listByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.idActivity,
+                1
+            )
+            assertEquals(
+                model.dateHour.time,
+                1748359002
+            )
+            assertEquals(
+                model.id,
+                1
+            )
+        }
+
+
 
 }

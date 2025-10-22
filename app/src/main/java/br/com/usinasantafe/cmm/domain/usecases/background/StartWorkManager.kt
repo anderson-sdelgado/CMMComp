@@ -9,6 +9,8 @@ import androidx.work.WorkManager
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SetStatusSend
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -23,10 +25,15 @@ class IStartWorkManager @Inject constructor(
 ): StartWorkManager {
 
     override suspend fun invoke() {
-        val getConfigInternalResult = getConfigInternal()
-        if(getConfigInternalResult.isFailure)
+        val resultGet = getConfigInternal()
+        if(resultGet.isFailure) {
+            val error = resultGet.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
             return
-        if(getConfigInternalResult.getOrNull() == null) return
+        }
+        if(resultGet.getOrNull() == null) return
         setStatusSend(StatusSend.SEND)
         val constraints = Constraints
             .Builder()

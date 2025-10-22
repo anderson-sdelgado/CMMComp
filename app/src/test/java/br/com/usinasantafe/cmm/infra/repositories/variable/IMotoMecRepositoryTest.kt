@@ -1,5 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import android.provider.ContactsContract
+import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
@@ -1981,5 +1983,107 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `noteList - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByHeaderOpen`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecRoomDatasource.getIByHeaderOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.noteList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.noteList -> IHeaderMotoMecRoomDatasource.getIByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `noteList - Check return failure if have error in NoteMotoMecRoomDatasource listByIdHeader`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                noteMotoMecRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "INoteMotoMecRoomDatasource.listByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.noteList()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.noteList -> INoteMotoMecRoomDatasource.listByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `noteList - Check return correct if function execute successfully`() =
+        runTest {
+            val modelList = listOf(
+                NoteMotoMecRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = null,
+                    dateHour = Date(1750422691),
+                    statusCon = true
+                )
+            )
+            val entityList = listOf(
+                NoteMotoMec(
+                    id = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = null,
+                    dateHour = Date(1750422691)
+                )
+            )
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                noteMotoMecRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(modelList)
+            )
+            val result = repository.noteList()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
 
 }

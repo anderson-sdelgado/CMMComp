@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckRegOperator
-import br.com.usinasantafe.cmm.domain.usecases.header.SetRegOperator
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckRegOperator
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField

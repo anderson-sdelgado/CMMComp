@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
-import br.com.usinasantafe.cmm.domain.usecases.header.GetNroOSHeader
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextField

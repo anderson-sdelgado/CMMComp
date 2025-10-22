@@ -71,4 +71,6 @@
     <string name="text_item_out">SAIR</string>
     <string name="text_title_history">HISTÓRICO</string>
     <string name="text_msg_no_data_history">NÃO CONTÉM APONTAMENTO NO BOLETIM.</string>">
+    <string name="text_item_work">ATIVIDADE: %1$s</string>
+    <string name="text_item_stop">PARADA: %1$s</string>
 </resources>

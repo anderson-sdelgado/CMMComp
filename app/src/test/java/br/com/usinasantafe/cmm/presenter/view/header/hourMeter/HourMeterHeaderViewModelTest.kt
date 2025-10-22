@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckOpenCheckList
-import br.com.usinasantafe.cmm.domain.usecases.header.CheckHourMeter
-import br.com.usinasantafe.cmm.domain.usecases.header.SetHourMeter
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
 import br.com.usinasantafe.cmm.utils.Errors
