@@ -26,7 +26,7 @@ data class HeaderMotoMecRoomModel(
     var statusCon: Boolean,
     var statusSend: StatusSend = StatusSend.SEND,
     var status: Status = Status.OPEN,
-    var idBD: Long? = null
+    var idServ: Int? = null
 )
 
 fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {

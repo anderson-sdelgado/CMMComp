@@ -25,4 +25,11 @@ object VariableRetrofitModule {
         @DefaultRetrofit retrofit: Retrofit
     ): MotoMecApi = retrofit.create(MotoMecApi::class.java)
 
+    @Provides
+    @Singleton
+    fun checkListApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): CheckListApi = retrofit.create(CheckListApi::class.java)
+
+
 }

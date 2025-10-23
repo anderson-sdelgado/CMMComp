@@ -13,7 +13,7 @@ interface HeaderMotoMecRoomDatasource {
     suspend fun getStatusConByHeaderOpen(): Result<Boolean>
     suspend fun setSentHeader(
         id: Int,
-        idBD: Long
+        idServ: Int
     ): Result<Boolean>
     suspend fun setSendHeader(
         id: Int

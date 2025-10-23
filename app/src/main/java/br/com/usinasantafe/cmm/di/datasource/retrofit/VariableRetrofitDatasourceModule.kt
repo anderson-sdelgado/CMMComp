@@ -20,4 +20,9 @@ interface VariableRetrofitDatasourceModule {
     @Singleton
     fun bindMotoMecRetrofitDatasource(dataSource: IMotoMecRetrofitDatasource): MotoMecRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindCheckListRetrofitDatasource(dataSource: ICheckListRetrofitDatasource): CheckListRetrofitDatasource
+
+
 }

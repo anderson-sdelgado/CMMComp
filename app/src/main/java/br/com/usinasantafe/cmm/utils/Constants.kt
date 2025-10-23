@@ -69,3 +69,4 @@ const val WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP = "check-update-check-list-by-nro-eq
 const val WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP = "item-check-list-list-by-nro-equip.php"
 
 const val WEB_SAVE_MOTO_MEC = "save-moto-mec.php"
+const val WEB_SAVE_CHECK_LIST = "save-check-list.php"

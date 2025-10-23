@@ -23,7 +23,7 @@ class ICheckUpdateCheckListTest {
     lateinit var usecase: CheckUpdateCheckList
 
     @Inject
-    lateinit var confiSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+    lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Test
     fun check_return_failure_if_not_have_data_in_config_shared_preferences() =
@@ -48,7 +48,7 @@ class ICheckUpdateCheckListTest {
     fun check_return_failure_if_not_have_data_in_config_to_get_token() =
         runTest {
             hiltRule.inject()
-            confiSharedPreferencesDatasource.save(
+            configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L
                 )
@@ -72,7 +72,7 @@ class ICheckUpdateCheckListTest {
     fun check_return_failure_if_not_have_data_without_return_web_service() =
         runTest {
             hiltRule.inject()
-            confiSharedPreferencesDatasource.save(
+            configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",
@@ -106,7 +106,7 @@ class ICheckUpdateCheckListTest {
             )
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
             hiltRule.inject()
-            confiSharedPreferencesDatasource.save(
+            configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",
@@ -136,7 +136,7 @@ class ICheckUpdateCheckListTest {
             )
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
             hiltRule.inject()
-            confiSharedPreferencesDatasource.save(
+            configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",

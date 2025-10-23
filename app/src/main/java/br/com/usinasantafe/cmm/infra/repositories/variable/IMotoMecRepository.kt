@@ -403,7 +403,7 @@ class IMotoMecRepository @Inject constructor(
                 for(noteMotoMec in noteMotoMecRetrofitList){
                     val result = noteMotoMecRoomDatasource.setSentNote(
                         id = noteMotoMec.id,
-                        idBD = noteMotoMec.idBD
+                        idServ = noteMotoMec.idServ
                     )
                     if(result.isFailure){
                         return resultFailure(
@@ -414,7 +414,7 @@ class IMotoMecRepository @Inject constructor(
                 }
                 val result = headerMotoMecRoomDatasource.setSentHeader(
                     id = headerMotoMec.id,
-                    idBD = headerMotoMec.idBD
+                    idServ = headerMotoMec.idServ
                 )
                 if(result.isFailure){
                     return resultFailure(

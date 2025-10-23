@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.external.retrofit.api.variable.MotoMecApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelOutput
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IMotoMecRetrofitDatasource @Inject constructor(
@@ -22,8 +23,7 @@ class IMotoMecRetrofitDatasource @Inject constructor(
             return Result.success(response.body()!!)
         } catch (e: Exception){
             return resultFailure(
-                context = "IMotoMecRetrofitDatasource.send",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }

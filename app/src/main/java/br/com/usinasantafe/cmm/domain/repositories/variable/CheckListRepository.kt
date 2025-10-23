@@ -10,4 +10,9 @@ interface CheckListRepository {
     suspend fun saveCheckList(): Result<Boolean>
     suspend fun delLastRespItem(): Result<Boolean>
     suspend fun checkOpen(): Result<Boolean>
+    suspend fun checkSend(): Result<Boolean>
+    suspend fun send(
+        number: Long,
+        token: String
+    ): Result<Boolean>
 }

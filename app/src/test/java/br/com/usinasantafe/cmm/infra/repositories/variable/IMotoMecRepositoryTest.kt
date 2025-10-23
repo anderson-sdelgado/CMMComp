@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import android.provider.ContactsContract
 import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
@@ -1628,11 +1627,11 @@ class IMotoMecRepositoryTest {
             val headerMotoMecRetrofitModelInputList = listOf(
                 HeaderMotoMecRetrofitModelInput(
                     id = 1,
-                    idBD = 1,
+                    idServ = 1,
                     noteMotoMecList = listOf(
                         NoteMotoMecRetrofitModelInput(
                             id = 1,
-                            idBD = 1,
+                            idServ = 1,
                         )
                     )
                 )
@@ -1658,7 +1657,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 noteMotoMecRoomDatasource.setSentNote(
                     id = 1,
-                    idBD = 1
+                    idServ = 1
                 )
             ).thenReturn(
                 resultFailure(
@@ -1727,11 +1726,11 @@ class IMotoMecRepositoryTest {
             val headerMotoMecRetrofitModelInputList = listOf(
                 HeaderMotoMecRetrofitModelInput(
                     id = 1,
-                    idBD = 1,
+                    idServ = 1,
                     noteMotoMecList = listOf(
                         NoteMotoMecRetrofitModelInput(
                             id = 1,
-                            idBD = 1,
+                            idServ = 1,
                         )
                     )
                 )
@@ -1757,7 +1756,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 noteMotoMecRoomDatasource.setSentNote(
                     id = 1,
-                    idBD = 1
+                    idServ = 1
                 )
             ).thenReturn(
                 Result.success(true)
@@ -1765,7 +1764,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecRoomDatasource.setSentHeader(
                     id = 1,
-                    idBD = 1
+                    idServ = 1
                 )
             ).thenReturn(
                 resultFailure(
@@ -1834,11 +1833,11 @@ class IMotoMecRepositoryTest {
             val headerMotoMecRetrofitModelInputList = listOf(
                 HeaderMotoMecRetrofitModelInput(
                     id = 1,
-                    idBD = 1,
+                    idServ = 1,
                     noteMotoMecList = listOf(
                         NoteMotoMecRetrofitModelInput(
                             id = 1,
-                            idBD = 1,
+                            idServ = 1,
                         )
                     )
                 )
@@ -1864,7 +1863,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 noteMotoMecRoomDatasource.setSentNote(
                     id = 1,
-                    idBD = 1
+                    idServ = 1
                 )
             ).thenReturn(
                 Result.success(true)
@@ -1872,7 +1871,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecRoomDatasource.setSentHeader(
                     id = 1,
-                    idBD = 1
+                    idServ = 1
                 )
             ).thenReturn(
                 Result.success(true)

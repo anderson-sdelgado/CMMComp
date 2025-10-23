@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "e7a1cc61b91fbc7a7eee45488fbbe595",
+    "identityHash": "e35e7f30a66178ec18fea6f075f826b8",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -810,7 +810,7 @@
       },
       {
         "tableName": "tb_header_moto_mec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idBD` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -897,8 +897,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "idBD",
-            "columnName": "idBD",
+            "fieldPath": "idServ",
+            "columnName": "idServ",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -914,7 +914,7 @@
       },
       {
         "tableName": "tb_note_moto_mec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idBD` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -971,8 +971,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "idBD",
-            "columnName": "idBD",
+            "fieldPath": "idServ",
+            "columnName": "idServ",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -988,7 +988,7 @@
       },
       {
         "tableName": "tb_header_check_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `nroEquip` INTEGER NOT NULL, `regOperator` INTEGER NOT NULL, `nroTurn` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `nroEquip` INTEGER NOT NULL, `regOperator` INTEGER NOT NULL, `nroTurn` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1025,6 +1025,12 @@
             "columnName": "statusSend",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1038,7 +1044,7 @@
       },
       {
         "tableName": "tb_resp_item_check_list",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1063,6 +1069,12 @@
             "columnName": "option",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1078,7 +1090,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e7a1cc61b91fbc7a7eee45488fbbe595')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e35e7f30a66178ec18fea6f075f826b8')"
     ]
   }
 }

@@ -575,12 +575,12 @@ class IHeaderMotoMecRoomDatasourceTest {
                 StatusSend.SEND
             )
             assertEquals(
-                modelBefore.idBD,
+                modelBefore.idServ,
                 null
             )
             val result = datasource.setSentHeader(
                 id = 1,
-                idBD = 1
+                idServ = 1
             )
             assertEquals(
                 result.isSuccess,
@@ -601,7 +601,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 StatusSend.SENT
             )
             assertEquals(
-                modelAfter.idBD,
+                modelAfter.idServ,
                 1L
             )
         }

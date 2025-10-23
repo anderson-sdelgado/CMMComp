@@ -8,7 +8,7 @@ interface NoteMotoMecRoomDatasource {
     suspend fun listByIdHeaderAndSend(idHeader: Int): Result<List<NoteMotoMecRoomModel>>
     suspend fun setSentNote(
         id: Int,
-        idBD: Long
+        idServ: Int
     ): Result<Boolean>
     suspend fun listByIdHeader(idHeader: Int): Result<List<NoteMotoMecRoomModel>>
 }

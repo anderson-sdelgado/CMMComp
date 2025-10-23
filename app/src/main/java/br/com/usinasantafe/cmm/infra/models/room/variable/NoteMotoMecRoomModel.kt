@@ -21,7 +21,7 @@ data class NoteMotoMecRoomModel(
     var statusSend: StatusSend = StatusSend.SEND,
     val status: Status = Status.CLOSE,
     val statusCon: Boolean,
-    var idBD: Long? = null
+    var idServ: Int? = null
 )
 
 fun NoteMotoMec.entityToRoomModel(

@@ -86,4 +86,60 @@ class IRespItemCheckListRoomDatasourceTest {
                 1
             )
         }
+
+    @Test
+    fun `listByIdHeader - Check return empty list if not have resp of header field`() =
+        runTest {
+            respItemCheckListDao.insert(
+                RespItemCheckListRoomModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING,
+                    idHeader = 1
+                )
+            )
+            val result = datasource.listByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return list if have resp of header field`() =
+        runTest {
+            respItemCheckListDao.insert(
+                RespItemCheckListRoomModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING,
+                    idHeader = 1
+                )
+            )
+            respItemCheckListDao.insert(
+                RespItemCheckListRoomModel(
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING,
+                    idHeader = 2
+                )
+            )
+            val result = datasource.listByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    RespItemCheckListRoomModel(
+                        id = 2,
+                        idItem = 1,
+                        option = OptionRespCheckList.ACCORDING,
+                        idHeader = 2
+                    )
+                )
+            )
+        }
 }

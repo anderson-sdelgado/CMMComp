@@ -3,10 +3,14 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.RespItemCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderCheckListRetrofitModelInput
+import br.com.usinasantafe.cmm.infra.models.retrofit.variable.RespItemCheckListRetrofitModelInput
+import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderCheckListSharedPreferencesModel
@@ -15,6 +19,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPref
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.whenever
 import java.util.Date
 import kotlin.test.Test
@@ -26,11 +31,13 @@ class ICheckListRepositoryTest {
     private val respItemCheckListSharedPreferencesDatasource = mock<RespItemCheckListSharedPreferencesDatasource>()
     private val headerCheckListRoomDatasource = mock<HeaderCheckListRoomDatasource>()
     private val respItemCheckListRoomDatasource = mock<RespItemCheckListRoomDatasource>()
+    private val checkListRetrofitDatasource = mock<CheckListRetrofitDatasource>()
     private val repository = ICheckListRepository(
         headerCheckListSharedPreferencesDatasource = headerCheckListSharedPreferencesDatasource,
         respItemCheckListSharedPreferencesDatasource = respItemCheckListSharedPreferencesDatasource,
         headerCheckListRoomDatasource = headerCheckListRoomDatasource,
-        respItemCheckListRoomDatasource = respItemCheckListRoomDatasource
+        respItemCheckListRoomDatasource = respItemCheckListRoomDatasource,
+        checkListRetrofitDatasource = checkListRetrofitDatasource
     )
 
     @Test
@@ -738,6 +745,462 @@ class ICheckListRepositoryTest {
                 Result.success(true)
             )
             val result = repository.checkOpen()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `checkSend - Check return failure if have error in HeaderCheckListRoomDatasource checkSend`() =
+        runTest {
+            whenever(
+                headerCheckListRoomDatasource.checkSend()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListRoomDatasource.checkSend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkSend()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.checkSend -> IHeaderCheckListRoomDatasource.checkSend"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkSend - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerCheckListRoomDatasource.checkSend()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in HeaderCheckListRoomDatasource listBySend`() =
+        runTest {
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListRoomDatasource.listBySend",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.send -> IHeaderCheckListRoomDatasource.listBySend"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in RespItemCheckListRoomDatasource listByIdHeader`() =
+        runTest {
+            val headerCheckListRoomModelList = listOf(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroEquip = 2200,
+                    regOperator = 19759,
+                    nroTurn = 2,
+                    dateHour = Date(1750422691)
+                )
+            )
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                Result.success(headerCheckListRoomModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListRoomDatasource.listByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.send -> IRespItemCheckListRoomDatasource.listByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in CheckListRetrofitDatasource send`() =
+        runTest {
+            val headerCheckListRoomModelList = listOf(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroEquip = 2200,
+                    regOperator = 19759,
+                    nroTurn = 2,
+                    dateHour = Date(1750422691000)
+                )
+            )
+            val respItemCheckListRoomModelList = listOf(
+                RespItemCheckListRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                )
+            )
+            val headerCheckListRetrofitModelOutputList =
+                headerCheckListRoomModelList.map {
+                    it.roomModelToRetrofitModel(
+                        number = 16997417840,
+                        respItemList = respItemCheckListRoomModelList.map { respItem -> respItem.roomModelToRetrofitModel() }
+                    )
+                }
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                Result.success(headerCheckListRoomModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(respItemCheckListRoomModelList)
+            )
+            whenever(
+                checkListRetrofitDatasource.send(
+                    token = "TOKEN",
+                    modelList = headerCheckListRetrofitModelOutputList
+                )
+            ).thenReturn(
+                resultFailure(
+                    "ICheckListRetrofitDatasource.send",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.send -> ICheckListRetrofitDatasource.send"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in RespItemCheckListRoomDatasource setIdServById`() =
+        runTest {
+            val headerCheckListRoomModelList = listOf(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroEquip = 2200,
+                    regOperator = 19759,
+                    nroTurn = 2,
+                    dateHour = Date(1750422691000)
+                )
+            )
+            val respItemCheckListRoomModelList = listOf(
+                RespItemCheckListRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                )
+            )
+            val headerCheckListRetrofitModelOutputList =
+                headerCheckListRoomModelList.map {
+                    it.roomModelToRetrofitModel(
+                        number = 16997417840,
+                        respItemList = respItemCheckListRoomModelList.map { respItem -> respItem.roomModelToRetrofitModel() }
+                    )
+                }
+            val headerCheckListRetrofitModelInputList = listOf(
+                HeaderCheckListRetrofitModelInput(
+                    id = 1,
+                    idServ = 1,
+                    respItemList = listOf(
+                        RespItemCheckListRetrofitModelInput(
+                            id = 1,
+                            idServ = 1,
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                Result.success(headerCheckListRoomModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(respItemCheckListRoomModelList)
+            )
+            whenever(
+                checkListRetrofitDatasource.send(
+                    token = "TOKEN",
+                    modelList = headerCheckListRetrofitModelOutputList
+                )
+            ).thenReturn(
+                Result.success(headerCheckListRetrofitModelInputList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.setIdServById(
+                    id = 1,
+                    idServ = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRespItemCheckListRoomDatasource.setIdServById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.send -> IRespItemCheckListRoomDatasource.setIdServById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `send - Check return failure if have error in HeaderCheckListRoomDatasource setSendAndIdServById`() =
+        runTest {
+            val headerCheckListRoomModelList = listOf(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroEquip = 2200,
+                    regOperator = 19759,
+                    nroTurn = 2,
+                    dateHour = Date(1750422691000)
+                )
+            )
+            val respItemCheckListRoomModelList = listOf(
+                RespItemCheckListRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                )
+            )
+            val headerCheckListRetrofitModelOutputList =
+                headerCheckListRoomModelList.map {
+                    it.roomModelToRetrofitModel(
+                        number = 16997417840,
+                        respItemList = respItemCheckListRoomModelList.map { respItem -> respItem.roomModelToRetrofitModel() }
+                    )
+                }
+            val headerCheckListRetrofitModelInputList = listOf(
+                HeaderCheckListRetrofitModelInput(
+                    id = 1,
+                    idServ = 1,
+                    respItemList = listOf(
+                        RespItemCheckListRetrofitModelInput(
+                            id = 1,
+                            idServ = 1,
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                Result.success(headerCheckListRoomModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(respItemCheckListRoomModelList)
+            )
+            whenever(
+                checkListRetrofitDatasource.send(
+                    token = "TOKEN",
+                    modelList = headerCheckListRetrofitModelOutputList
+                )
+            ).thenReturn(
+                Result.success(headerCheckListRetrofitModelInputList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.setIdServById(
+                    id = 1,
+                    idServ = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerCheckListRoomDatasource.setSentAndIdServById(
+                    id = 1,
+                    idServ = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderCheckListRoomDatasource.setSendAndIdServById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICheckListRepository.send -> IHeaderCheckListRoomDatasource.setSendAndIdServById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `send - Check return correct if function execute successfully`() =
+        runTest {
+            val headerCheckListRoomModelList = listOf(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroEquip = 2200,
+                    regOperator = 19759,
+                    nroTurn = 2,
+                    dateHour = Date(1750422691000)
+                )
+            )
+            val respItemCheckListRoomModelList = listOf(
+                RespItemCheckListRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                )
+            )
+            val headerCheckListRetrofitModelOutputList =
+                headerCheckListRoomModelList.map {
+                    it.roomModelToRetrofitModel(
+                        number = 16997417840,
+                        respItemList = respItemCheckListRoomModelList.map { respItem -> respItem.roomModelToRetrofitModel() }
+                    )
+                }
+            val headerCheckListRetrofitModelInputList = listOf(
+                HeaderCheckListRetrofitModelInput(
+                    id = 1,
+                    idServ = 1,
+                    respItemList = listOf(
+                        RespItemCheckListRetrofitModelInput(
+                            id = 1,
+                            idServ = 1,
+                        )
+                    )
+                )
+            )
+            whenever(
+                headerCheckListRoomDatasource.listBySend()
+            ).thenReturn(
+                Result.success(headerCheckListRoomModelList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(respItemCheckListRoomModelList)
+            )
+            whenever(
+                checkListRetrofitDatasource.send(
+                    token = "TOKEN",
+                    modelList = headerCheckListRetrofitModelOutputList
+                )
+            ).thenReturn(
+                Result.success(headerCheckListRetrofitModelInputList)
+            )
+            whenever(
+                respItemCheckListRoomDatasource.setIdServById(
+                    id = 1,
+                    idServ = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                headerCheckListRoomDatasource.setSentAndIdServById(
+                    id = 1,
+                    idServ = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.send(
+                number = 16997417840,
+                token = "TOKEN"
+            )
             assertEquals(
                 result.isSuccess,
                 true

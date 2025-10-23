@@ -117,11 +117,11 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun setSentHeader(
         id: Int,
-        idBD: Long
+        idServ: Int
     ): Result<Boolean> {
         try {
             val model = headerMotoMecDao.get(id)
-            model.idBD = idBD
+            model.idServ = idServ
             model.statusSend = StatusSend.SENT
             headerMotoMecDao.update(model)
             return Result.success(true)

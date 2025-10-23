@@ -53,11 +53,11 @@ class INoteMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun setSentNote(
         id: Int,
-        idBD: Long
+        idServ: Int
     ): Result<Boolean> {
         try {
             val model = noteMotoMecDao.get(id)
-            model.idBD = idBD
+            model.idServ = idServ
             model.statusSend = StatusSend.SENT
             noteMotoMecDao.update(model)
             return Result.success(true)

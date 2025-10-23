@@ -87,4 +87,85 @@ class IHeaderCheckListRoomDatasourceTest {
                 Date(1760711032)
             )
         }
+
+    @Test
+    fun `checkByStatusSend - Check return false when list is empty`() =
+        runTest {
+            val result = datasource.checkSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `checkByStatusSend - Check return true when list is not empty`() =
+        runTest {
+            headerCheckListDao.insert(
+                HeaderCheckListRoomModel(
+                    nroTurn = 1,
+                    regOperator = 1,
+                    nroEquip = 1,
+                    dateHour = Date(1760711032)
+                )
+            )
+            val result = datasource.checkSend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `listByStatusSend - Check return false when list is empty`() =
+        runTest {
+            val result = datasource.listBySend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByStatusSend - Check return false when list is not empty`() =
+        runTest {
+            headerCheckListDao.insert(
+                HeaderCheckListRoomModel(
+                    id = 1,
+                    nroTurn = 1,
+                    regOperator = 1,
+                    nroEquip = 1,
+                    dateHour = Date(1760711032)
+                )
+            )
+            val result = datasource.listBySend()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    HeaderCheckListRoomModel(
+                        id = 1,
+                        nroTurn = 1,
+                        regOperator = 1,
+                        nroEquip = 1,
+                        dateHour = Date(1760711032)
+                    )
+                )
+            )
+        }
 }

@@ -4,10 +4,12 @@ import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.RespItemCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
@@ -18,7 +20,8 @@ class ICheckListRepository @Inject constructor(
     private val headerCheckListSharedPreferencesDatasource: HeaderCheckListSharedPreferencesDatasource,
     private val respItemCheckListSharedPreferencesDatasource: RespItemCheckListSharedPreferencesDatasource,
     private val headerCheckListRoomDatasource: HeaderCheckListRoomDatasource,
-    private val respItemCheckListRoomDatasource: RespItemCheckListRoomDatasource
+    private val respItemCheckListRoomDatasource: RespItemCheckListRoomDatasource,
+    private val checkListRetrofitDatasource: CheckListRetrofitDatasource
 ): CheckListRepository {
 
     override suspend fun saveHeader(entity: HeaderCheckList): Result<Boolean> {
@@ -161,6 +164,89 @@ class ICheckListRepository @Inject constructor(
             )
         }
         return result
+    }
+
+    override suspend fun checkSend(): Result<Boolean> {
+        val result = headerCheckListRoomDatasource.checkSend()
+        if(result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
+    }
+
+    override suspend fun send(
+        number: Long,
+        token: String
+    ): Result<Boolean> {
+        try {
+            val resultListSend = headerCheckListRoomDatasource.listBySend() //ok
+            if(resultListSend.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultListSend.exceptionOrNull()!!
+                )
+            }
+            val modelRetrofitList =
+                resultListSend.getOrNull()!!.map {
+                    val resultRespItemList = respItemCheckListRoomDatasource.listByIdHeader(it.id!!)
+                    if(resultRespItemList.isFailure) {
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = resultRespItemList.exceptionOrNull()!!
+                        )
+                    }
+                    val respItemRoomList = resultRespItemList.getOrNull()!!
+                    it.roomModelToRetrofitModel(
+                        number = number,
+                        respItemList = respItemRoomList.map { resp -> resp.roomModelToRetrofitModel() }
+                    )
+                }
+            val resultSend = checkListRetrofitDatasource.send(
+                token = token,
+                modelList = modelRetrofitList
+            )
+            if(resultSend.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultSend.exceptionOrNull()!!
+                )
+            }
+            val headerCheckListRetrofitList = resultSend.getOrNull()!!
+            for(headerCheckList in headerCheckListRetrofitList){
+                val respItemCheckListRetrofitList = headerCheckList.respItemList
+                for(respItemCheckList in respItemCheckListRetrofitList){
+                    val result = respItemCheckListRoomDatasource.setIdServById(
+                        id = respItemCheckList.id,
+                        idServ = respItemCheckList.idServ
+                    )
+                    if(result.isFailure){
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = result.exceptionOrNull()!!
+                        )
+                    }
+                }
+                val result = headerCheckListRoomDatasource.setSentAndIdServById(
+                    id = headerCheckList.id,
+                    idServ = headerCheckList.idServ
+                )
+                if(result.isFailure) {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = result.exceptionOrNull()!!
+                    )
+                }
+            }
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

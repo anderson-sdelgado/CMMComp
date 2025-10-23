@@ -15,4 +15,7 @@ interface RespItemCheckListDao {
     @Query("SELECT * FROM $TB_RESP_ITEM_CHECK_LIST")
     suspend fun all(): List<RespItemCheckListRoomModel>
 
+    @Query("SELECT * FROM $TB_RESP_ITEM_CHECK_LIST WHERE idHeader = :idHeader")
+    suspend fun listByIdHeader(idHeader: Int): List<RespItemCheckListRoomModel>
+
 }

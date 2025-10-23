@@ -23,4 +23,23 @@ class IRespItemCheckListRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<RespItemCheckListRoomModel>> {
+        try {
+            val list = respItemCheckListDao.listByIdHeader(idHeader)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setIdServById(
+        id: Int,
+        idServ: Int
+    ): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
 }

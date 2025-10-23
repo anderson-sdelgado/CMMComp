@@ -13,6 +13,7 @@ data class RespItemCheckListRoomModel(
     var idHeader: Int,
     val idItem: Int,
     val option: OptionRespCheckList,
+    var idServ: Int? = null
 )
 
 fun RespItemCheckList.entityToRoomModel(

@@ -250,12 +250,12 @@ class INoteMotoMecRoomDatasourceTest {
                 StatusSend.SEND
             )
             assertEquals(
-                entityBefore.idBD,
+                entityBefore.idServ,
                 null
             )
             val result = datasource.setSentNote(
                 id = 1,
-                idBD = 1
+                idServ = 1
             )
             assertEquals(
                 result.isSuccess,
@@ -276,7 +276,7 @@ class INoteMotoMecRoomDatasourceTest {
                 StatusSend.SENT
             )
             assertEquals(
-                entityAfter.idBD,
+                entityAfter.idServ,
                 1L
             )
         }

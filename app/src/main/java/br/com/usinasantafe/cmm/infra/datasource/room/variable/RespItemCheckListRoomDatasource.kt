@@ -4,4 +4,6 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomM
 
 interface RespItemCheckListRoomDatasource {
     suspend fun save(respItemCheckListRoomModel: RespItemCheckListRoomModel): Result<Boolean>
+    suspend fun listByIdHeader(idHeader: Int): Result<List<RespItemCheckListRoomModel>>
+    suspend fun setIdServById(id: Int, idServ: Int): Result<Boolean>
 }

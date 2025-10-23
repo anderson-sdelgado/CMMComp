@@ -1,10 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.StatusSend
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 
@@ -20,15 +17,15 @@ data class HeaderMotoMecRetrofitModelOutput(
     var hourMeterFinish: Double? = null,
     val dateHourInitial: String,
     var dateHourFinish: String? = null,
-    var number: Long? = null,
+    var number: Long,
     var status: Int,
     var statusCon: Int,
     var noteMotoMecList: List<NoteMotoMecRetrofitModelOutput>
 )
 
 data class HeaderMotoMecRetrofitModelInput(
-    val idBD: Long,
     val id: Int,
+    val idServ: Int,
     val noteMotoMecList: List<NoteMotoMecRetrofitModelInput>
 )
 

@@ -237,7 +237,7 @@ class ISendHeaderTest {
                 StatusSend.SEND
             )
             assertEquals(
-                headerModelBefore.idBD,
+                headerModelBefore.idServ,
                 null
             )
             val noteListBefore = noteMotoMecDao.all()
@@ -337,7 +337,7 @@ class ISendHeaderTest {
                 StatusSend.SENT
             )
             assertEquals(
-                headerModelAfter.idBD,
+                headerModelAfter.idServ,
                 1L
             )
             val noteListAfter = noteMotoMecDao.all()
