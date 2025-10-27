@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ServicoRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ServicoRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ServicoRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityServicoToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IServicoRepository @Inject constructor(
-    private val servicoRetrofitDatasource: ServicoRetrofitDatasource, // Injeção da datasource Retrofit
-    private val servicoRoomDatasource: ServicoRoomDatasource // Injeção da datasource Room
+    private val servicoRetrofitDatasource: ServicoRetrofitDatasource,
+    private val servicoRoomDatasource: ServicoRoomDatasource
 ) : ServicoRepository {
 
     override suspend fun addAll(list: List<Servico>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityServicoToRoomModel() }
             val result = servicoRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

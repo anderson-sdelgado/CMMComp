@@ -23,7 +23,7 @@ fun REquipActivityRoomModel.roomModelToEntity(): REquipActivity {
     }
 }
 
-fun REquipActivity.entityToRoomModel(): REquipActivityRoomModel {
+fun REquipActivity.entityREquipActivityToRoomModel(): REquipActivityRoomModel {
     return with(this){
         REquipActivityRoomModel(
             idREquipActivity = this.idREquipActivity,

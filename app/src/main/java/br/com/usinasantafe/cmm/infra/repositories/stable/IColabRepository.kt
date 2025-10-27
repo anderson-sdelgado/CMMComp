@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ColabRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityColabToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Colab>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityColabToRoomModel() }
             val result = colabRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

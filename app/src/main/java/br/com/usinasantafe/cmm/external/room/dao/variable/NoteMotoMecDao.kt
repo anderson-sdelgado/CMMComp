@@ -37,8 +37,6 @@ interface NoteMotoMecDao {
     ): List<NoteMotoMecRoomModel>
 
     @Query("SELECT * FROM $TB_NOTE_MOTO_MEC WHERE id = :id")
-    suspend fun get(id: Int): NoteMotoMecRoomModel
-
-
+    suspend fun getById(id: Int): NoteMotoMecRoomModel
 
 }

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
+import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.infra.datasource.internal.ItemMenuInternalDatasource
@@ -14,7 +14,7 @@ class IMenuRepository @Inject constructor(
     private val itemMenuInternalDatasource: ItemMenuInternalDatasource
 ): MenuRepository {
 
-    override suspend fun listMenu(typeList: List<TypeItemMenu>): Result<List<ItemMenu>> {
+    override suspend fun listMenu(typeList: List<TypeItemMenu>): Result<List<ItemMenuPMM>> {
         try{
             val result = itemMenuInternalDatasource.listAll()
             if(result.isFailure) {

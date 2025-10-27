@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityReposito
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipActivityRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipActivityRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityREquipActivityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class IREquipActivityRepository @Inject constructor(
 
     override suspend fun addAll(list: List<REquipActivity>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityREquipActivityToRoomModel() }
             val result = rEquipActivityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

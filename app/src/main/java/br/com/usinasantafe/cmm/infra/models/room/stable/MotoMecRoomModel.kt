@@ -6,9 +6,9 @@ import br.com.usinasantafe.cmm.domain.entities.stable.MotoMec // Import da entid
 import br.com.usinasantafe.cmm.utils.TB_MOTOMEC // Import da constante do nome da tabela (suposição)
 import br.com.usinasantafe.cmm.utils.TypeOper // Import do enum TypeOper
 
-@Entity(tableName = TB_MOTOMEC) // Define como entidade do Room e especifica o nome da tabela
+@Entity(tableName = TB_MOTOMEC)
 data class MotoMecRoomModel (
-    @PrimaryKey // Define idMotoMec como chave primária
+    @PrimaryKey
     val idMotoMec: Int,
     val idOperMotoMec: Int,
     val descrOperMotoMec: String,
@@ -19,7 +19,6 @@ data class MotoMecRoomModel (
     val funcaoOperMotoMec: Int 
 )
 
-// Função de extensão para converter MotoMecRoomModel para a entidade de domínio MotoMec
 fun MotoMecRoomModel.roomModelToEntity(): MotoMec {
     return with(this){
         MotoMec(
@@ -35,8 +34,7 @@ fun MotoMecRoomModel.roomModelToEntity(): MotoMec {
     }
 }
 
-// Função de extensão para converter a entidade de domínio MotoMec para MotoMecRoomModel
-fun MotoMec.entityToRoomModel(): MotoMecRoomModel {
+fun MotoMec.entityMotoMecToRoomModel(): MotoMecRoomModel {
     return with(this){
         MotoMecRoomModel(
             idMotoMec = this.idMotoMec,

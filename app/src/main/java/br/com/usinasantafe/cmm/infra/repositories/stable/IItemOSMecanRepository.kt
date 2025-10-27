@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ItemOSMecanRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemOSMecanRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemOSMecanRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityItemOSMecanToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class IItemOSMecanRepository @Inject constructor(
 
     override suspend fun addAll(list: List<ItemOSMecan>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityItemOSMecanToRoomModel() }
             val result = itemOSMecanRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

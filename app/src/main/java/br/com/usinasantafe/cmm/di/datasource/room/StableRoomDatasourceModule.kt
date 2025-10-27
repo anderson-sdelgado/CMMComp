@@ -82,7 +82,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindFunctionActivityStopRoomDatasource(dataSource: IFunctionActivityStopRoomDatasource): FunctionActivityStopRoomDatasource
+    fun bindFunctionActivityRoomDatasource(dataSource: IFunctionActivityRoomDatasource): FunctionActivityRoomDatasource
 
     @Binds
     @Singleton
@@ -95,5 +95,13 @@ interface StableRoomDatasourceModule {
     @Binds
     @Singleton
     fun bindTurnoRoomDatasource(dataSource: ITurnRoomDatasource): TurnRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindFunctionStopRoomDatasource(dataSource: IFunctionStopRoomDatasource): FunctionStopRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindItemMenuPMMRoomDatasource(dataSource: IItemMenuPMMRoomDatasource): ItemMenuPMMRoomDatasource
 
 }

@@ -1,31 +1,29 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.entities.stable.RFuncaoAtivParada
+import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityStopRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.ItemMenuPMMRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FuncAtividade
-import br.com.usinasantafe.cmm.utils.FuncParada
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.TypeOper
+import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
-class IUpdateTableRFuncaoAtivStopTest {
+class IUpdateTableItemMenuPMMTest {
 
     private val getToken = mock<GetToken>()
-    private val functionActivityStopRepository = mock<FunctionActivityStopRepository>()
-    private val updateTableFunctionActivityStop = IUpdateTableFunctionActivityStop(
+    private val itemMenuPMMRepository = mock<ItemMenuPMMRepository>()
+    private val updateTableItemMenuPMM = IUpdateTableItemMenuPMM(
         getToken = getToken,
-        functionActivityStopRepository = functionActivityStopRepository
+        itemMenuPMMRepository = itemMenuPMMRepository
     )
 
     @Test
@@ -40,7 +38,7 @@ class IUpdateTableRFuncaoAtivStopTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivityStop(
+            val result = updateTableItemMenuPMM(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -54,24 +52,25 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableFunctionActivityStop -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableItemMenuPMM -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in FunctionActivityStopRepository recoverAll`() =
+    fun `Check return failure if have error in ItemMenuPMMRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -79,15 +78,15 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                functionActivityStopRepository.listAll("token")
+                itemMenuPMMRepository.listAll("token")
             ).thenReturn(
                 resultFailure(
-                    "IFunctionActivityStopRepository.recoverAll",
+                    "IItemMenuPMMRepository.recoverAll",
                     "-",
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivityStop(
+            val result = updateTableItemMenuPMM(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -101,32 +100,31 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.recoverAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in UpdateTableFunctionActivityStop deleteAll`() =
+    fun `Check return failure if have error in ItemMenuPMMRepository deleteAll`() =
         runTest {
             val list = listOf(
-                RFuncaoAtivParada(
-                    idRFuncaoAtivPar = 1,
-                    idAtivPar = 1,
-                    funcAtiv = FuncAtividade.LEIRA,
-                    tipoFuncao = TypeOper.PARADA,
-                    funcParada = FuncParada.CHECKLIST
+                ItemMenuPMM(
+                    id = 1,
+                    title = "TRABALHANDO",
+                    type = TypeItemMenu.ITEM_NORMAL
                 )
             )
             whenever(
@@ -135,22 +133,22 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                functionActivityStopRepository.listAll("token")
+                itemMenuPMMRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                functionActivityStopRepository.deleteAll()
+                itemMenuPMMRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "IFunctionActivityStopRepository.deleteAll",
+                    "IItemMenuPMMRepository.deleteAll",
                     "-",
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivityStop(
+            val result = updateTableItemMenuPMM(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -164,7 +162,7 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -173,32 +171,31 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in FunctionActivityStopRepository addAll`() =
+    fun `Check return failure if have error in ItemMenuPMMRepository addAll`() =
         runTest {
             val list = listOf(
-                RFuncaoAtivParada(
-                    idRFuncaoAtivPar = 1,
-                    idAtivPar = 1,
-                    funcAtiv = FuncAtividade.LEIRA,
-                    tipoFuncao = TypeOper.PARADA,
-                    funcParada = FuncParada.CHECKLIST
+                ItemMenuPMM(
+                    id = 1,
+                    title = "TRABALHANDO",
+                    type = TypeItemMenu.ITEM_NORMAL
                 )
             )
             whenever(
@@ -207,27 +204,27 @@ class IUpdateTableRFuncaoAtivStopTest {
                 Result.success("token")
             )
             whenever(
-                functionActivityStopRepository.listAll("token")
+                itemMenuPMMRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                functionActivityStopRepository.deleteAll()
+                itemMenuPMMRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                functionActivityStopRepository.addAll(list)
+                itemMenuPMMRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "IFunctionActivityStopRepository.addAll",
+                    "IItemMenuPMMRepository.addAll",
                     "-",
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivityStop(
+            val result = updateTableItemMenuPMM(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -241,7 +238,7 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -250,7 +247,7 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -259,17 +256,18 @@ class IUpdateTableRFuncaoAtivStopTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_function_activity_stop",
+                    tableUpdate = "tb_item_menu_pmm",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableFunctionActivityStop -> IFunctionActivityStopRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

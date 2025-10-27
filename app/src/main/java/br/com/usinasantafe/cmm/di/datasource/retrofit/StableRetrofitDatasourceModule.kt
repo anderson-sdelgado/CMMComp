@@ -96,4 +96,16 @@ interface StableRetrofitDatasourceModule {
     @Singleton
     fun bindTurnoRetrofitDatasource(dataSource: ITurnRetrofitDatasource): TurnoRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindFunctionActivityRetrofitDatasource(dataSource: IFunctionActivityRetrofitDatasource): FunctionActivityRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindFunctionStopRetrofitDatasource(dataSource: IFunctionStopRetrofitDatasource): FunctionStopRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindItemMenuPMMRetrofitDatasource(dataSource: IItemMenuPMMRetrofitDatasource): ItemMenuPMMRetrofitDatasource
+
 }

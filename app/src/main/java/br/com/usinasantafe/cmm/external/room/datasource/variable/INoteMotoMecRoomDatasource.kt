@@ -56,7 +56,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
         idServ: Int
     ): Result<Boolean> {
         try {
-            val model = noteMotoMecDao.get(id)
+            val model = noteMotoMecDao.getById(id)
             model.idServ = idServ
             model.statusSend = StatusSend.SENT
             noteMotoMecDao.update(model)

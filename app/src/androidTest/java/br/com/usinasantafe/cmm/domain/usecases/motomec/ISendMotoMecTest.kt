@@ -14,20 +14,19 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.*
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ISendHeaderTest {
+class ISendMotoMecTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ISendHeader
+    lateinit var usecase: SendMotoMec
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -38,14 +37,10 @@ class ISendHeaderTest {
     @Inject
     lateinit var noteMotoMecDao: NoteMotoMecDao
 
-    @Before
-    fun init() {
-        hiltRule.inject()
-    }
-
     @Test
     fun check_return_failure_if_not_have_data() =
         runTest {
+            hiltRule.inject()
             val result = usecase()
             assertEquals(
                 result.isFailure,
@@ -53,7 +48,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> IConfigRepository.getNumber -> IConfigSharedPreferencesDatasource.getNumber"
+                "ISendMotoMec -> IConfigRepository.getNumber -> IConfigSharedPreferencesDatasource.getNumber"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -64,18 +59,11 @@ class ISendHeaderTest {
     @Test
     fun check_return_failure_if_not_have_data_to_send() =
         runTest {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    password = "12345",
-                    nroEquip = 310,
-                    app = "PMM",
-                    version = "1.00",
-                    checkMotoMec = false,
-                    idBD = 1,
-                    idEquip = 20
-                )
-            )
+
+            hiltRule.inject()
+
+            initialRegister(1)
+
             val result = usecase()
             assertEquals(
                 result.isFailure,
@@ -83,7 +71,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> IMotoMecRepository.send -> IMotoMecRetrofitDatasource.send"
+                "ISendMotoMec -> IMotoMecRepository.send -> IMotoMecRetrofitDatasource.send"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -94,47 +82,17 @@ class ISendHeaderTest {
     @Test
     fun check_return_failure_if_web_service_return_error() =
         runTest {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    password = "12345",
-                    nroEquip = 310,
-                    app = "PMM",
-                    version = "1.00",
-                    checkMotoMec = false,
-                    idBD = 1,
-                    idEquip = 20
-                )
-            )
-            headerMotoMecDao.insert(
-                HeaderMotoMecRoomModel(
-                    id = 1,
-                    regOperator = 19759,
-                    idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    idTurn = 1,
-                    nroOS = 123456,
-                    idActivity = 1,
-                    hourMeterInitial = 10.0,
-                    dateHourInitial = Date(1748359002),
-                    statusCon = true
-                )
-            )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
-                    id = 1,
-                    idHeader = 1,
-                    nroOS = 123456,
-                    idActivity = 1,
-                    statusCon = true
-                )
-            )
 
             val server = MockWebServer()
             server.start(8080)
             server.enqueue(
-                MockResponse().setBody("""{"idBD":1,"idEquip":1}""")
+                MockResponse().setBody("""{"idServ":1,"idEquip":1}""")
             )
+
+            hiltRule.inject()
+
+            initialRegister(2)
+
             val result = usecase()
             assertEquals(
                 result.isFailure,
@@ -142,7 +100,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> IMotoMecRepository.send -> IMotoMecRetrofitDatasource.send"
+                "ISendMotoMec -> IMotoMecRepository.send -> IMotoMecRetrofitDatasource.send"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -154,41 +112,16 @@ class ISendHeaderTest {
     @Test
     fun check_return_true_and_data_returned() =
         runTest {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    password = "12345",
-                    nroEquip = 310,
-                    app = "PMM",
-                    version = "1.00",
-                    checkMotoMec = false,
-                    idBD = 1,
-                    idEquip = 20
-                )
+            val server = MockWebServer()
+            server.start(8080)
+            server.enqueue(
+                MockResponse().setBody("""[{"idServ":1,"id":1,"noteMotoMecList":[{"idServ":1,"id":1}]}]""")
             )
-            headerMotoMecDao.insert(
-                HeaderMotoMecRoomModel(
-                    id = 1,
-                    regOperator = 19759,
-                    idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    idTurn = 1,
-                    nroOS = 123456,
-                    idActivity = 1,
-                    hourMeterInitial = 10.0,
-                    dateHourInitial = Date(1748359002),
-                    statusCon = true
-                )
-            )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
-                    id = 1,
-                    idHeader = 1,
-                    nroOS = 123456,
-                    idActivity = 1,
-                    statusCon = true
-                )
-            )
+
+            hiltRule.inject()
+
+            initialRegister(2)
+
             val headerListBefore = headerMotoMecDao.all()
             assertEquals(
                 headerListBefore.size,
@@ -271,14 +204,8 @@ class ISendHeaderTest {
                 StatusSend.SEND
             )
             assertEquals(
-                noteModelBefore.idBD,
+                noteModelBefore.idServ,
                 null
-            )
-            val server = MockWebServer()
-            server.start(8080)
-            server.enqueue(
-//                MockResponse().setBody("""[{"idBD":1,"id":1,"noteMotoMecList":[{"idBD":1,"id":1}]}]""")
-                MockResponse().setBody("""[{"idBD":"1071061","id":1}]""")
             )
             val result = usecase()
             assertEquals(
@@ -338,7 +265,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 headerModelAfter.idServ,
-                1L
+                1
             )
             val noteListAfter = noteMotoMecDao.all()
             assertEquals(
@@ -371,10 +298,55 @@ class ISendHeaderTest {
                 StatusSend.SENT
             )
             assertEquals(
-                noteModelAfter.idBD,
-                1L
+                noteModelAfter.idServ,
+                1
             )
             server.shutdown()
         }
+
+    private suspend fun initialRegister(level: Int) {
+
+        configSharedPreferencesDatasource.save(
+            ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "12345",
+                nroEquip = 310,
+                app = "PMM",
+                version = "1.00",
+                checkMotoMec = false,
+                idBD = 1,
+                idEquip = 20
+            )
+        )
+
+        if(level == 1) return
+
+        headerMotoMecDao.insert(
+            HeaderMotoMecRoomModel(
+                id = 1,
+                regOperator = 19759,
+                idEquip = 1,
+                typeEquip = TypeEquip.NORMAL,
+                idTurn = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                hourMeterInitial = 10.0,
+                dateHourInitial = Date(1748359002),
+                statusCon = true
+            )
+        )
+        noteMotoMecDao.insert(
+            NoteMotoMecRoomModel(
+                id = 1,
+                idHeader = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                statusCon = true
+            )
+        )
+
+        if(level == 2) return
+
+    }
 
 }

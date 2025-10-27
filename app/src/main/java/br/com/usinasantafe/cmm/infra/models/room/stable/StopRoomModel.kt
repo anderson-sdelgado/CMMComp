@@ -23,7 +23,7 @@ fun StopRoomModel.roomModelToEntity(): Stop {
     }
 }
 
-fun Stop.entityToRoomModel(): StopRoomModel {
+fun Stop.entityStopToRoomModel(): StopRoomModel {
     return with(this){
         StopRoomModel(
             idStop = this.idStop,

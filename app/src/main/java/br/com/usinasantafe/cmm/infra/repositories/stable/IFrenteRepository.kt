@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.FrenteRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FrenteRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FrenteRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityFrenteToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IFrenteRepository @Inject constructor(
-    private val frenteRetrofitDatasource: FrenteRetrofitDatasource, // Injeção da datasource Retrofit
-    private val frenteRoomDatasource: FrenteRoomDatasource // Injeção da datasource Room
+    private val frenteRetrofitDatasource: FrenteRetrofitDatasource,
+    private val frenteRoomDatasource: FrenteRoomDatasource
 ) : FrenteRepository {
 
     override suspend fun addAll(list: List<Frente>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityFrenteToRoomModel() }
             val result = frenteRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

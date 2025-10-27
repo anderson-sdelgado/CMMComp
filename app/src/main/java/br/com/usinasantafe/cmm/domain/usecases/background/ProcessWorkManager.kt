@@ -6,7 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.usinasantafe.cmm.domain.usecases.config.SetStatusSend
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckSendMotoMec
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SendHeader
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SendMotoMec
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 
@@ -19,7 +19,7 @@ class ProcessWorkManager @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
     private val checkSendMotoMec: CheckSendMotoMec,
-    private val sendHeader: SendHeader,
+    private val sendMotoMec: SendMotoMec,
     private val setStatusSend: SetStatusSend
 ) : CoroutineWorker(appContext, workerParams) {
 
@@ -34,7 +34,7 @@ class ProcessWorkManager @AssistedInject constructor(
         }
         val checkHeaderSend = resultMotoMecCheckSend.getOrNull()!!
         if(checkHeaderSend) {
-            val resultSendHeader = sendHeader()
+            val resultSendHeader = sendMotoMec()
             if (resultSendHeader.isFailure){
                 val error = resultSendHeader.exceptionOrNull()!!
                 val failure =

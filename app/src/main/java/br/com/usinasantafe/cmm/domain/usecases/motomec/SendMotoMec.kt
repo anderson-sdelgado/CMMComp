@@ -7,15 +7,15 @@ import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface SendHeader {
+interface SendMotoMec {
     suspend operator fun invoke(): Result<Boolean>
 }
 
-class ISendHeader @Inject constructor(
+class ISendMotoMec @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
     private val configRepository: ConfigRepository,
     private val getToken: GetToken
-): SendHeader {
+): SendMotoMec {
 
     override suspend fun invoke(): Result<Boolean> {
         try {

@@ -7,10 +7,10 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.TurnRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ITurnRepositoryTest {
 

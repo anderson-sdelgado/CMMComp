@@ -82,10 +82,6 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindRFuncaoAtivRepository(repository: IRFuncaoAtivParadaRepository): FunctionActivityStopRepository
-
-    @Binds
-    @Singleton
     fun bindROSAtivRepository(repository: IROSActivityRepository): ROSActivityRepository
 
     @Binds
@@ -95,5 +91,17 @@ interface StableRepositoryModule {
     @Binds
     @Singleton
     fun bindTurnRepository(repository: ITurnRepository): TurnRepository
+
+    @Binds
+    @Singleton
+    fun bindFunctionActivityRepository(repository: IFunctionActivityRepository): FunctionActivityRepository
+
+    @Binds
+    @Singleton
+    fun bindFunctionStopRepository(repository: IFunctionStopRepository): FunctionStopRepository
+
+    @Binds
+    @Singleton
+    fun bindItemMenuPMMRepository(repository: IItemMenuPMMRepository): ItemMenuPMMRepository
 
 }

@@ -29,7 +29,7 @@ fun OSRoomModel.roomModelToEntity(): OS {
     }
 }
 
-fun OS.entityToRoomModel(): OSRoomModel {
+fun OS.entityOSToRoomModel(): OSRoomModel {
     return with(this){
         OSRoomModel(
             idOS = this.idOS,

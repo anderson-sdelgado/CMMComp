@@ -56,26 +56,11 @@ val itemMenuDatabase = """
     {
         "id": 11,
         "title": "RETORNAR PRA LISTA",
-        "type": 0
+        "type": 3
     },
     {
         "id": 12,
         "title": "HISTORICO",
-        "type": 1
-    },
-    {
-        "id": 13,
-        "title": "REENVIO DE DADOS",
-        "type": 0
-    },
-    {
-        "id": 14,
-        "title": "DATA/HORA",
-        "type": 1
-    },
-    {
-        "id": 15,
-        "title": "LOG",
         "type": 1
     }
 ]

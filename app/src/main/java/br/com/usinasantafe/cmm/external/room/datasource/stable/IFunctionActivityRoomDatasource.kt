@@ -1,18 +1,20 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.external.room.dao.stable.RFuncaoAtivParadaDao
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityStopRoomDatasource
-import br.com.usinasantafe.cmm.infra.models.room.stable.RFuncaoAtivParadaRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-class IFunctionActivityStopRoomDatasource @Inject constructor(
-    private val rFuncaoAtivParadaDao: RFuncaoAtivParadaDao
-) : FunctionActivityStopRoomDatasource {
-    override suspend fun addAll(list: List<RFuncaoAtivParadaRoomModel>): Result<Boolean> {
+class IFunctionActivityRoomDatasource @Inject constructor(
+    private val functionActivityDao: FunctionActivityDao
+) : FunctionActivityRoomDatasource {
+
+
+    override suspend fun addAll(list: List<FunctionActivityRoomModel>): Result<Boolean> {
         try {
-            rFuncaoAtivParadaDao.insertAll(list)
+            functionActivityDao.insertAll(list)
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
@@ -24,7 +26,7 @@ class IFunctionActivityStopRoomDatasource @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         try {
-            rFuncaoAtivParadaDao.deleteAll()
+            functionActivityDao.deleteAll()
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(

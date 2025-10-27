@@ -1,0 +1,210 @@
+package br.com.usinasantafe.cmm.infra.repositories.stable
+
+import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionActivityRetrofitDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionActivityRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
+import br.com.usinasantafe.cmm.utils.TypeActivity
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
+
+class IFunctionActivityRepositoryTest {
+
+    private val functionActivityRoomDatasource = mock<FunctionActivityRoomDatasource>()
+    private val functionActivityRetrofitDatasource = mock<FunctionActivityRetrofitDatasource>()
+    private val repository = IFunctionActivityRepository(
+        functionActivityRetrofitDatasource = functionActivityRetrofitDatasource,
+        functionActivityRoomDatasource = functionActivityRoomDatasource
+    )
+
+    @Test
+    fun `addAll - Check return failure if have error`() =
+        runTest {
+            val roomModelList = listOf(
+                FunctionActivityRoomModel(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            val entityList = listOf(
+                FunctionActivity(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            whenever(
+                functionActivityRoomDatasource.addAll(roomModelList)
+            ).thenReturn(
+                Result.failure(
+                    Exception()
+                )
+            )
+            val result = repository.addAll(entityList)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionActivityRepository.addAll -> Unknown Error"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "null"
+            )
+        }
+
+    @Test
+    fun `addAll - Check return true if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                FunctionActivityRoomModel(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            val entityList = listOf(
+                FunctionActivity(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            whenever(
+                functionActivityRoomDatasource.addAll(roomModelList)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.addAll(entityList)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `deleteAll - Check return failure if have error`() =
+        runTest {
+            whenever(
+                functionActivityRoomDatasource.deleteAll()
+            ).thenReturn(
+                Result.failure(
+                    Exception()
+                )
+            )
+            val result = repository.deleteAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionActivityRepository.deleteAll -> Unknown Error"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "null"
+            )
+        }
+
+    @Test
+    fun `deleteAll - Check return true if function execute successfully`() =
+        runTest {
+            whenever(
+                functionActivityRoomDatasource.deleteAll()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.deleteAll()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `recoverAll - Check return failure if have error`() =
+        runTest {
+            whenever(
+                functionActivityRetrofitDatasource.listAll("token")
+            ).thenReturn(
+                Result.failure(
+                    Exception()
+                )
+            )
+            val result = repository.listAll("token")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionActivityRepository.recoverAll -> Unknown Error"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "null"
+            )
+        }
+
+    @Test
+    fun `recoverAll - Check return true if function execute successfully`() =
+        runTest {
+            val retrofitModelList = listOf(
+                FunctionActivityRetrofitModel(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = 1,
+                ),
+                FunctionActivityRetrofitModel(
+                    idRFunctionActivity = 2,
+                    idActivity = 2,
+                    typeActivity = 2,
+                )
+            )
+            val entityList = listOf(
+                FunctionActivity(
+                    idRFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                ),
+                FunctionActivity(
+                    idRFunctionActivity = 2,
+                    idActivity = 2,
+                    typeActivity = TypeActivity.TRANSHIPMENT,
+                )
+            )
+            whenever(
+                functionActivityRetrofitDatasource.listAll("token")
+            ).thenReturn(
+                Result.success(
+                    retrofitModelList
+                )
+            )
+            val result = repository.listAll("token")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+}

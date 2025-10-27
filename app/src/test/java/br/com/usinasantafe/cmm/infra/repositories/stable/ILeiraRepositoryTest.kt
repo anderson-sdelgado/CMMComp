@@ -7,10 +7,10 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.LeiraRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.LeiraRoomModel
 import br.com.usinasantafe.cmm.utils.StatusLeira
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ILeiraRepositoryTest {
 

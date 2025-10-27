@@ -6,10 +6,10 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.PressaoBocalRoomData
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.PressaoBocalRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.PressaoBocalRoomModel
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IPressaoBocalRepositoryTest {
 

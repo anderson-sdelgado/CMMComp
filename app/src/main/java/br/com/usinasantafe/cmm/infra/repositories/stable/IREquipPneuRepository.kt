@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.REquipPneuRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipPneuRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipPneuRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityREquipPneuToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IREquipPneuRepository @Inject constructor(
-    private val rEquipPneuRetrofitDatasource: REquipPneuRetrofitDatasource, // Injeção da datasource Retrofit
-    private val rEquipPneuRoomDatasource: REquipPneuRoomDatasource // Injeção da datasource Room
+    private val rEquipPneuRetrofitDatasource: REquipPneuRetrofitDatasource,
+    private val rEquipPneuRoomDatasource: REquipPneuRoomDatasource
 ) : REquipPneuRepository {
 
     override suspend fun addAll(list: List<REquipPneu>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityREquipPneuToRoomModel() }
             val result = rEquipPneuRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

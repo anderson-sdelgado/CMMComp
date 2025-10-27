@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.LeiraRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.LeiraRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.LeiraRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityLeiraToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class ILeiraRepository @Inject constructor(
-    private val leiraRetrofitDatasource: LeiraRetrofitDatasource, // Injeção da datasource Retrofit
-    private val leiraRoomDatasource: LeiraRoomDatasource // Injeção da datasource Room
+    private val leiraRetrofitDatasource: LeiraRetrofitDatasource,
+    private val leiraRoomDatasource: LeiraRoomDatasource
 ) : LeiraRepository {
 
     override suspend fun addAll(list: List<Leira>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityLeiraToRoomModel() }
             val result = leiraRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

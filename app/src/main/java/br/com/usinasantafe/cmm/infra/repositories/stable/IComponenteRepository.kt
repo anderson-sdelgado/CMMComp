@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ComponenteRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ComponenteRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ComponenteRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityComponenteToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class IComponenteRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Componente>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityComponenteToRoomModel() }
             val result = componenteRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityActivityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class IActivityRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Activity>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityActivityToRoomModel() }
             val result = activityRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

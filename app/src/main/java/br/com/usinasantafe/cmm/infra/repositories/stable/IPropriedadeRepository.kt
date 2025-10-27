@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.PropriedadeRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PropriedadeRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.PropriedadeRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityPropriedadeToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IPropriedadeRepository @Inject constructor(
-    private val propriedadeRetrofitDatasource: PropriedadeRetrofitDatasource, // Injeção da datasource Retrofit
-    private val propriedadeRoomDatasource: PropriedadeRoomDatasource // Injeção da datasource Room
+    private val propriedadeRetrofitDatasource: PropriedadeRetrofitDatasource,
+    private val propriedadeRoomDatasource: PropriedadeRoomDatasource
 ) : PropriedadeRepository {
 
     override suspend fun addAll(list: List<Propriedade>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityPropriedadeToRoomModel() }
             val result = propriedadeRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

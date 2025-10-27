@@ -10,7 +10,10 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenuPMM
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
@@ -79,7 +82,10 @@ class ConfigViewModel @Inject constructor(
     private val updateTableActivity: UpdateTableActivity,
     private val updateTableColab: UpdateTableColab,
     private val updateTableEquipByIdEquip: UpdateTableEquipByIdEquip,
+    private val updateTableFunctionActivity: UpdateTableFunctionActivity,
+    private val updateTableFunctionStop: UpdateTableFunctionStop,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
+    private val updateTableItemMenuPMM: UpdateTableItemMenuPMM,
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
     private val updateTableStop: UpdateTableStop,
@@ -325,7 +331,7 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableItemCheckListByNroEquip(
+        updateTableFunctionActivity(
             sizeAll = sizeAllUpdate,
             count = 4f
         ).collect {
@@ -338,7 +344,7 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableRActivityStop(
+        updateTableFunctionStop(
             sizeAll = sizeAllUpdate,
             count = 5f
         ).collect {
@@ -351,7 +357,7 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableREquipActivityByIdEquip(
+        updateTableItemCheckListByNroEquip(
             sizeAll = sizeAllUpdate,
             count = 6f
         ).collect {
@@ -364,7 +370,7 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableStop(
+        updateTableItemMenuPMM(
             sizeAll = sizeAllUpdate,
             count = 7f
         ).collect {
@@ -377,9 +383,48 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableTurn(
+        updateTableRActivityStop(
             sizeAll = sizeAllUpdate,
             count = 8f
+        ).collect {
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToConfig(
+                classAndMethod,
+                currentState = currentGlobalState
+            )
+            lastEmittedState = newState
+            emit(newState)
+        }
+        if (lastEmittedState!!.flagFailure) return@flow
+        updateTableREquipActivityByIdEquip(
+            sizeAll = sizeAllUpdate,
+            count = 9f
+        ).collect {
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToConfig(
+                classAndMethod,
+                currentState = currentGlobalState
+            )
+            lastEmittedState = newState
+            emit(newState)
+        }
+        if (lastEmittedState!!.flagFailure) return@flow
+        updateTableStop(
+            sizeAll = sizeAllUpdate,
+            count = 10f
+        ).collect {
+            val currentGlobalState = _uiState.value
+            val newState = it.resultUpdateToConfig(
+                classAndMethod,
+                currentState = currentGlobalState
+            )
+            lastEmittedState = newState
+            emit(newState)
+        }
+        if (lastEmittedState!!.flagFailure) return@flow
+        updateTableTurn(
+            sizeAll = sizeAllUpdate,
+            count = 11f
         ).collect {
             val currentGlobalState = _uiState.value
             val newState = it.resultUpdateToConfig(
@@ -412,6 +457,7 @@ class ConfigViewModel @Inject constructor(
         lastEmittedState = _uiState.value
         emit(
             lastEmittedState.copy(
+                tableUpdate = "",
                 flagDialog = true,
                 flagProgress = true,
                 flagFailure = false,

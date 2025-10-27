@@ -23,7 +23,7 @@ fun BocalRoomModel.roomModelToEntity(): Bocal {
     }
 }
 
-fun Bocal.entityToRoomModel(): BocalRoomModel {
+fun Bocal.entityBocalToRoomModel(): BocalRoomModel {
     return with(this){
         BocalRoomModel(
             idBocal = this.idBocal,

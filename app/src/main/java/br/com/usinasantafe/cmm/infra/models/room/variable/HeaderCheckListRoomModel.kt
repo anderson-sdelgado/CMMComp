@@ -15,7 +15,7 @@ data class HeaderCheckListRoomModel(
     val regOperator: Int,
     val nroTurn: Int,
     val dateHour: Date,
-    val statusSend: StatusSend = StatusSend.SEND,
+    var statusSend: StatusSend = StatusSend.SEND,
     var idServ: Int? = null
 )
 

@@ -15,7 +15,7 @@ class ISendHeaderTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val configRepository = mock<ConfigRepository>()
     private val getToken = mock<GetToken>()
-    private val usecase = ISendHeader(
+    private val usecase = ISendMotoMec(
         motoMecRepository = motoMecRepository,
         configRepository = configRepository,
         getToken = getToken

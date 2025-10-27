@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityStopToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class IStopRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Stop>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityStopToRoomModel() }
             val result = stopRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

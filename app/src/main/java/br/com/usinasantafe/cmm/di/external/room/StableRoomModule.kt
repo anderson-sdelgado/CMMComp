@@ -116,7 +116,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideRFuncaoAtivParadaDao(database: DatabaseRoom): RFuncaoAtivParadaDao {
+    fun provideRFuncaoAtivParadaDao(database: DatabaseRoom): FunctionActivityDao {
         return database.rFuncaoAtivParadaDao()
     }
 

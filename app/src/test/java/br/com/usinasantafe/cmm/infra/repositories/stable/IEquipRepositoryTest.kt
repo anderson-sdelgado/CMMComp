@@ -7,10 +7,10 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IEquipRepositoryTest {
 

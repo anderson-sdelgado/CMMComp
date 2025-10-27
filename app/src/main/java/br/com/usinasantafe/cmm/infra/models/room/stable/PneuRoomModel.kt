@@ -5,14 +5,13 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Pneu // Import da entidade de domínio Pneu
 import br.com.usinasantafe.cmm.utils.TB_PNEU // Import da constante do nome da tabela (suposição)
 
-@Entity(tableName = TB_PNEU) // Define como entidade do Room e especifica o nome da tabela
+@Entity(tableName = TB_PNEU)
 data class PneuRoomModel (
-    @PrimaryKey // Define idPneu como chave primária
+    @PrimaryKey
     val idPneu: Int,
     val nroPneu: Int
 )
 
-// Função de extensão para converter PneuRoomModel para a entidade de domínio Pneu
 fun PneuRoomModel.roomModelToEntity(): Pneu {
     return with(this){
         Pneu(
@@ -22,8 +21,7 @@ fun PneuRoomModel.roomModelToEntity(): Pneu {
     }
 }
 
-// Função de extensão para converter a entidade de domínio Pneu para PneuRoomModel
-fun Pneu.entityToRoomModel(): PneuRoomModel {
+fun Pneu.entityPneuToRoomModel(): PneuRoomModel {
     return with(this){
         PneuRoomModel(
             idPneu = this.idPneu,

@@ -13,10 +13,10 @@ import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IUpdateTableEquipByIdEquipTest {
 

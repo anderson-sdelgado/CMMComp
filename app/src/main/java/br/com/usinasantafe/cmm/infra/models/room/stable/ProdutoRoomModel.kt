@@ -5,15 +5,14 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Produto // Import da entidade de domínio Produto
 import br.com.usinasantafe.cmm.utils.TB_PRODUTO // Import da constante do nome da tabela (suposição)
 
-@Entity(tableName = TB_PRODUTO) // Define como entidade do Room e especifica o nome da tabela
+@Entity(tableName = TB_PRODUTO)
 data class ProdutoRoomModel (
-    @PrimaryKey // Define idProduto como chave primária
+    @PrimaryKey
     val idProduto: Int,
     val codProduto: Int,
     val descrProduto: String
 )
 
-// Função de extensão para converter ProdutoRoomModel para a entidade de domínio Produto
 fun ProdutoRoomModel.roomModelToEntity(): Produto {
     return with(this){
         Produto(
@@ -24,8 +23,7 @@ fun ProdutoRoomModel.roomModelToEntity(): Produto {
     }
 }
 
-// Função de extensão para converter a entidade de domínio Produto para ProdutoRoomModel
-fun Produto.entityToRoomModel(): ProdutoRoomModel {
+fun Produto.entityProdutoToRoomModel(): ProdutoRoomModel {
     return with(this){
         ProdutoRoomModel(
             idProduto = this.idProduto,

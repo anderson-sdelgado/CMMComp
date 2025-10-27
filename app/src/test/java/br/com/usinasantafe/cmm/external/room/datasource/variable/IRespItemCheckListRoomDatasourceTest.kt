@@ -142,4 +142,81 @@ class IRespItemCheckListRoomDatasourceTest {
                 )
             )
         }
+
+    @Test
+    fun `setIdServById - Check alter data if process execute successfully`() =
+        runTest {
+            respItemCheckListDao.insert(
+                RespItemCheckListRoomModel(
+                    id = 1,
+                    idHeader = 1,
+                    idItem = 1,
+                    option = OptionRespCheckList.ACCORDING
+                )
+            )
+            val listBefore = respItemCheckListDao.all()
+            assertEquals(
+                listBefore.size,
+                1
+            )
+            val modelBefore = listBefore[0]
+            assertEquals(
+                modelBefore.id,
+                1
+            )
+            assertEquals(
+                modelBefore.idHeader,
+                1
+            )
+            assertEquals(
+                modelBefore.idItem,
+                1
+            )
+            assertEquals(
+                modelBefore.option,
+                OptionRespCheckList.ACCORDING
+            )
+            assertEquals(
+                modelBefore.idServ,
+                null
+            )
+            val result = datasource.setIdServById(
+                id = 1,
+                idServ = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val listAfter = respItemCheckListDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val modelAfter = listAfter[0]
+            assertEquals(
+                modelAfter.id,
+                1
+            )
+            assertEquals(
+                modelAfter.idHeader,
+                1
+            )
+            assertEquals(
+                modelAfter.idItem,
+                1
+            )
+            assertEquals(
+                modelAfter.option,
+                OptionRespCheckList.ACCORDING
+            )
+            assertEquals(
+                modelAfter.idServ,
+                1
+            )
+        }
 }

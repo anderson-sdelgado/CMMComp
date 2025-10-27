@@ -118,7 +118,7 @@ class ICheckListRetrofitDatasourceTest {
         }
 
     @Test
-    fun `send - Check return correct if function execute successfully`() =
+    fun `send - Check return failure if sent data incorrect - return only one item`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -130,38 +130,6 @@ class ICheckListRetrofitDatasourceTest {
                 token = "TOKEN",
                 modelList = listOf(headerCheckListRetrofitModelOutput)
             )
-//            assertEquals(
-//                result.isSuccess,
-//                true
-//            )
-//            val headerList = result.getOrNull()!!
-//            assertEquals(
-//                headerList.size,
-//                1
-//            )
-//            val headerModel = headerList[0]
-//            assertEquals(
-//                headerModel.id,
-//                1
-//            )
-//            assertEquals(
-//                headerModel.idServ,
-//                1
-//            )
-//            val respItemList = headerModel.respItemList
-//            assertEquals(
-//                respItemList.size,
-//                1
-//            )
-//            val respItemModel = respItemList[0]
-//            assertEquals(
-//                respItemModel.id,
-//                1
-//            )
-//            assertEquals(
-//                respItemModel.idServ,
-//                1
-//            )
             assertEquals(
                 result.isFailure,
                 true
@@ -177,4 +145,51 @@ class ICheckListRetrofitDatasourceTest {
             server.shutdown()
         }
 
+    @Test
+    fun `send - Check return correct if function execute successfully`() =
+        runTest {
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(MockResponse().setBody("""[{"idServ":1,"id":1,"respItemList":[{"idServ":1,"id":1}]}]"""))
+            val retrofit = provideRetrofitTest(server.url("/").toString())
+            val service = retrofit.create(CheckListApi::class.java)
+            val dataSource = ICheckListRetrofitDatasource(service)
+            val result = dataSource.send(
+                token = "TOKEN",
+                modelList = listOf(headerCheckListRetrofitModelOutput)
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val headerList = result.getOrNull()!!
+            assertEquals(
+                headerList.size,
+                1
+            )
+            val headerModel = headerList[0]
+            assertEquals(
+                headerModel.id,
+                1
+            )
+            assertEquals(
+                headerModel.idServ,
+                1
+            )
+            val respItemList = headerModel.respItemList
+            assertEquals(
+                respItemList.size,
+                1
+            )
+            val respItemModel = respItemList[0]
+            assertEquals(
+                respItemModel.id,
+                1
+            )
+            assertEquals(
+                respItemModel.idServ,
+                1
+            )
+            server.shutdown()
+        }
 }

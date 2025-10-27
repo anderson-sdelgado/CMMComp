@@ -5,15 +5,14 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Frente // Import da entidade de domínio Frente
 import br.com.usinasantafe.cmm.utils.TB_FRENTE // Import da constante do nome da tabela
 
-@Entity(tableName = TB_FRENTE) // Define como entidade do Room e especifica o nome da tabela
+@Entity(tableName = TB_FRENTE)
 data class FrenteRoomModel (
-    @PrimaryKey // Define idFrente como chave primária
-    val idFrente: Int, // ID da Frente (ajustado para Int, conforme suposição)
-    val codFrente: Int, // Código da Frente (ajustado para Int)
-    val descrFrente: String // Descrição da Frente
+    @PrimaryKey
+    val idFrente: Int,
+    val codFrente: Int,
+    val descrFrente: String
 )
 
-// Função de extensão para converter FrenteRoomModel para a entidade de domínio Frente
 fun FrenteRoomModel.roomModelToEntity(): Frente {
     return with(this){
         Frente(
@@ -24,8 +23,7 @@ fun FrenteRoomModel.roomModelToEntity(): Frente {
     }
 }
 
-// Função de extensão para converter a entidade de domínio Frente para FrenteRoomModel
-fun Frente.entityToRoomModel(): FrenteRoomModel {
+fun Frente.entityFrenteToRoomModel(): FrenteRoomModel {
     return with(this){
         FrenteRoomModel(
             idFrente = this.idFrente,

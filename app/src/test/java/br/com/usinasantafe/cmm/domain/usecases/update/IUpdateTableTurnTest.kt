@@ -11,10 +11,10 @@ import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IUpdateTableTurnTest {
 
@@ -68,7 +68,7 @@ class IUpdateTableTurnTest {
         }
 
     @Test
-    fun `Check return failure if have error in TurnoRepository recoverAll`() =
+    fun `Check return failure if have error in TurnRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -115,7 +115,7 @@ class IUpdateTableTurnTest {
         }
 
     @Test
-    fun `Check return failure if have error in TurnoRepository deleteAll`() =
+    fun `Check return failure if have error in TurnRepository deleteAll`() =
         runTest {
             val list = listOf(
                 Turn(
@@ -186,7 +186,7 @@ class IUpdateTableTurnTest {
         }
 
     @Test
-    fun `Check return failure if have error in TurnoRepository addAll`() =
+    fun `Check return failure if have error in TurnRepository addAll`() =
         runTest {
             val list = listOf(
                 Turn(

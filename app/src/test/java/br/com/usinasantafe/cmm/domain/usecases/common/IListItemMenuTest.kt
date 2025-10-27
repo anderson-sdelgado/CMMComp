@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.domain.entities.variable.ItemMenu
+import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MenuRepository
 import br.com.usinasantafe.cmm.utils.TypeItemMenu
@@ -59,17 +59,17 @@ class IListItemMenuTest {
             ).thenReturn(
                 Result.success(
                     listOf(
-                        ItemMenu(
+                        ItemMenuPMM(
                             id = 1,
                             title = "TRABALHANDO",
                             type = TypeItemMenu.ITEM_NORMAL
                         ),
-                        ItemMenu(
+                        ItemMenuPMM(
                             id = 2,
                             title = "PARADO",
                             type = TypeItemMenu.ITEM_NORMAL
                         ),
-                        ItemMenu(
+                        ItemMenuPMM(
                             id = 3,
                             title = "FINALIZAR BOLETIM",
                             type = TypeItemMenu.BUTTON_FINISH_HEADER

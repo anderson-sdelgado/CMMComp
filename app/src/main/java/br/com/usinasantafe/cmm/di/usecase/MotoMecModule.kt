@@ -87,7 +87,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindSendHeader(usecase: ISendHeader): SendHeader
+    fun bindSendHeader(usecase: ISendMotoMec): SendMotoMec
 
     @Binds
     @Singleton

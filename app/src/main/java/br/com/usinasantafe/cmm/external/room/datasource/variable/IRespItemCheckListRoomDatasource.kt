@@ -39,7 +39,17 @@ class IRespItemCheckListRoomDatasource @Inject constructor(
         id: Int,
         idServ: Int
     ): Result<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val model = respItemCheckListDao.getById(id)
+            model.idServ = idServ
+            respItemCheckListDao.update(model)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

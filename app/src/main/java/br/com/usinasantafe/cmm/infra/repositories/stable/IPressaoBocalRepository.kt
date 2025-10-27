@@ -6,18 +6,18 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.PressaoBocalRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PressaoBocalRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.PressaoBocalRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel // Import da função de mapeamento Entidade -> Room
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityPressaoBocalToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IPressaoBocalRepository @Inject constructor(
-    private val pressaoBocalRetrofitDatasource: PressaoBocalRetrofitDatasource, // Injeção da datasource Retrofit
-    private val pressaoBocalRoomDatasource: PressaoBocalRoomDatasource // Injeção da datasource Room
+    private val pressaoBocalRetrofitDatasource: PressaoBocalRetrofitDatasource,
+    private val pressaoBocalRoomDatasource: PressaoBocalRoomDatasource
 ) : PressaoBocalRepository {
 
     override suspend fun addAll(list: List<PressaoBocal>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityPressaoBocalToRoomModel() }
             val result = pressaoBocalRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

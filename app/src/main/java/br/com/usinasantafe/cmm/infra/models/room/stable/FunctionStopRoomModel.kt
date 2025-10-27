@@ -1,0 +1,35 @@
+package br.com.usinasantafe.cmm.infra.models.room.stable
+
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import br.com.usinasantafe.cmm.domain.entities.stable.FunctionStop
+import br.com.usinasantafe.cmm.utils.TB_FUNCTION_STOP
+import br.com.usinasantafe.cmm.utils.TypeStop
+
+@Entity(tableName = TB_FUNCTION_STOP)
+data class FunctionStopRoomModel(
+    @PrimaryKey
+    val idRFunctionStop: Int,
+    val idStop: Int,
+    val typeStop: TypeStop
+)
+
+fun FunctionStopRoomModel.roomModelToEntity(): FunctionStop {
+    return with(this){
+        FunctionStop(
+            idRFunctionStop = this.idRFunctionStop,
+            idStop = this.idStop,
+            typeStop = this.typeStop
+        )
+    }
+}
+
+fun FunctionStop.entityFunctionStopToRoomModel(): FunctionStopRoomModel {
+    return with(this){
+        FunctionStopRoomModel(
+            idRFunctionStop = this.idRFunctionStop,
+            idStop = this.idStop,
+            typeStop = this.typeStop
+        )
+    }
+}

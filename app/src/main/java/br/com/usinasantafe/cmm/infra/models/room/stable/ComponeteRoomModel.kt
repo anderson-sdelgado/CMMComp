@@ -23,7 +23,7 @@ fun ComponenteRoomModel.roomModelToEntity(): Componente {
     }
 }
 
-fun Componente.entityToRoomModel(): ComponenteRoomModel {
+fun Componente.entityComponenteToRoomModel(): ComponenteRoomModel {
     return with(this){
         ComponenteRoomModel(
             idComponente = this.idComponente,

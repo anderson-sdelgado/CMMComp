@@ -30,7 +30,7 @@ import java.util.Date
         RActivityStopRoomModel::class,
         REquipActivityRoomModel::class,
         REquipPneuRoomModel::class,
-        RFuncaoAtivParadaRoomModel::class,
+        FunctionActivityDao::class,
         ROSActivityRoomModel::class,
         ServicoRoomModel::class,
         TurnRoomModel::class,
@@ -59,7 +59,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun rActivityStopDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rEquipPneuDao(): REquipPneuDao
-    abstract fun rFuncaoAtivParadaDao(): RFuncaoAtivParadaDao
+    abstract fun rFuncaoAtivParadaDao(): FunctionActivityDao
     abstract fun rOSActivityDao(): ROSActivityDao
     abstract fun servicoDao(): ServicoDao
     abstract fun stopDao(): StopDao

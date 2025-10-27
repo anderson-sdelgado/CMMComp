@@ -81,7 +81,15 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableFunctionActivityStop(usecase: IUpdateTableFunctionActivityStop): UpdateTableFunctionActivityStop
+    fun bindUpdateTableFunctionActivity(usecase: IUpdateTableFunctionActivity): UpdateTableFunctionActivity
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableFunctionStop(usecase: IUpdateTableFunctionStop): UpdateTableFunctionStop
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableItemMenuPMM(usecase: IUpdateTableItemMenuPMM): UpdateTableItemMenuPMM
 
     @Binds
     @Singleton

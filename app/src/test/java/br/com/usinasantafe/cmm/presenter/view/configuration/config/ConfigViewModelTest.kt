@@ -11,7 +11,10 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenuPMM
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
@@ -49,6 +52,9 @@ class ConfigViewModelTest {
     private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
     private val updateTableStop = mock<UpdateTableStop>()
     private val updateTableTurn = mock<UpdateTableTurn>()
+    private val updateTableFunctionActivity = mock<UpdateTableFunctionActivity>()
+    private val updateTableFunctionStop = mock<UpdateTableFunctionStop>()
+    private val updateTableItemMenuPMM = mock<UpdateTableItemMenuPMM>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
     private val sizeAll = (QTD_TABLE * 3) + 1f
     private var contWhenever = 0f
@@ -67,7 +73,10 @@ class ConfigViewModelTest {
         updateTableREquipActivityByIdEquip = updateTableREquipActivityByIdEquip,
         updateTableStop = updateTableStop,
         updateTableTurn = updateTableTurn,
-        setFinishUpdateAllTable = setFinishUpdateAllTable
+        setFinishUpdateAllTable = setFinishUpdateAllTable,
+        updateTableFunctionActivity = updateTableFunctionActivity,
+        updateTableFunctionStop = updateTableFunctionStop,
+        updateTableItemMenuPMM = updateTableItemMenuPMM
     )
 
     @Test
@@ -228,6 +237,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[0],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = percentage(1f, 3f)
@@ -236,6 +250,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[1],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
@@ -299,6 +318,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[0],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = percentage(1f, 3f)
@@ -307,6 +331,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[1],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = percentage(2f, 3f),
@@ -315,6 +344,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[2],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     errors = Errors.TOKEN,
                     flagDialog = true,
                     flagFailure = true,
@@ -374,6 +408,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[0],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.GET_TOKEN,
                     currentProgress = percentage(1f, 3f)
@@ -382,6 +421,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[1],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE_TOKEN,
                     currentProgress = percentage(2f, 3f),
@@ -390,6 +434,11 @@ class ConfigViewModelTest {
             assertEquals(
                 result[2],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
                     currentProgress = 1f,
@@ -462,7 +511,7 @@ class ConfigViewModelTest {
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_activity",
+                        tableUpdate = "tb_colab",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
                     ResultUpdateModel(
@@ -484,7 +533,7 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_activity",
+                    tableUpdate = "tb_colab",
                     currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                 )
             )
@@ -554,12 +603,128 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
+    fun `update - Check return failure if have error in UpdateTableFunctionActivity`() =
         runTest {
             val qtdBefore = 3f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            whenever(
+                updateTableFunctionActivity(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanFunctionActivity -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionActivity -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableFunctionStop`() =
+        runTest {
+            val qtdBefore = 4f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            whenever(
+                updateTableFunctionStop(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanFunctionStop -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionStop -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
+        runTest {
+            val qtdBefore = 5f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             whenever(
                 updateTableItemCheckListByNroEquip(
                     sizeAll = sizeAll,
@@ -589,6 +754,8 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -610,13 +777,78 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+    fun `update - Check return failure if have error in UpdateTableItemMenuPMM`() =
         runTest {
-            val qtdBefore = 4f
+            val qtdBefore = 6f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            whenever(
+                updateTableItemMenuPMM(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_menu_pmm",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanItemMenuPMM -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
+            checkResultUpdateItemCheckList(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemMenuPMM -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+        runTest {
+            val qtdBefore = 7f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
+            wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             whenever(
                 updateTableRActivityStop(
                     sizeAll = sizeAll,
@@ -646,7 +878,10 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
             checkResultUpdateItemCheckList(result)
+            checkResultUpdateItemMenuPMM(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -670,11 +905,14 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
         runTest {
-            val qtdBefore = 5f
+            val qtdBefore = 8f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             whenever(
                 updateTableREquipActivityByIdEquip(
@@ -705,7 +943,10 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
             checkResultUpdateItemCheckList(result)
+            checkResultUpdateItemMenuPMM(result)
             checkResultUpdateRActivityStop(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
@@ -730,11 +971,14 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableStop`() =
         runTest {
-            val qtdBefore = 6f
+            val qtdBefore = 9f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             whenever(
@@ -766,7 +1010,10 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
             checkResultUpdateItemCheckList(result)
+            checkResultUpdateItemMenuPMM(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             assertEquals(
@@ -792,11 +1039,14 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableTurn`() =
         runTest {
-            val qtdBefore = 7f
+            val qtdBefore = 10f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -829,7 +1079,10 @@ class ConfigViewModelTest {
             checkResultUpdateActivity(result)
             checkResultUpdateColab(result)
             checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
             checkResultUpdateItemCheckList(result)
+            checkResultUpdateItemMenuPMM(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
             checkResultUpdateStop(result)
@@ -889,7 +1142,10 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -898,8 +1154,8 @@ class ConfigViewModelTest {
                 setFinishUpdateAllTable()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "ISetFinishUpdateAllTable",
+                    "-",
                     Exception()
                 )
             )
@@ -915,23 +1171,31 @@ class ConfigViewModelTest {
                 result.count(),
                 ((QTD_TABLE * 3) + 1).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateRActivityStop(result)
-            checkResultUpdateREquipActivity(result)
-            checkResultUpdateStop(result)
-            checkResultUpdateTurn(result)
+            checkResultUpdateActivityFull(result)
+            checkResultUpdateColabFull(result)
+            checkResultUpdateEquipFull(result)
+            checkResultUpdateFunctionActivityFull(result)
+            checkResultUpdateFunctionStopFull(result)
+            checkResultUpdateItemCheckListFull(result)
+            checkResultUpdateItemMenuPMMFull(result)
+            checkResultUpdateRActivityStopFull(result)
+            checkResultUpdateREquipActivityFull(result)
+            checkResultUpdateStopFull(result)
+            checkResultUpdateTurnFull(result)
             assertEquals(
                 result[(QTD_TABLE * 3).toInt()],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
                     flagDialog = true,
                     flagProgress = true,
                     currentProgress = 1f,
-                    failure = "ConfigViewModel.updateAllDatabase -> Error -> Exception -> java.lang.Exception",
+                    failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
                 )
             )
             viewModel.onSaveAndUpdate()
@@ -939,12 +1203,19 @@ class ConfigViewModelTest {
             assertEquals(
                 configState,
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
                     flagDialog = true,
                     flagProgress = true,
                     currentProgress = 1f,
-                    failure = "ConfigViewModel.updateAllDatabase -> Error -> Exception -> java.lang.Exception",
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_turn",
+                    failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
                 )
             )
         }
@@ -985,7 +1256,10 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
             wheneverSuccessStop()
@@ -1007,21 +1281,30 @@ class ConfigViewModelTest {
                 result.count(),
                 ((QTD_TABLE * 3) + 1).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateRActivityStop(result)
-            checkResultUpdateREquipActivity(result)
-            checkResultUpdateStop(result)
-            checkResultUpdateTurn(result)
+            checkResultUpdateActivityFull(result)
+            checkResultUpdateColabFull(result)
+            checkResultUpdateEquipFull(result)
+            checkResultUpdateFunctionActivityFull(result)
+            checkResultUpdateFunctionStopFull(result)
+            checkResultUpdateItemCheckListFull(result)
+            checkResultUpdateItemMenuPMMFull(result)
+            checkResultUpdateRActivityStopFull(result)
+            checkResultUpdateREquipActivityFull(result)
+            checkResultUpdateStopFull(result)
+            checkResultUpdateTurnFull(result)
             assertEquals(
                 result[(QTD_TABLE * 3).toInt()],
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagDialog = true,
                     flagProgress = true,
                     flagFailure = false,
                     levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+
                     currentProgress = 1f,
                 )
             )
@@ -1030,6 +1313,11 @@ class ConfigViewModelTest {
             assertEquals(
                 configState,
                 ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagDialog = true,
                     flagProgress = true,
                     flagFailure = false,
@@ -1100,62 +1388,52 @@ class ConfigViewModelTest {
                 )
             )
         }
-//
-//    private fun wheneverSuccessBocal() =
-//        runTest {
-//            whenever(
-//                updateTableBocal(
-//                    sizeAll = sizeAll,
-//                    count = ++contUpdate
-//                )
-//            ).thenReturn(
-//                flowOf(
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Limpando a tabela tb_bocal",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Recuperando dados da tabela tb_bocal do Web Service",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                    ResultUpdateModel(
-//                        flagProgress = true,
-//                        msgProgress = "Salvando dados na tabela tb_bocal",
-//                        currentProgress = percentage(++contWhenever, sizeAll)
-//                    ),
-//                )
-//            )
-//        }
-//
-//    private fun checkResultUpdateBocal(result: List<ConfigState>) =
-//        runTest {
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Limpando a tabela tb_bocal",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Recuperando dados da tabela tb_bocal do Web Service",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//            assertEquals(
-//                result[contResult.toInt()],
-//                ConfigState(
-//                    flagProgress = true,
-//                    msgProgress = "Salvando dados na tabela tb_bocal",
-//                    currentProgress = percentage(++contResult, sizeAll)
-//                )
-//            )
-//        }
+
+    private fun checkResultUpdateActivityFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
 
     private fun wheneverSuccessColab() =
         runTest {
@@ -1211,6 +1489,52 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_colab",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateColabFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_colab",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_colab",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_colab",
@@ -1281,6 +1605,268 @@ class ConfigViewModelTest {
             )
         }
 
+    private fun checkResultUpdateEquipFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_equip",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_equip",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_equip",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun wheneverSuccessFunctionActivity() =
+        runTest {
+            whenever(
+                updateTableFunctionActivity(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+    private fun checkResultUpdateFunctionActivity(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateFunctionActivityFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_function_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun wheneverSuccessFunctionStop() =
+        runTest {
+            whenever(
+                updateTableFunctionStop(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+    private fun checkResultUpdateFunctionStop(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateFunctionStopFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_function_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
     private fun wheneverSuccessItemCheckList() =
         runTest {
             whenever(
@@ -1343,6 +1929,160 @@ class ConfigViewModelTest {
             )
         }
 
+    private fun checkResultUpdateItemCheckListFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun wheneverSuccessItemMenuPMM() =
+        runTest {
+            whenever(
+                updateTableItemMenuPMM(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_menu_pmm",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_menu_pmm",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_menu_pmm",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+    private fun checkResultUpdateItemMenuPMM(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateItemMenuPMMFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_menu_pmm",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
     private fun wheneverSuccessStop() =
         runTest {
             whenever(
@@ -1397,6 +2137,52 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateStopFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_stop",
@@ -1467,6 +2253,52 @@ class ConfigViewModelTest {
             )
         }
 
+    private fun checkResultUpdateRActivityStopFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_activity_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_activity_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_activity_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
     private fun wheneverSuccessREquipActivity() =
         runTest {
             whenever(
@@ -1521,6 +2353,52 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_equip_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateREquipActivityFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_equip_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_equip_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_r_equip_activity",
@@ -1591,4 +2469,49 @@ class ConfigViewModelTest {
             )
         }
 
+    private fun checkResultUpdateTurnFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_turn",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_turn",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
 }

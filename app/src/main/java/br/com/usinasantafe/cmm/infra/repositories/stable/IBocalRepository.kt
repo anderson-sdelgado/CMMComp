@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.BocalRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.BocalRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.BocalRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
-import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.entityBocalToRoomModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class IBocalRepository @Inject constructor(
 
     override suspend fun addAll(list: List<Bocal>): Result<Boolean> {
         try {
-            val roomModelList = list.map { it.entityToRoomModel() }
+            val roomModelList = list.map { it.entityBocalToRoomModel() }
             val result = bocalRoomDatasource.addAll(roomModelList)
             if (result.isFailure) {
                 return resultFailure(

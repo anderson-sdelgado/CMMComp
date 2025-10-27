@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "e35e7f30a66178ec18fea6f075f826b8",
+    "identityHash": "b3e410152de35dbf1c2ca6cd06f427c3",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -663,7 +663,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_function_activity_stop",
+        "tableName": "tb_function_activity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idRFuncaoAtivPar` INTEGER NOT NULL, `idAtivPar` INTEGER NOT NULL, `funcAtiv` INTEGER NOT NULL, `funcParada` INTEGER NOT NULL, `tipoFuncao` INTEGER NOT NULL, PRIMARY KEY(`idRFuncaoAtivPar`))",
         "fields": [
           {
@@ -1090,7 +1090,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e35e7f30a66178ec18fea6f075f826b8')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3e410152de35dbf1c2ca6cd06f427c3')"
     ]
   }
 }

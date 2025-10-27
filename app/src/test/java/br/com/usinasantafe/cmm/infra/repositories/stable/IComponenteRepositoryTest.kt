@@ -6,16 +6,16 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.ComponenteRoomDataso
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ComponenteRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ComponenteRoomModel
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IComponenteRepositoryTest {
 
     private val componenteRoomDatasource = mock<ComponenteRoomDatasource>()
     private val componenteRetrofitDatasource = mock<ComponenteRetrofitDatasource>()
-    private val repository = IComponenteRepository( // Assume IComponenteRepository exists
+    private val repository = IComponenteRepository(
         componenteRetrofitDatasource = componenteRetrofitDatasource,
         componenteRoomDatasource = componenteRoomDatasource
     )

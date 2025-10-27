@@ -52,7 +52,18 @@ class IHeaderCheckListRoomDatasource @Inject constructor(
         id: Int,
         idServ: Int
     ): Result<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val model = headerCheckListDao.getById(id)
+            model.idServ = idServ
+            model.statusSend = StatusSend.SENT
+            headerCheckListDao.update(model)
+            return Result.success(true)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

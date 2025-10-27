@@ -25,7 +25,7 @@ fun REquipPneuRoomModel.roomModelToEntity(): REquipPneu {
     )
 }
 
-fun REquipPneu.entityToRoomModel(): REquipPneuRoomModel {
+fun REquipPneu.entityREquipPneuToRoomModel(): REquipPneuRoomModel {
     return REquipPneuRoomModel(
         idREquipPneu = this.idREquipPneu,
         idEquip = this.idEquip,

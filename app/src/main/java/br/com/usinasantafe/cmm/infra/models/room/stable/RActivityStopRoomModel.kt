@@ -23,7 +23,7 @@ fun RActivityStopRoomModel.roomModelToEntity(): RActivityStop {
     }
 }
 
-fun RActivityStop.entityToRoomModel(): RActivityStopRoomModel {
+fun RActivityStop.entityRActivityStopToRoomModel(): RActivityStopRoomModel {
     return with(this){
         RActivityStopRoomModel(
             idRActivityStop = this.idRActivityStop,
