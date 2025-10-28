@@ -269,7 +269,7 @@ class IUpdateTableEquipByIdEquipTest {
         runTest {
             val config = Config(
                 idEquip = 10,
-                idBD = 1
+                idServ = 1
             )
             val list = listOf(
                 Equip(

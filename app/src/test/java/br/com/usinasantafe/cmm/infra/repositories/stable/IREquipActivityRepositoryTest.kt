@@ -42,7 +42,7 @@ class IREquipActivityRepositoryTest {
                 rEquipActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
                 resultFailure(
-                    context = "IREquipActivityRepository.addAll",
+                    context = "IREquipActivityRoomDatasource.addAll",
                     message = "-",
                     cause = Exception()
                 )
@@ -54,7 +54,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipActivityRepository.addAll -> IREquipActivityRepository.addAll"
+                "IREquipActivityRepository.addAll -> IREquipActivityRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -102,7 +102,7 @@ class IREquipActivityRepositoryTest {
                 rEquipActivityRoomDatasource.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    context = "IREquipActivityRepository.deleteAll",
+                    context = "IREquipActivityRoomDatasource.deleteAll",
                     message = "-",
                     cause = Exception()
                 )
@@ -114,7 +114,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipActivityRepository.deleteAll -> IREquipActivityRepository.deleteAll"
+                "IREquipActivityRepository.deleteAll -> IREquipActivityRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -151,7 +151,7 @@ class IREquipActivityRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IREquipActivityRepository.listByIdEquip",
+                    context = "IREquipActivityRetrofitDatasource.listByIdEquip",
                     message = "-",
                     cause = Exception()
                 )
@@ -166,7 +166,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IREquipActivityRepository.listByIdEquip -> IREquipActivityRepository.listByIdEquip"
+                "IREquipActivityRepository.listByIdEquip -> IREquipActivityRetrofitDatasource.listByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

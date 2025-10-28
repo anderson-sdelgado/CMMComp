@@ -11,7 +11,7 @@ data class ConfigRetrofitModelOutput(
 )
 
 data class ConfigRetrofitModelInput(
-    val idBD: Int,
+    val idServ: Int,
     val idEquip: Int
 )
 
@@ -30,11 +30,11 @@ fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
 
 fun ConfigRetrofitModelInput.retrofitToEntity(): Config {
 
-    require(idBD != 0) { "The field 'idBD' cannot is null." }
+    require(idServ != 0) { "The field 'idServ' cannot is null." }
     require(idEquip != 0) { "The field 'idEquip' cannot is null." }
 
     return Config(
-            idBD = idBD,
+            idServ = idServ,
             idEquip = idEquip
         )
 }

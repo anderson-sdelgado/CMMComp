@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.utils.TypeStop
 @Entity(tableName = TB_FUNCTION_STOP)
 data class FunctionStopRoomModel(
     @PrimaryKey
-    val idRFunctionStop: Int,
+    val idFunctionStop: Int,
     val idStop: Int,
     val typeStop: TypeStop
 )
@@ -17,7 +17,7 @@ data class FunctionStopRoomModel(
 fun FunctionStopRoomModel.roomModelToEntity(): FunctionStop {
     return with(this){
         FunctionStop(
-            idRFunctionStop = this.idRFunctionStop,
+            idFunctionStop = this.idFunctionStop,
             idStop = this.idStop,
             typeStop = this.typeStop
         )
@@ -27,7 +27,7 @@ fun FunctionStopRoomModel.roomModelToEntity(): FunctionStop {
 fun FunctionStop.entityFunctionStopToRoomModel(): FunctionStopRoomModel {
     return with(this){
         FunctionStopRoomModel(
-            idRFunctionStop = this.idRFunctionStop,
+            idFunctionStop = this.idFunctionStop,
             idStop = this.idStop,
             typeStop = this.typeStop
         )

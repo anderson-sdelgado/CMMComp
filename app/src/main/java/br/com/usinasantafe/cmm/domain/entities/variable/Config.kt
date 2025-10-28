@@ -11,7 +11,7 @@ data class Config(
     val idEquip: Int? = null,
     var password: String? = null,
     var checkMotoMec: Boolean? = true,
-    var idBD: Int? = null,
+    var idServ: Int? = null,
     var version: String? = null,
     var app: String? = null,
     var statusSend: StatusSend = StatusSend.STARTED,

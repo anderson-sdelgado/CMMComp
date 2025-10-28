@@ -122,7 +122,7 @@ class IUpdateTableFunctionStopTest {
         runTest {
             val list = listOf(
                 FunctionStop(
-                    idRFunctionStop = 1,
+                    idFunctionStop = 1,
                     idStop = 1,
                     typeStop = TypeStop.CHECKLIST
                 )
@@ -193,7 +193,7 @@ class IUpdateTableFunctionStopTest {
         runTest {
             val list = listOf(
                 FunctionStop(
-                    idRFunctionStop = 1,
+                    idFunctionStop = 1,
                     idStop = 1,
                     typeStop = TypeStop.CHECKLIST
                 )

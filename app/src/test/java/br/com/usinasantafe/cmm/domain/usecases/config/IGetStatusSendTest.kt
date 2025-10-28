@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -22,7 +23,9 @@ class IGetStatusSendTest {
             whenever(
                 configRepository.get()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.get",
+                    "-",
                     Exception()
                 )
             )
@@ -33,7 +36,11 @@ class IGetStatusSendTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStatusSend -> Unknown Error"
+                "IGetStatusSend -> IConfigRepository.get"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 

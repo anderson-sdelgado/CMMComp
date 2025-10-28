@@ -48,7 +48,7 @@ class ISendDataConfigTest {
             assertEquals(
                 result.getOrNull()!!,
                 Config(
-                    idBD = 1,
+                    idServ = 1,
                     idEquip = 1
                 )
             )

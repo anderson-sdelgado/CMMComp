@@ -76,8 +76,8 @@ class InitialMenuNoteViewModelTest {
                 checkAccessInitial()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "CheckAccessInitial",
+                    "-",
                     Exception()
                 )
             )
@@ -97,7 +97,7 @@ class InitialMenuNoteViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "InitialMenuViewModel.checkAccess -> Error -> Exception -> java.lang.Exception",
+                "InitialMenuViewModel.checkAccess -> CheckAccessInitial -> java.lang.Exception",
             )
         }
 

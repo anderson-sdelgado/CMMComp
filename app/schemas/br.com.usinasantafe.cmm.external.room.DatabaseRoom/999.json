@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "b3e410152de35dbf1c2ca6cd06f427c3",
+    "identityHash": "48ee8bf0f3a7dd8f5dde878f7fc7731f",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -233,6 +233,70 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tb_function_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idFunctionActivity` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `typeActivity` TEXT NOT NULL, PRIMARY KEY(`idFunctionActivity`))",
+        "fields": [
+          {
+            "fieldPath": "idFunctionActivity",
+            "columnName": "idFunctionActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeActivity",
+            "columnName": "typeActivity",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idFunctionActivity"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_function_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idFunctionStop` INTEGER NOT NULL, `idStop` INTEGER NOT NULL, `typeStop` TEXT NOT NULL, PRIMARY KEY(`idFunctionStop`))",
+        "fields": [
+          {
+            "fieldPath": "idFunctionStop",
+            "columnName": "idFunctionStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeStop",
+            "columnName": "typeStop",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idFunctionStop"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "tb_item_check_list",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idItemCheckList` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `descrItemCheckList` TEXT NOT NULL, PRIMARY KEY(`idItemCheckList`))",
         "fields": [
@@ -259,6 +323,38 @@
           "autoGenerate": false,
           "columnNames": [
             "idItemCheckList"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item_menu_pmm",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
           ]
         },
         "indices": [],
@@ -663,50 +759,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_function_activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idRFuncaoAtivPar` INTEGER NOT NULL, `idAtivPar` INTEGER NOT NULL, `funcAtiv` INTEGER NOT NULL, `funcParada` INTEGER NOT NULL, `tipoFuncao` INTEGER NOT NULL, PRIMARY KEY(`idRFuncaoAtivPar`))",
-        "fields": [
-          {
-            "fieldPath": "idRFuncaoAtivPar",
-            "columnName": "idRFuncaoAtivPar",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idAtivPar",
-            "columnName": "idAtivPar",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "funcAtiv",
-            "columnName": "funcAtiv",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "funcParada",
-            "columnName": "funcParada",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tipoFuncao",
-            "columnName": "tipoFuncao",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idRFuncaoAtivPar"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "tb_r_os_activity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idROSActivity` INTEGER PRIMARY KEY AUTOINCREMENT, `idOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
         "fields": [
@@ -1090,7 +1142,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b3e410152de35dbf1c2ca6cd06f427c3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '48ee8bf0f3a7dd8f5dde878f7fc7731f')"
     ]
   }
 }

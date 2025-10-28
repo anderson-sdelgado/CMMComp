@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.token
 import kotlinx.coroutines.test.runTest
@@ -22,7 +23,9 @@ class IGetTokenTest {
             whenever(
                 configRepository.get()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.get",
+                    "-",
                     Exception()
                 )
             )
@@ -33,11 +36,11 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetToken -> Unknown Error"
+                "IGetToken -> IConfigRepository.get"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -46,7 +49,7 @@ class IGetTokenTest {
         runTest {
             val config = Config(
                 app = "PMM",
-                idBD = 1,
+                idServ = 1,
                 nroEquip = 1,
                 number = 1
             )
@@ -75,7 +78,7 @@ class IGetTokenTest {
         runTest {
             val config = Config(
                 app = "PMM",
-                idBD = 1,
+                idServ = 1,
                 nroEquip = 1,
                 number = 1,
                 version = "1.00"
@@ -92,7 +95,7 @@ class IGetTokenTest {
             )
             val token = token(
                 app = config.app!!,
-                idBD = config.idBD!!,
+                idBD = config.idServ!!,
                 nroEquip = config.nroEquip!!,
                 number = config.number!!,
                 version = config.version!!

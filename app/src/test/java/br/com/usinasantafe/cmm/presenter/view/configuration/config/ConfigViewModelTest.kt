@@ -283,7 +283,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(
                     Config(
-                        idBD = 1,
+                        idServ = 1,
                         idEquip = 1
                     )
                 )
@@ -377,7 +377,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(
                     Config(
-                        idBD = 1,
+                        idServ = 1,
                         idEquip = 1
                     )
                 )
@@ -1120,7 +1120,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(
                     Config(
-                        idBD = 1,
+                        idServ = 1,
                         idEquip = 1
                     )
                 )
@@ -1234,7 +1234,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(
                     Config(
-                        idBD = 1,
+                        idServ = 1,
                         idEquip = 1
                     )
                 )

@@ -15,7 +15,7 @@ object StableRoomModule {
     @Provides
     @Singleton
     fun provideActivityDao(database: DatabaseRoom): ActivityDao {
-        return database.atividadeDao()
+        return database.activityDao()
     }
 
     @Provides
@@ -116,12 +116,6 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideRFuncaoAtivParadaDao(database: DatabaseRoom): FunctionActivityDao {
-        return database.rFuncaoAtivParadaDao()
-    }
-
-    @Provides
-    @Singleton
     fun provideROSAtivDao(database: DatabaseRoom): ROSActivityDao {
         return database.rOSActivityDao()
     }
@@ -137,5 +131,25 @@ object StableRoomModule {
     fun provideTurnDao(database: DatabaseRoom): TurnDao {
         return database.turnDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideFunctionActivityDao(database: DatabaseRoom): FunctionActivityDao {
+        return database.functionActivityDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFunctionStopDao(database: DatabaseRoom): FunctionStopDao {
+        return database.functionStopDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideItemMenuPMMDao(database: DatabaseRoom): ItemMenuPMMDao {
+        return database.itemMenuPMMDao()
+    }
+
+
 
 }

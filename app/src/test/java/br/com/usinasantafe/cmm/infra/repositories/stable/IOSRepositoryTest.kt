@@ -47,7 +47,9 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IOSRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -58,11 +60,11 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.addAll -> Unknown Error"
+                "IOSRepository.addAll -> IOSRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -111,7 +113,9 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IOSRoomDatasource.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -122,11 +126,11 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.deleteAll -> Unknown Error"
+                "IOSRepository.deleteAll -> IOSRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -155,7 +159,9 @@ class IOSRepositoryTest {
             whenever(
                 osRetrofitDatasource.listAll("token")
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IOSRetrofitDatasource.listAll",
+                    "-",
                     Exception()
                 )
             )
@@ -166,11 +172,11 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.recoverAll -> Unknown Error"
+                "IOSRepository.recoverAll -> IOSRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

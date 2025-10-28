@@ -42,7 +42,9 @@ class IROSActivityRepositoryTest {
             whenever(
                 rOSActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IROSActivityRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -53,11 +55,11 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.addAll -> Unknown Error"
+                "IROSActivityRepository.addAll -> IROSActivityRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -100,7 +102,9 @@ class IROSActivityRepositoryTest {
             whenever(
                 rOSActivityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IROSActivityRoomDatasource.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -111,11 +115,11 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.deleteAll -> Unknown Error"
+                "IROSActivityRepository.deleteAll -> IROSActivityRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -144,7 +148,9 @@ class IROSActivityRepositoryTest {
             whenever(
                 rOSActivityRetrofitDatasource.listAll("token")
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IROSActivityRetrofitDatasource.listAll",
+                    "-",
                     Exception()
                 )
             )
@@ -155,11 +161,11 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.recoverAll -> Unknown Error"
+                "IROSActivityRepository.recoverAll -> IROSActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

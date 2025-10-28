@@ -41,7 +41,7 @@ class ISaveDataConfig @Inject constructor(
                 app = app.uppercase(),
                 nroEquip = nroEquip.toLong(),
                 checkMotoMec = checkMotoMec,
-                idBD = idBD,
+                idServ = idBD,
                 idEquip = idEquip
             )
             val result = configRepository.save(entity)

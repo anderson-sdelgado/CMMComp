@@ -314,7 +314,7 @@ class ISendMotoMecTest {
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1,
+                idServ = 1,
                 idEquip = 20
             )
         )

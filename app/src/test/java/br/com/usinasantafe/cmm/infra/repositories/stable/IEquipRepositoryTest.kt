@@ -55,7 +55,9 @@ class IEquipRepositoryTest {
             whenever(
                 equipRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IEquipRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -66,11 +68,11 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.addAll -> Unknown Error"
+                "IEquipRepository.addAll -> IEquipRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -127,7 +129,9 @@ class IEquipRepositoryTest {
             whenever(
                 equipRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IEquipRoomDatasource.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -138,11 +142,11 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.deleteAll -> Unknown Error"
+                "IEquipRepository.deleteAll -> IEquipRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -175,7 +179,7 @@ class IEquipRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "EquipRetrofitDatasource.listByIdEquip",
+                    "IEquipRetrofitDatasource.listByIdEquip",
                     "-",
                     Exception()
                 )
@@ -190,7 +194,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.listByIdEquip -> EquipRetrofitDatasource.listByIdEquip"
+                "IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class IUpdateTableColabTest {
@@ -283,7 +283,7 @@ class IUpdateTableColabTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 app = "CMM",
-                idBD = 1,
+                idServ = 1,
                 nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",

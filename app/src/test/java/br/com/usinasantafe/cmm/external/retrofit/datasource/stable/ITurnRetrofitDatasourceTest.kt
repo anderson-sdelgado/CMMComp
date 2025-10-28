@@ -11,6 +11,13 @@ import org.junit.Test
 
 class ITurnRetrofitDatasourceTest {
 
+    private val resultTurnRetrofit = """
+    [
+      {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"TURNO A"},
+      {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"TURNO B"}
+    ]
+""".trimIndent()
+
     @Test
     fun `Check return failure if token is invalid`() =
         runTest {
@@ -114,9 +121,4 @@ class ITurnRetrofitDatasourceTest {
         }
 }
 
-val resultTurnRetrofit = """
-    [
-      {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"TURNO A"},
-      {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"TURNO B"}
-    ]
-""".trimIndent()
+

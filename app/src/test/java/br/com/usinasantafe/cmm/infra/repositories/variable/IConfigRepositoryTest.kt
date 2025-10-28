@@ -32,8 +32,8 @@ class IConfigRepositoryTest {
                 configSharedPreferencesDatasource.get()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IConfigSharedPreferencesDatasource.get",
+                    "-",
                     Exception()
                 )
             )
@@ -44,7 +44,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> Error -> Exception"
+                "IConfigRepository.get -> IConfigSharedPreferencesDatasource.get"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -83,8 +83,8 @@ class IConfigRepositoryTest {
                 configSharedPreferencesDatasource.has()
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IConfigSharedPreferencesDatasource.has",
+                    "-",
                     Exception()
                 )
             )
@@ -95,7 +95,11 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "Error -> Exception"
+                "IConfigRepository.get -> IConfigSharedPreferencesDatasource.has"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
@@ -141,8 +145,8 @@ class IConfigRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "IConfigRetrofitDatasource.recoverToken",
+                    "-",
                     Exception()
                 )
             )
@@ -153,7 +157,11 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IConfigRepository.send -> Error -> Exception"
+                "IConfigRepository.get -> IConfigRetrofitDatasource.recoverToken"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
@@ -167,7 +175,7 @@ class IConfigRepositoryTest {
                 app = "PMM"
             )
             val retrofitModelInput = ConfigRetrofitModelInput(
-                idBD = 1,
+                idServ = 1,
                 idEquip = 10
             )
             val entity = Config(
@@ -191,7 +199,7 @@ class IConfigRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 Config(
-                    idBD = 1,
+                    idServ = 1,
                     idEquip = 10
                 )
             )
@@ -209,7 +217,7 @@ class IConfigRepositoryTest {
                         app = "PMM",
                         nroEquip = 310,
                         checkMotoMec = false,
-                        idBD = 1
+                        idServ = 1
                     )
                 )
             ).thenReturn(
@@ -227,7 +235,7 @@ class IConfigRepositoryTest {
                     app = "PMM",
                     nroEquip = 310,
                     checkMotoMec = false,
-                    idBD = 1
+                    idServ = 1
                 )
             )
             assertEquals(
@@ -256,7 +264,7 @@ class IConfigRepositoryTest {
                         app = "PMM",
                         nroEquip = 310,
                         checkMotoMec = false,
-                        idBD = 1
+                        idServ = 1
                     )
                 )
             ).thenReturn(
@@ -270,7 +278,7 @@ class IConfigRepositoryTest {
                     app = "PMM",
                     nroEquip = 310,
                     checkMotoMec = false,
-                    idBD = 1
+                    idServ = 1
                 )
             )
             assertEquals(

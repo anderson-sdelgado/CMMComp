@@ -10,6 +10,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class IColabRetrofitDatasourceTest {
+
     private val resultColabRetrofit = """
         [
           {"regColab":12345,"nameColab":"João da Silva"},

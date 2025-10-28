@@ -76,7 +76,7 @@ class ICheckUpdateCheckListTest {
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",
-                    idBD = 1,
+                    idServ = 1,
                     number = 1,
                     version = "1.0",
                 )
@@ -110,7 +110,7 @@ class ICheckUpdateCheckListTest {
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",
-                    idBD = 1,
+                    idServ = 1,
                     number = 1,
                     version = "1.0",
                 )
@@ -140,7 +140,7 @@ class ICheckUpdateCheckListTest {
                 ConfigSharedPreferencesModel(
                     nroEquip = 10L,
                     app = "PMM",
-                    idBD = 1,
+                    idServ = 1,
                     number = 1,
                     version = "1.0",
                 )

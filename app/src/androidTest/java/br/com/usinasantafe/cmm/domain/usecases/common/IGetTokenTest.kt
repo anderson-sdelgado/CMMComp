@@ -53,7 +53,7 @@ class IGetTokenTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     app = "PMM",
-                    idBD = 1,
+                    idServ = 1,
                     nroEquip = 1,
                     number = 1
                 )
@@ -79,7 +79,7 @@ class IGetTokenTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
                     app = "PMM",
-                    idBD = 1,
+                    idServ = 1,
                     nroEquip = 1,
                     number = 1,
                     version = "1.00"

@@ -378,7 +378,7 @@ class NoteFlowTest {
                 password = "12345",
                 idEquip = 30,
                 checkMotoMec = true,
-                idBD = 1,
+                idServ = 1,
                 version = "1.0",
                 app = "PMM",
                 flagUpdate = FlagUpdate.UPDATED

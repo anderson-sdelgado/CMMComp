@@ -54,9 +54,27 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
+    fun functionActivityRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): FunctionActivityApi = retrofit.create(FunctionActivityApi::class.java)
+
+    @Provides
+    @Singleton
+    fun functionStopRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): FunctionStopApi = retrofit.create(FunctionStopApi::class.java)
+
+    @Provides
+    @Singleton
     fun itemCheckListApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ItemCheckListApi = retrofit.create(ItemCheckListApi::class.java)
+
+    @Provides
+    @Singleton
+    fun itemMenuPMMRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ItemMenuPMMApi = retrofit.create(ItemMenuPMMApi::class.java)
 
     @Provides
     @Singleton

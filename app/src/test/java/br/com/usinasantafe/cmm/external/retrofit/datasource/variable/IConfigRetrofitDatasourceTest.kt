@@ -33,7 +33,7 @@ class IConfigRetrofitDatasourceTest {
             )
             val retrofitModelInput = result.getOrNull()
             assertEquals(
-                retrofitModelInput?.idBD,
+                retrofitModelInput?.idServ,
                 1
             )
             server.shutdown()

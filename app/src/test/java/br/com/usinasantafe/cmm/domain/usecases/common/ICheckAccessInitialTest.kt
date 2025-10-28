@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import kotlinx.coroutines.test.runTest
@@ -21,7 +22,9 @@ class ICheckAccessInitialTest {
             whenever(
                 configRepository.hasConfig()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.hasConfig",
+                    "-",
                     Exception()
                 )
             )
@@ -32,11 +35,11 @@ class ICheckAccessInitialTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckAccessInitial -> Unknown Error"
+                "ICheckAccessInitial -> IConfigRepository.hasConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -70,7 +73,9 @@ class ICheckAccessInitialTest {
             whenever(
                 configRepository.getFlagUpdate()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.getFlagUpdate",
+                    "-",
                     Exception()
                 )
             )
@@ -81,11 +86,11 @@ class ICheckAccessInitialTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckAccessInitial -> Unknown Error"
+                "ICheckAccessInitial -> IConfigRepository.getFlagUpdate"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

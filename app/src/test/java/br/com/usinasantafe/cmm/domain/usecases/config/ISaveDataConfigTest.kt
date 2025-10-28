@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -54,12 +55,14 @@ class ISaveDataConfigTest {
                         app = "PMM",
                         nroEquip = 310,
                         checkMotoMec = false,
-                        idBD = 1,
+                        idServ = 1,
                         idEquip = 1
                     )
                 )
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.save",
+                    "-",
                     Exception()
                 )
             )
@@ -79,11 +82,11 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISaveDataConfig -> Unknown Error"
+                "ISaveDataConfig -> IConfigRepository.save"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -99,7 +102,7 @@ class ISaveDataConfigTest {
                         app = "PMM",
                         nroEquip = 310,
                         checkMotoMec = false,
-                        idBD = 1
+                        idServ = 1
                     )
                 )
             ).thenReturn(

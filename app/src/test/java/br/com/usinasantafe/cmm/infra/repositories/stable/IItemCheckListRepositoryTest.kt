@@ -45,7 +45,7 @@ class IItemCheckListRepositoryTest {
                 resultFailure(
                     "IItemCheckListRoomDatasource.addAll",
                     "-",
-                    null
+                    cause = Exception()
                 )
             )
             val result = repository.addAll(entityList)
@@ -59,7 +59,7 @@ class IItemCheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -102,8 +102,10 @@ class IItemCheckListRepositoryTest {
             whenever(
                 itemCheckListRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    "IItemCheckListRoomDatasource.deleteAll",
+                    "-",
+                    cause = Exception()
                 )
             )
             val result = repository.deleteAll()
@@ -113,11 +115,11 @@ class IItemCheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IItemCheckListRepository.deleteAll -> Unknown Error"
+                "IItemCheckListRepository.deleteAll -> IItemCheckListRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

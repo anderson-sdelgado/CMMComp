@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -21,7 +22,9 @@ class IGetConfigInternalTest {
             whenever(
                 configRepository.hasConfig()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.hasConfig",
+                    "-",
                     Exception()
                 )
             )
@@ -32,11 +35,11 @@ class IGetConfigInternalTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetConfigInternal -> Unknown Error"
+                "IGetConfigInternal -> IConfigRepository.hasConfig"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -70,7 +73,9 @@ class IGetConfigInternalTest {
             whenever(
                 configRepository.get()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.get",
+                    "-",
                     Exception()
                 )
             )
@@ -81,11 +86,11 @@ class IGetConfigInternalTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetConfigInternal -> Unknown Error"
+                "IGetConfigInternal -> IConfigRepository.get"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

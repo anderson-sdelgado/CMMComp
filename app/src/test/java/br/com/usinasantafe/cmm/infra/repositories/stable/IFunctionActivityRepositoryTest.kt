@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionActivityRetrofitModel
@@ -26,14 +27,14 @@ class IFunctionActivityRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 FunctionActivityRoomModel(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE,
                 )
             )
             val entityList = listOf(
                 FunctionActivity(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE,
                 )
@@ -41,8 +42,10 @@ class IFunctionActivityRepositoryTest {
             whenever(
                 functionActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IFunctionActivityRoomDatasource.addAll",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.addAll(entityList)
@@ -52,11 +55,11 @@ class IFunctionActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IFunctionActivityRepository.addAll -> Unknown Error"
+                "IFunctionActivityRepository.addAll -> IFunctionActivityRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -65,14 +68,14 @@ class IFunctionActivityRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 FunctionActivityRoomModel(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE,
                 )
             )
             val entityList = listOf(
                 FunctionActivity(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE,
                 )
@@ -99,8 +102,10 @@ class IFunctionActivityRepositoryTest {
             whenever(
                 functionActivityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IFunctionActivityRoomDatasource.deleteAll",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.deleteAll()
@@ -110,11 +115,11 @@ class IFunctionActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IFunctionActivityRepository.deleteAll -> Unknown Error"
+                "IFunctionActivityRepository.deleteAll -> IFunctionActivityRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -143,8 +148,10 @@ class IFunctionActivityRepositoryTest {
             whenever(
                 functionActivityRetrofitDatasource.listAll("token")
             ).thenReturn(
-                Result.failure(
-                    Exception()
+                resultFailure(
+                    context = "IFunctionActivityRetrofitDatasource.listAll",
+                    message = "-",
+                    cause = Exception()
                 )
             )
             val result = repository.listAll("token")
@@ -154,11 +161,11 @@ class IFunctionActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IFunctionActivityRepository.recoverAll -> Unknown Error"
+                "IFunctionActivityRepository.listAll -> IFunctionActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -179,12 +186,12 @@ class IFunctionActivityRepositoryTest {
             )
             val entityList = listOf(
                 FunctionActivity(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE,
                 ),
                 FunctionActivity(
-                    idRFunctionActivity = 2,
+                    idFunctionActivity = 2,
                     idActivity = 2,
                     typeActivity = TypeActivity.TRANSHIPMENT,
                 )

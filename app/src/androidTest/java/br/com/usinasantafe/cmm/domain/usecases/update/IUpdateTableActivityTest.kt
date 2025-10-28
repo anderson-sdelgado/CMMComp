@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -93,11 +92,11 @@ class IUpdateTableActivityTest {
                 count = 1f
             )
             val list = result.toList()
-            Assert.assertEquals(
+            assertEquals(
                 list.count(),
                 2
             )
-            Assert.assertEquals(
+            assertEquals(
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
@@ -106,7 +105,7 @@ class IUpdateTableActivityTest {
                     currentProgress = updatePercentage(1f, 1f, 16f)
                 )
             )
-            Assert.assertEquals(
+            assertEquals(
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
@@ -140,11 +139,11 @@ class IUpdateTableActivityTest {
                 count = 1f
             )
             val list = result.toList()
-            Assert.assertEquals(
+            assertEquals(
                 list.count(),
                 2
             )
-            Assert.assertEquals(
+            assertEquals(
                 list[0],
                 ResultUpdateModel(
                     flagProgress = true,
@@ -153,7 +152,7 @@ class IUpdateTableActivityTest {
                     currentProgress = updatePercentage(1f, 1f, 16f)
                 )
             )
-            Assert.assertEquals(
+            assertEquals(
                 list[1],
                 ResultUpdateModel(
                     flagProgress = true,
@@ -246,8 +245,9 @@ class IUpdateTableActivityTest {
 
     private suspend fun initialRegister() {
         configSharedPreferencesDatasource.save(
-            ConfigSharedPreferencesModel(app = "CMM",
-                idBD = 1,
+            ConfigSharedPreferencesModel(
+                app = "CMM",
+                idServ = 1,
                 nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",

@@ -10,12 +10,12 @@ import br.com.usinasantafe.cmm.utils.TB_FUNCTION_ACTIVITY
 interface FunctionActivityDao {
 
     @Insert
-    fun insertAll(list: List<FunctionActivityRoomModel>)
+    suspend fun insertAll(list: List<FunctionActivityRoomModel>)
 
     @Query("DELETE FROM $TB_FUNCTION_ACTIVITY")
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_FUNCTION_ACTIVITY")
-    suspend fun listAll(): List<FunctionActivityRoomModel>
+    suspend fun all(): List<FunctionActivityRoomModel>
 
 }

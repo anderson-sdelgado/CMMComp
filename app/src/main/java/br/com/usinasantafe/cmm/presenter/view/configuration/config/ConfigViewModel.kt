@@ -258,7 +258,7 @@ class ConfigViewModel @Inject constructor(
             app = app,
             nroEquip = nroEquip,
             checkMotoMec = checkMotoMec,
-            idBD = config.idBD!!,
+            idBD = config.idServ!!,
             idEquip = config.idEquip!!,
         )
         if (resultSave.isFailure) {

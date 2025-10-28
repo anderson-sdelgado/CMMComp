@@ -5,11 +5,9 @@ import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.core.app.ApplicationProvider
 import androidx.work.Configuration
-import androidx.work.ListenableWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.testing.TestListenableWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -79,7 +77,7 @@ class ProcessWorkManagerTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 app = "CMM",
-                idBD = 1,
+                idServ = 1,
                 nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",
@@ -113,7 +111,7 @@ class ProcessWorkManagerTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 app = "CMM",
-                idBD = 1,
+                idServ = 1,
                 nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",

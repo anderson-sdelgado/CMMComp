@@ -26,7 +26,7 @@ class IGetToken @Inject constructor(
             val entity = resultGet.getOrNull()!!
             val token = token(
                 app = entity.app!!,
-                idBD = entity.idBD!!,
+                idBD = entity.idServ!!,
                 nroEquip = entity.nroEquip!!,
                 number = entity.number!!,
                 version = entity.version!!

@@ -62,14 +62,14 @@ class IConfigRepository @Inject constructor(
     }
 
     override suspend fun hasConfig(): Result<Boolean> {
-        return try {
-            configSharedPreferencesDatasource.has()
-        } catch (e: Exception){
+        val result = configSharedPreferencesDatasource.has()
+        if (result.isFailure) {
             return resultFailure(
                 context = getClassAndMethod(),
-                cause = e
+                cause = result.exceptionOrNull()!!
             )
         }
+        return result
     }
 
     override suspend fun send(entity: Config): Result<Config> {

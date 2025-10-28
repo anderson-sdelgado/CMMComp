@@ -11,7 +11,6 @@ class IFunctionActivityRoomDatasource @Inject constructor(
     private val functionActivityDao: FunctionActivityDao
 ) : FunctionActivityRoomDatasource {
 
-
     override suspend fun addAll(list: List<FunctionActivityRoomModel>): Result<Boolean> {
         try {
             functionActivityDao.insertAll(list)

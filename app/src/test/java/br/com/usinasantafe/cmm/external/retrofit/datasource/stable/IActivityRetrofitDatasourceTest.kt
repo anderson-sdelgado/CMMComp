@@ -31,7 +31,7 @@ class IActivityRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRetrofitDatasource.recoverAll"
+                "IActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -59,7 +59,7 @@ class IActivityRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRetrofitDatasource.recoverAll"
+                "IActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

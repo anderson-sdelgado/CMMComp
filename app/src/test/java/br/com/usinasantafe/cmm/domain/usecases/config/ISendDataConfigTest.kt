@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -53,7 +54,9 @@ class ISendDataConfigTest {
                     )
                 )
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IConfigRepository.send",
+                    "-",
                     Exception()
                 )
             )
@@ -70,11 +73,50 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendDataConfig -> Unknown Error"
+                "ISendDataConfig -> IConfigRepository.send"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configRepository.send(
+                    Config(
+                        number = 16997417840,
+                        password = "12345",
+                        nroEquip = 310,
+                        app = "PMM",
+                        version = "1.00"
+                    )
+                )
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        idServ = 1,
+                    )
+                )
+            )
+            val result = sendDataConfig(
+                number = "16997417840",
+                password = "12345",
+                nroEquip = "310",
+                app = "pmm",
+                version = "1.00"
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Config(
+                    idServ = 1,
+                )
             )
         }
 

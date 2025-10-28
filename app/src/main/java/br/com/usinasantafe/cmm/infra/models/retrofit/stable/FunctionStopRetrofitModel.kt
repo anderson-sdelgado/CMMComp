@@ -11,7 +11,7 @@ data class FunctionStopRetrofitModel(
 
 fun FunctionStopRetrofitModel.retrofitModelToEntity(): FunctionStop {
     return FunctionStop(
-        idRFunctionStop = this.idRFunctionStop,
+        idFunctionStop = this.idRFunctionStop,
         idStop = this.idStop,
         typeStop = TypeStop.entries[this.typeStop - 1]
     )

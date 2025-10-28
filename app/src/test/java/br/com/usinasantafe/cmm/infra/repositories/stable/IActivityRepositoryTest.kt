@@ -41,7 +41,9 @@ class IActivityRepositoryTest {
             whenever(
                 activityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IActivityRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -52,11 +54,11 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRepository.addAll -> Unknown Error"
+                "IActivityRepository.addAll -> IActivityRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -99,7 +101,9 @@ class IActivityRepositoryTest {
             whenever(
                 activityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IActivityRoomDatasource.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -110,11 +114,11 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRepository.deleteAll -> Unknown Error"
+                "IActivityRepository.deleteAll -> IActivityRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -143,7 +147,9 @@ class IActivityRepositoryTest {
             whenever(
                 activityRetrofitDatasource.listAll("token")
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IActivityRetrofitDatasource.listAll",
+                    "-",
                     Exception()
                 )
             )
@@ -154,11 +160,11 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IActivityRepository.recoverAll -> Unknown Error"
+                "IActivityRepository.listAll -> IActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

@@ -33,7 +33,6 @@ import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
-import com.google.gson.Gson
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -568,7 +567,7 @@ class CheckListFlowTest {
                 password = "12345",
                 idEquip = 30,
                 checkMotoMec = true,
-                idBD = 1,
+                idServ = 1,
                 version = "1.0",
                 app = "PMM",
                 flagUpdate = FlagUpdate.UPDATED

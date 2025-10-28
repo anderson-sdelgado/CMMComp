@@ -11,7 +11,7 @@ data class FunctionActivityRetrofitModel(
 
 fun FunctionActivityRetrofitModel.retrofitModelToEntity(): FunctionActivity {
     return FunctionActivity(
-        idRFunctionActivity = this.idRFunctionActivity,
+        idFunctionActivity = this.idRFunctionActivity,
         idActivity = this.idActivity,
         typeActivity = TypeActivity.entries[this.typeActivity - 1]
     )

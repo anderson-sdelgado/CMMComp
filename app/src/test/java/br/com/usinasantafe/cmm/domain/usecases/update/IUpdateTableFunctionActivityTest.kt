@@ -122,7 +122,7 @@ class IUpdateTableFunctionActivityTest {
         runTest {
             val list = listOf(
                 FunctionActivity(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE
                 )
@@ -193,7 +193,7 @@ class IUpdateTableFunctionActivityTest {
         runTest {
             val list = listOf(
                 FunctionActivity(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = TypeActivity.PERFORMANCE
                 )

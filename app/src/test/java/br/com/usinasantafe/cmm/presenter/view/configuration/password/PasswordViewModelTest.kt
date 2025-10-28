@@ -32,8 +32,8 @@ class PasswordViewModelTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "Error",
-                    "Exception",
+                    "CheckPassword",
+                    "-",
                     Exception()
                 )
             )
@@ -53,7 +53,7 @@ class PasswordViewModelTest {
             )
             assertEquals(
                 uiState.failure,
-                "PasswordViewModel.checkAccess -> Error -> Exception -> java.lang.Exception",
+                "PasswordViewModel.checkAccess -> CheckPassword -> java.lang.Exception",
             )
         }
 

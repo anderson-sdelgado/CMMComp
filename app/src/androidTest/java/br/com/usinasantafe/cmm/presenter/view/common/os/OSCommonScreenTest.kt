@@ -167,7 +167,7 @@ class OSCommonScreenTest {
                 password = "12345",
                 idEquip = 1,
                 checkMotoMec = true,
-                idBD = 1,
+                idServ = 1,
                 version = "1.0",
                 app = "PMM",
                 flagUpdate = FlagUpdate.UPDATED

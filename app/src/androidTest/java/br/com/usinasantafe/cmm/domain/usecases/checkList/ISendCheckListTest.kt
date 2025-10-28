@@ -7,7 +7,6 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomMod
 import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
-import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -265,7 +264,7 @@ class ISendCheckListTest {
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1,
+                idServ = 1,
                 idEquip = 20
             )
         )

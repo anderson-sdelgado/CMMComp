@@ -29,7 +29,7 @@ class IActivityRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        activityDao = db.atividadeDao()
+        activityDao = db.activityDao()
         datasource = IActivityRoomDatasource(activityDao)
     }
 

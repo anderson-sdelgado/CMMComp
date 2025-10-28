@@ -39,7 +39,9 @@ class IColabRepositoryTest {
             whenever(
                 colabRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IColabRoomDatasource.addAll",
+                    "-",
                     Exception()
                 )
             )
@@ -50,11 +52,11 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.addAll -> Unknown Error"
+                "IColabRepository.addAll -> IColabRoomDatasource.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -95,7 +97,9 @@ class IColabRepositoryTest {
             whenever(
                 colabRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IColabRoomDatasource.deleteAll",
+                    "-",
                     Exception()
                 )
             )
@@ -106,11 +110,11 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.deleteAll -> Unknown Error"
+                "IColabRepository.deleteAll -> IColabRoomDatasource.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 
@@ -139,7 +143,9 @@ class IColabRepositoryTest {
             whenever(
                 colabRetrofitDatasource.listAll("token")
             ).thenReturn(
-                Result.failure(
+                resultFailure(
+                    "IColabRetrofitDatasource.listAll",
+                    "-",
                     Exception()
                 )
             )
@@ -150,11 +156,11 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.recoverAll -> Unknown Error"
+                "IColabRepository.listAll -> IColabRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "null"
+                "java.lang.Exception"
             )
         }
 

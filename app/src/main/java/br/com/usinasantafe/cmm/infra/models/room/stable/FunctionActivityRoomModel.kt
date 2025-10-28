@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import br.com.usinasantafe.cmm.domain.entities.stable.Colab
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
 import br.com.usinasantafe.cmm.utils.TB_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.utils.TypeActivity
@@ -10,7 +9,7 @@ import br.com.usinasantafe.cmm.utils.TypeActivity
 @Entity(tableName = TB_FUNCTION_ACTIVITY)
 data class FunctionActivityRoomModel(
     @PrimaryKey
-    val idRFunctionActivity: Int,
+    val idFunctionActivity: Int,
     val idActivity: Int,
     val typeActivity: TypeActivity,
 )
@@ -18,7 +17,7 @@ data class FunctionActivityRoomModel(
 fun FunctionActivityRoomModel.roomModelToEntity(): FunctionActivity {
     return with(this){
         FunctionActivity(
-            idRFunctionActivity = this.idRFunctionActivity,
+            idFunctionActivity = this.idFunctionActivity,
             idActivity = this.idActivity,
             typeActivity = this.typeActivity
         )
@@ -28,7 +27,7 @@ fun FunctionActivityRoomModel.roomModelToEntity(): FunctionActivity {
 fun FunctionActivity.entityFunctionActivityToRoomModel(): FunctionActivityRoomModel {
     return with(this){
         FunctionActivityRoomModel(
-            idRFunctionActivity = this.idRFunctionActivity,
+            idFunctionActivity = this.idFunctionActivity,
             idActivity = this.idActivity,
             typeActivity = this.typeActivity
         )
