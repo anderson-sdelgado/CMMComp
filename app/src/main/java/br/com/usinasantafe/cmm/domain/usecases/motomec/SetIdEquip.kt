@@ -28,15 +28,14 @@ class ISetIdEquip @Inject constructor(
                 )
             }
             val config = resultGetConfig.getOrNull()!!
-            val resultGetTypeEquip = equipRepository.getTypeFertByIdEquip(config.idEquip!!)
+            val resultGetTypeEquip = equipRepository.getTypeEquipByIdEquip(config.idEquip!!)
             if (resultGetTypeEquip.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetTypeEquip.exceptionOrNull()!!
                 )
             }
-            val typeEquipBD = resultGetTypeEquip.getOrNull()!!
-            val typeEquip = if(typeEquipBD <= 2) TypeEquip.NORMAL else TypeEquip.FERT
+            val typeEquip = resultGetTypeEquip.getOrNull()!!
             val resultSetIdEquip = motoMecRepository.setDataEquipHeader(
                 idEquip = config.idEquip,
                 typeEquip = typeEquip

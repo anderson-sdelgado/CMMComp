@@ -7,8 +7,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.NoteMotoMecRetrofi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IMotoMecRetrofitDatasourceTest {
 

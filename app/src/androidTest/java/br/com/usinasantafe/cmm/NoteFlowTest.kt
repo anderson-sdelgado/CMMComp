@@ -38,12 +38,12 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
@@ -388,16 +388,17 @@ class NoteFlowTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 30,
-                    nroEquip = 2200,
+                    id = 30,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 100.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

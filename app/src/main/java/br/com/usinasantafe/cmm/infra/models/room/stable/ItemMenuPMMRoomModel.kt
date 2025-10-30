@@ -4,14 +4,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
 import br.com.usinasantafe.cmm.utils.TB_ITEM_MENU_PMM
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 
 @Entity(tableName = TB_ITEM_MENU_PMM)
 data class ItemMenuPMMRoomModel(
     @PrimaryKey
     val id: Int,
     val title: String,
-    val type: TypeItemMenu
+    val type: FunctionItemMenu
 )
 
 fun ItemMenuPMMRoomModel.roomModelToEntity(): ItemMenuPMM {
@@ -19,7 +19,7 @@ fun ItemMenuPMMRoomModel.roomModelToEntity(): ItemMenuPMM {
         ItemMenuPMM(
             id = this.id,
             title = this.title,
-            type = this.type
+            function = this.type
         )
     }
 }
@@ -29,7 +29,7 @@ fun ItemMenuPMM.entityItemMenuPMMToRoomModel(): ItemMenuPMMRoomModel {
         ItemMenuPMMRoomModel(
             id = this.id,
             title = this.title,
-            type = this.type
+            type = this.function
         )
     }
 }

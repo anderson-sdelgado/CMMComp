@@ -6,15 +6,15 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuPMMRetrofitM
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IItemMenuPMMRetrofitDatasourceTest {
 
     private val resultItemMenuPMMRetrofit = """
         [
-          {"id":1,"title":"ITEM 1","type":1},
-          {"id":2,"title":"ITEM 2","type":1}
+          {"id":1,"title":"ITEM 1","function":1},
+          {"id":2,"title":"ITEM 2","function":1}
         ]
     """.trimIndent()
 
@@ -32,7 +32,6 @@ class IItemMenuPMMRetrofitDatasourceTest {
             val service = retrofit.create(ItemMenuPMMApi::class.java)
             val datasource = IItemMenuPMMRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
@@ -103,12 +102,12 @@ class IItemMenuPMMRetrofitDatasourceTest {
                         ItemMenuPMMRetrofitModel(
                             id = 1,
                             title = "ITEM 1",
-                            type = 1
+                            function = 1
                         ),
                         ItemMenuPMMRetrofitModel(
                             id = 2,
                             title = "ITEM 2",
-                            type = 1
+                            function = 1
                         )
                     )
                 ),

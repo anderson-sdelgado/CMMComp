@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitM
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IROSActivityRetrofitDatasourceTest {
 
@@ -25,7 +25,6 @@ class IROSActivityRetrofitDatasourceTest {
             val service = retrofit.create(ROSActivityApi::class.java)
             val datasource = IROSActivityRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure

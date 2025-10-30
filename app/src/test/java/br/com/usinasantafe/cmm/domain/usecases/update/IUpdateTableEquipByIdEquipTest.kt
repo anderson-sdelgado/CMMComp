@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -184,16 +185,17 @@ class IUpdateTableEquipByIdEquipTest {
             )
             val list = listOf(
                 Equip(
-                    idEquip = 1,
-                    nroEquip = 10,
+                    id = 1,
+                    nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,
+                    flagTire = true
                 )
             )
             whenever(
@@ -273,16 +275,17 @@ class IUpdateTableEquipByIdEquipTest {
             )
             val list = listOf(
                 Equip(
-                    idEquip = 1,
-                    nroEquip = 10,
+                    id = 1,
+                    nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,
+                    flagTire = true
                 )
             )
             whenever(

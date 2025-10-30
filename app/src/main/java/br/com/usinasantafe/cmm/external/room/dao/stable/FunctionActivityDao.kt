@@ -18,4 +18,7 @@ interface FunctionActivityDao {
     @Query("SELECT * FROM $TB_FUNCTION_ACTIVITY")
     suspend fun all(): List<FunctionActivityRoomModel>
 
+    @Query("SELECT * FROM $TB_FUNCTION_ACTIVITY WHERE idActivity = :idActivity")
+    suspend fun listByIdActivity(idActivity: Int): List<FunctionActivityRoomModel>
+
 }

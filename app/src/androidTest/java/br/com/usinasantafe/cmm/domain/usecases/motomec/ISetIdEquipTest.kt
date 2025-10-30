@@ -9,11 +9,11 @@ import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class ISetIdEquipTest {
@@ -82,16 +82,17 @@ class ISetIdEquipTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 10,
-                        nroEquip = 10,
+                        id = 10,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     ),
                 )
             )

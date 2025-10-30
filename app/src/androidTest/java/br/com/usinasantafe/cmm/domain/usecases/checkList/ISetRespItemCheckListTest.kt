@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderCheckListSha
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -603,16 +604,17 @@ class ISetRespItemCheckListTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 10,
-                    nroEquip = 2200,
+                    id = 10,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

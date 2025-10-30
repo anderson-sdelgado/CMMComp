@@ -20,7 +20,7 @@ class IListStop @Inject constructor(
 
     override suspend fun invoke(): Result<List<StopScreenModel>> {
         try {
-            val resultGetIdActivity = motoMecRepository.getIdActivity()
+            val resultGetIdActivity = motoMecRepository.getIdActivityNote()
             if (resultGetIdActivity.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),

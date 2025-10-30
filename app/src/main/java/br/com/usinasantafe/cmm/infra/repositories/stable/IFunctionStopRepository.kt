@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionStopRetr
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityFunctionStopToRoomModel
+import br.com.usinasantafe.cmm.utils.TypeStop
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -62,4 +63,9 @@ class IFunctionStopRepository @Inject constructor(
             )
         }
     }
+
+    override suspend fun getIdStopByType(typeStop: TypeStop): Result<Int?> {
+        TODO("Not yet implemented")
+    }
+
 }

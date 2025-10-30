@@ -5,4 +5,5 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomMode
 interface FunctionActivityRoomDatasource {
     suspend fun addAll(list: List<FunctionActivityRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
+    suspend fun listByIdActivity(idActivity: Int): Result<List<FunctionActivityRoomModel>>
 }

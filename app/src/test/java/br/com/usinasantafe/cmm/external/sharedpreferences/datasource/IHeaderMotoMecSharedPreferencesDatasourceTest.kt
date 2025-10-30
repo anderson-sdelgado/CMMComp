@@ -6,12 +6,12 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -406,6 +406,42 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             assertEquals(
                 modelAfter.statusCon,
                 false
+            )
+        }
+
+    @Test
+    fun `getIdActivity - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getIdActivity()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecSharedPreferencesDatasource.getIdActivity"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getIdActivity - Check return correct if function execute successfully`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                idActivity = 1
+            )
+            datasource.save(data)
+            val result = datasource.getIdActivity()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
             )
         }
 

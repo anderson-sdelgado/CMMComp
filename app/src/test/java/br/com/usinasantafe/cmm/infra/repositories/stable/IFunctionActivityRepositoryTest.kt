@@ -174,12 +174,12 @@ class IFunctionActivityRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 FunctionActivityRetrofitModel(
-                    idRFunctionActivity = 1,
+                    idFunctionActivity = 1,
                     idActivity = 1,
                     typeActivity = 1,
                 ),
                 FunctionActivityRetrofitModel(
-                    idRFunctionActivity = 2,
+                    idFunctionActivity = 2,
                     idActivity = 2,
                     typeActivity = 2,
                 )
@@ -204,6 +204,66 @@ class IFunctionActivityRepositoryTest {
                 )
             )
             val result = repository.listAll("token")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+    @Test
+    fun `listByIdActivity - Check return failure if have error in FunctionActivityRoomDatasource listByIdActivity`() =
+        runTest {
+            whenever(
+                functionActivityRoomDatasource.listByIdActivity(1)
+            ).thenReturn(
+                resultFailure(
+                    "IFunctionActivityRoomDatasource.listByIdActivity",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdActivity(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionActivityRepository.listByIdActivity -> IFunctionActivityRoomDatasource.listByIdActivity"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdActivity - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                FunctionActivityRoomModel(
+                    idFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            val entityList = listOf(
+                FunctionActivity(
+                    idFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE,
+                )
+            )
+            whenever(
+                functionActivityRoomDatasource.listByIdActivity(1)
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByIdActivity(1)
             assertEquals(
                 result.isSuccess,
                 true

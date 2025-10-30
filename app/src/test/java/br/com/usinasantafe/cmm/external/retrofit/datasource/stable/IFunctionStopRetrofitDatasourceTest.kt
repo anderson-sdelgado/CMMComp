@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionStopRetrofit
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IFunctionStopRetrofitDatasourceTest {
 
@@ -32,7 +32,6 @@ class IFunctionStopRetrofitDatasourceTest {
             val service = retrofit.create(FunctionStopApi::class.java)
             val datasource = IFunctionStopRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
@@ -101,12 +100,12 @@ class IFunctionStopRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         FunctionStopRetrofitModel(
-                            idRFunctionStop = 1,
+                            idFunctionStop = 1,
                             idStop = 1,
                             typeStop = 1
                         ),
                         FunctionStopRetrofitModel(
-                            idRFunctionStop = 2,
+                            idFunctionStop = 2,
                             idStop = 2,
                             typeStop = 2
                         )

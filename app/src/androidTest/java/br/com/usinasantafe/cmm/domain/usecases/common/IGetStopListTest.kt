@@ -9,11 +9,11 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedP
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class IGetStopListTest {
@@ -42,15 +42,15 @@ class IGetStopListTest {
     fun check_return_failure_if_have_none_data() =
         runTest {
             val result = usecase()
-            Assert.assertEquals(
+            assertEquals(
                 result.isFailure,
                 true
             )
-            Assert.assertEquals(
+            assertEquals(
                 result.exceptionOrNull()!!.message,
                 "IGetStopList -> INoteMotoMecRepository.getIdActivity -> INoteMotoMecSharedPreferencesDatasource.getIdActivity"
             )
-            Assert.assertEquals(
+            assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
@@ -65,13 +65,13 @@ class IGetStopListTest {
                 )
             )
             val result = usecase()
-            Assert.assertEquals(
+            assertEquals(
                 result.isSuccess,
                 true
             )
-            Assert.assertEquals(
+            assertEquals(
                 result.getOrNull()!!,
-                emptyList<NoteMotoMecSharedPreferencesModel>()
+                emptyList()
             )
         }
 
@@ -108,13 +108,13 @@ class IGetStopListTest {
                 )
             )
             val result = usecase()
-            Assert.assertEquals(
+            assertEquals(
                 result.isSuccess,
                 true
             )
-            Assert.assertEquals(
+            assertEquals(
                 result.getOrNull()!!,
-                emptyList<NoteMotoMecSharedPreferencesModel>()
+                emptyList()
             )
         }
 
@@ -170,30 +170,30 @@ class IGetStopListTest {
                 )
             )
             val result = usecase()
-            Assert.assertEquals(
+            assertEquals(
                 result.isSuccess,
                 true
             )
             val list = result.getOrNull()!!
-            Assert.assertEquals(
+            assertEquals(
                 list.size,
                 2
             )
             val entity1 = list[0]
-            Assert.assertEquals(
+            assertEquals(
                 entity1.id,
                 1
             )
-            Assert.assertEquals(
+            assertEquals(
                 entity1.descr,
                 "10 - PARADA 1"
             )
             val entity2 = list[1]
-            Assert.assertEquals(
+            assertEquals(
                 entity2.id,
                 2
             )
-            Assert.assertEquals(
+            assertEquals(
                 entity2.descr,
                 "20 - PARADA 2"
             )

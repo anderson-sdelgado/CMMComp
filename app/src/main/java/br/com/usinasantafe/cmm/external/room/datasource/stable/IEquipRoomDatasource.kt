@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class IEquipRoomDatasource @Inject constructor(
     override suspend fun getDescrByIdEquip(id: Int): Result<String> {
         try {
             val model = equipDao.getByIdEquip(id)
-            return Result.success("${model.nroEquip} - ${model.descrClass}")
+            return Result.success("${model.nro} - ${model.descrClass}")
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -91,10 +92,10 @@ class IEquipRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getTypeFertByIdEquip(id: Int): Result<Int> {
+    override suspend fun getTypeEquipByIdEquip(id: Int): Result<TypeEquip> {
         try {
             val model = equipDao.getByIdEquip(id)
-            return Result.success(model.typeFert)
+            return Result.success(model.typeEquip)
         } catch (e: Exception){
             return resultFailure(
                 context = "IEquipRoomDatasource.getTypeFertByIdEquip",
@@ -115,6 +116,14 @@ class IEquipRoomDatasource @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun getFlagMechanicByIdEquip(idEquip: Int): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getFlagTireByIdEquip(idEquip: Int): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 
 }

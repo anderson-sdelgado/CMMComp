@@ -16,12 +16,12 @@ import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import java.util.Date
 import javax.inject.Inject
 import kotlin.test.Test
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class IGetItemCheckListTest {
@@ -332,16 +332,17 @@ class IGetItemCheckListTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 1,
-                    nroEquip = 2200,
+                    id = 1,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )
@@ -393,16 +394,17 @@ class IGetItemCheckListTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 1,
-                    nroEquip = 2200,
+                    id = 1,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

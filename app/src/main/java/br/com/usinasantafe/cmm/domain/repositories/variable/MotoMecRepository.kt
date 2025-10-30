@@ -13,6 +13,7 @@ interface MotoMecRepository {
     suspend fun setNroOSHeader(nroOS: Int): Result<Boolean>
     suspend fun getNroOSHeader(): Result<Int>
     suspend fun setIdActivityHeader(idActivity: Int): Result<Boolean>
+    suspend fun getIdActivityHeader(): Result<Int>
     suspend fun getIdEquipHeader(): Result<Int>
     suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Boolean>
     suspend fun saveHeader(): Result<Boolean>
@@ -29,7 +30,7 @@ interface MotoMecRepository {
     suspend fun saveNote(
         idHeader: Int
     ): Result<Boolean>
-    suspend fun getIdActivity(): Result<Int>
+    suspend fun getIdActivityNote(): Result<Int>
     suspend fun setIdStop(id: Int): Result<Boolean>
     suspend fun checkNoteHasByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun send(
@@ -37,4 +38,5 @@ interface MotoMecRepository {
         token: String
     ): Result<Boolean>
     suspend fun noteList(): Result<List<NoteMotoMec>>
+    suspend fun checkNoteHasByIdStop(idStop: Int): Result<Boolean>
 }

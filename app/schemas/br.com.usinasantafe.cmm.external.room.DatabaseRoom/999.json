@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "48ee8bf0f3a7dd8f5dde878f7fc7731f",
+    "identityHash": "0baf6eb35845bed46633b69bdd3290cb",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -128,17 +128,17 @@
       },
       {
         "tableName": "tb_equip",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idEquip` INTEGER NOT NULL, `nroEquip` INTEGER NOT NULL, `codClass` INTEGER NOT NULL, `descrClass` TEXT NOT NULL, `codTurnEquip` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `typeFert` INTEGER NOT NULL, `hourMeter` REAL NOT NULL, `classify` INTEGER NOT NULL, `flagMechanic` INTEGER NOT NULL, PRIMARY KEY(`idEquip`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nro` INTEGER NOT NULL, `codClass` INTEGER NOT NULL, `descrClass` TEXT NOT NULL, `codTurnEquip` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `hourMeter` REAL NOT NULL, `classify` INTEGER NOT NULL, `flagMechanic` INTEGER NOT NULL, `flagTire` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "idEquip",
-            "columnName": "idEquip",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "nroEquip",
-            "columnName": "nroEquip",
+            "fieldPath": "nro",
+            "columnName": "nro",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -167,9 +167,9 @@
             "notNull": true
           },
           {
-            "fieldPath": "typeFert",
-            "columnName": "typeFert",
-            "affinity": "INTEGER",
+            "fieldPath": "typeEquip",
+            "columnName": "typeEquip",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -189,12 +189,18 @@
             "columnName": "flagMechanic",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "flagTire",
+            "columnName": "flagTire",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "idEquip"
+            "id"
           ]
         },
         "indices": [],
@@ -1142,7 +1148,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '48ee8bf0f3a7dd8f5dde878f7fc7731f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0baf6eb35845bed46633b69bdd3290cb')"
     ]
   }
 }

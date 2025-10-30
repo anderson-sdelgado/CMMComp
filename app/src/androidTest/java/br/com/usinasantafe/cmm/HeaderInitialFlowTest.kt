@@ -40,12 +40,12 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.junit.AfterClass
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
 
 
@@ -83,13 +83,13 @@ class HeaderInitialFlowTest {
         private val jsonUpdateEquip = """
                 [
                     {
-                        "idEquip":30,
-                        "nroEquip":2200,
+                        "id":30,
+                        "nro":2200,
                         "codClass":1,
                         "descrClass":"TRATOR",
                         "codTurnEquip":1,
                         "idCheckList":0,
-                        "typeFert":1,
+                        "typeEquip":1,
                         "hourMeter":100.0,
                         "measure":200.0,
                         "classify":1,

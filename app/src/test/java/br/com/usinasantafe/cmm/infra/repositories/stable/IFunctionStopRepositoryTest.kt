@@ -174,12 +174,12 @@ class IFunctionStopRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 FunctionStopRetrofitModel(
-                    idRFunctionStop = 1,
+                    idFunctionStop = 1,
                     idStop = 1,
                     typeStop = 1,
                 ),
                 FunctionStopRetrofitModel(
-                    idRFunctionStop = 2,
+                    idFunctionStop = 2,
                     idStop = 2,
                     typeStop = 2,
                 )

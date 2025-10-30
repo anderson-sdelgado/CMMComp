@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -93,16 +94,17 @@ class IGetDescrEquipTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 200,
+                        id = 1,
+                        nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )

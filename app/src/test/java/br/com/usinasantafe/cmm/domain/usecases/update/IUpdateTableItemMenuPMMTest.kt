@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -124,7 +124,7 @@ class IUpdateTableItemMenuPMMTest {
                 ItemMenuPMM(
                     id = 1,
                     title = "TRABALHANDO",
-                    type = TypeItemMenu.ITEM_NORMAL
+                    function = FunctionItemMenu.ITEM_NORMAL
                 )
             )
             whenever(
@@ -195,7 +195,7 @@ class IUpdateTableItemMenuPMMTest {
                 ItemMenuPMM(
                     id = 1,
                     title = "TRABALHANDO",
-                    type = TypeItemMenu.ITEM_NORMAL
+                    function = FunctionItemMenu.ITEM_NORMAL
                 )
             )
             whenever(

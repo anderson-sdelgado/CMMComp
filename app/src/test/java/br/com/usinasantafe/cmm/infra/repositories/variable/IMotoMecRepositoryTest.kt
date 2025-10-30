@@ -18,12 +18,12 @@ import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.whenever
 import java.util.Date
+import kotlin.test.assertEquals
 
 class IMotoMecRepositoryTest {
 
@@ -1253,7 +1253,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.getIdActivity()
+            val result = repository.getIdActivityNote()
             assertEquals(
                 result.isFailure,
                 true
@@ -1276,7 +1276,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(1)
             )
-            val result = repository.getIdActivity()
+            val result = repository.getIdActivityNote()
             assertEquals(
                 result.isSuccess,
                 true
@@ -2082,6 +2082,52 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `getIdActivityHeader - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource getIdActivity`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getIdActivity()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecSharedPreferencesDatasource.getIdActivity",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdActivityHeader()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdActivityHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getIdActivity()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdActivityHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
             )
         }
 

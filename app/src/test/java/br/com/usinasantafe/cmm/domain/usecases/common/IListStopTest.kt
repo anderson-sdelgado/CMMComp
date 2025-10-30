@@ -27,7 +27,7 @@ class IListStopTest {
     fun `Check return failure if have error in NoteMotoMecRepository getIdActivity`() =
         runTest {
             whenever(
-                motoMecRepository.getIdActivity()
+                motoMecRepository.getIdActivityNote()
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecRepository.getIdActivity",
@@ -54,7 +54,7 @@ class IListStopTest {
     fun `Check return failure if have error in RActivityStopRepository listByIdActivity`() =
         runTest {
             whenever(
-                motoMecRepository.getIdActivity()
+                motoMecRepository.getIdActivityNote()
             ).thenReturn(
                 Result.success(1)
             )
@@ -94,7 +94,7 @@ class IListStopTest {
             )
             val listIdStop = listOf(1)
             whenever(
-                motoMecRepository.getIdActivity()
+                motoMecRepository.getIdActivityNote()
             ).thenReturn(
                 Result.success(1)
             )
@@ -146,7 +146,7 @@ class IListStopTest {
                 )
             )
             whenever(
-                motoMecRepository.getIdActivity()
+                motoMecRepository.getIdActivityNote()
             ).thenReturn(
                 Result.success(1)
             )

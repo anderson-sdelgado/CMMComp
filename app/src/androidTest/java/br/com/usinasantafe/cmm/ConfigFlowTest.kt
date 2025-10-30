@@ -11,7 +11,10 @@ import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuPMMDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
@@ -22,8 +25,15 @@ import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NRO_EQUIP
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
+import br.com.usinasantafe.cmm.utils.TypeActivity
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
+import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.utils.TypeStop
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
+import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_ACTIVITY
+import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_STOP
+import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU_PMM
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
@@ -84,67 +94,97 @@ class ConfigFlowTest {
     @Inject
     lateinit var turnDao: TurnDao
 
+    @Inject
+    lateinit var functionActivityDao: FunctionActivityDao
+
+    @Inject
+    lateinit var functionStopDao: FunctionStopDao
+
+    @Inject
+    lateinit var itemMenuPMMDao: ItemMenuPMMDao
+
     companion object {
 
         private lateinit var mockWebServer: MockWebServer
 
-        private val resultToken = """{"idBD":1,"idEquip":1}""".trimIndent()
+        private val resultToken = """{"idServ":1,"idEquip":1}""".trimIndent()
 
         private val resultActivity = """
-        [
-            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
-            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
-        ]
-    """.trimIndent()
+            [
+                {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
+                {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+            ]
+        """.trimIndent()
 
         private val resultColab = """
-        [
-            {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"},
-            {"regColab":18017,"nameColab":"RONALDO"}
-        ]
-    """.trimIndent()
+            [
+                {"regColab":19759,"nameColab":"ANDERSON DA SILVA DELGADO"},
+                {"regColab":18017,"nameColab":"RONALDO"}
+            ]
+        """.trimIndent()
 
         private val resultEquip = """
-        [
-          {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1},
-          {"idEquip":2,"nroEquip":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1}
-        ]
-    """.trimIndent()
+            [
+              {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1},
+              {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1}
+            ]
+        """.trimIndent()
+
+        private val resultFunctionActivity = """
+            [
+              {"idFunctionActivity":1,"idActivity":1,"typeActivity":1},
+              {"idFunctionActivity":2,"idActivity":2,"typeActivity":2}
+            ]
+        """.trimIndent()
+
+        private val resultFunctionStop = """
+            [
+              {"idFunctionStop":1,"idStop":1,"typeStop":1},
+              {"idFunctionStop":2,"idStop":2,"typeStop":2}
+            ]
+        """.trimIndent()
 
         private val resultItemCheckList = """
-        [
-          {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
-          {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
-        ]
-    """.trimIndent()
+            [
+              {"idItemCheckList":1,"idCheckList":101,"descrItemCheckList":"Verificar Nível de Óleo"},
+              {"idItemCheckList":2,"idCheckList":101,"descrItemCheckList":"Verificar Freios"}
+            ]
+        """.trimIndent()
+
+        private val resultItemMenuPMM = """
+            [
+              {"id":1,"title":"ITEM 1","function":1},
+              {"id":2,"title":"ITEM 2","function":1}
+            ]
+        """.trimIndent()
 
         private val resultRActivityStop = """
-        [
-            {"idActivity":101,"idStop":301},
-            {"idActivity":102,"idStop":303}
-        ]
-    """.trimIndent()
+            [
+                {"idActivity":101,"idStop":301},
+                {"idActivity":102,"idStop":303}
+            ]
+        """.trimIndent()
 
         private val resultREquipActivity = """
-        [
-          {"idREquipActivity":1,"idEquip":30,"idActivity":10},
-          {"idREquipActivity":2,"idEquip":40,"idActivity":10}
-        ]
-    """.trimIndent()
+            [
+              {"idREquipActivity":1,"idEquip":30,"idActivity":10},
+              {"idREquipActivity":2,"idEquip":40,"idActivity":10}
+            ]
+        """.trimIndent()
 
         private val resultStop = """
-        [
-            {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"},
-            {"idStop":2,"codStop":20,"descrStop":"CHUVA"}
-        ]
-    """.trimIndent()
+            [
+                {"idStop":1,"codStop":10,"descrStop":"PARADA PARA ALMOCO"},
+                {"idStop":2,"codStop":20,"descrStop":"CHUVA"}
+            ]
+        """.trimIndent()
 
         private val resultTurn = """
-        [
-          {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
-          {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
-        ]
-    """.trimIndent()
+            [
+              {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
+              {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
+            ]
+        """.trimIndent()
 
         @BeforeClass
         @JvmStatic
@@ -158,15 +198,12 @@ class ConfigFlowTest {
                         "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                         "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
                         "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
-                        "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(
-                            resultItemCheckList
-                        )
-
+                        "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
+                        "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
+                        "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                        "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
                         "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
-                        "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(
-                            resultREquipActivity
-                        )
-
+                        "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                         "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                         "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                         else -> MockResponse().setResponseCode(404)
@@ -304,309 +341,7 @@ class ConfigFlowTest {
 
             composeTestRule.waitUntilTimeout(10_000)
 
-            val activityRoomModelList = activityDao.all()
-            assertEquals(
-                activityRoomModelList.size,
-                2
-            )
-            val activityRoomModel1 = activityRoomModelList[0]
-            assertEquals(
-                activityRoomModel1.idActivity,
-                1
-            )
-            assertEquals(
-                activityRoomModel1.codActivity,
-                10
-            )
-            assertEquals(
-                activityRoomModel1.descrActivity,
-                "Test"
-            )
-            val activityRoomModel2 = activityRoomModelList[1]
-            assertEquals(
-                activityRoomModel2.idActivity,
-                2
-            )
-            assertEquals(
-                activityRoomModel2.codActivity,
-                20
-            )
-            assertEquals(
-                activityRoomModel2.descrActivity,
-                "Test2"
-            )
-
-            val colabRoomModelList = colabDao.all()
-            assertEquals(
-                colabRoomModelList.size,
-                2
-            )
-            val colabRoomModel1 = colabRoomModelList[0]
-            assertEquals(
-                colabRoomModel1.regColab,
-                18017
-            )
-            assertEquals(
-                colabRoomModel1.nameColab,
-                "RONALDO"
-            )
-            val colabRoomModel2 = colabRoomModelList[1]
-            assertEquals(
-                colabRoomModel2.regColab,
-                19759
-            )
-            assertEquals(
-                colabRoomModel2.nameColab,
-                "ANDERSON DA SILVA DELGADO"
-            )
-
-            val equipRoomModelList = equipDao.all()
-            assertEquals(
-                equipRoomModelList.size,
-                2
-            )
-            val equipRoomModel1 = equipRoomModelList[0]
-            assertEquals(
-                equipRoomModel1.idEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel1.nroEquip,
-                1000001
-            )
-            assertEquals(
-                equipRoomModel1.codClass,
-                1
-            )
-            assertEquals(
-                equipRoomModel1.descrClass,
-                "Classe 1"
-            )
-            assertEquals(
-                equipRoomModel1.codTurnEquip,
-                1
-            )
-            assertEquals(
-                equipRoomModel1.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel1.typeFert,
-                1
-            )
-            assertEquals(
-                equipRoomModel1.hourMeter,
-                100.0
-            )
-            assertEquals(
-                equipRoomModel1.classify,
-                1
-            )
-            val equipRoomModel2 = equipRoomModelList[1]
-            assertEquals(
-                equipRoomModel2.idEquip,
-                2
-            )
-            assertEquals(
-                equipRoomModel2.nroEquip,
-                1000002
-            )
-            assertEquals(
-                equipRoomModel2.codClass,
-                2
-            )
-            assertEquals(
-                equipRoomModel2.descrClass,
-                "Classe 2"
-            )
-            assertEquals(
-                equipRoomModel2.codTurnEquip,
-                2
-            )
-            assertEquals(
-                equipRoomModel2.idCheckList,
-                1
-            )
-            assertEquals(
-                equipRoomModel2.typeFert,
-                1
-            )
-            assertEquals(
-                equipRoomModel2.hourMeter,
-                100.0
-            )
-            assertEquals(
-                equipRoomModel2.classify,
-                1
-            )
-
-            val itemCheckListRoomModelList = itemCheckListDao.all()
-            assertEquals(
-                itemCheckListRoomModelList.size,
-                2
-            )
-            val itemCheckListRoomModel1 = itemCheckListRoomModelList[0]
-            assertEquals(
-                itemCheckListRoomModel1.idItemCheckList,
-                1
-            )
-            assertEquals(
-                itemCheckListRoomModel1.idCheckList,
-                101
-            )
-            assertEquals(
-                itemCheckListRoomModel1.descrItemCheckList,
-                "Verificar Nível de Óleo"
-            )
-            val itemCheckListRoomModel2 = itemCheckListRoomModelList[1]
-            assertEquals(
-                itemCheckListRoomModel2.idItemCheckList,
-                2
-            )
-            assertEquals(
-                itemCheckListRoomModel2.idCheckList,
-                101
-            )
-            assertEquals(
-                itemCheckListRoomModel2.descrItemCheckList,
-                "Verificar Freios"
-            )
-
-            val rActivityStopRoomModelList = rActivityStopDao.all()
-            assertEquals(
-                rActivityStopRoomModelList.size,
-                2
-            )
-            val rActivityStopRoomModel1 = rActivityStopRoomModelList[0]
-            assertEquals(
-                rActivityStopRoomModel1.idRActivityStop,
-                1
-            )
-            assertEquals(
-                rActivityStopRoomModel1.idActivity,
-                101
-            )
-            assertEquals(
-                rActivityStopRoomModel1.idStop,
-                301
-            )
-            val rActivityStopRoomModel2 = rActivityStopRoomModelList[1]
-            assertEquals(
-                rActivityStopRoomModel2.idRActivityStop,
-                2
-            )
-            assertEquals(
-                rActivityStopRoomModel2.idActivity,
-                102
-            )
-            assertEquals(
-                rActivityStopRoomModel2.idStop,
-                303
-            )
-
-            val rEquipActivityRoomModelList = rEquipActivityDao.all()
-            assertEquals(
-                rEquipActivityRoomModelList.size,
-                2
-            )
-            val rEquipActivityRoomModel1 = rEquipActivityRoomModelList[0]
-            assertEquals(
-                rEquipActivityRoomModel1.idREquipActivity,
-                1
-            )
-            assertEquals(
-                rEquipActivityRoomModel1.idEquip,
-                30
-            )
-            assertEquals(
-                rEquipActivityRoomModel1.idActivity,
-                10
-            )
-            val rEquipActivityRoomModel2 = rEquipActivityRoomModelList[1]
-            assertEquals(
-                rEquipActivityRoomModel2.idREquipActivity,
-                2
-            )
-            assertEquals(
-                rEquipActivityRoomModel2.idEquip,
-                40
-            )
-            assertEquals(
-                rEquipActivityRoomModel2.idActivity,
-                10
-            )
-
-            val stopRoomModelList = stopDao.all()
-            assertEquals(
-                stopRoomModelList.size,
-                2
-            )
-            val stopRoomModel1 = stopRoomModelList[0]
-            assertEquals(
-                stopRoomModel1.idStop,
-                1
-            )
-            assertEquals(
-                stopRoomModel1.codStop,
-                10
-            )
-            assertEquals(
-                stopRoomModel1.descrStop,
-                "PARADA PARA ALMOCO"
-            )
-            val stopRoomModel2 = stopRoomModelList[1]
-            assertEquals(
-                stopRoomModel2.idStop,
-                2
-            )
-            assertEquals(
-                stopRoomModel2.codStop,
-                20
-            )
-            assertEquals(
-                stopRoomModel2.descrStop,
-                "CHUVA"
-            )
-
-            val turnRoomModelList = turnDao.all()
-            assertEquals(
-                turnRoomModelList.size,
-                2
-            )
-            val turnRoomModel1 = turnRoomModelList[0]
-            assertEquals(
-                turnRoomModel1.idTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel1.codTurnEquip,
-                1
-            )
-            assertEquals(
-                turnRoomModel1.nroTurn,
-                1
-            )
-            assertEquals(
-                turnRoomModel1.descrTurn,
-                "Turno 1"
-            )
-            val turnRoomModel2 = turnRoomModelList[1]
-            assertEquals(
-                turnRoomModel2.idTurn,
-                2
-            )
-            assertEquals(
-                turnRoomModel2.codTurnEquip,
-                2
-            )
-            assertEquals(
-                turnRoomModel2.nroTurn,
-                2
-            )
-            assertEquals(
-                turnRoomModel2.descrTurn,
-                "Turno 2"
-            )
+            asserts()
 
             composeTestRule.waitUntilTimeout()
 
@@ -633,6 +368,411 @@ class ConfigFlowTest {
             Log.d("TestDebug", "Position Finish")
 
             composeTestRule.waitUntilTimeout()
+
+    }
+
+
+    private suspend fun asserts() {
+
+        val activityRoomModelList = activityDao.all()
+        assertEquals(
+            activityRoomModelList.size,
+            2
+        )
+        val activityRoomModel1 = activityRoomModelList[0]
+        assertEquals(
+            activityRoomModel1.idActivity,
+            1
+        )
+        assertEquals(
+            activityRoomModel1.codActivity,
+            10
+        )
+        assertEquals(
+            activityRoomModel1.descrActivity,
+            "Test"
+        )
+        val activityRoomModel2 = activityRoomModelList[1]
+        assertEquals(
+            activityRoomModel2.idActivity,
+            2
+        )
+        assertEquals(
+            activityRoomModel2.codActivity,
+            20
+        )
+        assertEquals(
+            activityRoomModel2.descrActivity,
+            "Test2"
+        )
+
+        val colabRoomModelList = colabDao.all()
+        assertEquals(
+            colabRoomModelList.size,
+            2
+        )
+        val colabRoomModel1 = colabRoomModelList[0]
+        assertEquals(
+            colabRoomModel1.regColab,
+            18017
+        )
+        assertEquals(
+            colabRoomModel1.nameColab,
+            "RONALDO"
+        )
+        val colabRoomModel2 = colabRoomModelList[1]
+        assertEquals(
+            colabRoomModel2.regColab,
+            19759
+        )
+        assertEquals(
+            colabRoomModel2.nameColab,
+            "ANDERSON DA SILVA DELGADO"
+        )
+
+        val equipRoomModelList = equipDao.all()
+        assertEquals(
+            equipRoomModelList.size,
+            2
+        )
+        val equipRoomModel1 = equipRoomModelList[0]
+        assertEquals(
+            equipRoomModel1.id,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.nro,
+            1000001
+        )
+        assertEquals(
+            equipRoomModel1.codClass,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.descrClass,
+            "Classe 1"
+        )
+        assertEquals(
+            equipRoomModel1.codTurnEquip,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.idCheckList,
+            1
+        )
+        assertEquals(
+            equipRoomModel1.typeEquip,
+            TypeEquip.NORMAL
+        )
+        assertEquals(
+            equipRoomModel1.hourMeter,
+            100.0
+        )
+        assertEquals(
+            equipRoomModel1.classify,
+            1
+        )
+        val equipRoomModel2 = equipRoomModelList[1]
+        assertEquals(
+            equipRoomModel2.id,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.nro,
+            1000002
+        )
+        assertEquals(
+            equipRoomModel2.codClass,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.descrClass,
+            "Classe 2"
+        )
+        assertEquals(
+            equipRoomModel2.codTurnEquip,
+            2
+        )
+        assertEquals(
+            equipRoomModel2.idCheckList,
+            1
+        )
+        assertEquals(
+            equipRoomModel2.typeEquip,
+            TypeEquip.NORMAL
+        )
+        assertEquals(
+            equipRoomModel2.hourMeter,
+            100.0
+        )
+        assertEquals(
+            equipRoomModel2.classify,
+            1
+        )
+
+        val functionActivityRoomModelList = functionActivityDao.all()
+        assertEquals(
+            functionActivityRoomModelList.size,
+            2
+        )
+        val functionActivityRoomModel1 = functionActivityRoomModelList[0]
+        assertEquals(
+            functionActivityRoomModel1.idFunctionActivity,
+            1
+        )
+        assertEquals(
+            functionActivityRoomModel1.idActivity,
+            1
+        )
+        assertEquals(
+            functionActivityRoomModel1.typeActivity,
+            TypeActivity.PERFORMANCE
+        )
+        val functionActivityRoomModel2 = functionActivityRoomModelList[1]
+        assertEquals(
+            functionActivityRoomModel2.idFunctionActivity,
+            2
+        )
+        assertEquals(
+            functionActivityRoomModel2.idActivity,
+            2
+        )
+        assertEquals(
+            functionActivityRoomModel2.typeActivity,
+            TypeActivity.TRANSHIPMENT
+        )
+
+        val functionStopRoomModelList = functionStopDao.all()
+        assertEquals(
+            functionStopRoomModelList.size,
+            2
+        )
+        val functionStopRoomModel1 = functionStopRoomModelList[0]
+        assertEquals(
+            functionStopRoomModel1.idFunctionStop,
+            1
+        )
+        assertEquals(
+            functionStopRoomModel1.idStop,
+            1
+        )
+        assertEquals(
+            functionStopRoomModel1.typeStop,
+            TypeStop.CHECKLIST
+        )
+        val functionStopRoomModel2 = functionStopRoomModelList[1]
+        assertEquals(
+            functionStopRoomModel2.idFunctionStop,
+            2
+        )
+        assertEquals(
+            functionStopRoomModel2.idStop,
+            2
+        )
+        assertEquals(
+            functionStopRoomModel2.typeStop,
+            TypeStop.IMPLEMENT
+        )
+
+        val itemCheckListRoomModelList = itemCheckListDao.all()
+        assertEquals(
+            itemCheckListRoomModelList.size,
+            2
+        )
+        val itemCheckListRoomModel1 = itemCheckListRoomModelList[0]
+        assertEquals(
+            itemCheckListRoomModel1.idItemCheckList,
+            1
+        )
+        assertEquals(
+            itemCheckListRoomModel1.idCheckList,
+            101
+        )
+        assertEquals(
+            itemCheckListRoomModel1.descrItemCheckList,
+            "Verificar Nível de Óleo"
+        )
+        val itemCheckListRoomModel2 = itemCheckListRoomModelList[1]
+        assertEquals(
+            itemCheckListRoomModel2.idItemCheckList,
+            2
+        )
+        assertEquals(
+            itemCheckListRoomModel2.idCheckList,
+            101
+        )
+        assertEquals(
+            itemCheckListRoomModel2.descrItemCheckList,
+            "Verificar Freios"
+        )
+
+        val itemMenuPMMRoomModelList = itemMenuPMMDao.all()
+        assertEquals(
+            itemMenuPMMRoomModelList.size,
+            2
+        )
+        val itemMenuPMMRoomModel1 = itemMenuPMMRoomModelList[0]
+        assertEquals(
+            itemMenuPMMRoomModel1.id,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.title,
+            "ITEM 1"
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.type,
+            FunctionItemMenu.ITEM_NORMAL
+        )
+        val itemMenuPMMRoomModel2 = itemMenuPMMRoomModelList[1]
+        assertEquals(
+            itemMenuPMMRoomModel2.id,
+            2
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.title,
+            "ITEM 2"
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.type,
+            FunctionItemMenu.ITEM_NORMAL
+        )
+
+        val rActivityStopRoomModelList = rActivityStopDao.all()
+        assertEquals(
+            rActivityStopRoomModelList.size,
+            2
+        )
+        val rActivityStopRoomModel1 = rActivityStopRoomModelList[0]
+        assertEquals(
+            rActivityStopRoomModel1.idRActivityStop,
+            1
+        )
+        assertEquals(
+            rActivityStopRoomModel1.idActivity,
+            101
+        )
+        assertEquals(
+            rActivityStopRoomModel1.idStop,
+            301
+        )
+        val rActivityStopRoomModel2 = rActivityStopRoomModelList[1]
+        assertEquals(
+            rActivityStopRoomModel2.idRActivityStop,
+            2
+        )
+        assertEquals(
+            rActivityStopRoomModel2.idActivity,
+            102
+        )
+        assertEquals(
+            rActivityStopRoomModel2.idStop,
+            303
+        )
+
+        val rEquipActivityRoomModelList = rEquipActivityDao.all()
+        assertEquals(
+            rEquipActivityRoomModelList.size,
+            2
+        )
+        val rEquipActivityRoomModel1 = rEquipActivityRoomModelList[0]
+        assertEquals(
+            rEquipActivityRoomModel1.idREquipActivity,
+            1
+        )
+        assertEquals(
+            rEquipActivityRoomModel1.idEquip,
+            30
+        )
+        assertEquals(
+            rEquipActivityRoomModel1.idActivity,
+            10
+        )
+        val rEquipActivityRoomModel2 = rEquipActivityRoomModelList[1]
+        assertEquals(
+            rEquipActivityRoomModel2.idREquipActivity,
+            2
+        )
+        assertEquals(
+            rEquipActivityRoomModel2.idEquip,
+            40
+        )
+        assertEquals(
+            rEquipActivityRoomModel2.idActivity,
+            10
+        )
+
+        val stopRoomModelList = stopDao.all()
+        assertEquals(
+            stopRoomModelList.size,
+            2
+        )
+        val stopRoomModel1 = stopRoomModelList[0]
+        assertEquals(
+            stopRoomModel1.idStop,
+            1
+        )
+        assertEquals(
+            stopRoomModel1.codStop,
+            10
+        )
+        assertEquals(
+            stopRoomModel1.descrStop,
+            "PARADA PARA ALMOCO"
+        )
+        val stopRoomModel2 = stopRoomModelList[1]
+        assertEquals(
+            stopRoomModel2.idStop,
+            2
+        )
+        assertEquals(
+            stopRoomModel2.codStop,
+            20
+        )
+        assertEquals(
+            stopRoomModel2.descrStop,
+            "CHUVA"
+        )
+
+        val turnRoomModelList = turnDao.all()
+        assertEquals(
+            turnRoomModelList.size,
+            2
+        )
+        val turnRoomModel1 = turnRoomModelList[0]
+        assertEquals(
+            turnRoomModel1.idTurn,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.codTurnEquip,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.nroTurn,
+            1
+        )
+        assertEquals(
+            turnRoomModel1.descrTurn,
+            "Turno 1"
+        )
+        val turnRoomModel2 = turnRoomModelList[1]
+        assertEquals(
+            turnRoomModel2.idTurn,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.codTurnEquip,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.nroTurn,
+            2
+        )
+        assertEquals(
+            turnRoomModel2.descrTurn,
+            "Turno 2"
+        )
 
     }
 

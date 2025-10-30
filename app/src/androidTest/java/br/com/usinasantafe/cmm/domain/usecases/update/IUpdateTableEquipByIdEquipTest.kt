@@ -267,11 +267,11 @@ class IUpdateTableEquipByIdEquipTest {
             )
             val roomModel = roomModelList[0]
             assertEquals(
-                roomModel.idEquip,
+                roomModel.id,
                 1
             )
             assertEquals(
-                roomModel.nroEquip,
+                roomModel.nro,
                 10
             )
             assertEquals(
@@ -295,7 +295,7 @@ class IUpdateTableEquipByIdEquipTest {
 
     private val resultEquipRetrofit = """
         [
-          {"idEquip":1,"nroEquip":10,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourMeter":100.0,"classify":1,"flagMechanic":1}
+          {"id":1,"nro":10,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1,"flagMechanic":1}
         ]
     """.trimIndent()
 

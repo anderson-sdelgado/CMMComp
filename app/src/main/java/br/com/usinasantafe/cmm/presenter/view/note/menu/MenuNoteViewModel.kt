@@ -22,7 +22,7 @@ data class MenuNoteState(
     val descrEquip: String = "",
     val menuList: List<ItemMenuModel> = listOf(),
     val textButtonReturn: String = "",
-    val flowNote: FlowNote = FlowNote.INVALID,
+    val flowNote: FlowNote = FlowNote.WORK,
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
@@ -101,24 +101,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     fun setSelection(id: Int)  = viewModelScope.launch {
-        val flowNote = when(id) {
-            1 -> FlowNote.WORK
-            2 -> FlowNote.STOP
-            else -> FlowNote.INVALID
-        }
-        if(flowNote == FlowNote.INVALID){
-            val failure = "MenuNoteViewModel.setSelection -> Option Invalid!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.INVALID,
-                    flagAccess = false
-                )
-            }
-            return@launch
-        }
+        val flowNote = FlowNote.entries[id - 1]
         _uiState.update {
             it.copy(
                 flagAccess = true,
@@ -161,7 +144,7 @@ class MenuNoteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 flagAccess = true,
-                flowNote = FlowNote.FINISH
+                flowNote = FlowNote.FINISH_HEADER
             )
         }
     }

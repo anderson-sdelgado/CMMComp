@@ -6,4 +6,5 @@ interface FunctionActivityRepository {
     suspend fun addAll(list: List<FunctionActivity>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<FunctionActivity>>
+    suspend fun listByIdActivity(idActivity: Int): Result<List<FunctionActivity>>
 }

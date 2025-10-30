@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.utils.TypeEquip
 
 interface EquipRepository {
     suspend fun addAll(list: List<Equip>): Result<Boolean>
@@ -22,10 +23,16 @@ interface EquipRepository {
         hourMeter: Double,
         idEquip: Int
     ): Result<Boolean>
-    suspend fun getTypeFertByIdEquip(
+    suspend fun getTypeEquipByIdEquip(
         idEquip: Int
-    ): Result<Int>
+    ): Result<TypeEquip>
     suspend fun getIdCheckListByIdEquip(
         idEquip: Int
     ): Result<Int>
+    suspend fun getFlagMechanicByIdEquip(
+        idEquip: Int
+    ): Result<Boolean>
+    suspend fun getFlagTireByIdEquip(
+        idEquip: Int
+    ): Result<Boolean>
 }

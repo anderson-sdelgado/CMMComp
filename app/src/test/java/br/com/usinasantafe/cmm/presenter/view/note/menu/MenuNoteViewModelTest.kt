@@ -259,7 +259,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.flowNote,
-                FlowNote.FINISH
+                FlowNote.FINISH_HEADER
             )
         }
 }

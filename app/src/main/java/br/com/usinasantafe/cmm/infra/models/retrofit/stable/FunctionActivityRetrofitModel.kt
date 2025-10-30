@@ -4,14 +4,14 @@ import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
 import br.com.usinasantafe.cmm.utils.TypeActivity
 
 data class FunctionActivityRetrofitModel(
-    val idRFunctionActivity: Int,
+    val idFunctionActivity: Int,
     val idActivity: Int,
     val typeActivity: Int,
 )
 
 fun FunctionActivityRetrofitModel.retrofitModelToEntity(): FunctionActivity {
     return FunctionActivity(
-        idFunctionActivity = this.idRFunctionActivity,
+        idFunctionActivity = this.idFunctionActivity,
         idActivity = this.idActivity,
         typeActivity = TypeActivity.entries[this.typeActivity - 1]
     )

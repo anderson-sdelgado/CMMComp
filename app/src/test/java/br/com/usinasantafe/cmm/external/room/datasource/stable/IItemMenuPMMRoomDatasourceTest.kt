@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuPMMDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuPMMRoomModel
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -53,12 +53,12 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = TypeItemMenu.ITEM_NORMAL
+                        type = FunctionItemMenu.ITEM_NORMAL
                     ),
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = TypeItemMenu.ITEM_NORMAL
+                        type = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -94,12 +94,12 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = TypeItemMenu.ITEM_NORMAL
+                        type = FunctionItemMenu.ITEM_NORMAL
                     ),
                     ItemMenuPMMRoomModel(
                         id = 2,
                         title = "Item 2",
-                        type = TypeItemMenu.ITEM_NORMAL
+                        type = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -126,7 +126,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = TypeItemMenu.ITEM_NORMAL
+                        type = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -144,6 +144,121 @@ class IItemMenuPMMRoomDatasourceTest {
             assertEquals(
                 qtdAfter,
                 0
+            )
+        }
+
+    @Test
+    fun `listByTypeList - Check return empty list if not have data`() =
+        runTest {
+            val result = datasource.listByTypeList(
+                listOf(
+                    FunctionItemMenu.ITEM_NORMAL
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val qtd = result.getOrNull()!!.size
+            assertEquals(
+                qtd,
+                0
+            )
+        }
+
+    @Test
+    fun `listByTypeList - Check return correct list if have data fielded`() =
+        runTest {
+            itemMenuPMMDao.insertAll(
+                listOf(
+                    ItemMenuPMMRoomModel(
+                        id = 1,
+                        title = "Item 1",
+                        type = FunctionItemMenu.ITEM_NORMAL
+                    ),
+                )
+            )
+            itemMenuPMMDao.insertAll(
+                listOf(
+                    ItemMenuPMMRoomModel(
+                        id = 2,
+                        title = "Item 2",
+                        type = FunctionItemMenu.ITEM_NORMAL
+                    ),
+                )
+            )
+            itemMenuPMMDao.insertAll(
+                listOf(
+                    ItemMenuPMMRoomModel(
+                        id = 3,
+                        title = "Item 3",
+                        type = FunctionItemMenu.FINISH_HEADER
+                    ),
+                )
+            )
+            itemMenuPMMDao.insertAll(
+                listOf(
+                    ItemMenuPMMRoomModel(
+                        id = 4,
+                        title = "Item 4",
+                        type = FunctionItemMenu.PERFORMANCE
+                    ),
+                )
+            )
+
+            val result = datasource.listByTypeList(
+                listOf(
+                    FunctionItemMenu.ITEM_NORMAL,
+                    FunctionItemMenu.FINISH_HEADER
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                3
+            )
+            val entity1 = list[0]
+            assertEquals(
+                entity1.id,
+                1
+            )
+            assertEquals(
+                entity1.title,
+                "Item 1"
+            )
+            assertEquals(
+                entity1.type,
+                FunctionItemMenu.ITEM_NORMAL
+            )
+            val entity2 = list[1]
+            assertEquals(
+                entity2.id,
+                2
+            )
+            assertEquals(
+                entity2.title,
+                "Item 2"
+            )
+            assertEquals(
+                entity2.type,
+                FunctionItemMenu.ITEM_NORMAL
+            )
+            val entity3 = list[2]
+            assertEquals(
+                entity3.id,
+                3
+            )
+            assertEquals(
+                entity3.title,
+                "Item 3"
+            )
+            assertEquals(
+                entity3.type,
+                FunctionItemMenu.FINISH_HEADER
             )
         }
 

@@ -5,5 +5,5 @@ import br.com.usinasantafe.cmm.utils.TypeView
 data class ItemMenuModel(
     val id: Int,
     val title: String,
-    val type: TypeView = TypeView.ITEM
+    val type: TypeView = TypeView.ITEM,
 )

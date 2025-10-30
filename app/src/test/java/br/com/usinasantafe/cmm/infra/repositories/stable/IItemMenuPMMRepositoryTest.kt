@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemMenuPMMRetro
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuPMMRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuPMMRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuPMMRoomModel
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -29,14 +29,14 @@ class IItemMenuPMMRepositoryTest {
                 ItemMenuPMMRoomModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = TypeItemMenu.ITEM_NORMAL,
+                    type = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             val entityList = listOf(
                 ItemMenuPMM(
                     id = 1,
                     title = "ITEM 1",
-                    type = TypeItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             whenever(
@@ -70,14 +70,14 @@ class IItemMenuPMMRepositoryTest {
                 ItemMenuPMMRoomModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = TypeItemMenu.ITEM_NORMAL,
+                    type = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             val entityList = listOf(
                 ItemMenuPMM(
                     id = 1,
                     title = "ITEM 1",
-                    type = TypeItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             whenever(
@@ -143,7 +143,7 @@ class IItemMenuPMMRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have error`() =
+    fun `listAll - Check return failure if have error`() =
         runTest {
             whenever(
                 itemMenuPMMRetrofitDatasource.listAll("token")
@@ -170,30 +170,30 @@ class IItemMenuPMMRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return true if function execute successfully`() =
+    fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 ItemMenuPMMRetrofitModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = 1,
+                    function = 1,
                 ),
                 ItemMenuPMMRetrofitModel(
                     id = 2,
                     title = "ITEM 2",
-                    type = 2,
+                    function = 2,
                 )
             )
             val entityList = listOf(
                 ItemMenuPMM(
                     id = 1,
                     title = "ITEM 1",
-                    type = TypeItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 ),
                 ItemMenuPMM(
                     id = 2,
                     title = "ITEM 2",
-                    type = TypeItemMenu.BUTTON_FINISH_HEADER,
+                    function = FunctionItemMenu.FINISH_HEADER,
                 )
             )
             whenever(
@@ -204,6 +204,96 @@ class IItemMenuPMMRepositoryTest {
                 )
             )
             val result = repository.listAll("token")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+    @Test
+    fun `listByTypeList - Check return failure if have error in ItemMenuPMMRoomDatasource listByTypeList`() =
+        runTest {
+            whenever(
+                itemMenuPMMRoomDatasource.listByTypeList(
+                    listOf(
+                        FunctionItemMenu.ITEM_NORMAL,
+                        FunctionItemMenu.FINISH_HEADER
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemMenuPMMRoomDatasource.listByByTypeList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByTypeList(
+                listOf(
+                    FunctionItemMenu.ITEM_NORMAL,
+                    FunctionItemMenu.FINISH_HEADER
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemMenuPMMRepository.listByTypeList -> IItemMenuPMMRoomDatasource.listByByTypeList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByTypeList - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ItemMenuPMMRoomModel(
+                    id = 1,
+                    title = "ITEM 1",
+                    type = FunctionItemMenu.ITEM_NORMAL,
+                ),
+                ItemMenuPMMRoomModel(
+                    id = 2,
+                    title = "ITEM 2",
+                    type = FunctionItemMenu.FINISH_HEADER,
+                )
+            )
+            val entityList = listOf(
+                ItemMenuPMM(
+                    id = 1,
+                    title = "ITEM 1",
+                    function = FunctionItemMenu.ITEM_NORMAL,
+                ),
+                ItemMenuPMM(
+                    id = 2,
+                    title = "ITEM 2",
+                    function = FunctionItemMenu.FINISH_HEADER,
+                )
+            )
+            whenever(
+                itemMenuPMMRoomDatasource.listByTypeList(
+                    listOf(
+                        FunctionItemMenu.ITEM_NORMAL,
+                        FunctionItemMenu.FINISH_HEADER
+                    )
+                )
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByTypeList(
+                listOf(
+                    FunctionItemMenu.ITEM_NORMAL,
+                    FunctionItemMenu.FINISH_HEADER
+                )
+            )
             assertEquals(
                 result.isSuccess,
                 true

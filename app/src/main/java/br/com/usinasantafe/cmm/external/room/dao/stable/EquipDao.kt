@@ -22,7 +22,7 @@ interface EquipDao {
     @Query("SELECT * FROM $TB_EQUIP")
     suspend fun all(): List<EquipRoomModel>
 
-    @Query("SELECT * FROM $TB_EQUIP WHERE idEquip = :id")
+    @Query("SELECT * FROM $TB_EQUIP WHERE id = :id")
     suspend fun getByIdEquip(id: Int): EquipRoomModel
 
 }

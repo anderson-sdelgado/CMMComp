@@ -19,7 +19,6 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPref
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.whenever
 import java.util.Date
 import kotlin.test.Test

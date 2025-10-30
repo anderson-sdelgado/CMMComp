@@ -27,6 +27,7 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 
 @Composable
 fun MenuNoteScreen(
@@ -148,8 +149,17 @@ fun MenuNoteContent(
             when(flowNote){
                 FlowNote.WORK -> onNavOS()
                 FlowNote.STOP -> onNavActivityList()
-                FlowNote.FINISH -> onNavMeasure()
-                else -> {}
+                FlowNote.FINISH_HEADER -> onNavMeasure()
+                FlowNote.PERFORMANCE -> TODO()
+                FlowNote.TRANSHIPMENT -> TODO()
+                FlowNote.IMPLEMENT -> TODO()
+                FlowNote.HOSE_COLLECTION -> TODO()
+                FlowNote.NOTE_MECHANICAL -> TODO()
+                FlowNote.FINISH_MECHANICAL -> TODO()
+                FlowNote.TIRE_INFLATION -> TODO()
+                FlowNote.TIRE_CHANGE -> TODO()
+                FlowNote.REEL -> TODO()
+                FlowNote.RETURN_LIST -> TODO()
             }
         }
     }
@@ -166,17 +176,18 @@ fun MenuHeaderPagePreview() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO"
+                        title = "TRABALHANDO",
+
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO"
+                        title = "PARADO",
                     ),
                 ),
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowNote = FlowNote.INVALID,
+                flowNote = FlowNote.WORK,
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
@@ -201,17 +212,17 @@ fun MenuHeaderPagePreviewFailure() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO"
+                        title = "TRABALHANDO",
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO"
+                        title = "PARADO",
                     ),
                 ),
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowNote = FlowNote.INVALID,
+                flowNote = FlowNote.WORK,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -236,17 +247,17 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO"
+                        title = "TRABALHANDO",
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO"
+                        title = "PARADO",
                     ),
                 ),
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowNote = FlowNote.INVALID,
+                flowNote = FlowNote.WORK,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -272,17 +283,17 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO"
+                        title = "TRABALHANDO",
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO"
+                        title = "PARADO",
                     ),
                 ),
                 setSelection = {},
                 textButtonReturn = "FINALIZAR BOLETIM",
                 onButtonReturn = {},
-                flowNote = FlowNote.INVALID,
+                flowNote = FlowNote.WORK,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",

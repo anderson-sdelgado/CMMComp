@@ -28,6 +28,7 @@ import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_OS_LIST_BY_NRO_OS
@@ -601,16 +602,17 @@ class CheckListFlowTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 30,
-                    nroEquip = 2200,
+                    id = 30,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 100.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

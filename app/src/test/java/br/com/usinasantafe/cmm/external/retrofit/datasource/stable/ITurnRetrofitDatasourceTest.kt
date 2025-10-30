@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.TurnRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class ITurnRetrofitDatasourceTest {
 
@@ -32,7 +32,6 @@ class ITurnRetrofitDatasourceTest {
             val service = retrofit.create(TurnApi::class.java)
             val datasource = ITurnRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure

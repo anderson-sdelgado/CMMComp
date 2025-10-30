@@ -304,4 +304,23 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getIdActivity(): Result<Int> {
+        try {
+            val result = get()
+            if (result.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.idActivity!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

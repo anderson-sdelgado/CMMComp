@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ColabRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IColabRetrofitDatasourceTest {
 
@@ -32,7 +32,6 @@ class IColabRetrofitDatasourceTest {
             val service = retrofit.create(ColabApi::class.java)
             val datasource = IColabRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure

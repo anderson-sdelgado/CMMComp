@@ -10,12 +10,12 @@ import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class ICheckOpenCheckListTest {
@@ -92,16 +92,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 0,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -127,16 +128,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -163,16 +165,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -203,16 +206,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -252,16 +256,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -306,16 +311,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -356,16 +362,17 @@ class ICheckOpenCheckListTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 2,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )

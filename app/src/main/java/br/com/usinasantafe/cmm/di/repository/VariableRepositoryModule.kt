@@ -22,10 +22,6 @@ interface VariableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindMenuRepository(repository: IMenuRepository): MenuRepository
-
-    @Binds
-    @Singleton
     fun bindCheckListRepository(repository: ICheckListRepository): CheckListRepository
 
 }

@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RActivityStopRetrofi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IRActivityStopRetrofitDatasourceTest {
 
@@ -25,7 +25,6 @@ class IRActivityStopRetrofitDatasourceTest {
             val service = retrofit.create(RActivityStopApi::class.java)
             val datasource = IRActivityStopRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure

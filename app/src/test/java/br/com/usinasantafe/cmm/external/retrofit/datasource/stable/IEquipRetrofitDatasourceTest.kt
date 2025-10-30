@@ -5,8 +5,8 @@ import br.com.usinasantafe.cmm.external.retrofit.api.stable.EquipApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IEquipRetrofitDatasourceTest {
 
@@ -102,11 +102,11 @@ class IEquipRetrofitDatasourceTest {
                 2
             )
             assertEquals(
-                list[0].idEquip,
+                list[0].id,
                 1
             )
             assertEquals(
-                list[0].nroEquip,
+                list[0].nro,
                 1000001
             )
             assertEquals(
@@ -126,7 +126,7 @@ class IEquipRetrofitDatasourceTest {
                 1
             )
             assertEquals(
-                list[0].typeFert,
+                list[0].typeEquip,
                 1
             )
             assertEquals(
@@ -143,11 +143,11 @@ class IEquipRetrofitDatasourceTest {
                 1
             )
             assertEquals(
-                list[1].idEquip,
+                list[1].id,
                 2
             )
             assertEquals(
-                list[1].nroEquip,
+                list[1].nro,
                 1000002
             )
             assertEquals(
@@ -167,7 +167,7 @@ class IEquipRetrofitDatasourceTest {
                 2
             )
             assertEquals(
-                list[1].typeFert,
+                list[1].typeEquip,
                 2
             )
             assertEquals(
@@ -189,7 +189,7 @@ class IEquipRetrofitDatasourceTest {
 
 val resultEquipRetrofit = """
     [
-      {"idEquip":1,"nroEquip":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeFert":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
-      {"idEquip":2,"nroEquip":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":2,"typeFert":2,"hourmeter":200.0,"measurement":300.0,"type":2,"classify":2,"flagApontMecan":0,"flagApontPneu":0}
+      {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
+      {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":2,"typeEquip":2,"hourmeter":200.0,"measurement":300.0,"type":2,"classify":2,"flagApontMecan":0,"flagApontPneu":0}
     ]
 """.trimIndent()

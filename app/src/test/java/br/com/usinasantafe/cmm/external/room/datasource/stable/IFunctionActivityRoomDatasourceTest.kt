@@ -147,4 +147,64 @@ class IFunctionFunctionActivityRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdActivity - Check return emptyList if not have row`() =
+        runTest {
+            val result = datasource.listByIdActivity(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val qtd = result.getOrNull()!!.size
+            assertEquals(
+                qtd,
+                0
+            )
+        }
+
+    @Test
+    fun `listByIdActivity - Check return list if have row with idActivity correct`() =
+        runTest {
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE,
+                    ),
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 2,
+                        idActivity = 2,
+                        typeActivity = TypeActivity.PERFORMANCE,
+                    ),
+                )
+            )
+            val result = datasource.listByIdActivity(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.idFunctionActivity,
+                1
+            )
+            assertEquals(
+                model.idActivity,
+                1
+            )
+            assertEquals(
+                model.typeActivity,
+                TypeActivity.PERFORMANCE
+            )
+        }
 }

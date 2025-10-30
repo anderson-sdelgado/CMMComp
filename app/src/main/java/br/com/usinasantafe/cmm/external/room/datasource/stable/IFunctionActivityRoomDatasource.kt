@@ -34,4 +34,16 @@ class IFunctionActivityRoomDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun listByIdActivity(idActivity: Int): Result<List<FunctionActivityRoomModel>> {
+        try {
+            val list = functionActivityDao.listByIdActivity(idActivity)
+            return Result.success(list)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

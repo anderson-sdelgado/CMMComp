@@ -255,10 +255,10 @@ class IUpdateTableFunctionActivityTest {
 
     private val resultFunctionActivityRetrofit = """
         [
-          {"idRFunctionActivity":1,"idActivity":1,"typeActivity":1},
-          {"idRFunctionActivity":2,"idActivity":2,"typeActivity":2}
+          {"idFunctionActivity":1,"idActivity":1,"typeActivity":1},
+          {"idFunctionActivity":2,"idActivity":2,"typeActivity":2}
         ]
-            """.trimIndent()
+    """.trimIndent()
 
     private suspend fun initialRegister() {
         configSharedPreferencesDatasource.save(

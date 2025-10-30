@@ -7,8 +7,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -237,7 +236,7 @@ class IUpdateTableItemMenuPMMTest {
             )
             assertEquals(
                 roomModel1.type,
-                TypeItemMenu.ITEM_NORMAL
+                FunctionItemMenu.ITEM_NORMAL
             )
             val roomModel2 = roomModelList[1]
             assertEquals(
@@ -250,16 +249,16 @@ class IUpdateTableItemMenuPMMTest {
             )
             assertEquals(
                 roomModel2.type,
-                TypeItemMenu.BUTTON_FINISH_HEADER
+                FunctionItemMenu.ITEM_NORMAL
             )
         }
 
     private val resultItemMenuPMMRetrofit = """
         [
-          {"id":1,"title":"ITEM 1","type":1},
-          {"id":2,"title":"ITEM 2","type":1}
+          {"id":1,"title":"ITEM 1","function":1},
+          {"id":2,"title":"ITEM 2","function":1}
         ]
-            """.trimIndent()
+    """.trimIndent()
 
     private suspend fun initialRegister() {
         configSharedPreferencesDatasource.save(

@@ -6,8 +6,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionActivityRetr
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import org.junit.Assert.*
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class IFunctionActivityRetrofitDatasourceTest {
 
@@ -32,7 +32,6 @@ class IFunctionActivityRetrofitDatasourceTest {
             val service = retrofit.create(FunctionActivityApi::class.java)
             val datasource = IFunctionActivityRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
@@ -101,12 +100,12 @@ class IFunctionActivityRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         FunctionActivityRetrofitModel(
-                            idRFunctionActivity = 1,
+                            idFunctionActivity = 1,
                             idActivity = 1,
                             typeActivity = 1
                         ),
                         FunctionActivityRetrofitModel(
-                            idRFunctionActivity = 2,
+                            idFunctionActivity = 2,
                             idActivity = 2,
                             typeActivity = 2
                         )

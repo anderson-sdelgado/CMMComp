@@ -103,6 +103,17 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
+    override suspend fun getIdActivityHeader(): Result<Int> {
+        val result = headerMotoMecSharedPreferencesDatasource.getIdActivity()
+        if (result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
+    }
+
     override suspend fun getIdEquipHeader(): Result<Int> {
         val result = headerMotoMecSharedPreferencesDatasource.getIdEquip()
         if (result.isFailure) {
@@ -326,7 +337,7 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun getIdActivity(): Result<Int> {
+    override suspend fun getIdActivityNote(): Result<Int> {
         val result = noteMotoMecSharedPreferencesDatasource.getIdActivity()
         if (result.isFailure) {
             return resultFailure(
@@ -457,6 +468,10 @@ class IMotoMecRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun checkNoteHasByIdStop(idStop: Int): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 
 }

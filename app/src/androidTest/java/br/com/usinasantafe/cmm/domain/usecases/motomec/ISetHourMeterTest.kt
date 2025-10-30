@@ -12,11 +12,11 @@ import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class ISetHourMeterTest {
@@ -109,16 +109,17 @@ class ISetHourMeterTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 2200,
+                        id = 1,
+                        nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 100.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -129,7 +130,7 @@ class ISetHourMeterTest {
             )
             val equipBefore = listEquipBefore[0]
             assertEquals(
-                equipBefore.idEquip,
+                equipBefore.id,
                 1
             )
             assertEquals(
@@ -169,7 +170,7 @@ class ISetHourMeterTest {
             )
             val equipAfter = listEquipAfter[0]
             assertEquals(
-                equipAfter.idEquip,
+                equipAfter.id,
                 1
             )
             assertEquals(
@@ -232,16 +233,17 @@ class ISetHourMeterTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 2200,
+                        id = 1,
+                        nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 100.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -252,7 +254,7 @@ class ISetHourMeterTest {
             )
             val equipBefore = listEquipBefore[0]
             assertEquals(
-                equipBefore.idEquip,
+                equipBefore.id,
                 1
             )
             assertEquals(
@@ -354,16 +356,17 @@ class ISetHourMeterTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 2200,
+                        id = 1,
+                        nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 2000.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -374,7 +377,7 @@ class ISetHourMeterTest {
             )
             val equipBefore = listEquipBefore[0]
             assertEquals(
-                equipBefore.idEquip,
+                equipBefore.id,
                 1
             )
             assertEquals(
@@ -433,7 +436,7 @@ class ISetHourMeterTest {
             )
             val equipAfter = listEquipAfter[0]
             assertEquals(
-                equipAfter.idEquip,
+                equipAfter.id,
                 1
             )
             assertEquals(

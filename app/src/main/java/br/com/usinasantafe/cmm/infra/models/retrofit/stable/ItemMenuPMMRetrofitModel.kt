@@ -1,19 +1,18 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 
 data class ItemMenuPMMRetrofitModel(
     val id: Int,
     val title: String,
-    val type: Int
+    val function: Int
 )
 
 fun ItemMenuPMMRetrofitModel.retrofitModelToEntity(): ItemMenuPMM {
     return ItemMenuPMM(
         id = this.id,
         title = this.title,
-        type = TypeItemMenu.entries[this.type - 1]
+        function = FunctionItemMenu.entries[this.function - 1]
     )
 }

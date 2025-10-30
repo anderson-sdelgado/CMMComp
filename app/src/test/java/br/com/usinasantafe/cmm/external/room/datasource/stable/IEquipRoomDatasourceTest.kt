@@ -6,14 +6,15 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.After
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -49,28 +50,30 @@ class IEquipRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     ),
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -104,28 +107,30 @@ class IEquipRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     ),
                     EquipRoomModel(
-                        idEquip = 2,
-                        nroEquip = 20,
+                        id = 2,
+                        nro = 20,
                         codClass = 20,
                         descrClass = "TRATOR 2",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -144,11 +149,11 @@ class IEquipRoomDatasourceTest {
             )
             val list = equipDao.all()
             assertEquals(
-                list[0].idEquip,
+                list[0].id,
                 1
             )
             assertEquals(
-                list[0].nroEquip,
+                list[0].nro,
                 10
             )
             assertEquals(
@@ -169,11 +174,11 @@ class IEquipRoomDatasourceTest {
                 true
             )
             assertEquals(
-                list[1].idEquip,
+                list[1].id,
                 2
             )
             assertEquals(
-                list[1].nroEquip,
+                list[1].nro,
                 20
             )
             assertEquals(
@@ -192,16 +197,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -250,16 +256,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -303,16 +310,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -356,16 +364,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -392,16 +401,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -432,7 +442,7 @@ class IEquipRoomDatasourceTest {
     @Test
     fun `getTypeFertByIdEquip - Check return failure if not have data`() =
         runTest {
-            val result = datasource.getTypeFertByIdEquip(1)
+            val result = datasource.getTypeEquipByIdEquip(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -453,16 +463,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -471,14 +482,14 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.getTypeFertByIdEquip(1)
+            val result = datasource.getTypeEquipByIdEquip(1)
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                3
+                TypeEquip.NORMAL
             )
         }
 
@@ -506,16 +517,17 @@ class IEquipRoomDatasourceTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 10,
+                        id = 1,
+                        nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 3,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )

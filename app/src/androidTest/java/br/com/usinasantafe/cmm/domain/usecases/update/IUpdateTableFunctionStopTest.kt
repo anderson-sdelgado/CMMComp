@@ -255,10 +255,10 @@ class IUpdateTableFunctionStopTest {
 
     private val resultFunctionStopRetrofit = """
         [
-          {"idRFunctionStop":1,"idStop":1,"typeStop":1},
-          {"idRFunctionStop":2,"idStop":2,"typeStop":2}
+          {"idFunctionStop":1,"idStop":1,"typeStop":1},
+          {"idFunctionStop":2,"idStop":2,"typeStop":2}
         ]
-            """.trimIndent()
+    """.trimIndent()
 
     private suspend fun initialRegister() {
         configSharedPreferencesDatasource.save(

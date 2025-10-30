@@ -27,12 +27,12 @@ import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
+import kotlin.test.assertEquals
 import kotlin.time.Duration.Companion.minutes
 
 @HiltAndroidTest
@@ -255,16 +255,17 @@ class HeaderFinishFlowTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 10,
-                    nroEquip = 2200,
+                    id = 10,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

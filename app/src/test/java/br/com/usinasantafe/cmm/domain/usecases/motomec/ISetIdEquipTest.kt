@@ -63,7 +63,7 @@ class ISetIdEquipTest {
                 )
             )
             whenever(
-                equipRepository.getTypeFertByIdEquip(
+                equipRepository.getTypeEquipByIdEquip(
                     idEquip = 10
                 )
             ).thenReturn(
@@ -101,11 +101,11 @@ class ISetIdEquipTest {
                 )
             )
             whenever(
-                equipRepository.getTypeFertByIdEquip(
+                equipRepository.getTypeEquipByIdEquip(
                     idEquip = 10
                 )
             ).thenReturn(
-                Result.success(1)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(
@@ -147,11 +147,11 @@ class ISetIdEquipTest {
                 )
             )
             whenever(
-                equipRepository.getTypeFertByIdEquip(
+                equipRepository.getTypeEquipByIdEquip(
                     idEquip = 10
                 )
             ).thenReturn(
-                Result.success(1)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(
@@ -185,11 +185,11 @@ class ISetIdEquipTest {
                 )
             )
             whenever(
-                equipRepository.getTypeFertByIdEquip(
+                equipRepository.getTypeEquipByIdEquip(
                     idEquip = 10
                 )
             ).thenReturn(
-                Result.success(3)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(

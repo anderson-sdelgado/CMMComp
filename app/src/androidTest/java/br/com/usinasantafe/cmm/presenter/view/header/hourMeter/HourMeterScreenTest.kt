@@ -270,13 +270,13 @@ class HourMeterScreenTest {
         val resultEquipRetrofit = """
                 [
                     {
-                        "idEquip":1,
-                        "nroEquip":2200,
+                        "id":1,
+                        "nro":2200,
                         "codClass":1,
                         "descrClass":"TRATOR",
                         "codTurnEquip":1,
                         "idCheckList":1,
-                        "typeFert":1,
+                        "typeEquip":1,
                         "hourmeter":100.0,
                         "measurement":20000.0,
                         "type":1,

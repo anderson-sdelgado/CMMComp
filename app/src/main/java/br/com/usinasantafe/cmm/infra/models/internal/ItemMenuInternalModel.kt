@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.internal
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenuPMM
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 
 data class ItemMenuInternalModel(
     val id: Int,
@@ -14,7 +14,7 @@ fun ItemMenuInternalModel.internalModelToEntity(): ItemMenuPMM {
         ItemMenuPMM(
             id = this.id,
             title = this.title,
-            type = TypeItemMenu.entries[this.type - 1]
+            function = FunctionItemMenu.entries[this.type - 1]
         )
     }
 }
@@ -24,7 +24,7 @@ fun ItemMenuPMM.entityToInternalModel(): ItemMenuInternalModel {
         ItemMenuInternalModel(
             id = this.id,
             title = this.title,
-            type = this.type.ordinal
+            type = this.function.ordinal
         )
     }
 }

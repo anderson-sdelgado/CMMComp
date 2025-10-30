@@ -448,16 +448,17 @@ class ItemCheckListScreenTest {
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
-                    idEquip = 10,
-                    nroEquip = 2200,
+                    id = 10,
+                    nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeFert = 1,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
-                    flagMechanic = true
+                    flagMechanic = true,
+                    flagTire = true
                 )
             )
         )

@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDat
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -124,8 +125,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getTypeFertByIdEquip(idEquip: Int): Result<Int> {
-        val result = equipRoomDatasource.getTypeFertByIdEquip(idEquip)
+    override suspend fun getTypeEquipByIdEquip(idEquip: Int): Result<TypeEquip> {
+        val result = equipRoomDatasource.getTypeEquipByIdEquip(idEquip)
         if(result.isFailure){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -145,5 +146,28 @@ class IEquipRepository @Inject constructor(
         }
         return result
     }
+
+    override suspend fun getFlagMechanicByIdEquip(idEquip: Int): Result<Boolean> {
+        val result = equipRoomDatasource.getFlagMechanicByIdEquip(idEquip)
+        if(result.isFailure){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
+    }
+
+    override suspend fun getFlagTireByIdEquip(idEquip: Int): Result<Boolean> {
+        val result = equipRoomDatasource.getFlagTireByIdEquip(idEquip)
+        if(result.isFailure){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
+    }
+
 
 }

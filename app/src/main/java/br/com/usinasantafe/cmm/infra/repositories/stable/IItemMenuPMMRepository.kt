@@ -7,6 +7,8 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemMenuPMMRetro
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuPMMRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityItemMenuPMMToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -54,6 +56,25 @@ class IItemMenuPMMRepository  @Inject constructor(
                 )
             }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
+            return Result.success(entityList)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun listByTypeList(typeList: List<FunctionItemMenu>): Result<List<ItemMenuPMM>> {
+        try {
+            val result = itemMenuPMMRoomDatasource.listByTypeList(typeList)
+            if (result.isFailure) {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = result.exceptionOrNull()!!
+                )
+            }
+            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
             return resultFailure(

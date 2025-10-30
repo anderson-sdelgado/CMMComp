@@ -8,14 +8,15 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
+import kotlin.test.assertEquals
 
 @HiltAndroidTest
 class IListTurnTest {
@@ -100,16 +101,17 @@ class IListTurnTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 200,
+                        id = 1,
+                        nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
@@ -139,16 +141,17 @@ class IListTurnTest {
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(
-                        idEquip = 1,
-                        nroEquip = 200,
+                        id = 1,
+                        nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeFert = 1,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
-                        flagMechanic = true
+                        flagMechanic = true,
+                        flagTire = true
                     )
                 )
             )
