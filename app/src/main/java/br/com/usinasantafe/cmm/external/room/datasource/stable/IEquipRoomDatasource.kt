@@ -54,8 +54,7 @@ class IEquipRoomDatasource @Inject constructor(
             return Result.success(model.codTurnEquip)
         } catch (e: Exception){
             return resultFailure(
-                context = "IEquipRoomDatasource.getCodTurnEquipByIdEquip",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -67,8 +66,7 @@ class IEquipRoomDatasource @Inject constructor(
             return Result.success(model.hourMeter)
         } catch (e: Exception){
             return resultFailure(
-                context = "IEquipRoomDatasource.getMeasureByIdEquip",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -85,8 +83,7 @@ class IEquipRoomDatasource @Inject constructor(
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
-                context = "IEquipRoomDatasource.updateMeasureByIdEquip",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -98,8 +95,7 @@ class IEquipRoomDatasource @Inject constructor(
             return Result.success(model.typeEquip)
         } catch (e: Exception){
             return resultFailure(
-                context = "IEquipRoomDatasource.getTypeFertByIdEquip",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -111,19 +107,34 @@ class IEquipRoomDatasource @Inject constructor(
             return Result.success(model.idCheckList)
         } catch (e: Exception){
             return resultFailure(
-                context = "IEquipRoomDatasource.getIdCheckListByIdEquip",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
     }
 
     override suspend fun getFlagMechanicByIdEquip(idEquip: Int): Result<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val model = equipDao.getByIdEquip(idEquip)
+            return Result.success(model.flagMechanic)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
     override suspend fun getFlagTireByIdEquip(idEquip: Int): Result<Boolean> {
-        TODO("Not yet implemented")
+        try {
+            val model = equipDao.getByIdEquip(idEquip)
+            return Result.success(model.flagTire)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
     }
 
 }

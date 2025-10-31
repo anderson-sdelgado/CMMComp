@@ -2506,7 +2506,7 @@ class ConfigScreenTest {
             "ITEM 1"
         )
         assertEquals(
-            itemMenuPMMRoomModel1.type,
+            itemMenuPMMRoomModel1.function,
             FunctionItemMenu.ITEM_NORMAL
         )
         val itemMenuPMMRoomModel2 = itemMenuPMMRoomModelList[1]
@@ -2519,7 +2519,7 @@ class ConfigScreenTest {
             "ITEM 2"
         )
         assertEquals(
-            itemMenuPMMRoomModel2.type,
+            itemMenuPMMRoomModel2.function,
             FunctionItemMenu.ITEM_NORMAL
         )
 

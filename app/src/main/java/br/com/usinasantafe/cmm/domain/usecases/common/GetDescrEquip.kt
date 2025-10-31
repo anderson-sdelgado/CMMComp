@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -11,22 +11,22 @@ interface GetDescrEquip {
 }
 
 class IGetDescrEquip @Inject constructor(
-    private val configRepository: ConfigRepository,
+    private val motoMecRepository: MotoMecRepository,
     private val equipRepository: EquipRepository
 ): GetDescrEquip {
 
     override suspend fun invoke(): Result<String> {
         try {
-            val resultGetConfig = configRepository.get()
-            if (resultGetConfig.isFailure) {
+            val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
+            if(resultGetIdEquipMotoMec.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetConfig.exceptionOrNull()!!
+                    cause = resultGetIdEquipMotoMec.exceptionOrNull()!!
                 )
             }
-            val config = resultGetConfig.getOrNull()!!
+            val idEquip = resultGetIdEquipMotoMec.getOrNull()!!
             val result = equipRepository.getDescrByIdEquip(
-                idEquip = config.idEquip!!
+                idEquip = idEquip
             )
             if (result.isFailure) {
                 return resultFailure(

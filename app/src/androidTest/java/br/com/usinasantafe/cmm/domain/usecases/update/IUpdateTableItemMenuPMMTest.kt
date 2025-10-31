@@ -235,7 +235,7 @@ class IUpdateTableItemMenuPMMTest {
                 "ITEM 1"
             )
             assertEquals(
-                roomModel1.type,
+                roomModel1.function,
                 FunctionItemMenu.ITEM_NORMAL
             )
             val roomModel2 = roomModelList[1]
@@ -248,7 +248,7 @@ class IUpdateTableItemMenuPMMTest {
                 "ITEM 2"
             )
             assertEquals(
-                roomModel2.type,
+                roomModel2.function,
                 FunctionItemMenu.ITEM_NORMAL
             )
         }

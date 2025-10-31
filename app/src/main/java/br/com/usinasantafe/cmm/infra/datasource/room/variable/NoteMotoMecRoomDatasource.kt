@@ -11,4 +11,8 @@ interface NoteMotoMecRoomDatasource {
         idServ: Int
     ): Result<Boolean>
     suspend fun listByIdHeader(idHeader: Int): Result<List<NoteMotoMecRoomModel>>
+    suspend fun checkHasByIdStopAndIdHeader(
+        idStop: Int,
+        idHeader: Int
+    ): Result<Boolean>
 }

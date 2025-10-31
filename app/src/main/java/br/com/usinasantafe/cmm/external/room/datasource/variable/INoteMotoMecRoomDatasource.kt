@@ -81,4 +81,25 @@ class INoteMotoMecRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun checkHasByIdStopAndIdHeader(
+        idStop: Int,
+        idHeader: Int
+    ): Result<Boolean> {
+        try {
+            val qtd = noteMotoMecDao.countByIdStopAndIdHeader(
+                idStop = idStop,
+                idHeader = idHeader
+            )
+            val check = qtd > 0
+            return Result.success(check)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+
+
 }

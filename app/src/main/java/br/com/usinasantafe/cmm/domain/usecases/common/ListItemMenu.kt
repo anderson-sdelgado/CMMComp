@@ -31,7 +31,7 @@ class IListItemMenu @Inject constructor(
 
     override suspend fun invoke(): Result<List<ItemMenuModel>> {
         try {
-            val resultGetIdEquipConfig = configRepository.getIdEquip() //ok
+            val resultGetIdEquipConfig = configRepository.getIdEquip()
             if(resultGetIdEquipConfig.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -39,7 +39,7 @@ class IListItemMenu @Inject constructor(
                 )
             }
             val idEquipConfig = resultGetIdEquipConfig.getOrNull()!!
-            val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader() //ok
+            val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
             if(resultGetIdEquipMotoMec.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -54,7 +54,7 @@ class IListItemMenu @Inject constructor(
             list.add(FunctionItemMenu.ITEM_NORMAL)
 
             //PERFORMANCE, TRANSHIPMENT, IMPLEMENT, HOSE_COLLECTION
-            val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquipMotoMec) //ok
+            val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquipMotoMec)
             if(resultTypeEquip.isFailure){
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -64,14 +64,14 @@ class IListItemMenu @Inject constructor(
             val typeEquip = resultTypeEquip.getOrNull()!!
             when(typeEquip) {
                 TypeEquip.NORMAL -> {
-                    val resultGetIdActivity = motoMecRepository.getIdActivityHeader() //ok
+                    val resultGetIdActivity = motoMecRepository.getIdActivityHeader()
                     if(resultGetIdActivity.isFailure){
                         return resultFailure(
                             context = getClassAndMethod(),
                             cause = resultGetIdActivity.exceptionOrNull()!!
                         )
                     }
-                    val resultListFunctionActivity = functionActivityRepository.listByIdActivity(resultGetIdActivity.getOrNull()!!) //ok
+                    val resultListFunctionActivity = functionActivityRepository.listByIdActivity(resultGetIdActivity.getOrNull()!!)
                     if(resultListFunctionActivity.isFailure) {
                         return resultFailure(
                             context = getClassAndMethod(),

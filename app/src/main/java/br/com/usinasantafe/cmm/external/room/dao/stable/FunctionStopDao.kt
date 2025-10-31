@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
 import br.com.usinasantafe.cmm.utils.TB_FUNCTION_STOP
+import br.com.usinasantafe.cmm.utils.TypeStop
 
 @Dao
 interface FunctionStopDao {
@@ -17,5 +18,8 @@ interface FunctionStopDao {
 
     @Query("SELECT * FROM $TB_FUNCTION_STOP")
     suspend fun all(): List<FunctionStopRoomModel>
+
+    @Query("SELECT idStop FROM $TB_FUNCTION_STOP WHERE typeStop = :typeStop")
+    suspend fun getIdStopByType(typeStop: TypeStop): Int?
 
 }

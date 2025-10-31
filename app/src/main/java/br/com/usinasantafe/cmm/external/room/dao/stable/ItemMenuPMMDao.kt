@@ -19,7 +19,7 @@ interface ItemMenuPMMDao {
     @Query("SELECT * FROM $TB_ITEM_MENU_PMM")
     suspend fun all(): List<ItemMenuPMMRoomModel>
 
-    @Query("SELECT * FROM $TB_ITEM_MENU_PMM WHERE type IN (:typeList)")
+    @Query("SELECT * FROM $TB_ITEM_MENU_PMM WHERE function IN (:typeList)")
     suspend fun listByTypeList(typeList: List<FunctionItemMenu>): List<ItemMenuPMMRoomModel>
 
 }

@@ -337,6 +337,103 @@ class INoteMotoMecRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `checkHasByIdStop - Check return false if not has data`() =
+        runTest {
+            val result = datasource.checkHasByIdStopAndIdHeader(
+                idStop = 1,
+                idHeader = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
 
+    @Test
+    fun `checkHasByIdStop - Check return false if not has row fielded`() =
+        runTest {
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 2,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.checkHasByIdStopAndIdHeader(
+                idStop = 2,
+                idHeader = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `checkHasByIdStop - Check return true if has data`() =
+        runTest {
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 2,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = 2,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.checkHasByIdStopAndIdHeader(
+                idStop = 2,
+                idHeader = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 
 }

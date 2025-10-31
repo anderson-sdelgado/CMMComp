@@ -65,7 +65,14 @@ class IFunctionStopRepository @Inject constructor(
     }
 
     override suspend fun getIdStopByType(typeStop: TypeStop): Result<Int?> {
-        TODO("Not yet implemented")
+        val result = functionStopRoomDatasource.getIdStopByType(typeStop)
+        if (result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
     }
 
 }

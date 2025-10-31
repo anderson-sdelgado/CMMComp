@@ -214,4 +214,68 @@ class IFunctionStopRepositoryTest {
             )
         }
 
+    @Test
+    fun `getIdStopByType - Check return failure if have error in FunctionStopRoomDatasource getIdStopByType`() =
+        runTest {
+            whenever(
+                functionStopRoomDatasource.getIdStopByType(TypeStop.REEL)
+            ).thenReturn(
+                resultFailure(
+                    "IFunctionStopRoomDatasource.getIdStopByType",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdStopByType(TypeStop.REEL)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionStopRepository.getIdStopByType -> IFunctionStopRoomDatasource.getIdStopByType"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdStopByType - Check return null if function execute successfully and not have data fielded`() =
+        runTest {
+            whenever(
+                functionStopRoomDatasource.getIdStopByType(TypeStop.REEL)
+            ).thenReturn(
+                Result.success(null)
+            )
+            val result = repository.getIdStopByType(TypeStop.REEL)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
+    @Test
+    fun `getIdStopByType - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                functionStopRoomDatasource.getIdStopByType(TypeStop.REEL)
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdStopByType(TypeStop.REEL)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
 }

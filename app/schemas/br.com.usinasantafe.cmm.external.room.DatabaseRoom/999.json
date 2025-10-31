@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "0baf6eb35845bed46633b69bdd3290cb",
+    "identityHash": "2726a3b2ae4f52db7cd3056702bbe7be",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -336,7 +336,7 @@
       },
       {
         "tableName": "tb_item_menu_pmm",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `type` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `function` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -351,8 +351,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "type",
-            "columnName": "type",
+            "fieldPath": "function",
+            "columnName": "function",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -1148,7 +1148,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '0baf6eb35845bed46633b69bdd3290cb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2726a3b2ae4f52db7cd3056702bbe7be')"
     ]
   }
 }

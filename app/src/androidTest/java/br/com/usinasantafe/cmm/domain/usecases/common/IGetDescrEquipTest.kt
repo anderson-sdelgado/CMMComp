@@ -1,9 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -24,7 +25,8 @@ class IGetDescrEquipTest {
     lateinit var usecase: GetDescrEquip
 
     @Inject
-    lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+    lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
+
 
     @Inject
     lateinit var equipDao: EquipDao
@@ -44,7 +46,7 @@ class IGetDescrEquipTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetDescrEquip"
+                "IGetDescrEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -55,14 +57,10 @@ class IGetDescrEquipTest {
     @Test
     fun check_return_failure_if_not_have_data_in_table_equip() =
         runTest {
-            val resultSave = configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    idEquip = 1,
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idEquip = 1
                 )
-            )
-            assertEquals(
-                resultSave.isSuccess,
-                true
             )
             val result = usecase()
             assertEquals(
@@ -71,26 +69,24 @@ class IGetDescrEquipTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetDescrEquip -> IEquipRepository.getDescrByIdEquip"
+                "IGetDescrEquip -> IEquipRepository.getDescrByIdEquip -> IEquipRoomDatasource.getDescrByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
+                "java.lang.NullPointerException: Attempt to invoke virtual method 'long br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()' on a null object reference"
             )
         }
 
     @Test
     fun check_return_value_correct_if_function_execute_successfully() =
         runTest {
-            val resultSave = configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel(
-                    idEquip = 1,
+
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idEquip = 1
                 )
             )
-            assertEquals(
-                resultSave.isSuccess,
-                true
-            )
+
             equipDao.insertAll(
                 listOf(
                     EquipRoomModel(

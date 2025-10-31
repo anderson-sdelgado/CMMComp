@@ -546,4 +546,113 @@ class IEquipRoomDatasourceTest {
                 1
             )
         }
+
+    @Test
+    fun `getFlagMechanicByIdEquip - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getFlagMechanicByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getFlagMechanicByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getFlagMechanic()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getFlagMechanicByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = false,
+                        flagTire = true
+                    )
+                )
+            )
+            val qtdBefore = equipDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getFlagMechanicByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `getFlagTireByIdEquip - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getFlagTireByIdEquip(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getFlagTireByIdEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getFlagTire()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getFlagTireByIdEquip - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = false,
+                        flagTire = false
+                    )
+                )
+            )
+            val qtdBefore = equipDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getFlagTireByIdEquip(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
 }

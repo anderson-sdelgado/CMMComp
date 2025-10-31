@@ -11,7 +11,7 @@ data class ItemMenuPMMRoomModel(
     @PrimaryKey
     val id: Int,
     val title: String,
-    val type: FunctionItemMenu
+    val function: FunctionItemMenu
 )
 
 fun ItemMenuPMMRoomModel.roomModelToEntity(): ItemMenuPMM {
@@ -19,7 +19,7 @@ fun ItemMenuPMMRoomModel.roomModelToEntity(): ItemMenuPMM {
         ItemMenuPMM(
             id = this.id,
             title = this.title,
-            function = this.type
+            function = this.function
         )
     }
 }
@@ -29,7 +29,7 @@ fun ItemMenuPMM.entityItemMenuPMMToRoomModel(): ItemMenuPMMRoomModel {
         ItemMenuPMMRoomModel(
             id = this.id,
             title = this.title,
-            type = this.function
+            function = this.function
         )
     }
 }

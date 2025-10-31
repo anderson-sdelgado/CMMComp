@@ -8,5 +8,4 @@ interface FunctionStopRepository {
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<FunctionStop>>
     suspend fun getIdStopByType(typeStop: TypeStop): Result<Int?>
-
 }

@@ -84,6 +84,17 @@ class MenuNoteViewModel @Inject constructor(
             return@launch
         }
         val list = result.getOrNull()!!
+        if(list.isEmpty()){
+            val failure = "MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!"
+            Timber.e(failure)
+            _uiState.update {
+                it.copy(
+                    flagDialog = true,
+                    failure = failure
+                )
+            }
+            return@launch
+        }
         val itemList = list.filter { it.type == TypeView.ITEM }
         val textButtonReturn = list.filter { it.type == TypeView.BUTTON }[0].title
         val itemMenuModel = itemList.map { entity ->
@@ -120,9 +131,7 @@ class MenuNoteViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false
+                    failure = failure
                 )
             }
             return@launch

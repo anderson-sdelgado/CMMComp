@@ -471,7 +471,25 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun checkNoteHasByIdStop(idStop: Int): Result<Boolean> {
-        TODO("Not yet implemented")
+        val resultGetId = headerMotoMecRoomDatasource.getIdByHeaderOpen()
+        if (resultGetId.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = resultGetId.exceptionOrNull()!!
+            )
+        }
+        val idHeader = resultGetId.getOrNull()!!
+        val result = noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
+            idStop,
+            idHeader
+        )
+        if (result.isFailure) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = result.exceptionOrNull()!!
+            )
+        }
+        return result
     }
 
 }

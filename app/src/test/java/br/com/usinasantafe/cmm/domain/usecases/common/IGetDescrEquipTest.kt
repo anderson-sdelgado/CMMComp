@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -13,20 +14,20 @@ import org.mockito.kotlin.whenever
 class IGetDescrEquipTest {
 
     private val equipRepository = mock<EquipRepository>()
-    private val configRepository = mock<ConfigRepository>()
+    private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = IGetDescrEquip(
-        configRepository = configRepository,
-        equipRepository = equipRepository
+        equipRepository = equipRepository,
+        motoMecRepository = motoMecRepository
     )
 
     @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
+    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
         runTest {
             whenever(
-                configRepository.get()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 resultFailure(
-                    "ConfigRepository.get",
+                    "MotoMecRepository.getIdEquipHeader",
                     "-",
                     Exception()
                 )
@@ -38,7 +39,7 @@ class IGetDescrEquipTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetDescrEquip -> ConfigRepository.get"
+                "IGetDescrEquip -> MotoMecRepository.getIdEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -50,13 +51,9 @@ class IGetDescrEquipTest {
     fun `Check return failure if have error in EquipRepository getDescr`() =
         runTest {
             whenever(
-                configRepository.get()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 1,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 equipRepository.getDescrByIdEquip(1)
@@ -86,13 +83,9 @@ class IGetDescrEquipTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                configRepository.get()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 1,
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 equipRepository.getDescrByIdEquip(1)

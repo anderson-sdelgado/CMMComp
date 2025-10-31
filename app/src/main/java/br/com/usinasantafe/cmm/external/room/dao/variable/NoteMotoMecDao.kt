@@ -39,4 +39,7 @@ interface NoteMotoMecDao {
     @Query("SELECT * FROM $TB_NOTE_MOTO_MEC WHERE id = :id")
     suspend fun getById(id: Int): NoteMotoMecRoomModel
 
+    @Query("SELECT COUNT(id) FROM $TB_NOTE_MOTO_MEC WHERE idStop = :idStop AND idHeader = :idHeader")
+    suspend fun countByIdStopAndIdHeader(idStop: Int, idHeader: Int): Int
+
 }

@@ -2131,4 +2131,93 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `checkNoteHasByIdStop - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByHeaderOpen`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkNoteHasByIdStop(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.checkNoteHasByIdStop -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkNoteHasByIdStop - Check return failure if have error in NoteMotoMecRoomDatasource checkHasByIdStop`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
+                    idStop = 1,
+                    idHeader = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "INoteMotoMecRoomDatasource.checkHasByIdStop",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.checkNoteHasByIdStop(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.checkNoteHasByIdStop -> INoteMotoMecRoomDatasource.checkHasByIdStop"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `checkNoteHasByIdStop - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
+                    idStop = 1,
+                    idHeader = 1
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.checkNoteHasByIdStop(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

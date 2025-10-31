@@ -147,4 +147,39 @@ class IFunctionStopRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getIdStopByType - Check execution correct if not have row fielded`() =
+        runTest {
+            val result = datasource.getIdStopByType(TypeStop.REEL)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+    @Test
+    fun `getIdStopByType - Check execution correct if have row fielded`() =
+        runTest {
+            functionStopDao.insertAll(
+                listOf(
+                    FunctionStopRoomModel(
+                        idFunctionStop = 1,
+                        idStop = 1,
+                        typeStop = TypeStop.REEL,
+                    ),
+                )
+            )
+            val result = datasource.getIdStopByType(TypeStop.REEL)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                1
+            )
+        }
 }

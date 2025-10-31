@@ -28,18 +28,3 @@ fun HeaderMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): Header
         )
     }
 }
-
-fun HeaderMotoMec.entityToSharedPreferencesModel(): HeaderMotoMecSharedPreferencesModel {
-    return with(this) {
-        HeaderMotoMecSharedPreferencesModel(
-            regOperator = regOperator,
-            idEquip = idEquip,
-            typeEquip = typeEquip,
-            idTurn = idTurn,
-            nroOS = nroOS,
-            idActivity = idActivity,
-            hourMeter = hourMeter,
-            statusCon = statusCon
-        )
-    }
-}

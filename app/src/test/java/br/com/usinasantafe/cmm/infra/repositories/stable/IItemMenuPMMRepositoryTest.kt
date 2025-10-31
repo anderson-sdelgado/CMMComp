@@ -29,7 +29,7 @@ class IItemMenuPMMRepositoryTest {
                 ItemMenuPMMRoomModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = FunctionItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             val entityList = listOf(
@@ -70,7 +70,7 @@ class IItemMenuPMMRepositoryTest {
                 ItemMenuPMMRoomModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = FunctionItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 )
             )
             val entityList = listOf(
@@ -258,12 +258,12 @@ class IItemMenuPMMRepositoryTest {
                 ItemMenuPMMRoomModel(
                     id = 1,
                     title = "ITEM 1",
-                    type = FunctionItemMenu.ITEM_NORMAL,
+                    function = FunctionItemMenu.ITEM_NORMAL,
                 ),
                 ItemMenuPMMRoomModel(
                     id = 2,
                     title = "ITEM 2",
-                    type = FunctionItemMenu.FINISH_HEADER,
+                    function = FunctionItemMenu.FINISH_HEADER,
                 )
             )
             val entityList = listOf(

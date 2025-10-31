@@ -10,6 +10,7 @@ import javax.inject.Inject
 class IREquipActivityRoomDatasource @Inject constructor(
     private val rEquipActivityDao: REquipActivityDao
 ) : REquipActivityRoomDatasource {
+
     override suspend fun addAll(list: List<REquipActivityRoomModel>): Result<Boolean> {
         try {
             rEquipActivityDao.insertAll(list)
@@ -45,4 +46,5 @@ class IREquipActivityRoomDatasource @Inject constructor(
             )
         }
     }
+
 }

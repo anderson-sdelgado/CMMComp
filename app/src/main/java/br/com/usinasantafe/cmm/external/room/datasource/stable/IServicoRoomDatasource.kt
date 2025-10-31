@@ -10,6 +10,7 @@ import javax.inject.Inject
 class IServicoRoomDatasource @Inject constructor(
     private val servicoDao: ServicoDao
 ) : ServicoRoomDatasource {
+
     override suspend fun addAll(list: List<ServicoRoomModel>): Result<Boolean> {
         try {
             servicoDao.insertAll(list)
@@ -33,4 +34,5 @@ class IServicoRoomDatasource @Inject constructor(
             )
         }
     }
+
 }

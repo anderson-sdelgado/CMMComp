@@ -53,12 +53,12 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -94,12 +94,12 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                     ItemMenuPMMRoomModel(
                         id = 2,
                         title = "Item 2",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -126,7 +126,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -174,7 +174,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 1,
                         title = "Item 1",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -183,7 +183,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 2,
                         title = "Item 2",
-                        type = FunctionItemMenu.ITEM_NORMAL
+                        function = FunctionItemMenu.ITEM_NORMAL
                     ),
                 )
             )
@@ -192,7 +192,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 3,
                         title = "Item 3",
-                        type = FunctionItemMenu.FINISH_HEADER
+                        function = FunctionItemMenu.FINISH_HEADER
                     ),
                 )
             )
@@ -201,7 +201,7 @@ class IItemMenuPMMRoomDatasourceTest {
                     ItemMenuPMMRoomModel(
                         id = 4,
                         title = "Item 4",
-                        type = FunctionItemMenu.PERFORMANCE
+                        function = FunctionItemMenu.PERFORMANCE
                     ),
                 )
             )
@@ -231,7 +231,7 @@ class IItemMenuPMMRoomDatasourceTest {
                 "Item 1"
             )
             assertEquals(
-                entity1.type,
+                entity1.function,
                 FunctionItemMenu.ITEM_NORMAL
             )
             val entity2 = list[1]
@@ -244,7 +244,7 @@ class IItemMenuPMMRoomDatasourceTest {
                 "Item 2"
             )
             assertEquals(
-                entity2.type,
+                entity2.function,
                 FunctionItemMenu.ITEM_NORMAL
             )
             val entity3 = list[2]
@@ -257,7 +257,7 @@ class IItemMenuPMMRoomDatasourceTest {
                 "Item 3"
             )
             assertEquals(
-                entity3.type,
+                entity3.function,
                 FunctionItemMenu.FINISH_HEADER
             )
         }

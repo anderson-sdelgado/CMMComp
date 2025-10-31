@@ -108,8 +108,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }
@@ -128,8 +127,7 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
             return Result.success(model.idActivity!!)
         } catch (e: Exception){
             return resultFailure(
-                context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
-                message = "-",
+                context = getClassAndMethod(),
                 cause = e
             )
         }

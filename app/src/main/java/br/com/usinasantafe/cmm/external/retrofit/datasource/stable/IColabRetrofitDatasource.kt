@@ -10,6 +10,7 @@ import javax.inject.Inject
 class IColabRetrofitDatasource @Inject constructor(
     private val colabApi: ColabApi
 ) : ColabRetrofitDatasource {
+
     override suspend fun listAll(token: String): Result<List<ColabRetrofitModel>> {
         try {
             val response = colabApi.all(token)
@@ -21,4 +22,5 @@ class IColabRetrofitDatasource @Inject constructor(
             )
         }
     }
+
 }
