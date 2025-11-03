@@ -39,7 +39,8 @@ import java.util.Date
         HeaderMotoMecRoomModel::class,
         NoteMotoMecRoomModel::class,
         HeaderCheckListRoomModel::class,
-        RespItemCheckListRoomModel::class
+        RespItemCheckListRoomModel::class,
+        NoteMechanicRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -72,6 +73,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun noteMotoMecDao(): NoteMotoMecDao
     abstract fun headerCheckListDao(): HeaderCheckListDao
     abstract fun respItemCheckListDao(): RespItemCheckListDao
+    abstract fun noteMechanicDao(): NoteMechanicDao
 }
 
 class Converters {

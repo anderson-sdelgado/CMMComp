@@ -24,4 +24,7 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindCheckListRepository(repository: ICheckListRepository): CheckListRepository
 
+    @Binds
+    @Singleton
+    fun bindMechanicRepository(repository: IMechanicRepository): MechanicRepository
 }

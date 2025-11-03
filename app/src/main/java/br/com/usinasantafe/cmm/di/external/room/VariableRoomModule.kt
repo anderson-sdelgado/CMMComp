@@ -36,4 +36,9 @@ object VariableRoomModule {
         return database.respItemCheckListDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideNoteMechanicDao(database: DatabaseRoom): NoteMechanicDao {
+        return database.noteMechanicDao()
+    }
 }

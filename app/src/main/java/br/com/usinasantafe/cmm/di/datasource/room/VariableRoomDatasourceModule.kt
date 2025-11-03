@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.di.datasource.room
 
 import br.com.usinasantafe.cmm.external.room.datasource.variable.*
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.*
+import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,5 +28,9 @@ interface VariableRoomDatasourceModule {
     @Binds
     @Singleton
     fun bindRespItemCheckListRoomDatasource(dataSource: IRespItemCheckListRoomDatasource): RespItemCheckListRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindNoteMechanicRoomDatasource(dataSource: INoteMechanicRoomDatasource): NoteMechanicRoomDatasource
 
 }

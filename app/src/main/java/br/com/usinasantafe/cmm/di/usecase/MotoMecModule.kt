@@ -95,7 +95,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckNoteHeaderOpen(usecase: ICheckHasNoteHeaderOpen): CheckHasNoteHeaderOpen
+    fun bindCheckNoteHeaderOpen(usecase: ICheckHasNoteMotoMec): CheckHasNoteMotoMec
 
     @Binds
     @Singleton

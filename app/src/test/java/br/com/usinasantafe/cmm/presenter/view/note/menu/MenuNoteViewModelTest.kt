@@ -3,8 +3,9 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteHeaderOpen
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.common.ListItemMenu
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowNote
@@ -26,11 +27,13 @@ class MenuNoteViewModelTest {
 
     private val listItemMenu = mock<ListItemMenu>()
     private val getDescrEquip = mock<GetDescrEquip>()
-    private val checkHasNoteHeaderOpen = mock<CheckHasNoteHeaderOpen>()
+    private val checkHasNoteMotoMec = mock<CheckHasNoteMotoMec>()
+    private val checkHasNoteOpenMechanic = mock<CheckHasNoteOpenMechanic>()
     private val viewModel = MenuNoteViewModel(
         listItemMenu = listItemMenu,
         getDescrEquip = getDescrEquip,
-        checkHasNoteHeaderOpen = checkHasNoteHeaderOpen
+        checkHasNoteMotoMec = checkHasNoteMotoMec,
+        checkHasNoteOpenMechanic = checkHasNoteOpenMechanic
     )
 
     @Test
@@ -160,7 +163,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> Option Invalid!"
+                "MenuNoteViewModel.setSelection -> Option Invalid! -> index: -1, size: 13"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -173,8 +176,71 @@ class MenuNoteViewModelTest {
         }
 
     @Test
+    fun `setSelection - Check return failure if have error in CheckHasNoteOpenMechanic`() =
+        runTest {
+            whenever(
+                checkHasNoteOpenMechanic()
+            ).thenReturn(
+                resultFailure(
+                    context = "CheckHasNoteOpenMechanic",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.setSelection(1)
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.setSelection -> CheckHasNoteOpenMechanic -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
+            )
+        }
+
+    @Test
+    fun `setSelection - Check return failure if have CheckHasNoteOpenMechanic return true`() =
+        runTest {
+            whenever(
+                checkHasNoteOpenMechanic()
+            ).thenReturn(
+                Result.success(true)
+            )
+            viewModel.setSelection(1)
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.setSelection -> checkHasNoteOpenMechanic -> Note mechanic open!"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.NOTE_MECHANICAL_OPEN
+            )
+        }
+
+    @Test
     fun `setSelection - Check return correct if function execute successfully`() =
         runTest {
+            whenever(
+                checkHasNoteOpenMechanic()
+            ).thenReturn(
+                Result.success(false)
+            )
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -190,7 +256,7 @@ class MenuNoteViewModelTest {
     fun `onButtonReturn - Check return failure if have error in CheckNoteHeaderOpen`() =
         runTest {
             whenever(
-                checkHasNoteHeaderOpen()
+                checkHasNoteMotoMec()
             ).thenReturn(
                 resultFailure(
                     context = "CheckNoteHeaderOpen",
@@ -221,7 +287,7 @@ class MenuNoteViewModelTest {
     fun `onButtonReturn - Check return failure Header Empty if CheckNoteHeaderOpen return false`() =
         runTest {
             whenever(
-                checkHasNoteHeaderOpen()
+                checkHasNoteMotoMec()
             ).thenReturn(
                 Result.success(false)
             )
@@ -248,7 +314,7 @@ class MenuNoteViewModelTest {
     fun `onButtonReturn - Check return access true and FlowMenu FINISH if CheckNoteHeaderOpen return true`() =
         runTest {
             whenever(
-                checkHasNoteHeaderOpen()
+                checkHasNoteMotoMec()
             ).thenReturn(
                 Result.success(true)
             )

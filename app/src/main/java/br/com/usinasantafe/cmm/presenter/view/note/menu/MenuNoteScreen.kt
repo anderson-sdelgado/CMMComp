@@ -132,6 +132,7 @@ fun MenuNoteContent(
                     failure
                 )
                 Errors.HEADER_EMPTY -> stringResource(id = R.string.text_header_empty)
+                Errors.NOTE_MECHANICAL_OPEN -> stringResource(id = R.string.text_note_mechanic_open)
                 else -> stringResource(
                     id = R.string.text_failure,
                     failure
@@ -272,7 +273,6 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun MenuHeaderPagePreviewHeaderEmpty() {
@@ -299,6 +299,41 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 failure = "Failure",
                 setCloseDialog = {},
                 errors = Errors.HEADER_EMPTY,
+                onNavOS = {},
+                onNavActivityList = {},
+                onNavMeasure = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreviewNoteMechanicOpen() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemMenuModelList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        title = "TRABALHANDO",
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        title = "PARADO",
+                    ),
+                ),
+                setSelection = {},
+                textButtonReturn = "FINALIZAR BOLETIM",
+                onButtonReturn = {},
+                flowNote = FlowNote.WORK,
+                flagAccess = false,
+                flagDialog = true,
+                failure = "Failure",
+                setCloseDialog = {},
+                errors = Errors.NOTE_MECHANICAL_OPEN,
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
