@@ -22,7 +22,7 @@ import java.util.Date
         FunctionActivityRoomModel::class,
         FunctionStopRoomModel::class,
         ItemCheckListRoomModel::class,
-        ItemMenuPMMRoomModel::class,
+        ItemMenuRoomModel::class,
         ItemOSMecanRoomModel::class,
         LeiraRoomModel::class,
         MotoMecRoomModel::class,
@@ -56,7 +56,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun functionStopDao(): FunctionStopDao
     abstract fun itemCheckListDao(): ItemCheckListDao
     abstract fun itemOSMecanDao(): ItemOSMecanDao
-    abstract fun itemMenuPMMDao(): ItemMenuPMMDao
+    abstract fun itemMenuPMMDao(): ItemMenuDao
     abstract fun leiraDao(): LeiraDao
     abstract fun motoMecDao(): MotoMecDao
     abstract fun osDao(): OSDao

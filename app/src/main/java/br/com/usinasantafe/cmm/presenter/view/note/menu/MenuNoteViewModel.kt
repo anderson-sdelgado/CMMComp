@@ -4,12 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
-import br.com.usinasantafe.cmm.domain.usecases.common.ListItemMenu
+import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeHeaderMotoMec
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
+import br.com.usinasantafe.cmm.presenter.model.functionListPMM
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowNote
-import br.com.usinasantafe.cmm.utils.TypeView
+import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,12 +23,13 @@ import javax.inject.Inject
 data class MenuNoteState(
     val descrEquip: String = "",
     val menuList: List<ItemMenuModel> = listOf(),
-    val textButtonReturn: String = "",
-    val flowNote: FlowNote = FlowNote.WORK,
+    val checkButton: Boolean = true,
+    val function: Pair<Int, String>? = null,
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
     val errors: Errors = Errors.EXCEPTION,
+    val flavorApp: String = "",
 )
 
 @HiltViewModel
@@ -35,7 +37,8 @@ class MenuNoteViewModel @Inject constructor(
     private val listItemMenu: ListItemMenu,
     private val getDescrEquip: GetDescrEquip,
     private val checkHasNoteMotoMec: CheckHasNoteMotoMec,
-    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic
+    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic,
+    private val checkTypeHeaderMotoMec: CheckTypeHeaderMotoMec
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuNoteState())
@@ -44,6 +47,47 @@ class MenuNoteViewModel @Inject constructor(
     fun setCloseDialog() {
         _uiState.update {
             it.copy(flagDialog = false)
+        }
+    }
+
+    fun menuList(flavor: String) = viewModelScope.launch {
+        _uiState.update {
+            it.copy(flavorApp = flavor)
+        }
+        val result = listItemMenu(flavor)
+        if(result.isFailure) {
+            val error = result.exceptionOrNull()!!
+            val failure =
+                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+            Timber.e(failure)
+            _uiState.update {
+                it.copy(
+                    flagDialog = true,
+                    failure = failure,
+                    errors = Errors.EXCEPTION,
+                    flagAccess = false
+                )
+            }
+            return@launch
+        }
+        val menuList = result.getOrNull()!!
+        if(menuList.isEmpty()){
+            val failure = "MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!"
+            Timber.e(failure)
+            _uiState.update {
+                it.copy(
+                    flagDialog = true,
+                    failure = failure,
+                    errors = Errors.EXCEPTION,
+                    flagAccess = false
+                )
+            }
+            return@launch
+        }
+        _uiState.update {
+            it.copy(
+                menuList = menuList,
+            )
         }
     }
 
@@ -72,8 +116,8 @@ class MenuNoteViewModel @Inject constructor(
         }
     }
 
-    fun menuList() = viewModelScope.launch {
-        val result = listItemMenu()
+    fun checkButton() = viewModelScope.launch {
+        val result = checkTypeHeaderMotoMec()
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =
@@ -89,79 +133,18 @@ class MenuNoteViewModel @Inject constructor(
             }
             return@launch
         }
-        val list = result.getOrNull()!!
-        if(list.isEmpty()){
-            val failure = "MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false
-                )
-            }
-            return@launch
-        }
-        val itemList = list.filter { it.type == TypeView.ITEM }
-        val textButtonReturn = list.filter { it.type == TypeView.BUTTON }[0].title
-        val itemMenuModel = itemList.map { entity ->
-            ItemMenuModel(
-                id = entity.id,
-                title = entity.title
-            )
-        }
+        val check = result.getOrNull()!!
         _uiState.update {
             it.copy(
-                menuList = itemMenuModel,
-                textButtonReturn = textButtonReturn
+                checkButton = check,
             )
         }
     }
 
     fun setSelection(id: Int)  = viewModelScope.launch {
-        try {
-            val flowNote = FlowNote.entries[id - 1]
-            if(flowNote != FlowNote.FINISH_MECHANICAL) {
-                val result = checkHasNoteOpenMechanic()
-                if(result.isFailure) {
-                    val error = result.exceptionOrNull()!!
-                    val failure =
-                        "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.EXCEPTION,
-                            flagAccess = false
-                        )
-                    }
-                    return@launch
-                }
-                if(result.getOrNull() == true) {
-                    val failure = "MenuNoteViewModel.setSelection -> checkHasNoteOpenMechanic -> Note mechanic open!"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.NOTE_MECHANICAL_OPEN,
-                            flagAccess = false
-                        )
-                    }
-                    return@launch
-                }
-            }
-            _uiState.update {
-                it.copy(
-                    flagAccess = true,
-                    flowNote = flowNote
-                )
-            }
-        } catch (e: Exception) {
-            val failure =
-                "${getClassAndMethod()} -> Option Invalid! -> ${e.message}"
+        val item = _uiState.value.menuList.find { it.id == id }
+        if (item == null) {
+            val failure = "${getClassAndMethod()} -> Item with id = $id not found in menuList"
             Timber.e(failure)
             _uiState.update {
                 it.copy(
@@ -172,6 +155,57 @@ class MenuNoteViewModel @Inject constructor(
                 )
             }
             return@launch
+        }
+        val function = functionListPMM.find { it.first == item.function.first }
+        if (function == null) {
+            val failure = "${getClassAndMethod()} -> idFunction = ${item.function.first} not found in functionListPMM"
+            Timber.e(failure)
+            _uiState.update {
+                it.copy(
+                    flagDialog = true,
+                    failure = failure,
+                    errors = Errors.INVALID,
+                    flagAccess = false
+                )
+            }
+            return@launch
+        }
+        if (function.second != FINISH_MECHANICAL){
+            val result = checkHasNoteOpenMechanic()
+            if(result.isFailure) {
+                val error = result.exceptionOrNull()!!
+                val failure =
+                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                Timber.e(failure)
+                _uiState.update {
+                    it.copy(
+                        flagDialog = true,
+                        failure = failure,
+                        errors = Errors.EXCEPTION,
+                        flagAccess = false
+                    )
+                }
+                return@launch
+            }
+            if(result.getOrNull() == true) {
+                val failure = "MenuNoteViewModel.setSelection -> checkHasNoteOpenMechanic -> Note mechanic open!"
+                Timber.e(failure)
+                _uiState.update {
+                    it.copy(
+                        flagDialog = true,
+                        failure = failure,
+                        errors = Errors.NOTE_MECHANICAL_OPEN,
+                        flagAccess = false
+                    )
+                }
+                return@launch
+            }
+        }
+        _uiState.update {
+            it.copy(
+                flagAccess = true,
+                function = function
+            )
         }
     }
 
@@ -209,7 +243,6 @@ class MenuNoteViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 flagAccess = true,
-                flowNote = FlowNote.FINISH_HEADER
             )
         }
     }

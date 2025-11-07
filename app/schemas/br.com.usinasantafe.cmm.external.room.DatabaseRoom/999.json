@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "b4acb89d746a14a29ac6124fe88ebfcc",
+    "identityHash": "c291c17f8afdd56b8c46a01a8163d247",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -335,8 +335,8 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_item_menu_pmm",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `title` TEXT NOT NULL, `function` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "tableName": "tb_item_menu",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `descr` TEXT NOT NULL, `idType` INTEGER NOT NULL, `pos` INTEGER NOT NULL, `idFunction` INTEGER NOT NULL, `idApp` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -345,15 +345,33 @@
             "notNull": true
           },
           {
-            "fieldPath": "title",
-            "columnName": "title",
+            "fieldPath": "descr",
+            "columnName": "descr",
             "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "function",
-            "columnName": "function",
-            "affinity": "TEXT",
+            "fieldPath": "idType",
+            "columnName": "idType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pos",
+            "columnName": "pos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idFunction",
+            "columnName": "idFunction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idApp",
+            "columnName": "idApp",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -1210,7 +1228,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b4acb89d746a14a29ac6124fe88ebfcc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c291c17f8afdd56b8c46a01a8163d247')"
     ]
   }
 }

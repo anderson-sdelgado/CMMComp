@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -59,6 +60,7 @@ fun InitialMenuScreen(
     }
 }
 
+@SuppressLint("ContextCastToActivity")
 @Composable
 fun InitialMenuContent(
     statusSend: StatusSend,

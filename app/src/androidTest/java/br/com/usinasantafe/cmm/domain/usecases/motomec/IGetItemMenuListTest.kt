@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.usecases.common.IListItemMenu
 import br.com.usinasantafe.cmm.utils.TypeView
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -23,7 +22,7 @@ class IGetItemMenuListTest {
     fun check_return_true_and_data_returned() =
         runTest {
             hiltRule.inject()
-            val result = usecase()
+            val result = usecase("pmm")
             assertEquals(
                 result.isSuccess,
                 true
@@ -39,7 +38,7 @@ class IGetItemMenuListTest {
                 1
             )
             assertEquals(
-                entity.title,
+                entity.descr,
                 "TRABALHANDO"
             )
             assertEquals(

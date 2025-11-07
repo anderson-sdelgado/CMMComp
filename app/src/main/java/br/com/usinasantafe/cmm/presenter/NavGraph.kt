@@ -228,7 +228,8 @@ fun NavigationGraph(
                     navActions.navigateToMeasureHeader(
                         flowApp = FlowApp.HEADER_FINISH.ordinal
                     )
-                }
+                },
+                onNavReturnList = {}
             )
         }
 

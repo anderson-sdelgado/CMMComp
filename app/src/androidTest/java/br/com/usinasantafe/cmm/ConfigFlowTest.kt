@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuPMMDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
@@ -26,14 +26,13 @@ import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TE
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.utils.TypeActivity
-import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.TypeStop
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_STOP
-import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU_PMM
+import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
@@ -101,7 +100,7 @@ class ConfigFlowTest {
     lateinit var functionStopDao: FunctionStopDao
 
     @Inject
-    lateinit var itemMenuPMMDao: ItemMenuPMMDao
+    lateinit var itemMenuDao: ItemMenuDao
 
     companion object {
 
@@ -153,8 +152,8 @@ class ConfigFlowTest {
 
         private val resultItemMenuPMM = """
             [
-              {"id":1,"title":"ITEM 1","function":1},
-              {"id":2,"title":"ITEM 2","function":1}
+              {"id":1,"descr":"ITEM 1","idType": 1,"pos": 1,"idFunction": 1,"idApp": 1},
+              {"id":2,"descr":"ITEM 2","idType": 1,"pos": 2,"idFunction": 2,"idApp": 1}
             ]
         """.trimIndent()
 
@@ -201,7 +200,7 @@ class ConfigFlowTest {
                         "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                         "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                         "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                        "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                        "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenuPMM)
                         "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                         "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                         "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
@@ -606,7 +605,7 @@ class ConfigFlowTest {
             "Verificar Freios"
         )
 
-        val itemMenuPMMRoomModelList = itemMenuPMMDao.all()
+        val itemMenuPMMRoomModelList = itemMenuDao.all()
         assertEquals(
             itemMenuPMMRoomModelList.size,
             2
@@ -617,12 +616,24 @@ class ConfigFlowTest {
             1
         )
         assertEquals(
-            itemMenuPMMRoomModel1.title,
+            itemMenuPMMRoomModel1.descr,
             "ITEM 1"
         )
         assertEquals(
-            itemMenuPMMRoomModel1.function,
-            FunctionItemMenu.ITEM_NORMAL
+            itemMenuPMMRoomModel1.idType,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.pos,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.idFunction,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.idApp,
+            1
         )
         val itemMenuPMMRoomModel2 = itemMenuPMMRoomModelList[1]
         assertEquals(
@@ -630,12 +641,24 @@ class ConfigFlowTest {
             2
         )
         assertEquals(
-            itemMenuPMMRoomModel2.title,
+            itemMenuPMMRoomModel2.descr,
             "ITEM 2"
         )
         assertEquals(
-            itemMenuPMMRoomModel2.function,
-            FunctionItemMenu.ITEM_NORMAL
+            itemMenuPMMRoomModel2.idType,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.pos,
+            2
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.idFunction,
+            2
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.idApp,
+            1
         )
 
         val rActivityStopRoomModelList = rActivityStopDao.all()

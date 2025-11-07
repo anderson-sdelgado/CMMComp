@@ -106,6 +106,6 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindItemMenuPMMRetrofitDatasource(dataSource: IItemMenuPMMRetrofitDatasource): ItemMenuPMMRetrofitDatasource
+    fun bindItemMenuPMMRetrofitDatasource(dataSource: IItemMenuRetrofitDatasource): ItemMenuRetrofitDatasource
 
 }

@@ -1,19 +1,5 @@
 package br.com.usinasantafe.cmm.di.usecase
 
-import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
-import br.com.usinasantafe.cmm.domain.usecases.common.FlowAppOpen
-import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
-import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.common.ICheckNroOS
-import br.com.usinasantafe.cmm.domain.usecases.common.IFlowAppOpen
-import br.com.usinasantafe.cmm.domain.usecases.common.IListActivity
-import br.com.usinasantafe.cmm.domain.usecases.common.IGetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.common.IListTurn
-import br.com.usinasantafe.cmm.domain.usecases.common.ISetIdActivityCommon
-import br.com.usinasantafe.cmm.domain.usecases.common.ISetNroOSCommon
-import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
-import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
-import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
 import br.com.usinasantafe.cmm.domain.usecases.motomec.*
 import dagger.Binds
 import dagger.Module
@@ -32,10 +18,6 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindSetRegOperator(usecase: ISetRegOperator): SetRegOperator
-
-    @Binds
-    @Singleton
-    fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
 
     @Binds
     @Singleton
@@ -75,10 +57,6 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckFlowOpen(usecase: IFlowAppOpen): FlowAppOpen
-
-    @Binds
-    @Singleton
     fun bindGetNroOSHeader(usecase: IGetNroOSHeader): GetNroOSHeader
 
     @Binds
@@ -100,5 +78,17 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindHistoryList(usecase: IHistoryList): HistoryList
+
+    @Binds
+    @Singleton
+    fun bindGetItemMenuList(usecase: IListItemMenu): ListItemMenu
+
+    @Binds
+    @Singleton
+    fun bindGetStopList(usecase: IListStop): ListStop
+
+    @Binds
+    @Singleton
+    fun bindCheckTypeHeaderMotoMec(usecase: ICheckTypeHeaderMotoMec): CheckTypeHeaderMotoMec
 
 }

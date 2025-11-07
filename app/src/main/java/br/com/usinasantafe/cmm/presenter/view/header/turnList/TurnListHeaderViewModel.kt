@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.domain.usecases.common.ListTurn
+import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors

@@ -89,7 +89,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableItemMenuPMM(usecase: IUpdateTableItemMenuPMM): UpdateTableItemMenuPMM
+    fun bindUpdateTableItemMenuPMM(usecase: IUpdateTableItemMenu): UpdateTableItemMenu
 
     @Binds
     @Singleton

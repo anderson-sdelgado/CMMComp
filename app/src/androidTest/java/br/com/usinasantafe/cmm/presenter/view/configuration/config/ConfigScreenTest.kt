@@ -15,7 +15,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuPMMDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
@@ -25,14 +25,13 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.utils.FlagUpdate
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.TypeActivity
-import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.TypeStop
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_COLAB
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_STOP
-import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU_PMM
+import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
@@ -97,7 +96,7 @@ class ConfigScreenTest {
     lateinit var functionStopDao: FunctionStopDao
 
     @Inject
-    lateinit var itemMenuPMMDao: ItemMenuPMMDao
+    lateinit var itemMenuDao: ItemMenuDao
 
     private val resultTokenFailure = """{"idServ":1a,"idEquip":1}""".trimIndent()
 
@@ -229,24 +228,24 @@ class ConfigScreenTest {
         ]
     """.trimIndent()
 
-    private val resultItemMenuPMMFailure = """
+    private val resultItemMenuFailure = """
         [
-          {"id":"1a","title":"ITEM 1","function":1},
-          {"id":2,"title":"ITEM 2","function":1}
+          {"id":"1a","descr":"ITEM 1","idType": 1,"pos": 1,"idFunction": 1,"idApp": 1},
+          {"id":2,"descr":"ITEM 2","idType": 1,"pos": 2,"idFunction": 2,"idApp": 1}
         ]
     """.trimIndent()
 
-    private val resultItemMenuPMMRepeated = """
+    private val resultItemMenuRepeated = """
         [
-          {"id":1,"title":"ITEM 1","function":1},
-          {"id":1,"title":"ITEM 1","function":1}
+          {"id":1,"descr":"ITEM 1","idType": 1,"pos": 1,"idFunction": 1,"idApp": 1},
+          {"id":1,"descr":"ITEM 1","idType": 1,"pos": 2,"idFunction": 2,"idApp": 1}
         ]
     """.trimIndent()
 
-    private val resultItemMenuPMM = """
+    private val resultItemMenu = """
         [
-          {"id":1,"title":"ITEM 1","function":1},
-          {"id":2,"title":"ITEM 2","function":1}
+          {"id":1,"descr":"ITEM 1","idType": 1,"pos": 1,"idFunction": 1,"idApp": 1},
+          {"id":2,"descr":"ITEM 2","idType": 1,"pos": 2,"idFunction": 2,"idApp": 1}
         ]
     """.trimIndent()
 
@@ -331,7 +330,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -352,7 +351,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -373,7 +372,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -394,7 +393,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -415,7 +414,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -436,7 +435,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -457,7 +456,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -478,7 +477,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -499,7 +498,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -520,7 +519,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -541,7 +540,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody("")
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -562,7 +561,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivityFailure)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -583,7 +582,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivityRepeated)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -604,7 +603,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody("")
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -625,7 +624,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStopFailure)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -646,7 +645,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStopRepeated)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -667,7 +666,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody("")
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -688,7 +687,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckListFailure)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -709,7 +708,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckListRepeated)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -730,7 +729,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody("")
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody("")
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -740,7 +739,7 @@ class ConfigScreenTest {
         }
     }
 
-    private val dispatcherItemMenuPMMFailure: Dispatcher = object : Dispatcher() {
+    private val dispatcherItemMenuFailure: Dispatcher = object : Dispatcher() {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
@@ -751,7 +750,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMMFailure)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenuFailure)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -761,7 +760,7 @@ class ConfigScreenTest {
         }
     }
 
-    private val dispatcherItemMenuPMMRepeated: Dispatcher = object : Dispatcher() {
+    private val dispatcherItemMenuRepeated: Dispatcher = object : Dispatcher() {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
@@ -772,7 +771,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMMRepeated)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenuRepeated)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -782,7 +781,7 @@ class ConfigScreenTest {
         }
     }
 
-    private val dispatcherItemMenuPMM: Dispatcher = object : Dispatcher() {
+    private val dispatcherItemMenu: Dispatcher = object : Dispatcher() {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
             return when (request.path) {
@@ -793,7 +792,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody("")
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -814,7 +813,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStopFailure)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -835,7 +834,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody("")
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -856,7 +855,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivityFailure)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -877,7 +876,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody("")
@@ -898,7 +897,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopFailure)
@@ -919,7 +918,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopRepeated)
@@ -940,7 +939,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
@@ -961,7 +960,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
@@ -982,7 +981,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
@@ -1003,7 +1002,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                 "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                 "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
-                "/$WEB_ALL_ITEM_MENU_PMM"  -> MockResponse().setBody(resultItemMenuPMM)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
@@ -1160,7 +1159,7 @@ class ConfigScreenTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "PMM",
+                    app = "ECM",
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.OUTDATED
                 )
@@ -1436,7 +1435,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableEquipByIdEquip -> IEquipRepository.addAll -> IEquipRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.idEquip (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableEquipByIdEquip -> IEquipRepository.addAll -> IEquipRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_equip.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
 
             composeTestRule.waitUntilTimeout()
         }
@@ -1506,7 +1505,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableFunctionActivity -> IFunctionActivityRepository.addAll -> IFunctionActivityRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_function_activity.idFunctionActivity (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableFunctionActivity -> IFunctionActivityRepository.listAll -> IFunctionActivityRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
 
             composeTestRule.waitUntilTimeout()
         }
@@ -1778,7 +1777,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.listAll -> IItemMenuPMMRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenu -> IItemMenuRepository.listAll -> IItemMenuRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
 
             composeTestRule.waitUntilTimeout()
 
@@ -1788,13 +1787,13 @@ class ConfigScreenTest {
         }
 
     @Test
-    fun check_open_screen_and_msg_if_web_service_return_data_item_menu_pmm_incorrect() =
+    fun check_open_screen_and_msg_if_web_service_return_data_item_menu_incorrect() =
         runTest(
             timeout = 1.minutes
         ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherItemMenuPMMFailure
+            mockWebServer.dispatcher = dispatcherItemMenuFailure
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -1815,19 +1814,19 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.listAll -> IItemMenuPMMRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenu -> IItemMenuRepository.listAll -> IItemMenuRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
 
             composeTestRule.waitUntilTimeout()
         }
 
     @Test
-    fun check_open_screen_and_msg_if_web_service_return_data_item_menu_pmm_repeated() =
+    fun check_open_screen_and_msg_if_web_service_return_data_item_menu_repeated() =
         runTest(
             timeout = 1.minutes
         ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherItemMenuPMMRepeated
+            mockWebServer.dispatcher = dispatcherItemMenuRepeated
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -1848,7 +1847,7 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenuPMM -> IItemMenuPMMRepository.addAll -> IItemMenuPMMRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_item_menu_pmm.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableItemMenu -> IItemMenuRepository.addAll -> IItemMenuRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_item_menu.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
 
             composeTestRule.waitUntilTimeout()
         }
@@ -1860,7 +1859,7 @@ class ConfigScreenTest {
         ) {
 
             val mockWebServer = MockWebServer()
-            mockWebServer.dispatcher = dispatcherItemMenuPMM
+            mockWebServer.dispatcher = dispatcherItemMenu
             mockWebServer.start()
 
             BaseUrlModuleTest.url = mockWebServer.url("/").toString()
@@ -2491,7 +2490,7 @@ class ConfigScreenTest {
 
         if(level == 6) return
 
-        val itemMenuPMMRoomModelList = itemMenuPMMDao.all()
+        val itemMenuPMMRoomModelList = itemMenuDao.all()
         assertEquals(
             itemMenuPMMRoomModelList.size,
             2
@@ -2502,12 +2501,24 @@ class ConfigScreenTest {
             1
         )
         assertEquals(
-            itemMenuPMMRoomModel1.title,
+            itemMenuPMMRoomModel1.descr,
             "ITEM 1"
         )
         assertEquals(
-            itemMenuPMMRoomModel1.function,
-            FunctionItemMenu.ITEM_NORMAL
+            itemMenuPMMRoomModel1.idType,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.pos,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.idFunction,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel1.idApp,
+            1
         )
         val itemMenuPMMRoomModel2 = itemMenuPMMRoomModelList[1]
         assertEquals(
@@ -2515,12 +2526,24 @@ class ConfigScreenTest {
             2
         )
         assertEquals(
-            itemMenuPMMRoomModel2.title,
+            itemMenuPMMRoomModel2.descr,
             "ITEM 2"
         )
         assertEquals(
-            itemMenuPMMRoomModel2.function,
-            FunctionItemMenu.ITEM_NORMAL
+            itemMenuPMMRoomModel2.idType,
+            1
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.pos,
+            2
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.idFunction,
+            2
+        )
+        assertEquals(
+            itemMenuPMMRoomModel2.idApp,
+            1
         )
 
         if(level == 7) return

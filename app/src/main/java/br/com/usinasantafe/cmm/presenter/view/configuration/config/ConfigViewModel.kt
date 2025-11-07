@@ -13,7 +13,7 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenuPMM
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
@@ -85,7 +85,7 @@ class ConfigViewModel @Inject constructor(
     private val updateTableFunctionActivity: UpdateTableFunctionActivity,
     private val updateTableFunctionStop: UpdateTableFunctionStop,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
-    private val updateTableItemMenuPMM: UpdateTableItemMenuPMM,
+    private val updateTableItemMenu: UpdateTableItemMenu,
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
     private val updateTableStop: UpdateTableStop,
@@ -370,7 +370,7 @@ class ConfigViewModel @Inject constructor(
             emit(newState)
         }
         if (lastEmittedState!!.flagFailure) return@flow
-        updateTableItemMenuPMM(
+        updateTableItemMenu(
             sizeAll = sizeAllUpdate,
             count = 7f
         ).collect {

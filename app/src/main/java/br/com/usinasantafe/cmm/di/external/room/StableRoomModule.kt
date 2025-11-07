@@ -146,7 +146,7 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideItemMenuPMMDao(database: DatabaseRoom): ItemMenuPMMDao {
+    fun provideItemMenuPMMDao(database: DatabaseRoom): ItemMenuDao {
         return database.itemMenuPMMDao()
     }
 

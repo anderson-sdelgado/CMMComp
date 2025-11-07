@@ -3,9 +3,9 @@ package br.com.usinasantafe.cmm.presenter.view.common.os
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
-import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOSCommon
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp

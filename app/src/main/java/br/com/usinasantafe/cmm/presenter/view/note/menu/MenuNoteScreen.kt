@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.usinasantafe.cmm.BuildConfig
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
@@ -26,22 +27,24 @@ import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowNote
-import br.com.usinasantafe.cmm.utils.FunctionItemMenu
+import br.com.usinasantafe.cmm.utils.STOP
+import br.com.usinasantafe.cmm.utils.WORK
 
 @Composable
 fun MenuNoteScreen(
     viewModel: MenuNoteViewModel = hiltViewModel(),
     onNavOS: () -> Unit,
     onNavActivityList: () -> Unit,
-    onNavMeasure: () -> Unit
+    onNavMeasure: () -> Unit,
+    onNavReturnList: () -> Unit,
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.menuList()
+                viewModel.menuList(BuildConfig.FLAVOR_app)
+                viewModel.checkButton()
                 viewModel.descrEquip()
             }
 
@@ -49,9 +52,9 @@ fun MenuNoteScreen(
                 descrEquip = uiState.descrEquip,
                 itemMenuModelList = uiState.menuList,
                 setSelection = viewModel::setSelection,
-                textButtonReturn = uiState.textButtonReturn,
+                checkButton = uiState.checkButton,
                 onButtonReturn = viewModel::onButtonReturn,
-                flowNote = uiState.flowNote,
+                function = uiState.function,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
@@ -60,6 +63,7 @@ fun MenuNoteScreen(
                 onNavOS = onNavOS,
                 onNavActivityList = onNavActivityList,
                 onNavMeasure = onNavMeasure,
+                onNavReturnList = onNavReturnList,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -71,9 +75,9 @@ fun MenuNoteContent(
     descrEquip: String,
     itemMenuModelList: List<ItemMenuModel>,
     setSelection: (Int) -> Unit,
-    textButtonReturn: String,
+    checkButton: Boolean,
     onButtonReturn: () -> Unit,
-    flowNote: FlowNote,
+    function: Pair<Int, String>?,
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
@@ -82,6 +86,7 @@ fun MenuNoteContent(
     onNavOS: () -> Unit,
     onNavActivityList: () -> Unit,
     onNavMeasure: () -> Unit,
+    onNavReturnList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -107,7 +112,7 @@ fun MenuNoteContent(
         ) {
             items(itemMenuModelList) { item ->
                 ItemListDesign(
-                    text = item.title,
+                    text = item.descr,
                     setActionItem = {
                         setSelection(item.id)
                     },
@@ -120,7 +125,11 @@ fun MenuNoteContent(
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
-                text = textButtonReturn
+                text = if(checkButton) {
+                    stringResource(id = R.string.text_button_finish_header)
+                } else {
+                    stringResource(id = R.string.text_button_return_list)
+                },
             )
         }
         BackHandler {}
@@ -147,25 +156,34 @@ fun MenuNoteContent(
 
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
-            when(flowNote){
-                FlowNote.WORK -> onNavOS()
-                FlowNote.STOP -> onNavActivityList()
-                FlowNote.FINISH_HEADER -> onNavMeasure()
-                FlowNote.PERFORMANCE -> TODO()
-                FlowNote.TRANSHIPMENT -> TODO()
-                FlowNote.IMPLEMENT -> TODO()
-                FlowNote.HOSE_COLLECTION -> TODO()
-                FlowNote.NOTE_MECHANICAL -> TODO()
-                FlowNote.FINISH_MECHANICAL -> TODO()
-                FlowNote.TIRE_INFLATION -> TODO()
-                FlowNote.TIRE_CHANGE -> TODO()
-                FlowNote.REEL -> TODO()
-                FlowNote.RETURN_LIST -> TODO()
+            if(function != null) {
+                when (function.first) {
+                    1 -> onNavOS()
+                    2 -> onNavActivityList()
+                    3 -> onNavMeasure()
+                    4 -> TODO()
+                    5 -> TODO()
+                    6 -> TODO()
+                    7 -> TODO()
+                    8 -> TODO()
+                    9 -> TODO()
+                    10 -> TODO()
+                    11 -> TODO()
+                    12 -> TODO()
+                    13 -> TODO()
+                }
+            } else {
+                if(checkButton) {
+                    onNavMeasure()
+                } else {
+                    onNavReturnList()
+                }
             }
         }
     }
 
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -177,18 +195,19 @@ fun MenuHeaderPagePreview() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO",
-
+                        descr = "TRABALHANDO",
+                        1 to WORK
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO",
+                        descr = "PARADO",
+                        function = 1 to STOP
                     ),
                 ),
                 setSelection = {},
-                textButtonReturn = "FINALIZAR BOLETIM",
+                checkButton = false,
                 onButtonReturn = {},
-                flowNote = FlowNote.WORK,
+                function = null,
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
@@ -197,6 +216,7 @@ fun MenuHeaderPagePreview() {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
+                onNavReturnList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -213,17 +233,19 @@ fun MenuHeaderPagePreviewFailure() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO",
+                        descr = "TRABALHANDO",
+                        1 to WORK
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO",
+                        descr = "PARADO",
+                        function = 1 to STOP
                     ),
                 ),
                 setSelection = {},
-                textButtonReturn = "FINALIZAR BOLETIM",
+                checkButton = true,
                 onButtonReturn = {},
-                flowNote = FlowNote.WORK,
+                function = null,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -232,6 +254,7 @@ fun MenuHeaderPagePreviewFailure() {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
+                onNavReturnList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -248,17 +271,19 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO",
+                        descr = "TRABALHANDO",
+                        1 to WORK
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO",
+                        descr = "PARADO",
+                        function = 1 to STOP
                     ),
                 ),
                 setSelection = {},
-                textButtonReturn = "FINALIZAR BOLETIM",
+                checkButton = true,
                 onButtonReturn = {},
-                flowNote = FlowNote.WORK,
+                function = null,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -267,6 +292,7 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
+                onNavReturnList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -283,17 +309,19 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO",
+                        descr = "TRABALHANDO",
+                        1 to WORK
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO",
+                        descr = "PARADO",
+                        function = 1 to STOP
                     ),
                 ),
                 setSelection = {},
-                textButtonReturn = "FINALIZAR BOLETIM",
+                checkButton = false,
                 onButtonReturn = {},
-                flowNote = FlowNote.WORK,
+                function = null,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -302,6 +330,7 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
+                onNavReturnList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -318,17 +347,19 @@ fun MenuHeaderPagePreviewNoteMechanicOpen() {
                 itemMenuModelList = listOf(
                     ItemMenuModel(
                         id = 1,
-                        title = "TRABALHANDO",
+                        descr = "TRABALHANDO",
+                        1 to WORK
                     ),
                     ItemMenuModel(
                         id = 2,
-                        title = "PARADO",
+                        descr = "PARADO",
+                        function = 1 to STOP
                     ),
                 ),
                 setSelection = {},
-                textButtonReturn = "FINALIZAR BOLETIM",
+                checkButton = false,
                 onButtonReturn = {},
-                flowNote = FlowNote.WORK,
+                function = null,
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
@@ -337,6 +368,7 @@ fun MenuHeaderPagePreviewNoteMechanicOpen() {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
+                onNavReturnList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

@@ -10,27 +10,25 @@ import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
-import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuPMMDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuPMMRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.FunctionItemMenu
 import br.com.usinasantafe.cmm.utils.TypeActivity
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.TypeStop
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -59,7 +57,7 @@ class MenuNoteScreenTest {
     lateinit var equipDao: EquipDao
 
     @Inject
-    lateinit var itemMenuPMMDao: ItemMenuPMMDao
+    lateinit var itemMenuDao: ItemMenuDao
 
     @Inject
     lateinit var functionActivityDao: FunctionActivityDao
@@ -72,6 +70,9 @@ class MenuNoteScreenTest {
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
+
+    @Inject
+    lateinit var noteMechanicDao: NoteMechanicDao
 
     @Test
     fun check_msg_if_not_have_data_in_config_shared_preferences() =
@@ -86,7 +87,7 @@ class MenuNoteScreenTest {
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
@@ -280,12 +281,45 @@ class MenuNoteScreenTest {
 
         }
 
+    @Test
+    fun check_msg_in_click_if_have_note_mechanic_open() =
+        runTest(
+            timeout = 2.minutes
+        ) {
+
+            hiltRule.inject()
+
+            initialRegister(
+                level = 5,
+                flagMechanic = true,
+                flagTire = true,
+                typeEquip = TypeEquip.FERT,
+                idEquip = 10
+            )
+            initialRegisterSec(3)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithText("TRABALHANDO").performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("POR FAVOR, FINALIZE O APONTAMENTO DE MANUTENÇÃO PARA INICIAR OUTRO APONTAMENTO.")
+
+            composeTestRule.waitUntilTimeout()
+
+        }
+
     private fun setContent() {
         composeTestRule.setContent {
             MenuNoteScreen(
                 onNavOS = {},
                 onNavActivityList = {},
-                onNavMeasure = {}
+                onNavMeasure = {},
+                onNavReturnList = {}
             )
         }
     }
@@ -350,72 +384,111 @@ class MenuNoteScreenTest {
 
         if (level == 4) return
 
-        itemMenuPMMDao.insertAll(
+        itemMenuDao.insertAll(
             listOf(
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 1,
-                    title = "TRABALHANDO",
-                    function = FunctionItemMenu.ITEM_NORMAL
+                    descr = "TRABALHANDO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 2,
-                    title = "PARADO",
-                    function = FunctionItemMenu.ITEM_NORMAL
+                    descr = "PARADO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 3,
-                    title = "RENDIMENTO",
-                    function = FunctionItemMenu.PERFORMANCE
+                    descr = "RENDIMENTO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 4,
-                    title = "NOVO TRANSBORDO",
-                    function = FunctionItemMenu.TRANSHIPMENT
+                    descr = "NOVO TRANSBORDO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 5,
-                    title = "TROCAR IMPLEMENTO",
-                    function = FunctionItemMenu.TRANSHIPMENT
+                    descr = "TROCAR IMPLEMENTO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 6,
-                    title = "RECOLHIMENTO MANGUEIRA",
-                    function = FunctionItemMenu.HOSE_COLLECTION
+                    descr = "RECOLHIMENTO MANGUEIRA",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 7,
-                    title = "APONTAR MANUTENÇÃO",
-                    function = FunctionItemMenu.MECHANICAL_MAINTENANCE
+                    descr = "APONTAR MANUTENÇÃO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 8,
-                    title = "FINALIZAR MANUTENÇÃO",
-                    function = FunctionItemMenu.MECHANICAL_MAINTENANCE
+                    descr = "FINALIZAR MANUTENÇÃO",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 9,
-                    title = "CALIBRAGEM DE PNEU",
-                    function = FunctionItemMenu.TIRE
+                    descr = "CALIBRAGEM DE PNEU",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 10,
-                    title = "TROCA DE PNEU",
-                    function = FunctionItemMenu.TIRE
+                    descr = "TROCA DE PNEU",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 11,
-                    title = "APONTAR CARRETEL",
-                    function = FunctionItemMenu.REEL
+                    descr = "APONTAR CARRETEL",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 12,
-                    title = "FINALIZAR BOLETIM",
-                    function = FunctionItemMenu.FINISH_HEADER
+                    descr = "FINALIZAR BOLETIM",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 ),
-                ItemMenuPMMRoomModel(
+                ItemMenuRoomModel(
                     id = 13,
-                    title = "RETORNAR PRA LISTA",
-                    function = FunctionItemMenu.RETURN_LIST
+                    descr = "RETORNAR PRA LISTA",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1,
                 )
             )
         )
@@ -483,6 +556,33 @@ class MenuNoteScreenTest {
         )
 
         if (level == 2) return
+
+        noteMechanicDao.insert(
+            NoteMechanicRoomModel(
+                idHeader = 1,
+                os = 123456,
+                seq = 1,
+                dateHourFinish = null
+            )
+        )
+        noteMechanicDao.insert(
+            NoteMechanicRoomModel(
+                idHeader = 2,
+                os = 123456,
+                seq = 1,
+                dateHourFinish = null
+            )
+        )
+        noteMechanicDao.insert(
+            NoteMechanicRoomModel(
+                idHeader = 1,
+                os = 123456,
+                seq = 1,
+                dateHourFinish = Date()
+            )
+        )
+
+        if (level == 3) return
 
     }
 

@@ -8,8 +8,8 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.HiltTestActivity
-import br.com.usinasantafe.cmm.domain.usecases.common.SetNroOSCommon
-import br.com.usinasantafe.cmm.domain.usecases.common.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource

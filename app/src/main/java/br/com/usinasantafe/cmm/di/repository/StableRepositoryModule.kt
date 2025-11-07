@@ -102,6 +102,6 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindItemMenuPMMRepository(repository: IItemMenuPMMRepository): ItemMenuPMMRepository
+    fun bindItemMenuPMMRepository(repository: IItemMenuRepository): ItemMenuRepository
 
 }

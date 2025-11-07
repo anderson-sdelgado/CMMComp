@@ -5,12 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.domain.usecases.common.ListActivity
-import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
-import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigState
-import br.com.usinasantafe.cmm.presenter.view.configuration.config.resultUpdateToConfig
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.LevelUpdate

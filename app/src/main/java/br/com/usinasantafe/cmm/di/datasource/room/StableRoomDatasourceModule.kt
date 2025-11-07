@@ -102,6 +102,6 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindItemMenuPMMRoomDatasource(dataSource: IItemMenuPMMRoomDatasource): ItemMenuPMMRoomDatasource
+    fun bindItemMenuPMMRoomDatasource(dataSource: IItemMenuRoomDatasource): ItemMenuRoomDatasource
 
 }

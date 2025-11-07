@@ -21,10 +21,10 @@ interface CommonModule {
 
     @Binds
     @Singleton
-    fun bindGetItemMenuList(usecase: IListItemMenu): ListItemMenu
+    fun bindCheckFlowOpen(usecase: IFlowAppOpen): FlowAppOpen
 
     @Binds
     @Singleton
-    fun bindGetStopList(usecase: IListStop): ListStop
+    fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
 
 }

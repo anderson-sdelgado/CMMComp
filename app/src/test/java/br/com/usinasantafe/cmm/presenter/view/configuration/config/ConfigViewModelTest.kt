@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenuPMM
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
@@ -54,7 +54,7 @@ class ConfigViewModelTest {
     private val updateTableTurn = mock<UpdateTableTurn>()
     private val updateTableFunctionActivity = mock<UpdateTableFunctionActivity>()
     private val updateTableFunctionStop = mock<UpdateTableFunctionStop>()
-    private val updateTableItemMenuPMM = mock<UpdateTableItemMenuPMM>()
+    private val updateTableItemMenu = mock<UpdateTableItemMenu>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
     private val sizeAll = (QTD_TABLE * 3) + 1f
     private var contWhenever = 0f
@@ -76,7 +76,7 @@ class ConfigViewModelTest {
         setFinishUpdateAllTable = setFinishUpdateAllTable,
         updateTableFunctionActivity = updateTableFunctionActivity,
         updateTableFunctionStop = updateTableFunctionStop,
-        updateTableItemMenuPMM = updateTableItemMenuPMM
+        updateTableItemMenu = updateTableItemMenu
     )
 
     @Test
@@ -787,7 +787,7 @@ class ConfigViewModelTest {
             wheneverSuccessFunctionStop()
             wheneverSuccessItemCheckList()
             whenever(
-                updateTableItemMenuPMM(
+                updateTableItemMenu(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -796,14 +796,14 @@ class ConfigViewModelTest {
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_menu_pmm",
+                        tableUpdate = "tb_item_menu",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
                     ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "CleanItemMenuPMM -> java.lang.NullPointerException",
+                        failure = "CleanItemMenu -> java.lang.NullPointerException",
                     )
                 )
             )
@@ -823,7 +823,7 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                 )
             )
@@ -833,7 +833,7 @@ class ConfigViewModelTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemMenuPMM -> java.lang.NullPointerException",
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemMenu -> java.lang.NullPointerException",
                 )
             )
         }
@@ -1978,7 +1978,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessItemMenuPMM() =
         runTest {
             whenever(
-                updateTableItemMenuPMM(
+                updateTableItemMenu(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )
@@ -1987,19 +1987,19 @@ class ConfigViewModelTest {
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_menu_pmm",
+                        tableUpdate = "tb_item_menu",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_menu_pmm",
+                        tableUpdate = "tb_item_menu",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_menu_pmm",
+                        tableUpdate = "tb_item_menu",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
                 )
@@ -2013,7 +2013,7 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -2022,7 +2022,7 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -2031,7 +2031,7 @@ class ConfigViewModelTest {
                 ConfigState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -2049,7 +2049,7 @@ class ConfigViewModelTest {
                     version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -2063,7 +2063,7 @@ class ConfigViewModelTest {
                     version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
@@ -2077,7 +2077,7 @@ class ConfigViewModelTest {
                     version = "1.00",
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_menu_pmm",
+                    tableUpdate = "tb_item_menu",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )
