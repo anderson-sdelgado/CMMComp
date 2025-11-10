@@ -145,7 +145,7 @@ class IHistoryListTest {
                 1
             )
             assertEquals(
-                model.type,
+                model.function,
                 FlowNote.STOP
             )
             assertEquals(
@@ -166,7 +166,7 @@ class IHistoryListTest {
                 2
             )
             assertEquals(
-                model2.type,
+                model2.function,
                 FlowNote.WORK
             )
             assertEquals(

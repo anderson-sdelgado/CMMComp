@@ -8,7 +8,6 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasour
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityItemMenuToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -66,7 +65,10 @@ class IItemMenuRepository  @Inject constructor(
         }
     }
 
-    override suspend fun listByTypeList(typeList: List<Pair<Int, String>>): Result<List<ItemMenu>> {
+    override suspend fun listByTypeList(
+        app: Pair<Int, String>,
+        typeList: List<Pair<Int, String>>
+    ): Result<List<ItemMenu>> {
         try {
             val result = itemMenuRoomDatasource.listByTypeList(typeList)
             if (result.isFailure) {
@@ -83,6 +85,10 @@ class IItemMenuRepository  @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun listByTypeList(app: Pair<Int, String>): Result<List<ItemMenu>> {
+        TODO("Not yet implemented")
     }
 
 }

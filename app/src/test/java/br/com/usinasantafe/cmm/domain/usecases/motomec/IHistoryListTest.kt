@@ -7,7 +7,8 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.STOP
+import br.com.usinasantafe.cmm.utils.WORK
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
@@ -215,8 +216,12 @@ class IHistoryListTest {
                 1
             )
             assertEquals(
-                model1.type,
-                FlowNote.STOP
+                model1.function.first,
+                2
+            )
+            assertEquals(
+                model1.function.second,
+                STOP
             )
             assertEquals(
                 model1.descr,
@@ -232,8 +237,12 @@ class IHistoryListTest {
                 2
             )
             assertEquals(
-                model2.type,
-                FlowNote.WORK
+                model1.function.first,
+                1
+            )
+            assertEquals(
+                model1.function.second,
+                WORK
             )
             assertEquals(
                 model2.descr,

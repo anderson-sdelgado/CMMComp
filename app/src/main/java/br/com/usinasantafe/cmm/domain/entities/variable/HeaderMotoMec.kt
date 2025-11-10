@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.TypeEquip
 
 data class HeaderMotoMec(
@@ -11,5 +12,6 @@ data class HeaderMotoMec(
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var hourMeter: Double? = null,
-    var statusCon: Boolean = true
+    var statusCon: Boolean = true,
+    val flowComposting: FlowComposting? = null
 )

@@ -26,7 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.STOP
+import br.com.usinasantafe.cmm.utils.WORK
 
 @Composable
 fun ItemListDesign(
@@ -53,7 +54,7 @@ fun ItemListDesign(
 @Composable
 fun ItemHistoryListDesign(
     id: Int = 0,
-    type: FlowNote,
+    function: Pair<Int, String>,
     descr: String,
     dateHour: String,
     detail: String,
@@ -61,17 +62,17 @@ fun ItemHistoryListDesign(
     padding: Int = 8,
     setActionItem: () -> Unit
 ) {
-    val color = when(type){
-        FlowNote.WORK -> Color.Blue
-        FlowNote.STOP -> Color.Red
+    val color = when(function.second){
+        WORK -> Color.Blue
+        STOP -> Color.Red
         else -> Color.Black
     }
-    val descr = when(type){
-        FlowNote.WORK -> stringResource(
+    val descr = when(function.second){
+        WORK -> stringResource(
             id = R.string.text_item_work,
             descr
         )
-        FlowNote.STOP -> stringResource(
+        STOP -> stringResource(
             id = R.string.text_item_stop,
             descr
         )

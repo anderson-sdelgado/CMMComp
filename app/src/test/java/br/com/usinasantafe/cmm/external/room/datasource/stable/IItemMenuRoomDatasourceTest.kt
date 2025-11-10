@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before

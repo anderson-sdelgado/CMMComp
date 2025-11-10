@@ -6,7 +6,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ItemMenuRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
 import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.utils.PMM
+import br.com.usinasantafe.cmm.utils.WORK
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -123,10 +126,10 @@ class IUpdateTableItemMenuTest {
                 ItemMenu(
                     id = 1,
                     descr = "TRABALHANDO",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 )
             )
             whenever(
@@ -197,10 +200,10 @@ class IUpdateTableItemMenuTest {
                 ItemMenu(
                     id = 1,
                     descr = "TRABALHANDO",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 )
             )
             whenever(

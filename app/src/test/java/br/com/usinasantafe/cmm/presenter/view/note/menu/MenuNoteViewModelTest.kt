@@ -6,9 +6,11 @@ import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeHeaderMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquipNoteMotoMec
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.Errors
+import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
+import br.com.usinasantafe.cmm.utils.PMM
 import br.com.usinasantafe.cmm.utils.STOP
 import br.com.usinasantafe.cmm.utils.WORK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,13 +32,13 @@ class MenuNoteViewModelTest {
     private val getDescrEquip = mock<GetDescrEquip>()
     private val checkHasNoteMotoMec = mock<CheckHasNoteMotoMec>()
     private val checkHasNoteOpenMechanic = mock<CheckHasNoteOpenMechanic>()
-    private val checkTypeHeaderMotoMec = mock<CheckTypeHeaderMotoMec>()
+    private val getFlowEquipNoteMotoMec = mock<GetFlowEquipNoteMotoMec>()
     private val viewModel = MenuNoteViewModel(
         listItemMenu = listItemMenu,
         getDescrEquip = getDescrEquip,
         checkHasNoteMotoMec = checkHasNoteMotoMec,
         checkHasNoteOpenMechanic = checkHasNoteOpenMechanic,
-        checkTypeHeaderMotoMec = checkTypeHeaderMotoMec
+        getFlowEquipNoteMotoMec = getFlowEquipNoteMotoMec
     )
 
     @Test
@@ -100,12 +102,16 @@ class MenuNoteViewModelTest {
                         ItemMenuModel(
                             id = 1,
                             descr = "TRABALHANDO",
-                            function = 1 to WORK
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                         ItemMenuModel(
                             id = 2,
                             descr = "PARADO",
-                            function = 1 to STOP
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                     )
                 )
@@ -227,12 +233,16 @@ class MenuNoteViewModelTest {
                         ItemMenuModel(
                             id = 1,
                             descr = "TRABALHANDO",
-                            function = 50 to WORK
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                         ItemMenuModel(
                             id = 2,
                             descr = "PARADO",
-                            function = 1 to STOP
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                     )
                 )
@@ -268,12 +278,16 @@ class MenuNoteViewModelTest {
                         ItemMenuModel(
                             id = 1,
                             descr = "TRABALHANDO",
-                            function = 1 to WORK
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                         ItemMenuModel(
                             id = 2,
                             descr = "PARADO",
-                            function = 2 to STOP
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                     )
                 )
@@ -318,12 +332,16 @@ class MenuNoteViewModelTest {
                         ItemMenuModel(
                             id = 1,
                             descr = "TRABALHANDO",
-                            function = 1 to WORK
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                         ItemMenuModel(
                             id = 2,
                             descr = "PARADO",
-                            function = 2 to STOP
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                     )
                 )
@@ -373,12 +391,16 @@ class MenuNoteViewModelTest {
                         ItemMenuModel(
                             id = 1,
                             descr = "TRABALHANDO",
-                            function = 1 to WORK
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                         ItemMenuModel(
                             id = 2,
                             descr = "PARADO",
-                            function = 2 to STOP
+                            type = 1 to ITEM_NORMAL,
+                            function = 1 to WORK,
+                            app = 1 to PMM
                         ),
                     )
                 )

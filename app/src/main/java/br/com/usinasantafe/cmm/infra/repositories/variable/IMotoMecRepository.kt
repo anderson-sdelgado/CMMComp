@@ -12,6 +12,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofi
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -250,6 +251,10 @@ class IMotoMecRepository @Inject constructor(
             )
         }
         return result
+    }
+
+    override suspend fun getCompostingHeader(): Result<FlowComposting> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun setNroOSNote(nroOS: Int): Result<Boolean> {

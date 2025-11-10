@@ -21,7 +21,7 @@ const val dataMenu = """
     {
         "id": 3,
         "descr": "RENDIMENTO",
-        "idType": 4,
+        "idType": 2,
         "pos": 3,
         "idFunction": 3,
         "idApp": 1
@@ -29,7 +29,7 @@ const val dataMenu = """
     {
         "id": 4,
         "descr": "NOVO TRANSBORDO",
-        "idType": 5,
+        "idType": 3,
         "pos": 4,
         "idFunction": 4,
         "idApp": 1
@@ -37,7 +37,7 @@ const val dataMenu = """
     {
         "id": 5,
         "descr": "TROCAR IMPLEMENTO",
-        "idType": 6,
+        "idType": 4,
         "pos": 5,
         "idFunction": 5,
         "idApp": 1
@@ -45,7 +45,7 @@ const val dataMenu = """
     {
         "id": 6,
         "descr": "RECOLHIMENTO MANGUEIRA",
-        "idType": 7,
+        "idType": 5,
         "pos": 6,
         "idFunction": 6,
         "idApp": 1
@@ -53,7 +53,7 @@ const val dataMenu = """
     {
         "id": 7,
         "descr": "APONTAR MANUTENÇÃO",
-        "idType": 8,
+        "idType": 6,
         "pos": 7,
         "idFunction": 7,
         "idApp": 1
@@ -61,7 +61,7 @@ const val dataMenu = """
     {
         "id": 8,
         "descr": "FINALIZAR MANUTENÇÃO",
-        "idType": 8,
+        "idType": 6,
         "pos": 8,
         "idFunction": 8,
         "idApp": 1
@@ -69,7 +69,7 @@ const val dataMenu = """
     {
         "id": 9,
         "descr": "CALIBRAGEM DE PNEU",
-        "idType": 9,
+        "idType": 7,
         "pos": 9,
         "idFunction": 9,
         "idApp": 1
@@ -77,7 +77,7 @@ const val dataMenu = """
     {
         "id": 10,
         "descr": "TROCA DE PNEU",
-        "idType": 9,
+        "idType": 7,
         "pos": 10,
         "idFunction": 10,
         "idApp": 1
@@ -85,7 +85,7 @@ const val dataMenu = """
     {
         "id": 11,
         "descr": "APONTAR CARRETEL",
-        "idType": 10,
+        "idType": 8,
         "pos": 11,
         "idFunction": 11,
         "idApp": 1

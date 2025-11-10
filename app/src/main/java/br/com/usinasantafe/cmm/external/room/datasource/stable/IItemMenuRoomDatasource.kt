@@ -4,7 +4,6 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

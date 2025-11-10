@@ -13,6 +13,10 @@ interface MechanicModule {
 
     @Binds
     @Singleton
-    fun bindCheckNoteOpen(usecase: ICheckHasNoteOpenMechanic): CheckHasNoteOpenMechanic
+    fun bindCheckHasNoteOpenMechanic(usecase: ICheckHasNoteOpenMechanic): CheckHasNoteOpenMechanic
+
+    @Binds
+    @Singleton
+    fun bindFinishNoteMechanical(usecase: IFinishNoteMechanical): FinishNoteMechanical
 
 }

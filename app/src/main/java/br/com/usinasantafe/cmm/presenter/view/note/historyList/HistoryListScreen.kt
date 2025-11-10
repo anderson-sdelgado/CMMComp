@@ -32,7 +32,8 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemHistoryListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.STOP
+import br.com.usinasantafe.cmm.utils.WORK
 
 @Composable
 fun HistoryListScreen(
@@ -102,7 +103,7 @@ fun HistoryListContent(
             ) {
                 items(historyList) { item ->
                     ItemHistoryListDesign(
-                        type = item.type,
+                        function = item.function,
                         descr = item.descr,
                         dateHour = item.dateHour,
                         detail = item.detail,
@@ -146,14 +147,14 @@ fun HistoryListPagePreview() {
                 historyList = listOf(
                     ItemHistoryScreenModel(
                         id = 1,
-                        type = FlowNote.WORK,
+                        function = 1 to WORK,
                         descr = "ATIVIDADE: TRANPORTE DE CANA",
                         dateHour = "21/10/2025 15:23",
                         detail = ""
                     ),
                     ItemHistoryScreenModel(
                         id = 2,
-                        type = FlowNote.STOP,
+                        function = 2 to STOP,
                         descr = "PARADA: CHUVA",
                         dateHour = "21/10/2025 15:23",
                         detail = "Teste\nTeste"

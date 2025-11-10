@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.MotoMec
-import br.com.usinasantafe.cmm.utils.TypeOper
+import br.com.usinasantafe.cmm.utils.TypeNote
 
 data class MotoMecRetrofitModel(
     val idMotoMec: Int,
@@ -23,6 +23,6 @@ fun MotoMecRetrofitModel.retrofitModelToEntity(): MotoMec {
         posOperMotoMec = this.posOperMotoMec,
         tipoOperMotoMec = this.tipoOperMotoMec,
         aplicOperMotoMec = this.aplicOperMotoMec,
-        funcaoOperMotoMec = TypeOper.entries[this.funcaoOperMotoMec]
+        funcaoOperMotoMec = TypeNote.entries[this.funcaoOperMotoMec]
     )
 }

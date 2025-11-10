@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.MotoMecRetrofitD
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.MotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.MotoMecRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.MotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.TypeOper
+import br.com.usinasantafe.cmm.utils.TypeNote
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -33,7 +33,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE.ordinal
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE.ordinal
                 )
             )
             val entityList = listOf(
@@ -45,7 +45,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE
                 )
             )
             whenever(
@@ -82,7 +82,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE.ordinal
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE.ordinal
                 )
             )
             val entityList = listOf(
@@ -94,7 +94,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE
                 )
             )
             whenever(
@@ -194,7 +194,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE.ordinal
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE.ordinal
                 ),
                 MotoMecRetrofitModel(
                     idMotoMec = 2,
@@ -204,7 +204,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 2,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.PARADA.ordinal
+                    funcaoOperMotoMec = TypeNote.PARADA.ordinal
                 )
             )
             val entityList = listOf(
@@ -216,7 +216,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 1,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.ATIVIDADE
+                    funcaoOperMotoMec = TypeNote.ATIVIDADE
                 ),
                 MotoMec(
                     idMotoMec = 2,
@@ -226,7 +226,7 @@ class IMotoMecRepositoryTest {
                     posOperMotoMec = 1,
                     tipoOperMotoMec = 2,
                     aplicOperMotoMec = 1,
-                    funcaoOperMotoMec = TypeOper.PARADA
+                    funcaoOperMotoMec = TypeNote.PARADA
                 )
             )
             whenever(

@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cmm.di.usecase
 
 import br.com.usinasantafe.cmm.domain.usecases.motomec.*
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.motomec.IGetStatusTranshipment
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -89,6 +91,17 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckTypeHeaderMotoMec(usecase: ICheckTypeHeaderMotoMec): CheckTypeHeaderMotoMec
+    fun bindGetFlowEquipNoteMotoMec(usecase: IGetFlowEquipNoteMotoMec): GetFlowEquipNoteMotoMec
 
+    @Binds
+    @Singleton
+    fun bindGetStatusTranshipment(usecase: IGetStatusTranshipment): GetStatusTranshipment
+
+    @Binds
+    @Singleton
+    fun bindCheckTypeLastNote(usecase: ICheckTypeLastNote): CheckTypeLastNote
+
+    @Binds
+    @Singleton
+    fun bindSetNoteMotoMec(usecase: ISetNoteMotoMec): SetNoteMotoMec
 }

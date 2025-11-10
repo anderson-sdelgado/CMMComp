@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.MotoMec // Import da entidade de domínio MotoMec
 import br.com.usinasantafe.cmm.utils.TB_MOTOMEC // Import da constante do nome da tabela (suposição)
-import br.com.usinasantafe.cmm.utils.TypeOper // Import do enum TypeOper
+import br.com.usinasantafe.cmm.utils.TypeNote // Import do enum TypeOper
 
 @Entity(tableName = TB_MOTOMEC)
 data class MotoMecRoomModel (
@@ -29,7 +29,7 @@ fun MotoMecRoomModel.roomModelToEntity(): MotoMec {
             posOperMotoMec = this.posOperMotoMec,
             tipoOperMotoMec = this.tipoOperMotoMec,
             aplicOperMotoMec = this.aplicOperMotoMec,
-            funcaoOperMotoMec = TypeOper.values()[this.funcaoOperMotoMec]
+            funcaoOperMotoMec = TypeNote.values()[this.funcaoOperMotoMec]
         )
     }
 }

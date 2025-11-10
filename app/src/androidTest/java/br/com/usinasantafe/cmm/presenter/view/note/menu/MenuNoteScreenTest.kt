@@ -319,7 +319,7 @@ class MenuNoteScreenTest {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
-                onNavReturnList = {}
+                onNavListReel = {}
             )
         }
     }

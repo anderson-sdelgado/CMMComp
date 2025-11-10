@@ -5,7 +5,9 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
-import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.STOP
+import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.utils.functionListPMM
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -31,12 +33,16 @@ class IHistoryList @Inject constructor(
                 )
             }
             val listNoteList = resultNoteList.getOrNull()!!
-            val itemHistoryList = listNoteList.map {
+            val itemHistoryList = listNoteList.map { item ->
 
-                val type = if(it.idStop == null) FlowNote.WORK else FlowNote.STOP
+                val function = if(item.idStop == null) {
+                    functionListPMM.find { it.second == WORK }!!
+                } else {
+                    functionListPMM.find { it.second == STOP }!!
+                }
 
-                val descr = if(it.idStop != null) {
-                    val resultStop = stopRepository.getById(it.idStop!!)
+                val descr = if(item.idStop != null) {
+                    val resultStop = stopRepository.getById(item.idStop!!)
                     if(resultStop.isFailure) {
                         return resultFailure(
                             context = getClassAndMethod(),
@@ -45,7 +51,7 @@ class IHistoryList @Inject constructor(
                     }
                     resultStop.getOrNull()!!.descrStop
                 } else {
-                    val resultActivity = activityRepository.getById(it.idActivity!!)
+                    val resultActivity = activityRepository.getById(item.idActivity!!)
                     if(resultActivity.isFailure) {
                         return resultFailure(
                             context = getClassAndMethod(),
@@ -58,11 +64,11 @@ class IHistoryList @Inject constructor(
                 val dateHour = SimpleDateFormat(
                     "dd/MM/yyyy HH:mm",
                     Locale.Builder().setLanguage("pt").setRegion("BR").build()
-                ).format(it.dateHour)
+                ).format(item.dateHour)
 
                 ItemHistoryScreenModel(
-                    id = it.id!!,
-                    type = type,
+                    id = item.id!!,
+                    function = function,
                     descr = descr,
                     dateHour = dateHour,
                     detail = ""

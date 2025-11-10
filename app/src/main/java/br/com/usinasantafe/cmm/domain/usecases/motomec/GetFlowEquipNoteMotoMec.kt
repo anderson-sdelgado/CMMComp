@@ -3,19 +3,20 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.FlowEquipNote
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckTypeHeaderMotoMec {
-    suspend operator fun invoke(): Result<Boolean>
+interface GetFlowEquipNoteMotoMec {
+    suspend operator fun invoke(): Result<FlowEquipNote>
 }
 
-class ICheckTypeHeaderMotoMec @Inject constructor(
+class IGetFlowEquipNoteMotoMec @Inject constructor(
     private val configRepository: ConfigRepository,
     private val motoMecRepository: MotoMecRepository,
-): CheckTypeHeaderMotoMec {
+): GetFlowEquipNoteMotoMec {
 
-    override suspend fun invoke(): Result<Boolean> {
+    override suspend fun invoke(): Result<FlowEquipNote> {
         try {
             val resultGetIdEquipConfig = configRepository.getIdEquip()
             if(resultGetIdEquipConfig.isFailure) {
@@ -33,7 +34,7 @@ class ICheckTypeHeaderMotoMec @Inject constructor(
                 )
             }
             val idEquipMotoMec = resultGetIdEquipMotoMec.getOrNull()!!
-            val ret = idEquipConfig == idEquipMotoMec
+            val ret = if(idEquipConfig == idEquipMotoMec) FlowEquipNote.MAIN else FlowEquipNote.SECONDARY
             return Result.success(ret)
         } catch (e: Exception){
             return resultFailure(

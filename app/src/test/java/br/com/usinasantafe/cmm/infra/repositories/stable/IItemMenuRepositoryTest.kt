@@ -6,7 +6,9 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemMenuRetrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
+import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
+import br.com.usinasantafe.cmm.utils.PMM
+import br.com.usinasantafe.cmm.utils.WORK
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -39,10 +41,10 @@ class IItemMenuRepositoryTest {
                 ItemMenu(
                     id = 1,
                     descr = "ITEM 1",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 )
             )
             whenever(
@@ -86,10 +88,10 @@ class IItemMenuRepositoryTest {
                 ItemMenu(
                     id = 1,
                     descr = "ITEM 1",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 )
             )
             whenever(
@@ -206,18 +208,18 @@ class IItemMenuRepositoryTest {
                 ItemMenu(
                     id = 1,
                     descr = "ITEM 1",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 ),
                 ItemMenu(
                     id = 2,
                     descr = "ITEM 2",
-                    idType = 1,
+                    type = 1 to ITEM_NORMAL,
                     pos = 1,
-                    idFunction = 1,
-                    idApp = 1
+                    function = 1 to WORK,
+                    app = 1 to PMM
                 )
             )
             whenever(

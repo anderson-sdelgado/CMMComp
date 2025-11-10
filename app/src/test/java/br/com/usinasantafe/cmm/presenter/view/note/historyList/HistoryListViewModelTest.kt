@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HistoryList
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
-import br.com.usinasantafe.cmm.utils.FlowNote
+import br.com.usinasantafe.cmm.utils.WORK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -73,7 +73,7 @@ class HistoryListViewModelTest {
                     listOf(
                         ItemHistoryScreenModel(
                             id = 1,
-                            type = FlowNote.WORK,
+                            function = 1 to WORK,
                             descr = "CARREGAMENTO",
                             dateHour = "22/10/2025 08:20",
                             detail = ""
@@ -93,8 +93,12 @@ class HistoryListViewModelTest {
                 1
             )
             assertEquals(
-                model.type,
-                FlowNote.WORK
+                model.function.first,
+                1
+            )
+            assertEquals(
+                model.function.second,
+                WORK
             )
             assertEquals(
                 model.descr,

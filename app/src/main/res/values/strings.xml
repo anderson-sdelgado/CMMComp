@@ -76,4 +76,6 @@
     <string name="text_note_mechanic_open">POR FAVOR, FINALIZE O APONTAMENTO DE MANUTENÇÃO PARA INICIAR OUTRO APONTAMENTO.</string>
     <string name="text_button_finish_header">FINALIZAR BOLETIM</string>
     <string name="text_button_return_list">RETORNAR PRA LISTA</string>
+    <string name="text_msg_finish_mechanic">DESEJA REALMENTE FINALIZAR A MANUTENÇÃO?</string>
+    <string name="text_msg_initial_activity">INÍCIO DE ATIVIDADE: %1$s</string>
 </resources>

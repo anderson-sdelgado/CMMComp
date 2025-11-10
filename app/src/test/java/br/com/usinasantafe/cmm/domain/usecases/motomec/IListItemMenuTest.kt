@@ -2,26 +2,27 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
-import br.com.usinasantafe.cmm.domain.entities.stable.typeListPMM
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemMenuRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.FERTIGATION
 import br.com.usinasantafe.cmm.utils.IMPLEMENT
 import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
 import br.com.usinasantafe.cmm.utils.MECHANICAL
 import br.com.usinasantafe.cmm.utils.PERFORMANCE
+import br.com.usinasantafe.cmm.utils.PMM
 import br.com.usinasantafe.cmm.utils.REEL
 import br.com.usinasantafe.cmm.utils.TIRE
 import br.com.usinasantafe.cmm.utils.TRANSHIPMENT
-import br.com.usinasantafe.cmm.utils.TypeItemMenu
 import br.com.usinasantafe.cmm.utils.TypeActivity
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.utils.appList
+import br.com.usinasantafe.cmm.utils.typeListPMM
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -31,7 +32,6 @@ import kotlin.test.assertEquals
 class IListItemMenuTest {
 
     private val itemMenuRepository = mock<ItemMenuRepository>()
-    private val configRepository = mock<ConfigRepository>()
     private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
     private val functionActivityRepository = mock<FunctionActivityRepository>()
@@ -47,11 +47,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -79,11 +74,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in EquipRepository getTypeEquipByIdEquip`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -116,11 +106,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -158,11 +143,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in FunctionActivityRepository listByIdActivity`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -205,11 +185,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in EquipRepository getFlagMechanicByIdEquip`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -257,11 +232,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in EquipRepository getFlagTireByIdEquip`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -314,11 +284,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in FunctionStopRepository getIdStopByType`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -376,11 +341,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository checkNoteHasByIdStop`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -444,11 +404,6 @@ class IListItemMenuTest {
     fun `Check return failure if have error in ItemMenuPMMRepository listByTypeList`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
@@ -492,8 +447,12 @@ class IListItemMenuTest {
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
 
+            val app = appList.find { it.second == PMM }!!
             whenever(
-                itemMenuRepository.listByTypeList(list)
+                itemMenuRepository.listByTypeList(
+                    typeList = list,
+                    app = app
+                )
             ).thenReturn(
                 resultFailure(
                     "IItemMenuPMMRepository.listByTypeList",
@@ -520,11 +479,6 @@ class IListItemMenuTest {
     fun `Check return correct if function execute successfully, flow basic and emptyList`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
@@ -568,8 +522,12 @@ class IListItemMenuTest {
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
 
+            val app = appList.find { it.second == PMM }!!
             whenever(
-                itemMenuRepository.listByTypeList(list)
+                itemMenuRepository.listByTypeList(
+                    typeList = list,
+                    app = app
+                )
             ).thenReturn(
                 Result.success(emptyList())
             )
@@ -588,11 +546,6 @@ class IListItemMenuTest {
     fun `Check return correct if function execute successfully, flow basic and with list`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
@@ -636,26 +589,30 @@ class IListItemMenuTest {
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
 
+            val app = appList.find { it.second == PMM }!!
             whenever(
-                itemMenuRepository.listByTypeList(list)
+                itemMenuRepository.listByTypeList(
+                    typeList = list,
+                    app = app
+                )
             ).thenReturn(
                 Result.success(
                     listOf(
                         ItemMenu(
                             id = 1,
                             descr = "ITEM 1",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         ),
                         ItemMenu(
                             id = 2,
                             descr = "ITEM 2",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         )
                     )
                 )
@@ -693,11 +650,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return correct if function execute successfully, type equip is NORMAL, all item and with list`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(2)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -767,26 +719,30 @@ class IListItemMenuTest {
             list.add(typeListPMM.find { it.second == TIRE }!!)
             list.add(typeListPMM.find { it.second == REEL }!!)
 
+            val app = appList.find { it.second == PMM }!!
             whenever(
-                itemMenuRepository.listByTypeList(list)
+                itemMenuRepository.listByTypeList(
+                    typeList = list,
+                    app = app
+                )
             ).thenReturn(
                 Result.success(
                     listOf(
                         ItemMenu(
                             id = 1,
                             descr = "ITEM 1",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         ),
                         ItemMenu(
                             id = 2,
                             descr = "ITEM 2",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         )
                     )
                 )
@@ -824,11 +780,6 @@ class IListItemMenuTest {
     @Test
     fun `Check return correct if function execute successfully, type equip is FERT, all item and with list`() =
         runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(2)
-            )
             whenever(
                 motoMecRepository.getIdEquipHeader()
             ).thenReturn(
@@ -896,26 +847,30 @@ class IListItemMenuTest {
             list.add(typeListPMM.find { it.second == TIRE }!!)
             list.add(typeListPMM.find { it.second == REEL }!!)
 
+            val app = appList.find { it.second == PMM }!!
             whenever(
-                itemMenuRepository.listByTypeList(list)
+                itemMenuRepository.listByTypeList(
+                    typeList = list,
+                    app = app
+                )
             ).thenReturn(
                 Result.success(
                     listOf(
                         ItemMenu(
                             id = 1,
                             descr = "ITEM 1",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         ),
                         ItemMenu(
                             id = 2,
                             descr = "ITEM 2",
-                            idType = 1,
+                            type = 1 to ITEM_NORMAL,
                             pos = 1,
-                            idFunction = 1,
-                            idApp = 1
+                            function = 1 to WORK,
+                            app = 1 to PMM,
                         )
                     )
                 )

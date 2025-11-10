@@ -229,7 +229,17 @@ fun NavigationGraph(
                         flowApp = FlowApp.HEADER_FINISH.ordinal
                     )
                 },
-                onNavReturnList = {}
+                onNavListReel = {},
+                onNavTranshipment = {},
+                onNavTrailer = {},
+                onNavOSListFertigation = {},
+                onNavMenuCertificate = {},
+                onNavImplement = {},
+                onNavOSMechanical = {},
+                onNavEquipTire = {},
+                onNavInfoLocalSugarcaneLoading = {},
+                onNavUncouplingTrailer = {},
+                onNavOSListPerformance = {}
             )
         }
 
