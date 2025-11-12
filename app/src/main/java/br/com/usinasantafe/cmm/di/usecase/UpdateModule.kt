@@ -17,15 +17,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableBocal(usecase: IUpdateTableBocal): UpdateTableBocal
-
-    @Binds
-    @Singleton
     fun bindUpdateTableColab(usecase: IUpdateTableColab): UpdateTableColab
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableComponente(usecase: IUpdateTableComponente): UpdateTableComponente
 
     @Binds
     @Singleton
@@ -33,39 +25,11 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableFrente(usecase: IUpdateTableFrente): UpdateTableFrente
-
-    @Binds
-    @Singleton
     fun bindUpdateTableItemCheckList(usecase: IUpdateTableItemCheckListByNroEquip): UpdateTableItemCheckListByNroEquip
 
     @Binds
     @Singleton
-    fun bindUpdateTableItemOSMecan(usecase: IUpdateTableItemOSMecan): UpdateTableItemOSMecan
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableLeira(usecase: IUpdateTableLeira): UpdateTableLeira
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableMotoMec(usecase: IUpdateTableMotoMec): UpdateTableMotoMec
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableOS(usecase: IUpdateTableOS): UpdateTableOS
-
-    @Binds
-    @Singleton
     fun bindUpdateTableStop(usecase: IUpdateTableStop): UpdateTableStop
-
-    @Binds
-    @Singleton
-    fun bindUpdateTablePressaoBocal(usecase: IUpdateTablePressaoBocal): UpdateTablePressaoBocal
-
-    @Binds
-    @Singleton
-    fun bindUpdateTablePropriedade(usecase: IUpdateTablePropriedade): UpdateTablePropriedade
 
     @Binds
     @Singleton
@@ -77,10 +41,6 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableREquipPneu(usecase: IUpdateTableREquipPneu): UpdateTableREquipPneu
-
-    @Binds
-    @Singleton
     fun bindUpdateTableFunctionActivity(usecase: IUpdateTableFunctionActivity): UpdateTableFunctionActivity
 
     @Binds
@@ -89,18 +49,10 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableItemMenuPMM(usecase: IUpdateTableItemMenu): UpdateTableItemMenu
+    fun bindUpdateTableItemMenu(usecase: IUpdateTableItemMenu): UpdateTableItemMenu
 
     @Binds
     @Singleton
-    fun bindUpdateTableROSAtiv(usecase: IUpdateTableROSAtiv): UpdateTableROSAtiv
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableServico(usecase: IUpdateTableServico): UpdateTableServico
-
-    @Binds
-    @Singleton
-    fun bindUpdateTableTurno(usecase: IUpdateTableTurn): UpdateTableTurn
+    fun bindUpdateTableTurn(usecase: IUpdateTableTurn): UpdateTableTurn
 
 }

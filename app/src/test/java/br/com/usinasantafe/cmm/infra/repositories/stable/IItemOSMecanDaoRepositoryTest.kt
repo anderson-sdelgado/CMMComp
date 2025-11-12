@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemOSMecan
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemOSMecanRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemOSMecanRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemOSMecanRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemOSMecanRoomModel
 import kotlinx.coroutines.test.runTest

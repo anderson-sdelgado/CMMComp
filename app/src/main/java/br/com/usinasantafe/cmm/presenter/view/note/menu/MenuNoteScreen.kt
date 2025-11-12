@@ -90,8 +90,8 @@ fun MenuNoteScreen(
 
             LaunchedEffect(Unit) {
                 viewModel.menuList(BuildConfig.FLAVOR_app)
-                viewModel.flowEquipNote()
                 viewModel.descrEquip()
+                viewModel.flowEquipNote()
             }
 
             MenuNoteContent(
@@ -101,35 +101,80 @@ fun MenuNoteScreen(
                 flowEquipNote = uiState.flowEquipNote,
                 onButtonReturn = viewModel::onButtonReturn,
                 idSelection = uiState.idSelection,
-                flagAccess = uiState.flagAccess,
                 flagFailure = uiState.flagFailure,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
                 errors = uiState.errors,
                 flagDialogCheck = uiState.flagDialogCheck,
-                setCloseDialog = viewModel::setCloseDialog,
+                onCloseDialog = viewModel::onCloseDialog,
                 onDialogCheck = viewModel::onDialogCheck,
                 typeMsg = uiState.typeMsg,
-                onNavOS = onNavOS,
-                onNavActivityList = onNavActivityList,
-                onNavMeasure = onNavMeasure,
-                onNavListReel = onNavListReel,
-                onNavOSListPerformance = onNavOSListPerformance,
-                onNavTranshipment = onNavTranshipment,
-                onNavImplement = onNavImplement,
-                onNavOSListFertigation = onNavOSListFertigation,
-                onNavOSMechanical = onNavOSMechanical,
-                onNavEquipTire = onNavEquipTire,
-                onNavMenuCertificate = onNavMenuCertificate,
-                onNavInfoLocalSugarcaneLoading = onNavInfoLocalSugarcaneLoading,
-                onNavUncouplingTrailer = onNavUncouplingTrailer,
-                onNavTrailer = onNavTrailer,
-                onNavProduct = onNavProduct,
-                onNavWill = onNavWill,
-                onNavInfoLoadingCompound = onNavInfoLoadingCompound,
-                onNavHistory = onNavHistory,
+                onCloseDialogCheck = viewModel::onCloseDialogCheck,
                 modifier = Modifier.padding(innerPadding)
             )
+
+            LaunchedEffect(uiState.flagAccess) {
+                if(uiState.flagAccess) {
+                    if(uiState.idSelection != null) {
+                        val item = uiState.menuList.find { it.id == uiState.idSelection }!!
+                        when(item.app.second){
+                            PMM -> {
+                                when(item.function.second){
+                                    WORK -> {
+                                        when(uiState.flowEquipNote){
+                                            FlowEquipNote.MAIN -> onNavMeasure()
+                                            FlowEquipNote.SECONDARY -> onNavListReel()
+                                        }
+                                    }
+                                    STOP -> onNavActivityList()
+                                    PERFORMANCE -> onNavOSListPerformance()
+                                    TRANSHIPMENT -> onNavTranshipment()
+                                    HOSE_COLLECTION -> onNavOSListFertigation()
+                                    IMPLEMENT -> onNavImplement()
+                                    NOTE_MECHANICAL -> onNavOSMechanical()
+                                    TIRE_INFLATION -> onNavEquipTire(FlowTire.INFLATION)
+                                    TIRE_CHANGE -> onNavEquipTire(FlowTire.CHANGE)
+                                    REEL -> onNavListReel()
+                                    HISTORY -> onNavHistory()
+                                }
+                            }
+                            ECM -> {
+                                when(item.type.second) {
+                                    CERTIFICATE -> onNavMenuCertificate()
+                                    EXIT_MILL -> onNavInfoLocalSugarcaneLoading()
+                                    RETURN_MILL -> onNavOS()
+                                    UNCOUPLING_TRAILER -> onNavUncouplingTrailer()
+                                    COUPLING_TRAILER -> onNavTrailer()
+                                }
+                            }
+                            PCOMP_INPUT -> {
+                                when(item.type.second) {
+                                    EXIT_SCALE,
+                                    EXIT_TO_DEPOSIT -> onNavOS()
+                                    LOADING_INPUT -> onNavProduct()
+                                    CHECK_WILL,
+                                    WEIGHING_LOADED -> onNavInfoLoadingCompound()
+                                    WAITING_UNLOADING -> onNavWill()
+                                }
+                            }
+                            PCOMP_COMPOUND -> {
+                                when(item.type.second) {
+                                    EXIT_SCALE,
+                                    EXIT_TO_FIELD -> onNavOS()
+                                    LOADING_COMPOUND -> onNavWill()
+                                    CHECK_WILL,
+                                    WEIGHING_LOADED -> onNavInfoLoadingCompound()
+                                }
+                            }
+                        }
+                    } else {
+                        when(uiState.flowEquipNote){
+                            FlowEquipNote.MAIN -> onNavMeasure()
+                            FlowEquipNote.SECONDARY -> onNavListReel()
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -142,33 +187,15 @@ fun MenuNoteContent(
     flowEquipNote: FlowEquipNote,
     onButtonReturn: () -> Unit,
     idSelection: Int?,
-    flagAccess: Boolean,
     flagFailure: Boolean,
     flagDialog: Boolean,
     failure: String,
     errors: Errors,
-    setCloseDialog: () -> Unit,
+    onCloseDialog: () -> Unit,
     flagDialogCheck: Boolean,
     onDialogCheck: (Pair<Int, String>) -> Unit,
     typeMsg: TypeMsg,
-    onNavOS: () -> Unit,
-    onNavActivityList: () -> Unit,
-    onNavMeasure: () -> Unit,
-    onNavListReel: () -> Unit,
-    onNavOSListPerformance: () -> Unit,
-    onNavTranshipment: () -> Unit,
-    onNavImplement: () -> Unit,
-    onNavOSListFertigation: () -> Unit,
-    onNavOSMechanical: () -> Unit,
-    onNavEquipTire: (flowTire: FlowTire) -> Unit,
-    onNavMenuCertificate: () -> Unit,
-    onNavInfoLocalSugarcaneLoading: () -> Unit,
-    onNavUncouplingTrailer: () -> Unit,
-    onNavTrailer: () -> Unit,
-    onNavProduct: () -> Unit,
-    onNavWill: () -> Unit,
-    onNavInfoLoadingCompound: () -> Unit,
-    onNavHistory: () -> Unit,
+    onCloseDialogCheck: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -215,37 +242,6 @@ fun MenuNoteContent(
         }
         BackHandler {}
 
-        if(flagDialog) {
-            var text = ""
-            if(flagFailure){
-                text = when(errors) {
-                    Errors.INVALID -> stringResource(
-                        id = R.string.text_selection_option_invalid,
-                        failure
-                    )
-                    Errors.HEADER_EMPTY -> stringResource(id = R.string.text_header_empty)
-                    Errors.NOTE_MECHANICAL_OPEN -> stringResource(id = R.string.text_note_mechanic_open)
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-
-            } else {
-                text = when(typeMsg){
-                    TypeMsg.NOTE_FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_finish_mechanic)
-                    TypeMsg.ITEM_NORMAL -> {
-                        val model = itemList.find { it.id == idSelection }!!
-                        stringResource(id = R.string.text_msg_initial_activity, model.descr )
-                    }
-                }
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        }
-
         if(flagDialogCheck){
             var selection: Pair<Int, String>? = null
             if(idSelection != null) {
@@ -257,79 +253,48 @@ fun MenuNoteContent(
             }
             AlertDialogCheckDesign(
                 text = when(selection!!.second){
-                    FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_finish_mechanic)
+                    FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_question_finish_mechanic)
+                    RETURN_MILL -> stringResource(id = R.string.text_msg_question_return_mill)
                     else -> ""
                 },
-                setCloseDialog = setCloseDialog,
+                setCloseDialog = onCloseDialogCheck,
                 setActionButtonYes = { onDialogCheck(selection) },
             )
         }
 
-    }
-
-    LaunchedEffect(flagAccess) {
-        if(flagAccess) {
-            if(idSelection != null) {
-                val item = itemList.find { it.id == idSelection }!!
-                when(item.app.second){
-                    PMM -> {
-                        when(item.function.second){
-                            WORK -> {
-                                when(flowEquipNote){
-                                    FlowEquipNote.MAIN -> onNavMeasure()
-                                    FlowEquipNote.SECONDARY -> onNavListReel()
-                                }
-                            }
-                            STOP -> onNavActivityList()
-                            PERFORMANCE -> onNavOSListPerformance()
-                            TRANSHIPMENT -> onNavTranshipment()
-                            HOSE_COLLECTION -> onNavOSListFertigation()
-                            IMPLEMENT -> onNavImplement()
-                            NOTE_MECHANICAL -> onNavOSMechanical()
-                            TIRE_INFLATION -> onNavEquipTire(FlowTire.INFLATION)
-                            TIRE_CHANGE -> onNavEquipTire(FlowTire.CHANGE)
-                            REEL -> onNavListReel()
-                            HISTORY -> onNavHistory()
-                        }
-                    }
-                    ECM -> {
-                        when(item.type.second) {
-                            CERTIFICATE -> onNavMenuCertificate()
-                            EXIT_MILL -> onNavInfoLocalSugarcaneLoading()
-                            RETURN_MILL -> onNavOS()
-                            UNCOUPLING_TRAILER -> onNavUncouplingTrailer()
-                            COUPLING_TRAILER -> onNavTrailer()
-                        }
-                    }
-                    PCOMP_INPUT -> {
-                        when(item.type.second) {
-                            EXIT_SCALE,
-                            EXIT_TO_DEPOSIT -> onNavOS()
-                            LOADING_INPUT -> onNavProduct()
-                            CHECK_WILL,
-                            WEIGHING_LOADED -> onNavInfoLoadingCompound()
-                            WAITING_UNLOADING -> onNavWill()
-                        }
-                    }
-                    PCOMP_COMPOUND -> {
-                        when(item.type.second) {
-                            EXIT_SCALE,
-                            EXIT_TO_FIELD -> onNavOS()
-                            LOADING_COMPOUND -> onNavWill()
-                            CHECK_WILL,
-                            WEIGHING_LOADED -> onNavInfoLoadingCompound()
-                        }
-                    }
+        if(flagDialog) {
+            var text = ""
+            if(flagFailure){
+                text = when(errors) {
+                    Errors.INVALID -> stringResource(
+                        id = R.string.text_selection_option_invalid,
+                        failure
+                    )
+                    Errors.HEADER_EMPTY -> stringResource(id = R.string.text_header_empty)
+                    Errors.NOTE_MECHANICAL_OPEN -> stringResource(id = R.string.text_msg_note_mechanic_open)
+                    Errors.PRE_CEC_STARTED -> stringResource(id = R.string.text_msg_pre_cec_started)
+                    Errors.WITHOUT_LOADING_INPUT -> stringResource(id = R.string.text_msg_without_loading_input)
+                    Errors.WITHOUT_LOADING_COMPOSTING -> stringResource(id = R.string.text_msg_without_loading_composing)
+                    else -> stringResource(
+                        id = R.string.text_failure,
+                        failure
+                    )
                 }
             } else {
-                when(flowEquipNote){
-                    FlowEquipNote.MAIN -> onNavMeasure()
-                    FlowEquipNote.SECONDARY -> onNavListReel()
+                text = when(typeMsg){
+                    TypeMsg.NOTE_FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_finish_mechanic)
+                    else -> {
+                        val model = itemList.find { it.id == idSelection }!!
+                        stringResource(id = R.string.text_msg_initial_activity, model.descr )
+                    }
                 }
             }
+            AlertDialogSimpleDesign(
+                text = text,
+                setCloseDialog = onCloseDialog,
+            )
         }
     }
-
 }
 
 
@@ -360,33 +325,15 @@ fun MenuHeaderPagePreview() {
                 flowEquipNote = FlowEquipNote.MAIN,
                 onButtonReturn = {},
                 idSelection = null,
-                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 errors = Errors.INVALID,
-                setCloseDialog = {},
+                onCloseDialog = {},
                 flagDialogCheck = false,
                 onDialogCheck = {},
                 typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
                 flagFailure = false,
-                onNavOS = {},
-                onNavActivityList = {},
-                onNavMeasure = {},
-                onNavListReel = {},
-                onNavOSListPerformance = {},
-                onNavUncouplingTrailer = {},
-                onNavInfoLocalSugarcaneLoading = {},
-                onNavEquipTire = {},
-                onNavOSMechanical = {},
-                onNavImplement = {},
-                onNavMenuCertificate = {},
-                onNavOSListFertigation = {},
-                onNavTrailer = {},
-                onNavTranshipment = {},
-                onNavInfoLoadingCompound = {},
-                onNavWill = {},
-                onNavProduct = {},
-                onNavHistory = {},
+                onCloseDialogCheck = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -420,33 +367,15 @@ fun MenuHeaderPagePreviewFailure() {
                 flowEquipNote = FlowEquipNote.MAIN,
                 onButtonReturn = {},
                 idSelection = null,
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
-                setCloseDialog = {},
+                onCloseDialog = {},
                 flagDialogCheck = false,
                 errors = Errors.EXCEPTION,
                 onDialogCheck = {},
                 typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
                 flagFailure = false,
-                onNavOS = {},
-                onNavActivityList = {},
-                onNavMeasure = {},
-                onNavListReel = {},
-                onNavOSListPerformance = {},
-                onNavUncouplingTrailer = {},
-                onNavInfoLocalSugarcaneLoading = {},
-                onNavEquipTire = {},
-                onNavOSMechanical = {},
-                onNavImplement = {},
-                onNavMenuCertificate = {},
-                onNavOSListFertigation = {},
-                onNavTrailer = {},
-                onNavTranshipment = {},
-                onNavInfoLoadingCompound = {},
-                onNavWill = {},
-                onNavProduct = {},
-                onNavHistory = {},
+                onCloseDialogCheck = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -480,33 +409,15 @@ fun MenuHeaderPagePreviewSelectionInvalid() {
                 flowEquipNote = FlowEquipNote.SECONDARY,
                 onButtonReturn = {},
                 idSelection = null,
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
-                setCloseDialog = {},
+                onCloseDialog = {},
                 flagDialogCheck = false,
                 errors = Errors.INVALID,
                 onDialogCheck = {},
                 typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
                 flagFailure = false,
-                onNavOS = {},
-                onNavActivityList = {},
-                onNavMeasure = {},
-                onNavListReel = {},
-                onNavOSListPerformance = {},
-                onNavUncouplingTrailer = {},
-                onNavInfoLocalSugarcaneLoading = {},
-                onNavEquipTire = {},
-                onNavOSMechanical = {},
-                onNavImplement = {},
-                onNavMenuCertificate = {},
-                onNavOSListFertigation = {},
-                onNavTrailer = {},
-                onNavTranshipment = {},
-                onNavInfoLoadingCompound = {},
-                onNavWill = {},
-                onNavProduct = {},
-                onNavHistory = {},
+                onCloseDialogCheck = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -540,33 +451,15 @@ fun MenuHeaderPagePreviewHeaderEmpty() {
                 flowEquipNote = FlowEquipNote.MAIN,
                 onButtonReturn = {},
                 idSelection = null,
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
-                setCloseDialog = {},
+                onCloseDialog = {},
                 flagDialogCheck = false,
                 errors = Errors.HEADER_EMPTY,
                 onDialogCheck = {},
                 typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
                 flagFailure = false,
-                onNavOS = {},
-                onNavActivityList = {},
-                onNavMeasure = {},
-                onNavListReel = {},
-                onNavOSListPerformance = {},
-                onNavUncouplingTrailer = {},
-                onNavInfoLocalSugarcaneLoading = {},
-                onNavEquipTire = {},
-                onNavOSMechanical = {},
-                onNavImplement = {},
-                onNavMenuCertificate = {},
-                onNavOSListFertigation = {},
-                onNavTrailer = {},
-                onNavTranshipment = {},
-                onNavInfoLoadingCompound = {},
-                onNavWill = {},
-                onNavProduct = {},
-                onNavHistory = {},
+                onCloseDialogCheck = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -600,33 +493,15 @@ fun MenuHeaderPagePreviewNoteMechanicOpen() {
                 flowEquipNote = FlowEquipNote.SECONDARY,
                 onButtonReturn = {},
                 idSelection = null,
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
-                setCloseDialog = {},
+                onCloseDialog = {},
                 flagDialogCheck = false,
                 errors = Errors.NOTE_MECHANICAL_OPEN,
                 onDialogCheck = {},
                 typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
                 flagFailure = false,
-                onNavOS = {},
-                onNavActivityList = {},
-                onNavMeasure = {},
-                onNavListReel = {},
-                onNavOSListPerformance = {},
-                onNavUncouplingTrailer = {},
-                onNavInfoLocalSugarcaneLoading = {},
-                onNavEquipTire = {},
-                onNavOSMechanical = {},
-                onNavImplement = {},
-                onNavMenuCertificate = {},
-                onNavOSListFertigation = {},
-                onNavTrailer = {},
-                onNavTranshipment = {},
-                onNavInfoLoadingCompound = {},
-                onNavWill = {},
-                onNavProduct = {},
-                onNavHistory = {},
+                onCloseDialogCheck = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

@@ -17,14 +17,14 @@ interface CommonModule {
 
     @Binds
     @Singleton
-    fun bindGetToken(usecase: IGetToken): GetToken
-
-    @Binds
-    @Singleton
-    fun bindCheckFlowOpen(usecase: IFlowAppOpen): FlowAppOpen
+    fun bindFlowAppOpen(usecase: IFlowAppOpen): FlowAppOpen
 
     @Binds
     @Singleton
     fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
+
+    @Binds
+    @Singleton
+    fun bindGetToken(usecase: IGetToken): GetToken
 
 }

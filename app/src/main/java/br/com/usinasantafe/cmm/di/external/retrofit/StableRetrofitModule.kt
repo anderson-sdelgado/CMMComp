@@ -18,15 +18,9 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
-    fun atividadeApiRetrofit(
+    fun activityApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ActivityApi = retrofit.create(ActivityApi::class.java)
-
-    @Provides
-    @Singleton
-    fun bocalApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): BocalApi = retrofit.create(BocalApi::class.java)
 
     @Provides
     @Singleton
@@ -36,21 +30,9 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
-    fun componenteApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): ComponenteApi = retrofit.create(ComponenteApi::class.java)
-
-    @Provides
-    @Singleton
     fun equipApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): EquipApi = retrofit.create(EquipApi::class.java)
-
-    @Provides
-    @Singleton
-    fun frenteApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): FrenteApi = retrofit.create(FrenteApi::class.java)
 
     @Provides
     @Singleton
@@ -72,27 +54,9 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
-    fun itemMenuPMMRetrofit(
+    fun itemMenuRetrofit(
         @DefaultRetrofit retrofit: Retrofit
-    ): ItemMenuPMMApi = retrofit.create(ItemMenuPMMApi::class.java)
-
-    @Provides
-    @Singleton
-    fun itemOSMecanApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): ItemOSMecanApi = retrofit.create(ItemOSMecanApi::class.java)
-
-    @Provides
-    @Singleton
-    fun leiraApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): LeiraApi = retrofit.create(LeiraApi::class.java)
-
-    @Provides
-    @Singleton
-    fun motoMecApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): MotoMecApi = retrofit.create(MotoMecApi::class.java)
+    ): ItemMenuApi = retrofit.create(ItemMenuApi::class.java)
 
     @Provides
     @Singleton
@@ -110,61 +74,31 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
-    fun paradaApiRetrofit(
+    fun stopApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): StopApi = retrofit.create(StopApi::class.java)
 
     @Provides
     @Singleton
-    fun pressaoBocalApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): PressaoBocalApi = retrofit.create(PressaoBocalApi::class.java)
-
-    @Provides
-    @Singleton
-    fun propriedadeApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): PropriedadeApi = retrofit.create(PropriedadeApi::class.java)
-
-    @Provides
-    @Singleton
-    fun rAtivParadaApiRetrofit(
+    fun rActivityStopApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): RActivityStopApi = retrofit.create(RActivityStopApi::class.java)
 
     @Provides
     @Singleton
-    fun rEquipAtivApiRetrofit(
+    fun rEquipActivityApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): REquipActivityApi = retrofit.create(REquipActivityApi::class.java)
 
     @Provides
     @Singleton
-    fun rEquipPneuApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): REquipPneuApi = retrofit.create(REquipPneuApi::class.java)
-
-    @Provides
-    @Singleton
-    fun rFuncaoAtivParadaApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): RFuncaoAtivParadaApi = retrofit.create(RFuncaoAtivParadaApi::class.java)
-
-    @Provides
-    @Singleton
-    fun rOSAtivApiRetrofit(
+    fun rOSActivityApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ROSActivityApi = retrofit.create(ROSActivityApi::class.java)
 
     @Provides
     @Singleton
-    fun servicoApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): ServicoApi = retrofit.create(ServicoApi::class.java)
-
-    @Provides
-    @Singleton
-    fun turnoApiRetrofit(
+    fun turnApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): TurnApi = retrofit.create(TurnApi::class.java)
 

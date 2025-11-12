@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.HiltTestActivity
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -45,7 +45,7 @@ class OSCommonScreenTest {
     lateinit var checkNroOS: CheckNroOS
 
     @Inject
-    lateinit var setNroOSCommon: SetNroOSCommon
+    lateinit var setNroOS: SetNroOS
 
     @Inject
     lateinit var getNroOSHeader: GetNroOSHeader
@@ -146,7 +146,7 @@ class OSCommonScreenTest {
                         )
                     ),
                     checkNroOS = checkNroOS,
-                    setNroOSCommon = setNroOSCommon,
+                    setNroOS = setNroOS,
                     getNroOSHeader = getNroOSHeader
                 ),
                 onNavTurn = {},

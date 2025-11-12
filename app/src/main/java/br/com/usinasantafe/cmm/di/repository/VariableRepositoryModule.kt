@@ -14,17 +14,18 @@ interface VariableRepositoryModule {
 
     @Binds
     @Singleton
+    fun bindCheckListRepository(repository: ICheckListRepository): CheckListRepository
+
+    @Binds
+    @Singleton
     fun bindConfigRepository(repository: IConfigRepository): ConfigRepository
+
+    @Binds
+    @Singleton
+    fun bindMechanicRepository(repository: IMechanicRepository): MechanicRepository
 
     @Binds
     @Singleton
     fun bindMotoMecRepository(repository: IMotoMecRepository): MotoMecRepository
 
-    @Binds
-    @Singleton
-    fun bindCheckListRepository(repository: ICheckListRepository): CheckListRepository
-
-    @Binds
-    @Singleton
-    fun bindMechanicRepository(repository: IMechanicRepository): MechanicRepository
 }

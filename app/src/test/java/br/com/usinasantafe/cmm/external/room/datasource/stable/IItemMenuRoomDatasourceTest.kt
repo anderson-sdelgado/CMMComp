@@ -30,7 +30,7 @@ class IItemMenuRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        itemMenuDao = db.itemMenuPMMDao()
+        itemMenuDao = db.itemMenuDao()
         datasource = IItemMenuRoomDatasource(itemMenuDao)
     }
 

@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
-import br.com.usinasantafe.cmm.external.retrofit.api.stable.MotoMecApi
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.MotoMecRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse

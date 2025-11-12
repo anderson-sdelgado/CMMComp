@@ -18,15 +18,11 @@ interface CheckListModule {
 
     @Binds
     @Singleton
+    fun bindCheckSendCheckList(usecase: ICheckSendCheckList): CheckSendCheckList
+
+    @Binds
+    @Singleton
     fun bindCheckUpdateCheckList(usecase: ICheckUpdateCheckList): CheckUpdateCheckList
-
-    @Binds
-    @Singleton
-    fun bindGetItemCheckList(usecase: IGetItemCheckList): GetItemCheckList
-
-    @Binds
-    @Singleton
-    fun bindSetRespItemCheckList(usecase: ISetRespItemCheckList): SetRespItemCheckList
 
     @Binds
     @Singleton
@@ -34,10 +30,14 @@ interface CheckListModule {
 
     @Binds
     @Singleton
-    fun bindCheckSendCheckList(usecase: ICheckSendCheckList): CheckSendCheckList
+    fun bindGetItemCheckList(usecase: IGetItemCheckList): GetItemCheckList
 
     @Binds
     @Singleton
     fun bindSendCheckList(usecase: ISendCheckList): SendCheckList
+
+    @Binds
+    @Singleton
+    fun bindSetRespItemCheckList(usecase: ISetRespItemCheckList): SetRespItemCheckList
 
 }

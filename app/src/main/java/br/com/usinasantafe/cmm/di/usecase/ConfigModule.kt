@@ -21,7 +21,7 @@ interface ConfigModule {
 
     @Binds
     @Singleton
-    fun bindSendDataConfig(usecase: ISendDataConfig): SendDataConfig
+    fun bindGetStatusSend(usecase: IGetStatusSend): GetStatusSend
 
     @Binds
     @Singleton
@@ -29,11 +29,11 @@ interface ConfigModule {
 
     @Binds
     @Singleton
-    fun bindSetCheckUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
+    fun bindSendDataConfig(usecase: ISendDataConfig): SendDataConfig
 
     @Binds
     @Singleton
-    fun bindGetStatusSend(usecase: IGetStatusSend): GetStatusSend
+    fun bindSetFinishUpdateAllTable(usecase: ISetFinishUpdateAllTable): SetFinishUpdateAllTable
 
     @Binds
     @Singleton

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
-import br.com.usinasantafe.cmm.external.retrofit.api.stable.ItemMenuPMMApi
+import br.com.usinasantafe.cmm.external.retrofit.api.stable.ItemMenuApi
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -43,7 +43,7 @@ class IItemMenuRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ItemMenuPMMApi::class.java)
+            val service = retrofit.create(ItemMenuApi::class.java)
             val datasource = IItemMenuRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
             assertEquals(
@@ -72,7 +72,7 @@ class IItemMenuRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ItemMenuPMMApi::class.java)
+            val service = retrofit.create(ItemMenuApi::class.java)
             val datasource = IItemMenuRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
 
@@ -102,7 +102,7 @@ class IItemMenuRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ItemMenuPMMApi::class.java)
+            val service = retrofit.create(ItemMenuApi::class.java)
             val datasource = IItemMenuRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
 

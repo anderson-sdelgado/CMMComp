@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FlowApp
@@ -26,7 +26,7 @@ class OSCommonViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private val checkNroOS = mock<CheckNroOS>()
-    private val setNroOSCommon = mock<SetNroOSCommon>()
+    private val setNroOS = mock<SetNroOS>()
     private val getNroOSHeader = mock<GetNroOSHeader>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
@@ -37,7 +37,7 @@ class OSCommonViewModelTest {
     ) = OSCommonViewModel(
         savedStateHandle,
         checkNroOS = checkNroOS,
-        setNroOSCommon = setNroOSCommon,
+        setNroOS = setNroOS,
         getNroOSHeader = getNroOSHeader
     )
 
@@ -192,7 +192,7 @@ class OSCommonViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroOSCommon(
+                setNroOS(
                     nroOS = "123456"
                 )
             ).thenReturn(
@@ -241,7 +241,7 @@ class OSCommonViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroOSCommon("123456")
+                setNroOS("123456")
             ).thenReturn(
                 Result.success(true)
             )
@@ -280,7 +280,7 @@ class OSCommonViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroOSCommon(
+                setNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.NOTE_WORK
                 )

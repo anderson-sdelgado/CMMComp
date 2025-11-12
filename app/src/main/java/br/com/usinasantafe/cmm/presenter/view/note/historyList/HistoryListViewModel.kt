@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.historyList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.motomec.HistoryList
+import br.com.usinasantafe.cmm.domain.usecases.motomec.ListHistory
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ data class HistoryListState(
 
 @HiltViewModel
 class HistoryListViewModel @Inject constructor(
-    private val historyList: HistoryList
+    private val listHistory: ListHistory
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HistoryListState())
@@ -34,7 +34,7 @@ class HistoryListViewModel @Inject constructor(
     }
 
     fun recoverHistoryList() = viewModelScope.launch {
-        val result = historyList()
+        val result = listHistory()
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!
             val failure =

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOSCommon
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
@@ -36,7 +36,7 @@ data class OSCommonState(
 class OSCommonViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
     private val checkNroOS: CheckNroOS,
-    private val setNroOSCommon: SetNroOSCommon,
+    private val setNroOS: SetNroOS,
     private val getNroOSHeader: GetNroOSHeader
 ) : ViewModel() {
 
@@ -161,7 +161,7 @@ class OSCommonViewModel @Inject constructor(
             }
             return@launch
         }
-        val resultSet = setNroOSCommon(
+        val resultSet = setNroOS(
             nroOS = uiState.value.nroOS,
             flowApp = uiState.value.flowApp
         )

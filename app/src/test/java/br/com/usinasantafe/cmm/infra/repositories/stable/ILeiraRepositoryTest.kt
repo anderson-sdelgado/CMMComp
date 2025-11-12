@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Leira
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.LeiraRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.LeiraRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.LeiraRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.LeiraRoomModel
 import br.com.usinasantafe.cmm.utils.StatusLeira

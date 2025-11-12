@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.historyList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.motomec.HistoryList
+import br.com.usinasantafe.cmm.domain.usecases.motomec.ListHistory
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
 import br.com.usinasantafe.cmm.utils.WORK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,16 +20,16 @@ class HistoryListViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val historyList = mock<HistoryList>()
+    private val listHistory = mock<ListHistory>()
     private val viewModel = HistoryListViewModel(
-        historyList = historyList
+        listHistory = listHistory
     )
 
     @Test
     fun `recoverHistoryList - Check return failure if have error in HistoryList`() =
         runTest {
             whenever(
-                historyList()
+                listHistory()
             ).thenReturn(
                 resultFailure(
                     context = "HistoryList",
@@ -52,7 +52,7 @@ class HistoryListViewModelTest {
     fun `recoverHistoryList - Check return true if HistoryList execute successfully and list is empty`() =
         runTest {
             whenever(
-                historyList()
+                listHistory()
             ).thenReturn(
                 Result.success(emptyList())
             )
@@ -67,7 +67,7 @@ class HistoryListViewModelTest {
     fun `recoverHistoryList - Check return true if HistoryList execute successfully`() =
         runTest {
             whenever(
-                historyList()
+                listHistory()
             ).thenReturn(
                 Result.success(
                     listOf(

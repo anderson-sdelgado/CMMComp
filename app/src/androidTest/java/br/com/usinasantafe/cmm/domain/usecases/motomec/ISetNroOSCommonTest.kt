@@ -25,7 +25,7 @@ class ISetNroOSCommonTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SetNroOSCommon
+    lateinit var usecase: SetNroOS
 
     @Inject
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource

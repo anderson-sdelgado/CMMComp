@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.PressaoBocal
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PressaoBocalRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.PressaoBocalRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.PressaoBocalRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.PressaoBocalRoomModel
 import kotlinx.coroutines.test.runTest

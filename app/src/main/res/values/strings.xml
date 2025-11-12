@@ -73,9 +73,14 @@
     <string name="text_msg_no_data_history">NÃO CONTÉM APONTAMENTO NO BOLETIM.</string>">
     <string name="text_item_work">ATIVIDADE: %1$s</string>
     <string name="text_item_stop">PARADA: %1$s</string>
-    <string name="text_note_mechanic_open">POR FAVOR, FINALIZE O APONTAMENTO DE MANUTENÇÃO PARA INICIAR OUTRO APONTAMENTO.</string>
+    <string name="text_msg_note_mechanic_open">POR FAVOR, FINALIZE O APONTAMENTO DE MANUTENÇÃO PARA INICIAR OUTRO APONTAMENTO.</string>
     <string name="text_button_finish_header">FINALIZAR BOLETIM</string>
     <string name="text_button_return_list">RETORNAR PRA LISTA</string>
-    <string name="text_msg_finish_mechanic">DESEJA REALMENTE FINALIZAR A MANUTENÇÃO?</string>
+    <string name="text_msg_question_finish_mechanic">DESEJA REALMENTE FINALIZAR A MANUTENÇÃO?</string>
     <string name="text_msg_initial_activity">INÍCIO DE ATIVIDADE: %1$s</string>
+    <string name="text_msg_pre_cec_started">O HORÁRIO DE SAÍDA DA USINA JÁ FOI INSERIDO ANTERIORMENTE. POR FAVOR TERMINE DE FAZER O APONTAMENTO OU REENVIE OS APONTAMENTOS JÁ PRONTOS.</string>
+    <string name="text_msg_finish_mechanic">FOI REALIZADO COM SUCESSO A FINALIZAÇÃO DA MANUTENÇÃO MECANICA.</string>
+    <string name="text_msg_question_return_mill">DESEJA REALMENTE RETORNAR AO TRABALHO?</string>
+    <string name="text_msg_without_loading_input">POR FAVOR! REALIZE O PROCESSO DE CARREGAMENTO DE INSUMO PARA DEPOIS REALIZAR O DESCARREGAMENTO.</string>
+    <string name="text_msg_without_loading_composing">POR FAVOR! REALIZE O PROCESSO DE CARREGAMENTO DE INSUMO PARA DEPOIS REALIZAR O DESCARREGAMENTO.</string>
 </resources>

@@ -27,7 +27,7 @@ class IHistoryListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: IHistoryList
+    lateinit var usecase: IListHistory
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao

@@ -14,27 +14,17 @@ import java.util.Date
 @Database(
     entities = [
         ActivityRoomModel::class,
-        BocalRoomModel::class,
         ColabRoomModel::class,
-        ComponenteRoomModel::class,
         EquipRoomModel::class,
-        FrenteRoomModel::class,
         FunctionActivityRoomModel::class,
         FunctionStopRoomModel::class,
         ItemCheckListRoomModel::class,
         ItemMenuRoomModel::class,
-        ItemOSMecanRoomModel::class,
-        LeiraRoomModel::class,
-        MotoMecRoomModel::class,
         OSRoomModel::class,
         StopRoomModel::class,
-        PressaoBocalRoomModel::class,
-        PropriedadeRoomModel::class,
         RActivityStopRoomModel::class,
         REquipActivityRoomModel::class,
-        REquipPneuRoomModel::class,
         ROSActivityRoomModel::class,
-        ServicoRoomModel::class,
         TurnRoomModel::class,
         HeaderMotoMecRoomModel::class,
         NoteMotoMecRoomModel::class,
@@ -47,26 +37,16 @@ import java.util.Date
 @TypeConverters(Converters::class)
 abstract class DatabaseRoom : RoomDatabase() {
     abstract fun activityDao(): ActivityDao
-    abstract fun bocalDao(): BocalDao
     abstract fun colabDao(): ColabDao
-    abstract fun componenteDao(): ComponenteDao
     abstract fun equipDao(): EquipDao
-    abstract fun frenteDao(): FrenteDao
     abstract fun functionActivityDao(): FunctionActivityDao
     abstract fun functionStopDao(): FunctionStopDao
     abstract fun itemCheckListDao(): ItemCheckListDao
-    abstract fun itemOSMecanDao(): ItemOSMecanDao
-    abstract fun itemMenuPMMDao(): ItemMenuDao
-    abstract fun leiraDao(): LeiraDao
-    abstract fun motoMecDao(): MotoMecDao
+    abstract fun itemMenuDao(): ItemMenuDao
     abstract fun osDao(): OSDao
-    abstract fun pressaoBocalDao(): PressaoBocalDao
-    abstract fun propriedadeDao(): PropriedadeDao
     abstract fun rActivityStopDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
-    abstract fun rEquipPneuDao(): REquipPneuDao
     abstract fun rOSActivityDao(): ROSActivityDao
-    abstract fun servicoDao(): ServicoDao
     abstract fun stopDao(): StopDao
     abstract fun turnDao(): TurnDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao

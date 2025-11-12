@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.domain.repositories.stable.ItemOSMecanRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import org.mockito.Mockito.mock
 

@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Frente
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FrenteRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.FrenteRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FrenteRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.FrenteRoomModel
 import kotlinx.coroutines.test.runTest

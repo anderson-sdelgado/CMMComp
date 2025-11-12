@@ -14,11 +14,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindAtividadeRoomDatasource(dataSource: IActivityRoomDatasource): ActivityRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindBocalRoomDatasource(dataSource: IBocalRoomDatasource): BocalRoomDatasource
+    fun bindActivityRoomDatasource(dataSource: IActivityRoomDatasource): ActivityRoomDatasource
 
     @Binds
     @Singleton
@@ -26,59 +22,7 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindComponenteRoomDatasource(dataSource: IComponenteRoomDatasource): ComponenteRoomDatasource
-
-    @Binds
-    @Singleton
     fun bindEquipRoomDatasource(dataSource: IEquipRoomDatasource): EquipRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindFrenteRoomDatasource(dataSource: IFrenteRoomDatasource): FrenteRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindItemCheckListRoomDatasource(dataSource: IItemCheckListRoomDatasource): ItemCheckListRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindItemOSMecanRoomDatasource(dataSource: IItemOSMecanRoomDatasource): ItemOSMecanRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindLeiraRoomDatasource(dataSource: ILeiraRoomDatasource): LeiraRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindMotoMecRoomDatasource(dataSource: IMotoMecRoomDatasource): MotoMecRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindOSRoomDatasource(dataSource: IOSRoomDatasource): OSRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindParadaRoomDatasource(dataSource: IStopRoomDatasource): StopRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindPressaoBocalRoomDatasource(dataSource: IPressaoBocalRoomDatasource): PressaoBocalRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindPropriedadeRoomDatasource(dataSource: IPropriedadeRoomDatasource): PropriedadeRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindRAtivParadaRoomDatasource(dataSource: IRActivityStopRoomDatasource): RActivityStopRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindREquipAtivRoomDatasource(dataSource: IREquipActivityRoomDatasource): REquipActivityRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindREquipPneuRoomDatasource(dataSource: IREquipPneuRoomDatasource): REquipPneuRoomDatasource
 
     @Binds
     @Singleton
@@ -86,22 +30,38 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindROSAtivRoomDatasource(dataSource: IROSActivityRoomDatasource): ROSActivityRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindServicoRoomDatasource(dataSource: IServicoRoomDatasource): ServicoRoomDatasource
-
-    @Binds
-    @Singleton
-    fun bindTurnoRoomDatasource(dataSource: ITurnRoomDatasource): TurnRoomDatasource
-
-    @Binds
-    @Singleton
     fun bindFunctionStopRoomDatasource(dataSource: IFunctionStopRoomDatasource): FunctionStopRoomDatasource
 
     @Binds
     @Singleton
-    fun bindItemMenuPMMRoomDatasource(dataSource: IItemMenuRoomDatasource): ItemMenuRoomDatasource
+    fun bindItemCheckListRoomDatasource(dataSource: IItemCheckListRoomDatasource): ItemCheckListRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindItemMenuRoomDatasource(dataSource: IItemMenuRoomDatasource): ItemMenuRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindOSRoomDatasource(dataSource: IOSRoomDatasource): OSRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindRActivityStopRoomDatasource(dataSource: IRActivityStopRoomDatasource): RActivityStopRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindREquipActivityRoomDatasource(dataSource: IREquipActivityRoomDatasource): REquipActivityRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindROSActivityRoomDatasource(dataSource: IROSActivityRoomDatasource): ROSActivityRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindStopRoomDatasource(dataSource: IStopRoomDatasource): StopRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindTurnRoomDatasource(dataSource: ITurnRoomDatasource): TurnRoomDatasource
 
 }

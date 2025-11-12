@@ -12,7 +12,7 @@ import org.mockito.kotlin.whenever
 class ISetNroOSCommonTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ISetNroOSCommon(
+    private val usecase = ISetNroOS(
         motoMecRepository = motoMecRepository
     )
 

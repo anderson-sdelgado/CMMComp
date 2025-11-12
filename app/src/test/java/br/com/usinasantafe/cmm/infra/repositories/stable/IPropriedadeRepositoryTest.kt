@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Propriedade
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PropriedadeRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.PropriedadeRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.PropriedadeRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.PropriedadeRoomModel
 import kotlinx.coroutines.test.runTest

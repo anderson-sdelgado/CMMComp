@@ -2,35 +2,50 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cmm.domain.usecases.cec.GetStatusPreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
+import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
+import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanical
+import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquipNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
+import br.com.usinasantafe.cmm.utils.ARRIVAL_FIELD
+import br.com.usinasantafe.cmm.utils.CHECK_WILL
+import br.com.usinasantafe.cmm.utils.COUPLING_TRAILER
 import br.com.usinasantafe.cmm.utils.ECM
+import br.com.usinasantafe.cmm.utils.EXIT_MILL
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.FlowEquipNote
 import br.com.usinasantafe.cmm.utils.IMPLEMENT
 import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
 import br.com.usinasantafe.cmm.utils.NOTE_MECHANICAL
 import br.com.usinasantafe.cmm.utils.PCOMP
 import br.com.usinasantafe.cmm.utils.PMM
+import br.com.usinasantafe.cmm.utils.RETURN_MILL
+import br.com.usinasantafe.cmm.utils.StatusPreCEC
 import br.com.usinasantafe.cmm.utils.StatusTranshipment
 import br.com.usinasantafe.cmm.utils.TRANSHIPMENT
 import br.com.usinasantafe.cmm.utils.TypeMsg
 import br.com.usinasantafe.cmm.utils.TypeNote
+import br.com.usinasantafe.cmm.utils.UNCOUPLING_TRAILER
+import br.com.usinasantafe.cmm.utils.UNLOADING_INPUT
+import br.com.usinasantafe.cmm.utils.WEIGHING
 import br.com.usinasantafe.cmm.utils.functionListPMM
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.typeListECM
+import br.com.usinasantafe.cmm.utils.typeListPCOMPCompound
+import br.com.usinasantafe.cmm.utils.typeListPCOMPInput
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -63,460 +78,350 @@ class MenuNoteViewModel @Inject constructor(
     private val getStatusTranshipment: GetStatusTranshipment,
     private val checkTypeLastNote: CheckTypeLastNote,
     private val finishNoteMechanical: FinishNoteMechanical,
-    private val setNoteMotoMec: SetNoteMotoMec
+    private val setNoteMotoMec: SetNoteMotoMec,
+    private val getStatusPreCEC: GetStatusPreCEC,
+    private val checkCouplingTrailer: CheckCouplingTrailer,
+    private val getFlowComposting: GetFlowComposting,
+    private val checkInitialLoading: CheckInitialLoading,
+    private val checkWill: CheckWill
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuNoteState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
-    }
+    fun onCloseDialog() = _uiState.update { it.copy(flagDialog = false) }
+
+    fun onCloseDialogCheck() = _uiState.update { it.copy(flagDialogCheck = false) }
 
     fun menuList(flavor: String) = viewModelScope.launch {
-        _uiState.update {
-            it.copy(flavorApp = flavor)
-        }
-        val result = listItemMenu(flavor)
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
+        _uiState.update { it.copy(flavorApp = flavor.uppercase()) }
+        val result = listItemMenu(flavor.uppercase())
+        result.onSuccess { menuList ->
+            if (menuList.isEmpty()) {
+                handleFailure("MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!")
+            } else {
+                _uiState.update { it.copy(menuList = menuList) }
             }
-            return@launch
-        }
-        val menuList = result.getOrNull()!!
-        if(menuList.isEmpty()){
-            val failure = "MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-        _uiState.update {
-            it.copy(
-                menuList = menuList,
-            )
-        }
+        }.onFailure(::handleFailure)
     }
 
     fun descrEquip() = viewModelScope.launch {
-        val result = getDescrEquip()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-        val descrEquip = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                descrEquip = descrEquip
-            )
-        }
+        getDescrEquip().onSuccess { descr ->
+            _uiState.update { it.copy(descrEquip = descr) }
+        }.onFailure(::handleFailure)
     }
 
     fun flowEquipNote() = viewModelScope.launch {
-        val result = getFlowEquipNoteMotoMec()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-        val flowEquipNote = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                flowEquipNote = flowEquipNote,
-            )
-        }
+        getFlowEquipNoteMotoMec().onSuccess { flow ->
+            _uiState.update { it.copy(flowEquipNote = flow) }
+        }.onFailure(::handleFailure)
     }
 
     fun onButtonReturn() = viewModelScope.launch {
-        val result = checkHasNote().await()
-        if(result.isFailure) return@launch
-        val check = result.getOrNull()!!
-        if(!check) {
-            val failure = "MenuNoteViewModel.onButtonReturn -> CheckNoteHeaderOpen -> Header without note!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.HEADER_EMPTY,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
+        if (checkHasNote() == false) {
+            handleFailure(
+                failure = "MenuNoteViewModel.onButtonReturn -> checkHasNote -> Header without note!",
+                errors = Errors.HEADER_EMPTY
+            )
             return@launch
         }
-        _uiState.update {
-            it.copy(
-                flagAccess = true,
-                idSelection = null
-            )
+        _uiState.update { it.copy(flagAccess = true, idSelection = null) }
+    }
+
+    fun onDialogCheck(function: Pair<Int, String>) = viewModelScope.launch {
+        onCloseDialogCheck()
+        when (function.second) {
+            FINISH_MECHANICAL -> handleFinishMechanicalDialog()
+            RETURN_MILL -> {
+                _uiState.update { it.copy(flagAccess = true) }
+            }
         }
     }
 
     fun setSelection(id: Int)  = viewModelScope.launch {
         val item = _uiState.value.menuList.find { it.id == id }
         if (item == null) {
-            val failure = "${getClassAndMethod()} -> Item with id = $id not found in menuList"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.INVALID,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
+            handleFailure("Item with id = $id not found in menuList", Errors.INVALID)
             return@launch
         }
-        when(_uiState.value.flavorApp.uppercase()) {
-            PMM -> {
-                setSelectionPMM(
-                    item = item
-                )
-            }
-            ECM -> setSelectionECM(item)
-            PCOMP -> {}
+        _uiState.update { it.copy(idSelection = item.id) }
+        when (_uiState.value.flavorApp.uppercase()) {
+            PMM -> handleSelectionPMM(item)
+            ECM -> handleSelectionECM(item)
+            PCOMP -> handleSelectionPCOM(item)
         }
     }
 
-    fun setSelectionPMM(item: ItemMenuModel) = viewModelScope.launch {
+    private suspend fun handleSelectionPMM(item: ItemMenuModel) {
         val function = functionListPMM.find { it.first == item.function.first }
         if (function == null) {
-            val failure = "${getClassAndMethod()} -> idFunction = ${item.function.first} not found in functionListPMM"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.INVALID,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
+            handleFailure("idFunction = ${item.function.first} not found in functionListPMM", Errors.INVALID)
+            return
         }
-        if(function.second != FINISH_MECHANICAL){
-            val result = checkHasOpenMechanic().await()
-            if(result.isFailure) return@launch
-            val check = result.getOrNull()!!
-            if(check) {
-                val failure = "MenuNoteViewModel.setSelection -> checkHasNoteOpenMechanic -> Note mechanic open!"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.NOTE_MECHANICAL_OPEN,
-                        flagAccess = false,
-                        flagFailure = true
-                    )
-                }
-                return@launch
-            }
+
+        if (function.second != FINISH_MECHANICAL && checkHasOpenMechanic() == true) {
+            handleFailure("Note mechanic open!", Errors.NOTE_MECHANICAL_OPEN)
+            return
         }
-        when(function.second){
+
+        val allChecksPassed = when (function.second) {
             FINISH_MECHANICAL -> {
-                val result = checkHasOpenMechanic().await()
-                if(result.isFailure) return@launch
-                val check = result.getOrNull()!!
-                if(!check) {
-                    val failure = "MenuNoteViewModel.setSelection -> checkHasNoteOpenMechanic -> Note mechanic NOT open!"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.NOTE_MECHANICAL_OPEN,
-                            flagAccess = false,
-                            flagFailure = true
-                        )
-                    }
-                    return@launch
-                }
+                handleFinishMechanical()
+                false
             }
-            TRANSHIPMENT -> checkStatusTranshipment()
-            IMPLEMENT -> checkHasNoteImplement()
-            NOTE_MECHANICAL -> checkLastNote()
+            TRANSHIPMENT -> handleTranshipment()
+            IMPLEMENT -> handleImplement()
+            NOTE_MECHANICAL -> handleNoteMechanical()
+            UNCOUPLING_TRAILER -> checkTrailer()
+            COUPLING_TRAILER -> checkTrailer() != true
+            else -> true
         }
-        if(!_uiState.value.flagAccess) return@launch
+
+        if (allChecksPassed != null && allChecksPassed) {
+            _uiState.update { it.copy(flagAccess = true) }
+        }
+    }
+
+    private suspend fun handleSelectionECM(item: ItemMenuModel) {
+        val type = typeListECM.find { it.first == item.type.first }
+        if (type == null) {
+            handleFailure("idType = ${item.type.first} not found in typeListECM", Errors.INVALID)
+            return
+        }
+        val allChecksPassed = when (type.second) {
+            ITEM_NORMAL,
+            WEIGHING -> {
+                handleSetNote(item)
+                false
+            }
+            EXIT_MILL -> {
+                handleExitWill()
+                false
+            }
+            ARRIVAL_FIELD -> {
+                handleArrivalField(item)
+                false
+            }
+            RETURN_MILL -> {
+                handleReturnMill()
+                false
+            }
+            else -> true
+        }
+
+        if (allChecksPassed) {
+            _uiState.update { it.copy(flagAccess = true) }
+        }
+    }
+
+    private suspend fun handleSelectionPCOM(item: ItemMenuModel) {
+        val flow = getFlowComposting().getOrElse {
+            handleFailure(it)
+            return
+        }
+        val type = when(flow){
+            FlowComposting.INPUT -> typeListPCOMPInput.find { it.first == item.type.first }
+            FlowComposting.COMPOUND -> typeListPCOMPCompound.find { it.first == item.type.first }
+        }
+        if (type == null) {
+            handleFailure("idType = ${item.type.first} not found in typeListECM", Errors.INVALID)
+            return
+        }
+        val allChecksPassed = when (type.second) {
+            ITEM_NORMAL,
+            WEIGHING -> {
+                handleSetNote(item)
+                false
+            }
+
+            UNLOADING_INPUT -> handleLoadingInput()
+            CHECK_WILL -> handleShowInfoWill()
+            else -> true
+        }
+
+        if (allChecksPassed) {
+            _uiState.update { it.copy(flagAccess = true) }
+        }
+    }
+
+    private suspend fun handleShowInfoWill(): Boolean {
+        val check = checkWill().getOrElse {
+            handleFailure(it)
+            return false
+        }
+        if (!check) {
+            handleFailure("Without will!", Errors.WITHOUT_LOADING_COMPOSTING)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun handleLoadingInput(): Boolean {
+        val check = checkInitialLoading().getOrElse {
+            handleFailure(it)
+            return false
+        }
+        if (!check) {
+            handleFailure("Without loading input!", Errors.WITHOUT_LOADING_INPUT)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun checkTrailer(): Boolean? {
+        val result = checkCouplingTrailer()
+        result.onFailure {
+            handleFailure(it)
+            return null
+        }
+        return result.getOrNull()!!
+    }
+
+    private fun handleReturnMill(){
+        _uiState.update {
+            it.copy(flagDialogCheck = true, typeMsg = TypeMsg.RETURN_MILL)
+        }
+    }
+
+    private suspend fun handleSetNote(item: ItemMenuModel) {
+        setNoteMotoMec(item).onFailure {
+            handleFailure(it)
+            return
+        }
         _uiState.update {
             it.copy(
-                flagAccess = true,
+                flagDialog = true,
+                flagFailure = false,
+                typeMsg = TypeMsg.ITEM_NORMAL,
                 idSelection = item.id
             )
         }
     }
 
-    fun setSelectionECM(item: ItemMenuModel) = viewModelScope.launch {
-        val type = typeListECM.find { it.first == item.type.first }
-        if (type == null) {
-            val failure = "${getClassAndMethod()} -> idType = ${item.type.first} not found in typeListECM"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.INVALID,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
+    private suspend fun handleArrivalField(item: ItemMenuModel) {
+        val status = getStatusPreCEC().getOrElse {
+            handleFailure(it)
+            return
         }
-        when(type.second){
-            ITEM_NORMAL -> {
-                val result = setNoteMotoMec(item)
-                if(result.isFailure) {
-                    val error = result.exceptionOrNull()!!
-                    val failure =
-                        "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.EXCEPTION,
-                            flagAccess = false,
-                            flagFailure = true
-                        )
-                    }
-                    return@launch
-                }
+        when (status) {
+            StatusPreCEC.EMPTY -> {
+                handleFailure("PRE CEC without exit mill", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
+            }
+            StatusPreCEC.ARRIVAL_FIELD -> {
+                handleFailure("PRE CEC with arrival field", Errors.WITH_ARRIVAL_FIELD_PRE_CEC)
+            }
+            StatusPreCEC.EXIT_MILL -> handleSetNote(item)
+        }
+    }
+
+    private suspend fun handleExitWill(): Boolean {
+        val status = getStatusPreCEC().getOrElse {
+            handleFailure(it)
+            return false
+        }
+        if (status != StatusPreCEC.EMPTY) {
+            handleFailure("PRE CEC already started!", Errors.PRE_CEC_STARTED)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun handleNoteMechanical(): Boolean {
+        val typeNote = checkTypeLastNote().getOrElse {
+            handleFailure(it)
+            return false
+        }
+        if (typeNote == TypeNote.WORK) {
+            handleFailure("Type Last Note is WORK!", Errors.LAST_NOTE_WORK)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun handleFinishMechanical() {
+        if (checkHasOpenMechanic() == false) {
+            handleFailure("Note mechanic NOT open!", Errors.NOTE_MECHANICAL_OPEN)
+            return
+        }
+        _uiState.update {
+            it.copy(flagDialogCheck = true, typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL)
+        }
+    }
+
+    private suspend fun handleTranshipment(): Boolean {
+        val status = getStatusTranshipment().getOrElse {
+            handleFailure(it)
+            return false
+        }
+        return when (status) {
+            StatusTranshipment.OK -> true
+            StatusTranshipment.WITHOUT_NOTE -> {
+                handleFailure("Without note!", Errors.WITHOUT_NOTE_TRANSHIPMENT)
+                false
+            }
+            StatusTranshipment.TIME_INVALID -> {
+                handleFailure("Time invalid!", Errors.TIME_INVALID_TRANSHIPMENT)
+                false
+            }
+        }
+    }
+
+    private suspend fun handleImplement(): Boolean {
+        if (checkHasNote() == false) {
+            handleFailure("Header without note!", Errors.HEADER_EMPTY)
+            return false
+        }
+        return true
+    }
+
+    private suspend fun handleFinishMechanicalDialog() {
+        finishNoteMechanical()
+            .onSuccess {
                 _uiState.update {
                     it.copy(
                         flagDialog = true,
                         flagFailure = false,
-                        typeMsg = TypeMsg.ITEM_NORMAL
+                        typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                        flagAccess = false
                     )
                 }
             }
-        }
+            .onFailure(::handleFailure)
     }
 
-
-    fun checkLastNote() = viewModelScope.launch {
-        val result = checkTypeLastNote()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-        val typeNote = result.getOrNull()!!
-        if(typeNote == TypeNote.WORK) {
-            val failure = "MenuNoteViewModel.setSelection -> CheckLastNote -> Type Last Note is WORK!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.LAST_NOTE_WORK,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-    }
-
-    fun checkHasOpenMechanic(): Deferred<Result<Boolean>> = viewModelScope.async {
-        val result = checkHasNoteOpenMechanic()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@async Result.failure(error)
-        }
-        return@async result
-    }
-
-    fun checkStatusTranshipment() = viewModelScope.launch {
-        val result = getStatusTranshipment()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-        val status = result.getOrNull()!!
-        if(status == StatusTranshipment.OK) return@launch
-        when(status){
-            StatusTranshipment.WITHOUT_NOTE -> {
-                val failure = "MenuNoteViewModel.setSelection -> CheckStatusTranshipment -> Without note!"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.WITHOUT_NOTE_TRANSHIPMENT,
-                        flagAccess = false,
-                        flagFailure = true
-                    )
-                }
-                return@launch
-            }
-            StatusTranshipment.TIME_INVALID -> {
-                val failure = "MenuNoteViewModel.setSelection -> CheckStatusTranshipment -> Time invalid!"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.TIME_INVALID_TRANSHIPMENT,
-                        flagAccess = false,
-                        flagFailure = true
-                    )
-                }
-                return@launch
-            }
-
-            else -> {}
-        }
-    }
-
-    fun checkHasNoteImplement() = viewModelScope.launch {
-        val result = checkHasNote().await()
-        if(result.isFailure) return@launch
-        val flag = result.getOrNull()!!
-        if(!flag) {
-            val failure = "MenuNoteViewModel.setSelection -> CheckHasNoteImplement -> Header without note!"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.HEADER_EMPTY,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@launch
-        }
-    }
-
-    fun checkHasNote(): Deferred<Result<Boolean>> = viewModelScope.async {
+    private suspend fun checkHasNote(): Boolean? {
         val result = checkHasNoteMotoMec()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    errors = Errors.EXCEPTION,
-                    flagAccess = false,
-                    flagFailure = true
-                )
-            }
-            return@async Result.failure(error)
+        result.onFailure {
+            handleFailure(it)
+            return null
         }
-        return@async result
+        return result.getOrNull()!!
     }
 
-    fun onDialogCheck(function: Pair<Int, String>) = viewModelScope.launch {
-        when(function.second){
-            FINISH_MECHANICAL -> {
-                val result = finishNoteMechanical()
-                if(result.isFailure) {
-                    val error = result.exceptionOrNull()!!
-                    val failure =
-                        "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.EXCEPTION,
-                            flagAccess = false,
-                            flagFailure = true
-                        )
-                    }
-                    return@launch
-                }
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagFailure = false
-                    )
-                }
-            }
+    private suspend fun checkHasOpenMechanic(): Boolean? {
+        val result = checkHasNoteOpenMechanic()
+        result.onFailure {
+            handleFailure(it)
+            return null
+        }
+        return result.getOrNull()!!
+    }
+
+    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
+        Timber.e("${getClassAndMethod()} -> $failure")
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = failure,
+                errors = errors,
+                flagAccess = false,
+                flagFailure = true
+            )
         }
     }
 
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
+    }
 }

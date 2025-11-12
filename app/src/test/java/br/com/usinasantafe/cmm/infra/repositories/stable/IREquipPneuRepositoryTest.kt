@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipPneu
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipPneuRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipPneuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.REquipPneuRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipPneuRoomModel
 import kotlinx.coroutines.test.runTest

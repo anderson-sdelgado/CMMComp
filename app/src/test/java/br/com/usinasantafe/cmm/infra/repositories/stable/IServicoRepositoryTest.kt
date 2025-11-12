@@ -1,8 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Servico
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ServicoRetrofitDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.ServicoRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ServicoRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ServicoRoomModel
 import kotlinx.coroutines.test.runTest

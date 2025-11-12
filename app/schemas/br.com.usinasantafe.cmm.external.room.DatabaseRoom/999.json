@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "c291c17f8afdd56b8c46a01a8163d247",
+    "identityHash": "4a3aefd71243e98760578af445e1e02e",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -37,38 +37,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_bocal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idBocal` INTEGER NOT NULL, `codBocal` INTEGER NOT NULL, `descrBocal` TEXT NOT NULL, PRIMARY KEY(`idBocal`))",
-        "fields": [
-          {
-            "fieldPath": "idBocal",
-            "columnName": "idBocal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codBocal",
-            "columnName": "codBocal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrBocal",
-            "columnName": "descrBocal",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idBocal"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "tb_colab",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`regColab` INTEGER NOT NULL, `nameColab` TEXT NOT NULL, PRIMARY KEY(`regColab`))",
         "fields": [
@@ -89,38 +57,6 @@
           "autoGenerate": false,
           "columnNames": [
             "regColab"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_componente",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idComponente` INTEGER NOT NULL, `codComponente` INTEGER NOT NULL, `descrComponente` TEXT NOT NULL, PRIMARY KEY(`idComponente`))",
-        "fields": [
-          {
-            "fieldPath": "idComponente",
-            "columnName": "idComponente",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codComponente",
-            "columnName": "codComponente",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrComponente",
-            "columnName": "descrComponente",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idComponente"
           ]
         },
         "indices": [],
@@ -201,38 +137,6 @@
           "autoGenerate": false,
           "columnNames": [
             "id"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_frente",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idFrente` INTEGER NOT NULL, `codFrente` INTEGER NOT NULL, `descrFrente` TEXT NOT NULL, PRIMARY KEY(`idFrente`))",
-        "fields": [
-          {
-            "fieldPath": "idFrente",
-            "columnName": "idFrente",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codFrente",
-            "columnName": "codFrente",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrFrente",
-            "columnName": "descrFrente",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idFrente"
           ]
         },
         "indices": [],
@@ -385,144 +289,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_item_os_mecan",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idItemOS` INTEGER NOT NULL, `idOS` INTEGER NOT NULL, `seqItemOS` INTEGER NOT NULL, `idServItemOS` INTEGER NOT NULL, `idCompItemOS` INTEGER NOT NULL, PRIMARY KEY(`idItemOS`))",
-        "fields": [
-          {
-            "fieldPath": "idItemOS",
-            "columnName": "idItemOS",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idOS",
-            "columnName": "idOS",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "seqItemOS",
-            "columnName": "seqItemOS",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idServItemOS",
-            "columnName": "idServItemOS",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idCompItemOS",
-            "columnName": "idCompItemOS",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idItemOS"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_leira",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idLeira` INTEGER NOT NULL, `codLeira` INTEGER NOT NULL, `statusLeira` INTEGER NOT NULL, PRIMARY KEY(`idLeira`))",
-        "fields": [
-          {
-            "fieldPath": "idLeira",
-            "columnName": "idLeira",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codLeira",
-            "columnName": "codLeira",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "statusLeira",
-            "columnName": "statusLeira",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idLeira"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_motomec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idMotoMec` INTEGER NOT NULL, `idOperMotoMec` INTEGER NOT NULL, `descrOperMotoMec` TEXT NOT NULL, `codFuncaoOperMotoMec` INTEGER NOT NULL, `posOperMotoMec` INTEGER NOT NULL, `tipoOperMotoMec` INTEGER NOT NULL, `aplicOperMotoMec` INTEGER NOT NULL, `funcaoOperMotoMec` INTEGER NOT NULL, PRIMARY KEY(`idMotoMec`))",
-        "fields": [
-          {
-            "fieldPath": "idMotoMec",
-            "columnName": "idMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idOperMotoMec",
-            "columnName": "idOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrOperMotoMec",
-            "columnName": "descrOperMotoMec",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codFuncaoOperMotoMec",
-            "columnName": "codFuncaoOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "posOperMotoMec",
-            "columnName": "posOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "tipoOperMotoMec",
-            "columnName": "tipoOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "aplicOperMotoMec",
-            "columnName": "aplicOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "funcaoOperMotoMec",
-            "columnName": "funcaoOperMotoMec",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idMotoMec"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "tb_os",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idPropAgr` INTEGER NOT NULL, `areaOS` REAL NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
         "fields": [
@@ -605,76 +371,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_pressao_bocal",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPressaoBocal` INTEGER NOT NULL, `idBocal` INTEGER NOT NULL, `valorPressao` REAL NOT NULL, `valorVeloc` INTEGER NOT NULL, PRIMARY KEY(`idPressaoBocal`))",
-        "fields": [
-          {
-            "fieldPath": "idPressaoBocal",
-            "columnName": "idPressaoBocal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idBocal",
-            "columnName": "idBocal",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "valorPressao",
-            "columnName": "valorPressao",
-            "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "valorVeloc",
-            "columnName": "valorVeloc",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idPressaoBocal"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_propriedade",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idPropriedade` INTEGER NOT NULL, `codPropriedade` INTEGER NOT NULL, `descrPropriedade` TEXT NOT NULL, PRIMARY KEY(`idPropriedade`))",
-        "fields": [
-          {
-            "fieldPath": "idPropriedade",
-            "columnName": "idPropriedade",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codPropriedade",
-            "columnName": "codPropriedade",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrPropriedade",
-            "columnName": "descrPropriedade",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idPropriedade"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "tb_r_activity_stop",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idRActivityStop` INTEGER PRIMARY KEY AUTOINCREMENT, `idActivity` INTEGER NOT NULL, `idStop` INTEGER NOT NULL)",
         "fields": [
@@ -739,50 +435,6 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_r_equip_pneu",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idREquipPneu` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `idEquip` INTEGER NOT NULL, `idPosConfPneu` INTEGER NOT NULL, `posPneu` INTEGER NOT NULL, `statusPneu` INTEGER NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "idREquipPneu",
-            "columnName": "idREquipPneu",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idEquip",
-            "columnName": "idEquip",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idPosConfPneu",
-            "columnName": "idPosConfPneu",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "posPneu",
-            "columnName": "posPneu",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "statusPneu",
-            "columnName": "statusPneu",
-            "affinity": "INTEGER",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": true,
-          "columnNames": [
-            "idREquipPneu"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
         "tableName": "tb_r_os_activity",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idROSActivity` INTEGER PRIMARY KEY AUTOINCREMENT, `idOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
         "fields": [
@@ -809,38 +461,6 @@
           "autoGenerate": true,
           "columnNames": [
             "idROSActivity"
-          ]
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "tb_servico",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idServico` INTEGER NOT NULL, `codServico` INTEGER NOT NULL, `descrServico` TEXT NOT NULL, PRIMARY KEY(`idServico`))",
-        "fields": [
-          {
-            "fieldPath": "idServico",
-            "columnName": "idServico",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "codServico",
-            "columnName": "codServico",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "descrServico",
-            "columnName": "descrServico",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "autoGenerate": false,
-          "columnNames": [
-            "idServico"
           ]
         },
         "indices": [],
@@ -1228,7 +848,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c291c17f8afdd56b8c46a01a8163d247')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a3aefd71243e98760578af445e1e02e')"
     ]
   }
 }

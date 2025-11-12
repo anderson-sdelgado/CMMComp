@@ -14,11 +14,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindAtividadeRepository(repository: IActivityRepository): ActivityRepository
-
-    @Binds
-    @Singleton
-    fun bindBocalRepository(repository: IBocalRepository): BocalRepository
+    fun bindActivityRepository(repository: IActivityRepository): ActivityRepository
 
     @Binds
     @Singleton
@@ -26,71 +22,7 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindComponenteRepository(repository: IComponenteRepository): ComponenteRepository
-
-    @Binds
-    @Singleton
     fun bindEquipRepository(repository: IEquipRepository): EquipRepository
-
-    @Binds
-    @Singleton
-    fun bindFrenteRepository(repository: IFrenteRepository): FrenteRepository
-
-    @Binds
-    @Singleton
-    fun bindItemCheckListRepository(repository: IItemCheckListRepository): ItemCheckListRepository
-
-    @Binds
-    @Singleton
-    fun bindItemOSMecanRepository(repository: IItemOSMecanRepository): ItemOSMecanRepository
-
-    @Binds
-    @Singleton
-    fun bindLeiraRepository(repository: ILeiraRepository): LeiraRepository
-
-    @Binds
-    @Singleton
-    fun bindMotoMecRepository(repository: IMotoMecRepository): MotoMecRepository
-
-    @Binds
-    @Singleton
-    fun bindOSRepository(repository: IOSRepository): OSRepository
-
-    @Binds
-    @Singleton
-    fun bindParadaRepository(repository: IStopRepository): StopRepository
-
-    @Binds
-    @Singleton
-    fun bindPressaoBocalRepository(repository: IPressaoBocalRepository): PressaoBocalRepository
-
-    @Binds
-    @Singleton
-    fun bindPropriedadeRepository(repository: IPropriedadeRepository): PropriedadeRepository
-
-    @Binds
-    @Singleton
-    fun bindRAtivParadaRepository(repository: IRActivityStopRepository): RActivityStopRepository
-
-    @Binds
-    @Singleton
-    fun bindREquipActivityRepository(repository: IREquipActivityRepository): REquipActivityRepository
-
-    @Binds
-    @Singleton
-    fun bindREquipPneuRepository(repository: IREquipPneuRepository): REquipPneuRepository
-
-    @Binds
-    @Singleton
-    fun bindROSAtivRepository(repository: IROSActivityRepository): ROSActivityRepository
-
-    @Binds
-    @Singleton
-    fun bindServicoRepository(repository: IServicoRepository): ServicoRepository
-
-    @Binds
-    @Singleton
-    fun bindTurnRepository(repository: ITurnRepository): TurnRepository
 
     @Binds
     @Singleton
@@ -102,6 +34,34 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
-    fun bindItemMenuPMMRepository(repository: IItemMenuRepository): ItemMenuRepository
+    fun bindItemCheckListRepository(repository: IItemCheckListRepository): ItemCheckListRepository
+
+    @Binds
+    @Singleton
+    fun bindItemMenuRepository(repository: IItemMenuRepository): ItemMenuRepository
+
+    @Binds
+    @Singleton
+    fun bindOSRepository(repository: IOSRepository): OSRepository
+
+    @Binds
+    @Singleton
+    fun bindRActivityStopRepository(repository: IRActivityStopRepository): RActivityStopRepository
+
+    @Binds
+    @Singleton
+    fun bindREquipActivityRepository(repository: IREquipActivityRepository): REquipActivityRepository
+
+    @Binds
+    @Singleton
+    fun bindROSActivityRepository(repository: IROSActivityRepository): ROSActivityRepository
+
+    @Binds
+    @Singleton
+    fun bindStopRepository(repository: IStopRepository): StopRepository
+
+    @Binds
+    @Singleton
+    fun bindTurnRepository(repository: ITurnRepository): TurnRepository
 
 }

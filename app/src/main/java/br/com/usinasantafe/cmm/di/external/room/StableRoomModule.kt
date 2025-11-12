@@ -20,20 +20,8 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideBocalDao(database: DatabaseRoom): BocalDao {
-        return database.bocalDao()
-    }
-
-    @Provides
-    @Singleton
     fun provideColabDao(database: DatabaseRoom): ColabDao {
         return database.colabDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideComponenteDao(database: DatabaseRoom): ComponenteDao {
-        return database.componenteDao()
     }
 
     @Provides
@@ -44,32 +32,8 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideFrenteDao(database: DatabaseRoom): FrenteDao {
-        return database.frenteDao()
-    }
-
-    @Provides
-    @Singleton
     fun provideItemCheckListDao(database: DatabaseRoom): ItemCheckListDao {
         return database.itemCheckListDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideItemOSMecanDao(database: DatabaseRoom): ItemOSMecanDao {
-        return database.itemOSMecanDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideLeiraDao(database: DatabaseRoom): LeiraDao {
-        return database.leiraDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideMotoMecDao(database: DatabaseRoom): MotoMecDao {
-        return database.motoMecDao()
     }
 
     @Provides
@@ -80,25 +44,13 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideParadaDao(database: DatabaseRoom): StopDao {
+    fun provideStopDao(database: DatabaseRoom): StopDao {
         return database.stopDao()
     }
 
     @Provides
     @Singleton
-    fun providePressaoBocalDao(database: DatabaseRoom): PressaoBocalDao {
-        return database.pressaoBocalDao()
-    }
-
-    @Provides
-    @Singleton
-    fun providePropriedadeDao(database: DatabaseRoom): PropriedadeDao {
-        return database.propriedadeDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRAtivParadaDao(database: DatabaseRoom): RActivityStopDao {
+    fun provideRActivityStopDao(database: DatabaseRoom): RActivityStopDao {
         return database.rActivityStopDao()
     }
 
@@ -110,20 +62,8 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideREquipPneuDao(database: DatabaseRoom): REquipPneuDao {
-        return database.rEquipPneuDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideROSAtivDao(database: DatabaseRoom): ROSActivityDao {
+    fun provideROSActivityDao(database: DatabaseRoom): ROSActivityDao {
         return database.rOSActivityDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideServicoDao(database: DatabaseRoom): ServicoDao {
-        return database.servicoDao()
     }
 
     @Provides
@@ -146,10 +86,8 @@ object StableRoomModule {
 
     @Provides
     @Singleton
-    fun provideItemMenuPMMDao(database: DatabaseRoom): ItemMenuDao {
-        return database.itemMenuPMMDao()
+    fun provideItemMenuDao(database: DatabaseRoom): ItemMenuDao {
+        return database.itemMenuDao()
     }
-
-
 
 }

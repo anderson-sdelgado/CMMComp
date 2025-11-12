@@ -8,7 +8,7 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IEquipRetrofitDatasource @Inject constructor(
-    private val api: EquipApi
+    private val equipApi: EquipApi
 ): EquipRetrofitDatasource {
 
     override suspend fun listByIdEquip(
@@ -16,7 +16,7 @@ class IEquipRetrofitDatasource @Inject constructor(
         idEquip: Int
     ): Result<List<EquipRetrofitModel>> {
         try {
-            val response = api.getListByIdEquip(
+            val response = equipApi.getListByIdEquip(
                 auth = token,
                 idEquip = idEquip
             )

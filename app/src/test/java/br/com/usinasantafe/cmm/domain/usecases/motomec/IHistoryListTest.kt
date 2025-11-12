@@ -21,7 +21,7 @@ class IHistoryListTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val activityRepository = mock<ActivityRepository>()
     private val stopRepository = mock<StopRepository>()
-    private val usecase = IHistoryList(
+    private val usecase = IListHistory(
         motoMecRepository = motoMecRepository,
         activityRepository = activityRepository,
         stopRepository = stopRepository

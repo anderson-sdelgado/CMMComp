@@ -14,15 +14,14 @@ interface VariableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
+    fun bindCheckListRetrofitDatasource(dataSource: ICheckListRetrofitDatasource): CheckListRetrofitDatasource
+
+    @Binds
+    @Singleton
     fun bindConfigRetrofitDatasource(dataSource: IConfigRetrofitDatasource): ConfigRetrofitDatasource
 
     @Binds
     @Singleton
     fun bindMotoMecRetrofitDatasource(dataSource: IMotoMecRetrofitDatasource): MotoMecRetrofitDatasource
-
-    @Binds
-    @Singleton
-    fun bindCheckListRetrofitDatasource(dataSource: ICheckListRetrofitDatasource): CheckListRetrofitDatasource
-
 
 }
