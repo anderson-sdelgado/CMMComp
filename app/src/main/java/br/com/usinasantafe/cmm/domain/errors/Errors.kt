@@ -41,3 +41,4 @@ class AppError(
     message: String?,
     cause: Throwable? = null
 ) : Exception("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}", cause)
+

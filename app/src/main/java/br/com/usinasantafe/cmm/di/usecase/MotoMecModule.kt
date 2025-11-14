@@ -107,4 +107,8 @@ interface MotoMecModule {
     @Singleton
     fun bindSetRegOperator(usecase: ISetRegOperator): SetRegOperator
 
+    @Binds
+    @Singleton
+    fun bindUncouplingTrailer(usecase: IUncouplingTrailer): UncouplingTrailer
+
 }

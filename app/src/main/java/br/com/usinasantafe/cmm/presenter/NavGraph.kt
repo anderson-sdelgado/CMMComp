@@ -239,7 +239,11 @@ fun NavigationGraph(
                 onNavEquipTire = {},
                 onNavInfoLocalSugarcaneLoading = {},
                 onNavUncouplingTrailer = {},
-                onNavOSListPerformance = {}
+                onNavOSListPerformance = {},
+                onNavHistory = {},
+                onNavProduct = {},
+                onNavWill = {},
+                onNavInfoLoadingCompound = {}
             )
         }
 

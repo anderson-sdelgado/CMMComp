@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.cec.GetStatusPreCEC
+import br.com.usinasantafe.cmm.domain.usecases.cec.SetDataPreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
@@ -16,6 +16,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquipNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.ARRIVAL_FIELD
 import br.com.usinasantafe.cmm.utils.CHECK_WILL
@@ -26,6 +27,7 @@ import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
 import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.FlowEquipNote
+import br.com.usinasantafe.cmm.utils.FlowTrailer
 import br.com.usinasantafe.cmm.utils.IMPLEMENT
 import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
 import br.com.usinasantafe.cmm.utils.NOTE_MECHANICAL
@@ -40,6 +42,7 @@ import br.com.usinasantafe.cmm.utils.TypeNote
 import br.com.usinasantafe.cmm.utils.UNCOUPLING_TRAILER
 import br.com.usinasantafe.cmm.utils.UNLOADING_INPUT
 import br.com.usinasantafe.cmm.utils.WEIGHING
+import br.com.usinasantafe.cmm.utils.WEIGHING_TARE
 import br.com.usinasantafe.cmm.utils.functionListPMM
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.typeListECM
@@ -65,7 +68,7 @@ data class MenuNoteState(
     val flavorApp: String = "",
     val flagDialogCheck: Boolean = false,
     val flagFailure: Boolean = false,
-    val typeMsg: TypeMsg = TypeMsg.NOTE_FINISH_MECHANICAL
+    val typeMsg: TypeMsg = TypeMsg.ITEM_NORMAL
 )
 
 @HiltViewModel
@@ -79,11 +82,12 @@ class MenuNoteViewModel @Inject constructor(
     private val checkTypeLastNote: CheckTypeLastNote,
     private val finishNoteMechanical: FinishNoteMechanical,
     private val setNoteMotoMec: SetNoteMotoMec,
-    private val getStatusPreCEC: GetStatusPreCEC,
+    private val setDataPreCEC: SetDataPreCEC,
     private val checkCouplingTrailer: CheckCouplingTrailer,
     private val getFlowComposting: GetFlowComposting,
     private val checkInitialLoading: CheckInitialLoading,
-    private val checkWill: CheckWill
+    private val checkWill: CheckWill,
+    private val uncouplingTrailer: UncouplingTrailer
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuNoteState())
@@ -98,7 +102,7 @@ class MenuNoteViewModel @Inject constructor(
         val result = listItemMenu(flavor.uppercase())
         result.onSuccess { menuList ->
             if (menuList.isEmpty()) {
-                handleFailure("MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!")
+                handleFailure("listItemMenu -> EmptyList!")
             } else {
                 _uiState.update { it.copy(menuList = menuList) }
             }
@@ -120,7 +124,7 @@ class MenuNoteViewModel @Inject constructor(
     fun onButtonReturn() = viewModelScope.launch {
         if (checkHasNote() == false) {
             handleFailure(
-                failure = "MenuNoteViewModel.onButtonReturn -> checkHasNote -> Header without note!",
+                failure = "checkHasNote -> Header without note!",
                 errors = Errors.HEADER_EMPTY
             )
             return@launch
@@ -128,9 +132,10 @@ class MenuNoteViewModel @Inject constructor(
         _uiState.update { it.copy(flagAccess = true, idSelection = null) }
     }
 
-    fun onDialogCheck(function: Pair<Int, String>) = viewModelScope.launch {
+    fun onDialogCheck(pair: Pair<Int, String>) = viewModelScope.launch {
         onCloseDialogCheck()
-        when (function.second) {
+        when (pair.second) {
+            UNCOUPLING_TRAILER -> handleUncouplingTrailer()
             FINISH_MECHANICAL -> handleFinishMechanicalDialog()
             RETURN_MILL -> {
                 _uiState.update { it.copy(flagAccess = true) }
@@ -148,7 +153,7 @@ class MenuNoteViewModel @Inject constructor(
         when (_uiState.value.flavorApp.uppercase()) {
             PMM -> handleSelectionPMM(item)
             ECM -> handleSelectionECM(item)
-            PCOMP -> handleSelectionPCOM(item)
+            PCOMP -> handleSelectionPCOMP(item)
         }
     }
 
@@ -159,25 +164,26 @@ class MenuNoteViewModel @Inject constructor(
             return
         }
 
-        if (function.second != FINISH_MECHANICAL && checkHasOpenMechanic() == true) {
-            handleFailure("Note mechanic open!", Errors.NOTE_MECHANICAL_OPEN)
-            return
+        if (function.second != FINISH_MECHANICAL) {
+            val check = checkHasOpenMechanic() ?: return
+            if (check) {
+                handleFailure("Note mechanic open!", Errors.NOTE_MECHANICAL_OPEN)
+                return
+            }
         }
 
         val allChecksPassed = when (function.second) {
             FINISH_MECHANICAL -> {
-                handleFinishMechanical()
+                handleFinishMechanical() //ok
                 false
             }
-            TRANSHIPMENT -> handleTranshipment()
-            IMPLEMENT -> handleImplement()
-            NOTE_MECHANICAL -> handleNoteMechanical()
-            UNCOUPLING_TRAILER -> checkTrailer()
-            COUPLING_TRAILER -> checkTrailer() != true
+            TRANSHIPMENT -> handleTranshipment() //ok
+            IMPLEMENT -> handleImplement() //ok
+            NOTE_MECHANICAL -> handleNoteMechanical() //ok
             else -> true
         }
 
-        if (allChecksPassed != null && allChecksPassed) {
+        if (allChecksPassed) {
             _uiState.update { it.copy(flagAccess = true) }
         }
     }
@@ -195,8 +201,7 @@ class MenuNoteViewModel @Inject constructor(
                 false
             }
             EXIT_MILL -> {
-                handleExitWill()
-                false
+                handleExitWill(item)
             }
             ARRIVAL_FIELD -> {
                 handleArrivalField(item)
@@ -206,6 +211,8 @@ class MenuNoteViewModel @Inject constructor(
                 handleReturnMill()
                 false
             }
+            UNCOUPLING_TRAILER -> checkTrailer(FlowTrailer.UNCOUPLING)
+            COUPLING_TRAILER -> checkTrailer(FlowTrailer.COUPLING)
             else -> true
         }
 
@@ -214,7 +221,7 @@ class MenuNoteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleSelectionPCOM(item: ItemMenuModel) {
+    private suspend fun handleSelectionPCOMP(item: ItemMenuModel) {
         val flow = getFlowComposting().getOrElse {
             handleFailure(it)
             return
@@ -224,12 +231,15 @@ class MenuNoteViewModel @Inject constructor(
             FlowComposting.COMPOUND -> typeListPCOMPCompound.find { it.first == item.type.first }
         }
         if (type == null) {
-            handleFailure("idType = ${item.type.first} not found in typeListECM", Errors.INVALID)
+            when(flow){
+                FlowComposting.INPUT -> handleFailure("idType = ${item.type.first} not found in typeListPCOMPInput", Errors.INVALID)
+                FlowComposting.COMPOUND -> handleFailure("idType = ${item.type.first} not found in typeListPCOMPCompound", Errors.INVALID)
+            }
             return
         }
         val allChecksPassed = when (type.second) {
             ITEM_NORMAL,
-            WEIGHING -> {
+            WEIGHING_TARE -> {
                 handleSetNote(item)
                 false
             }
@@ -268,13 +278,33 @@ class MenuNoteViewModel @Inject constructor(
         return true
     }
 
-    private suspend fun checkTrailer(): Boolean? {
+    private suspend fun checkTrailer(flowTrailer: FlowTrailer): Boolean {
         val result = checkCouplingTrailer()
         result.onFailure {
             handleFailure(it)
-            return null
+            return false
         }
-        return result.getOrNull()!!
+        val check = result.getOrNull()!!
+        when (flowTrailer) {
+            FlowTrailer.UNCOUPLING -> {
+                if(!check) {
+                    handleFailure("Need coupling trailer!", Errors.NEED_COUPLING_TRAILER)
+                    return false
+                } else {
+                    _uiState.update {
+                        it.copy(flagDialogCheck = true, typeMsg = TypeMsg.UNCOUPLING_TRAILER)
+                    }
+                    return false
+                }
+            }
+            FlowTrailer.COUPLING -> {
+                if(check) {
+                    handleFailure("Need uncoupling trailer!", Errors.NEED_UNCOUPLING_TRAILER)
+                    return false
+                }
+            }
+        }
+        return true
     }
 
     private fun handleReturnMill(){
@@ -292,30 +322,29 @@ class MenuNoteViewModel @Inject constructor(
             it.copy(
                 flagDialog = true,
                 flagFailure = false,
-                typeMsg = TypeMsg.ITEM_NORMAL,
-                idSelection = item.id
+                typeMsg = TypeMsg.ITEM_NORMAL
             )
         }
     }
 
     private suspend fun handleArrivalField(item: ItemMenuModel) {
-        val status = getStatusPreCEC().getOrElse {
+        val status = setDataPreCEC(item).getOrElse {
             handleFailure(it)
             return
         }
         when (status) {
             StatusPreCEC.EMPTY -> {
-                handleFailure("PRE CEC without exit mill", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
+                handleFailure("PRE CEC without exit mill!", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
             }
             StatusPreCEC.ARRIVAL_FIELD -> {
-                handleFailure("PRE CEC with arrival field", Errors.WITH_ARRIVAL_FIELD_PRE_CEC)
+                handleFailure("PRE CEC with arrival field!", Errors.WITH_ARRIVAL_FIELD_PRE_CEC)
             }
             StatusPreCEC.EXIT_MILL -> handleSetNote(item)
         }
     }
 
-    private suspend fun handleExitWill(): Boolean {
-        val status = getStatusPreCEC().getOrElse {
+    private suspend fun handleExitWill(item: ItemMenuModel): Boolean {
+        val status = setDataPreCEC(item).getOrElse {
             handleFailure(it)
             return false
         }
@@ -367,7 +396,8 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleImplement(): Boolean {
-        if (checkHasNote() == false) {
+        val check = checkHasNote() ?: return false
+        if (!check) {
             handleFailure("Header without note!", Errors.HEADER_EMPTY)
             return false
         }
@@ -382,7 +412,20 @@ class MenuNoteViewModel @Inject constructor(
                         flagDialog = true,
                         flagFailure = false,
                         typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
-                        flagAccess = false
+                    )
+                }
+            }
+            .onFailure(::handleFailure)
+    }
+
+    private suspend fun handleUncouplingTrailer() {
+        uncouplingTrailer()
+            .onSuccess {
+                _uiState.update {
+                    it.copy(
+                        flagDialog = true,
+                        flagFailure = false,
+                        typeMsg = TypeMsg.UNCOUPLING_TRAILER,
                     )
                 }
             }
@@ -408,11 +451,12 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
-        Timber.e("${getClassAndMethod()} -> $failure")
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
         _uiState.update {
             it.copy(
                 flagDialog = true,
-                failure = failure,
+                failure = fail,
                 errors = errors,
                 flagAccess = false,
                 flagFailure = true
@@ -424,4 +468,5 @@ class MenuNoteViewModel @Inject constructor(
         val failure = "${error.message} -> ${error.cause.toString()}"
         handleFailure(failure)
     }
+
 }

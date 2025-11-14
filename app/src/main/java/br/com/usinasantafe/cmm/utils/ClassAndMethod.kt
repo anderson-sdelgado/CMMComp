@@ -9,55 +9,89 @@ import kotlin.text.substringAfter
 import kotlin.text.substringAfterLast
 import kotlin.text.substringBefore
 
+//fun getClassAndMethod(): String {
+//    val stackTrace = Thread.currentThread().stackTrace
+//    val utilClassName = "br.com.usinasantafe.$BASE_SHARE_PREFERENCES.utils.ClassAndMethodKt"
+//
+//    for (i in stackTrace.indices) {
+//        val element = stackTrace[i]
+//
+//        if (element.className.startsWith("java.lang.Thread") ||
+//            element.methodName == "getStackTrace" ||
+//            element.methodName == "getClassAndMethod" ||
+//            element.className == utilClassName) {
+//            continue
+//        }
+//
+//        if (element.className.startsWith("kotlin.coroutines") ||
+//            element.className.contains("Continuation") ||
+//            element.className.contains("SuspendLambda") ||
+//            element.methodName.contains("\$resumeWith") ||
+//            element.methodName.endsWith("\$suspendImpl")) {
+//            continue
+//        }
+//
+//        if (element.className.contains("br.com.usinasantafe") && element.className != utilClassName) {
+//            val rawClassName = element.className.substringAfterLast('.')
+//            val className = rawClassName.substringBefore('$')
+//
+//            var methodName = if (rawClassName.contains('$')) {
+//                rawClassName.substringAfter("$className$", "")
+//                    .substringBefore('$')
+//            } else {
+//                element.methodName
+//            }
+//
+//            if (methodName.isBlank() || methodName == "invoke" || methodName == "invokeSuspend") {
+//                methodName = element.methodName
+//            }
+//
+//            methodName = methodName.substringBefore('$')
+//            methodName = methodName.substringBefore('-')
+//
+//            val methodPart = if (methodName == "invoke" || methodName == "invokeSuspend") {
+//                if (className == methodName) ""
+//                else ""
+//            } else {
+//                ".$methodName"
+//            }
+//
+//            return "$className$methodPart"
+//        }
+//    }
+//    return "Classe.MetodoDesconhecido"
+//}
+
 fun getClassAndMethod(): String {
-    val stackTrace = Thread.currentThread().stackTrace
-    val utilClassName = "br.com.usinasantafe.$BASE_SHARE_PREFERENCES.utils.ClassAndMethodKt"
+    val pkg = "br.com.usinasantafe"
+    val stack = Throwable().stackTrace // ← usa Throwable em vez de Thread, funciona em coroutines
 
-    for (i in stackTrace.indices) {
-        val element = stackTrace[i]
+    val calls = stack
+        .filter {
+            it.className.contains(pkg)
+        } // só classes da sua base
+        .map { el ->
+            val cls = el.className.substringAfterLast('.').substringBefore('$')
+            val mtd = el.methodName.substringBefore('$').substringBefore('-')
+            "$cls.$mtd"
+        }
+        .distinct()
+        //.takeLast(6) // evita stack muito longo
+        .reversed()  // do chamador ao método final
 
-        if (element.className.startsWith("java.lang.Thread") ||
-            element.methodName == "getStackTrace" ||
-            element.methodName == "getClassAndMethod" ||
-            element.className == utilClassName) {
-            continue
+    val listFinish = calls
+        .filter {
+//            !it.endsWith("invoke") &&
+            !it.endsWith("invokeSuspend") &&
+            !it.endsWith("access") &&
+            !it.contains("Test") &&
+            !it.endsWith("Failure") &&
+            !it.endsWith("getClassAndMethod")
+        }
+        .map {
+            it.replace(".invoke", "")
         }
 
-        if (element.className.startsWith("kotlin.coroutines") ||
-            element.className.contains("Continuation") ||
-            element.className.contains("SuspendLambda") ||
-            element.methodName.contains("\$resumeWith") ||
-            element.methodName.endsWith("\$suspendImpl")) {
-            continue
-        }
 
-        if (element.className.contains("br.com.usinasantafe") && element.className != utilClassName) {
-            val rawClassName = element.className.substringAfterLast('.')
-            val className = rawClassName.substringBefore('$')
-
-            var methodName = if (rawClassName.contains('$')) {
-                rawClassName.substringAfter("$className$", "")
-                    .substringBefore('$')
-            } else {
-                element.methodName
-            }
-
-            if (methodName.isBlank() || methodName == "invoke" || methodName == "invokeSuspend") {
-                methodName = element.methodName
-            }
-
-            methodName = methodName.substringBefore('$')
-            methodName = methodName.substringBefore('-')
-
-            val methodPart = if (methodName == "invoke" || methodName == "invokeSuspend") {
-                if (className == methodName) ""
-                else ""
-            } else {
-                ".$methodName"
-            }
-
-            return "$className$methodPart"
-        }
-    }
-    return "Classe.MetodoDesconhecido"
+    return listFinish.joinToString(" -> ").ifBlank { "Classe.MetodoDesconhecido" }
 }

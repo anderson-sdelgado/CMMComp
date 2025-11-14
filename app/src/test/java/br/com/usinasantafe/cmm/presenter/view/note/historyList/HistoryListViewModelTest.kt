@@ -58,8 +58,12 @@ class HistoryListViewModelTest {
             )
             viewModel.recoverHistoryList()
             assertEquals(
-                viewModel.uiState.value.historyList,
-                emptyList()
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "HistoryListViewModel.recoverHistoryList -> listItemMenu -> EmptyList!"
             )
         }
 

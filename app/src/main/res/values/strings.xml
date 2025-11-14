@@ -83,4 +83,7 @@
     <string name="text_msg_question_return_mill">DESEJA REALMENTE RETORNAR AO TRABALHO?</string>
     <string name="text_msg_without_loading_input">POR FAVOR! REALIZE O PROCESSO DE CARREGAMENTO DE INSUMO PARA DEPOIS REALIZAR O DESCARREGAMENTO.</string>
     <string name="text_msg_without_loading_composing">POR FAVOR! REALIZE O PROCESSO DE CARREGAMENTO DE INSUMO PARA DEPOIS REALIZAR O DESCARREGAMENTO.</string>
+    <string name="text_msg_need_uncoupling_trailer">POR FAVOR! DESENGATE CARRETA(S) PARA DEPOIS ENGATÁ-LAS.</string>
+    <string name="text_msg_need_coupling_trailer">POR FAVOR! ENGATE CARRETA(S) PARA DEPOIS DESENGATÁ-LAS.</string>
+    <string name="text_msg_uncoupling_trailer">FOI REALIZADO COM SUCESSO O DESENGATE AS CARRETAS.</string>
 </resources>

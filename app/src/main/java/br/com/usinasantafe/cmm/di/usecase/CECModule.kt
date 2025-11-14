@@ -13,6 +13,6 @@ interface CECModule {
 
     @Binds
     @Singleton
-    fun bindGetStatusPreCEC(usecase: IGetStatusPreCEC): GetStatusPreCEC
+    fun bindGetStatusPreCEC(usecase: ISetDataPreCEC): SetDataPreCEC
 
 }

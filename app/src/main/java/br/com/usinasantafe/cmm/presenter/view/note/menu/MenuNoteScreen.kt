@@ -275,6 +275,8 @@ fun MenuNoteContent(
                     Errors.PRE_CEC_STARTED -> stringResource(id = R.string.text_msg_pre_cec_started)
                     Errors.WITHOUT_LOADING_INPUT -> stringResource(id = R.string.text_msg_without_loading_input)
                     Errors.WITHOUT_LOADING_COMPOSTING -> stringResource(id = R.string.text_msg_without_loading_composing)
+                    Errors.NEED_UNCOUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_uncoupling_trailer)
+                    Errors.NEED_COUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_coupling_trailer)
                     else -> stringResource(
                         id = R.string.text_failure,
                         failure
@@ -283,6 +285,7 @@ fun MenuNoteContent(
             } else {
                 text = when(typeMsg){
                     TypeMsg.NOTE_FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_finish_mechanic)
+                    TypeMsg.UNCOUPLING_TRAILER -> stringResource(id = R.string.text_msg_uncoupling_trailer)
                     else -> {
                         val model = itemList.find { it.id == idSelection }!!
                         stringResource(id = R.string.text_msg_initial_activity, model.descr )

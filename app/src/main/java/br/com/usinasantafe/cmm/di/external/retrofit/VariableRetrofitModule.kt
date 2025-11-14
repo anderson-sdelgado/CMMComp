@@ -15,6 +15,12 @@ object VariableRetrofitModule {
 
     @Provides
     @Singleton
+    fun checkListApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): CheckListApi = retrofit.create(CheckListApi::class.java)
+
+    @Provides
+    @Singleton
     fun configApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): ConfigApi = retrofit.create(ConfigApi::class.java)
@@ -24,12 +30,5 @@ object VariableRetrofitModule {
     fun motoMecApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): MotoMecApi = retrofit.create(MotoMecApi::class.java)
-
-    @Provides
-    @Singleton
-    fun checkListApiRetrofit(
-        @DefaultRetrofit retrofit: Retrofit
-    ): CheckListApi = retrofit.create(CheckListApi::class.java)
-
 
 }
