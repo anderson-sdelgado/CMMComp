@@ -37,17 +37,8 @@ class EquipHeaderViewModel @Inject constructor(
 
     fun getDescr() = viewModelScope.launch {
         val result = getDescrEquip()
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val description = result.getOrNull()!!
@@ -60,17 +51,8 @@ class EquipHeaderViewModel @Inject constructor(
 
     fun setIdEquipHeader() = viewModelScope.launch {
         val result = setIdEquip()
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         _uiState.update {
@@ -78,6 +60,23 @@ class EquipHeaderViewModel @Inject constructor(
                 flagAccess = result.isSuccess,
             )
         }
+    }
+
+    private fun handleFailure(failure: String) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false,
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
     }
 
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
+import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,17 +45,8 @@ class ItemCheckListViewModel @Inject constructor(
         pos: Int = 1
     ) = viewModelScope.launch {
         val result = getItemCheckList(pos)
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val model = result.getOrNull()!!
@@ -70,17 +62,8 @@ class ItemCheckListViewModel @Inject constructor(
     fun ret() = viewModelScope.launch {
         if(uiState.value.pos == 1) return@launch
         val result = delLastRespItemCheckList()
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         get(pos = uiState.value.pos - 1)
@@ -94,17 +77,8 @@ class ItemCheckListViewModel @Inject constructor(
             id = uiState.value.id,
             option = option
         )
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val check = result.getOrNull()!!
@@ -117,6 +91,23 @@ class ItemCheckListViewModel @Inject constructor(
                 flagAccess = true,
             )
         }
+    }
+
+    private fun handleFailure(failure: String) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
     }
 
 }

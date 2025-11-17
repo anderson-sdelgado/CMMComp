@@ -209,7 +209,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `saveTokenAndUpdate - Check return failure if have error in SendDataConfig`() =
-        runTest {
+        runTest { //
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -265,13 +265,13 @@ class ConfigViewModelTest {
             viewModel.onSaveAndUpdate()
             assertEquals(
                 viewModel.uiState.value.failure,
-                "ConfigViewModel.token -> SendDataConfig -> java.lang.Exception"
+                "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.token -> SendDataConfig -> java.lang.Exception"
             )
         }
     
     @Test
     fun `saveTokenAndUpdate - Check return failure if have error in SaveDataConfig`() =
-        runTest {
+        runTest { //
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -359,7 +359,7 @@ class ConfigViewModelTest {
             viewModel.onSaveAndUpdate()
             assertEquals(
                 viewModel.uiState.value.failure,
-                "ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception"
+                "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception"
             )
         }
 
@@ -448,7 +448,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableActivity`() =
-        runTest {
+        runTest { //
             val qtdBefore = 0f
             whenever(
                 updateTableActivity(
@@ -498,7 +498,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableColab`() =
-        runTest {
+        runTest { //
             val qtdBefore = 1f
             wheneverSuccessActivity()
             whenever(
@@ -550,7 +550,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableEquip`() =
-        runTest {
+        runTest { //
             val qtdBefore = 2f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -604,7 +604,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableFunctionActivity`() =
-        runTest {
+        runTest { //
             val qtdBefore = 3f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -660,7 +660,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableFunctionStop`() =
-        runTest {
+        runTest { //
             val qtdBefore = 4f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -718,7 +718,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
-        runTest {
+        runTest { //
             val qtdBefore = 5f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -778,7 +778,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableItemMenuPMM`() =
-        runTest {
+        runTest { //
             val qtdBefore = 6f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -840,7 +840,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
-        runTest {
+        runTest { //
             val qtdBefore = 7f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -904,7 +904,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
-        runTest {
+        runTest { //
             val qtdBefore = 8f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -970,7 +970,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableStop`() =
-        runTest {
+        runTest { //
             val qtdBefore = 9f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -1038,7 +1038,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableTurn`() =
-        runTest {
+        runTest { ///
             val qtdBefore = 10f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -1108,7 +1108,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in SetCheckUpdateAllTable`() =
-        runTest {
+        runTest { //
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -1193,7 +1193,7 @@ class ConfigViewModelTest {
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
                     flagDialog = true,
-                    flagProgress = true,
+                    flagProgress = false,
                     currentProgress = 1f,
                     failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
                 )
@@ -1211,11 +1211,11 @@ class ConfigViewModelTest {
                     errors = Errors.EXCEPTION,
                     flagFailure = true,
                     flagDialog = true,
-                    flagProgress = true,
+                    flagProgress = false,
                     currentProgress = 1f,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_turn",
-                    failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
                 )
             )
         }

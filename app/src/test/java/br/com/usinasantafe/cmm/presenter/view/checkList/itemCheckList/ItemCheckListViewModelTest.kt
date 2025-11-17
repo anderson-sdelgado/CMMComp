@@ -33,7 +33,7 @@ class ItemCheckListViewModelTest {
 
     @Test
     fun `get - Check return failure if have error in GetItemCheckList and pos is initial`() =
-        runTest {
+        runTest { //
             whenever(
                 getItemCheckList(1)
             ).thenReturn(
@@ -56,7 +56,7 @@ class ItemCheckListViewModelTest {
 
     @Test
     fun `get - Check return failure if have error in GetItemCheckList and pos is 3`() =
-        runTest {
+        runTest { //
             whenever(
                 getItemCheckList(3)
             ).thenReturn(
@@ -271,7 +271,7 @@ class ItemCheckListViewModelTest {
 
     @Test
     fun `set - Check return failure if have error in SetRespItemCheckList`() =
-        runTest {
+        runTest { //
             whenever(
                 getItemCheckList(1)
             ).thenReturn(

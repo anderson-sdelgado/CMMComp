@@ -33,26 +33,26 @@ data class TurnListHeaderState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToTurnListState(
+fun ResultUpdateModel.toTurn(
     classAndMethod: String,
-    currentState: TurnListHeaderState
+    current: TurnListHeaderState
 ): TurnListHeaderState {
-    val fail = if(failure.isNotEmpty()){
-        val ret = "$classAndMethod -> ${this.failure}"
-        Timber.e(ret)
-        ret
-    } else {
-        this.failure
-    }
-    return currentState.copy(
-        flagDialog = this.flagDialog,
-        flagFailure = this.flagFailure,
-        errors = this.errors,
-        failure = fail,
-        flagProgress = this.flagProgress,
-        currentProgress = this.currentProgress,
-        levelUpdate = this.levelUpdate,
-        tableUpdate = this.tableUpdate
+
+    val failMsg = failure.takeIf { it.isNotEmpty() }
+        ?.let { "$classAndMethod -> $it" }
+        ?: ""
+
+    if (failMsg.isNotEmpty()) Timber.e(failMsg)
+
+    return current.copy(
+        flagDialog = flagDialog,
+        flagFailure = flagFailure,
+        errors = errors,
+        failure = failMsg,
+        flagProgress = flagProgress,
+        currentProgress = currentProgress,
+        levelUpdate = levelUpdate,
+        tableUpdate = tableUpdate
     )
 }
 
@@ -74,18 +74,8 @@ class TurnListHeaderViewModel @Inject constructor(
 
     fun turnList() = viewModelScope.launch {
         val result = listTurn()
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val list = result.getOrNull()!!
@@ -98,18 +88,8 @@ class TurnListHeaderViewModel @Inject constructor(
 
     fun setIdTurnHeader(id: Int) = viewModelScope.launch {
         val result = setIdTurn(id)
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         _uiState.update {
@@ -127,26 +107,37 @@ class TurnListHeaderViewModel @Inject constructor(
         }
     }
 
-    fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
-        val sizeAllUpdate = 4f
-        var lastEmittedState: TurnListHeaderState? = null
-        val classAndMethod = getClassAndMethod()
-        updateTableTurn(
-            sizeAll = sizeAllUpdate,
-            count = 1f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToTurnListState(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
+    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+        classAndMethod: String,
+        emitState: suspend (TurnListHeaderState) -> Unit
+    ): Boolean {
+        var ok = true
+        collect { result ->
+            val newState = result.toTurn(classAndMethod, _uiState.value)
+            emitState(newState)
+            if (newState.flagFailure) {
+                ok = false
+                return@collect
+            }
         }
-        if (lastEmittedState!!.flagFailure) return@flow
-        lastEmittedState = _uiState.value
+        return ok
+    }
+
+    fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
+        val size = 4f
+        val classAndMethod = getClassAndMethod()
+
+        val steps = listOf(
+            updateTableTurn(size, 1f),
+        )
+
+        for (step in steps) {
+            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            if (!ok) return@flow
+        }
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
@@ -155,4 +146,38 @@ class TurnListHeaderViewModel @Inject constructor(
             )
         )
     }
+
+    private fun handleFailure(
+        message: String,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): TurnListHeaderState {
+        val failMsg = "${getClassAndMethod()} -> $message"
+        Timber.e(failMsg)
+
+        val newState = _uiState.value.copy(
+            flagDialog = true,
+            flagFailure = true,
+            failure = failMsg,
+            errors = errors,
+            flagProgress = false,
+            currentProgress = 1f
+        )
+
+        if (!emit) {
+            _uiState.value = newState
+        }
+
+        return newState
+    }
+
+    private fun handleFailure(
+        throwable: Throwable,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): TurnListHeaderState {
+        val msg = "${throwable.message} -> ${throwable.cause}"
+        return handleFailure(msg, errors, emit)
+    }
+
 }

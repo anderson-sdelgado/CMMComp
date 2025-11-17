@@ -148,7 +148,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
             )
         }
 
@@ -252,7 +252,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField.OK -> Field Empty!"
+                "OperatorHeaderViewModel.setTextField -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -298,7 +298,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -383,7 +383,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,

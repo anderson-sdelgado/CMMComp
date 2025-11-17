@@ -103,7 +103,7 @@ class ActivityListCommonViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "ActivityListCommonViewModel.updateAllDatabase -> UpdateTableActivity -> java.lang.NullPointerException"
+                "ActivityListCommonViewModel.updateDatabase -> ActivityListCommonViewModel.updateAllDatabase -> UpdateTableActivity -> java.lang.NullPointerException"
             )
         }
 

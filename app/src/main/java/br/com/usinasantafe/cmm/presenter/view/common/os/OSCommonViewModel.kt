@@ -78,16 +78,7 @@ class OSCommonViewModel @Inject constructor(
             }
             TypeButton.OK -> {
                 if (uiState.value.nroOS.isEmpty()) {
-                    val failure = "OSCommonViewModel.setTextField.OK -> Field Empty!"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.FIELD_EMPTY,
-                            flagAccess = false
-                        )
-                    }
+                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
                     return
                 }
                 setNroOS()
@@ -99,19 +90,8 @@ class OSCommonViewModel @Inject constructor(
     fun getNroOS() = viewModelScope.launch {
         if(uiState.value.flowApp != FlowApp.HEADER_INITIAL) {
             val result = getNroOSHeader()
-            if (result.isFailure) {
-                val error = result.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        errors = Errors.EXCEPTION,
-                        failure = failure,
-                        flagProgress = false,
-                    )
-                }
+            result.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val nroOS = result.getOrNull()!!
@@ -134,19 +114,8 @@ class OSCommonViewModel @Inject constructor(
             nroOS = uiState.value.nroOS,
             flowApp = uiState.value.flowApp
         )
-        if (resultCheck.isFailure) {
-            val error = resultCheck.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    errors = Errors.EXCEPTION,
-                    failure = failure,
-                    flagProgress = false,
-                )
-            }
+        resultCheck.onFailure {
+            handleFailure(it)
             return@launch
         }
         val check = resultCheck.getOrNull()!!
@@ -165,20 +134,8 @@ class OSCommonViewModel @Inject constructor(
             nroOS = uiState.value.nroOS,
             flowApp = uiState.value.flowApp
         )
-        if(resultSet.isFailure){
-            val error = resultSet.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    errors = Errors.EXCEPTION,
-                    failure = failure,
-                    flagProgress = false,
-                    flagAccess = false
-                )
-            }
+        resultSet.onFailure {
+            handleFailure(it)
             return@launch
         }
         _uiState.update {
@@ -188,6 +145,24 @@ class OSCommonViewModel @Inject constructor(
                 flagProgress = false,
             )
         }
+    }
+
+    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                errors = errors,
+                flagAccess = false
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
     }
 
 }

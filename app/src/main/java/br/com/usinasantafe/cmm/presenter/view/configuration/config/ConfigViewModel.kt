@@ -51,26 +51,26 @@ data class ConfigState(
     val errors: Errors = Errors.FIELD_EMPTY,
 )
 
-fun ResultUpdateModel.resultUpdateToConfig(
+fun ResultUpdateModel.toConfig(
     classAndMethod: String,
-    currentState: ConfigState
+    current: ConfigState
 ): ConfigState {
-    val fail = if(failure.isNotEmpty()){
-        val ret = "$classAndMethod -> ${this.failure}"
-        Timber.e(ret)
-        ret
-    } else {
-        this.failure
-    }
-    return currentState.copy(
-        flagDialog = this.flagDialog,
-        flagFailure = this.flagFailure,
-        errors = this.errors,
-        failure = fail,
-        flagProgress = this.flagProgress,
-        currentProgress = this.currentProgress,
-        levelUpdate = this.levelUpdate,
-        tableUpdate = this.tableUpdate,
+
+    val failMsg = failure.takeIf { it.isNotEmpty() }
+        ?.let { "$classAndMethod -> $it" }
+        ?: ""
+
+    if (failMsg.isNotEmpty()) Timber.e(failMsg)
+
+    return current.copy(
+        flagDialog = flagDialog,
+        flagFailure = flagFailure,
+        errors = errors,
+        failure = failMsg,
+        flagProgress = flagProgress,
+        currentProgress = currentProgress,
+        levelUpdate = levelUpdate,
+        tableUpdate = tableUpdate
     )
 }
 
@@ -96,374 +96,213 @@ class ConfigViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ConfigState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(
-                flagDialog = false,
-                flagFailure = false
-            )
-        }
+    private fun updateUi(block: ConfigState.() -> ConfigState) {
+        _uiState.update { it.block() }
     }
 
-    fun onNumberChanged(number: String) {
-        _uiState.update {
-            it.copy(number = number)
-        }
+
+    fun setCloseDialog() = updateUi {
+        copy(flagDialog = false, flagFailure = false)
     }
 
-    fun onPasswordChanged(password: String) {
-        _uiState.update {
-            it.copy(password = password)
-        }
-    }
+    fun onNumberChanged(v: String) = updateUi { copy(number = v) }
+    fun onPasswordChanged(v: String) = updateUi { copy(password = v) }
+    fun onNroEquipChanged(v: String) = updateUi { copy(nroEquip = v) }
+    fun onCheckMotoMecChanged(v: Boolean) = updateUi { copy(checkMotoMec = v) }
 
-    fun onNroEquipChanged(nroEquip: String) {
-        _uiState.update {
-            it.copy(nroEquip = nroEquip)
-        }
-    }
-
-    fun onCheckMotoMecChanged(checkMotoMec: Boolean) {
-        _uiState.update {
-            it.copy(checkMotoMec = checkMotoMec)
-        }
-    }
-
-    fun setConfigMain(
-        version: String,
-        app: String
-    ) {
-        _uiState.update {
-            it.copy(
-                version = version,
-                app = app
-            )
-        }
+    fun setConfigMain(version: String, app: String) = updateUi {
+        copy(version = version, app = app)
     }
 
     fun returnDataConfig() = viewModelScope.launch {
-        val resultGetConfig = getConfigInternal()
-        if (resultGetConfig.isFailure) {
-            val error = resultGetConfig.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    errors = Errors.EXCEPTION,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                )
+        getConfigInternal().fold(
+            onSuccess = { config ->
+                config?.let {
+                    updateUi {
+                        copy(
+                            number = it.number,
+                            password = it.password,
+                            nroEquip = it.nroEquip,
+                            checkMotoMec = it.checkMotoMec
+                        )
+                    }
+                }
+            },
+            onFailure = {
+                handleFailure(it)
             }
-            return@launch
-        }
-        val configModel = resultGetConfig.getOrNull()
-        configModel?.let { config ->
-            _uiState.update {
-                it.copy(
-                    number = config.number,
-                    password = config.password,
-                    nroEquip = config.nroEquip,
-                    checkMotoMec = config.checkMotoMec,
-                )
-            }
-        }
+        )
     }
 
+    private fun ConfigState.isValid() =
+        number.isNotBlank() && password.isNotBlank() && nroEquip.isNotBlank()
+
     fun onSaveAndUpdate() {
-        if (
-            uiState.value.number.isEmpty() ||
-            uiState.value.password.isEmpty() ||
-            uiState.value.nroEquip.isEmpty()
-        ) {
-            _uiState.update {
-                it.copy(
+        if (!uiState.value.isValid()) {
+            updateUi {
+                copy(
                     flagDialog = true,
                     errors = Errors.FIELD_EMPTY,
-                    flagFailure = true,
+                    flagFailure = true
                 )
             }
             return
         }
+
         viewModelScope.launch {
-            token().collect { configStateToken ->
-                _uiState.value = configStateToken
-                if (
-                    (!configStateToken.flagFailure) &&
-                    (configStateToken.currentProgress == 1f)
-                ) {
-                    updateAllDatabase().collect { configStateUpdate ->
-                        _uiState.value = configStateUpdate
-                    }
+            token().collect { state ->
+                _uiState.value = state
+                if (!state.flagFailure && state.currentProgress == 1f) {
+                    updateAllDatabase().collect { _uiState.value = it }
                 }
             }
         }
     }
 
     fun token(): Flow<ConfigState> = flow {
+
+        val s = uiState.value
         val sizeToken = 3f
-        val number = uiState.value.number
-        val password = uiState.value.password
-        val nroEquip = uiState.value.nroEquip
-        val app = uiState.value.app
-        val version = uiState.value.version
-        val checkMotoMec = uiState.value.checkMotoMec
-        var lastEmittedState: ConfigState?
-        lastEmittedState = _uiState.value
-        emit(
-            lastEmittedState.copy(
-                flagProgress = true,
-                levelUpdate = LevelUpdate.GET_TOKEN,
-                currentProgress = percentage(1f, sizeToken)
-            )
+
+        emit(s.copy(
+            flagProgress = true,
+            levelUpdate = LevelUpdate.GET_TOKEN,
+            currentProgress = percentage(1f, sizeToken)
+        ))
+
+        val sendResult = sendDataConfig(
+            number = s.number,
+            password = s.password,
+            nroEquip = s.nroEquip,
+            app = s.app,
+            version = s.version
         )
-        val resultSendDataConfig = sendDataConfig(
-            number = number,
-            password = password,
-            nroEquip = nroEquip,
-            app = app,
-            version = version
-        )
-        if (resultSendDataConfig.isFailure) {
-            val error = resultSendDataConfig.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            lastEmittedState = _uiState.value
-            emit(
-                lastEmittedState.copy(
-                    errors = Errors.TOKEN,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    currentProgress = 1f,
-                )
-            )
+
+        val config = sendResult.getOrElse {
+            emit(handleFailure(it, Errors.TOKEN, true))
             return@flow
         }
-        lastEmittedState = _uiState.value
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagProgress = true,
                 levelUpdate = LevelUpdate.SAVE_TOKEN,
-                currentProgress = percentage(2f, sizeToken),
+                currentProgress = percentage(2f, sizeToken)
             )
         )
-        val config = resultSendDataConfig.getOrNull()!!
-        val resultSave = saveDataConfig(
-            number = number,
-            password = password,
-            version = version,
-            app = app,
-            nroEquip = nroEquip,
-            checkMotoMec = checkMotoMec,
-            idBD = config.idServ!!,
-            idEquip = config.idEquip!!,
+
+        val saveResult = saveDataConfig(
+            number = s.number,
+            password = s.password,
+            version = s.version,
+            app = s.app,
+            nroEquip = s.nroEquip,
+            checkMotoMec = s.checkMotoMec,
+            idBD = config.idServ ?: 0,
+            idEquip = config.idEquip ?: 0
         )
-        if (resultSave.isFailure) {
-            val error = resultSave.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            lastEmittedState = _uiState.value
-            emit(
-                lastEmittedState.copy(
-                    errors = Errors.TOKEN,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    currentProgress = 1f,
-                )
-            )
+
+        saveResult.getOrElse {
+            emit(handleFailure(it, Errors.TOKEN, true))
             return@flow
         }
-        lastEmittedState = _uiState.value
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagProgress = true,
                 currentProgress = 1f,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
+                levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL
             )
         )
     }
 
+    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+        classAndMethod: String,
+        emitState: suspend (ConfigState) -> Unit
+    ): Boolean {
+        var ok = true
+        collect { result ->
+            val newState = result.toConfig(classAndMethod, _uiState.value)
+            emitState(newState)
+            if (newState.flagFailure) {
+                ok = false
+                return@collect
+            }
+        }
+        return ok
+    }
+
     fun updateAllDatabase(): Flow<ConfigState> = flow {
-        val sizeAllUpdate = sizeUpdate(QTD_TABLE)
-        var lastEmittedState: ConfigState? = null
         val classAndMethod = getClassAndMethod()
-        updateTableActivity(
-            sizeAll = sizeAllUpdate,
-            count = 1f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
+        val size = sizeUpdate(QTD_TABLE)
+
+        val steps = listOf(
+            updateTableActivity(size, 1f),
+            updateTableColab(size, 2f),
+            updateTableEquipByIdEquip(size, 3f),
+            updateTableFunctionActivity(size, 4f),
+            updateTableFunctionStop(size, 5f),
+            updateTableItemCheckListByNroEquip(size, 6f),
+            updateTableItemMenu(size, 7f),
+            updateTableRActivityStop(size, 8f),
+            updateTableREquipActivityByIdEquip(size, 9f),
+            updateTableStop(size, 10f),
+            updateTableTurn(size, 11f)
+        )
+
+        for (step in steps) {
+            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            if (!ok) return@flow
         }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableColab(
-            sizeAll = sizeAllUpdate,
-            count = 2f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableEquipByIdEquip(
-            sizeAll = sizeAllUpdate,
-            count = 3f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableFunctionActivity(
-            sizeAll = sizeAllUpdate,
-            count = 4f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableFunctionStop(
-            sizeAll = sizeAllUpdate,
-            count = 5f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableItemCheckListByNroEquip(
-            sizeAll = sizeAllUpdate,
-            count = 6f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableItemMenu(
-            sizeAll = sizeAllUpdate,
-            count = 7f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableRActivityStop(
-            sizeAll = sizeAllUpdate,
-            count = 8f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableREquipActivityByIdEquip(
-            sizeAll = sizeAllUpdate,
-            count = 9f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableStop(
-            sizeAll = sizeAllUpdate,
-            count = 10f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableTurn(
-            sizeAll = sizeAllUpdate,
-            count = 11f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToConfig(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        val result = setFinishUpdateAllTable()
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            lastEmittedState = _uiState.value
-            emit(
-                lastEmittedState!!.copy(
-                    errors = Errors.EXCEPTION,
-                    flagFailure = true,
+
+        setFinishUpdateAllTable().fold(
+            onSuccess = {
+                emit(_uiState.value.copy(
+                    tableUpdate = "",
                     flagDialog = true,
-                    failure = failure,
                     flagProgress = true,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        lastEmittedState = _uiState.value
-        emit(
-            lastEmittedState.copy(
-                tableUpdate = "",
-                flagDialog = true,
-                flagProgress = true,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
+                    flagFailure = false,
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                    currentProgress = 1f
+                ))
+            },
+            onFailure = {
+                emit(handleFailure(it, emit = true))
+            }
         )
     }
+
+    private fun handleFailure(
+        message: String,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): ConfigState {
+        val failMsg = "${getClassAndMethod()} -> $message"
+        Timber.e(failMsg)
+
+        val newState = _uiState.value.copy(
+            flagDialog = true,
+            flagFailure = true,
+            failure = failMsg,
+            errors = errors,
+            flagProgress = false,
+            currentProgress = 1f
+        )
+
+        if (!emit) {
+            _uiState.value = newState
+        }
+
+        return newState
+    }
+
+    private fun handleFailure(
+        throwable: Throwable,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): ConfigState {
+        val msg = "${throwable.message} -> ${throwable.cause}"
+        return handleFailure(msg, errors, emit)
+    }
+
 }

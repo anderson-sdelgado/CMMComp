@@ -125,20 +125,20 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
+                viewModel.uiState.value.failure,
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.setNroOS -> ICheckNroOS -> java.lang.Exception"
+                )
+            assertEquals(
+                viewModel.uiState.value.flagProgress,
+                true
+            )
+            assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
             )
             assertEquals(
                 viewModel.uiState.value.errors,
                 Errors.EXCEPTION
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "OSCommonViewModel.setNroOS -> ICheckNroOS -> java.lang.Exception"
-                )
-            assertEquals(
-                viewModel.uiState.value.flagProgress,
-                false
             )
         }
 
@@ -212,20 +212,20 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
+                viewModel.uiState.value.failure,
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.setNroOS -> ISetNroOS -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagProgress,
+                true
+            )
+            assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
             )
             assertEquals(
                 viewModel.uiState.value.errors,
                 Errors.EXCEPTION
-                )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "OSCommonViewModel.setNroOS -> ISetNroOS -> java.lang.Exception"
-            )
-            assertEquals(
-                viewModel.uiState.value.flagProgress,
-                false
             )
         }
 

@@ -45,19 +45,8 @@ class PasswordViewModel @Inject constructor(
             val resultCheck = checkPassword(
                 password = _uiState.value.password
             )
-            if(resultCheck.isFailure) {
-                val error = resultCheck.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagAccess = false,
-                        flagFailure = true,
-                        failure = failure
-                    )
-                }
+            resultCheck.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val statusAccess = resultCheck.getOrNull()!!
@@ -70,5 +59,23 @@ class PasswordViewModel @Inject constructor(
                 )
             }
         }
+
+    private fun handleFailure(failure: String) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false,
+                flagFailure = true
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
+    }
 
 }

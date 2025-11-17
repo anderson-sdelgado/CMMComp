@@ -64,29 +64,31 @@ import kotlin.text.substringBefore
 
 fun getClassAndMethod(): String {
     val pkg = "br.com.usinasantafe"
-    val stack = Throwable().stackTrace // ← usa Throwable em vez de Thread, funciona em coroutines
+    val stack = Throwable().stackTrace
 
     val calls = stack
         .filter {
             it.className.contains(pkg)
-        } // só classes da sua base
+        }
         .map { el ->
-            val cls = el.className.substringAfterLast('.').substringBefore('$')
-            val mtd = el.methodName.substringBefore('$').substringBefore('-')
-            "$cls.$mtd"
+            val clsFull = el.className.substringAfterLast('.')
+            val realMethod = clsFull.substringAfter('$', "").substringBefore('$')
+            val cls = clsFull.substringBefore('$')
+            val meth = realMethod.ifBlank { el.methodName }
+            "$cls.$meth"
         }
         .distinct()
-        //.takeLast(6) // evita stack muito longo
-        .reversed()  // do chamador ao método final
+        .reversed()
 
     val listFinish = calls
         .filter {
-//            !it.endsWith("invoke") &&
             !it.endsWith("invokeSuspend") &&
-            !it.endsWith("access") &&
+            !it.contains("access") &&
             !it.contains("Test") &&
+            !it.contains("handleFailure") &&
             !it.endsWith("Failure") &&
-            !it.endsWith("getClassAndMethod")
+            !it.endsWith("getClassAndMethod") &&
+            !it.endsWith("default")
         }
         .map {
             it.replace(".invoke", "")

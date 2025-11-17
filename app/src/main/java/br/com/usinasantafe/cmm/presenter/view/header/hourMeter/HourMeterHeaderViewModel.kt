@@ -79,16 +79,7 @@ class HourMeterHeaderViewModel @Inject constructor(
 
             TypeButton.OK -> {
                 if (uiState.value.hourMeter == "0,0") {
-                    val failure = "HourMeterHeaderViewModel.setTextField.OK -> Field Empty!"
-                    Timber.e(failure)
-                    _uiState.update {
-                        it.copy(
-                            flagDialog = true,
-                            failure = failure,
-                            errors = Errors.FIELD_EMPTY,
-                            flagAccess = false
-                        )
-                    }
+                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
                     return
                 }
                 checkHourMeterHeader()
@@ -101,19 +92,8 @@ class HourMeterHeaderViewModel @Inject constructor(
     private fun checkHourMeterHeader() =
         viewModelScope.launch {
             val result = checkHourMeter(uiState.value.hourMeter)
-            if (result.isFailure) {
-                val error = result.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.EXCEPTION,
-                        flagAccess = false
-                    )
-                }
+            result.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val model = result.getOrNull()!!
@@ -137,19 +117,8 @@ class HourMeterHeaderViewModel @Inject constructor(
                 hourMeter = uiState.value.hourMeter,
                 flowApp = uiState.value.flowApp
             )
-            if (resultSet.isFailure) {
-                val error = resultSet.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.EXCEPTION,
-                        flagAccess = false
-                    )
-                }
+            resultSet.onFailure {
+                handleFailure(it)
                 return@launch
             }
             if(uiState.value.flowApp == FlowApp.HEADER_FINISH){
@@ -162,19 +131,8 @@ class HourMeterHeaderViewModel @Inject constructor(
                 return@launch
             }
             val resultCheckOpenCheckList = checkOpenCheckList()
-            if (resultCheckOpenCheckList.isFailure) {
-                val error = resultCheckOpenCheckList.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        errors = Errors.EXCEPTION,
-                        flagAccess = false
-                    )
-                }
+            resultCheckOpenCheckList.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val check = resultCheckOpenCheckList.getOrNull()!!
@@ -187,5 +145,23 @@ class HourMeterHeaderViewModel @Inject constructor(
                 )
             }
         }
+
+    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                errors = errors,
+                flagAccess = false,
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
+    }
 
 }

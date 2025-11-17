@@ -53,7 +53,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setTextField.OK -> Field Empty!"
+                "HourMeterHeaderViewModel.setTextField -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -91,7 +91,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.checkHourMeterHeader -> ICheckHourMeter -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> ICheckHourMeter -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -174,7 +174,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -227,7 +227,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setHourMeterHeader -> ICheckOpenCheckList -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> HourMeterHeaderViewModel.setHourMeterHeader -> ICheckOpenCheckList -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -374,7 +374,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,

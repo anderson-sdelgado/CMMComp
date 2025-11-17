@@ -7,14 +7,14 @@ import br.com.usinasantafe.cmm.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cmm.utils.StatusSend
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class InitialMenuNoteViewModelTest {
+class InitialMenuViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -26,7 +26,7 @@ class InitialMenuNoteViewModelTest {
         getStatusSend = getStatusSend,
         checkAccessInitial = checkAccessInitial
     )
-    
+
     @Test
     fun `recoverStatusSend - Check return failure if have error in GetStatusSend`() =
         runTest {
@@ -43,7 +43,7 @@ class InitialMenuNoteViewModelTest {
             val uiState = viewModel.uiState.value
             assertEquals(
                 uiState.failure,
-                "InitialMenuViewModel.recoverStatusSend -> Error -> Exception -> java.lang.Exception",
+                "InitialMenuViewModel.recoverStatusSend -> GetStatusSend -> java.lang.Exception",
             )
         }
 

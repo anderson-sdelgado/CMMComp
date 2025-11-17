@@ -37,26 +37,26 @@ data class ActivityListCommonState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToActivityListCommonState(
+fun ResultUpdateModel.toActivity(
     classAndMethod: String,
-    currentState: ActivityListCommonState
+    current: ActivityListCommonState
 ): ActivityListCommonState {
-    val fail = if(failure.isNotEmpty()){
-        val ret = "$classAndMethod -> ${this.failure}"
-        Timber.e(ret)
-        ret
-    } else {
-        this.failure
-    }
-    return currentState.copy(
-        flagDialog = this.flagDialog,
-        flagFailure = this.flagFailure,
-        errors = this.errors,
-        failure = fail,
-        flagProgress = this.flagProgress,
-        currentProgress = this.currentProgress,
-        levelUpdate = this.levelUpdate,
-        tableUpdate = this.tableUpdate
+
+    val failMsg = failure.takeIf { it.isNotEmpty() }
+        ?.let { "$classAndMethod -> $it" }
+        ?: ""
+
+    if (failMsg.isNotEmpty()) Timber.e(failMsg)
+
+    return current.copy(
+        flagDialog = flagDialog,
+        flagFailure = flagFailure,
+        errors = errors,
+        failure = failMsg,
+        flagProgress = flagProgress,
+        currentProgress = currentProgress,
+        levelUpdate = levelUpdate,
+        tableUpdate = tableUpdate
     )
 }
 
@@ -89,18 +89,8 @@ class ActivityListCommonViewModel @Inject constructor(
 
     fun activityList() = viewModelScope.launch {
         val result = listActivity()
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val list = result.getOrNull()!!
@@ -116,18 +106,8 @@ class ActivityListCommonViewModel @Inject constructor(
             id = id,
             flowApp = uiState.value.flowApp
         )
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         _uiState.update {
@@ -145,26 +125,37 @@ class ActivityListCommonViewModel @Inject constructor(
         }
     }
 
-    fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
-        val sizeAllUpdate = 4f
-        var lastEmittedState: ActivityListCommonState? = null
-        val classAndMethod = getClassAndMethod()
-        updateTableActivity(
-            sizeAll = sizeAllUpdate,
-            count = 1f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToActivityListCommonState(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
+    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+        classAndMethod: String,
+        emitState: suspend (ActivityListCommonState) -> Unit
+    ): Boolean {
+        var ok = true
+        collect { result ->
+            val newState = result.toActivity(classAndMethod, _uiState.value)
+            emitState(newState)
+            if (newState.flagFailure) {
+                ok = false
+                return@collect
+            }
         }
-        if (lastEmittedState!!.flagFailure) return@flow
-        lastEmittedState = _uiState.value
+        return ok
+    }
+
+    fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
+        val size = 4f
+        val classAndMethod = getClassAndMethod()
+
+        val steps = listOf(
+            updateTableActivity(size, 1f),
+        )
+
+        for (step in steps) {
+            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            if (!ok) return@flow
+        }
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
@@ -173,4 +164,38 @@ class ActivityListCommonViewModel @Inject constructor(
             )
         )
     }
+
+    private fun handleFailure(
+        message: String,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): ActivityListCommonState {
+        val failMsg = "${getClassAndMethod()} -> $message"
+        Timber.e(failMsg)
+
+        val newState = _uiState.value.copy(
+            flagDialog = true,
+            flagFailure = true,
+            failure = failMsg,
+            errors = errors,
+            flagProgress = false,
+            currentProgress = 1f
+        )
+
+        if (!emit) {
+            _uiState.value = newState
+        }
+
+        return newState
+    }
+
+    private fun handleFailure(
+        throwable: Throwable,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): ActivityListCommonState {
+        val msg = "${throwable.message} -> ${throwable.cause}"
+        return handleFailure(msg, errors, emit)
+    }
+
 }

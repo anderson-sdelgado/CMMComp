@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.config.GetStatusSend
+import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,16 +41,8 @@ class InitialMenuViewModel @Inject constructor(
     fun recoverStatusSend() {
         viewModelScope.launch {
             val resultGetStatus = getStatusSend()
-            if(resultGetStatus.isFailure){
-                val error = resultGetStatus.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        failure = failure
-                    )
-                }
+            resultGetStatus.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val result = resultGetStatus.getOrNull()!!
@@ -64,19 +57,8 @@ class InitialMenuViewModel @Inject constructor(
     fun checkAccess() {
         viewModelScope.launch {
             val resultCheck = checkAccessInitial()
-            if(resultCheck.isFailure){
-                val error = resultCheck.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagAccess = false,
-                        flagFailure = true,
-                        failure = failure
-                    )
-                }
+            resultCheck.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val statusAccess = resultCheck.getOrNull()!!
@@ -90,4 +72,23 @@ class InitialMenuViewModel @Inject constructor(
             }
         }
     }
+
+    private fun handleFailure(failure: String) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false,
+                flagFailure = true
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
+    }
+
 }

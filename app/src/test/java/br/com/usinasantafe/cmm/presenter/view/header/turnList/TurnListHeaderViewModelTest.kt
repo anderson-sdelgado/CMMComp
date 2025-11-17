@@ -181,7 +181,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
+                "TurnListHeaderViewModel.updateDatabase -> TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
             )
         }
 
