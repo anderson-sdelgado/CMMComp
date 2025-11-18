@@ -25,7 +25,15 @@ class IListHistory @Inject constructor(
 
     override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> {
         try {
-            val resultNoteList = motoMecRepository.noteList()
+            val resultGetId = motoMecRepository.getIdByHeaderOpen()
+            resultGetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = resultGetId.exceptionOrNull()!!
+                )
+            }
+            val id = resultGetId.getOrNull()!!
+            val resultNoteList = motoMecRepository.noteListByIdHeader(id)
             if(resultNoteList.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),

@@ -44,9 +44,8 @@ class IListItemMenu @Inject constructor(
 
     override suspend fun invoke(flavor: String): Result<List<ItemMenuModel>> {
         try {
-
             val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-            if(resultGetIdEquipMotoMec.isFailure) {
+            resultGetIdEquipMotoMec.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultGetIdEquipMotoMec.exceptionOrNull()!!
@@ -61,7 +60,7 @@ class IListItemMenu @Inject constructor(
                 ECM -> {
                     val app = appList.find { it.second == ECM }!!
                     val resultList = itemMenuRepository.listByTypeList(app = app)
-                    if (resultList.isFailure) {
+                    resultList.onFailure {
                         return resultFailure(
                             context = getClassAndMethod(),
                             cause = resultList.exceptionOrNull()!!
@@ -72,7 +71,7 @@ class IListItemMenu @Inject constructor(
                 }
                 PCOMP -> {
                     val resultComposting = motoMecRepository.getCompostingHeader()
-                    if (resultComposting.isFailure) {
+                    resultComposting.onFailure {
                         return resultFailure(
                             context = getClassAndMethod(),
                             cause = resultComposting.exceptionOrNull()!!
@@ -84,7 +83,7 @@ class IListItemMenu @Inject constructor(
                         FlowComposting.COMPOUND -> appList.find { it.second == PCOMP_COMPOUND }!!
                     }
                     val resultList = itemMenuRepository.listByTypeList(app = app)
-                    if (resultList.isFailure) {
+                    resultList.onFailure {
                         return resultFailure(
                             context = getClassAndMethod(),
                             cause = resultList.exceptionOrNull()!!
@@ -110,6 +109,15 @@ class IListItemMenu @Inject constructor(
     }
 
     private suspend fun pmmList(idEquip: Int): Result<List<ItemMenuModel>> {
+        val resultIdHeader = motoMecRepository.getIdByHeaderOpen()
+        resultIdHeader.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = resultIdHeader.exceptionOrNull()!!
+            )
+        }
+        val idHeader = resultIdHeader.getOrNull()!!
+
         val list: MutableList<Pair<Int, String>> = mutableListOf()
 
         // ADD ITEM_NORMAL
@@ -117,7 +125,7 @@ class IListItemMenu @Inject constructor(
 
         //PERFORMANCE, TRANSHIPMENT, IMPLEMENT, HOSE_COLLECTION
         val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquip)
-        if (resultTypeEquip.isFailure) {
+        resultTypeEquip.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
                 cause = resultTypeEquip.exceptionOrNull()!!
@@ -127,7 +135,7 @@ class IListItemMenu @Inject constructor(
         when (typeEquip) {
             TypeEquip.NORMAL -> {
                 val resultGetIdActivity = motoMecRepository.getIdActivityHeader()
-                if (resultGetIdActivity.isFailure) {
+                resultGetIdActivity.onFailure {
                     return resultFailure(
                         context = getClassAndMethod(),
                         cause = resultGetIdActivity.exceptionOrNull()!!
@@ -135,7 +143,7 @@ class IListItemMenu @Inject constructor(
                 }
                 val resultListFunctionActivity =
                     functionActivityRepository.listByIdActivity(resultGetIdActivity.getOrNull()!!)
-                if (resultListFunctionActivity.isFailure) {
+                resultListFunctionActivity.onFailure {
                     return resultFailure(
                         context = getClassAndMethod(),
                         cause = resultListFunctionActivity.exceptionOrNull()!!
@@ -156,7 +164,7 @@ class IListItemMenu @Inject constructor(
 
         //MECHANICAL
         val resultGetFlagMechanic = equipRepository.getFlagMechanicByIdEquip(idEquip)
-        if (resultGetFlagMechanic.isFailure) {
+        resultGetFlagMechanic.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
                 cause = resultGetFlagMechanic.exceptionOrNull()!!
@@ -167,7 +175,7 @@ class IListItemMenu @Inject constructor(
 
         //TIRE
         val resultGetFlagTire = equipRepository.getFlagTireByIdEquip(idEquip)
-        if (resultGetFlagTire.isFailure) {
+        resultGetFlagTire.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
                 cause = resultGetFlagTire.exceptionOrNull()!!
@@ -178,7 +186,7 @@ class IListItemMenu @Inject constructor(
 
         //REEL
         val resultGetIdStopReel = functionStopRepository.getIdStopByType(TypeStop.REEL)
-        if (resultGetIdStopReel.isFailure) {
+        resultGetIdStopReel.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
                 cause = resultGetIdStopReel.exceptionOrNull()!!
@@ -186,8 +194,8 @@ class IListItemMenu @Inject constructor(
         }
         val idStopReel = resultGetIdStopReel.getOrNull()
         if (idStopReel != null) {
-            val resultCheckStopReel = motoMecRepository.checkNoteHasByIdStop(idStopReel)
-            if (resultCheckStopReel.isFailure) {
+            val resultCheckStopReel = motoMecRepository.hasNoteByIdStopAndIdHeader(idHeader, idStopReel)
+            resultCheckStopReel.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = resultCheckStopReel.exceptionOrNull()!!
@@ -200,7 +208,7 @@ class IListItemMenu @Inject constructor(
         //ADJUST LIST
         val app = appList.find { it.second == PMM }!!
         val resultList = itemMenuRepository.listByTypeList(typeList = list, app = app)
-        if (resultList.isFailure) {
+        resultList.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
                 cause = resultList.exceptionOrNull()!!

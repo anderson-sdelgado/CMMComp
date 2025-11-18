@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonState
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.toActivity
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -32,7 +34,7 @@ data class QuestionUpdateCheckListState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToQuestionUpdateCheckListState(
+fun ResultUpdateModel.toQuestion(
     classAndMethod: String,
     currentState: QuestionUpdateCheckListState
 ): QuestionUpdateCheckListState {
@@ -72,18 +74,8 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
 
     fun checkUpdate() = viewModelScope.launch {
         val result = checkUpdateCheckList()
-        if (result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val check = result.getOrNull()!!
@@ -103,26 +95,37 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
         }
     }
 
-    fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
-        val sizeAllUpdate = sizeUpdate(1f)
-        val classAndMethod = getClassAndMethod()
-        var lastEmittedState: QuestionUpdateCheckListState? = null
-        updateTableItemCheckListByNroEquip(
-            sizeAll = sizeAllUpdate,
-            count = 1f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToQuestionUpdateCheckListState(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
+    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+        classAndMethod: String,
+        emitState: suspend (QuestionUpdateCheckListState) -> Unit
+    ): Boolean {
+        var ok = true
+        collect { result ->
+            val newState = result.toQuestion(classAndMethod, _uiState.value)
+            emitState(newState)
+            if (newState.flagFailure) {
+                ok = false
+                return@collect
+            }
         }
-        if (lastEmittedState!!.flagFailure) return@flow
-        lastEmittedState = _uiState.value
+        return ok
+    }
+
+    fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
+        val size = sizeUpdate(1f)
+        val classAndMethod = getClassAndMethod()
+
+        val steps = listOf(
+            updateTableItemCheckListByNroEquip(size, 1f),
+        )
+
+        for (step in steps) {
+            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            if (!ok) return@flow
+        }
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
@@ -131,4 +134,38 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
             )
         )
     }
+
+    private fun handleFailure(
+        message: String,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): QuestionUpdateCheckListState {
+        val failMsg = "${getClassAndMethod()} -> $message"
+        Timber.e(failMsg)
+
+        val newState = _uiState.value.copy(
+            flagDialog = true,
+            flagFailure = true,
+            failure = failMsg,
+            errors = errors,
+            flagProgress = false,
+            currentProgress = 1f
+        )
+
+        if (!emit) {
+            _uiState.value = newState
+        }
+
+        return newState
+    }
+
+    private fun handleFailure(
+        throwable: Throwable,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): QuestionUpdateCheckListState {
+        val msg = "${throwable.message} -> ${throwable.cause}"
+        return handleFailure(msg, errors, emit)
+    }
+
 }

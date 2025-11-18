@@ -34,11 +34,15 @@ interface MotoMecRepository {
     ): Result<Boolean>
     suspend fun getIdActivityNote(): Result<Int>
     suspend fun setIdStop(id: Int): Result<Boolean>
-    suspend fun checkNoteHasByIdHeader(idHeader: Int): Result<Boolean>
+    suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun send(
         number: Long,
         token: String
     ): Result<Boolean>
-    suspend fun noteList(): Result<List<NoteMotoMec>>
-    suspend fun checkNoteHasByIdStop(idStop: Int): Result<Boolean>
+    suspend fun noteListByIdHeader(idHeader: Int): Result<List<NoteMotoMec>>
+    suspend fun hasNoteByIdStopAndIdHeader(
+        idHeader: Int,
+        idStop: Int
+    ): Result<Boolean>
+    suspend fun getNoteLastByIdHeader(idHeader: Int): Result<NoteMotoMec>
 }

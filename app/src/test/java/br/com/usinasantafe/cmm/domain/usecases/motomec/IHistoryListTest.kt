@@ -31,7 +31,7 @@ class IHistoryListTest {
     fun `Check return failure if have error in MotoMecRepository noteList`() =
         runTest {
             whenever(
-                motoMecRepository.noteList()
+                motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.noteList",
@@ -71,7 +71,7 @@ class IHistoryListTest {
                 )
             )
             whenever(
-                motoMecRepository.noteList()
+                motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )
@@ -116,7 +116,7 @@ class IHistoryListTest {
                 )
             )
             whenever(
-                motoMecRepository.noteList()
+                motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )
@@ -174,7 +174,7 @@ class IHistoryListTest {
                 )
             )
             whenever(
-                motoMecRepository.noteList()
+                motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )

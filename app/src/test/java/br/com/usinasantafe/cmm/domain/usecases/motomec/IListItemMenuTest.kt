@@ -72,13 +72,37 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository getTypeEquipByIdEquip`() =
+    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen - PMM`() =
         runTest {
+            wheneverRegister(1)
             whenever(
-                motoMecRepository.getIdEquipHeader()
+                motoMecRepository.getIdByHeaderOpen()
             ).thenReturn(
-                Result.success(1)
+                resultFailure(
+                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "-",
+                    Exception()
+                )
             )
+            val result = usecase("pmm")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in EquipRepository getTypeEquipByIdEquip - PMM`() =
+        runTest {
+            wheneverRegister(2)
             whenever(
                 equipRepository.getTypeEquipByIdEquip(1)
             ).thenReturn(
@@ -95,7 +119,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IEquipRepository.getTypeEquipByIdEquip"
+                "IListItemMenu -> IListItemMenu.pmmList -> IEquipRepository.getTypeEquipByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -104,18 +128,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
+    fun `Check return failure if have error in MotoMecRepository getIdActivityHeader - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
+            wheneverRegister(3)
             whenever(
                 motoMecRepository.getIdActivityHeader()
             ).thenReturn(
@@ -132,7 +147,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IMotoMecRepository.getIdActivityHeader"
+                "IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdActivityHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -141,23 +156,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in FunctionActivityRepository listByIdActivity`() =
+    fun `Check return failure if have error in FunctionActivityRepository listByIdActivity - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
+            wheneverRegister(4)
             whenever(
                 functionActivityRepository.listByIdActivity(1)
             ).thenReturn(
@@ -174,7 +175,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IFunctionActivityRepository.listByIdActivity"
+                "IListItemMenu -> IListItemMenu.pmmList -> IFunctionActivityRepository.listByIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -183,28 +184,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository getFlagMechanicByIdEquip`() =
+    fun `Check return failure if have error in EquipRepository getFlagMechanicByIdEquip - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
+            wheneverRegister(5)
             whenever(
                 equipRepository.getFlagMechanicByIdEquip(1)
             ).thenReturn(
@@ -221,7 +203,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IEquipRepository.getFlagMechanicByIdEquip"
+                "IListItemMenu -> IListItemMenu.pmmList -> IEquipRepository.getFlagMechanicByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -230,33 +212,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository getFlagTireByIdEquip`() =
+    fun `Check return failure if have error in EquipRepository getFlagTireByIdEquip - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
+            wheneverRegister(6)
             whenever(
                 equipRepository.getFlagTireByIdEquip(1)
             ).thenReturn(
@@ -273,7 +231,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IEquipRepository.getFlagTireByIdEquip"
+                "IListItemMenu -> IListItemMenu.pmmList -> IEquipRepository.getFlagTireByIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -282,38 +240,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in FunctionStopRepository getIdStopByType`() =
+    fun `Check return failure if have error in FunctionStopRepository getIdStopByType - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
+            wheneverRegister(7)
             whenever(
                 functionStopRepository.getIdStopByType(TypeStop.REEL)
             ).thenReturn(
@@ -330,7 +259,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IFunctionStopRepository.getIdStopByType"
+                "IListItemMenu -> IListItemMenu.pmmList -> IFunctionStopRepository.getIdStopByType"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -339,45 +268,11 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository checkNoteHasByIdStop`() =
+    fun `Check return failure if have error in MotoMecRepository checkNoteHasByIdStop - PMM`() =
         runTest {
+            wheneverRegister(8)
             whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
+                motoMecRepository.hasNoteByIdStopAndIdHeader(1, 1)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.checkNoteHasByIdStop",
@@ -392,7 +287,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IMotoMecRepository.checkNoteHasByIdStop"
+                "IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.checkNoteHasByIdStop"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -401,48 +296,9 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in ItemMenuPMMRepository listByTypeList`() =
+    fun `Check return failure if have error in ItemMenuPMMRepository listByTypeList - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
-            ).thenReturn(
-                Result.success(false)
-            )
+            wheneverRegister(9)
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
@@ -467,7 +323,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IItemMenuPMMRepository.listByTypeList"
+                "IListItemMenu -> IListItemMenu.pmmList -> IItemMenuPMMRepository.listByTypeList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -476,48 +332,10 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully, flow basic and emptyList`() =
+    fun `Check return correct if function execute successfully, flow basic and emptyList - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
-            ).thenReturn(
-                Result.success(false)
-            )
+
+            wheneverRegister(9)
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
@@ -543,48 +361,10 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully, flow basic and with list`() =
+    fun `Check return correct if function execute successfully, flow basic and with list - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(emptyList())
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(false)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
-            ).thenReturn(
-                Result.success(false)
-            )
+
+            wheneverRegister(9)
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
             list.add(1 to ITEM_NORMAL)
@@ -648,66 +428,32 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully, type equip is NORMAL, all item and with list`() =
+    fun `Check return correct if function execute successfully, type equip is NORMAL, all item and with list - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.NORMAL)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        FunctionActivity(
-                            idFunctionActivity = 1,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.PERFORMANCE
-                        ),
-                        FunctionActivity(
-                            idFunctionActivity = 2,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.TRANSHIPMENT
-                        ),
 
-                        FunctionActivity(
-                            idFunctionActivity = 3,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.IMPLEMENT
-                        )
+            wheneverRegister(
+                level = 9,
+                list = listOf(
+                    FunctionActivity(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE
+                    ),
+                    FunctionActivity(
+                        idFunctionActivity = 2,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.TRANSHIPMENT
+                    ),
+
+                    FunctionActivity(
+                        idFunctionActivity = 3,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.IMPLEMENT
                     )
-                )
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
-            ).thenReturn(
-                Result.success(true)
+                ),
+                flagMechanic = true,
+                flagTire = true,
+                flagReel = true
             )
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -778,66 +524,32 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully, type equip is FERT, all item and with list`() =
+    fun `Check return correct if function execute successfully, type equip is FERT, all item and with list - PMM`() =
         runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
-            ).thenReturn(
-                Result.success(TypeEquip.FERT)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.listByIdActivity(1)
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        FunctionActivity(
-                            idFunctionActivity = 1,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.PERFORMANCE
-                        ),
-                        FunctionActivity(
-                            idFunctionActivity = 2,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.TRANSHIPMENT
-                        ),
 
-                        FunctionActivity(
-                            idFunctionActivity = 3,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.IMPLEMENT
-                        )
+            wheneverRegister(
+                level = 9,
+                list = listOf(
+                    FunctionActivity(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE
+                    ),
+                    FunctionActivity(
+                        idFunctionActivity = 2,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.TRANSHIPMENT
+                    ),
+
+                    FunctionActivity(
+                        idFunctionActivity = 3,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.IMPLEMENT
                     )
-                )
-            )
-            whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                equipRepository.getFlagTireByIdEquip(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                functionStopRepository.getIdStopByType(TypeStop.REEL)
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.checkNoteHasByIdStop(1)
-            ).thenReturn(
-                Result.success(true)
+                ),
+                flagMechanic = true,
+                flagTire = true,
+                flagReel = true
             )
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -904,4 +616,87 @@ class IListItemMenuTest {
                 "ITEM 2"
             )
         }
+
+    private suspend fun wheneverRegister(
+        level: Int,
+        flagMechanic: Boolean = false,
+        flagTire: Boolean = false,
+        flagReel: Boolean = false,
+        list: List<FunctionActivity> = emptyList(),
+    ) {
+
+        whenever(
+            motoMecRepository.getIdEquipHeader()
+        ).thenReturn(
+            Result.success(1)
+        )
+
+        if(level == 1) return
+
+        whenever(
+            motoMecRepository.getIdByHeaderOpen()
+        ).thenReturn(
+            Result.success(1)
+        )
+
+        if(level == 2) return
+
+        whenever(
+            equipRepository.getTypeEquipByIdEquip(1)
+        ).thenReturn(
+            Result.success(TypeEquip.NORMAL)
+        )
+
+        if(level == 3) return
+
+        whenever(
+            motoMecRepository.getIdActivityHeader()
+        ).thenReturn(
+            Result.success(1)
+        )
+
+        if(level == 4) return
+
+        whenever(
+            functionActivityRepository.listByIdActivity(1)
+        ).thenReturn(
+            Result.success(list)
+        )
+
+        if(level == 5) return
+
+        whenever(
+            equipRepository.getFlagMechanicByIdEquip(1)
+        ).thenReturn(
+            Result.success(flagMechanic)
+        )
+
+        if(level == 6) return
+
+        whenever(
+            equipRepository.getFlagTireByIdEquip(1)
+        ).thenReturn(
+            Result.success(flagTire)
+        )
+
+        if(level == 7) return
+
+        whenever(
+            functionStopRepository.getIdStopByType(TypeStop.REEL)
+        ).thenReturn(
+            Result.success(1)
+        )
+
+        if(level == 8) return
+
+        whenever(
+            motoMecRepository.hasNoteByIdStopAndIdHeader(1, 1)
+        ).thenReturn(
+            Result.success(flagReel)
+        )
+
+        if(level == 9) return
+
+    }
+
 }

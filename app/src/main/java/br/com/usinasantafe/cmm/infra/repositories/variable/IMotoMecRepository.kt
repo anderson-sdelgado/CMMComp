@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.utils.TypeNote
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -365,7 +366,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun checkNoteHasByIdHeader(idHeader: Int): Result<Boolean> {
+    override suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean> {
         val result = noteMotoMecRoomDatasource.checkHasByIdHeader(idHeader)
         if (result.isFailure) {
             return resultFailure(
@@ -448,17 +449,9 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun noteList(): Result<List<NoteMotoMec>> {
+    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<NoteMotoMec>> {
         try {
-            val resultGetId = headerMotoMecRoomDatasource.getIdByHeaderOpen()
-            if (resultGetId.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetId.exceptionOrNull()!!
-                )
-            }
-            val id = resultGetId.getOrNull()!!
-            val resultNoteList = noteMotoMecRoomDatasource.listByIdHeader(id)
+            val resultNoteList = noteMotoMecRoomDatasource.listByIdHeader(idHeader)
             if (resultNoteList.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -475,15 +468,10 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun checkNoteHasByIdStop(idStop: Int): Result<Boolean> {
-        val resultGetId = headerMotoMecRoomDatasource.getIdByHeaderOpen()
-        if (resultGetId.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = resultGetId.exceptionOrNull()!!
-            )
-        }
-        val idHeader = resultGetId.getOrNull()!!
+    override suspend fun hasNoteByIdStopAndIdHeader(
+        idHeader: Int,
+        idStop: Int
+    ): Result<Boolean> {
         val result = noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
             idStop,
             idHeader
@@ -496,5 +484,10 @@ class IMotoMecRepository @Inject constructor(
         }
         return result
     }
+
+    override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<NoteMotoMec> {
+        TODO("Not yet implemented")
+    }
+
 
 }

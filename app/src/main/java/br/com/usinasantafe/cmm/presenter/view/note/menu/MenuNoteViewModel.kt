@@ -174,12 +174,12 @@ class MenuNoteViewModel @Inject constructor(
 
         val allChecksPassed = when (function.second) {
             FINISH_MECHANICAL -> {
-                handleFinishMechanical() //ok
+                handleFinishMechanical()
                 false
             }
-            TRANSHIPMENT -> handleTranshipment() //ok
-            IMPLEMENT -> handleImplement() //ok
-            NOTE_MECHANICAL -> handleNoteMechanical() //ok
+            TRANSHIPMENT -> handleTranshipment()
+            IMPLEMENT -> handleImplement()
+            NOTE_MECHANICAL -> handleNoteMechanical()
             else -> true
         }
 
@@ -385,7 +385,7 @@ class MenuNoteViewModel @Inject constructor(
         return when (status) {
             StatusTranshipment.OK -> true
             StatusTranshipment.WITHOUT_NOTE -> {
-                handleFailure("Without note!", Errors.WITHOUT_NOTE_TRANSHIPMENT)
+                handleFailure("Without note or last is not type work!", Errors.WITHOUT_NOTE_TRANSHIPMENT)
                 false
             }
             StatusTranshipment.TIME_INVALID -> {

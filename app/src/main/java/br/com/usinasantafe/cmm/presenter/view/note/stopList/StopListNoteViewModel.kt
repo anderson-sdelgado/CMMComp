@@ -36,26 +36,26 @@ data class StopListNoteState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.resultUpdateToStopListNoteState(
+fun ResultUpdateModel.toStop(
     classAndMethod: String,
-    currentState: StopListNoteState
+    current: StopListNoteState
 ): StopListNoteState {
-    val fail = if(failure.isNotEmpty()){
-        val ret = "$classAndMethod -> ${this.failure}"
-        Timber.e(ret)
-        ret
-    } else {
-        this.failure
-    }
-    return currentState.copy(
-        flagDialog = this.flagDialog,
-        flagFailure = this.flagFailure,
-        errors = this.errors,
-        failure = fail,
-        flagProgress = this.flagProgress,
-        currentProgress = this.currentProgress,
-        levelUpdate = this.levelUpdate,
-        tableUpdate = this.tableUpdate
+
+    val failMsg = failure.takeIf { it.isNotEmpty() }
+        ?.let { "$classAndMethod -> $it" }
+        ?: ""
+
+    if (failMsg.isNotEmpty()) Timber.e(failMsg)
+
+    return current.copy(
+        flagDialog = flagDialog,
+        flagFailure = flagFailure,
+        errors = errors,
+        failure = failMsg,
+        flagProgress = flagProgress,
+        currentProgress = currentProgress,
+        levelUpdate = levelUpdate,
+        tableUpdate = tableUpdate
     )
 }
 
@@ -79,18 +79,8 @@ class StopListNoteViewModel @Inject constructor(
     fun stopList() = viewModelScope.launch {
         if(!uiState.value.flagFilter) {
             val result = listStop()
-            if (result.isFailure) {
-                val error = result.exceptionOrNull()!!
-                val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-                Timber.e(failure)
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        failure = failure,
-                        flagFailure = true
-                    )
-                }
+            result.onFailure {
+                handleFailure(it)
                 return@launch
             }
             val list = result.getOrNull()!!
@@ -104,18 +94,8 @@ class StopListNoteViewModel @Inject constructor(
 
     fun setIdStop(id: Int) = viewModelScope.launch {
         val result = setIdStopNote(id)
-        if(result.isFailure){
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure,
-                    flagFailure = true
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         _uiState.update {
@@ -160,39 +140,39 @@ class StopListNoteViewModel @Inject constructor(
         }
     }
 
+    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+        classAndMethod: String,
+        emitState: suspend (StopListNoteState) -> Unit
+    ): Boolean {
+        var ok = true
+        collect { result ->
+            val newState = result.toStop(classAndMethod, _uiState.value)
+            emitState(newState)
+            if (newState.flagFailure) {
+                ok = false
+                return@collect
+            }
+        }
+        return ok
+    }
+
     fun updateAllDatabase(): Flow<StopListNoteState> = flow {
-        val sizeAllUpdate = 7f
-        var lastEmittedState: StopListNoteState? = null
+        val size = 7f
         val classAndMethod = getClassAndMethod()
-        updateTableRActivityStop(
-            sizeAll = sizeAllUpdate,
-            count = 1f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToStopListNoteState(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
+
+        val steps = listOf(
+            updateTableRActivityStop(size, 1f),
+            updateTableStop(size, 2f),
+        )
+
+        for (step in steps) {
+            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            if (!ok) return@flow
         }
-        if (lastEmittedState!!.flagFailure) return@flow
-        updateTableStop(
-            sizeAll = sizeAllUpdate,
-            count = 2f
-        ).collect {
-            val currentGlobalState = _uiState.value
-            val newState = it.resultUpdateToStopListNoteState(
-                classAndMethod,
-                currentState = currentGlobalState
-            )
-            lastEmittedState = newState
-            emit(newState)
-        }
-        if (lastEmittedState!!.flagFailure) return@flow
-        lastEmittedState = _uiState.value
+
+
         emit(
-            lastEmittedState.copy(
+            _uiState.value.copy(
                 flagDialog = true,
                 flagProgress = false,
                 flagFailure = false,
@@ -201,4 +181,38 @@ class StopListNoteViewModel @Inject constructor(
             )
         )
     }
+
+    private fun handleFailure(
+        message: String,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): StopListNoteState {
+        val failMsg = "${getClassAndMethod()} -> $message"
+        Timber.e(failMsg)
+
+        val newState = _uiState.value.copy(
+            flagDialog = true,
+            flagFailure = true,
+            failure = failMsg,
+            errors = errors,
+            flagProgress = false,
+            currentProgress = 1f
+        )
+
+        if (!emit) {
+            _uiState.value = newState
+        }
+
+        return newState
+    }
+
+    private fun handleFailure(
+        throwable: Throwable,
+        errors: Errors = Errors.EXCEPTION,
+        emit: Boolean = false
+    ): StopListNoteState {
+        val msg = "${throwable.message} -> ${throwable.cause}"
+        return handleFailure(msg, errors, emit)
+    }
+
 }

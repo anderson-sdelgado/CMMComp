@@ -39,18 +39,8 @@ class SplashViewModel @Inject constructor(
     fun startApp() = viewModelScope.launch {
         startWorkManager()
         val result = flowAppOpen()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagAccess = false,
-                    flagDialog = true,
-                    failure = failure
-                )
-            }
+        result.onFailure {
+            handleFailure(it)
             return@launch
         }
         val flowApp = result.getOrNull()!!
@@ -60,6 +50,23 @@ class SplashViewModel @Inject constructor(
                 flowApp = flowApp
             )
         }
+    }
+
+    private fun handleFailure(failure: String) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
     }
 
 }

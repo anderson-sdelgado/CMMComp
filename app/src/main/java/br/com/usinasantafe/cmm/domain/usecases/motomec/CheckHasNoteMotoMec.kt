@@ -23,7 +23,7 @@ class ICheckHasNoteMotoMec @Inject constructor(
                 )
             }
             val id = resultGetId.getOrNull()!!
-            val resultCheck = motoMecRepository.checkNoteHasByIdHeader(id)
+            val resultCheck = motoMecRepository.hasNoteByIdHeader(id)
             if (resultCheck.isFailure) {
                 return resultFailure(
                     context = getClassAndMethod(),

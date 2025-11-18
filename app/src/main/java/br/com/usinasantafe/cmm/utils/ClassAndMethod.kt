@@ -91,7 +91,7 @@ fun getClassAndMethod(): String {
             !it.endsWith("default")
         }
         .map {
-            it.replace(".invoke", "")
+            it.replace(".invoke", "").substringBefore('-')
         }
 
 
