@@ -143,14 +143,13 @@ class ActivityListCommonViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
         val size = 4f
-        val classAndMethod = getClassAndMethod()
 
         val steps = listOf(
             updateTableActivity(size, 1f),
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
             if (!ok) return@flow
         }
 

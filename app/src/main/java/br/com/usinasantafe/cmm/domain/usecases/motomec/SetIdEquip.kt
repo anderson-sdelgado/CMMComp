@@ -4,7 +4,6 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.utils.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -21,31 +20,16 @@ class ISetIdEquip @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGetConfig = configRepository.get()
-            if (resultGetConfig.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetConfig.exceptionOrNull()!!
-                )
-            }
+            resultGetConfig.onFailure { return Result.failure(it) }
             val config = resultGetConfig.getOrNull()!!
             val resultGetTypeEquip = equipRepository.getTypeEquipByIdEquip(config.idEquip!!)
-            if (resultGetTypeEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetTypeEquip.exceptionOrNull()!!
-                )
-            }
+            resultGetTypeEquip.onFailure { return Result.failure(it) }
             val typeEquip = resultGetTypeEquip.getOrNull()!!
             val resultSetIdEquip = motoMecRepository.setDataEquipHeader(
                 idEquip = config.idEquip,
                 typeEquip = typeEquip
             )
-            if (resultSetIdEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSetIdEquip.exceptionOrNull()!!
-                )
-            }
+            resultSetIdEquip.onFailure { return Result.failure(it) }
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(

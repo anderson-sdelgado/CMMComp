@@ -19,20 +19,10 @@ class IGetFlowEquipNoteMotoMec @Inject constructor(
     override suspend fun invoke(): Result<FlowEquipNote> {
         try {
             val resultGetIdEquipConfig = configRepository.getIdEquip()
-            if(resultGetIdEquipConfig.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdEquipConfig.exceptionOrNull()!!
-                )
-            }
+            resultGetIdEquipConfig.onFailure { return Result.failure(it) }
             val idEquipConfig = resultGetIdEquipConfig.getOrNull()!!
             val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-            if(resultGetIdEquipMotoMec.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdEquipMotoMec.exceptionOrNull()!!
-                )
-            }
+            resultGetIdEquipMotoMec.onFailure { return Result.failure(it) }
             val idEquipMotoMec = resultGetIdEquipMotoMec.getOrNull()!!
             val ret = if(idEquipConfig == idEquipMotoMec) FlowEquipNote.MAIN else FlowEquipNote.SECONDARY
             return Result.success(ret)

@@ -21,29 +21,14 @@ class IListStop @Inject constructor(
     override suspend fun invoke(): Result<List<StopScreenModel>> {
         try {
             val resultGetIdActivity = motoMecRepository.getIdActivityNote()
-            if (resultGetIdActivity.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdActivity.exceptionOrNull()!!
-                )
-            }
+            resultGetIdActivity.onFailure { return Result.failure(it) }
             val idActivity = resultGetIdActivity.getOrNull()!!
             val resultListByIdActivity = rActivityStopRepository.listByIdActivity(idActivity)
-            if (resultListByIdActivity.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultListByIdActivity.exceptionOrNull()!!
-                )
-            }
+            resultListByIdActivity.onFailure { return Result.failure(it) }
             val list = resultListByIdActivity.getOrNull()!!
             val idList = list.map { it.idStop }
             val resultListByIdList = stopRepository.listByIdList(idList)
-            if (resultListByIdList.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultListByIdList.exceptionOrNull()!!
-                )
-            }
+            resultListByIdList.onFailure { return Result.failure(it) }
             val stopList = resultListByIdList.getOrNull()!!
             val stopScreenModelList = stopList.map {
                 StopScreenModel(

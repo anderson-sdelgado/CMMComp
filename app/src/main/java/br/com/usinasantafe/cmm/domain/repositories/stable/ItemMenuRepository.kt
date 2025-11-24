@@ -6,6 +6,6 @@ interface ItemMenuRepository {
     suspend fun addAll(list: List<ItemMenu>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<ItemMenu>>
-    suspend fun listByTypeList(app: Pair<Int, String>, typeList: List<Pair<Int, String>>): Result<List<ItemMenu>>
-    suspend fun listByTypeList(app: Pair<Int, String>): Result<List<ItemMenu>>
+    suspend fun listByTypeList(typeList: List<Pair<Int, String>>): Result<List<ItemMenu>>
+    suspend fun listByApp(app: Pair<Int, String>): Result<List<ItemMenu>>
 }

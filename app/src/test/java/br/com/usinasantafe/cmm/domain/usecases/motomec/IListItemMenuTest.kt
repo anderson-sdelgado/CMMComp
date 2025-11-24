@@ -8,10 +8,13 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityReposi
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemMenuRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.ECM
 import br.com.usinasantafe.cmm.utils.FERTIGATION
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.IMPLEMENT
 import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
 import br.com.usinasantafe.cmm.utils.MECHANICAL
+import br.com.usinasantafe.cmm.utils.PCOMP_INPUT
 import br.com.usinasantafe.cmm.utils.PERFORMANCE
 import br.com.usinasantafe.cmm.utils.PMM
 import br.com.usinasantafe.cmm.utils.REEL
@@ -24,9 +27,9 @@ import br.com.usinasantafe.cmm.utils.WORK
 import br.com.usinasantafe.cmm.utils.appList
 import br.com.usinasantafe.cmm.utils.typeListPMM
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IListItemMenuTest {
@@ -45,7 +48,26 @@ class IListItemMenuTest {
     )
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
+    fun `Check return failure if not exist flavor fielded`() =
+        runTest {
+            wheneverRegister(1)
+            val result = usecase("test")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListItemMenu"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception: Flavor not found"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader - PMM`() =
         runTest {
             whenever(
                 motoMecRepository.getIdEquipHeader()
@@ -63,7 +85,7 @@ class IListItemMenuTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IMotoMecRepository.getIdEquipHeader"
+                "IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -306,8 +328,7 @@ class IListItemMenuTest {
             val app = appList.find { it.second == PMM }!!
             whenever(
                 itemMenuRepository.listByTypeList(
-                    typeList = list,
-                    app = app
+                    typeList = list
                 )
             ).thenReturn(
                 resultFailure(
@@ -343,8 +364,7 @@ class IListItemMenuTest {
             val app = appList.find { it.second == PMM }!!
             whenever(
                 itemMenuRepository.listByTypeList(
-                    typeList = list,
-                    app = app
+                    typeList = list
                 )
             ).thenReturn(
                 Result.success(emptyList())
@@ -372,8 +392,7 @@ class IListItemMenuTest {
             val app = appList.find { it.second == PMM }!!
             whenever(
                 itemMenuRepository.listByTypeList(
-                    typeList = list,
-                    app = app
+                    typeList = list
                 )
             ).thenReturn(
                 Result.success(
@@ -468,8 +487,7 @@ class IListItemMenuTest {
             val app = appList.find { it.second == PMM }!!
             whenever(
                 itemMenuRepository.listByTypeList(
-                    typeList = list,
-                    app = app
+                    typeList = list
                 )
             ).thenReturn(
                 Result.success(
@@ -549,7 +567,8 @@ class IListItemMenuTest {
                 ),
                 flagMechanic = true,
                 flagTire = true,
-                flagReel = true
+                flagReel = true,
+                typeEquip = TypeEquip.FERT
             )
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -562,8 +581,7 @@ class IListItemMenuTest {
             val app = appList.find { it.second == PMM }!!
             whenever(
                 itemMenuRepository.listByTypeList(
-                    typeList = list,
-                    app = app
+                    typeList = list
                 )
             ).thenReturn(
                 Result.success(
@@ -617,11 +635,232 @@ class IListItemMenuTest {
             )
         }
 
+    @Test
+    fun `Check return failure if have error in ItemMenuRepository listByTypeList - ECM`() =
+        runTest {
+            whenever(
+                itemMenuRepository.listByApp(2 to ECM)
+            ).thenReturn(
+                resultFailure(
+                    "IItemMenuRepository.listByTypeList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase("ecm")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListItemMenu -> IItemMenuRepository.listByTypeList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if process execute successfully - ECM`() =
+        runTest {
+            whenever(
+                itemMenuRepository.listByApp(2 to ECM)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemMenu(
+                            id = 1,
+                            descr = "ITEM 1",
+                            type = 1 to ITEM_NORMAL,
+                            pos = 1,
+                            function = 1 to WORK,
+                            app = 1 to ECM,
+                        ),
+                    )
+                )
+            )
+            val result = usecase("ecm")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val item = list[0]
+            assertEquals(
+                item.id,
+                1
+            )
+            assertEquals(
+                item.descr,
+                "ITEM 1"
+            )
+            assertEquals(
+                item.type.first,
+                1
+            )
+            assertEquals(
+                item.type.second,
+                ITEM_NORMAL
+            )
+            assertEquals(
+                item.function.first,
+                1
+            )
+            assertEquals(
+                item.function.second,
+                WORK
+            )
+            assertEquals(
+                item.app.first,
+                1
+            )
+            assertEquals(
+                item.app.second,
+                ECM
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getCompostingHeader - PCOMP`() =
+        runTest {
+            whenever(
+                motoMecRepository.getCompostingHeader()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getCompostingHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase("pcomp")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListItemMenu -> IMotoMecRepository.getCompostingHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in ItemMenuRepository listByTypeList - PCOMP`() =
+        runTest {
+            whenever(
+                motoMecRepository.getCompostingHeader()
+            ).thenReturn(
+                Result.success(FlowComposting.INPUT)
+            )
+            whenever(
+                itemMenuRepository.listByApp(3 to PCOMP_INPUT)
+            ).thenReturn(
+                resultFailure(
+                    "IItemMenuRepository.listByTypeList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase("pcomp")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListItemMenu -> IItemMenuRepository.listByTypeList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if process execute successfully - PCOMP`() =
+        runTest {
+            whenever(
+                motoMecRepository.getCompostingHeader()
+            ).thenReturn(
+                Result.success(FlowComposting.INPUT)
+            )
+            whenever(
+                itemMenuRepository.listByApp(3 to PCOMP_INPUT)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemMenu(
+                            id = 1,
+                            descr = "ITEM 1",
+                            type = 1 to ITEM_NORMAL,
+                            pos = 1,
+                            function = 1 to WORK,
+                            app = 3 to PCOMP_INPUT,
+                        ),
+                    )
+                )
+            )
+            val result = usecase("pcomp")
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val item = list[0]
+            assertEquals(
+                item.id,
+                1
+            )
+            assertEquals(
+                item.descr,
+                "ITEM 1"
+            )
+            assertEquals(
+                item.type.first,
+                1
+            )
+            assertEquals(
+                item.type.second,
+                ITEM_NORMAL
+            )
+            assertEquals(
+                item.function.first,
+                1
+            )
+            assertEquals(
+                item.function.second,
+                WORK
+            )
+            assertEquals(
+                item.app.first,
+                3
+            )
+            assertEquals(
+                item.app.second,
+                PCOMP_INPUT
+            )
+        }
+
+    
     private suspend fun wheneverRegister(
         level: Int,
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         flagReel: Boolean = false,
+        typeEquip: TypeEquip = TypeEquip.NORMAL,
         list: List<FunctionActivity> = emptyList(),
     ) {
 
@@ -644,7 +883,7 @@ class IListItemMenuTest {
         whenever(
             equipRepository.getTypeEquipByIdEquip(1)
         ).thenReturn(
-            Result.success(TypeEquip.NORMAL)
+            Result.success(typeEquip)
         )
 
         if(level == 3) return

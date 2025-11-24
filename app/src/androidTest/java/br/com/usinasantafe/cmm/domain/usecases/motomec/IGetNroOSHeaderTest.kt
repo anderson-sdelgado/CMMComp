@@ -33,7 +33,7 @@ class IGetNroOSHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetNroOSHeader -> IHeaderMotoMecRepository.getNroOS -> IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
+                "IGetNroOSHeader -> IMotoMecRepository.getNroOSHeader -> IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

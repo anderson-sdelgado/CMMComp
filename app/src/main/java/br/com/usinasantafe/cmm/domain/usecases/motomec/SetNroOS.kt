@@ -25,22 +25,12 @@ class ISetNroOS @Inject constructor(
             val resultSetNroOSHeader = motoMecRepository.setNroOSHeader(
                 nroOS.toInt()
             )
-            if (resultSetNroOSHeader.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSetNroOSHeader.exceptionOrNull()!!
-                )
-            }
+            resultSetNroOSHeader.onFailure { return Result.failure(it) }
             if (flowApp == FlowApp.HEADER_INITIAL) return resultSetNroOSHeader
             val resultSetNroOSNote = motoMecRepository.setNroOSNote(
                 nroOS.toInt()
             )
-            if (resultSetNroOSNote.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSetNroOSNote.exceptionOrNull()!!
-                )
-            }
+            resultSetNroOSNote.onFailure { return Result.failure(it) }
             return resultSetNroOSNote
         } catch (e: Exception) {
             return resultFailure(

@@ -18,22 +18,12 @@ class IGetDescrEquip @Inject constructor(
     override suspend fun invoke(): Result<String> {
         try {
             val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-            if(resultGetIdEquipMotoMec.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdEquipMotoMec.exceptionOrNull()!!
-                )
-            }
+            resultGetIdEquipMotoMec.onFailure { return Result.failure(it) }
             val idEquip = resultGetIdEquipMotoMec.getOrNull()!!
             val result = equipRepository.getDescrByIdEquip(
                 idEquip = idEquip
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val description = result.getOrNull()!!
             return Result.success(description)
         } catch (e: Exception) {

@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
+import br.com.usinasantafe.cmm.domain.errors.failure
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
@@ -39,10 +40,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
             )
         )
         val resultGetToken = getToken()
-        if (resultGetToken.isFailure) {
-            val error = resultGetToken.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultGetToken.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -58,10 +57,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         }
         val token = resultGetToken.getOrNull()!!
         val resultGetConfig = configRepository.get()
-        if (resultGetConfig.isFailure) {
-            val error = resultGetConfig.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultGetConfig.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -80,10 +77,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
             token = token,
             idEquip = config.idEquip!!
         )
-        if (resultGetList.isFailure) {
-            val error = resultGetList.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultGetList.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -106,10 +101,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
             )
         )
         val resultDeleteAll = rEquipActivityRepository.deleteAll()
-        if (resultDeleteAll.isFailure) {
-            val error = resultDeleteAll.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultDeleteAll.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -133,10 +126,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         )
         val entityList = resultGetList.getOrNull()!!
         val resultAddAll = rEquipActivityRepository.addAll(entityList)
-        if (resultAddAll.isFailure) {
-            val error = resultAddAll.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultAddAll.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,

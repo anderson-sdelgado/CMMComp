@@ -16,12 +16,7 @@ class ISetFinishUpdateAllTable @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         val result = configRepository.setFlagUpdate(FlagUpdate.UPDATED)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 

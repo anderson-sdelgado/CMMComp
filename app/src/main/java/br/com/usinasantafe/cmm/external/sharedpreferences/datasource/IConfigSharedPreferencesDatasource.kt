@@ -76,21 +76,11 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
         try {
             val resultConfig = get()
-            if (resultConfig.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultConfig.exceptionOrNull()!!
-                )
-            }
+            resultConfig.onFailure { return Result.failure(it) }
             val config = resultConfig.getOrNull()!!
             config.flagUpdate = flagUpdate
             val resultSave = save(config)
-            if (resultSave.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSave.exceptionOrNull()!!
-                )
-            }
+            resultSave.onFailure { return Result.failure(it) }
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
@@ -103,12 +93,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getPassword(): Result<String> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.password!!)
         } catch (e: Exception){
@@ -122,12 +107,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getFlagUpdate(): Result<FlagUpdate> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.flagUpdate)
         } catch (e: Exception){
@@ -141,12 +121,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getNumber(): Result<Long> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.number!!)
         } catch (e: Exception){
@@ -160,21 +135,11 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean> {
         try {
             val resultConfig = get()
-            if (resultConfig.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultConfig.exceptionOrNull()!!
-                )
-            }
+            resultConfig.onFailure { return Result.failure(it) }
             val config = resultConfig.getOrNull()!!
             config.statusSend = statusSend
             val resultSave = save(config)
-            if (resultSave.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSave.exceptionOrNull()!!
-                )
-            }
+            resultSave.onFailure { return Result.failure(it) }
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
@@ -187,12 +152,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getIdEquip(): Result<Int> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.idEquip!!)
         } catch (e: Exception){
@@ -206,12 +166,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getIdTurnCheckListLast(): Result<Int?> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.idTurnCheckListLast)
         } catch (e: Exception){
@@ -225,12 +180,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getDateCheckListLast(): Result<Date> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.dateLastCheckList!!)
         } catch (e: Exception){
@@ -244,12 +194,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getNroEquip(): Result<Long> {
         try {
             val result = get()
-            if(result.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.nroEquip!!)
         } catch (e: Exception){

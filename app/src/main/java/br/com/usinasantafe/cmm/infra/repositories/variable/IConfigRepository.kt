@@ -23,12 +23,7 @@ class IConfigRepository @Inject constructor(
     override suspend fun get(): Result<Config> {
         try {
             val result = configSharedPreferencesDatasource.get()
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val config = result.getOrNull()!!
             return Result.success(config.sharedPreferencesModelToEntity())
         } catch (e: Exception){
@@ -41,34 +36,19 @@ class IConfigRepository @Inject constructor(
 
     override suspend fun getFlagUpdate(): Result<FlagUpdate> {
         val result = configSharedPreferencesDatasource.getFlagUpdate()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getPassword(): Result<String> {
         val result = configSharedPreferencesDatasource.getPassword()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun hasConfig(): Result<Boolean> {
         val result = configSharedPreferencesDatasource.has()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -77,12 +57,7 @@ class IConfigRepository @Inject constructor(
             val result = configRetrofitDatasource.recoverToken(
                 entity.entityToRetrofitModel()
             )
-            if(result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val configRetrofitModel = result.getOrNull()!!
             val entity = configRetrofitModel.retrofitToEntity()
             return Result.success(entity)
@@ -98,12 +73,7 @@ class IConfigRepository @Inject constructor(
         try {
             val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
             val result = configSharedPreferencesDatasource.save(sharedPreferencesModel)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception) {
             return resultFailure(
@@ -115,78 +85,43 @@ class IConfigRepository @Inject constructor(
 
     override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
         val result = configSharedPreferencesDatasource.setFlagUpdate(flagUpdate)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getNumber(): Result<Long> {
         val result = configSharedPreferencesDatasource.getNumber()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean> {
         val result = configSharedPreferencesDatasource.setStatusSend(statusSend)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getIdEquip(): Result<Int> {
         val result = configSharedPreferencesDatasource.getIdEquip()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getIdTurnCheckListLast(): Result<Int?> {
         val result = configSharedPreferencesDatasource.getIdTurnCheckListLast()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getDateCheckListLast(): Result<Date> {
         val result = configSharedPreferencesDatasource.getDateCheckListLast()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getNroEquip(): Result<Long> {
         val result = configSharedPreferencesDatasource.getNroEquip()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 }

@@ -338,9 +338,9 @@ class INoteMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHasByIdStop - Check return false if not has data`() =
+    fun `hasByIdStop - Check return false if not has data`() =
         runTest {
-            val result = datasource.checkHasByIdStopAndIdHeader(
+            val result = datasource.hasByIdStopAndIdHeader(
                 idStop = 1,
                 idHeader = 1
             )
@@ -355,7 +355,7 @@ class INoteMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHasByIdStop - Check return false if not has row fielded`() =
+    fun `hasByIdStop - Check return false if not has row fielded`() =
         runTest {
             noteMotoMecDao.insert(
                 NoteMotoMecRoomModel(
@@ -376,7 +376,7 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkHasByIdStopAndIdHeader(
+            val result = datasource.hasByIdStopAndIdHeader(
                 idStop = 2,
                 idHeader = 1
             )
@@ -391,7 +391,7 @@ class INoteMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHasByIdStop - Check return true if has data`() =
+    fun `hasByIdStop - Check return true if has data`() =
         runTest {
             noteMotoMecDao.insert(
                 NoteMotoMecRoomModel(
@@ -422,7 +422,7 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkHasByIdStopAndIdHeader(
+            val result = datasource.hasByIdStopAndIdHeader(
                 idStop = 2,
                 idHeader = 1
             )

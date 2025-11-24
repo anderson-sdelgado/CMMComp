@@ -18,20 +18,10 @@ class ICheckHasNoteOpenMechanic @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGetIdHeader = motoMecRepository.getIdByHeaderOpen()
-            if(resultGetIdHeader.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdHeader.exceptionOrNull()!!
-                )
-            }
+            resultGetIdHeader.onFailure { return Result.failure(it) }
             val idHeader = resultGetIdHeader.getOrNull()!!
             val resultGetCheck = mechanicRepository.checkNoteOpenByIdHeader(idHeader)
-            if(resultGetCheck.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetCheck.exceptionOrNull()!!
-                )
-            }
+            resultGetCheck.onFailure { return Result.failure(it) }
             val check = resultGetCheck.getOrNull()!!
             return Result.success(check)
         } catch (e: Exception){

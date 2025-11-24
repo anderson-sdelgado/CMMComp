@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonState
-import br.com.usinasantafe.cmm.presenter.view.common.activityList.toActivity
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -113,14 +111,13 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
         val size = sizeUpdate(1f)
-        val classAndMethod = getClassAndMethod()
 
         val steps = listOf(
             updateTableItemCheckListByNroEquip(size, 1f),
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
             if (!ok) return@flow
         }
 

@@ -239,107 +239,157 @@ class IItemMenuRepositoryTest {
                 entityList
             )
         }
-//
-//    @Test
-//    fun `listByTypeList - Check return failure if have error in ItemMenuRoomDatasource listByTypeList`() =
-//        runTest {
-//            whenever(
-//                itemMenuRoomDatasource.listByTypeList(
-//                    listOf(
-//                        TypeItemMenu.ITEM_NORMAL,
-//                        TypeItemMenu.FINISH_HEADER
-//                    )
-//                )
-//            ).thenReturn(
-//                resultFailure(
-//                    "IItemMenuRoomDatasource.listByByTypeList",
-//                    "-",
-//                    Exception()
-//                )
-//            )
-//            val result = repository.listByTypeList(
-//                listOf(
-//                    TypeItemMenu.ITEM_NORMAL,
-//                    TypeItemMenu.FINISH_HEADER
-//                )
-//            )
-//            assertEquals(
-//                result.isFailure,
-//                true
-//            )
-//            assertEquals(
-//                result.exceptionOrNull()!!.message,
-//                "IItemMenuRepository.listByTypeList -> IItemMenuRoomDatasource.listByByTypeList"
-//            )
-//            assertEquals(
-//                result.exceptionOrNull()!!.cause.toString(),
-//                "java.lang.Exception"
-//            )
-//        }
-//
-//    @Test
-//    fun `listByTypeList - Check return correct if function execute successfully`() =
-//        runTest {
-//            val roomModelList = listOf(
-//                ItemMenuRoomModel(
-//                    id = 1,
-//                    descr = "ITEM 1",
-//                    idType = 1,
-//                    pos = 1,
-//                    idFunction = 1,
-//                    idApp = 1
-//                ),
-//                ItemMenuRoomModel(
-//                    id = 2,
-//                    descr = "ITEM 2",
-//                    idType = 1,
-//                    pos = 1,
-//                    idFunction = 1,
-//                    idApp = 1
-//                )
-//            )
-//            val entityList = listOf(
-//                ItemMenu(
-//                    id = 1,
-//                    descr = "ITEM 1",
-//                    idType = 1,
-//                    pos = 1,
-//                    idFunction = 1,
-//                    idApp = 1
-//                ),
-//                ItemMenu(
-//                    id = 2,
-//                    descr = "ITEM 2",
-//                    idType = 1,
-//                    pos = 1,
-//                    idFunction = 1,
-//                    idApp = 1
-//                )
-//            )
-//            whenever(
-//                itemMenuRoomDatasource.listByTypeList(
-//                    listOf(
-//                        TypeItemMenu.ITEM_NORMAL,
-//                        TypeItemMenu.FINISH_HEADER
-//                    )
-//                )
-//            ).thenReturn(
-//                Result.success(roomModelList)
-//            )
-//            val result = repository.listByTypeList(
-//                listOf(
-//                    TypeItemMenu.ITEM_NORMAL,
-//                    TypeItemMenu.FINISH_HEADER
-//                )
-//            )
-//            assertEquals(
-//                result.isSuccess,
-//                true
-//            )
-//            assertEquals(
-//                result.getOrNull()!!,
-//                entityList
-//            )
-//        }
+
+    @Test
+    fun `listByTypeList - Check return failure if have error in ItemMenuRoomDatasource listByTypeList - typeList`() =
+        runTest {
+            whenever(
+                itemMenuRoomDatasource.listByTypeList(
+                        listOf(
+                        1 to ITEM_NORMAL,
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemMenuRoomDatasource.listByByTypeList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByTypeList(
+                listOf(
+                    1 to ITEM_NORMAL,
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemMenuRepository.listByTypeList -> IItemMenuRoomDatasource.listByByTypeList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByTypeList - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ItemMenuRoomModel(
+                    id = 1,
+                    descr = "ITEM 1",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1
+                ),
+            )
+            val entityList = listOf(
+                ItemMenu(
+                    id = 1,
+                    descr = "ITEM 1",
+                    type = 1 to ITEM_NORMAL,
+                    pos = 1,
+                    function = 1 to WORK,
+                    app = 1 to PMM
+                ),
+            )
+            whenever(
+                itemMenuRoomDatasource.listByTypeList(
+                    listOf(
+                        1 to ITEM_NORMAL,
+                    )
+                )
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByTypeList(
+                listOf(
+                    1 to ITEM_NORMAL,
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
+
+    @Test
+    fun `listByApp - Check return failure if have error in ItemMenuDatasource listByTypeList`() =
+        runTest {
+            whenever(
+                itemMenuRoomDatasource.listByTypeList(app = 1 to PMM)
+            ).thenReturn(
+                resultFailure(
+                    "IItemMenuDatasource.listByTypeList",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByApp(
+                app = 1 to PMM
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemMenuRepository.listByApp -> IItemMenuDatasource.listByTypeList"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByApp - Check return correct if function execute successfully`() =
+        runTest {
+            val roomModelList = listOf(
+                ItemMenuRoomModel(
+                    id = 1,
+                    descr = "ITEM 1",
+                    idType = 1,
+                    pos = 1,
+                    idFunction = 1,
+                    idApp = 1
+                ),
+            )
+            val entityList = listOf(
+                ItemMenu(
+                    id = 1,
+                    descr = "ITEM 1",
+                    type = 1 to ITEM_NORMAL,
+                    pos = 1,
+                    function = 1 to WORK,
+                    app = 1 to PMM
+                ),
+            )
+            whenever(
+                itemMenuRoomDatasource.listByTypeList(app = 1 to PMM)
+            ).thenReturn(
+                Result.success(roomModelList)
+            )
+            val result = repository.listByApp(
+                app = 1 to PMM
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                entityList
+            )
+        }
 
 }

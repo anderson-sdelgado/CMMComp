@@ -19,31 +19,16 @@ class ICheckUpdateCheckList @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGetNroEquip = configRepository.getNroEquip()
-            if (resultGetNroEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetNroEquip.exceptionOrNull()!!
-                )
-            }
+            resultGetNroEquip.onFailure { return Result.failure(it) }
             val nroEquip = resultGetNroEquip.getOrNull()!!
             val resultGetToken = getToken()
-            if (resultGetToken.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetToken.exceptionOrNull()!!
-                )
-            }
+            resultGetToken.onFailure { return Result.failure(it) }
             val token = resultGetToken.getOrNull()!!
             val resultCheckUpdateByNroEquip = itemCheckListRepository.checkUpdateByNroEquip(
                 token,
                 nroEquip
             )
-            if (resultCheckUpdateByNroEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultCheckUpdateByNroEquip.exceptionOrNull()!!
-                )
-            }
+            resultCheckUpdateByNroEquip.onFailure { return Result.failure(it) }
             val check = resultCheckUpdateByNroEquip.getOrNull()!!
             return Result.success(check)
         } catch (e: Exception) {

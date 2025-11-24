@@ -19,12 +19,7 @@ class IColabRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityColabToRoomModel() }
             val result = colabRoomDatasource.addAll(roomModelList)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -36,12 +31,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = colabRoomDatasource.deleteAll()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -50,12 +40,7 @@ class IColabRepository @Inject constructor(
     ): Result<List<Colab>> {
         try {
             val result = colabRetrofitDatasource.listAll(token)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -68,12 +53,7 @@ class IColabRepository @Inject constructor(
 
     override suspend fun checkByReg(reg: Int): Result<Boolean> {
         val result = colabRoomDatasource.checkByReg(reg)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 }

@@ -22,12 +22,7 @@ class ISetRegOperator @Inject constructor(
             val result = motoMecRepository.setRegOperatorHeader(
                 regOperator.toInt()
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception) {
             return resultFailure(

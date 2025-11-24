@@ -45,12 +45,7 @@ class ISaveDataConfig @Inject constructor(
                 idEquip = idEquip
             )
             val result = configRepository.save(entity)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception) {
             return resultFailure(

@@ -18,12 +18,7 @@ class ICheckRegOperator @Inject constructor(
             val result = colabRepository.checkByReg(
                 regOperator.toInt()
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception) {
             return resultFailure(

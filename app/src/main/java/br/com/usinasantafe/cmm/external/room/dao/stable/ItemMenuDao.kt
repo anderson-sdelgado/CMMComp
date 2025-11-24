@@ -18,6 +18,9 @@ interface ItemMenuDao {
     @Query("SELECT * FROM $TB_ITEM_MENU")
     suspend fun all(): List<ItemMenuRoomModel>
 
-    @Query("SELECT * FROM $TB_ITEM_MENU WHERE idType in (:idType)")
-    suspend fun listByIdTypeList(idType: List<Int>): List<ItemMenuRoomModel>
+    @Query("SELECT * FROM $TB_ITEM_MENU WHERE idType in (:idType) and idApp = :idApp")
+    suspend fun listByIdTypeListAndIdApp(idType: List<Int>, idApp: Int): List<ItemMenuRoomModel>
+
+    @Query("SELECT * FROM $TB_ITEM_MENU WHERE idApp = :idApp")
+    suspend fun listByIdApp(idApp: Int): List<ItemMenuRoomModel>
 }

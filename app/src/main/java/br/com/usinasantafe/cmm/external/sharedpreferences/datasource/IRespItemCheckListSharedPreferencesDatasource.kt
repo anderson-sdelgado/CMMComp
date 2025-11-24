@@ -20,12 +20,7 @@ class IRespItemCheckListSharedPreferencesDatasource @Inject constructor(
     override suspend fun save(model: RespItemCheckListSharedPreferencesModel): Result<Boolean> {
         try {
             val resultList = list()
-            if(resultList.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultList.exceptionOrNull()!!
-                )
-            }
+            resultList.onFailure { return Result.failure(it) }
             val list = resultList.getOrNull()!!
             var mutableList = list.toMutableList()
             if(list.isNotEmpty()) mutableList = list.toMutableList()
@@ -84,12 +79,7 @@ class IRespItemCheckListSharedPreferencesDatasource @Inject constructor(
     override suspend fun delLast(): Result<Boolean> {
         try {
             val resultList = list()
-            if(resultList.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultList.exceptionOrNull()!!
-                )
-            }
+            resultList.onFailure { return Result.failure(it) }
             val list = resultList.getOrNull()!!
             var mutableList = list.toMutableList()
             if(list.isNotEmpty()) mutableList = list.toMutableList()

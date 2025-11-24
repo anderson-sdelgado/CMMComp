@@ -41,10 +41,7 @@ class IGetItemMenuListTest {
                 entity.descr,
                 "TRABALHANDO"
             )
-            assertEquals(
-                entity.type,
-                TypeView.ITEM
-            )
+
         }
 
 }

@@ -15,12 +15,7 @@ class ICheckSendMotoMec @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         val result = motoMecRepository.checkHeaderSend()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 

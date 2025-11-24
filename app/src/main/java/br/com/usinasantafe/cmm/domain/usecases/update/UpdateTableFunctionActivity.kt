@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
+import br.com.usinasantafe.cmm.domain.errors.failure
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -37,10 +38,8 @@ class IUpdateTableFunctionActivity @Inject constructor(
             )
         )
         val resultGetToken = getToken()
-        if (resultGetToken.isFailure) {
-            val error = resultGetToken.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultGetToken.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -56,10 +55,8 @@ class IUpdateTableFunctionActivity @Inject constructor(
         }
         val token = resultGetToken.getOrNull()!!
         val resultRecoverAll = functionActivityRepository.listAll(token)
-        if (resultRecoverAll.isFailure) {
-            val error = resultRecoverAll.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultRecoverAll.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -82,10 +79,8 @@ class IUpdateTableFunctionActivity @Inject constructor(
             )
         )
         val resultDeleteAll = functionActivityRepository.deleteAll()
-        if (resultDeleteAll.isFailure) {
-            val error = resultDeleteAll.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultDeleteAll.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,
@@ -109,10 +104,8 @@ class IUpdateTableFunctionActivity @Inject constructor(
         )
         val entityList = resultRecoverAll.getOrNull()!!
         val resultAddAll = functionActivityRepository.addAll(entityList)
-        if (resultAddAll.isFailure) {
-            val error = resultAddAll.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+        resultAddAll.onFailure {
+            val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
                     flagProgress = true,

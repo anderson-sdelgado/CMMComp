@@ -2095,10 +2095,10 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `checkNoteHasByIdStop - Check return failure if have error in NoteMotoMecRoomDatasource checkHasByIdStop`() =
+    fun `hasNoteByIdStopAndIdHeader - Check return failure if have error in NoteMotoMecRoomDatasource checkHasByIdStop`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
+                noteMotoMecRoomDatasource.hasByIdStopAndIdHeader(
                     idStop = 1,
                     idHeader = 1
                 )
@@ -2125,10 +2125,10 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `checkNoteHasByIdStop - Check return correct if function execute successfully`() =
+    fun `hasNoteByIdStopAndIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.checkHasByIdStopAndIdHeader(
+                noteMotoMecRoomDatasource.hasByIdStopAndIdHeader(
                     idStop = 1,
                     idHeader = 1
                 )

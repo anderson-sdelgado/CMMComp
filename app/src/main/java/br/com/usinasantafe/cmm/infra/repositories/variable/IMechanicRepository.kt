@@ -12,12 +12,7 @@ class IMechanicRepository @Inject constructor(
 
     override suspend fun checkNoteOpenByIdHeader(idHeader: Int): Result<Boolean> {
         val result = noteMechanicRoomDatasource.checkNoteOpenByIdHeader(idHeader)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 }

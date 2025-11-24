@@ -35,57 +35,27 @@ class ISetRespItemCheckList @Inject constructor(
         try {
             if(pos == 1) {
                 val resultClean = checkListRepository.cleanResp()
-                if (resultClean.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultClean.exceptionOrNull()!!
-                    )
-                }
+                resultClean.onFailure { return Result.failure(it) }
             }
             val entity = RespItemCheckList(
                 idItem = id,
                 option = option
             )
             val resultSave = checkListRepository.saveResp(entity)
-            if (resultSave.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSave.exceptionOrNull()!!
-                )
-            }
+            resultSave.onFailure { return Result.failure(it) }
             val resultGetIdEquip = configRepository.getIdEquip()
-            if (resultGetIdEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdEquip.exceptionOrNull()!!
-                )
-            }
+            resultGetIdEquip.onFailure { return Result.failure(it) }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
-            if (resultGetIdCheckList.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdCheckList.exceptionOrNull()!!
-                )
-            }
+            resultGetIdCheckList.onFailure { return Result.failure(it) }
             val idCheckList = resultGetIdCheckList.getOrNull()!!
             val resultCount = itemCheckListRepository.countByIdCheckList(idCheckList)
-            if (resultCount.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultCount.exceptionOrNull()!!
-                )
-            }
+            resultCount.onFailure { return Result.failure(it) }
             val count = resultCount.getOrNull()!!
             val check =  pos < count
             if(!check) {
                 val resultSave = checkListRepository.saveCheckList()
-                if (resultSave.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultSave.exceptionOrNull()!!
-                    )
-                }
+                resultSave.onFailure { return Result.failure(it) }
                 startWorkManager()
             }
             return Result.success(check)

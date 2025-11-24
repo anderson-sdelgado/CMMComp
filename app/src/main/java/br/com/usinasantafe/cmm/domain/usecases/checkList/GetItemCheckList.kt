@@ -29,36 +29,16 @@ class IGetItemCheckList @Inject constructor(
         try {
             if(pos == 1) {
                 val resultGetNroEquip = configRepository.getNroEquip()
-                if (resultGetNroEquip.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultGetNroEquip.exceptionOrNull()!!
-                    )
-                }
+                resultGetNroEquip.onFailure { return Result.failure(it) }
                 val nroEquip = resultGetNroEquip.getOrNull()!!
                 val resultGetRegOperator = motoMecRepository.getRegOperatorHeader()
-                if (resultGetRegOperator.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultGetRegOperator.exceptionOrNull()!!
-                    )
-                }
+                resultGetRegOperator.onFailure { return Result.failure(it) }
                 val regOperator = resultGetRegOperator.getOrNull()!!
                 val resultGetIdTurn = motoMecRepository.getIdTurnHeader()
-                if (resultGetIdTurn.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultGetIdTurn.exceptionOrNull()!!
-                    )
-                }
+                resultGetIdTurn.onFailure { return Result.failure(it) }
                 val idTurn = resultGetIdTurn.getOrNull()!!
                 val resultGetNroTurn = turnRepository.getNroTurnByIdTurn(idTurn)
-                if (resultGetNroTurn.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultGetNroTurn.exceptionOrNull()!!
-                    )
-                }
+                resultGetNroTurn.onFailure { return Result.failure(it) }
                 val nroTurn = resultGetNroTurn.getOrNull()!!
                 val resultSaveHeader = checkListRepository.saveHeader(
                     HeaderCheckList(
@@ -67,36 +47,16 @@ class IGetItemCheckList @Inject constructor(
                         nroTurn = nroTurn
                     )
                 )
-                if (resultSaveHeader.isFailure) {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = resultSaveHeader.exceptionOrNull()!!
-                    )
-                }
+                resultSaveHeader.onFailure { return Result.failure(it) }
             }
             val resultGetIdEquip = configRepository.getIdEquip()
-            if (resultGetIdEquip.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdEquip.exceptionOrNull()!!
-                )
-            }
+            resultGetIdEquip.onFailure { return Result.failure(it) }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
-            if (resultGetIdCheckList.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetIdCheckList.exceptionOrNull()!!
-                )
-            }
+            resultGetIdCheckList.onFailure { return Result.failure(it) }
             val idCheckList = resultGetIdCheckList.getOrNull()!!
             val resultListCheckList = itemCheckListRepository.listByIdCheckList(idCheckList)
-            if (resultListCheckList.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultListCheckList.exceptionOrNull()!!
-                )
-            }
+            resultListCheckList.onFailure { return Result.failure(it) }
             val list = resultListCheckList.getOrNull()!!
             val entity = list[pos - 1]
             val model = ItemCheckListModel(

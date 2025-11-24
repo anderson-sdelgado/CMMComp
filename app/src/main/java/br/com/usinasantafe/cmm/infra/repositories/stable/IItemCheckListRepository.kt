@@ -20,12 +20,7 @@ class IItemCheckListRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityItemCheckListToRoomModel() }
             val result = itemCheckListRoomDatasource.addAll(roomModelList)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -37,12 +32,7 @@ class IItemCheckListRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = itemCheckListRoomDatasource.deleteAll()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -55,12 +45,7 @@ class IItemCheckListRepository @Inject constructor(
                 token = token,
                 nroEquip = nroEquip
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -80,12 +65,7 @@ class IItemCheckListRepository @Inject constructor(
                 token = token,
                 nroEquip = nroEquip
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val model = result.getOrNull()!!
             return Result.success(model.qtd > 0)
         } catch (e: Exception) {
@@ -99,12 +79,7 @@ class IItemCheckListRepository @Inject constructor(
     override suspend fun listByIdCheckList(idCheckList: Int): Result<List<ItemCheckList>> {
         try {
             val result = itemCheckListRoomDatasource.listByIdCheckList(idCheckList)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -117,12 +92,7 @@ class IItemCheckListRepository @Inject constructor(
 
     override suspend fun countByIdCheckList(idCheckList: Int): Result<Int> {
         val result = itemCheckListRoomDatasource.countByIdCheckList(idCheckList)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 

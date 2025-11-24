@@ -25,20 +25,18 @@ class ProcessWorkManager @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val resultMotoMecCheckSend = checkSendMotoMec()
-        if (resultMotoMecCheckSend.isFailure) {
-            val error = resultMotoMecCheckSend.exceptionOrNull()!!
+        resultMotoMecCheckSend.onFailure {
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${it.message} -> ${it.cause.toString()}"
             Timber.e(failure)
             return Result.retry()
         }
         val checkHeaderSend = resultMotoMecCheckSend.getOrNull()!!
         if(checkHeaderSend) {
             val resultSendHeader = sendMotoMec()
-            if (resultSendHeader.isFailure){
-                val error = resultSendHeader.exceptionOrNull()!!
+            resultSendHeader.onFailure {
                 val failure =
-                    "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                    "${getClassAndMethod()} -> ${it.message} -> ${it.cause.toString()}"
                 Timber.e(failure)
                 return Result.retry()
             }

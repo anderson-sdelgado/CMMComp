@@ -26,10 +26,9 @@ class IStartWorkManager @Inject constructor(
 
     override suspend fun invoke() {
         val resultGet = getConfigInternal()
-        if(resultGet.isFailure) {
-            val error = resultGet.exceptionOrNull()!!
+        resultGet.onFailure {
             val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
+                "${getClassAndMethod()} -> ${it.message} -> ${it.cause.toString()}"
             Timber.e(failure)
             return
         }

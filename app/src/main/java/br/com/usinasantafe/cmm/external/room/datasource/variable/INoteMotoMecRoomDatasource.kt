@@ -81,7 +81,7 @@ class INoteMotoMecRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun checkHasByIdStopAndIdHeader(
+    override suspend fun hasByIdStopAndIdHeader(
         idStop: Int,
         idHeader: Int
     ): Result<Boolean> {

@@ -8,7 +8,6 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.FlowNote
 import br.com.usinasantafe.cmm.utils.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -145,10 +144,6 @@ class IHistoryListTest {
                 1
             )
             assertEquals(
-                model.function,
-                FlowNote.STOP
-            )
-            assertEquals(
                 model.descr,
                 "CHECKLIST"
             )
@@ -164,10 +159,6 @@ class IHistoryListTest {
             assertEquals(
                 model2.id,
                 2
-            )
-            assertEquals(
-                model2.function,
-                FlowNote.WORK
             )
             assertEquals(
                 model2.descr,

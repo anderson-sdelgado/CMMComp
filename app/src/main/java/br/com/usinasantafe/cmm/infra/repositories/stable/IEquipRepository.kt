@@ -20,12 +20,7 @@ class IEquipRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityEquipToRoomModel() }
             val result = equipRoomDatasource.addAll(roomModelList)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -37,12 +32,7 @@ class IEquipRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = equipRoomDatasource.deleteAll()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -55,12 +45,7 @@ class IEquipRepository @Inject constructor(
                 token = token,
                 idEquip = idEquip
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -75,12 +60,7 @@ class IEquipRepository @Inject constructor(
         idEquip: Int
     ): Result<String> {
         val result = equipRoomDatasource.getDescrByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -88,23 +68,13 @@ class IEquipRepository @Inject constructor(
         idEquip: Int
     ): Result<Int> {
         val result = equipRoomDatasource.getCodTurnEquipByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getHourMeterByIdEquip(idEquip: Int): Result<Double> {
         val result = equipRoomDatasource.getHourMeterByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -116,56 +86,31 @@ class IEquipRepository @Inject constructor(
             hourMeter = hourMeter,
             idEquip = idEquip
         )
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getTypeEquipByIdEquip(idEquip: Int): Result<TypeEquip> {
         val result = equipRoomDatasource.getTypeEquipByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getIdCheckListByIdEquip(idEquip: Int): Result<Int> {
         val result = equipRoomDatasource.getIdCheckListByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getFlagMechanicByIdEquip(idEquip: Int): Result<Boolean> {
         val result = equipRoomDatasource.getFlagMechanicByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
     override suspend fun getFlagTireByIdEquip(idEquip: Int): Result<Boolean> {
         val result = equipRoomDatasource.getFlagTireByIdEquip(idEquip)
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 

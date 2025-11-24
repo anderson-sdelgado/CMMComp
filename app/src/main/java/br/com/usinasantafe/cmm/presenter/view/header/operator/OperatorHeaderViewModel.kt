@@ -154,7 +154,7 @@ class OperatorHeaderViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<OperatorHeaderState> = flow {
-        val classAndMethod = getClassAndMethod()
+
         val size = 4f
 
         val steps = listOf(
@@ -162,7 +162,7 @@ class OperatorHeaderViewModel @Inject constructor(
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
             if (!ok) return@flow
         }
 

@@ -233,7 +233,6 @@ class ConfigViewModel @Inject constructor(
     }
 
     fun updateAllDatabase(): Flow<ConfigState> = flow {
-        val classAndMethod = getClassAndMethod()
         val size = sizeUpdate(QTD_TABLE)
 
         val steps = listOf(
@@ -251,7 +250,7 @@ class ConfigViewModel @Inject constructor(
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
             if (!ok) return@flow
         }
 

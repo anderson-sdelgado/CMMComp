@@ -26,20 +26,10 @@ class IListHistory @Inject constructor(
     override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> {
         try {
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetId.exceptionOrNull()!!
-                )
-            }
+            resultGetId.onFailure { return Result.failure(it) }
             val id = resultGetId.getOrNull()!!
             val resultNoteList = motoMecRepository.noteListByIdHeader(id)
-            if(resultNoteList.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultNoteList.exceptionOrNull()!!
-                )
-            }
+            resultNoteList.onFailure { return Result.failure(it) }
             val listNoteList = resultNoteList.getOrNull()!!
             val itemHistoryList = listNoteList.map { item ->
 
@@ -48,27 +38,15 @@ class IListHistory @Inject constructor(
                 } else {
                     functionListPMM.find { it.second == STOP }!!
                 }
-
                 val descr = if(item.idStop != null) {
                     val resultStop = stopRepository.getById(item.idStop!!)
-                    if(resultStop.isFailure) {
-                        return resultFailure(
-                            context = getClassAndMethod(),
-                            cause = resultStop.exceptionOrNull()!!
-                        )
-                    }
+                    resultStop.onFailure { return Result.failure(it) }
                     resultStop.getOrNull()!!.descrStop
                 } else {
                     val resultActivity = activityRepository.getById(item.idActivity!!)
-                    if(resultActivity.isFailure) {
-                        return resultFailure(
-                            context = getClassAndMethod(),
-                            cause = resultActivity.exceptionOrNull()!!
-                        )
-                    }
+                    resultActivity.onFailure { return Result.failure(it) }
                     resultActivity.getOrNull()!!.descrActivity
                 }
-
                 val dateHour = SimpleDateFormat(
                     "dd/MM/yyyy HH:mm",
                     Locale.Builder().setLanguage("pt").setRegion("BR").build()

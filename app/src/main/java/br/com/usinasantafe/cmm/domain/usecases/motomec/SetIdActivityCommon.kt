@@ -25,36 +25,16 @@ class ISetIdActivityCommon @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
-            if(resultHeaderSetId.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultHeaderSetId.exceptionOrNull()!!
-                )
-            }
+            resultHeaderSetId.onFailure { return Result.failure(it) }
             if(flowApp == FlowApp.HEADER_INITIAL) return resultHeaderSetId
             val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
-            if(resultNoteSetId.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultNoteSetId.exceptionOrNull()!!
-                )
-            }
+            resultNoteSetId.onFailure { return Result.failure(it) }
             if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            if(resultGetId.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetId.exceptionOrNull()!!
-                )
-            }
+            resultGetId.onFailure { return Result.failure(it) }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
-            if(resultSave.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSave.exceptionOrNull()!!
-                )
-            }
+            resultSave.onFailure { return Result.failure(it) }
             startWorkManager()
             return resultSave
         } catch (e: Exception){

@@ -42,3 +42,7 @@ class AppError(
     cause: Throwable? = null
 ) : Exception("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}", cause)
 
+fun failure(classAndMethod: String, error: Throwable) : String {
+    return "$classAndMethod -> ${error.message} -> ${error.cause.toString()}"
+}
+

@@ -20,12 +20,7 @@ class IOSRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityOSToRoomModel() }
             val result = osRoomDatasource.addAll(roomModelList)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -37,12 +32,7 @@ class IOSRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = osRoomDatasource.deleteAll()
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -51,12 +41,7 @@ class IOSRepository @Inject constructor(
     ): Result<List<OS>> {
         try {
             val result = osRetrofitDatasource.listAll(token)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -69,12 +54,7 @@ class IOSRepository @Inject constructor(
 
     override suspend fun checkNroOS(nroOS: Int): Result<Boolean> {
         val result = osRoomDatasource.checkNroOS(nroOS)
-        if (result.isFailure) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
@@ -87,12 +67,7 @@ class IOSRepository @Inject constructor(
                 token,
                 nroOS
             )
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -106,12 +81,7 @@ class IOSRepository @Inject constructor(
     override suspend fun add(os: OS): Result<Boolean> {
         try {
             val result = osRoomDatasource.add(os.entityOSToRoomModel())
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             return result
         } catch (e: Exception) {
             return resultFailure(
@@ -124,12 +94,7 @@ class IOSRepository @Inject constructor(
     override suspend fun listByNroOS(nroOS: Int): Result<List<OS>> {
         try {
             val result = osRoomDatasource.listByNroOS(nroOS)
-            if (result.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = result.exceptionOrNull()!!
-                )
-            }
+            result.onFailure { return Result.failure(it) }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {

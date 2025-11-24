@@ -158,7 +158,6 @@ class StopListNoteViewModel @Inject constructor(
 
     fun updateAllDatabase(): Flow<StopListNoteState> = flow {
         val size = 7f
-        val classAndMethod = getClassAndMethod()
 
         val steps = listOf(
             updateTableRActivityStop(size, 1f),
@@ -166,7 +165,7 @@ class StopListNoteViewModel @Inject constructor(
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(classAndMethod) { emit(it) }
+            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
             if (!ok) return@flow
         }
 

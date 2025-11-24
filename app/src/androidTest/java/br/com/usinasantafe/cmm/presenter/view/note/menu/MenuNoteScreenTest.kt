@@ -319,7 +319,21 @@ class MenuNoteScreenTest {
                 onNavOS = {},
                 onNavActivityList = {},
                 onNavMeasure = {},
-                onNavListReel = {}
+                onNavListReel = {},
+                onNavProduct = {},
+                onNavWill = {},
+                onNavMenuCertificate = {},
+                onNavHistory = {},
+                onNavTrailer = {},
+                onNavEquipTire = {},
+                onNavImplement = {},
+                onNavOSMechanical = {},
+                onNavTranshipment = {},
+                onNavOSListPerformance = {},
+                onNavUncouplingTrailer = {},
+                onNavOSListFertigation = {},
+                onNavInfoLoadingCompound = {},
+                onNavInfoLocalSugarcaneLoading = {}
             )
         }
     }

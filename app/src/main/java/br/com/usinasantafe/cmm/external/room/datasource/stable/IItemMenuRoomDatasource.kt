@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
+import br.com.usinasantafe.cmm.utils.PMM
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -35,10 +36,22 @@ class IItemMenuRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun listByTypeList(typeList: List<Pair<Int, String>>): Result<List<ItemMenuRoomModel>> {
+    override suspend fun listByTypeList(
+        typeList: List<Pair<Int, String>>,
+        app: Pair<Int, String>,
+        checkMenu: Boolean
+    ): Result<List<ItemMenuRoomModel>> {
         try {
-            val idTypeList = typeList.map { it.first }
-            val list = itemMenuDao.listByIdTypeList(idTypeList)
+            if(app.second == PMM) {
+                val idTypeList = typeList.map { it.first }
+                val list = itemMenuDao.listByIdTypeListAndIdApp(idTypeList, app.first)
+                return Result.success(list)
+            }
+            val list = itemMenuDao.listByIdApp(app.first)
+            if(checkMenu) {
+                val listMenu = list.filter { it.pos != 0 }
+                return Result.success(listMenu)
+            }
             return Result.success(list)
         } catch (e: Exception) {
             return resultFailure(

@@ -22,27 +22,12 @@ class ISetIdStopNote @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultSet = motoMecRepository.setIdStop(id)
-            if (resultSet.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSet.exceptionOrNull()!!
-                )
-            }
+            resultSet.onFailure { return Result.failure(it) }
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            if(resultGetId.isFailure){
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetId.exceptionOrNull()!!
-                )
-            }
+            resultGetId.onFailure { return Result.failure(it) }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
-            if(resultSave.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultSave.exceptionOrNull()!!
-                )
-            }
+            resultSave.onFailure { return Result.failure(it) }
             startWorkManager()
             return resultSave
         } catch (e: Exception) {

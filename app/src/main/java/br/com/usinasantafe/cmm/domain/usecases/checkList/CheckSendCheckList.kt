@@ -15,12 +15,7 @@ class ICheckSendCheckList @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         val result = checkListRepository.checkSend()
-        if(result.isFailure){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = result.exceptionOrNull()!!
-            )
-        }
+        result.onFailure { return Result.failure(it) }
         return result
     }
 
