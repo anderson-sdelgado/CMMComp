@@ -19,7 +19,12 @@ class IColabRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityColabToRoomModel() }
             val result = colabRoomDatasource.addAll(roomModelList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -31,7 +36,12 @@ class IColabRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = colabRoomDatasource.deleteAll()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
@@ -40,7 +50,12 @@ class IColabRepository @Inject constructor(
     ): Result<List<Colab>> {
         try {
             val result = colabRetrofitDatasource.listAll(token)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -53,7 +68,12 @@ class IColabRepository @Inject constructor(
 
     override suspend fun checkByReg(reg: Int): Result<Boolean> {
         val result = colabRoomDatasource.checkByReg(reg)
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 }

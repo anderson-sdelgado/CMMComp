@@ -23,42 +23,42 @@ class ICheckOpenCheckList @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGetIdEquip = configRepository.getIdEquip()
-            if (resultGetIdEquip.isFailure) {
+            resultGetIdEquip.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetIdEquip.exceptionOrNull()!!
+                    cause = it
                 )
             }
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(resultGetIdEquip.getOrNull()!!)
-            if (resultGetIdCheckList.isFailure) {
+            resultGetIdCheckList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetIdCheckList.exceptionOrNull()!!
+                    cause = it
                 )
             }
             if (resultGetIdCheckList.getOrNull()!! == 0) return Result.success(false)
             val resultGetIdTurnCheckListLast = configRepository.getIdTurnCheckListLast()
-            if (resultGetIdTurnCheckListLast.isFailure) {
+            resultGetIdTurnCheckListLast.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetIdTurnCheckListLast.exceptionOrNull()!!
+                    cause = it
                 )
             }
             val idTurnCheckListLast = resultGetIdTurnCheckListLast.getOrNull() ?: return Result.success(true)
             val resultGetIdTurnHeader = motoMecRepository.getIdTurnHeader()
-            if (resultGetIdTurnHeader.isFailure) {
+            resultGetIdTurnHeader.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetIdTurnHeader.exceptionOrNull()!!
+                    cause = it
                 )
             }
             val idTurnHeader = resultGetIdTurnHeader.getOrNull()!!
             if (idTurnHeader != idTurnCheckListLast) return Result.success(true)
             val resultGetDateCheckListLast = configRepository.getDateCheckListLast()
-            if (resultGetDateCheckListLast.isFailure) {
+            resultGetDateCheckListLast.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
-                    cause = resultGetDateCheckListLast.exceptionOrNull()!!
+                    cause = it
                 )
             }
             val dateNow = Date()

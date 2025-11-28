@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.TypeEquip
@@ -628,7 +629,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderOpen`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkHeaderOpen()
+                headerMotoMecRoomDatasource.checkOpen()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.checkHeaderOpen",
@@ -655,7 +656,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkHeaderOpen()
+                headerMotoMecRoomDatasource.checkOpen()
             ).thenReturn(
                 Result.success(true)
             )
@@ -674,7 +675,7 @@ class IMotoMecRepositoryTest {
     fun `getIdByHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByHeaderOpen`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+                headerMotoMecRoomDatasource.getId()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen",
@@ -701,7 +702,7 @@ class IMotoMecRepositoryTest {
     fun `getIdByHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getIdByHeaderOpen()
+                headerMotoMecRoomDatasource.getId()
             ).thenReturn(
                 Result.success(1)
             )
@@ -812,7 +813,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderSend - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderSend`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkHeaderSend()
+                headerMotoMecRoomDatasource.checkSend()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.checkHeaderSend",
@@ -839,7 +840,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderSend - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkHeaderSend()
+                headerMotoMecRoomDatasource.checkSend()
             ).thenReturn(
                 Result.success(true)
             )
@@ -890,7 +891,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusConByHeaderOpen()
+                headerMotoMecRoomDatasource.getStatusCon()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen",
@@ -922,7 +923,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusConByHeaderOpen()
+                headerMotoMecRoomDatasource.getStatusCon()
             ).thenReturn(
                 Result.success(true)
             )
@@ -962,7 +963,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusConByHeaderOpen()
+                headerMotoMecRoomDatasource.getStatusCon()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1156,7 +1157,7 @@ class IMotoMecRepositoryTest {
                 )
             }
             whenever(
-                headerMotoMecRoomDatasource.setSendHeader(1)
+                headerMotoMecRoomDatasource.setSend(1)
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.setSendHeader",
@@ -1213,7 +1214,7 @@ class IMotoMecRepositoryTest {
                 )
             }
             whenever(
-                headerMotoMecRoomDatasource.setSendHeader(1)
+                headerMotoMecRoomDatasource.setSend(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -1260,7 +1261,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.getIdActivity -> INoteMotoMecSharedPreferencesDatasource.getIdActivity"
+                "IMotoMecRepository.getIdActivityNote -> INoteMotoMecSharedPreferencesDatasource.getIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -1352,7 +1353,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.checkNoteHasByIdHeader -> INoteMotoMecRoomDatasource.checkHasByIdHeader"
+                "IMotoMecRepository.hasNoteByIdHeader -> INoteMotoMecRoomDatasource.checkHasByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -1429,7 +1430,7 @@ class IMotoMecRepositoryTest {
     fun `send - Check return failure if have error in HeaderMotoMecRoomDatasource listHeaderSend`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.listHeaderSend",
@@ -1475,7 +1476,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 Result.success(modelRoomList)
             )
@@ -1546,7 +1547,7 @@ class IMotoMecRepositoryTest {
                     )
                 }
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 Result.success(headerModelRoomList)
             )
@@ -1637,7 +1638,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 Result.success(headerModelRoomList)
             )
@@ -1736,7 +1737,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 Result.success(headerModelRoomList)
             )
@@ -1762,7 +1763,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.setSentHeader(
+                headerMotoMecRoomDatasource.setSent(
                     id = 1,
                     idServ = 1
                 )
@@ -1843,7 +1844,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                headerMotoMecRoomDatasource.listHeaderSend()
+                headerMotoMecRoomDatasource.listSend()
             ).thenReturn(
                 Result.success(headerModelRoomList)
             )
@@ -1869,7 +1870,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.setSentHeader(
+                headerMotoMecRoomDatasource.setSent(
                     id = 1,
                     idServ = 1
                 )
@@ -1894,7 +1895,7 @@ class IMotoMecRepositoryTest {
     fun `getIdTurnHeader - Check return failure if have error in HeaderMotoMecRoomDatasource getIdTurnHeader`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getIdTurnByHeaderOpen()
+                headerMotoMecRoomDatasource.getIdTurn()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRoomDatasource.getIdTurnByHeaderOpen",
@@ -1921,7 +1922,7 @@ class IMotoMecRepositoryTest {
     fun `getIdTurnHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getIdTurnByHeaderOpen()
+                headerMotoMecRoomDatasource.getIdTurn()
             ).thenReturn(
                 Result.success(1)
             )
@@ -1940,7 +1941,7 @@ class IMotoMecRepositoryTest {
     fun `getRegOperator - Check return failure if have error in HeaderMotoMecRoomDatasource getRegOperatorOpen`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getRegOperatorOpen()
+                headerMotoMecRoomDatasource.getRegOperator()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRoomDatasource.getRegOperatorOpen",
@@ -1955,7 +1956,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.getRegOperator -> IHeaderMotoMecRoomDatasource.getRegOperatorOpen"
+                "IMotoMecRepository.getRegOperatorHeader -> IHeaderMotoMecRoomDatasource.getRegOperatorOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -1967,7 +1968,7 @@ class IMotoMecRepositoryTest {
     fun `getRegOperator - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getRegOperatorOpen()
+                headerMotoMecRoomDatasource.getRegOperator()
             ).thenReturn(
                 Result.success(19759)
             )
@@ -2001,7 +2002,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.noteList -> INoteMotoMecRoomDatasource.listByIdHeader"
+                "IMotoMecRepository.noteListByIdHeader -> INoteMotoMecRoomDatasource.listByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -2116,7 +2117,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.checkNoteHasByIdStop -> INoteMotoMecRoomDatasource.checkHasByIdStop"
+                "IMotoMecRepository.hasNoteByIdStopAndIdHeader -> INoteMotoMecRoomDatasource.checkHasByIdStop"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -2143,6 +2144,106 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `getFlowCompostingHeader - Check return failure if have error in HeaderMotoMecDatasource getFlowComposting`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getFlowComposting()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecDatasource.getFlowComposting",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getFlowCompostingHeader()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getFlowCompostingHeader -> IHeaderMotoMecDatasource.getFlowComposting"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getFlowCompostingHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getFlowComposting()
+            ).thenReturn(
+                Result.success(FlowComposting.INPUT)
+            )
+            val result = repository.getFlowCompostingHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowComposting.INPUT
+            )
+        }
+
+    @Test
+    fun `getNoteLastByIdHeader - Check return failure if have error in NoteMotoMecDatasource getLastByIdHeader`() =
+        runTest {
+            whenever(
+                noteMotoMecRoomDatasource.getLastByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "INoteMotoMecDatasource.getLastByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNoteLastByIdHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getNoteLastByIdHeader -> INoteMotoMecDatasource.getLastByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+    @Test
+    fun `getNoteLastByIdHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                noteMotoMecRoomDatasource.getLastByIdHeader(1)
+            ).thenReturn(
+                Result.success(
+                    NoteMotoMecRoomModel(
+                        idHeader = 1,
+                        nroOS = 123456,
+                        idActivity = 1,
+                    )
+                )
+            )
+            val result = repository.getNoteLastByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                NoteMotoMec(
+                    nroOS = 123456,
+                    idActivity = 1,
+                )
             )
         }
 

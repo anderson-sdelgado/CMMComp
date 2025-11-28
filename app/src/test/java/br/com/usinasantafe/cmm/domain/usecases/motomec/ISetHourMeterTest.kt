@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.FlowApp
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

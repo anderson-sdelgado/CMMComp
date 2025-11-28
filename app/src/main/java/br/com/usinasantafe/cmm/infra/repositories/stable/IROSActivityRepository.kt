@@ -20,7 +20,12 @@ class IROSActivityRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityROSActivityToRoomModel() }
             val result = rOSActivityRoomDatasource.addAll(roomModelList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -32,7 +37,12 @@ class IROSActivityRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = rOSActivityRoomDatasource.deleteAll()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
@@ -41,7 +51,12 @@ class IROSActivityRepository @Inject constructor(
     ): Result<List<ROSActivity>> {
         try {
             val result = rOSActivityRetrofitDatasource.listAll(token)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -61,7 +76,12 @@ class IROSActivityRepository @Inject constructor(
                 token = token,
                 nroOS = nroOS
             )
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -75,7 +95,12 @@ class IROSActivityRepository @Inject constructor(
     override suspend fun listByIdOS(idOS: Int): Result<List<ROSActivity>> {
         try {
             val result = rOSActivityRoomDatasource.listByIdOS(idOS)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {

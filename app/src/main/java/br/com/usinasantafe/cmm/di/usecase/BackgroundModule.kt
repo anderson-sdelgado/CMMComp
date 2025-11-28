@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.di.usecase
 
-import br.com.usinasantafe.cmm.domain.usecases.background.*
+import br.com.usinasantafe.cmm.lib.IStartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

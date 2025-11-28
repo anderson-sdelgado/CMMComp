@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -25,16 +25,36 @@ class ISetIdActivityCommon @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
-            resultHeaderSetId.onFailure { return Result.failure(it) }
+            resultHeaderSetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             if(flowApp == FlowApp.HEADER_INITIAL) return resultHeaderSetId
             val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
-            resultNoteSetId.onFailure { return Result.failure(it) }
+            resultNoteSetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure { return Result.failure(it) }
+            resultGetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             startWorkManager()
             return resultSave
         } catch (e: Exception){

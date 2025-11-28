@@ -19,7 +19,12 @@ class IFunctionStopRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityFunctionStopToRoomModel() }
             val result = functionStopRoomDatasource.addAll(roomModelList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -31,14 +36,24 @@ class IFunctionStopRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = functionStopRoomDatasource.deleteAll()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
     override suspend fun listAll(token: String): Result<List<FunctionStop>> {
         try {
             val result = functionStopRetrofitDatasource.listAll(token)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -51,7 +66,12 @@ class IFunctionStopRepository @Inject constructor(
 
     override suspend fun getIdStopByType(typeStop: TypeStop): Result<Int?> {
         val result = functionStopRoomDatasource.getIdStopByType(typeStop)
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 

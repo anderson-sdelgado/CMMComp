@@ -125,7 +125,7 @@ const val dataMenu = """
     {
         "id": 18,
         "descr": "DESENGATE CAMPO",
-        "idType": 8,
+        "idType": 7,
         "pos": 3,
         "idFunction": 5,
         "idApp": 2
@@ -133,7 +133,7 @@ const val dataMenu = """
     {
         "id": 19,
         "descr": "ENGATE CAMPO",
-        "idType": 9,
+        "idType": 8,
         "pos": 4,
         "idFunction": 6,
         "idApp": 2
@@ -173,7 +173,7 @@ const val dataMenu = """
     {
         "id": 24,
         "descr": "DESENGATE PATIO",
-        "idType": 19,
+        "idType": 7,
         "pos": 10,
         "idFunction": 11,
         "idApp": 2
@@ -181,7 +181,7 @@ const val dataMenu = """
     {
         "id": 25,
         "descr": "ENGATE PATIO",
-        "idType": 20,
+        "idType": 8,
         "pos": 11,
         "idFunction": 12,
         "idApp": 2
@@ -189,7 +189,7 @@ const val dataMenu = """
     {
         "id": 26,
         "descr": "PARADA NO PATIO",
-        "idType": 11,
+        "idType": 1,
         "pos": 12,
         "idFunction": 13,
         "idApp": 2
@@ -205,7 +205,7 @@ const val dataMenu = """
     {
         "id": 28,
         "descr": "FIM DE DESCARGA",
-        "idType": 12,
+        "idType": 1,
         "pos": 14,
         "idFunction": 15,
         "idApp": 2
@@ -293,7 +293,7 @@ const val dataMenu = """
     {
         "id": 39,
         "descr": "AGUARDANDO DESCARREG.",
-        "idType": 11,
+        "idType": 1,
         "pos": 8,
         "idFunction": 9,
         "idApp": 3

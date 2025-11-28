@@ -17,7 +17,12 @@ class IGetToken @Inject constructor(
     override suspend fun invoke(): Result<String> {
         try {
             val resultGet = configRepository.get()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entity = resultGet.getOrNull()!!
             val token = token(
                 app = entity.app!!,

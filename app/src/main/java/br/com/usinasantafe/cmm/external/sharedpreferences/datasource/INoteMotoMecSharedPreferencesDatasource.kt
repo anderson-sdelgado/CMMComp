@@ -62,12 +62,22 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultGet = get()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val model = resultGet.getOrNull()!!
             model.nroOS = nroOS
             model.statusCon = statusCon
             val resultSave = save(model)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
@@ -80,11 +90,21 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun setIdActivity(id: Int): Result<Boolean> {
         try {
             val resultGet = get()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val model = resultGet.getOrNull()!!
             model.idActivity = id
             val resultSave = save(model)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
@@ -97,7 +117,12 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun getIdActivity(): Result<Int> {
         try {
             val result = get()
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val model = result.getOrNull()!!
             return Result.success(model.idActivity!!)
         } catch (e: Exception){
@@ -111,11 +136,21 @@ class INoteMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun setIdStop(id: Int): Result<Boolean> {
         try {
             val resultGet = get()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val model = resultGet.getOrNull()!!
             model.idStop = id
             val resultSave = save(model)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(

@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock

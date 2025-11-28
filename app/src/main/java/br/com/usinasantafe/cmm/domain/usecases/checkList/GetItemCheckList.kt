@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
+import kotlin.onFailure
 
 interface GetItemCheckList {
     suspend operator fun invoke(pos: Int): Result<ItemCheckListModel>
@@ -29,16 +30,36 @@ class IGetItemCheckList @Inject constructor(
         try {
             if(pos == 1) {
                 val resultGetNroEquip = configRepository.getNroEquip()
-                resultGetNroEquip.onFailure { return Result.failure(it) }
+                resultGetNroEquip.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
                 val nroEquip = resultGetNroEquip.getOrNull()!!
                 val resultGetRegOperator = motoMecRepository.getRegOperatorHeader()
-                resultGetRegOperator.onFailure { return Result.failure(it) }
+                resultGetRegOperator.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
                 val regOperator = resultGetRegOperator.getOrNull()!!
                 val resultGetIdTurn = motoMecRepository.getIdTurnHeader()
-                resultGetIdTurn.onFailure { return Result.failure(it) }
+                resultGetIdTurn.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
                 val idTurn = resultGetIdTurn.getOrNull()!!
                 val resultGetNroTurn = turnRepository.getNroTurnByIdTurn(idTurn)
-                resultGetNroTurn.onFailure { return Result.failure(it) }
+                resultGetNroTurn.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
                 val nroTurn = resultGetNroTurn.getOrNull()!!
                 val resultSaveHeader = checkListRepository.saveHeader(
                     HeaderCheckList(
@@ -47,16 +68,36 @@ class IGetItemCheckList @Inject constructor(
                         nroTurn = nroTurn
                     )
                 )
-                resultSaveHeader.onFailure { return Result.failure(it) }
+                resultSaveHeader.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
             }
             val resultGetIdEquip = configRepository.getIdEquip()
-            resultGetIdEquip.onFailure { return Result.failure(it) }
+            resultGetIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
-            resultGetIdCheckList.onFailure { return Result.failure(it) }
+            resultGetIdCheckList.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idCheckList = resultGetIdCheckList.getOrNull()!!
             val resultListCheckList = itemCheckListRepository.listByIdCheckList(idCheckList)
-            resultListCheckList.onFailure { return Result.failure(it) }
+            resultListCheckList.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val list = resultListCheckList.getOrNull()!!
             val entity = list[pos - 1]
             val model = ItemCheckListModel(

@@ -16,7 +16,12 @@ class IGetNroOSHeader @Inject constructor(
     override suspend fun invoke(): Result<String> {
         try {
             val result = motoMecRepository.getNroOSHeader()
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val nroOS = result.getOrNull()!!
             return Result.success(nroOS.toString())
         } catch (e: Exception) {

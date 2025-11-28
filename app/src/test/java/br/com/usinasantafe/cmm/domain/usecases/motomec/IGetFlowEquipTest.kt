@@ -1,31 +1,32 @@
-package br.com.usinasantafe.cmm.domain.usecases.mechanic
+package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.MechanicRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.FlowEquipNote
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ICheckNoteOpenTest {
+class IGetFlowEquipTest {
 
+    private val configRepository = mock<ConfigRepository>()
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val mechanicRepository = mock<MechanicRepository>()
-    private val usecase = ICheckHasNoteOpenMechanic(
-        motoMecRepository = motoMecRepository,
-        mechanicRepository = mechanicRepository
+    private val usecase = IGetFlowEquip(
+        configRepository = configRepository,
+        motoMecRepository = motoMecRepository
     )
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdHeader`() =
+    fun `Check return failure if have error in ConfigRepository getIdEquip`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                configRepository.getIdEquip()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "IConfigRepository.getIdEquip",
                     "-",
                     Exception()
                 )
@@ -37,7 +38,7 @@ class ICheckNoteOpenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNoteOpen -> IMotoMecRepository.getIdByHeaderOpen"
+                "IGetFlowEquip -> IConfigRepository.getIdEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -46,18 +47,18 @@ class ICheckNoteOpenTest {
         }
 
     @Test
-    fun `Check return failure if have error in MechanicRepository checkNoteOpenByIdHeader`() =
+    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                configRepository.getIdEquip()
             ).thenReturn(
                 Result.success(1)
             )
             whenever(
-                mechanicRepository.checkNoteOpenByIdHeader(1)
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 resultFailure(
-                    "IMechanicRepository.checkNoteOpenByIdHeaderMotoMec",
+                    "IMotoMecRepository.getIdEquipHeader",
                     "-",
                     Exception()
                 )
@@ -69,26 +70,26 @@ class ICheckNoteOpenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNoteOpen -> IMechanicRepository.checkNoteOpenByIdHeaderMotoMec"
+                "IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
             )
         }
-
+    
     @Test
-    fun `Check return correct if function execute successfully`() =
+    fun `Check return MAIN if idEquip Config and idEquipHeader MotoMec are equals`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                configRepository.getIdEquip()
             ).thenReturn(
                 Result.success(1)
             )
             whenever(
-                mechanicRepository.checkNoteOpenByIdHeader(1)
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
-                Result.success(false)
+                Result.success(1)
             )
             val result = usecase()
             assertEquals(
@@ -97,7 +98,31 @@ class ICheckNoteOpenTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                false
+                FlowEquipNote.MAIN
+            )
+        }
+
+    @Test
+    fun `Check return SECONDARY if idEquip Config and idEquipHeader MotoMec are not equals`() =
+        runTest {
+            whenever(
+                configRepository.getIdEquip()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdEquipHeader()
+            ).thenReturn(
+                Result.success(2)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowEquipNote.SECONDARY
             )
         }
 

@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.room.variable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.TB_HEADER_MOTO_MEC
@@ -19,6 +20,7 @@ data class HeaderMotoMecRoomModel(
     val idTurn: Int,
     val nroOS: Int,
     val idActivity: Int,
+    val flowComposting: FlowComposting? = null,
     val hourMeterInitial: Double,
     var hourMeterFinish: Double? = null,
     val dateHourInitial: Date = Date(),
@@ -40,6 +42,7 @@ fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
             nroOS = this.nroOS!!,
             idActivity = this.idActivity!!,
             hourMeterInitial = this.hourMeter!!,
+            flowComposting = this.flowComposting,
             statusCon = this.statusCon
         )
     }

@@ -26,10 +26,20 @@ class IListHistory @Inject constructor(
     override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> {
         try {
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure { return Result.failure(it) }
+            resultGetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val id = resultGetId.getOrNull()!!
             val resultNoteList = motoMecRepository.noteListByIdHeader(id)
-            resultNoteList.onFailure { return Result.failure(it) }
+            resultNoteList.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val listNoteList = resultNoteList.getOrNull()!!
             val itemHistoryList = listNoteList.map { item ->
 
@@ -40,11 +50,21 @@ class IListHistory @Inject constructor(
                 }
                 val descr = if(item.idStop != null) {
                     val resultStop = stopRepository.getById(item.idStop!!)
-                    resultStop.onFailure { return Result.failure(it) }
+                    resultStop.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
                     resultStop.getOrNull()!!.descrStop
                 } else {
                     val resultActivity = activityRepository.getById(item.idActivity!!)
-                    resultActivity.onFailure { return Result.failure(it) }
+                    resultActivity.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
                     resultActivity.getOrNull()!!.descrActivity
                 }
                 val dateHour = SimpleDateFormat(

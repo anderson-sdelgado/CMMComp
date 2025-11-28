@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecShare
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -22,10 +23,14 @@ class IGetNroOSHeaderTest {
     @Inject
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
+    @Before
+    fun setup() {
+        hiltRule.inject()
+    }
+
     @Test
     fun check_return_failure_if_not_have_data() =
         runTest {
-            hiltRule.inject()
             val result = usecase()
             assertEquals(
                 result.isFailure,
@@ -44,7 +49,6 @@ class IGetNroOSHeaderTest {
     @Test
     fun check_return_true_and_data_returned() =
         runTest {
-            hiltRule.inject()
             headerMotoMecSharedPreferencesDatasource.save(
                 HeaderMotoMecSharedPreferencesModel(
                     nroOS = 10000

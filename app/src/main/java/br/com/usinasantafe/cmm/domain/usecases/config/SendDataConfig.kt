@@ -36,7 +36,12 @@ class ISendDataConfig @Inject constructor(
                 version = version
             )
             val result = configRepository.send(entity)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(result.getOrNull()!!)
         } catch (e: Exception) {
             return resultFailure(

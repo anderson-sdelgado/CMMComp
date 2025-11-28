@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.domain.usecases.background
+package br.com.usinasantafe.cmm.lib
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker

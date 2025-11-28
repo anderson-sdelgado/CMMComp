@@ -15,7 +15,12 @@ class IDelLastRespItemCheckList @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         val result = checkListRepository.delLastRespItem()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
         return result
     }
 

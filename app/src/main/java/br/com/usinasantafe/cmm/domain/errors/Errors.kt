@@ -40,9 +40,21 @@ class AppError(
     context: String,
     message: String?,
     cause: Throwable? = null
-) : Exception("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}", cause)
+) : Exception(removeRepeatedCalls("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}"), cause)
 
 fun failure(classAndMethod: String, error: Throwable) : String {
     return "$classAndMethod -> ${error.message} -> ${error.cause.toString()}"
 }
 
+fun removeRepeatedCalls(path: String): String {
+    val seen = mutableSetOf<String>()
+    val result = mutableListOf<String>()
+
+    path.split(" -> ").forEach { item ->
+        if (seen.add(item)) {
+            result.add(item)
+        }
+    }
+
+    return result.joinToString(" -> ")
+}

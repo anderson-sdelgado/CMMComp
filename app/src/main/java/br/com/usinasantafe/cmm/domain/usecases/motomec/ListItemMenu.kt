@@ -46,20 +46,35 @@ class IListItemMenu @Inject constructor(
         try {
             when(flavor.uppercase()){
                 PMM -> {
-                    return pmmList()
+                    val resultList = pmmList()
+                    resultList.onFailure {
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = it
+                        )
+                    }
+                    val entityList = resultList.getOrNull()!!
+                    return Result.success(entityList)
                 }
                 ECM -> {
                     val app = appList.find { it.second == ECM }!!
                     val resultList = itemMenuRepository.listByApp(app = app)
                     resultList.onFailure {
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = it
+                        )
                     }
                     val entityList = resultList.getOrNull()!!
                     return Result.success(convertList(entityList = entityList))
                 }
                 PCOMP -> {
-                    val resultComposting = motoMecRepository.getCompostingHeader()
+                    val resultComposting = motoMecRepository.getFlowCompostingHeader()
                     resultComposting.onFailure {
-                        return Result.failure(it)
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = it
+                        )
                     }
                     val composting = resultComposting.getOrNull()!!
                     val app = when(composting) {
@@ -68,7 +83,10 @@ class IListItemMenu @Inject constructor(
                     }
                     val resultList = itemMenuRepository.listByApp(app = app)
                     resultList.onFailure {
-                        return Result.failure(it)
+                        return resultFailure(
+                            context = getClassAndMethod(),
+                            cause = it
+                        )
                     }
                     val entityList = resultList.getOrNull()!!
                     return Result.success(convertList(entityList = entityList))
@@ -92,13 +110,19 @@ class IListItemMenu @Inject constructor(
     private suspend fun pmmList(): Result<List<ItemMenuModel>> {
         val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
         resultGetIdEquipMotoMec.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val idEquip = resultGetIdEquipMotoMec.getOrNull()!!
 
         val resultIdHeader = motoMecRepository.getIdByHeaderOpen()
         resultIdHeader.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val idHeader = resultIdHeader.getOrNull()!!
 
@@ -108,21 +132,30 @@ class IListItemMenu @Inject constructor(
         list.add(typeListPMM.find { it.second == ITEM_NORMAL }!!)
 
         //PERFORMANCE, TRANSHIPMENT, IMPLEMENT, HOSE_COLLECTION
-        val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquip) //ok
+        val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquip)
         resultTypeEquip.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val typeEquip = resultTypeEquip.getOrNull()!!
         when (typeEquip) {
             TypeEquip.NORMAL -> {
-                val resultGetIdActivity = motoMecRepository.getIdActivityHeader() //ok
+                val resultGetIdActivity = motoMecRepository.getIdActivityHeader()
                 resultGetIdActivity.onFailure {
-                    return Result.failure(it)
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
                 }
                 val resultListFunctionActivity =
                     functionActivityRepository.listByIdActivity(resultGetIdActivity.getOrNull()!!) //ok
                 resultListFunctionActivity.onFailure {
-                    return Result.failure(it)
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
                 }
                 val functionActivityList = resultListFunctionActivity.getOrNull()!!
                 functionActivityList.forEach { function ->
@@ -140,7 +173,10 @@ class IListItemMenu @Inject constructor(
         //MECHANICAL
         val resultGetFlagMechanic = equipRepository.getFlagMechanicByIdEquip(idEquip) //ok
         resultGetFlagMechanic.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val flagMechanic = resultGetFlagMechanic.getOrNull()!!
         if (flagMechanic) list.add(typeListPMM.find { it.second == MECHANICAL }!!)
@@ -148,7 +184,10 @@ class IListItemMenu @Inject constructor(
         //TIRE
         val resultGetFlagTire = equipRepository.getFlagTireByIdEquip(idEquip)
         resultGetFlagTire.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val flagTire = resultGetFlagTire.getOrNull()!!
         if (flagTire) list.add(typeListPMM.find { it.second == TIRE }!!)
@@ -156,13 +195,19 @@ class IListItemMenu @Inject constructor(
         //REEL
         val resultGetIdStopReel = functionStopRepository.getIdStopByType(TypeStop.REEL)
         resultGetIdStopReel.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val idStopReel = resultGetIdStopReel.getOrNull()
         if (idStopReel != null) {
             val resultCheckStopReel = motoMecRepository.hasNoteByIdStopAndIdHeader(idHeader, idStopReel) //ok
             resultCheckStopReel.onFailure {
-                return Result.failure(it)
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
             }
             val checkStopReel = resultCheckStopReel.getOrNull()!!
             if (checkStopReel) list.add(typeListPMM.find { it.second == REEL }!!)
@@ -171,7 +216,10 @@ class IListItemMenu @Inject constructor(
         //ADJUST LIST
         val resultList = itemMenuRepository.listByTypeList(typeList = list)
         resultList.onFailure {
-            return Result.failure(it)
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
         }
         val entityList = resultList.getOrNull()!!
         return Result.success(convertList(entityList = entityList))

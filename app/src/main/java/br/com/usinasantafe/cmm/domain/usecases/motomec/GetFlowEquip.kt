@@ -7,22 +7,32 @@ import br.com.usinasantafe.cmm.utils.FlowEquipNote
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface GetFlowEquipNoteMotoMec {
+interface GetFlowEquip {
     suspend operator fun invoke(): Result<FlowEquipNote>
 }
 
-class IGetFlowEquipNoteMotoMec @Inject constructor(
+class IGetFlowEquip @Inject constructor(
     private val configRepository: ConfigRepository,
     private val motoMecRepository: MotoMecRepository,
-): GetFlowEquipNoteMotoMec {
+): GetFlowEquip {
 
     override suspend fun invoke(): Result<FlowEquipNote> {
         try {
             val resultGetIdEquipConfig = configRepository.getIdEquip()
-            resultGetIdEquipConfig.onFailure { return Result.failure(it) }
+            resultGetIdEquipConfig.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idEquipConfig = resultGetIdEquipConfig.getOrNull()!!
             val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquipMotoMec.onFailure { return Result.failure(it) }
+            resultGetIdEquipMotoMec.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idEquipMotoMec = resultGetIdEquipMotoMec.getOrNull()!!
             val ret = if(idEquipConfig == idEquipMotoMec) FlowEquipNote.MAIN else FlowEquipNote.SECONDARY
             return Result.success(ret)

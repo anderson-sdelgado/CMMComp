@@ -8,6 +8,6 @@ data class NoteMotoMec(
     var idActivity: Int? = null,
     var idStop: Int? = null,
     val idEquipTrans: Int? = null,
-    var statusCon: Boolean? = true,
+    var statusCon: Boolean? = false,
     var dateHour: Date = Date()
 )

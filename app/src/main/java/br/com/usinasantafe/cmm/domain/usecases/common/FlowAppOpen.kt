@@ -19,11 +19,21 @@ class IFlowAppOpen @Inject constructor(
     override suspend fun invoke(): Result<FlowApp> {
         try {
             val resultCheckMotoMecOpen = motoMecRepository.checkHeaderOpen()
-            resultCheckMotoMecOpen.onFailure { return Result.failure(it) }
+            resultCheckMotoMecOpen.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val checkMotoMecOpen = resultCheckMotoMecOpen.getOrNull()!!
             if(!checkMotoMecOpen) return Result.success(FlowApp.HEADER_INITIAL)
             val resultCheckCheckListOpen = checkListRepository.checkOpen()
-            resultCheckCheckListOpen.onFailure { return Result.failure(it) }
+            resultCheckCheckListOpen.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val checkCheckListOpen = resultCheckCheckListOpen.getOrNull()!!
             if(checkCheckListOpen) return Result.success(FlowApp.CHECK_LIST)
             return Result.success(FlowApp.NOTE_WORK)

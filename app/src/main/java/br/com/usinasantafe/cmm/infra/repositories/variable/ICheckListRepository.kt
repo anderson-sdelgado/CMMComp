@@ -27,10 +27,20 @@ class ICheckListRepository @Inject constructor(
     override suspend fun saveHeader(entity: HeaderCheckList): Result<Boolean> {
         try {
             val resultClean = headerCheckListSharedPreferencesDatasource.clean()
-            resultClean.onFailure { return Result.failure(it) }
+            resultClean.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val model = entity.entityToSharedPreferencesModel()
             val resultSave = headerCheckListSharedPreferencesDatasource.save(model)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return resultSave
         } catch (e: Exception) {
             return resultFailure(
@@ -42,7 +52,12 @@ class ICheckListRepository @Inject constructor(
 
     override suspend fun cleanResp(): Result<Boolean> {
         val result = respItemCheckListSharedPreferencesDatasource.clean()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
@@ -51,7 +66,12 @@ class ICheckListRepository @Inject constructor(
             val result = respItemCheckListSharedPreferencesDatasource.save(
                 model = entity.entityToSharedPreferencesModel()
             )
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception) {
             return resultFailure(
@@ -64,27 +84,57 @@ class ICheckListRepository @Inject constructor(
     override suspend fun saveCheckList(): Result<Boolean> {
         try {
             val resultGet = headerCheckListSharedPreferencesDatasource.get()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val modelSharedPreferences = resultGet.getOrNull()!!
             val entityHeader = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = entityHeader.entityToRoomModel()
             val resultSaveHeader = headerCheckListRoomDatasource.save(modelRoom)
-            resultSaveHeader.onFailure { return Result.failure(it) }
+            resultSaveHeader.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val id = resultSaveHeader.getOrNull()!!.toInt()
             val resultListResp = respItemCheckListSharedPreferencesDatasource.list()
-            resultListResp.onFailure { return Result.failure(it) }
+            resultListResp.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val list = resultListResp.getOrNull()!!
             for(model in list) {
                 val entity = model.sharedPreferencesModelToEntity()
                 val resultSave = respItemCheckListRoomDatasource.save(
                     respItemCheckListRoomModel = entity.entityToRoomModel(id)
                 )
-                resultSave.onFailure { return Result.failure(it) }
+                resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             }
             val resultHeaderClean = headerCheckListSharedPreferencesDatasource.clean()
-            resultHeaderClean.onFailure { return Result.failure(it) }
+            resultHeaderClean.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val resultRespItemClean = respItemCheckListSharedPreferencesDatasource.clean()
-            resultRespItemClean.onFailure { return Result.failure(it) }
+            resultRespItemClean.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(
@@ -96,19 +146,34 @@ class ICheckListRepository @Inject constructor(
 
     override suspend fun delLastRespItem(): Result<Boolean> {
         val result = respItemCheckListSharedPreferencesDatasource.delLast()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
     override suspend fun checkOpen(): Result<Boolean> {
         val result = headerCheckListSharedPreferencesDatasource.checkOpen()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
     override suspend fun checkSend(): Result<Boolean> {
         val result = headerCheckListRoomDatasource.checkSend()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
@@ -118,11 +183,21 @@ class ICheckListRepository @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultListSend = headerCheckListRoomDatasource.listBySend() //ok
-            resultListSend.onFailure { return Result.failure(it) }
+            resultListSend.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val modelRetrofitList =
                 resultListSend.getOrNull()!!.map {
                     val resultRespItemList = respItemCheckListRoomDatasource.listByIdHeader(it.id!!)
-                    resultRespItemList.onFailure { return Result.failure(it) }
+                    resultRespItemList.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
                     val respItemRoomList = resultRespItemList.getOrNull()!!
                     it.roomModelToRetrofitModel(
                         number = number,
@@ -133,7 +208,12 @@ class ICheckListRepository @Inject constructor(
                 token = token,
                 modelList = modelRetrofitList
             )
-            resultSend.onFailure { return Result.failure(it) }
+            resultSend.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val headerCheckListRetrofitList = resultSend.getOrNull()!!
             for(headerCheckList in headerCheckListRetrofitList){
                 val respItemCheckListRetrofitList = headerCheckList.respItemList
@@ -142,13 +222,23 @@ class ICheckListRepository @Inject constructor(
                         id = respItemCheckList.id,
                         idServ = respItemCheckList.idServ
                     )
-                    result.onFailure { return Result.failure(it) }
+                    result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
                 }
                 val result = headerCheckListRoomDatasource.setSentAndIdServById(
                     id = headerCheckList.id,
                     idServ = headerCheckList.idServ
                 )
-                result.onFailure { return Result.failure(it) }
+                result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             }
             return Result.success(true)
         } catch (e: Exception) {

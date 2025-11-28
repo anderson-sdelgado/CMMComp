@@ -436,4 +436,75 @@ class INoteMotoMecRoomDatasourceTest {
             )
         }
 
+
+    @Test
+    fun `getLastByIdHeader - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getLastByIdHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "INoteMotoMecRoomDatasource.getLastByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception: Not has data"
+            )
+        }
+
+    @Test
+    fun `getLastByIdHeader -  Check return last if has data`() =
+        runTest {
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    idStop = 1,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 456789,
+                    idActivity = 10,
+                    idStop = 20,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            noteMotoMecDao.insert(
+                NoteMotoMecRoomModel(
+                    idHeader = 2,
+                    nroOS = 789456,
+                    idActivity = 15,
+                    idStop = 30,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.getLastByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                NoteMotoMecRoomModel(
+                    id = 2,
+                    idHeader = 1,
+                    nroOS = 456789,
+                    idActivity = 10,
+                    idStop = 20,
+                    dateHour = Date(1748359002),
+                    statusCon = true
+                )
+            )
+        }
+
 }

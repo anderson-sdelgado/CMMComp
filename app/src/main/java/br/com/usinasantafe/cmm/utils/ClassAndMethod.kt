@@ -8,22 +8,36 @@ import kotlin.text.substringBefore
 
 fun getClassAndMethod(): String {
     val pkg = "br.com.usinasantafe"
+    val stack = Throwable().stackTrace
 
-    val frame = Throwable().stackTrace
-        .firstOrNull { it.className.contains(pkg) &&
-                !it.methodName.contains("invokeSuspend") &&
-                !it.methodName.contains("access") &&
-                !it.methodName.contains("handleFailure") &&
-                !it.methodName.contains("default") &&
-                !it.methodName.contains("getClassAndMethod")
+    val calls = stack
+        .filter {
+            it.className.contains(pkg)
+        }
+        .map { el ->
+            val clsFull = el.className.substringAfterLast('.')
+            val realMethod = clsFull.substringAfter('$', "").substringBefore('$')
+            val cls = clsFull.substringBefore('$')
+            val meth = realMethod.ifBlank { el.methodName }
+            "$cls.$meth"
+        }
+        .distinct()
+        .reversed()
+
+    val listFinish = calls
+        .filter {
+            !it.endsWith("invokeSuspend") &&
+                    !it.contains("access") &&
+                    !it.contains("Test") &&
+                    !it.contains("handleFailure") &&
+                    !it.endsWith("Failure") &&
+                    !it.endsWith("getClassAndMethod") &&
+                    !it.endsWith("default")
+        }
+        .map {
+            it.replace(".invoke", "").substringBefore('-')
         }
 
-    if (frame == null) {
-        return "Classe.MetodoDesconhecido"
-    }
 
-    val cls = frame.className.substringAfterLast('.').substringBefore('$')
-    val meth = frame.methodName.substringBefore('-')
-
-    return "$cls.$meth"
+    return listFinish.joinToString(" -> ").ifBlank { "Classe.MetodoDesconhecido" }
 }

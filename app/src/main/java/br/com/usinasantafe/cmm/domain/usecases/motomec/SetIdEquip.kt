@@ -20,16 +20,31 @@ class ISetIdEquip @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGetConfig = configRepository.get()
-            resultGetConfig.onFailure { return Result.failure(it) }
+            resultGetConfig.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val config = resultGetConfig.getOrNull()!!
             val resultGetTypeEquip = equipRepository.getTypeEquipByIdEquip(config.idEquip!!)
-            resultGetTypeEquip.onFailure { return Result.failure(it) }
+            resultGetTypeEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val typeEquip = resultGetTypeEquip.getOrNull()!!
             val resultSetIdEquip = motoMecRepository.setDataEquipHeader(
                 idEquip = config.idEquip,
                 typeEquip = typeEquip
             )
-            resultSetIdEquip.onFailure { return Result.failure(it) }
+            resultSetIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception) {
             return resultFailure(

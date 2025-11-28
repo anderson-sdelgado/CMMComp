@@ -15,7 +15,12 @@ class ISetIdTurn @Inject constructor(
 
     override suspend fun invoke(id: Int): Result<Boolean> {
         val result = motoMecRepository.setIdTurnHeader(id)
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 

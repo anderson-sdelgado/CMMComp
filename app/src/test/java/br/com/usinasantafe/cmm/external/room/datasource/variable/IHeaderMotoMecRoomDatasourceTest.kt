@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.utils.FlowComposting
 import br.com.usinasantafe.cmm.utils.Status
 import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.TypeEquip
@@ -113,9 +114,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHeaderOpen - Check return false if not have header open`() =
+    fun `checkOpen - Check return false if not have header open`() =
         runTest {
-            val result = datasource.checkHeaderOpen()
+            val result = datasource.checkOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -127,7 +128,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHeaderOpen - Check return true if have header open`() =
+    fun `checkOpen - Check return true if have header open`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -142,7 +143,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkHeaderOpen()
+            val result = datasource.checkOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -164,16 +165,16 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getIdByHeaderOpen - Check return failure if table is empty`() =
+    fun `getId - Check return failure if table is empty`() =
         runTest {
-            val result = datasource.getIdByHeaderOpen()
+            val result = datasource.getId()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+                "IHeaderMotoMecRoomDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -182,7 +183,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getIdByHeaderOpen - Check return correct if function execute successfully`() =
+    fun `getId - Check return correct if function execute successfully`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -197,7 +198,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.getIdByHeaderOpen()
+            val result = datasource.getId()
             assertEquals(
                 result.isSuccess,
                 true
@@ -341,9 +342,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
     
     @Test
-    fun `checkHeaderSend - Check return false if not have header to send`() =
+    fun `checkSend - Check return false if not have header to send`() =
         runTest {
-            val result = datasource.checkHeaderSend()
+            val result = datasource.checkSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -355,7 +356,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkHeaderSend - Check return true if not have header to send`() =
+    fun `checkSend - Check return true if not have header to send`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -373,7 +374,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkHeaderSend()
+            val result = datasource.checkSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -404,16 +405,16 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getStatusConByHeaderOpen - Check return failure if table is empty`() =
+    fun `getStatusCon - Check return failure if table is empty`() =
         runTest {
-            val result = datasource.getStatusConByHeaderOpen()
+            val result = datasource.getStatusCon()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen"
+                "IHeaderMotoMecRoomDatasource.getStatusCon"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -422,7 +423,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getStatusConByHeaderOpen - Check return correct if function execute successfully`() =
+    fun `getStatusCon - Check return correct if function execute successfully`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -437,7 +438,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.getStatusConByHeaderOpen()
+            val result = datasource.getStatusCon()
             assertEquals(
                 result.isSuccess,
                 true
@@ -449,9 +450,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `listHeaderSend - Check return emptyList if not have header to send`() =
+    fun `listSend - Check return emptyList if not have header to send`() =
         runTest {
-            val result = datasource.listHeaderSend()
+            val result = datasource.listSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -463,7 +464,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `listHeaderSend - Check return list if not have header to send`() =
+    fun `listSend - Check return list if not have header to send`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -481,7 +482,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.listHeaderSend()
+            val result = datasource.listSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -549,7 +550,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `setSentHeader - Check alter data if execute success`() =
+    fun `setSent - Check alter data if execute success`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -578,7 +579,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 modelBefore.idServ,
                 null
             )
-            val result = datasource.setSentHeader(
+            val result = datasource.setSent(
                 id = 1,
                 idServ = 1
             )
@@ -607,7 +608,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `setSendHeader - Check alter data if execute success`() =
+    fun `setSend - Check alter data if execute success`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -633,7 +634,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 modelBefore.statusSend,
                 StatusSend.SENT
             )
-            val result = datasource.setSendHeader(
+            val result = datasource.setSend(
                 id = 1
             )
             assertEquals(
@@ -657,9 +658,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getIdTurnByHeaderOpen - Check return failure if table is empty`() =
+    fun `getIdTurn - Check return failure if table is empty`() =
         runTest {
-            val result = datasource.getIdTurnByHeaderOpen()
+            val result = datasource.getIdTurn()
             assertEquals(
                 result.isFailure,
                 true
@@ -675,7 +676,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getIdTurnByHeaderOpen - Check return correct if function execute successfully`() =
+    fun `getIdTurn - Check return correct if function execute successfully`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -690,7 +691,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.getIdTurnByHeaderOpen()
+            val result = datasource.getIdTurn()
             assertEquals(
                 result.isSuccess,
                 true
@@ -702,9 +703,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getRegOperatorOpen - Check return failure if table is empty`() =
+    fun `getRegOperator - Check return failure if table is empty`() =
         runTest {
-            val result = datasource.getRegOperatorOpen()
+            val result = datasource.getRegOperator()
             assertEquals(
                 result.isFailure,
                 true
@@ -719,4 +720,107 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getRegOperator - Check return correct if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.getRegOperator()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                19859
+            )
+        }
+
+    @Test
+    fun `getFlowComposting - Check return failure if table is empty`() =
+        runTest {
+            val result = datasource.getFlowComposting()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getFlowComposting"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getFlowComposting()\" because \"roomModel\" is null"
+            )
+        }
+
+    @Test
+    fun `getFlowComposting - Check return failure if flowComposting is empty`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.getFlowComposting()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getFlowComposting"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception: flowComposting is null"
+            )
+        }
+
+    @Test
+    fun `getFlowComposting - Check return correct if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    flowComposting = FlowComposting.INPUT,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.getFlowComposting()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowComposting.INPUT
+            )
+        }
 }

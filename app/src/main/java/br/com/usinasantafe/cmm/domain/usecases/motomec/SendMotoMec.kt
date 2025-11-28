@@ -20,16 +20,31 @@ class ISendMotoMec @Inject constructor(
     override suspend fun invoke(): Result<Boolean> {
         try {
             val resultGet = configRepository.getNumber()
-            resultGet.onFailure { return Result.failure(it) }
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val number = resultGet.getOrNull()!!
             val resultToken = getToken()
-            resultToken.onFailure { return Result.failure(it) }
+            resultToken.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val token = resultToken.getOrNull()!!
             val result = motoMecRepository.send(
                 number = number,
                 token = token
             )
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception) {
             return resultFailure(

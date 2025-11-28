@@ -18,12 +18,22 @@ class IGetConfigInternal @Inject constructor(
     override suspend fun invoke(): Result<ConfigModel?> {
         try {
             val resultHasConfig = configRepository.hasConfig()
-            resultHasConfig.onFailure { return Result.failure(it) }
+            resultHasConfig.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val hasConfig = resultHasConfig.getOrNull()!!
             if (!hasConfig)
                 return Result.success(null)
             val resultConfig = configRepository.get()
-            resultConfig.onFailure { return Result.failure(it) }
+            resultConfig.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val config = resultConfig.getOrNull()!!.toConfigModel()
             return Result.success(config)
         } catch (e: Exception) {

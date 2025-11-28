@@ -13,7 +13,7 @@ import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanical
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquipNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
@@ -73,12 +73,12 @@ data class MenuNoteState(
 
 @HiltViewModel
 class MenuNoteViewModel @Inject constructor(
-    private val listItemMenu: ListItemMenu,
-    private val getDescrEquip: GetDescrEquip,
-    private val checkHasNoteMotoMec: CheckHasNoteMotoMec,
-    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic,
-    private val getFlowEquipNoteMotoMec: GetFlowEquipNoteMotoMec,
-    private val getStatusTranshipment: GetStatusTranshipment,
+    private val listItemMenu: ListItemMenu, //ok
+    private val getDescrEquip: GetDescrEquip, //ok
+    private val checkHasNoteMotoMec: CheckHasNoteMotoMec, //ok
+    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic, //ok
+    private val getFlowEquip: GetFlowEquip, //ok
+    private val getStatusTranshipment: GetStatusTranshipment, //ok
     private val checkTypeLastNote: CheckTypeLastNote,
     private val finishNoteMechanical: FinishNoteMechanical,
     private val setNoteMotoMec: SetNoteMotoMec,
@@ -116,7 +116,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     fun flowEquipNote() = viewModelScope.launch {
-        getFlowEquipNoteMotoMec().onSuccess { flow ->
+        getFlowEquip().onSuccess { flow ->
             _uiState.update { it.copy(flowEquipNote = flow) }
         }.onFailure(::handleFailure)
     }
@@ -358,6 +358,10 @@ class MenuNoteViewModel @Inject constructor(
     private suspend fun handleNoteMechanical(): Boolean {
         val typeNote = checkTypeLastNote().getOrElse {
             handleFailure(it)
+            return false
+        }
+        if(typeNote == null) {
+            handleFailure("Without Note!", Errors.WITHOUT_NOTE)
             return false
         }
         if (typeNote == TypeNote.WORK) {

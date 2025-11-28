@@ -730,7 +730,7 @@ class IListItemMenuTest {
     fun `Check return failure if have error in MotoMecRepository getCompostingHeader - PCOMP`() =
         runTest {
             whenever(
-                motoMecRepository.getCompostingHeader()
+                motoMecRepository.getFlowCompostingHeader()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getCompostingHeader",
@@ -757,7 +757,7 @@ class IListItemMenuTest {
     fun `Check return failure if have error in ItemMenuRepository listByTypeList - PCOMP`() =
         runTest {
             whenever(
-                motoMecRepository.getCompostingHeader()
+                motoMecRepository.getFlowCompostingHeader()
             ).thenReturn(
                 Result.success(FlowComposting.INPUT)
             )
@@ -789,7 +789,7 @@ class IListItemMenuTest {
     fun `Check return correct if process execute successfully - PCOMP`() =
         runTest {
             whenever(
-                motoMecRepository.getCompostingHeader()
+                motoMecRepository.getFlowCompostingHeader()
             ).thenReturn(
                 Result.success(FlowComposting.INPUT)
             )

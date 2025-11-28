@@ -18,14 +18,29 @@ class IGetStatusTranshipment @Inject constructor(
     override suspend fun invoke(): Result<StatusTranshipment> {
         try {
             val resultGetId = motoMecRepository.getIdByHeaderOpen() //ok
-            resultGetId.onFailure { return Result.failure(it) }
+            resultGetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val id = resultGetId.getOrNull()!!
             val resultHasNote = motoMecRepository.hasNoteByIdHeader(id) //ok
-            resultHasNote.onFailure { return Result.failure(it) }
+            resultHasNote.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val check = resultHasNote.getOrNull()!!
             if (!check) return Result.success(StatusTranshipment.WITHOUT_NOTE)
-            val resultGetNoteLast = motoMecRepository.getNoteLastByIdHeader(id)
-            resultGetNoteLast.onFailure { return Result.failure(it) }
+            val resultGetNoteLast = motoMecRepository.getNoteLastByIdHeader(id) //ok
+            resultGetNoteLast.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val noteLast = resultGetNoteLast.getOrNull()!!
             if(noteLast.idStop == null) return Result.success(StatusTranshipment.WITHOUT_NOTE)
             if((noteLast.idEquipTrans != null ) && (noteLast.dateHour > adjDate(-10))){

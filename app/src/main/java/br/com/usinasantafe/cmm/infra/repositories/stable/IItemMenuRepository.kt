@@ -20,7 +20,12 @@ class IItemMenuRepository  @Inject constructor(
         try {
             val roomModelList = list.map { it.entityItemMenuToRoomModel() }
             val result = itemMenuRoomDatasource.addAll(roomModelList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -32,14 +37,24 @@ class IItemMenuRepository  @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = itemMenuRoomDatasource.deleteAll()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
     override suspend fun listAll(token: String): Result<List<ItemMenu>> {
         try {
             val result = itemMenuRetrofitDatasource.listAll(token)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -55,7 +70,12 @@ class IItemMenuRepository  @Inject constructor(
     ): Result<List<ItemMenu>> {
         try {
             val result = itemMenuRoomDatasource.listByTypeList(typeList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -69,7 +89,12 @@ class IItemMenuRepository  @Inject constructor(
     override suspend fun listByApp(app: Pair<Int, String>): Result<List<ItemMenu>> {
         try {
             val result = itemMenuRoomDatasource.listByTypeList(app = app)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {

@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.domain.usecases.background
+package br.com.usinasantafe.cmm.lib
 
 import androidx.work.BackoffPolicy
 import androidx.work.Constraints

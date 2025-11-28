@@ -35,10 +35,20 @@ class ICheckHourMeter @Inject constructor(
             val measureInput = formatNumber.parse(measure)!!
             val measureInputDouble = measureInput.toDouble()
             val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquip.onFailure { return Result.failure(it) }
+            resultGetIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultGetHourMeterByIdEquip = equipRepository.getHourMeterByIdEquip(idEquip)
-            resultGetHourMeterByIdEquip.onFailure { return Result.failure(it) }
+            resultGetHourMeterByIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val measureBDDouble = resultGetHourMeterByIdEquip.getOrNull()!!
             measureBD = formatDecimal.format(measureBDDouble)
             if(measureInputDouble < measureBDDouble) check = false

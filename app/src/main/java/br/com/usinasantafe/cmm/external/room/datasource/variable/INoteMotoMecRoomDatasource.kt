@@ -100,6 +100,20 @@ class INoteMotoMecRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getLastByIdHeader(idHeader: Int): Result<NoteMotoMecRoomModel> {
+        try {
+            val model = noteMotoMecDao.getLastByIdHeader(idHeader) ?: return resultFailure(
+                context = getClassAndMethod(),
+                cause = Exception("Not has data")
+            )
+            return Result.success(model)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 
 
 }

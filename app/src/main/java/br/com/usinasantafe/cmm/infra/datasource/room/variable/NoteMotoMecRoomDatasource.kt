@@ -15,4 +15,5 @@ interface NoteMotoMecRoomDatasource {
         idStop: Int,
         idHeader: Int
     ): Result<Boolean>
+    suspend fun getLastByIdHeader(idHeader: Int): Result<NoteMotoMecRoomModel>
 }

@@ -20,8 +20,9 @@ data class NoteMotoMecRoomModel(
     val dateHour: Date = Date(),
     var statusSend: StatusSend = StatusSend.SEND,
     val status: Status = Status.CLOSE,
-    val statusCon: Boolean,
-    var idServ: Int? = null
+    val statusCon: Boolean = false,
+    var idServ: Int? = null,
+    val idEquipTrans: Int? = null,
 )
 
 fun NoteMotoMec.entityToRoomModel(
@@ -35,7 +36,8 @@ fun NoteMotoMec.entityToRoomModel(
             idActivity = this.idActivity!!,
             idStop = this.idStop,
             statusCon = this.statusCon!!,
-            dateHour = dateHour
+            dateHour = dateHour,
+            idEquipTrans = this.idEquipTrans
         )
     }
 }
@@ -48,7 +50,8 @@ fun NoteMotoMecRoomModel.roomModelToEntity(): NoteMotoMec {
             idActivity = this.idActivity,
             idStop = this.idStop,
             statusCon = this.statusCon,
-            dateHour = this.dateHour
+            dateHour = this.dateHour,
+            idEquipTrans = this.idEquipTrans
         )
     }
 }

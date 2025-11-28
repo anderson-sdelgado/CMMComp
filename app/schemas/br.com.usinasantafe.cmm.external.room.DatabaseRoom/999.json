@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "4a3aefd71243e98760578af445e1e02e",
+    "identityHash": "4b13f09c1264ef5bb539b9cc48e0a5b4",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -506,7 +506,7 @@
       },
       {
         "tableName": "tb_header_moto_mec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `flowComposting` TEXT, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -549,6 +549,12 @@
             "columnName": "idActivity",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "flowComposting",
+            "columnName": "flowComposting",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "hourMeterInitial",
@@ -610,7 +616,7 @@
       },
       {
         "tableName": "tb_note_moto_mec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, `idEquipTrans` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -669,6 +675,12 @@
           {
             "fieldPath": "idServ",
             "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idEquipTrans",
+            "columnName": "idEquipTrans",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -848,7 +860,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a3aefd71243e98760578af445e1e02e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b13f09c1264ef5bb539b9cc48e0a5b4')"
     ]
   }
 }

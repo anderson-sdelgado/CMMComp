@@ -20,7 +20,12 @@ class ITurnRepository @Inject constructor(
         try {
             val roomModelList = list.map { it.entityTurnToRoomModel() }
             val result = turnRoomDatasource.addAll(roomModelList)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return result
         } catch (e: Exception){
             return resultFailure(
@@ -32,7 +37,12 @@ class ITurnRepository @Inject constructor(
 
     override suspend fun deleteAll(): Result<Boolean> {
         val result = turnRoomDatasource.deleteAll()
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 
@@ -41,7 +51,12 @@ class ITurnRepository @Inject constructor(
     ): Result<List<Turn>> {
         try {
             val result = turnoRetrofitDatasource.listAll(token)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -57,7 +72,12 @@ class ITurnRepository @Inject constructor(
     ): Result<List<Turn>> {
         try {
             val result = turnRoomDatasource.listByCodTurnEquip(codTurnEquip)
-            result.onFailure { return Result.failure(it) }
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
             return Result.success(entityList)
         } catch (e: Exception) {
@@ -70,7 +90,12 @@ class ITurnRepository @Inject constructor(
 
     override suspend fun getNroTurnByIdTurn(idTurn: Int): Result<Int> {
         val result = turnRoomDatasource.getNroTurnByIdTurn(idTurn)
-        result.onFailure { return Result.failure(it) }
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
         return result
     }
 }

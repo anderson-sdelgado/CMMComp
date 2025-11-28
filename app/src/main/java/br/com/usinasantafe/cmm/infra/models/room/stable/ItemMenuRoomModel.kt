@@ -6,7 +6,13 @@ import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.failure
 import br.com.usinasantafe.cmm.utils.TB_ITEM_MENU
 import br.com.usinasantafe.cmm.utils.appList
+import br.com.usinasantafe.cmm.utils.functionListECM
+import br.com.usinasantafe.cmm.utils.functionListPCOMPCompound
+import br.com.usinasantafe.cmm.utils.functionListPCOMPInput
 import br.com.usinasantafe.cmm.utils.functionListPMM
+import br.com.usinasantafe.cmm.utils.typeListECM
+import br.com.usinasantafe.cmm.utils.typeListPCOMPCompound
+import br.com.usinasantafe.cmm.utils.typeListPCOMPInput
 import br.com.usinasantafe.cmm.utils.typeListPMM
 
 @Entity(tableName = TB_ITEM_MENU)
@@ -29,9 +35,15 @@ fun ItemMenuRoomModel.roomModelToEntity(): ItemMenu {
                 1 -> {
                     typeListPMM.find { it.first == this.idType } ?: failure
                 }
-                2 -> failure
-                3 -> failure
-                4 -> failure
+                2 -> {
+                    typeListECM.find { it.first == this.idType } ?: failure
+                }
+                3 -> {
+                    typeListPCOMPInput.find { it.first == this.idType } ?: failure
+                }
+                4 -> {
+                    typeListPCOMPCompound.find { it.first == this.idType } ?: failure
+                }
                 else -> failure
             },
             pos = this.pos,
@@ -39,9 +51,15 @@ fun ItemMenuRoomModel.roomModelToEntity(): ItemMenu {
                 1 -> {
                     functionListPMM.find { it.first == this.idFunction } ?: failure
                 }
-                2 -> failure
-                3 -> failure
-                4 -> failure
+                2 -> {
+                    functionListECM.find { it.first == this.idFunction } ?: failure
+                }
+                3 -> {
+                    functionListPCOMPInput.find { it.first == this.idFunction } ?: failure
+                }
+                4 -> {
+                    functionListPCOMPCompound.find { it.first == this.idFunction } ?: failure
+                }
                 else -> failure
             },
             app = appList.find { it.first == this.idApp } ?: failure,

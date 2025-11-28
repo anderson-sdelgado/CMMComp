@@ -41,7 +41,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindGetFlowEquipNoteMotoMec(usecase: IGetFlowEquipNoteMotoMec): GetFlowEquipNoteMotoMec
+    fun bindGetFlowEquipNoteMotoMec(usecase: IGetFlowEquip): GetFlowEquip
 
     @Binds
     @Singleton

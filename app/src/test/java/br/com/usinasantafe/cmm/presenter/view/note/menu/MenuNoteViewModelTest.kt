@@ -13,7 +13,7 @@ import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanical
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquipNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
@@ -64,7 +64,7 @@ class MenuNoteViewModelTest {
     private val getDescrEquip = mock<GetDescrEquip>()
     private val checkHasNoteMotoMec = mock<CheckHasNoteMotoMec>()
     private val checkHasNoteOpenMechanic = mock<CheckHasNoteOpenMechanic>()
-    private val getFlowEquipNoteMotoMec = mock<GetFlowEquipNoteMotoMec>()
+    private val getFlowEquip = mock<GetFlowEquip>()
     private val getStatusTranshipment = mock<GetStatusTranshipment>()
     private val checkTypeLastNote = mock<CheckTypeLastNote>()
     private val finishNoteMechanical = mock<FinishNoteMechanical>()
@@ -81,7 +81,7 @@ class MenuNoteViewModelTest {
         getDescrEquip = getDescrEquip,
         checkHasNoteMotoMec = checkHasNoteMotoMec,
         checkHasNoteOpenMechanic = checkHasNoteOpenMechanic,
-        getFlowEquipNoteMotoMec = getFlowEquipNoteMotoMec,
+        getFlowEquip = getFlowEquip,
         getStatusTranshipment = getStatusTranshipment,
         checkTypeLastNote = checkTypeLastNote,
         finishNoteMechanical = finishNoteMechanical,
@@ -257,7 +257,7 @@ class MenuNoteViewModelTest {
     fun `flowEquipNote - Check return failure if have error in GetFlowEquipNoteMotoMec`() =
         runTest {
             whenever(
-                getFlowEquipNoteMotoMec()
+                getFlowEquip()
             ).thenReturn(
                 resultFailure(
                     context = "GetFlowEquipNoteMotoMec",
@@ -280,7 +280,7 @@ class MenuNoteViewModelTest {
     fun `flowEquipNote - Check return true if GetFlowEquipNoteMotoMec execute successfully`() =
         runTest {
             whenever(
-                getFlowEquipNoteMotoMec()
+                getFlowEquip()
             ).thenReturn(
                 Result.success(FlowEquipNote.SECONDARY)
             )

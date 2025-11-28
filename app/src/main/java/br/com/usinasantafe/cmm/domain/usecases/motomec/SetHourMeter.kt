@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.FlowApp
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.text.NumberFormat
@@ -38,23 +38,48 @@ class ISetHourMeter @Inject constructor(
             } else {
                 motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble)
             }
-            resultSetHourMeter.onFailure { return Result.failure(it) }
+            resultSetHourMeter.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquip.onFailure { return Result.failure(it) }
+            resultGetIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idEquip = resultGetIdEquip.getOrNull()!!
             val resultUpdateHourMeterByIdEquip = equipRepository.updateHourMeterByIdEquip(
                 hourMeter = hourMeterInputDouble,
                 idEquip = idEquip
             )
-            resultUpdateHourMeterByIdEquip.onFailure { return Result.failure(it) }
+            resultUpdateHourMeterByIdEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             if(flowApp == FlowApp.HEADER_INITIAL) {
                 val resultSaveHeader = motoMecRepository.saveHeader()
-                resultSaveHeader.onFailure { return Result.failure(it) }
+                resultSaveHeader.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
                 startWorkManager()
                 return resultSaveHeader
             }
             val resultFinishHeader = motoMecRepository.finishHeader()
-            resultFinishHeader.onFailure { return Result.failure(it) }
+            resultFinishHeader.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             startWorkManager()
             return resultFinishHeader
         } catch (e: Exception) {

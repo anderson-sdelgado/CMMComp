@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.usecases.background.StartWorkManager
+import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -22,12 +22,27 @@ class ISetIdStopNote @Inject constructor(
     ): Result<Boolean> {
         try {
             val resultSet = motoMecRepository.setIdStop(id)
-            resultSet.onFailure { return Result.failure(it) }
+            resultSet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure { return Result.failure(it) }
+            resultGetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val idHeader = resultGetId.getOrNull()!!
             val resultSave = motoMecRepository.saveNote(idHeader)
-            resultSave.onFailure { return Result.failure(it) }
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             startWorkManager()
             return resultSave
         } catch (e: Exception) {

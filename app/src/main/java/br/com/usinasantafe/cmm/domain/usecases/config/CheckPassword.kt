@@ -16,12 +16,22 @@ class ICheckPassword @Inject constructor(
     override suspend fun invoke(password: String): Result<Boolean> {
         try {
             val resultHasConfig = configRepository.hasConfig()
-            resultHasConfig.onFailure { return Result.failure(it) }
+            resultHasConfig.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val hasConfig = resultHasConfig.getOrNull()!!
             if (!hasConfig)
                 return Result.success(true)
             val resultGetPassword = configRepository.getPassword()
-            resultGetPassword.onFailure { return Result.failure(it) }
+            resultGetPassword.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val passwordConfig = resultGetPassword.getOrNull()!!
             if (passwordConfig == password)
                 return Result.success(true)
