@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.entities.stable.Colab
+import br.com.usinasantafe.cmm.domain.entities.stable.RItemMenuStop
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.Errors
 import br.com.usinasantafe.cmm.utils.LevelUpdate
 import br.com.usinasantafe.cmm.utils.updatePercentage
@@ -16,13 +16,13 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class IUpdateTableColabTest {
+class IUpdateTableRItemMenuStopTest {
 
     private val getToken = mock<GetToken>()
-    private val colabRepository = mock<ColabRepository>()
-    private val usecase = IUpdateTableColab(
+    private val rItemMenuStopRepository = mock<RItemMenuStopRepository>()
+    private val usecase = IUpdateTableRItemMenuStop(
         getToken = getToken,
-        colabRepository = colabRepository
+        rItemMenuStopRepository = rItemMenuStopRepository
     )
 
     @Test
@@ -51,24 +51,25 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableRItemMenuStop -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in ColabRepository recoverAll`() =
+    fun `Check return failure if have error in RItemMenuStopRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -76,10 +77,10 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.listAll("token")
+                rItemMenuStopRepository.listAll("token")
             ).thenReturn(
                 resultFailure(
-                    "IColabRepository.recoverAll",
+                    "IRItemMenuStopRepository.recoverAll",
                     "-",
                     Exception()
                 )
@@ -98,17 +99,18 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.recoverAll -> java.lang.Exception",
+                    failure = "IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.recoverAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -118,9 +120,11 @@ class IUpdateTableColabTest {
     fun `Check return failure if have error in ColabRepository deleteAll`() =
         runTest {
             val list = listOf(
-                Colab(
-                    regColab = 19759,
-                    nameColab = "ANDERSON"
+                RItemMenuStop(
+                    id = 1,
+                    idFunction = 1,
+                    idApp = 1,
+                    idStop = 1
                 )
             )
             whenever(
@@ -129,17 +133,17 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.listAll("token")
+                rItemMenuStopRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                colabRepository.deleteAll()
+                rItemMenuStopRepository.deleteAll()
             ).thenReturn(
                 resultFailure(
-                    "IColabRepository.deleteAll",
+                    "IRItemMenuStopRepository.deleteAll",
                     "-",
                     Exception()
                 )
@@ -158,7 +162,7 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -167,17 +171,18 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -187,9 +192,11 @@ class IUpdateTableColabTest {
     fun `Check return failure if have error in ColabRepository addAll`() =
         runTest {
             val list = listOf(
-                Colab(
-                    regColab = 19759,
-                    nameColab = "ANDERSON"
+                RItemMenuStop(
+                    id = 1,
+                    idFunction = 1,
+                    idApp = 1,
+                    idStop = 1
                 )
             )
             whenever(
@@ -198,22 +205,22 @@ class IUpdateTableColabTest {
                 Result.success("token")
             )
             whenever(
-                colabRepository.listAll("token")
+                rItemMenuStopRepository.listAll("token")
             ).thenReturn(
                 Result.success(
                     list
                 )
             )
             whenever(
-                colabRepository.deleteAll()
+                rItemMenuStopRepository.deleteAll()
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                colabRepository.addAll(list)
+                rItemMenuStopRepository.addAll(list)
             ).thenReturn(
                 resultFailure(
-                    "IColabRepository.addAll",
+                    "IRItemMenuStopRepository.addAll",
                     "-",
                     Exception()
                 )
@@ -232,7 +239,7 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(1f, 1f, 7f)
                 )
             )
@@ -241,7 +248,7 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(2f, 1f, 7f)
                 )
             )
@@ -250,17 +257,18 @@ class IUpdateTableColabTest {
                 ResultUpdateModel(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
             assertEquals(
                 resultList[3],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableColab -> IColabRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

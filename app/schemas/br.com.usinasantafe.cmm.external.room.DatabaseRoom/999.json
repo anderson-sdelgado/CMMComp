@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "4b13f09c1264ef5bb539b9cc48e0a5b4",
+    "identityHash": "f7237713aedd8dda3e108a9af8a6ca84",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -467,6 +467,44 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tb_r_item_menu_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `idFunction` INTEGER NOT NULL, `idApp` INTEGER NOT NULL, `idStop` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idFunction",
+            "columnName": "idFunction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idApp",
+            "columnName": "idApp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "tb_turn",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTurn` INTEGER NOT NULL, `codTurnEquip` INTEGER NOT NULL, `nroTurn` INTEGER NOT NULL, `descrTurn` TEXT NOT NULL, PRIMARY KEY(`idTurn`))",
         "fields": [
@@ -796,7 +834,7 @@
       },
       {
         "tableName": "tb_note_mechanic",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `os` INTEGER NOT NULL, `seq` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `os` INTEGER NOT NULL, `item` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -817,8 +855,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "seq",
-            "columnName": "seq",
+            "fieldPath": "item",
+            "columnName": "item",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -860,7 +898,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4b13f09c1264ef5bb539b9cc48e0a5b4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f7237713aedd8dda3e108a9af8a6ca84')"
     ]
   }
 }

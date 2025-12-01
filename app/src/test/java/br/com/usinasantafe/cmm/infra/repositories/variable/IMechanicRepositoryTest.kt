@@ -61,4 +61,50 @@ class IMechanicRepositoryTest {
             )
         }
 
+    @Test
+    fun `setFinishNote - Check return failure if have error in NoteMechanicDatasource setFinishNote`() =
+        runTest {
+            whenever(
+                noteMechanicRoomDatasource.setFinishNote()
+            ).thenReturn(
+                resultFailure(
+                    "INoteMechanicDatasource.setFinishNote",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setFinishNote()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMechanicRepository.setFinishNote -> INoteMechanicDatasource.setFinishNote"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+    
+    @Test
+    fun `setFinishNote - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                noteMechanicRoomDatasource.setFinishNote()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.setFinishNote()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

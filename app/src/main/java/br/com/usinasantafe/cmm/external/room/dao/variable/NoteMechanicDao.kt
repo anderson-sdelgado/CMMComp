@@ -22,4 +22,7 @@ interface NoteMechanicDao {
     @Query("SELECT COUNT(id) FROM $TB_NOTE_MECHANIC WHERE idHeader = :idHeader and dateHourFinish is null")
     suspend fun countOpenByIdHeader(idHeader: Int): Int
 
+    @Query("SELECT * FROM $TB_NOTE_MECHANIC WHERE dateHourFinish is null")
+    suspend fun getByOpen(): NoteMechanicRoomModel
+
 }

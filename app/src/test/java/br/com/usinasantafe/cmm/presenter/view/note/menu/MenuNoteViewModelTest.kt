@@ -10,7 +10,7 @@ import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanical
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
@@ -67,7 +67,7 @@ class MenuNoteViewModelTest {
     private val getFlowEquip = mock<GetFlowEquip>()
     private val getStatusTranshipment = mock<GetStatusTranshipment>()
     private val checkTypeLastNote = mock<CheckTypeLastNote>()
-    private val finishNoteMechanical = mock<FinishNoteMechanical>()
+    private val finishNoteMechanic = mock<FinishNoteMechanic>()
     private val setNoteMotoMec = mock<SetNoteMotoMec>()
     private val setDataPreCEC = mock<SetDataPreCEC>()
     private val checkCouplingTrailer = mock<CheckCouplingTrailer>()
@@ -84,7 +84,7 @@ class MenuNoteViewModelTest {
         getFlowEquip = getFlowEquip,
         getStatusTranshipment = getStatusTranshipment,
         checkTypeLastNote = checkTypeLastNote,
-        finishNoteMechanical = finishNoteMechanical,
+        finishNoteMechanic = finishNoteMechanic,
         setNoteMotoMec = setNoteMotoMec,
         setDataPreCEC = setDataPreCEC,
         checkCouplingTrailer = checkCouplingTrailer,
@@ -360,7 +360,7 @@ class MenuNoteViewModelTest {
     fun `onDialogCheck - Check return failure if have error in FinishNoteMechanical and Pair is FINISH_MECHANICAL`() =
         runTest {
             whenever(
-                finishNoteMechanical()
+                finishNoteMechanic()
             ).thenReturn(
                 resultFailure(
                     context = "FinishNoteMechanical",
@@ -385,7 +385,7 @@ class MenuNoteViewModelTest {
     fun `onDialogCheck - Check return true if FinishNoteMechanical execute successfully and Pair is FINISH_MECHANICAL`() =
         runTest {
             whenever(
-                finishNoteMechanical()
+                finishNoteMechanic()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1031,6 +1031,37 @@ class MenuNoteViewModelTest {
             assertEquals(
                 viewModel.uiState.value.errors,
                 Errors.EXCEPTION
+            )
+        }
+
+    @Test
+    fun `setSelection - PMM - Check return failure if CheckTypeLastNote return null and function is NOTE_MECHANICAL`() =
+        runTest {
+            wheneverBasicPMM(
+                7 to NOTE_MECHANICAL
+            )
+            whenever(
+                checkTypeLastNote()
+            ).thenReturn(
+                Result.success(null)
+            )
+            viewModel.menuList("pmm")
+            viewModel.setSelection(1)
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleNoteMechanical -> Without Note!"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.WITHOUT_NOTE
             )
         }
 

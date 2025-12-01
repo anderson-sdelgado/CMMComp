@@ -58,6 +58,10 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
+    fun bindRItemMenuStopRetrofitDatasource(dataSource: IRItemMenuStopRetrofitDatasource): RItemMenuStopRetrofitDatasource
+
+    @Binds
+    @Singleton
     fun bindStopRetrofitDatasource(dataSource: IStopRetrofitDatasource): StopRetrofitDatasource
 
     @Binds

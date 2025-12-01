@@ -25,6 +25,7 @@ import java.util.Date
         RActivityStopRoomModel::class,
         REquipActivityRoomModel::class,
         ROSActivityRoomModel::class,
+        RItemMenuStopRoomModel::class,
         TurnRoomModel::class,
         HeaderMotoMecRoomModel::class,
         NoteMotoMecRoomModel::class,
@@ -47,6 +48,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun rActivityStopDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rOSActivityDao(): ROSActivityDao
+    abstract fun rItemMenuStopDao(): RItemMenuStopDao
     abstract fun stopDao(): StopDao
     abstract fun turnDao(): TurnDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao

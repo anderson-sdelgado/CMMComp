@@ -10,7 +10,7 @@ import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanical
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
@@ -79,8 +79,8 @@ class MenuNoteViewModel @Inject constructor(
     private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic, //ok
     private val getFlowEquip: GetFlowEquip, //ok
     private val getStatusTranshipment: GetStatusTranshipment, //ok
-    private val checkTypeLastNote: CheckTypeLastNote,
-    private val finishNoteMechanical: FinishNoteMechanical,
+    private val checkTypeLastNote: CheckTypeLastNote, // ok
+    private val finishNoteMechanic: FinishNoteMechanic, // ok
     private val setNoteMotoMec: SetNoteMotoMec,
     private val setDataPreCEC: SetDataPreCEC,
     private val checkCouplingTrailer: CheckCouplingTrailer,
@@ -409,7 +409,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleFinishMechanicalDialog() {
-        finishNoteMechanical()
+        finishNoteMechanic()
             .onSuccess {
                 _uiState.update {
                     it.copy(

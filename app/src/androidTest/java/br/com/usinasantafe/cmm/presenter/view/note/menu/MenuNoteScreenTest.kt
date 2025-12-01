@@ -575,7 +575,7 @@ class MenuNoteScreenTest {
             NoteMechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
-                seq = 1,
+                item = 1,
                 dateHourFinish = null
             )
         )
@@ -583,7 +583,7 @@ class MenuNoteScreenTest {
             NoteMechanicRoomModel(
                 idHeader = 2,
                 os = 123456,
-                seq = 1,
+                item = 1,
                 dateHourFinish = null
             )
         )
@@ -591,7 +591,7 @@ class MenuNoteScreenTest {
             NoteMechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
-                seq = 1,
+                item = 1,
                 dateHourFinish = Date()
             )
         )

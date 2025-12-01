@@ -14,10 +14,10 @@ data class NoteMechanicRoomModel(
     val id: Int? = null,
     val idHeader: Int,
     val os: Int,
-    val seq: Int,
+    val item: Int,
     val dateHourInitial: Date = Date(),
-    val dateHourFinish: Date?,
-    val status: Status = Status.OPEN,
+    var dateHourFinish: Date?,
+    var status: Status = Status.OPEN,
     val statusSend: StatusSend = StatusSend.SEND
 )
 
@@ -27,7 +27,7 @@ fun NoteMechanic.entityToRoomModel(): NoteMechanicRoomModel {
             id = this.id,
             idHeader = this.idHeader!!,
             os = this.os!!,
-            seq = this.seq!!,
+            item = this.item!!,
             dateHourInitial = this.dateHourInitial,
             dateHourFinish = this.dateHourFinish,
         )

@@ -1,42 +1,44 @@
-package br.com.usinasantafe.cmm.domain.usecases.mechanic
+package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.utils.StatusTranshipment
 import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.utils.TypeNote
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
-import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ICheckHasNoteOpenMechanicTest {
+class ICheckTypeLastNoteTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ICheckHasNoteOpenMechanic
+    lateinit var usecase: CheckTypeLastNote
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMechanicDao: NoteMechanicDao
+    lateinit var noteMotoMecDao: NoteMotoMecDao
 
     @Before
-    fun init() {
+    fun setup() {
         hiltRule.inject()
     }
 
     @Test
-    fun check_return_failure_if_not_have_data_header_moto_mec_room() =
+    fun check_return_failure_if_not_have_data_in_header_moto_mec_room() =
         runTest {
             val result = usecase()
             assertEquals(
@@ -45,7 +47,7 @@ class ICheckHasNoteOpenMechanicTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNoteOpen -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+                "ICheckTypeLastNote -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -54,7 +56,7 @@ class ICheckHasNoteOpenMechanicTest {
         }
 
     @Test
-    fun check_return_false_if_not_have_data_in_table_room() =
+    fun check_return_null_if_not_have_data_in_note_moto_mec_room() =
         runTest {
             initialRegister(1)
             val result = usecase()
@@ -63,23 +65,38 @@ class ICheckHasNoteOpenMechanicTest {
                 true
             )
             assertEquals(
-                result.getOrNull()!!,
-                false
+                result.getOrNull(),
+                null
             )
         }
 
     @Test
-    fun check_return_true_if_not_have_data_fielded_in_table_room() =
+    fun check_return_STOP_if_have_last_note_moto_mec_room_is_STOP() =
+    runTest {
+        initialRegister(2)
+        val result = usecase()
+        assertEquals(
+            result.isSuccess,
+            true
+        )
+        assertEquals(
+            result.getOrNull(),
+            TypeNote.STOP
+        )
+    }
+
+    @Test
+    fun check_return_WORK_if_have_last_note_moto_mec_room_is_WORK() =
         runTest {
-            initialRegister(2)
+            initialRegister(3)
             val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                result.getOrNull(),
+                TypeNote.WORK
             )
         }
 
@@ -101,33 +118,27 @@ class ICheckHasNoteOpenMechanicTest {
 
         if(level == 1) return
 
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        noteMotoMecDao.insert(
+            NoteMotoMecRoomModel(
                 idHeader = 1,
-                os = 123456,
-                item = 1,
-                dateHourFinish = null
-            )
-        )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
-                idHeader = 2,
-                os = 123456,
-                item = 1,
-                dateHourFinish = null
-            )
-        )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
-                idHeader = 1,
-                os = 123456,
-                item = 1,
-                dateHourFinish = Date()
+                nroOS = 123456,
+                idActivity = 1,
+                idStop = 2,
             )
         )
 
         if(level == 2) return
 
+        noteMotoMecDao.insert(
+            NoteMotoMecRoomModel(
+                idHeader = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                idStop = null,
+            )
+        )
+
+        if(level == 3) return
     }
 
 }

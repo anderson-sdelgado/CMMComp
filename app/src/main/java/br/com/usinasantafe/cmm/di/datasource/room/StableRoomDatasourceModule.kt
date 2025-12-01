@@ -58,6 +58,10 @@ interface StableRoomDatasourceModule {
 
     @Binds
     @Singleton
+    fun bindRItemMenuStopRoomDatasource(dataSource: IRItemMenuStopRoomDatasource): RItemMenuStopRoomDatasource
+
+    @Binds
+    @Singleton
     fun bindStopRoomDatasource(dataSource: IStopRoomDatasource): StopRoomDatasource
 
     @Binds

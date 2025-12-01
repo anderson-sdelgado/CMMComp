@@ -18,6 +18,7 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.utils.Errors
@@ -55,6 +56,7 @@ class ConfigViewModelTest {
     private val updateTableFunctionActivity = mock<UpdateTableFunctionActivity>()
     private val updateTableFunctionStop = mock<UpdateTableFunctionStop>()
     private val updateTableItemMenu = mock<UpdateTableItemMenu>()
+    private val updateTableRItemMenuStop = mock<UpdateTableRItemMenuStop>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
     private val sizeAll = (QTD_TABLE * 3) + 1f
     private var contWhenever = 0f
@@ -71,6 +73,7 @@ class ConfigViewModelTest {
         updateTableItemCheckListByNroEquip = updateTableItemCheckListByNroEquip,
         updateTableRActivityStop = updateTableRActivityStop,
         updateTableREquipActivityByIdEquip = updateTableREquipActivityByIdEquip,
+        updateTableRItemMenuStop = updateTableRItemMenuStop,
         updateTableStop = updateTableStop,
         updateTableTurn = updateTableTurn,
         setFinishUpdateAllTable = setFinishUpdateAllTable,
@@ -209,7 +212,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `saveTokenAndUpdate - Check return failure if have error in SendDataConfig`() =
-        runTest { //
+        runTest {
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -271,7 +274,7 @@ class ConfigViewModelTest {
     
     @Test
     fun `saveTokenAndUpdate - Check return failure if have error in SaveDataConfig`() =
-        runTest { //
+        runTest {
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -448,7 +451,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableActivity`() =
-        runTest { //
+        runTest {
             val qtdBefore = 0f
             whenever(
                 updateTableActivity(
@@ -498,7 +501,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableColab`() =
-        runTest { //
+        runTest {
             val qtdBefore = 1f
             wheneverSuccessActivity()
             whenever(
@@ -550,7 +553,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableEquip`() =
-        runTest { //
+        runTest {
             val qtdBefore = 2f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -604,7 +607,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableFunctionActivity`() =
-        runTest { //
+        runTest {
             val qtdBefore = 3f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -660,7 +663,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableFunctionStop`() =
-        runTest { //
+        runTest {
             val qtdBefore = 4f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -718,7 +721,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
-        runTest { //
+        runTest {
             val qtdBefore = 5f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -778,7 +781,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableItemMenuPMM`() =
-        runTest { //
+        runTest {
             val qtdBefore = 6f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -840,7 +843,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
-        runTest { //
+        runTest {
             val qtdBefore = 7f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -904,7 +907,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
-        runTest { //
+        runTest {
             val qtdBefore = 8f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -969,8 +972,8 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableStop`() =
-        runTest { //
+    fun `update - Check return failure if have error in UpdateTableRItemMenuStop`() =
+        runTest {
             val qtdBefore = 9f
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -981,6 +984,75 @@ class ConfigViewModelTest {
             wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
+            whenever(
+                updateTableRItemMenuStop(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanRItemMenuStop -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateActivity(result)
+            checkResultUpdateColab(result)
+            checkResultUpdateEquip(result)
+            checkResultUpdateFunctionActivity(result)
+            checkResultUpdateFunctionStop(result)
+            checkResultUpdateItemCheckList(result)
+            checkResultUpdateItemMenuPMM(result)
+            checkResultUpdateRActivityStop(result)
+            checkResultUpdateREquipActivity(result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ConfigViewModel.updateAllDatabase -> CleanRItemMenuStop -> java.lang.NullPointerException",
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableStop`() =
+        runTest {
+            val qtdBefore = 10f
+            wheneverSuccessActivity()
+            wheneverSuccessColab()
+            wheneverSuccessEquip()
+            wheneverSuccessFunctionActivity()
+            wheneverSuccessFunctionStop()
+            wheneverSuccessItemCheckList()
+            wheneverSuccessItemMenuPMM()
+            wheneverSuccessRActivityStop()
+            wheneverSuccessREquipActivity()
+            wheneverSuccessRItemMenuStop()
             whenever(
                 updateTableStop(
                     sizeAll = sizeAll,
@@ -1016,6 +1088,7 @@ class ConfigViewModelTest {
             checkResultUpdateItemMenuPMM(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
+            checkResultUpdateRItemMenuStop(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -1038,8 +1111,8 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in UpdateTableTurn`() =
-        runTest { ///
-            val qtdBefore = 10f
+        runTest {
+            val qtdBefore = 11f
             wheneverSuccessActivity()
             wheneverSuccessColab()
             wheneverSuccessEquip()
@@ -1049,6 +1122,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
+            wheneverSuccessRItemMenuStop()
             wheneverSuccessStop()
             whenever(
                 updateTableTurn(
@@ -1085,6 +1159,7 @@ class ConfigViewModelTest {
             checkResultUpdateItemMenuPMM(result)
             checkResultUpdateRActivityStop(result)
             checkResultUpdateREquipActivity(result)
+            checkResultUpdateRItemMenuStop(result)
             checkResultUpdateStop(result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
@@ -1108,7 +1183,7 @@ class ConfigViewModelTest {
 
     @Test
     fun `update - Check return failure if have error in SetCheckUpdateAllTable`() =
-        runTest { //
+        runTest {
             whenever(
                 sendDataConfig(
                     number = "16997417840",
@@ -1148,6 +1223,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
+            wheneverSuccessRItemMenuStop()
             wheneverSuccessStop()
             wheneverSuccessTurn()
             whenever(
@@ -1180,6 +1256,7 @@ class ConfigViewModelTest {
             checkResultUpdateItemMenuPMMFull(result)
             checkResultUpdateRActivityStopFull(result)
             checkResultUpdateREquipActivityFull(result)
+            checkResultUpdateRItemMenuStopFull(result)
             checkResultUpdateStopFull(result)
             checkResultUpdateTurnFull(result)
             assertEquals(
@@ -1262,6 +1339,7 @@ class ConfigViewModelTest {
             wheneverSuccessItemMenuPMM()
             wheneverSuccessRActivityStop()
             wheneverSuccessREquipActivity()
+            wheneverSuccessRItemMenuStop()
             wheneverSuccessStop()
             wheneverSuccessTurn()
             whenever(
@@ -1290,6 +1368,7 @@ class ConfigViewModelTest {
             checkResultUpdateItemMenuPMMFull(result)
             checkResultUpdateRActivityStopFull(result)
             checkResultUpdateREquipActivityFull(result)
+            checkResultUpdateRItemMenuStopFull(result)
             checkResultUpdateStopFull(result)
             checkResultUpdateTurnFull(result)
             assertEquals(
@@ -2402,6 +2481,114 @@ class ConfigViewModelTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_r_equip_activity",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun wheneverSuccessRItemMenuStop() =
+        runTest {
+            whenever(
+                updateTableRItemMenuStop(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    ResultUpdateModel(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+    private fun checkResultUpdateRItemMenuStop(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+        }
+
+    private fun checkResultUpdateRItemMenuStopFull(result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_r_item_menu_stop",
+                    currentProgress = percentage(++contResult, sizeAll)
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = "pmm",
+                    version = "1.00",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_r_item_menu_stop",
                     currentProgress = percentage(++contResult, sizeAll)
                 )
             )

@@ -98,6 +98,12 @@ object StableRetrofitModule {
 
     @Provides
     @Singleton
+    fun rItemMenuStopApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): RItemMenuStopApi = retrofit.create(RItemMenuStopApi::class.java)
+
+    @Provides
+    @Singleton
     fun turnApiRetrofit(
         @DefaultRetrofit retrofit: Retrofit
     ): TurnApi = retrofit.create(TurnApi::class.java)

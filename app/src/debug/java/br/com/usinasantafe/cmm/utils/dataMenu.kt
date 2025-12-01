@@ -420,3 +420,182 @@ const val dataMenu = """
     }
 ]
 """
+
+const val dataMenuStop = """
+[
+    {
+        "id": 1,
+        "idFunction": 1,
+        "idApp": 2,
+        "idStop": 74
+    },
+    {
+        "id": 2,
+        "idFunction": 2,
+        "idApp": 2,
+        "idStop": 127
+    },
+    {
+        "id": 3,
+        "idFunction": 3,
+        "idApp": 2,
+        "idStop": 71
+    },
+    {
+        "id": 4,
+        "idFunction": 4,
+        "idApp": 2,
+        "idStop": 72
+    },
+    {
+        "id": 5,
+        "idFunction": 5,
+        "idApp": 2,
+        "idStop": 70
+    },
+    {
+        "id": 6,
+        "idFunction": 6,
+        "idApp": 2,
+        "idStop": 70
+    },
+    {
+        "id": 7,
+        "idFunction": 7,
+        "idApp": 2,
+        "idStop": 14
+    },
+    {
+        "id": 8,
+        "idFunction": 8,
+        "idApp": 2,
+        "idStop": 38
+    },
+    {
+        "id": 9,
+        "idFunction": 10,
+        "idApp": 2,
+        "idStop": 84
+    },
+    {
+        "id": 10,
+        "idFunction": 11,
+        "idApp": 2,
+        "idStop": 70
+    },
+    {
+        "id": 11,
+        "idFunction": 12,
+        "idApp": 2,
+        "idStop": 70
+    },
+    {
+        "id": 12,
+        "idFunction": 13,
+        "idApp": 2,
+        "idStop": 84
+    },
+    {
+        "id": 13,
+        "idFunction": 14,
+        "idApp": 2,
+        "idStop": 80
+    },
+    {
+        "id": 14,
+        "idFunction": 15,
+        "idApp": 2,
+        "idStop": 84
+    },
+    {
+        "id": 15,
+        "idFunction": 16,
+        "idApp": 2,
+        "idStop": 165
+    },
+    {
+        "id": 16,
+        "idFunction": 1,
+        "idApp": 3,
+        "idStop": 127
+    },
+    {
+        "id": 17,
+        "idFunction": 2,
+        "idApp": 3,
+        "idStop": 84
+    },
+    {
+        "id": 18,
+        "idFunction": 4,
+        "idApp": 3,
+        "idStop": 14
+    },
+    {
+        "id": 19,
+        "idFunction": 5,
+        "idApp": 3,
+        "idStop": 123
+    },
+    {
+        "id": 20,
+        "idFunction": 7,
+        "idApp": 3,
+        "idStop": 84
+    },
+    {
+        "id": 21,
+        "idFunction": 9,
+        "idApp": 3,
+        "idStop": 117
+    },
+    {
+        "id": 22,
+        "idFunction": 10,
+        "idApp": 3,
+        "idStop": 118
+    },
+    {
+        "id": 23,
+        "idFunction": 1,
+        "idApp": 4,
+        "idStop": 127
+    },
+    {
+        "id": 24,
+        "idFunction": 2,
+        "idApp": 4,
+        "idStop": 84
+    },
+    {
+        "id": 25,
+        "idFunction": 4,
+        "idApp": 4,
+        "idStop": 14
+    },
+    {
+        "id": 26,
+        "idFunction": 5,
+        "idApp": 4,
+        "idStop": 123
+    },
+    {
+        "id": 27,
+        "idFunction": 7,
+        "idApp": 4,
+        "idStop": 84
+    },
+    {
+        "id": 28,
+        "idFunction": 9,
+        "idApp": 4,
+        "idStop": 117
+    },
+    {
+        "id": 29,
+        "idFunction": 10,
+        "idApp": 4,
+        "idStop": 118
+    }
+]
+"""

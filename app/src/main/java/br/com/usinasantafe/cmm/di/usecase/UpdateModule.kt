@@ -41,6 +41,10 @@ interface UpdateModule {
 
     @Binds
     @Singleton
+    fun bindUpdateTableRItemMenuStop(usecase: IUpdateTableRItemMenuStop): UpdateTableRItemMenuStop
+
+    @Binds
+    @Singleton
     fun bindUpdateTableFunctionActivity(usecase: IUpdateTableFunctionActivity): UpdateTableFunctionActivity
 
     @Binds

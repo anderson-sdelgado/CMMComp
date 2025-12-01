@@ -6,7 +6,7 @@ data class NoteMechanic(
     val id: Int? = null,
     val idHeader: Int? = null,
     val os: Int? = null,
-    val seq: Int? = null,
+    val item: Int? = null,
     val dateHourInitial: Date = Date(),
     val dateHourFinish: Date? = null
 )

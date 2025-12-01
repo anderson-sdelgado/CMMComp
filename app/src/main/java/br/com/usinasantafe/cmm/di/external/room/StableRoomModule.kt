@@ -68,6 +68,11 @@ object StableRoomModule {
 
     @Provides
     @Singleton
+    fun provideRItemMenuStopDao(database: DatabaseRoom): RItemMenuStopDao {
+        return database.rItemMenuStopDao()
+    }
+    @Provides
+    @Singleton
     fun provideTurnDao(database: DatabaseRoom): TurnDao {
         return database.turnDao()
     }

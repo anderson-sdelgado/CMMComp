@@ -54,6 +54,10 @@ interface StableRepositoryModule {
 
     @Binds
     @Singleton
+    fun bindRItemMenuStopRepository(repository: IRItemMenuStopRepository): RItemMenuStopRepository
+
+    @Binds
+    @Singleton
     fun bindROSActivityRepository(repository: IROSActivityRepository): ROSActivityRepository
 
     @Binds

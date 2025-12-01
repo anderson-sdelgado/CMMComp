@@ -1,20 +1,30 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
 import br.com.usinasantafe.cmm.di.external.ApiModuleTest.provideRetrofitTest
-import br.com.usinasantafe.cmm.external.retrofit.api.stable.ColabApi
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ColabRetrofitModel
+import br.com.usinasantafe.cmm.external.retrofit.api.stable.RItemMenuStopApi
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RItemMenuStopRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class IColabRetrofitDatasourceTest {
+class IRItemMenuStopRetrofitDatasourceTest {
 
-    private val resultColabRetrofit = """
+    private val result = """
         [
-          {"regColab":12345,"nameColab":"João da Silva"},
-          {"regColab":67890,"nameColab":"Maria Oliveira"}
+            {
+                "id": 1,
+                "idFunction": 1,
+                "idApp": 1,
+                "idStop": 1
+            },
+            {
+                "id": 2,
+                "idFunction": 2,
+                "idApp": 2,
+                "idStop": 2
+            }
         ]
     """.trimIndent()
 
@@ -29,20 +39,20 @@ class IColabRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ColabApi::class.java)
-            val datasource = IColabRetrofitDatasource(service)
+            val service = retrofit.create(RItemMenuStopApi::class.java)
+            val datasource = IRItemMenuStopRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IColabRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IRItemMenuStopRetrofitDatasource.listAll"
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
             server.shutdown()
         }
@@ -58,21 +68,20 @@ class IColabRetrofitDatasourceTest {
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ColabApi::class.java)
-            val datasource = IColabRetrofitDatasource(service)
+            val service = retrofit.create(RItemMenuStopApi::class.java)
+            val datasource = IRItemMenuStopRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isFailure
             )
             assertEquals(
-                "IColabRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IRItemMenuStopRetrofitDatasource.listAll",
             )
             assertEquals(
-                NullPointerException().toString(),
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException",
             )
             server.shutdown()
         }
@@ -83,15 +92,14 @@ class IColabRetrofitDatasourceTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultColabRetrofit)
+                MockResponse().setBody(result)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
             )
-            val service = retrofit.create(ColabApi::class.java)
-            val datasource = IColabRetrofitDatasource(service)
+            val service = retrofit.create(RItemMenuStopApi::class.java)
+            val datasource = IRItemMenuStopRetrofitDatasource(service)
             val result = datasource.listAll("TOKEN")
-
             assertEquals(
                 true,
                 result.isSuccess
@@ -99,13 +107,17 @@ class IColabRetrofitDatasourceTest {
             assertEquals(
                 Result.success(
                     listOf(
-                        ColabRetrofitModel(
-                            regColab = 12345L,
-                            nameColab = "João da Silva"
+                        RItemMenuStopRetrofitModel(
+                            id = 1,
+                            idFunction = 1,
+                            idApp = 1,
+                            idStop = 1
                         ),
-                        ColabRetrofitModel(
-                            regColab = 67890L,
-                            nameColab = "Maria Oliveira"
+                        RItemMenuStopRetrofitModel(
+                            id = 2,
+                            idFunction = 2,
+                            idApp = 2,
+                            idStop = 2
                         )
                     )
                 ),
@@ -114,5 +126,3 @@ class IColabRetrofitDatasourceTest {
             server.shutdown()
         }
 }
-
-

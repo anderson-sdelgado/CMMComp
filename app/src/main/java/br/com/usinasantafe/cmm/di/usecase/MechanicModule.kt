@@ -17,6 +17,6 @@ interface MechanicModule {
 
     @Binds
     @Singleton
-    fun bindFinishNoteMechanical(usecase: IFinishNoteMechanical): FinishNoteMechanical
+    fun bindFinishNoteMechanical(usecase: IFinishNoteMechanic): FinishNoteMechanic
 
 }

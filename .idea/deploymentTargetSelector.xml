@@ -13,18 +13,6 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_WITHOUT_NOTE_if_not_have_note_moto_mec_in_header()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_TIME_INVALID_if_idEquipTrans_is_not_null_and_date_hour_is_minor_than_date_hour_initial()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_Ok_if_idEquipTrans_is_null()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_OK_if_idEquipTrans_is_not_null_and_date_hour_is_greater_than_date_hour_initial()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
     </selectionStates>
   </component>
 </project>

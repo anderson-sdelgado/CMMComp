@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
+import br.com.usinasantafe.cmm.utils.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -16,6 +17,7 @@ import org.robolectric.annotation.Config
 import java.util.Date
 import kotlin.intArrayOf
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
@@ -61,7 +63,7 @@ class INoteMechanicRoomDatasourceTest {
                 NoteMechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
-                    seq = 1,
+                    item = 1,
                     dateHourFinish = null
                 )
             )
@@ -69,7 +71,7 @@ class INoteMechanicRoomDatasourceTest {
                 NoteMechanicRoomModel(
                     idHeader = 2,
                     os = 123456,
-                    seq = 1,
+                    item = 1,
                     dateHourFinish = null
                 )
             )
@@ -77,7 +79,7 @@ class INoteMechanicRoomDatasourceTest {
                 NoteMechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
-                    seq = 1,
+                    item = 1,
                     dateHourFinish = Date()
                 )
             )
@@ -94,6 +96,71 @@ class INoteMechanicRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `setFinishNote - Check return failure if not have data in table room`() =
+        runTest {
+            val result = datasource.setFinishNote()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "INoteMechanicRoomDatasource.setFinishNote"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel.setDateHourFinish(java.util.Date)\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `setFinishNote - Check alter date`() =
+        runTest {
+            noteMechanicDao.insert(
+                NoteMechanicRoomModel(
+                    idHeader = 1,
+                    os = 123456,
+                    item = 1,
+                    dateHourFinish = null
+                )
+            )
+            val result = datasource.setFinishNote()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+            val list = noteMechanicDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.os,
+                123456
+            )
+            assertEquals(
+                model.item,
+                1
+            )
+            assertNotNull(
+                model.dateHourFinish
+            )
+            assertEquals(
+                model.status,
+                Status.FINISH
             )
         }
 }

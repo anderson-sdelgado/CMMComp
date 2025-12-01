@@ -277,6 +277,8 @@ fun MenuNoteContent(
                     Errors.WITHOUT_LOADING_COMPOSTING -> stringResource(id = R.string.text_msg_without_loading_composing)
                     Errors.NEED_UNCOUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_uncoupling_trailer)
                     Errors.NEED_COUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_coupling_trailer)
+                    Errors.WITHOUT_NOTE,
+                    Errors.LAST_NOTE_WORK -> stringResource(id = R.string.text_msg_without_note_stop)
                     else -> stringResource(
                         id = R.string.text_failure,
                         failure

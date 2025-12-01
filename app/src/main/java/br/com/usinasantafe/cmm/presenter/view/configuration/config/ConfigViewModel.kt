@@ -16,6 +16,7 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListBy
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.Errors
@@ -88,6 +89,7 @@ class ConfigViewModel @Inject constructor(
     private val updateTableItemMenu: UpdateTableItemMenu,
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
+    private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable
@@ -245,8 +247,9 @@ class ConfigViewModel @Inject constructor(
             updateTableItemMenu(size, 7f),
             updateTableRActivityStop(size, 8f),
             updateTableREquipActivityByIdEquip(size, 9f),
-            updateTableStop(size, 10f),
-            updateTableTurn(size, 11f)
+            updateTableRItemMenuStop(size, 10f),
+            updateTableStop(size, 11f),
+            updateTableTurn(size, 12f)
         )
 
         for (step in steps) {
