@@ -64,4 +64,21 @@ class IRItemMenuStopRepository @Inject constructor(
         }
     }
 
+    override suspend fun getIdStopByIdFunctionAndIdApp(
+        idFunction: Int,
+        idApp: Int
+    ): Result<Int?> {
+        val result = rItemMenuStopRoomDatasource.getIdStopByIdFunctionAndIdApp(
+            idFunction = idFunction,
+            idApp = idApp
+        )
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
+    }
+
 }

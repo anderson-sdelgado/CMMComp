@@ -19,4 +19,10 @@ interface RItemMenuStopDao {
     @Query("SELECT * FROM $TB_R_ITEM_MENU_STOP")
     suspend fun all(): List<RItemMenuStopRoomModel>
 
+    @Query("SELECT idStop FROM $TB_R_ITEM_MENU_STOP WHERE idFunction = :idFunction AND idApp = :idApp")
+    suspend fun getIdStopByIdFunctionAndIdApp(
+        idFunction: Int,
+        idApp: Int
+    ): Int?
+
 }

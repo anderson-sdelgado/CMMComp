@@ -18,6 +18,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.RItemMenuStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -33,6 +34,7 @@ import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
+import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ITEM_MENU_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
@@ -97,6 +99,9 @@ class ConfigScreenTest {
 
     @Inject
     lateinit var itemMenuDao: ItemMenuDao
+
+    @Inject
+    lateinit var rItemMenuStopDao: RItemMenuStopDao
 
     private val resultTokenFailure = """{"idServ":1a,"idEquip":1}""".trimIndent()
 
@@ -316,6 +321,27 @@ class ConfigScreenTest {
         [
           {"idTurn":1,"codTurnEquip":1,"nroTurn":1,"descrTurn":"Turno 1"},
           {"idTurn":2,"codTurnEquip":2,"nroTurn":2,"descrTurn":"Turno 2"}
+        ]
+    """.trimIndent()
+
+    private val resultRItemMenuStopFailure = """
+        [
+            {"id": "1a","idFunction": 1,"idApp": 1,"idStop": 1},
+            {"id": 2,"idFunction": 2,"idApp": 2,"idStop": 2}
+        ]
+    """.trimIndent()
+
+    private val resultRItemMenuStopRepeated = """
+        [
+            {"id": 1,"idFunction": 1,"idApp": 1,"idStop": 1},
+            {"id": 1,"idFunction": 1,"idApp": 1,"idStop": 1}
+        ]
+    """.trimIndent()
+
+    private val resultRItemMenuStop = """
+        [
+            {"id": 1,"idFunction": 1,"idApp": 1,"idStop": 1},
+            {"id": 2,"idFunction": 2,"idApp": 2,"idStop": 2}
         ]
     """.trimIndent()
 
@@ -886,6 +912,72 @@ class ConfigScreenTest {
         }
     }
 
+    private val dispatcherRItemMenuStopFailure: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
+                "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStopFailure)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherRItemMenuStopRepeated: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
+                "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStopRepeated)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
+    private val dispatcherRItemMenuStop: Dispatcher = object : Dispatcher() {
+        @Throws(InterruptedException::class)
+        override fun dispatch(request: RecordedRequest): MockResponse {
+            return when (request.path) {
+                "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
+                "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
+                "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
+                "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
+                "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
+                "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)
+                "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
+                "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
+                "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
+                "/$WEB_ALL_STOP" -> MockResponse().setBody("")
+                "/$WEB_ALL_TURN" -> MockResponse().setBody("")
+                else -> MockResponse().setResponseCode(404)
+            }
+        }
+    }
+
     private val dispatcherStopFailure: Dispatcher = object : Dispatcher() {
         @Throws(InterruptedException::class)
         override fun dispatch(request: RecordedRequest): MockResponse {
@@ -900,6 +992,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopFailure)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody("")
                 else -> MockResponse().setResponseCode(404)
@@ -921,6 +1014,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStopRepeated)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody("")
                 else -> MockResponse().setResponseCode(404)
@@ -942,6 +1036,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody("")
                 else -> MockResponse().setResponseCode(404)
@@ -963,6 +1058,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnFailure)
                 else -> MockResponse().setResponseCode(404)
@@ -984,6 +1080,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurnRepeated)
                 else -> MockResponse().setResponseCode(404)
@@ -1005,6 +1102,7 @@ class ConfigScreenTest {
                 "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenu)
                 "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                 "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                 "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                 "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                 else -> MockResponse().setResponseCode(404)
@@ -2020,11 +2118,114 @@ class ConfigScreenTest {
             composeTestRule.waitUntilTimeout()
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableStop -> IStopRepository.listAll -> IStopRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.listAll -> IRItemMenuStopRetrofitDatasource.listAll -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout()
 
             asserts(9)
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_item_menu_stop_incorrect() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherRItemMenuStopFailure
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.listAll -> IRItemMenuStopRetrofitDatasource.listAll -> com.google.gson.JsonSyntaxException: java.lang.NumberFormatException: For input string: \"1a\"")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_item_menu_stop_repeated() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherRItemMenuStopRepeated
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableRItemMenuStop -> IRItemMenuStopRepository.addAll -> IRItemMenuStopRoomDatasource.addAll -> android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: tb_r_item_menu_stop.id (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY[1555])")
+
+            composeTestRule.waitUntilTimeout()
+        }
+
+    @Test
+    fun check_open_screen_and_msg_if_web_service_return_data_r_item_menu_stop_correct() =
+        runTest(
+            timeout = 1.minutes
+        ) {
+
+            val mockWebServer = MockWebServer()
+            mockWebServer.dispatcher = dispatcherRItemMenuStop
+            mockWebServer.start()
+
+            BaseUrlModuleTest.url = mockWebServer.url("/").toString()
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.onNodeWithTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("16997417840")
+            composeTestRule.onNodeWithTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("2200")
+            composeTestRule.onNodeWithTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+                .performTextInput("12345")
+            composeTestRule.onNodeWithText("SALVAR")
+                .performClick()
+
+            composeTestRule.waitUntilTimeout()
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA DE ATUALIZAÇÃO DE DADOS! POR FAVOR ENTRE EM CONTATO COM TI. ConfigViewModel.updateAllDatabase -> IUpdateTableStop -> IStopRepository.listAll -> IStopRetrofitDatasource.listAll -> java.io.EOFException: End of input at line 1 column 1 path \$")
+
+            composeTestRule.waitUntilTimeout()
+
+            asserts(10)
 
             composeTestRule.waitUntilTimeout()
         }
@@ -2127,7 +2328,7 @@ class ConfigScreenTest {
 
             composeTestRule.waitUntilTimeout()
 
-            asserts(10)
+            asserts(11)
 
             composeTestRule.waitUntilTimeout()
         }
@@ -2230,7 +2431,7 @@ class ConfigScreenTest {
 
             composeTestRule.waitUntilTimeout()
 
-            asserts(11)
+            asserts(12)
 
             composeTestRule.waitUntilTimeout()
 
@@ -2616,6 +2817,48 @@ class ConfigScreenTest {
 
         if(level == 9) return
 
+        val rItemMenuStopRoomModelList = rItemMenuStopDao.all()
+        assertEquals(
+            rItemMenuStopRoomModelList.size,
+            2
+        )
+        val rItemMenuStopRoomModel1 = rItemMenuStopRoomModelList[0]
+        assertEquals(
+            rItemMenuStopRoomModel1.id,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idFunction,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idApp,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idStop,
+            1
+        )
+        val rItemMenuStopRoomModel2 = rItemMenuStopRoomModelList[1]
+        assertEquals(
+            rItemMenuStopRoomModel2.id,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idFunction,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idApp,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idStop,
+            2
+        )
+
+        if(level == 10) return
+
         val stopRoomModelList = stopDao.all()
         assertEquals(
             stopRoomModelList.size,
@@ -2648,7 +2891,7 @@ class ConfigScreenTest {
             "CHUVA"
         )
 
-        if(level == 10) return
+        if(level == 11) return
 
         val turnRoomModelList = turnDao.all()
         assertEquals(
@@ -2690,7 +2933,7 @@ class ConfigScreenTest {
             "Turno 2"
         )
 
-        if(level == 11) return
+        if(level == 12) return
 
     }
 

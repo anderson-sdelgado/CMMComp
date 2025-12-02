@@ -35,4 +35,22 @@ class IRItemMenuStopRoomDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getIdStopByIdFunctionAndIdApp(
+        idFunction: Int,
+        idApp: Int
+    ): Result<Int?> {
+        try {
+            val idStop = rItemMenuStopDao.getIdStopByIdFunctionAndIdApp(
+                idFunction = idFunction,
+                idApp = idApp
+            )
+            return Result.success(idStop)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
 }

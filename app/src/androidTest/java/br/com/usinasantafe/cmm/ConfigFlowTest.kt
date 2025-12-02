@@ -17,6 +17,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
+import br.com.usinasantafe.cmm.external.room.dao.stable.RItemMenuStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -34,6 +35,7 @@ import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.utils.WEB_ALL_FUNCTION_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_ITEM_MENU
 import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
+import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ITEM_MENU_STOP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_STOP
 import br.com.usinasantafe.cmm.utils.WEB_EQUIP_LIST_BY_ID_EQUIP
 import br.com.usinasantafe.cmm.utils.WEB_ALL_TURN
@@ -101,6 +103,9 @@ class ConfigFlowTest {
 
     @Inject
     lateinit var itemMenuDao: ItemMenuDao
+
+    @Inject
+    lateinit var rItemMenuStopDao: RItemMenuStopDao
 
     companion object {
 
@@ -185,6 +190,13 @@ class ConfigFlowTest {
             ]
         """.trimIndent()
 
+        private val resultRItemMenuStop = """
+            [
+                {"id": 1,"idFunction": 1,"idApp": 1,"idStop": 1},
+                {"id": 2,"idFunction": 2,"idApp": 2,"idStop": 2}
+            ]
+        """.trimIndent()
+
         @BeforeClass
         @JvmStatic
         fun setupClass() {
@@ -203,6 +215,7 @@ class ConfigFlowTest {
                         "/$WEB_ALL_ITEM_MENU"  -> MockResponse().setBody(resultItemMenuPMM)
                         "/$WEB_ALL_R_ACTIVITY_STOP" -> MockResponse().setBody(resultRActivityStop)
                         "/$WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultREquipActivity)
+                        "/$WEB_ALL_R_ITEM_MENU_STOP" -> MockResponse().setBody(resultRItemMenuStop)
                         "/$WEB_ALL_STOP" -> MockResponse().setBody(resultStop)
                         "/$WEB_ALL_TURN" -> MockResponse().setBody(resultTurn)
                         else -> MockResponse().setResponseCode(404)
@@ -723,6 +736,47 @@ class ConfigFlowTest {
         assertEquals(
             rEquipActivityRoomModel2.idActivity,
             10
+        )
+
+
+        val rItemMenuStopRoomModelList = rItemMenuStopDao.all()
+        assertEquals(
+            rItemMenuStopRoomModelList.size,
+            2
+        )
+        val rItemMenuStopRoomModel1 = rItemMenuStopRoomModelList[0]
+        assertEquals(
+            rItemMenuStopRoomModel1.id,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idFunction,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idApp,
+            1
+        )
+        assertEquals(
+            rItemMenuStopRoomModel1.idStop,
+            1
+        )
+        val rItemMenuStopRoomModel2 = rItemMenuStopRoomModelList[1]
+        assertEquals(
+            rItemMenuStopRoomModel2.id,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idFunction,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idApp,
+            2
+        )
+        assertEquals(
+            rItemMenuStopRoomModel2.idStop,
+            2
         )
 
         val stopRoomModelList = stopDao.all()

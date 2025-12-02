@@ -43,7 +43,7 @@ class AppError(
 ) : Exception(removeRepeatedCalls("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}"), cause)
 
 fun failure(classAndMethod: String, error: Throwable) : String {
-    return "$classAndMethod -> ${error.message} -> ${error.cause.toString()}"
+    return removeRepeatedCalls("$classAndMethod -> ${error.message} -> ${error.cause.toString()}")
 }
 
 fun removeRepeatedCalls(path: String): String {

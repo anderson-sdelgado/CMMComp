@@ -207,4 +207,62 @@ class IRItemMenuStopRepositoryTest {
             )
         }
 
+    @Test
+    fun `getIdStopByIdFunctionAndIdApp - Check return failure if have error in RItemMenuStopRoomDatasource getIdStopByIdFunctionAndIdApp`() =
+        runTest {
+            whenever(
+                rItemMenuStopRoomDatasource.getIdStopByIdFunctionAndIdApp(
+                    idFunction = 1,
+                    idApp = 1
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IRItemMenuStopRoomDatasource.getIdStopByIdFunctionAndIdApp",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdStopByIdFunctionAndIdApp(
+                idFunction = 1,
+                idApp = 1
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IRItemMenuStopRepository.getIdStopByIdFunctionAndIdApp -> IRItemMenuStopRoomDatasource.getIdStopByIdFunctionAndIdApp"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdStopByIdFunctionAndIdApp - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                rItemMenuStopRoomDatasource.getIdStopByIdFunctionAndIdApp(
+                    idFunction = 1,
+                    idApp = 1
+                )
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdStopByIdFunctionAndIdApp(
+                idFunction = 1,
+                idApp = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                1
+            )
+        }
+
 }

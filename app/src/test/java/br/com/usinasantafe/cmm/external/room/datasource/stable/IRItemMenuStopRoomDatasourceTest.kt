@@ -190,4 +190,48 @@ class IRItemMenuStopRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getIdStopByIdFunctionAndIdApp - Check return null if not have data`() =
+        runTest {
+            val result = datasource.getIdStopByIdFunctionAndIdApp(
+                idFunction = 1,
+                idApp = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
+    @Test
+    fun `getIdStopByIdFunctionAndIdApp - Check return correct if have data`() =
+        runTest {
+            rItemMenuStopDao.insertAll(
+                listOf(
+                    RItemMenuStopRoomModel(
+                        id = 1,
+                        idFunction = 1,
+                        idApp = 1,
+                        idStop = 2
+                    )
+                )
+            )
+            val result = datasource.getIdStopByIdFunctionAndIdApp(
+                idFunction = 1,
+                idApp = 1
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                2
+            )
+        }
+
 }
