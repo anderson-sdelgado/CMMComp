@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel>

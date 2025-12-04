@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
-import br.com.usinasantafe.cmm.utils.appList
-import br.com.usinasantafe.cmm.utils.functionListPMM
-import br.com.usinasantafe.cmm.utils.typeListPMM
+import br.com.usinasantafe.cmm.lib.appList
+import br.com.usinasantafe.cmm.lib.functionListPMM
+import br.com.usinasantafe.cmm.lib.typeListPMM
 
 data class ItemMenuRetrofitModel(
     val id: Int,

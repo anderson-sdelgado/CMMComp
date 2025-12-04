@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
-import br.com.usinasantafe.cmm.utils.Status
+import br.com.usinasantafe.cmm.lib.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before

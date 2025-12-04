@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
-import br.com.usinasantafe.cmm.utils.TB_NOTE_MECHANIC
+import br.com.usinasantafe.cmm.lib.TB_NOTE_MECHANIC
 
 @Dao
 interface NoteMechanicDao {

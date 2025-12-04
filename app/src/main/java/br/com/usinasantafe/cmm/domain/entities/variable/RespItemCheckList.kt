@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 
 data class RespItemCheckList(
     val id: Int? = null,

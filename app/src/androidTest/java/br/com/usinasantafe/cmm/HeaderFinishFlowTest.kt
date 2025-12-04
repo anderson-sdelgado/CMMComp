@@ -20,9 +20,9 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecShare
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
-import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

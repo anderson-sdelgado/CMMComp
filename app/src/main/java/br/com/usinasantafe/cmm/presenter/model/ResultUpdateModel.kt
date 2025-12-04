@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.model
 
-import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.LevelUpdate
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.LevelUpdate
 
 data class ResultUpdateModel(
     val flagDialog: Boolean = false,

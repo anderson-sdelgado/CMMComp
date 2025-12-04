@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class EquipRetrofitModel(
     val id: Int,

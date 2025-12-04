@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.work.WorkManager
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.utils.BASE_DB
-import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES
+import br.com.usinasantafe.cmm.lib.BASE_DB
+import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

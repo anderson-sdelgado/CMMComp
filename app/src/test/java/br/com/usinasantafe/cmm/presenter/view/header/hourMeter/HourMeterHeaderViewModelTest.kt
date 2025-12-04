@@ -8,9 +8,9 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
-import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FlowApp
-import br.com.usinasantafe.cmm.utils.TypeButton
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.TypeButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

@@ -37,7 +37,7 @@ import br.com.usinasantafe.cmm.presenter.view.header.turnList.TurnListHeaderScre
 import br.com.usinasantafe.cmm.presenter.view.note.menu.MenuNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.note.stopList.StopListNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
-import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.lib.FlowApp
 
 @Composable
 fun NavigationGraph(

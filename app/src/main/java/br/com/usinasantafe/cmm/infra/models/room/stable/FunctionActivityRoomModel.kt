@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
-import br.com.usinasantafe.cmm.utils.TB_FUNCTION_ACTIVITY
-import br.com.usinasantafe.cmm.utils.TypeActivity
+import br.com.usinasantafe.cmm.lib.TB_FUNCTION_ACTIVITY
+import br.com.usinasantafe.cmm.lib.TypeActivity
 
 @Entity(tableName = TB_FUNCTION_ACTIVITY)
 data class FunctionActivityRoomModel(

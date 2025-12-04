@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.lib.StatusSend
 import java.util.Date
 
 data class ConfigSharedPreferencesModel(

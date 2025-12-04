@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test

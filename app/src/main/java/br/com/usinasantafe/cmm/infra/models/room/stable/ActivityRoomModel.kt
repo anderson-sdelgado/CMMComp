@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.utils.TB_ACTIVITY
+import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 
 @Entity(tableName = TB_ACTIVITY)
 data class ActivityRoomModel (

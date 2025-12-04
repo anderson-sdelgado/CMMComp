@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListHistory
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.WORK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

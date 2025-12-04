@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class HeaderMotoMecSharedPreferencesModel(
     var regOperator: Int? = null,

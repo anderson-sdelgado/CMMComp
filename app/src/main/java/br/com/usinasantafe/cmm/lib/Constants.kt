@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.utils
+package br.com.usinasantafe.cmm.lib
 
 const val BASE_SHARE_PREFERENCES = "cmm"
 const val BASE_DB = "cmm.db"
@@ -103,7 +103,7 @@ const val FERTIGATION = "FERTIRRIGACAO"
 const val CERTIFICATE = "CERTIFICADO"
 const val EXIT_MILL = "SAIDA_USINA"
 const val EXIT_FIELD = "SAIDA_CAMPO"
-const val ARRIVAL_FIELD = "CHEGADA_CAMPO"
+const val FIELD_ARRIVAL = "CHEGADA_CAMPO"
 const val RETURN_MILL = "RETORNO_USINA"
 const val WEIGHING = "PESAGEM"
 const val UNCOUPLING_TRAILER = "DESENGATE_CARRETA"

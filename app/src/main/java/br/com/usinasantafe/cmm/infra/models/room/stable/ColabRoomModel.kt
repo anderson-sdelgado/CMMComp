@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Colab // Supondo que a entidade de domínio Colab exista neste pacote
-import br.com.usinasantafe.cmm.utils.TB_COLAB // Supondo que a constante para o nome da tabela exista
+import br.com.usinasantafe.cmm.lib.TB_COLAB // Supondo que a constante para o nome da tabela exista
 
 @Entity(tableName = TB_COLAB)
 data class ColabRoomModel (

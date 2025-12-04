@@ -8,7 +8,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.*
 import br.com.usinasantafe.cmm.external.room.dao.variable.*
 import br.com.usinasantafe.cmm.infra.models.room.stable.*
 import br.com.usinasantafe.cmm.infra.models.room.variable.*
-import br.com.usinasantafe.cmm.utils.VERSION_DB
+import br.com.usinasantafe.cmm.lib.VERSION_DB
 import java.util.Date
 
 @Database(

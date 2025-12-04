@@ -5,9 +5,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.TB_HEADER_MOTO_MEC
+import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TB_HEADER_MOTO_MEC
 
 @Dao
 interface HeaderMotoMecDao {

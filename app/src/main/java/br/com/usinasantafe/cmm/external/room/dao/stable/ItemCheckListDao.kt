@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.TB_ITEM_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.TB_ITEM_CHECK_LIST
 
 @Dao
 interface ItemCheckListDao {

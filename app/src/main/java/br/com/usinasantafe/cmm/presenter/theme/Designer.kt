@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.utils.STOP
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.STOP
+import br.com.usinasantafe.cmm.lib.WORK
 
 @Composable
 fun ItemListDesign(

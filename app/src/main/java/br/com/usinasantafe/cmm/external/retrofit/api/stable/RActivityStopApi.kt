@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.retrofit.api.stable
 
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RActivityStopRetrofitModel
-import br.com.usinasantafe.cmm.utils.WEB_ALL_R_ACTIVITY_STOP
+import br.com.usinasantafe.cmm.lib.WEB_ALL_R_ACTIVITY_STOP
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

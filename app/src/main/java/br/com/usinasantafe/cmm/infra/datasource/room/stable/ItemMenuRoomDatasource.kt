@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.stable
 
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
-import br.com.usinasantafe.cmm.utils.PMM
+import br.com.usinasantafe.cmm.lib.PMM
 
 interface ItemMenuRoomDatasource {
     suspend fun addAll(list: List<ItemMenuRoomModel>): Result<Boolean>

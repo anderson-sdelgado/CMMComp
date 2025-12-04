@@ -6,9 +6,9 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemMenuRetrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
-import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
-import br.com.usinasantafe.cmm.utils.PMM
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
+import br.com.usinasantafe.cmm.lib.PMM
+import br.com.usinasantafe.cmm.lib.WORK
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionStop
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.lib.TypeStop
 
 interface FunctionStopRepository {
     suspend fun addAll(list: List<FunctionStop>): Result<Boolean>

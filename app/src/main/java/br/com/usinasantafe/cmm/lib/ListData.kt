@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.utils
+package br.com.usinasantafe.cmm.lib
 
 val appList = listOf(
     1 to PMM,
@@ -36,7 +36,7 @@ val functionListECM = listOf(
     1 to EXIT_FIELD,
     2 to RETURN_WORK,
     3 to EXIT_MILL,
-    4 to ARRIVAL_FIELD,
+    4 to FIELD_ARRIVAL,
     5 to UNCOUPLING_FIELD,
     6 to COUPLING_FIELD,
     7 to WAITING_LOADING,
@@ -55,7 +55,7 @@ val functionListECM = listOf(
 val typeListECM = listOf(
     1 to ITEM_NORMAL,
     2 to EXIT_MILL,
-    3 to ARRIVAL_FIELD,
+    3 to FIELD_ARRIVAL,
     4 to CERTIFICATE,
     5 to RETURN_MILL,
     6 to WEIGHING,

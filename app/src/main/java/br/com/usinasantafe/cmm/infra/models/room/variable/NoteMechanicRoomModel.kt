@@ -3,9 +3,9 @@ package br.com.usinasantafe.cmm.infra.models.room.variable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.NoteMechanic
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.TB_NOTE_MECHANIC
+import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TB_NOTE_MECHANIC
 import java.util.Date
 
 @Entity(tableName = TB_NOTE_MECHANIC)

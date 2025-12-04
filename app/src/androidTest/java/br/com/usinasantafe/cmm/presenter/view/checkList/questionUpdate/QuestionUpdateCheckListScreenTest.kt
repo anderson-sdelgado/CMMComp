@@ -10,9 +10,9 @@ import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP
-import br.com.usinasantafe.cmm.utils.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
+import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.lib.WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP
+import br.com.usinasantafe.cmm.lib.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

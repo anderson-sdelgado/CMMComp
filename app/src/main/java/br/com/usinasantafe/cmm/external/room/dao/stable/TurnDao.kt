@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
-import br.com.usinasantafe.cmm.utils.TB_TURN
+import br.com.usinasantafe.cmm.lib.TB_TURN
 
 @Dao
 interface TurnDao {

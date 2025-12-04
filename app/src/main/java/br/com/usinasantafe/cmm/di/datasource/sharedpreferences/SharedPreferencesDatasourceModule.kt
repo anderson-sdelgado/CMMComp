@@ -32,4 +32,10 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindRespItemCheckListSharedPreferencesDatasource(dataSource: IRespItemCheckListSharedPreferencesDatasource): RespItemCheckListSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun binPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
+
+
+
 }

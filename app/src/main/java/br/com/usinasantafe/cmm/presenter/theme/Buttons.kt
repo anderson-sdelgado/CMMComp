@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.utils.TypeButton
+import br.com.usinasantafe.cmm.lib.TypeButton
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale

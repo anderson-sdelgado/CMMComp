@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.utils.FlowEquipNote
+import br.com.usinasantafe.cmm.lib.FlowEquipNote
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

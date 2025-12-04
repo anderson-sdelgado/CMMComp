@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRepository {
     suspend fun addAll(list: List<Equip>): Result<Boolean>

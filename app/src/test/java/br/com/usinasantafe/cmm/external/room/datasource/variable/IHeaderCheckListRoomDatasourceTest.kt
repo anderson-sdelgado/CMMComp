@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.lib.StatusSend
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before

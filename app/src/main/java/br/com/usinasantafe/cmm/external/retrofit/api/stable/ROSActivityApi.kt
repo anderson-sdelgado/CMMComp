@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.external.retrofit.api.stable
 
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
-import br.com.usinasantafe.cmm.utils.WEB_ALL_R_OS_ATIV
-import br.com.usinasantafe.cmm.utils.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
+import br.com.usinasantafe.cmm.lib.WEB_ALL_R_OS_ATIV
+import br.com.usinasantafe.cmm.lib.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

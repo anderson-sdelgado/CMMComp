@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.RItemMenuStop
-import br.com.usinasantafe.cmm.utils.TB_R_ITEM_MENU_STOP
+import br.com.usinasantafe.cmm.lib.TB_R_ITEM_MENU_STOP
 
 @Entity(tableName = TB_R_ITEM_MENU_STOP)
 data class RItemMenuStopRoomModel(

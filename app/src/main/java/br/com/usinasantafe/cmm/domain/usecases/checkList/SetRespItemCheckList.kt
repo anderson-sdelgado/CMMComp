@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepositor
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

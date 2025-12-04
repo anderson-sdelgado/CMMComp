@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.composting
 
-import br.com.usinasantafe.cmm.utils.FlowComposting
+import br.com.usinasantafe.cmm.lib.FlowComposting
 import javax.inject.Inject
 
 interface GetFlowComposting {

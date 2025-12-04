@@ -29,7 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.lib.FlowApp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

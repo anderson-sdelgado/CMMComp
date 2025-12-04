@@ -32,8 +32,8 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemHistoryListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.utils.STOP
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.STOP
+import br.com.usinasantafe.cmm.lib.WORK
 
 @Composable
 fun HistoryListScreen(

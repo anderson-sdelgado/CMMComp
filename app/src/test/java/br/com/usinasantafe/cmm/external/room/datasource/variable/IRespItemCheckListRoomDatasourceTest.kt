@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before

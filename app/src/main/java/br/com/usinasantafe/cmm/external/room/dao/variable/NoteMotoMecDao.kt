@@ -6,8 +6,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
-import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.TB_NOTE_MOTO_MEC
+import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TB_NOTE_MOTO_MEC
 
 @Dao
 interface NoteMotoMecDao {

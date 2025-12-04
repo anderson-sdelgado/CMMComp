@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.utils.StatusTranshipment
+import br.com.usinasantafe.cmm.lib.StatusTranshipment
 import br.com.usinasantafe.cmm.utils.adjDate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject

@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
-import br.com.usinasantafe.cmm.utils.TB_OS
+import br.com.usinasantafe.cmm.lib.TB_OS
 
 @Dao
 interface OSDao {

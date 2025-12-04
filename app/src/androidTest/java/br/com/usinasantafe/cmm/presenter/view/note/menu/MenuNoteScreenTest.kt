@@ -25,9 +25,9 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.TypeActivity
-import br.com.usinasantafe.cmm.utils.TypeEquip
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.lib.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionStopRetr
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionStopRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.lib.TypeStop
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock

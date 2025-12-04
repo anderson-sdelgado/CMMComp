@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.stable
 
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRoomDatasource {
     suspend fun addAll(list: List<EquipRoomModel>): Result<Boolean>

@@ -16,7 +16,7 @@ import br.com.usinasantafe.cmm.presenter.Screens.QUESTION_UPDATE_CHECK_LIST_SCRE
 import br.com.usinasantafe.cmm.presenter.Screens.SPLASH_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.STOP_LIST_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TURN_LIST_HEADER_SCREEN
-import br.com.usinasantafe.cmm.utils.FlowApp
+import br.com.usinasantafe.cmm.lib.FlowApp
 
 object Screens {
     const val SPLASH_SCREEN = "splash"

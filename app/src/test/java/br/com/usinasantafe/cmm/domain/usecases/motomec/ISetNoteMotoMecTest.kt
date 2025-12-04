@@ -4,9 +4,8 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
-import br.com.usinasantafe.cmm.utils.ECM
-import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
-import br.com.usinasantafe.cmm.utils.typeListECM
+import br.com.usinasantafe.cmm.lib.ECM
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever

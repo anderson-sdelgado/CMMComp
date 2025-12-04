@@ -5,8 +5,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.TB_HEADER_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TB_HEADER_CHECK_LIST
 
 @Dao
 interface HeaderCheckListDao {

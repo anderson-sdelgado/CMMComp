@@ -9,8 +9,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.entityToRetrofitMo
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.retrofitToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
-import br.com.usinasantafe.cmm.utils.FlagUpdate
-import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.util.Date
 import javax.inject.Inject

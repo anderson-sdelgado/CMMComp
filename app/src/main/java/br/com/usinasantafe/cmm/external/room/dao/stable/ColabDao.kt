@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
-import br.com.usinasantafe.cmm.utils.TB_COLAB
+import br.com.usinasantafe.cmm.lib.TB_COLAB
 
 @Dao
 interface ColabDao {

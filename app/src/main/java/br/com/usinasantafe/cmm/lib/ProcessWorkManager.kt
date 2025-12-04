@@ -7,7 +7,6 @@ import androidx.work.WorkerParameters
 import br.com.usinasantafe.cmm.domain.usecases.config.SetStatusSend
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckSendMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SendMotoMec
-import br.com.usinasantafe.cmm.utils.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 
 import dagger.assisted.Assisted

@@ -28,7 +28,7 @@ import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
-import br.com.usinasantafe.cmm.utils.StatusSend
+import br.com.usinasantafe.cmm.lib.StatusSend
 
 @Composable
 fun InitialMenuScreen(

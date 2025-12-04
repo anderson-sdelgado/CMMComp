@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
-import br.com.usinasantafe.cmm.utils.TB_RESP_ITEM_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.TB_RESP_ITEM_CHECK_LIST
 
 @Dao
 interface RespItemCheckListDao {

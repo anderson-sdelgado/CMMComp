@@ -16,60 +16,60 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
-import br.com.usinasantafe.cmm.utils.ARRIVAL_FIELD
-import br.com.usinasantafe.cmm.utils.CERTIFICATE
-import br.com.usinasantafe.cmm.utils.CHECK_WILL
-import br.com.usinasantafe.cmm.utils.COUPLING_COURTYARD
-import br.com.usinasantafe.cmm.utils.COUPLING_FIELD
-import br.com.usinasantafe.cmm.utils.COUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.ECM
-import br.com.usinasantafe.cmm.utils.EXIT_LOADING
-import br.com.usinasantafe.cmm.utils.EXIT_MILL
-import br.com.usinasantafe.cmm.utils.EXIT_SCALE
-import br.com.usinasantafe.cmm.utils.EXIT_TO_DEPOSIT
-import br.com.usinasantafe.cmm.utils.EXIT_TO_FIELD
-import br.com.usinasantafe.cmm.utils.EXIT_UNLOADING
-import br.com.usinasantafe.cmm.utils.FERTIGATION
-import br.com.usinasantafe.cmm.utils.FINISH_DISCHARGE
-import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.HOSE_COLLECTION
-import br.com.usinasantafe.cmm.utils.IMPLEMENT
-import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
-import br.com.usinasantafe.cmm.utils.LOADING
-import br.com.usinasantafe.cmm.utils.LOADING_COMPOUND
-import br.com.usinasantafe.cmm.utils.LOADING_INPUT
-import br.com.usinasantafe.cmm.utils.MECHANICAL
-import br.com.usinasantafe.cmm.utils.NOTE_MECHANICAL
-import br.com.usinasantafe.cmm.utils.PCOMP_COMPOUND
-import br.com.usinasantafe.cmm.utils.PCOMP_INPUT
-import br.com.usinasantafe.cmm.utils.PERFORMANCE
-import br.com.usinasantafe.cmm.utils.PMM
-import br.com.usinasantafe.cmm.utils.REEL
-import br.com.usinasantafe.cmm.utils.RETURN_MILL
-import br.com.usinasantafe.cmm.utils.STOP
-import br.com.usinasantafe.cmm.utils.STOP_COURTYARD
-import br.com.usinasantafe.cmm.utils.TIRE
-import br.com.usinasantafe.cmm.utils.TIRE_CHANGE
-import br.com.usinasantafe.cmm.utils.TIRE_INFLATION
-import br.com.usinasantafe.cmm.utils.TRANSHIPMENT
-import br.com.usinasantafe.cmm.utils.TypeActivity
-import br.com.usinasantafe.cmm.utils.TypeEquip
-import br.com.usinasantafe.cmm.utils.TypeStop
-import br.com.usinasantafe.cmm.utils.UNCOUPLING_COURTYARD
-import br.com.usinasantafe.cmm.utils.UNCOUPLING_FIELD
-import br.com.usinasantafe.cmm.utils.UNCOUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.UNLOADING_COMPOUND
-import br.com.usinasantafe.cmm.utils.UNLOADING_HILO
-import br.com.usinasantafe.cmm.utils.UNLOADING_INPUT
-import br.com.usinasantafe.cmm.utils.WAITING_ALLOCATION
-import br.com.usinasantafe.cmm.utils.WAITING_LOADING
-import br.com.usinasantafe.cmm.utils.WAITING_UNLOADING
-import br.com.usinasantafe.cmm.utils.WEIGHING
-import br.com.usinasantafe.cmm.utils.WEIGHING_LOADED
-import br.com.usinasantafe.cmm.utils.WEIGHING_SCALE
-import br.com.usinasantafe.cmm.utils.WEIGHING_TARE
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
+import br.com.usinasantafe.cmm.lib.CERTIFICATE
+import br.com.usinasantafe.cmm.lib.CHECK_WILL
+import br.com.usinasantafe.cmm.lib.COUPLING_COURTYARD
+import br.com.usinasantafe.cmm.lib.COUPLING_FIELD
+import br.com.usinasantafe.cmm.lib.COUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.ECM
+import br.com.usinasantafe.cmm.lib.EXIT_LOADING
+import br.com.usinasantafe.cmm.lib.EXIT_MILL
+import br.com.usinasantafe.cmm.lib.EXIT_SCALE
+import br.com.usinasantafe.cmm.lib.EXIT_TO_DEPOSIT
+import br.com.usinasantafe.cmm.lib.EXIT_TO_FIELD
+import br.com.usinasantafe.cmm.lib.EXIT_UNLOADING
+import br.com.usinasantafe.cmm.lib.FERTIGATION
+import br.com.usinasantafe.cmm.lib.FINISH_DISCHARGE
+import br.com.usinasantafe.cmm.lib.FINISH_MECHANICAL
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.HOSE_COLLECTION
+import br.com.usinasantafe.cmm.lib.IMPLEMENT
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
+import br.com.usinasantafe.cmm.lib.LOADING
+import br.com.usinasantafe.cmm.lib.LOADING_COMPOUND
+import br.com.usinasantafe.cmm.lib.LOADING_INPUT
+import br.com.usinasantafe.cmm.lib.MECHANICAL
+import br.com.usinasantafe.cmm.lib.NOTE_MECHANICAL
+import br.com.usinasantafe.cmm.lib.PCOMP_COMPOUND
+import br.com.usinasantafe.cmm.lib.PCOMP_INPUT
+import br.com.usinasantafe.cmm.lib.PERFORMANCE
+import br.com.usinasantafe.cmm.lib.PMM
+import br.com.usinasantafe.cmm.lib.REEL
+import br.com.usinasantafe.cmm.lib.RETURN_MILL
+import br.com.usinasantafe.cmm.lib.STOP
+import br.com.usinasantafe.cmm.lib.STOP_COURTYARD
+import br.com.usinasantafe.cmm.lib.TIRE
+import br.com.usinasantafe.cmm.lib.TIRE_CHANGE
+import br.com.usinasantafe.cmm.lib.TIRE_INFLATION
+import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
+import br.com.usinasantafe.cmm.lib.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeStop
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_COURTYARD
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_FIELD
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.UNLOADING_COMPOUND
+import br.com.usinasantafe.cmm.lib.UNLOADING_HILO
+import br.com.usinasantafe.cmm.lib.UNLOADING_INPUT
+import br.com.usinasantafe.cmm.lib.WAITING_ALLOCATION
+import br.com.usinasantafe.cmm.lib.WAITING_LOADING
+import br.com.usinasantafe.cmm.lib.WAITING_UNLOADING
+import br.com.usinasantafe.cmm.lib.WEIGHING
+import br.com.usinasantafe.cmm.lib.WEIGHING_LOADED
+import br.com.usinasantafe.cmm.lib.WEIGHING_SCALE
+import br.com.usinasantafe.cmm.lib.WEIGHING_TARE
+import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.utils.dataMenu
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -476,8 +476,8 @@ class IListItemMenuTest {
                     ItemMenuModel(
                         id = 17,
                         descr = "CHEGADA AO CAMPO",
-                        4 to ARRIVAL_FIELD,
-                        3 to ARRIVAL_FIELD,
+                        4 to FIELD_ARRIVAL,
+                        3 to FIELD_ARRIVAL,
                         app = 2 to ECM
                     ),
                     ItemMenuModel(

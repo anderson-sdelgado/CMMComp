@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.utils.TB_EQUIP
+import br.com.usinasantafe.cmm.lib.TB_EQUIP
 
 @Dao
 interface EquipDao {

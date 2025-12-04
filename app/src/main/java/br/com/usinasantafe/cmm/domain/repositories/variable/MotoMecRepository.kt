@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface MotoMecRepository {
     suspend fun setRegOperatorHeader(regOperator: Int): Result<Boolean>

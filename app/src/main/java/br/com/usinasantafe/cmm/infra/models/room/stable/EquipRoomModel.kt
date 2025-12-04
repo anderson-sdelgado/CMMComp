@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.Equip // Import da entidade de domínio Equip
-import br.com.usinasantafe.cmm.utils.TB_EQUIP // Import da constante do nome da tabela
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TB_EQUIP // Import da constante do nome da tabela
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 @Entity(tableName = TB_EQUIP)
 data class EquipRoomModel (

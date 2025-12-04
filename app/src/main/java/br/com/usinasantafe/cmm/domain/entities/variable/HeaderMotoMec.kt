@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class HeaderMotoMec(
     var id: Int? = null,

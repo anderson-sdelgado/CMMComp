@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
-import br.com.usinasantafe.cmm.utils.TB_R_OS_ACTIVITY
+import br.com.usinasantafe.cmm.lib.TB_R_OS_ACTIVITY
 
 @Dao
 interface ROSActivityDao {

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.room.datasource.variable
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMechanicRoomDatasource
-import br.com.usinasantafe.cmm.utils.Status
+import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.util.Date
 import javax.inject.Inject

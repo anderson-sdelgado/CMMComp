@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.cec.SetDataPreCEC
+import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
@@ -18,33 +18,33 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
-import br.com.usinasantafe.cmm.utils.ARRIVAL_FIELD
-import br.com.usinasantafe.cmm.utils.CHECK_WILL
-import br.com.usinasantafe.cmm.utils.COUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.ECM
-import br.com.usinasantafe.cmm.utils.EXIT_MILL
-import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.FlowEquipNote
-import br.com.usinasantafe.cmm.utils.IMPLEMENT
-import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
-import br.com.usinasantafe.cmm.utils.NOTE_MECHANICAL
-import br.com.usinasantafe.cmm.utils.PCOMP
-import br.com.usinasantafe.cmm.utils.PMM
-import br.com.usinasantafe.cmm.utils.REEL
-import br.com.usinasantafe.cmm.utils.RETURN_MILL
-import br.com.usinasantafe.cmm.utils.STOP
-import br.com.usinasantafe.cmm.utils.StatusPreCEC
-import br.com.usinasantafe.cmm.utils.StatusTranshipment
-import br.com.usinasantafe.cmm.utils.TRANSHIPMENT
-import br.com.usinasantafe.cmm.utils.TypeMsg
-import br.com.usinasantafe.cmm.utils.TypeNote
-import br.com.usinasantafe.cmm.utils.UNCOUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.UNLOADING_INPUT
-import br.com.usinasantafe.cmm.utils.WEIGHING
-import br.com.usinasantafe.cmm.utils.WEIGHING_TARE
-import br.com.usinasantafe.cmm.utils.WORK
+import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
+import br.com.usinasantafe.cmm.lib.CHECK_WILL
+import br.com.usinasantafe.cmm.lib.COUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.ECM
+import br.com.usinasantafe.cmm.lib.EXIT_MILL
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FINISH_MECHANICAL
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.FlowEquipNote
+import br.com.usinasantafe.cmm.lib.IMPLEMENT
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
+import br.com.usinasantafe.cmm.lib.NOTE_MECHANICAL
+import br.com.usinasantafe.cmm.lib.PCOMP
+import br.com.usinasantafe.cmm.lib.PMM
+import br.com.usinasantafe.cmm.lib.REEL
+import br.com.usinasantafe.cmm.lib.RETURN_MILL
+import br.com.usinasantafe.cmm.lib.STOP
+import br.com.usinasantafe.cmm.lib.StatusPreCEC
+import br.com.usinasantafe.cmm.lib.StatusTranshipment
+import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
+import br.com.usinasantafe.cmm.lib.TypeMsg
+import br.com.usinasantafe.cmm.lib.TypeNote
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.UNLOADING_INPUT
+import br.com.usinasantafe.cmm.lib.WEIGHING
+import br.com.usinasantafe.cmm.lib.WEIGHING_TARE
+import br.com.usinasantafe.cmm.lib.WORK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
@@ -69,7 +69,7 @@ class MenuNoteViewModelTest {
     private val checkTypeLastNote = mock<CheckTypeLastNote>()
     private val finishNoteMechanic = mock<FinishNoteMechanic>()
     private val setNoteMotoMec = mock<SetNoteMotoMec>()
-    private val setDataPreCEC = mock<SetDataPreCEC>()
+    private val setDatePreCEC = mock<SetDatePreCEC>()
     private val checkCouplingTrailer = mock<CheckCouplingTrailer>()
     private val getFlowComposting = mock<GetFlowComposting>()
     private val checkInitialLoading = mock<CheckInitialLoading>()
@@ -86,7 +86,7 @@ class MenuNoteViewModelTest {
         checkTypeLastNote = checkTypeLastNote,
         finishNoteMechanic = finishNoteMechanic,
         setNoteMotoMec = setNoteMotoMec,
-        setDataPreCEC = setDataPreCEC,
+        setDatePreCEC = setDatePreCEC,
         checkCouplingTrailer = checkCouplingTrailer,
         getFlowComposting = getFlowComposting,
         checkInitialLoading = checkInitialLoading,
@@ -1355,7 +1355,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(2 to EXIT_MILL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1396,7 +1396,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(2 to EXIT_MILL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1406,7 +1406,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.ARRIVAL_FIELD)
+                Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -1433,7 +1433,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(2 to EXIT_MILL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1456,13 +1456,13 @@ class MenuNoteViewModelTest {
     @Test
     fun `setSelection - ECM - Check return failure if have error in GetStatusPreCEC and type is ARRIVAL_FIELD`() =
         runTest {
-            wheneverBasicECM(3 to ARRIVAL_FIELD)
+            wheneverBasicECM(3 to FIELD_ARRIVAL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
@@ -1497,13 +1497,13 @@ class MenuNoteViewModelTest {
     @Test
     fun `setSelection - ECM - Check return failure if GetStatusPreCEC return EMPTY and type is ARRIVAL_FIELD`() =
         runTest {
-            wheneverBasicECM(3 to ARRIVAL_FIELD)
+            wheneverBasicECM(3 to FIELD_ARRIVAL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
@@ -1534,19 +1534,19 @@ class MenuNoteViewModelTest {
     @Test
     fun `setSelection - ECM - Check return failure if GetStatusPreCEC return ARRIVAL_FIELD and type is ARRIVAL_FIELD`() =
         runTest {
-            wheneverBasicECM(3 to ARRIVAL_FIELD)
+            wheneverBasicECM(3 to FIELD_ARRIVAL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.ARRIVAL_FIELD)
+                Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -1556,7 +1556,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.WITH_ARRIVAL_FIELD_PRE_CEC
+                Errors.WITH_FIELD_ARRIVAL_PRE_CEC
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,
@@ -1571,13 +1571,13 @@ class MenuNoteViewModelTest {
     @Test
     fun `setSelection - ECM - Check return failure if GetStatusPreCEC return EXIT_MILL and have error in SetNoteMotoMec and type is ARRIVAL_FIELD`() =
         runTest {
-            wheneverBasicECM(3 to ARRIVAL_FIELD)
+            wheneverBasicECM(3 to FIELD_ARRIVAL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
@@ -1590,7 +1590,7 @@ class MenuNoteViewModelTest {
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
@@ -1625,13 +1625,13 @@ class MenuNoteViewModelTest {
     @Test
     fun `setSelection - ECM - Check return msg  if GetStatusPreCEC return EXIT_MILL and SetNoteMotoMec execute successfully and type is ARRIVAL_FIELD`() =
         runTest {
-            wheneverBasicECM(3 to ARRIVAL_FIELD)
+            wheneverBasicECM(3 to FIELD_ARRIVAL)
             whenever(
-                setDataPreCEC(
+                setDatePreCEC(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )
@@ -1644,7 +1644,7 @@ class MenuNoteViewModelTest {
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
-                        type = 3 to ARRIVAL_FIELD,
+                        type = 3 to FIELD_ARRIVAL,
                         function = 1 to WORK,
                         app = 2 to ECM
                     )

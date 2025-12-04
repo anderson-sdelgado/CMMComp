@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.infra.models.room.variable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
-import br.com.usinasantafe.cmm.utils.TB_RESP_ITEM_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.TB_RESP_ITEM_CHECK_LIST
 
 @Entity(tableName = TB_RESP_ITEM_CHECK_LIST)
 data class RespItemCheckListRoomModel(

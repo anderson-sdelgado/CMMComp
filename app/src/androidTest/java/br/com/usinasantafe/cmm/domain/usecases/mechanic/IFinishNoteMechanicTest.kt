@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
-import br.com.usinasantafe.cmm.utils.Status
+import br.com.usinasantafe.cmm.lib.Status
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest

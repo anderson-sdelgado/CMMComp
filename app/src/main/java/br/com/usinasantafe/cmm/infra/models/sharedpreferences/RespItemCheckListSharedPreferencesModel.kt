@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 
 data class RespItemCheckListSharedPreferencesModel(
     val idItem: Int,

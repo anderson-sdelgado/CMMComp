@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.external.retrofit.api.variable
 
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderCheckListRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderCheckListRetrofitModelOutput
-import br.com.usinasantafe.cmm.utils.WEB_SAVE_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.WEB_SAVE_CHECK_LIST
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header

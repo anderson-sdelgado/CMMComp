@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionStopRetr
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityFunctionStopToRoomModel
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 

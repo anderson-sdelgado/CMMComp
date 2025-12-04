@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionStop
-import br.com.usinasantafe.cmm.utils.TB_FUNCTION_STOP
-import br.com.usinasantafe.cmm.utils.TypeStop
+import br.com.usinasantafe.cmm.lib.TB_FUNCTION_STOP
+import br.com.usinasantafe.cmm.lib.TypeStop
 
 @Entity(tableName = TB_FUNCTION_STOP)
 data class FunctionStopRoomModel(

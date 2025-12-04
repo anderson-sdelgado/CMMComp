@@ -5,7 +5,7 @@ import androidx.core.content.edit
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
-import br.com.usinasantafe.cmm.utils.BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

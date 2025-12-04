@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionActivity
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionActivityRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
-import br.com.usinasantafe.cmm.utils.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock

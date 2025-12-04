@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckLis
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
 import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
-import br.com.usinasantafe.cmm.utils.OptionRespCheckList
+import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

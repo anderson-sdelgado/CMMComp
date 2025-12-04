@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
-import br.com.usinasantafe.cmm.utils.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeActivity
 
 data class FunctionActivityRetrofitModel(
     val idFunctionActivity: Int,

@@ -3,11 +3,11 @@ package br.com.usinasantafe.cmm.infra.models.room.variable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.Status
-import br.com.usinasantafe.cmm.utils.StatusSend
-import br.com.usinasantafe.cmm.utils.TB_HEADER_MOTO_MEC
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TB_HEADER_MOTO_MEC
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import java.util.Date
 
 @Entity(tableName = TB_HEADER_MOTO_MEC)

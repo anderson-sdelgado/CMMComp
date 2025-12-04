@@ -4,16 +4,16 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.failure
-import br.com.usinasantafe.cmm.utils.TB_ITEM_MENU
-import br.com.usinasantafe.cmm.utils.appList
-import br.com.usinasantafe.cmm.utils.functionListECM
-import br.com.usinasantafe.cmm.utils.functionListPCOMPCompound
-import br.com.usinasantafe.cmm.utils.functionListPCOMPInput
-import br.com.usinasantafe.cmm.utils.functionListPMM
-import br.com.usinasantafe.cmm.utils.typeListECM
-import br.com.usinasantafe.cmm.utils.typeListPCOMPCompound
-import br.com.usinasantafe.cmm.utils.typeListPCOMPInput
-import br.com.usinasantafe.cmm.utils.typeListPMM
+import br.com.usinasantafe.cmm.lib.TB_ITEM_MENU
+import br.com.usinasantafe.cmm.lib.appList
+import br.com.usinasantafe.cmm.lib.functionListECM
+import br.com.usinasantafe.cmm.lib.functionListPCOMPCompound
+import br.com.usinasantafe.cmm.lib.functionListPCOMPInput
+import br.com.usinasantafe.cmm.lib.functionListPMM
+import br.com.usinasantafe.cmm.lib.typeListECM
+import br.com.usinasantafe.cmm.lib.typeListPCOMPCompound
+import br.com.usinasantafe.cmm.lib.typeListPCOMPInput
+import br.com.usinasantafe.cmm.lib.typeListPMM
 
 @Entity(tableName = TB_ITEM_MENU)
 data class ItemMenuRoomModel(

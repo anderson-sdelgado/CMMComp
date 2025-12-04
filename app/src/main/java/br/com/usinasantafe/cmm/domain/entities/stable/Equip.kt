@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.stable
 
-import br.com.usinasantafe.cmm.utils.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class Equip(
     val id: Int,

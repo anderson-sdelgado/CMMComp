@@ -28,4 +28,8 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindMotoMecRepository(repository: IMotoMecRepository): MotoMecRepository
 
+    @Binds
+    @Singleton
+    fun bindCECRepository(repository: ICECRepository): CECRepository
+
 }

@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.cec.SetDataPreCEC
+import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
@@ -18,36 +18,36 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
-import br.com.usinasantafe.cmm.utils.ARRIVAL_FIELD
-import br.com.usinasantafe.cmm.utils.CHECK_WILL
-import br.com.usinasantafe.cmm.utils.COUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.ECM
-import br.com.usinasantafe.cmm.utils.EXIT_MILL
-import br.com.usinasantafe.cmm.utils.Errors
-import br.com.usinasantafe.cmm.utils.FINISH_MECHANICAL
-import br.com.usinasantafe.cmm.utils.FlowComposting
-import br.com.usinasantafe.cmm.utils.FlowEquipNote
-import br.com.usinasantafe.cmm.utils.FlowTrailer
-import br.com.usinasantafe.cmm.utils.IMPLEMENT
-import br.com.usinasantafe.cmm.utils.ITEM_NORMAL
-import br.com.usinasantafe.cmm.utils.NOTE_MECHANICAL
-import br.com.usinasantafe.cmm.utils.PCOMP
-import br.com.usinasantafe.cmm.utils.PMM
-import br.com.usinasantafe.cmm.utils.RETURN_MILL
-import br.com.usinasantafe.cmm.utils.StatusPreCEC
-import br.com.usinasantafe.cmm.utils.StatusTranshipment
-import br.com.usinasantafe.cmm.utils.TRANSHIPMENT
-import br.com.usinasantafe.cmm.utils.TypeMsg
-import br.com.usinasantafe.cmm.utils.TypeNote
-import br.com.usinasantafe.cmm.utils.UNCOUPLING_TRAILER
-import br.com.usinasantafe.cmm.utils.UNLOADING_INPUT
-import br.com.usinasantafe.cmm.utils.WEIGHING
-import br.com.usinasantafe.cmm.utils.WEIGHING_TARE
-import br.com.usinasantafe.cmm.utils.functionListPMM
+import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
+import br.com.usinasantafe.cmm.lib.CHECK_WILL
+import br.com.usinasantafe.cmm.lib.COUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.ECM
+import br.com.usinasantafe.cmm.lib.EXIT_MILL
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FINISH_MECHANICAL
+import br.com.usinasantafe.cmm.lib.FlowComposting
+import br.com.usinasantafe.cmm.lib.FlowEquipNote
+import br.com.usinasantafe.cmm.lib.FlowTrailer
+import br.com.usinasantafe.cmm.lib.IMPLEMENT
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
+import br.com.usinasantafe.cmm.lib.NOTE_MECHANICAL
+import br.com.usinasantafe.cmm.lib.PCOMP
+import br.com.usinasantafe.cmm.lib.PMM
+import br.com.usinasantafe.cmm.lib.RETURN_MILL
+import br.com.usinasantafe.cmm.lib.StatusPreCEC
+import br.com.usinasantafe.cmm.lib.StatusTranshipment
+import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
+import br.com.usinasantafe.cmm.lib.TypeMsg
+import br.com.usinasantafe.cmm.lib.TypeNote
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.UNLOADING_INPUT
+import br.com.usinasantafe.cmm.lib.WEIGHING
+import br.com.usinasantafe.cmm.lib.WEIGHING_TARE
+import br.com.usinasantafe.cmm.lib.functionListPMM
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import br.com.usinasantafe.cmm.utils.typeListECM
-import br.com.usinasantafe.cmm.utils.typeListPCOMPCompound
-import br.com.usinasantafe.cmm.utils.typeListPCOMPInput
+import br.com.usinasantafe.cmm.lib.typeListECM
+import br.com.usinasantafe.cmm.lib.typeListPCOMPCompound
+import br.com.usinasantafe.cmm.lib.typeListPCOMPInput
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -81,8 +81,8 @@ class MenuNoteViewModel @Inject constructor(
     private val getStatusTranshipment: GetStatusTranshipment, //ok
     private val checkTypeLastNote: CheckTypeLastNote, // ok
     private val finishNoteMechanic: FinishNoteMechanic, // ok
-    private val setNoteMotoMec: SetNoteMotoMec,
-    private val setDataPreCEC: SetDataPreCEC,
+    private val setNoteMotoMec: SetNoteMotoMec, // ok
+    private val setDatePreCEC: SetDatePreCEC, // ok
     private val checkCouplingTrailer: CheckCouplingTrailer,
     private val getFlowComposting: GetFlowComposting,
     private val checkInitialLoading: CheckInitialLoading,
@@ -203,8 +203,8 @@ class MenuNoteViewModel @Inject constructor(
             EXIT_MILL -> {
                 handleExitWill(item)
             }
-            ARRIVAL_FIELD -> {
-                handleArrivalField(item)
+            FIELD_ARRIVAL -> {
+                handleFieldArrival(item)
                 false
             }
             RETURN_MILL -> {
@@ -327,28 +327,28 @@ class MenuNoteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleArrivalField(item: ItemMenuModel) {
-        val status = setDataPreCEC(item).getOrElse {
+    private suspend fun handleFieldArrival(item: ItemMenuModel) {
+        val status = setDatePreCEC(item).getOrElse {
             handleFailure(it)
             return
         }
         when (status) {
-            StatusPreCEC.EMPTY -> {
+            StatusPreCEC.EXIT_MILL -> {
                 handleFailure("PRE CEC without exit mill!", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
             }
-            StatusPreCEC.ARRIVAL_FIELD -> {
-                handleFailure("PRE CEC with arrival field!", Errors.WITH_ARRIVAL_FIELD_PRE_CEC)
+            StatusPreCEC.EXIT_ARRIVAL -> {
+                handleFailure("PRE CEC with arrival field!", Errors.WITH_FIELD_ARRIVAL_PRE_CEC)
             }
-            StatusPreCEC.EXIT_MILL -> handleSetNote(item)
+            StatusPreCEC.FIELD_ARRIVAL -> handleSetNote(item)
         }
     }
 
     private suspend fun handleExitWill(item: ItemMenuModel): Boolean {
-        val status = setDataPreCEC(item).getOrElse {
+        val status = setDatePreCEC(item).getOrElse {
             handleFailure(it)
             return false
         }
-        if (status != StatusPreCEC.EMPTY) {
+        if (status != StatusPreCEC.EXIT_MILL) {
             handleFailure("PRE CEC already started!", Errors.PRE_CEC_STARTED)
             return false
         }

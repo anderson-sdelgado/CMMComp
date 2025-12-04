@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
-import br.com.usinasantafe.cmm.utils.TB_ACTIVITY
+import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 
 @Dao
 interface ActivityDao {
