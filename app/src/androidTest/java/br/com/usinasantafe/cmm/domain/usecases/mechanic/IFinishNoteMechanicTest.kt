@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
+import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.lib.Status
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -23,7 +23,7 @@ class IFinishNoteMechanicTest {
     lateinit var usecase: FinishNoteMechanic
 
     @Inject
-    lateinit var noteMechanicDao: NoteMechanicDao
+    lateinit var mechanicDao: MechanicDao
 
     @Before
     fun init() {
@@ -51,8 +51,8 @@ class IFinishNoteMechanicTest {
     @Test
     fun check_alter_date() =
         runTest {
-            noteMechanicDao.insert(
-                NoteMechanicRoomModel(
+            mechanicDao.insert(
+                MechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
                     item = 1,
@@ -68,7 +68,7 @@ class IFinishNoteMechanicTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = noteMechanicDao.all()
+            val list = mechanicDao.all()
             assertEquals(
                 list.size,
                 1

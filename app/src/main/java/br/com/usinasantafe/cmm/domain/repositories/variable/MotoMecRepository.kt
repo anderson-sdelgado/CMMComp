@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
@@ -39,10 +39,11 @@ interface MotoMecRepository {
         number: Long,
         token: String
     ): Result<Boolean>
-    suspend fun noteListByIdHeader(idHeader: Int): Result<List<NoteMotoMec>>
+    suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>>
     suspend fun hasNoteByIdStopAndIdHeader(
         idHeader: Int,
         idStop: Int
     ): Result<Boolean>
-    suspend fun getNoteLastByIdHeader(idHeader: Int): Result<NoteMotoMec>
+    suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
+    suspend fun hasCouplingTrailerImplement(): Result<Boolean>
 }

@@ -22,7 +22,7 @@ interface SharedPreferencesDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindNoteMotoMecSharedPreferencesDatasource(dataSource: INoteMotoMecSharedPreferencesDatasource): NoteMotoMecSharedPreferencesDatasource
+    fun bindNoteMotoMecSharedPreferencesDatasource(dataSource: IItemMotoMecSharedPreferencesDatasource): ItemMotoMecSharedPreferencesDatasource
 
     @Binds
     @Singleton
@@ -30,12 +30,13 @@ interface SharedPreferencesDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindRespItemCheckListSharedPreferencesDatasource(dataSource: IRespItemCheckListSharedPreferencesDatasource): RespItemCheckListSharedPreferencesDatasource
+    fun bindRespItemCheckListSharedPreferencesDatasource(dataSource: IItemRespCheckListSharedPreferencesDatasource): ItemRespCheckListSharedPreferencesDatasource
 
     @Binds
     @Singleton
-    fun binPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
+    fun bindPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
 
-
-
+    @Binds
+    @Singleton
+    fun bindTrailerSharedPreferencesDatasource(dataSource: ITrailerSharedPreferencesDatasource): TrailerSharedPreferencesDatasource
 }

@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
@@ -25,7 +25,7 @@ class IGetStopListTest {
     lateinit var usecase: ListStop
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
     lateinit var rActivityStopDao: RActivityStopDao
@@ -59,7 +59,7 @@ class IGetStopListTest {
     @Test
     fun check_return_empty_list_if_not_have_data_in_table_r_activity_stop() =
         runTest {
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
@@ -78,7 +78,7 @@ class IGetStopListTest {
     @Test
     fun check_return_empty_list_if_not_have_data_in_table_stop() =
         runTest {
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
@@ -121,7 +121,7 @@ class IGetStopListTest {
     @Test
     fun check_return_true_and_data_returned() =
         runTest {
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )

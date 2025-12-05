@@ -28,10 +28,10 @@ import java.util.Date
         RItemMenuStopRoomModel::class,
         TurnRoomModel::class,
         HeaderMotoMecRoomModel::class,
-        NoteMotoMecRoomModel::class,
+        ItemMotoMecRoomModel::class,
         HeaderCheckListRoomModel::class,
-        RespItemCheckListRoomModel::class,
-        NoteMechanicRoomModel::class,
+        ItemRespCheckListRoomModel::class,
+        MechanicRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -52,10 +52,10 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun stopDao(): StopDao
     abstract fun turnDao(): TurnDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao
-    abstract fun noteMotoMecDao(): NoteMotoMecDao
+    abstract fun noteMotoMecDao(): ItemMotoMecDao
     abstract fun headerCheckListDao(): HeaderCheckListDao
-    abstract fun respItemCheckListDao(): RespItemCheckListDao
-    abstract fun noteMechanicDao(): NoteMechanicDao
+    abstract fun respItemCheckListDao(): ItemRespCheckListDao
+    abstract fun noteMechanicDao(): MechanicDao
 }
 
 class Converters {

@@ -1,14 +1,14 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
-import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.RespItemCheckListRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemRespCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
@@ -18,9 +18,9 @@ import javax.inject.Inject
 
 class ICheckListRepository @Inject constructor(
     private val headerCheckListSharedPreferencesDatasource: HeaderCheckListSharedPreferencesDatasource,
-    private val respItemCheckListSharedPreferencesDatasource: RespItemCheckListSharedPreferencesDatasource,
+    private val itemRespCheckListSharedPreferencesDatasource: ItemRespCheckListSharedPreferencesDatasource,
     private val headerCheckListRoomDatasource: HeaderCheckListRoomDatasource,
-    private val respItemCheckListRoomDatasource: RespItemCheckListRoomDatasource,
+    private val itemRespCheckListRoomDatasource: ItemRespCheckListRoomDatasource,
     private val checkListRetrofitDatasource: CheckListRetrofitDatasource
 ): CheckListRepository {
 
@@ -51,7 +51,7 @@ class ICheckListRepository @Inject constructor(
     }
 
     override suspend fun cleanResp(): Result<Boolean> {
-        val result = respItemCheckListSharedPreferencesDatasource.clean()
+        val result = itemRespCheckListSharedPreferencesDatasource.clean()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -61,9 +61,9 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
-    override suspend fun saveResp(entity: RespItemCheckList): Result<Boolean> {
+    override suspend fun saveResp(entity: ItemRespCheckList): Result<Boolean> {
         try {
-            val result = respItemCheckListSharedPreferencesDatasource.save(
+            val result = itemRespCheckListSharedPreferencesDatasource.add(
                 model = entity.entityToSharedPreferencesModel()
             )
             result.onFailure {
@@ -101,7 +101,7 @@ class ICheckListRepository @Inject constructor(
                 )
             }
             val id = resultSaveHeader.getOrNull()!!.toInt()
-            val resultListResp = respItemCheckListSharedPreferencesDatasource.list()
+            val resultListResp = itemRespCheckListSharedPreferencesDatasource.list()
             resultListResp.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -111,8 +111,8 @@ class ICheckListRepository @Inject constructor(
             val list = resultListResp.getOrNull()!!
             for(model in list) {
                 val entity = model.sharedPreferencesModelToEntity()
-                val resultSave = respItemCheckListRoomDatasource.save(
-                    respItemCheckListRoomModel = entity.entityToRoomModel(id)
+                val resultSave = itemRespCheckListRoomDatasource.save(
+                    itemRespCheckListRoomModel = entity.entityToRoomModel(id)
                 )
                 resultSave.onFailure {
                 return resultFailure(
@@ -128,7 +128,7 @@ class ICheckListRepository @Inject constructor(
                     cause = it
                 )
             }
-            val resultRespItemClean = respItemCheckListSharedPreferencesDatasource.clean()
+            val resultRespItemClean = itemRespCheckListSharedPreferencesDatasource.clean()
             resultRespItemClean.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -145,7 +145,7 @@ class ICheckListRepository @Inject constructor(
     }
 
     override suspend fun delLastRespItem(): Result<Boolean> {
-        val result = respItemCheckListSharedPreferencesDatasource.delLast()
+        val result = itemRespCheckListSharedPreferencesDatasource.delLast()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -191,7 +191,7 @@ class ICheckListRepository @Inject constructor(
             }
             val modelRetrofitList =
                 resultListSend.getOrNull()!!.map {
-                    val resultRespItemList = respItemCheckListRoomDatasource.listByIdHeader(it.id!!)
+                    val resultRespItemList = itemRespCheckListRoomDatasource.listByIdHeader(it.id!!)
                     resultRespItemList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -218,7 +218,7 @@ class ICheckListRepository @Inject constructor(
             for(headerCheckList in headerCheckListRetrofitList){
                 val respItemCheckListRetrofitList = headerCheckList.respItemList
                 for(respItemCheckList in respItemCheckListRetrofitList){
-                    val result = respItemCheckListRoomDatasource.setIdServById(
+                    val result = itemRespCheckListRoomDatasource.setIdServById(
                         id = respItemCheckList.id,
                         idServ = respItemCheckList.idServ
                     )

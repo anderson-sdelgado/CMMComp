@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
-import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel
 
 data class RespItemCheckListRetrofitModelOutput(
     val id: Int,
@@ -14,7 +14,7 @@ data class RespItemCheckListRetrofitModelInput(
     val idServ: Int
 )
 
-fun RespItemCheckListRoomModel.roomModelToRetrofitModel(): RespItemCheckListRetrofitModelOutput {
+fun ItemRespCheckListRoomModel.roomModelToRetrofitModel(): RespItemCheckListRetrofitModelOutput {
     return with(this){
         RespItemCheckListRetrofitModelOutput(
             id = this.id!!,

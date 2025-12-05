@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -35,7 +35,7 @@ class ISendCheckListTest {
     lateinit var headerCheckListDao: HeaderCheckListDao
 
     @Inject
-    lateinit var respItemCheckListDao: RespItemCheckListDao
+    lateinit var itemRespCheckListDao: ItemRespCheckListDao
 
     @Test
     fun check_return_failure_if_not_have_data() =
@@ -156,7 +156,7 @@ class ISendCheckListTest {
                 headerModelBefore.idServ,
                 null
             )
-            val respItemListBefore = respItemCheckListDao.all()
+            val respItemListBefore = itemRespCheckListDao.all()
             assertEquals(
                 respItemListBefore.size,
                 1
@@ -225,7 +225,7 @@ class ISendCheckListTest {
                 headerModelAfter.idServ,
                 1
             )
-            val respItemListAfter = respItemCheckListDao.all()
+            val respItemListAfter = itemRespCheckListDao.all()
             assertEquals(
                 respItemListAfter.size,
                 1
@@ -281,8 +281,8 @@ class ISendCheckListTest {
             )
         )
 
-        respItemCheckListDao.insert(
-            RespItemCheckListRoomModel(
+        itemRespCheckListDao.insert(
+            ItemRespCheckListRoomModel(
                 id = 1,
                 idHeader = 1,
                 idItem = 1,

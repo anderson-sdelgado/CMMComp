@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
-import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 
 data class RespItemCheckListSharedPreferencesModel(
@@ -8,16 +8,16 @@ data class RespItemCheckListSharedPreferencesModel(
     val option: OptionRespCheckList,
 )
 
-fun RespItemCheckListSharedPreferencesModel.sharedPreferencesModelToEntity(): RespItemCheckList {
+fun RespItemCheckListSharedPreferencesModel.sharedPreferencesModelToEntity(): ItemRespCheckList {
     return with(this) {
-        RespItemCheckList(
+        ItemRespCheckList(
             idItem = idItem,
             option = option
         )
     }
 }
 
-fun RespItemCheckList.entityToSharedPreferencesModel(): RespItemCheckListSharedPreferencesModel {
+fun ItemRespCheckList.entityToSharedPreferencesModel(): RespItemCheckListSharedPreferencesModel {
     return with(this) {
         RespItemCheckListSharedPreferencesModel(
             idItem = idItem,

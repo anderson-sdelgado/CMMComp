@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMechanicRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.MechanicRoomDatasource
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
@@ -10,16 +10,16 @@ import kotlin.test.assertEquals
 
 class IMechanicRepositoryTest {
 
-    private val noteMechanicRoomDatasource = mock<NoteMechanicRoomDatasource>()
+    private val mechanicRoomDatasource = mock<MechanicRoomDatasource>()
     private val repository = IMechanicRepository(
-        noteMechanicRoomDatasource = noteMechanicRoomDatasource
+        mechanicRoomDatasource = mechanicRoomDatasource
     )
 
     @Test
     fun `checkNoteOpenByIdHeader - Check return failure if have error in NoteMechanicRoomDatasource checkNoteOpenByIdHeader`() =
         runTest {
             whenever(
-                noteMechanicRoomDatasource.checkNoteOpenByIdHeader(1)
+                mechanicRoomDatasource.checkNoteOpenByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "INoteMechanicRoomDatasource.checkNoteOpenByIdHeader",
@@ -46,7 +46,7 @@ class IMechanicRepositoryTest {
     fun `checkNoteOpenByIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMechanicRoomDatasource.checkNoteOpenByIdHeader(1)
+                mechanicRoomDatasource.checkNoteOpenByIdHeader(1)
             ).thenReturn(
                 Result.success(false)
             )
@@ -65,7 +65,7 @@ class IMechanicRepositoryTest {
     fun `setFinishNote - Check return failure if have error in NoteMechanicDatasource setFinishNote`() =
         runTest {
             whenever(
-                noteMechanicRoomDatasource.setFinishNote()
+                mechanicRoomDatasource.setFinishNote()
             ).thenReturn(
                 resultFailure(
                     "INoteMechanicDatasource.setFinishNote",
@@ -92,7 +92,7 @@ class IMechanicRepositoryTest {
     fun `setFinishNote - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMechanicRoomDatasource.setFinishNote()
+                mechanicRoomDatasource.setFinishNote()
             ).thenReturn(
                 Result.success(true)
             )

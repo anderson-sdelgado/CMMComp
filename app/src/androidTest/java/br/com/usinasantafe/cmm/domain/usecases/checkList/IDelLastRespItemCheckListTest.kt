@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -22,7 +22,7 @@ class IDelLastRespItemCheckListTest {
     lateinit var usecase: DelLastRespItemCheckList
 
     @Inject
-    lateinit var respItemCheckListSharedPreferencesdatasource: RespItemCheckListSharedPreferencesDatasource
+    lateinit var itemRespCheckListSharedPreferencesdatasource: ItemRespCheckListSharedPreferencesDatasource
 
     @Before
     fun init() {
@@ -40,7 +40,7 @@ class IDelLastRespItemCheckListTest {
                 idItem = 2,
                 option = OptionRespCheckList.ANALYZE
             )
-            val resultSave1 = respItemCheckListSharedPreferencesdatasource.save(model1)
+            val resultSave1 = itemRespCheckListSharedPreferencesdatasource.add(model1)
             assertEquals(
                 resultSave1.isSuccess,
                 true
@@ -49,7 +49,7 @@ class IDelLastRespItemCheckListTest {
                 resultSave1.getOrNull()!!,
                 true
             )
-            val resultSave2 = respItemCheckListSharedPreferencesdatasource.save(model2)
+            val resultSave2 = itemRespCheckListSharedPreferencesdatasource.add(model2)
             assertEquals(
                 resultSave2.isSuccess,
                 true
@@ -58,7 +58,7 @@ class IDelLastRespItemCheckListTest {
                 resultSave2.getOrNull()!!,
                 true
             )
-            val resultListBefore = respItemCheckListSharedPreferencesdatasource.list()
+            val resultListBefore = itemRespCheckListSharedPreferencesdatasource.list()
             assertEquals(
                 resultListBefore.isSuccess,
                 true
@@ -95,7 +95,7 @@ class IDelLastRespItemCheckListTest {
                 result.getOrNull()!!,
                 true
             )
-            val resultListAfter = respItemCheckListSharedPreferencesdatasource.list()
+            val resultListAfter = itemRespCheckListSharedPreferencesdatasource.list()
             assertEquals(
                 resultListAfter.isSuccess,
                 true

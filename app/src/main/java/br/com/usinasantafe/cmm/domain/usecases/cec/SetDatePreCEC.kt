@@ -20,20 +20,21 @@ class ISetDatePreCEC @Inject constructor(
 
     override suspend fun invoke(item: ItemMenuModel): Result<StatusPreCEC> {
 
-        val model = cecRepository.get().getOrElse {
+        val result = cecRepository.get()
+        result.onFailure {
             return resultFailure(context = getClassAndMethod(), cause = it)
         }
-
+        val model = result.getOrNull()!!
         val currentStatus = when {
-            model.dateMillExit == null -> StatusPreCEC.EXIT_MILL
+            model.dateExitMill == null -> StatusPreCEC.EXIT_MILL
             model.dateFieldArrival == null -> StatusPreCEC.FIELD_ARRIVAL
-            else -> StatusPreCEC.EXIT_ARRIVAL
+            else -> StatusPreCEC.EXIT_FIELD
         }
 
         val expectedStatus = when (item.type.second) {
             EXIT_MILL -> StatusPreCEC.EXIT_MILL
             FIELD_ARRIVAL -> StatusPreCEC.FIELD_ARRIVAL
-            else -> StatusPreCEC.EXIT_ARRIVAL
+            else -> StatusPreCEC.EXIT_FIELD
         }
 
         if (currentStatus != expectedStatus) {
@@ -43,7 +44,7 @@ class ISetDatePreCEC @Inject constructor(
         val updateResult = when(item.type.second) {
             EXIT_MILL -> cecRepository.setDateExitMill(Date())
             FIELD_ARRIVAL -> cecRepository.setDateFieldArrival(Date())
-            else -> cecRepository.setDateExitArrival(Date())
+            else -> cecRepository.setDateExitField(Date())
         }
 
         updateResult.onFailure {

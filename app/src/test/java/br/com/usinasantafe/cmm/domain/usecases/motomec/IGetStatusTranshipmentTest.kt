@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.StatusTranshipment
@@ -155,7 +155,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    NoteMotoMec(
+                    ItemMotoMec(
                         id = 1,
                         nroOS = 123456,
                         idActivity = 1
@@ -190,7 +190,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    NoteMotoMec(
+                    ItemMotoMec(
                         id = 1,
                         nroOS = 123456,
                         idActivity = 1,
@@ -228,7 +228,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    NoteMotoMec(
+                    ItemMotoMec(
                         id = 1,
                         nroOS = 123456,
                         idActivity = 1,
@@ -265,7 +265,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    NoteMotoMec(
+                    ItemMotoMec(
                         id = 1,
                         nroOS = 123456,
                         idActivity = 1,

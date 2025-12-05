@@ -20,17 +20,17 @@ class IRespItemCheckListSharedPreferencesDatasourceTest {
 
     private lateinit var context: Context
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var datasource: IRespItemCheckListSharedPreferencesDatasource
+    private lateinit var datasource: IItemRespCheckListSharedPreferencesDatasource
 
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
-        datasource = IRespItemCheckListSharedPreferencesDatasource(sharedPreferences)
+        datasource = IItemRespCheckListSharedPreferencesDatasource(sharedPreferences)
     }
 
     @Test
-    fun `Check save data, get data e clean table`() =
+    fun `Check add data, get data and clean table`() =
         runTest {
             val model1 = RespItemCheckListSharedPreferencesModel(
                 idItem = 1,
@@ -40,22 +40,22 @@ class IRespItemCheckListSharedPreferencesDatasourceTest {
                 idItem = 2,
                 option = OptionRespCheckList.ANALYZE
             )
-            val resultSave1 = datasource.save(model1)
+            val resultAdd1 = datasource.add(model1)
             assertEquals(
-                resultSave1.isSuccess,
+                resultAdd1.isSuccess,
                 true
             )
             assertEquals(
-                resultSave1.getOrNull()!!,
+                resultAdd1.getOrNull()!!,
                 true
             )
-            val resultSave2 = datasource.save(model2)
+            val resultAdd2 = datasource.add(model2)
             assertEquals(
-                resultSave2.isSuccess,
+                resultAdd2.isSuccess,
                 true
             )
             assertEquals(
-                resultSave2.getOrNull()!!,
+                resultAdd2.getOrNull()!!,
                 true
             )
             val resultList = datasource.list()
@@ -119,7 +119,7 @@ class IRespItemCheckListSharedPreferencesDatasourceTest {
                 idItem = 2,
                 option = OptionRespCheckList.ANALYZE
             )
-            val resultSave1 = datasource.save(model1)
+            val resultSave1 = datasource.add(model1)
             assertEquals(
                 resultSave1.isSuccess,
                 true
@@ -128,7 +128,7 @@ class IRespItemCheckListSharedPreferencesDatasourceTest {
                 resultSave1.getOrNull()!!,
                 true
             )
-            val resultSave2 = datasource.save(model2)
+            val resultSave2 = datasource.add(model2)
             assertEquals(
                 resultSave2.isSuccess,
                 true

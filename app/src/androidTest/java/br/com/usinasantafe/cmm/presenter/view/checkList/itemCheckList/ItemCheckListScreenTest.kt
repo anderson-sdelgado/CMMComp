@@ -12,10 +12,10 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
@@ -63,13 +63,13 @@ class ItemCheckListScreenTest {
     lateinit var headerCheckListSharedPreferencesDatasource: HeaderCheckListSharedPreferencesDatasource
 
     @Inject
-    lateinit var respItemCheckListSharedPreferencesDatasource: RespItemCheckListSharedPreferencesDatasource
+    lateinit var itemRespCheckListSharedPreferencesDatasource: ItemRespCheckListSharedPreferencesDatasource
 
     @Inject
     lateinit var headerCheckListDao: HeaderCheckListDao
 
     @Inject
-    lateinit var respItemCheckListDao: RespItemCheckListDao
+    lateinit var itemRespCheckListDao: ItemRespCheckListDao
 
     @Test
     fun check_open_screen_and_msg_failure_if_config_shared_preferences_datasource_is_empty() =
@@ -219,7 +219,7 @@ class ItemCheckListScreenTest {
                 2200
             )
 
-            val resultListResp = respItemCheckListSharedPreferencesDatasource.list()
+            val resultListResp = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultListResp.isSuccess,
                 true
@@ -275,7 +275,7 @@ class ItemCheckListScreenTest {
 
             composeTestRule.waitUntilTimeout()
 
-            val resultListRespFinish = respItemCheckListSharedPreferencesDatasource.list()
+            val resultListRespFinish = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultListRespFinish.isSuccess,
                 true
@@ -309,7 +309,7 @@ class ItemCheckListScreenTest {
                 StatusSend.SEND
             )
 
-            val respListRoom = respItemCheckListDao.all()
+            val respListRoom = itemRespCheckListDao.all()
             assertEquals(
                 respListRoom.size,
                 5

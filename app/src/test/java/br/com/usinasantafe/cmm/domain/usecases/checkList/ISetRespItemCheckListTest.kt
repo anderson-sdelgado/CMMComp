@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
-import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
@@ -63,7 +63,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return failure if have error in CheckListRepository saveResp`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -103,7 +103,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return failure if have error in ConfigRepository getIdEquip`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -148,7 +148,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return failure if have error in EquipRepository getIdCheckListByIdEquip`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -198,7 +198,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return failure if have error in ItemCheckListRepository countByIdCheckList`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -253,7 +253,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return failure if have error in CheckListRepository saveCheckList and count equals pos`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -313,7 +313,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return correct if function execute successfully and count equals pos`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )
@@ -365,7 +365,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun `Check return correct if function execute successfully and pos minor than count`() =
         runTest {
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = 1,
                 option = OptionRespCheckList.ACCORDING
             )

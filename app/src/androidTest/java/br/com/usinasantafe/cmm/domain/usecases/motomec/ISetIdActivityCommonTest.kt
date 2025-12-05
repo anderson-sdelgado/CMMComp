@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
@@ -31,10 +31,10 @@ class ISetIdActivityCommonTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
@@ -76,7 +76,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderAfter.idActivity,
                 1
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -125,7 +125,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderAfter.idActivity,
                 2
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -150,7 +150,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore,
                 HeaderMotoMecSharedPreferencesModel()
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -182,7 +182,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderAfter.idActivity,
                 1
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -202,7 +202,7 @@ class ISetIdActivityCommonTest {
                     idActivity = 1
                 )
             )
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
@@ -217,7 +217,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore.idActivity,
                 1
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -249,7 +249,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderAfter.idActivity,
                 2
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -264,12 +264,12 @@ class ISetIdActivityCommonTest {
     @Test
     fun check_return_failure_if_data_header_is_empty_note_work() =
         runTest {
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     nroOS = 123456
                 )
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -279,7 +279,7 @@ class ISetIdActivityCommonTest {
                 modelNoteBefore.idActivity,
                 null
             )
-            val listBefore = noteMotoMecDao.all()
+            val listBefore = itemMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -350,12 +350,12 @@ class ISetIdActivityCommonTest {
                     statusCon = true
                 )
             )
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     nroOS = 123456
                 )
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -375,7 +375,7 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore.id,
                 1
             )
-            val listNoteBefore = noteMotoMecDao.all()
+            val listNoteBefore = itemMotoMecDao.all()
             assertEquals(
                 listNoteBefore.size,
                 0
@@ -392,7 +392,7 @@ class ISetIdActivityCommonTest {
                 result.getOrNull()!!,
                 true
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -402,7 +402,7 @@ class ISetIdActivityCommonTest {
                 modelNoteAfter.idActivity,
                 1
             )
-            val listAfter = noteMotoMecDao.all()
+            val listAfter = itemMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -441,13 +441,13 @@ class ISetIdActivityCommonTest {
                     statusCon = true
                 )
             )
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     idActivity = 1
                 )
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -461,7 +461,7 @@ class ISetIdActivityCommonTest {
                 modelNoteBefore.nroOS,
                 123456
             )
-            val listBefore = noteMotoMecDao.all()
+            val listBefore = itemMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
@@ -488,7 +488,7 @@ class ISetIdActivityCommonTest {
                 result.getOrNull()!!,
                 true
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -502,7 +502,7 @@ class ISetIdActivityCommonTest {
                 modelNoteAfter.nroOS,
                 123456
             )
-            val listAfter = noteMotoMecDao.all()
+            val listAfter = itemMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1

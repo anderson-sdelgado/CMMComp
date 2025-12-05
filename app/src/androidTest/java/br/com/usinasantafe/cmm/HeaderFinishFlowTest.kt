@@ -9,12 +9,12 @@ import androidx.compose.ui.test.performClick
 import androidx.test.core.app.ActivityScenario
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
@@ -57,7 +57,7 @@ class HeaderFinishFlowTest {
     lateinit var equipDao: EquipDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Before
     fun setup() {
@@ -270,8 +270,8 @@ class HeaderFinishFlowTest {
             )
         )
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,

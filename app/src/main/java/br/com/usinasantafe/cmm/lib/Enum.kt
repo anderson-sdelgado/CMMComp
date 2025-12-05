@@ -29,4 +29,6 @@ enum class FlowTrailer { UNCOUPLING, COUPLING }
 enum class StatusTranshipment { OK, WITHOUT_NOTE, TIME_INVALID }
 
 enum class TypeMsg { ITEM_NORMAL, NOTE_FINISH_MECHANICAL, RETURN_MILL, UNCOUPLING_TRAILER }
-enum class StatusPreCEC { EXIT_MILL, FIELD_ARRIVAL, EXIT_ARRIVAL }
+enum class StatusPreCEC { EXIT_MILL, FIELD_ARRIVAL, EXIT_FIELD }
+
+enum class StatusComposting { LOAD, UNLOADING }

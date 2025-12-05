@@ -3,10 +3,10 @@ package br.com.usinasantafe.cmm.domain.usecases.checkList
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -35,7 +35,7 @@ class ISetRespItemCheckListTest {
     lateinit var usecase: SetRespItemCheckList
 
     @Inject
-    lateinit var respItemCheckListSharedPreferencesDatasource: RespItemCheckListSharedPreferencesDatasource
+    lateinit var itemRespCheckListSharedPreferencesDatasource: ItemRespCheckListSharedPreferencesDatasource
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -53,7 +53,7 @@ class ISetRespItemCheckListTest {
     lateinit var headerCheckListDao: HeaderCheckListDao
 
     @Inject
-    lateinit var respItemCheckListDao: RespItemCheckListDao
+    lateinit var itemRespCheckListDao: ItemRespCheckListDao
 
     @Before
     fun init() {
@@ -63,13 +63,13 @@ class ISetRespItemCheckListTest {
     @Test
     fun check_return_failure_if_not_have_data_in_config_shared_preferences() =
         runTest {
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
                 )
             )
-            val resultListBefore = respItemCheckListSharedPreferencesDatasource.list()
+            val resultListBefore = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultListBefore.isSuccess,
                 true
@@ -105,7 +105,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
-            val resultListAfter = respItemCheckListSharedPreferencesDatasource.list()
+            val resultListAfter = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultListAfter.isSuccess,
                 true
@@ -149,7 +149,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException: Attempt to invoke virtual method 'int br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getIdCheckList()' on a null object reference"
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -193,7 +193,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.IllegalArgumentException: Field 'nroEquip' cannot be null."
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -233,7 +233,7 @@ class ISetRespItemCheckListTest {
                 result.getOrNull()!!,
                 true
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -257,7 +257,7 @@ class ISetRespItemCheckListTest {
     @Test
     fun check_return_failure_if_not_have_data_in_config_shared_preferences_and_pos_2() =
         runTest {
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
@@ -280,7 +280,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException"
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -316,7 +316,7 @@ class ISetRespItemCheckListTest {
 
             initialRegister(1)
 
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
@@ -339,7 +339,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.NullPointerException: Attempt to invoke virtual method 'int br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getIdCheckList()' on a null object reference"
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -375,7 +375,7 @@ class ISetRespItemCheckListTest {
 
             initialRegister(2)
 
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
@@ -398,7 +398,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.IllegalArgumentException: Field 'nroEquip' cannot be null."
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -434,7 +434,7 @@ class ISetRespItemCheckListTest {
 
             initialRegister(3)
 
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
@@ -457,7 +457,7 @@ class ISetRespItemCheckListTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.IllegalArgumentException: Field 'nroEquip' cannot be null."
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -493,7 +493,7 @@ class ISetRespItemCheckListTest {
 
             initialRegister(4)
 
-            respItemCheckListSharedPreferencesDatasource.save(
+            itemRespCheckListSharedPreferencesDatasource.add(
                 RespItemCheckListSharedPreferencesModel(
                     idItem = 1,
                     option = OptionRespCheckList.ANALYZE
@@ -513,7 +513,7 @@ class ISetRespItemCheckListTest {
                 resultBoolean,
                 false
             )
-            val resultList = respItemCheckListSharedPreferencesDatasource.list()
+            val resultList = itemRespCheckListSharedPreferencesDatasource.list()
             assertEquals(
                 resultList.isSuccess,
                 true
@@ -542,7 +542,7 @@ class ISetRespItemCheckListTest {
                 modelHeader.nroTurn,
                 2
             )
-            val respItemCheckListRoomModelList = respItemCheckListDao.all()
+            val respItemCheckListRoomModelList = itemRespCheckListDao.all()
             assertEquals(
                 respItemCheckListRoomModelList.size,
                 2

@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -25,13 +25,13 @@ class ISetIdStopNoteTest {
     lateinit var usecase: ISetIdStopNote
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Before
     fun setUp() {
@@ -41,7 +41,7 @@ class ISetIdStopNoteTest {
     @Test
     fun check_return_failure_if_not_have_data() =
         runTest {
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -64,7 +64,7 @@ class ISetIdStopNoteTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0"
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -79,7 +79,7 @@ class ISetIdStopNoteTest {
     @Test
     fun check_return_true_and_data_returned() =
         runTest {
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     idActivity = 1,
@@ -98,7 +98,7 @@ class ISetIdStopNoteTest {
                     statusCon = false
                 )
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -126,7 +126,7 @@ class ISetIdStopNoteTest {
                 modelHeaderBefore.id,
                 1
             )
-            val listNoteBefore = noteMotoMecDao.all()
+            val listNoteBefore = itemMotoMecDao.all()
             assertEquals(
                 listNoteBefore.size,
                 0
@@ -140,7 +140,7 @@ class ISetIdStopNoteTest {
                 result.getOrNull()!!,
                 true
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -162,7 +162,7 @@ class ISetIdStopNoteTest {
                 modelSharedPreferencesAfter.statusCon,
                 false
             )
-            val listAfter = noteMotoMecDao.all()
+            val listAfter = itemMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1

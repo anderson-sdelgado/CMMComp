@@ -1,17 +1,18 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.NoteMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
@@ -30,14 +31,16 @@ class IMotoMecRepositoryTest {
 
     private val headerMotoMecSharedPreferencesDatasource = mock<HeaderMotoMecSharedPreferencesDatasource>()
     private val headerMotoMecRoomDatasource = mock<HeaderMotoMecRoomDatasource>()
-    private val noteMotoMecSharedPreferencesDatasource = mock<NoteMotoMecSharedPreferencesDatasource>()
-    private val noteMotoMecRoomDatasource = mock<NoteMotoMecRoomDatasource>()
+    private val itemMotoMecSharedPreferencesDatasource = mock<ItemMotoMecSharedPreferencesDatasource>()
+    private val itemMotoMecRoomDatasource = mock<ItemMotoMecRoomDatasource>()
+    private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
     private val motoMecRetrofitDatasource = mock<MotoMecRetrofitDatasource>()
     private val repository = IMotoMecRepository(
         headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource,
         headerMotoMecRoomDatasource = headerMotoMecRoomDatasource,
-        noteMotoMecSharedPreferencesDatasource = noteMotoMecSharedPreferencesDatasource,
-        noteMotoMecRoomDatasource = noteMotoMecRoomDatasource,
+        itemMotoMecSharedPreferencesDatasource = itemMotoMecSharedPreferencesDatasource,
+        itemMotoMecRoomDatasource = itemMotoMecRoomDatasource,
+        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource,
         motoMecRetrofitDatasource = motoMecRetrofitDatasource
     )
 
@@ -859,7 +862,7 @@ class IMotoMecRepositoryTest {
     fun `setNroOSNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource clean`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.clean()
+                itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecSharedPreferencesDatasource.clean",
@@ -886,7 +889,7 @@ class IMotoMecRepositoryTest {
     fun `setNroOSNote - Check return failure if have error in HeaderMotoMecRoomDatasource getStatusConByHeaderOpen`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.clean()
+                itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
                 Result.success(true)
             )
@@ -918,7 +921,7 @@ class IMotoMecRepositoryTest {
     fun `setNroOSNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource setNroOS`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.clean()
+                itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
                 Result.success(true)
             )
@@ -928,7 +931,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
+                itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
                     nroOS = 1,
                     statusCon = true
                 )
@@ -958,7 +961,7 @@ class IMotoMecRepositoryTest {
     fun `setNroOSNote - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.clean()
+                itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
                 Result.success(true)
             )
@@ -968,7 +971,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
+                itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
                     nroOS = 1,
                     statusCon = true
                 )
@@ -990,7 +993,7 @@ class IMotoMecRepositoryTest {
     fun `setIdActivity- Check return failure if have error in NoteMotoMecSharedPreferencesDatasource setIdActivity`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setIdActivity(1)
+                itemMotoMecSharedPreferencesDatasource.setIdActivity(1)
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecSharedPreferencesDatasource.setIdActivity",
@@ -1017,7 +1020,7 @@ class IMotoMecRepositoryTest {
     fun `setIdActivity - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setIdActivity(1)
+                itemMotoMecSharedPreferencesDatasource.setIdActivity(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -1036,7 +1039,7 @@ class IMotoMecRepositoryTest {
     fun `saveNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource get`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.get()
+                itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecSharedPreferencesDatasource.get",
@@ -1063,7 +1066,7 @@ class IMotoMecRepositoryTest {
     fun `saveNote - Check return failure if NoteMotoMecSharedPreferencesModel have field empty`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.get()
+                itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(
                     NoteMotoMecSharedPreferencesModel()
@@ -1093,13 +1096,13 @@ class IMotoMecRepositoryTest {
                 statusCon = true
             )
             whenever(
-                noteMotoMecSharedPreferencesDatasource.get()
+                itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(modelSharedPreferences)
             )
-            val modelCaptor = argumentCaptor<NoteMotoMecRoomModel>().apply {
+            val modelCaptor = argumentCaptor<ItemMotoMecRoomModel>().apply {
                 whenever(
-                    noteMotoMecRoomDatasource.save(capture())
+                    itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
                     resultFailure(
                         context = "INoteMotoMecRoomDatasource.save",
@@ -1145,13 +1148,13 @@ class IMotoMecRepositoryTest {
                 statusCon = true
             )
             whenever(
-                noteMotoMecSharedPreferencesDatasource.get()
+                itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(modelSharedPreferences)
             )
-            val modelCaptor = argumentCaptor<NoteMotoMecRoomModel>().apply {
+            val modelCaptor = argumentCaptor<ItemMotoMecRoomModel>().apply {
                 whenever(
-                    noteMotoMecRoomDatasource.save(capture())
+                    itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
                     Result.success(true)
                 )
@@ -1202,13 +1205,13 @@ class IMotoMecRepositoryTest {
                 statusCon = true
             )
             whenever(
-                noteMotoMecSharedPreferencesDatasource.get()
+                itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(modelSharedPreferences)
             )
-            val modelCaptor = argumentCaptor<NoteMotoMecRoomModel>().apply {
+            val modelCaptor = argumentCaptor<ItemMotoMecRoomModel>().apply {
                 whenever(
-                    noteMotoMecRoomDatasource.save(capture())
+                    itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
                     Result.success(true)
                 )
@@ -1246,7 +1249,7 @@ class IMotoMecRepositoryTest {
     fun `getIdActivity - Check return failure if have error in INoteMotoMecSharedPreferencesDatasource getIdActivity`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.getIdActivity()
+                itemMotoMecSharedPreferencesDatasource.getIdActivity()
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
@@ -1273,7 +1276,7 @@ class IMotoMecRepositoryTest {
     fun `getIdActivity - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.getIdActivity()
+                itemMotoMecSharedPreferencesDatasource.getIdActivity()
             ).thenReturn(
                 Result.success(1)
             )
@@ -1292,7 +1295,7 @@ class IMotoMecRepositoryTest {
     fun `setIdStop - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource setIdStop`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setIdStop(1)
+                itemMotoMecSharedPreferencesDatasource.setIdStop(1)
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecSharedPreferencesDatasource.setIdStop",
@@ -1319,7 +1322,7 @@ class IMotoMecRepositoryTest {
     fun `setIdStop - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecSharedPreferencesDatasource.setIdStop(1)
+                itemMotoMecSharedPreferencesDatasource.setIdStop(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -1338,7 +1341,7 @@ class IMotoMecRepositoryTest {
     fun `checkHasByIdHeader - Check return failure if have error in noteMotoMecRoomDatasource checkHasNoteById`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.checkHasByIdHeader(1)
+                itemMotoMecRoomDatasource.checkHasByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecRoomDatasource.checkHasByIdHeader",
@@ -1365,7 +1368,7 @@ class IMotoMecRepositoryTest {
     fun `checkHasByIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.checkHasByIdHeader(1)
+                itemMotoMecRoomDatasource.checkHasByIdHeader(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -1481,7 +1484,7 @@ class IMotoMecRepositoryTest {
                 Result.success(modelRoomList)
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeaderAndSend(1)
+                itemMotoMecRoomDatasource.listByIdHeaderAndSend(1)
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecRoomDatasource.listByIdHeaderAndSend",
@@ -1527,7 +1530,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val noteModelRoomList = listOf(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 1,
                     idHeader = 1,
                     nroOS = 123456,
@@ -1552,7 +1555,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerModelRoomList)
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeaderAndSend(1)
+                itemMotoMecRoomDatasource.listByIdHeaderAndSend(1)
             ).thenReturn(
                 Result.success(noteModelRoomList)
             )
@@ -1606,7 +1609,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val noteModelRoomList = listOf(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 1,
                     idHeader = 1,
                     nroOS = 123456,
@@ -1643,7 +1646,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerModelRoomList)
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeaderAndSend(1)
+                itemMotoMecRoomDatasource.listByIdHeaderAndSend(1)
             ).thenReturn(
                 Result.success(noteModelRoomList)
             )
@@ -1656,7 +1659,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerMotoMecRetrofitModelInputList)
             )
             whenever(
-                noteMotoMecRoomDatasource.setSentNote(
+                itemMotoMecRoomDatasource.setSentNote(
                     id = 1,
                     idServ = 1
                 )
@@ -1705,7 +1708,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val noteModelRoomList = listOf(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 1,
                     idHeader = 1,
                     nroOS = 123456,
@@ -1742,7 +1745,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerModelRoomList)
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeaderAndSend(1)
+                itemMotoMecRoomDatasource.listByIdHeaderAndSend(1)
             ).thenReturn(
                 Result.success(noteModelRoomList)
             )
@@ -1755,7 +1758,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerMotoMecRetrofitModelInputList)
             )
             whenever(
-                noteMotoMecRoomDatasource.setSentNote(
+                itemMotoMecRoomDatasource.setSentNote(
                     id = 1,
                     idServ = 1
                 )
@@ -1812,7 +1815,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val noteModelRoomList = listOf(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 1,
                     idHeader = 1,
                     nroOS = 123456,
@@ -1849,7 +1852,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerModelRoomList)
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeaderAndSend(1)
+                itemMotoMecRoomDatasource.listByIdHeaderAndSend(1)
             ).thenReturn(
                 Result.success(noteModelRoomList)
             )
@@ -1862,7 +1865,7 @@ class IMotoMecRepositoryTest {
                 Result.success(headerMotoMecRetrofitModelInputList)
             )
             whenever(
-                noteMotoMecRoomDatasource.setSentNote(
+                itemMotoMecRoomDatasource.setSentNote(
                     id = 1,
                     idServ = 1
                 )
@@ -1987,7 +1990,7 @@ class IMotoMecRepositoryTest {
     fun `noteListByIdHeader - Check return failure if have error in NoteMotoMecRoomDatasource listByIdHeader`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeader(1)
+                itemMotoMecRoomDatasource.listByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "INoteMotoMecRoomDatasource.listByIdHeader",
@@ -2014,7 +2017,7 @@ class IMotoMecRepositoryTest {
     fun `noteListByIdHeader - Check return correct if function execute successfully`() =
         runTest {
             val modelList = listOf(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 1,
                     idHeader = 1,
                     nroOS = 123456,
@@ -2025,7 +2028,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val entityList = listOf(
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -2034,7 +2037,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             whenever(
-                noteMotoMecRoomDatasource.listByIdHeader(1)
+                itemMotoMecRoomDatasource.listByIdHeader(1)
             ).thenReturn(
                 Result.success(modelList)
             )
@@ -2099,7 +2102,7 @@ class IMotoMecRepositoryTest {
     fun `hasNoteByIdStopAndIdHeader - Check return failure if have error in NoteMotoMecRoomDatasource checkHasByIdStop`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.hasByIdStopAndIdHeader(
+                itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(
                     idStop = 1,
                     idHeader = 1
                 )
@@ -2129,7 +2132,7 @@ class IMotoMecRepositoryTest {
     fun `hasNoteByIdStopAndIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.hasByIdStopAndIdHeader(
+                itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(
                     idStop = 1,
                     idHeader = 1
                 )
@@ -2197,7 +2200,7 @@ class IMotoMecRepositoryTest {
     fun `getNoteLastByIdHeader - Check return failure if have error in NoteMotoMecDatasource getLastByIdHeader`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.getLastByIdHeader(1)
+                itemMotoMecRoomDatasource.getLastByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "INoteMotoMecDatasource.getLastByIdHeader",
@@ -2223,10 +2226,10 @@ class IMotoMecRepositoryTest {
     fun `getNoteLastByIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                noteMotoMecRoomDatasource.getLastByIdHeader(1)
+                itemMotoMecRoomDatasource.getLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    NoteMotoMecRoomModel(
+                    ItemMotoMecRoomModel(
                         idHeader = 1,
                         nroOS = 123456,
                         idActivity = 1,
@@ -2240,10 +2243,56 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                NoteMotoMec(
+                ItemMotoMec(
                     nroOS = 123456,
                     idActivity = 1,
                 )
+            )
+        }
+
+    @Test
+    fun `hasCouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource has`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.has()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerSharedPreferencesDatasource.has",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasCouplingTrailerImplement()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.hasCouplingTrailerImplement -> ITrailerSharedPreferencesDatasource.has"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasCouplingTrailerImplement - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.has()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasCouplingTrailerImplement()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

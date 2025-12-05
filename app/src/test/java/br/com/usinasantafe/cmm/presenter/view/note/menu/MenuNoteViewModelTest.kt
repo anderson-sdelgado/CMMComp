@@ -4,14 +4,14 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
+import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
@@ -70,9 +70,9 @@ class MenuNoteViewModelTest {
     private val finishNoteMechanic = mock<FinishNoteMechanic>()
     private val setNoteMotoMec = mock<SetNoteMotoMec>()
     private val setDatePreCEC = mock<SetDatePreCEC>()
-    private val checkCouplingTrailer = mock<CheckCouplingTrailer>()
+    private val hasCouplingTrailer = mock<HasCouplingTrailer>()
     private val getFlowComposting = mock<GetFlowComposting>()
-    private val checkInitialLoading = mock<CheckInitialLoading>()
+    private val hasCompostingInputLoadSentOpen = mock<HasCompostingInputLoadSentOpen>()
     private val checkWill = mock<CheckWill>()
     private val uncouplingTrailer = mock<UncouplingTrailer>()
 
@@ -87,9 +87,9 @@ class MenuNoteViewModelTest {
         finishNoteMechanic = finishNoteMechanic,
         setNoteMotoMec = setNoteMotoMec,
         setDatePreCEC = setDatePreCEC,
-        checkCouplingTrailer = checkCouplingTrailer,
+        hasCouplingTrailer = hasCouplingTrailer,
         getFlowComposting = getFlowComposting,
-        checkInitialLoading = checkInitialLoading,
+        hasCompostingInputLoadSentOpen = hasCompostingInputLoadSentOpen,
         checkWill = checkWill,
         uncouplingTrailer = uncouplingTrailer
     )
@@ -848,7 +848,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleTranshipment -> Without note!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleTranshipment -> Without note or last is not type work!"
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,
@@ -1443,7 +1443,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.EMPTY)
+                Result.success(StatusPreCEC.EXIT_MILL)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -1478,7 +1478,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleArrivalField -> GetStatusPreCEC -> java.lang.Exception"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> GetStatusPreCEC -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -1509,13 +1509,13 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.EMPTY)
+                Result.success(StatusPreCEC.EXIT_MILL)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleArrivalField -> PRE CEC without exit mill!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> PRE CEC without exit mill!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -1546,13 +1546,13 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.FIELD_ARRIVAL)
+                Result.success(StatusPreCEC.EXIT_FIELD)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleArrivalField -> PRE CEC with arrival field!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> PRE CEC with arrival field!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -1583,7 +1583,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.EXIT_MILL)
+                Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             whenever(
                 setNoteMotoMec(
@@ -1606,7 +1606,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleArrivalField -> MenuNoteViewModel.handleSetNote -> SetNoteMotoMec -> java.lang.Exception"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> MenuNoteViewModel.handleSetNote -> SetNoteMotoMec -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -1637,7 +1637,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(StatusPreCEC.EXIT_MILL)
+                Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             whenever(
                 setNoteMotoMec(
@@ -1697,7 +1697,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(7 to UNCOUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 resultFailure(
                     context = "CheckCouplingTrailer",
@@ -1730,7 +1730,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(7 to UNCOUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 Result.success(false)
             )
@@ -1759,7 +1759,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(7 to UNCOUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1780,7 +1780,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(8 to COUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 resultFailure(
                     context = "CheckCouplingTrailer",
@@ -1813,7 +1813,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(8 to COUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1842,7 +1842,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(8 to COUPLING_TRAILER)
             whenever(
-                checkCouplingTrailer()
+                hasCouplingTrailer()
             ).thenReturn(
                 Result.success(false)
             )
@@ -2233,7 +2233,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.INPUT)
             )
             whenever(
-                checkInitialLoading()
+                hasCompostingInputLoadSentOpen()
             ).thenReturn(
                 resultFailure(
                     context = "CheckInitialLoading",
@@ -2271,7 +2271,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.INPUT)
             )
             whenever(
-                checkInitialLoading()
+                hasCompostingInputLoadSentOpen()
             ).thenReturn(
                 Result.success(false)
             )
@@ -2305,7 +2305,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.INPUT)
             )
             whenever(
-                checkInitialLoading()
+                hasCompostingInputLoadSentOpen()
             ).thenReturn(
                 Result.success(true)
             )

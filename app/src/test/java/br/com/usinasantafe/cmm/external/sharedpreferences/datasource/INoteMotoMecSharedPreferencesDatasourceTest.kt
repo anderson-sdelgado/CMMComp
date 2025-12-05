@@ -18,13 +18,13 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var datasource: INoteMotoMecSharedPreferencesDatasource
+    private lateinit var datasource: IItemMotoMecSharedPreferencesDatasource
 
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
-        datasource = INoteMotoMecSharedPreferencesDatasource(sharedPreferences)
+        datasource = IItemMotoMecSharedPreferencesDatasource(sharedPreferences)
     }
 
     @Test

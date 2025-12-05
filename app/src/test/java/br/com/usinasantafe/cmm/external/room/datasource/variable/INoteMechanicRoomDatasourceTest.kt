@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
+import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.lib.Status
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -23,9 +23,9 @@ import kotlin.test.assertNotNull
 @Config(sdk = [34])
 class INoteMechanicRoomDatasourceTest {
 
-    private lateinit var noteMechanicDao: NoteMechanicDao
+    private lateinit var mechanicDao: MechanicDao
     private lateinit var db: DatabaseRoom
-    private lateinit var datasource: INoteMechanicRoomDatasource
+    private lateinit var datasource: IMechanicRoomDatasource
 
     @Before
     fun setup() {
@@ -33,8 +33,8 @@ class INoteMechanicRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        noteMechanicDao = db.noteMechanicDao()
-        datasource = INoteMechanicRoomDatasource(noteMechanicDao)
+        mechanicDao = db.noteMechanicDao()
+        datasource = IMechanicRoomDatasource(mechanicDao)
     }
 
     @After
@@ -59,31 +59,31 @@ class INoteMechanicRoomDatasourceTest {
     @Test
     fun `checkNoteOpenByIdHeader - Check return true if have data fielded in table room`() =
         runTest {
-            noteMechanicDao.insert(
-                NoteMechanicRoomModel(
+            mechanicDao.insert(
+                MechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
                     item = 1,
                     dateHourFinish = null
                 )
             )
-            noteMechanicDao.insert(
-                NoteMechanicRoomModel(
+            mechanicDao.insert(
+                MechanicRoomModel(
                     idHeader = 2,
                     os = 123456,
                     item = 1,
                     dateHourFinish = null
                 )
             )
-            noteMechanicDao.insert(
-                NoteMechanicRoomModel(
+            mechanicDao.insert(
+                MechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
                     item = 1,
                     dateHourFinish = Date()
                 )
             )
-            val list = noteMechanicDao.all()
+            val list = mechanicDao.all()
             assertEquals(
                 list.size,
                 3
@@ -120,8 +120,8 @@ class INoteMechanicRoomDatasourceTest {
     @Test
     fun `setFinishNote - Check alter date`() =
         runTest {
-            noteMechanicDao.insert(
-                NoteMechanicRoomModel(
+            mechanicDao.insert(
+                MechanicRoomModel(
                     idHeader = 1,
                     os = 123456,
                     item = 1,
@@ -137,7 +137,7 @@ class INoteMechanicRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val list = noteMechanicDao.all()
+            val list = mechanicDao.all()
             assertEquals(
                 list.size,
                 1

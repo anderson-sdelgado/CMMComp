@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
-import br.com.usinasantafe.cmm.domain.entities.variable.RespItemCheckList
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
@@ -42,7 +42,7 @@ class ISetRespItemCheckList @Inject constructor(
                     )
                 }
             }
-            val entity = RespItemCheckList(
+            val entity = ItemRespCheckList(
                 idItem = id,
                 option = option
             )

@@ -13,7 +13,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckCouplingTrailer(usecase: ICheckCouplingTrailer): CheckCouplingTrailer
+    fun bindCheckCouplingTrailer(usecase: IHasCouplingTrailer): HasCouplingTrailer
 
     @Binds
     @Singleton

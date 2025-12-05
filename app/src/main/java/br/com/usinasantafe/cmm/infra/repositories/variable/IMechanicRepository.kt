@@ -2,16 +2,16 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MechanicRepository
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMechanicRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.MechanicRoomDatasource
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IMechanicRepository @Inject constructor(
-    private val noteMechanicRoomDatasource: NoteMechanicRoomDatasource
+    private val mechanicRoomDatasource: MechanicRoomDatasource
 ): MechanicRepository {
 
     override suspend fun checkNoteOpenByIdHeader(idHeader: Int): Result<Boolean> {
-        val result = noteMechanicRoomDatasource.checkNoteOpenByIdHeader(idHeader)
+        val result = mechanicRoomDatasource.checkNoteOpenByIdHeader(idHeader)
         result.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -22,7 +22,7 @@ class IMechanicRepository @Inject constructor(
     }
 
     override suspend fun setFinishNote(): Result<Boolean> {
-        val result = noteMechanicRoomDatasource.setFinishNote()
+        val result = mechanicRoomDatasource.setFinishNote()
         result.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),

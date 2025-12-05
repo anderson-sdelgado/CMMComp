@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
@@ -13,7 +13,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomMode
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
@@ -111,7 +111,7 @@ class IListItemMenuTest {
     lateinit var functionStopDao: FunctionStopDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
@@ -899,8 +899,8 @@ class IListItemMenuTest {
 
         if (level == 1) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 id = 1,
                 idHeader = 1,
                 nroOS = 123456,

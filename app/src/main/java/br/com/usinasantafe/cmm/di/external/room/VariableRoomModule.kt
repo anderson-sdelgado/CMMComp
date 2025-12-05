@@ -26,19 +26,19 @@ object VariableRoomModule {
 
     @Provides
     @Singleton
-    fun provideNoteMechanicDao(database: DatabaseRoom): NoteMechanicDao {
+    fun provideNoteMechanicDao(database: DatabaseRoom): MechanicDao {
         return database.noteMechanicDao()
     }
     
     @Provides
     @Singleton
-    fun provideNoteMotoMecDao(database: DatabaseRoom): NoteMotoMecDao {
+    fun provideNoteMotoMecDao(database: DatabaseRoom): ItemMotoMecDao {
         return database.noteMotoMecDao()
     }
 
     @Provides
     @Singleton
-    fun provideRespCheckListDao(database: DatabaseRoom): RespItemCheckListDao {
+    fun provideRespCheckListDao(database: DatabaseRoom): ItemRespCheckListDao {
         return database.respItemCheckListDao()
     }
 

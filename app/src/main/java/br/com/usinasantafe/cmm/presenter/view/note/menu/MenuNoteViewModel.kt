@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
-import br.com.usinasantafe.cmm.domain.usecases.composting.CheckInitialLoading
+import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckCouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
@@ -83,9 +83,9 @@ class MenuNoteViewModel @Inject constructor(
     private val finishNoteMechanic: FinishNoteMechanic, // ok
     private val setNoteMotoMec: SetNoteMotoMec, // ok
     private val setDatePreCEC: SetDatePreCEC, // ok
-    private val checkCouplingTrailer: CheckCouplingTrailer,
-    private val getFlowComposting: GetFlowComposting,
-    private val checkInitialLoading: CheckInitialLoading,
+    private val hasCouplingTrailer: HasCouplingTrailer, // ok
+    private val getFlowComposting: GetFlowComposting, // ok
+    private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen,
     private val checkWill: CheckWill,
     private val uncouplingTrailer: UncouplingTrailer
 ) : ViewModel() {
@@ -267,7 +267,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleLoadingInput(): Boolean {
-        val check = checkInitialLoading().getOrElse {
+        val check = hasCompostingInputLoadSentOpen().getOrElse {
             handleFailure(it)
             return false
         }
@@ -279,7 +279,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun checkTrailer(flowTrailer: FlowTrailer): Boolean {
-        val result = checkCouplingTrailer()
+        val result = hasCouplingTrailer()
         result.onFailure {
             handleFailure(it)
             return false
@@ -336,7 +336,7 @@ class MenuNoteViewModel @Inject constructor(
             StatusPreCEC.EXIT_MILL -> {
                 handleFailure("PRE CEC without exit mill!", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
             }
-            StatusPreCEC.EXIT_ARRIVAL -> {
+            StatusPreCEC.EXIT_FIELD -> {
                 handleFailure("PRE CEC with arrival field!", Errors.WITH_FIELD_ARRIVAL_PRE_CEC)
             }
             StatusPreCEC.FIELD_ARRIVAL -> handleSetNote(item)

@@ -32,4 +32,8 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindCECRepository(repository: ICECRepository): CECRepository
 
+    @Binds
+    @Singleton
+    fun bindCompostingRepository(repository: ICompostingRepository): CompostingRepository
+
 }

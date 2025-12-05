@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -28,7 +28,7 @@ class ICheckHasNoteOpenMechanicTest {
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMechanicDao: NoteMechanicDao
+    lateinit var mechanicDao: MechanicDao
 
     @Before
     fun init() {
@@ -101,24 +101,24 @@ class ICheckHasNoteOpenMechanicTest {
 
         if(level == 1) return
 
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
                 item = 1,
                 dateHourFinish = null
             )
         )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 2,
                 os = 123456,
                 item = 1,
                 dateHourFinish = null
             )
         )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
                 item = 1,

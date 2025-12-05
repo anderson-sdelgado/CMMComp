@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 
 data class NoteMotoMecSharedPreferencesModel(
     var nroOS: Int? = null,
@@ -9,9 +9,9 @@ data class NoteMotoMecSharedPreferencesModel(
     var statusCon: Boolean? = null,
 )
 
-fun NoteMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): NoteMotoMec {
+fun NoteMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): ItemMotoMec {
     return with(this) {
-        NoteMotoMec(
+        ItemMotoMec(
             nroOS = nroOS,
             idActivity = idActivity,
             idStop = idStop,
@@ -20,7 +20,7 @@ fun NoteMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): NoteMoto
     }
 }
 
-fun NoteMotoMec.entityToSharedPreferencesModel(): NoteMotoMecSharedPreferencesModel {
+fun ItemMotoMec.entityToSharedPreferencesModel(): NoteMotoMecSharedPreferencesModel {
     return with(this) {
         NoteMotoMecSharedPreferencesModel(
             nroOS = nroOS,

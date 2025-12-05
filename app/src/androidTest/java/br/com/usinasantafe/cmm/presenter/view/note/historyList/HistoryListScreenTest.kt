@@ -9,11 +9,11 @@ import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -37,7 +37,7 @@ class HistoryListScreenTest {
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var stopDao: StopDao
@@ -152,8 +152,8 @@ class HistoryListScreenTest {
 
         if (level == 1) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -163,8 +163,8 @@ class HistoryListScreenTest {
             )
         )
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,

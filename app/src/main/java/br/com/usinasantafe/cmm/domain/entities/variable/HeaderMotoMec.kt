@@ -13,5 +13,5 @@ data class HeaderMotoMec(
     var idActivity: Int? = null,
     var hourMeter: Double? = null,
     var statusCon: Boolean = true,
-    val flowComposting: FlowComposting? = null
+    var flowComposting: FlowComposting? = null
 )

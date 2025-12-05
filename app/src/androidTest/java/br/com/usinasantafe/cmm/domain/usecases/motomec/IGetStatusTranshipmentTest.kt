@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.StatusTranshipment
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -30,7 +30,7 @@ class IGetStatusTranshipmentTest {
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Before
     fun setup() {
@@ -154,16 +154,16 @@ class IGetStatusTranshipmentTest {
 
         if(level == 1) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 2,
                 nroOS = 123456,
                 idActivity = 1,
                 idStop = 2,
             )
         )
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -173,8 +173,8 @@ class IGetStatusTranshipmentTest {
 
         if(level == 2) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -187,8 +187,8 @@ class IGetStatusTranshipmentTest {
 
         if(level == 3) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -200,8 +200,8 @@ class IGetStatusTranshipmentTest {
 
         if(level == 4) return
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 idHeader = 1,
                 nroOS = 123456,
                 idActivity = 1,

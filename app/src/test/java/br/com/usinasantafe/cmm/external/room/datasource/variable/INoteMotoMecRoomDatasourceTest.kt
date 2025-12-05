@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -22,9 +22,9 @@ import kotlin.test.assertEquals
 @Config(sdk = [34])
 class INoteMotoMecRoomDatasourceTest {
 
-    private lateinit var noteMotoMecDao: NoteMotoMecDao
+    private lateinit var itemMotoMecDao: ItemMotoMecDao
     private lateinit var db: DatabaseRoom
-    private lateinit var datasource: INoteMotoMecRoomDatasource
+    private lateinit var datasource: IItemMotoMecRoomDatasource
 
     @Before
     fun setup() {
@@ -32,8 +32,8 @@ class INoteMotoMecRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        noteMotoMecDao = db.noteMotoMecDao()
-        datasource = INoteMotoMecRoomDatasource(noteMotoMecDao)
+        itemMotoMecDao = db.noteMotoMecDao()
+        datasource = IItemMotoMecRoomDatasource(itemMotoMecDao)
     }
 
     @After
@@ -44,13 +44,13 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `save - Check save and data`() =
         runTest {
-            val listBefore = noteMotoMecDao.all()
+            val listBefore = itemMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 0
             )
             val result = datasource.save(
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -66,7 +66,7 @@ class INoteMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = noteMotoMecDao.all()
+            val listAfter = itemMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -123,8 +123,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `checkHasByIdHeader - Check return true if has data`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -160,8 +160,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `listByIdHeaderAndSend - Check return list if has data to send`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -170,8 +170,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusSend = StatusSend.SENT
                 ),
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -229,8 +229,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `setSentNote - Check alter data if execute success`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -239,7 +239,7 @@ class INoteMotoMecRoomDatasourceTest {
                     statusSend = StatusSend.SEND
                 ),
             )
-            val listBefore = noteMotoMecDao.all()
+            val listBefore = itemMotoMecDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -265,7 +265,7 @@ class INoteMotoMecRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = noteMotoMecDao.all()
+            val listAfter = itemMotoMecDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -298,8 +298,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `listByIdHeader - Check return list if has data`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -357,8 +357,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `hasByIdStop - Check return false if not has row fielded`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 2,
                     nroOS = 123456,
                     idActivity = 1,
@@ -366,8 +366,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -393,8 +393,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `hasByIdStop - Check return true if has data`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 2,
                     nroOS = 123456,
                     idActivity = 1,
@@ -402,8 +402,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -412,8 +412,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -458,8 +458,8 @@ class INoteMotoMecRoomDatasourceTest {
     @Test
     fun `getLastByIdHeader -  Check return last if has data`() =
         runTest {
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -468,8 +468,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 1,
                     nroOS = 456789,
                     idActivity = 10,
@@ -478,8 +478,8 @@ class INoteMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            noteMotoMecDao.insert(
-                NoteMotoMecRoomModel(
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
                     idHeader = 2,
                     nroOS = 789456,
                     idActivity = 15,
@@ -495,7 +495,7 @@ class INoteMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                NoteMotoMecRoomModel(
+                ItemMotoMecRoomModel(
                     id = 2,
                     idHeader = 1,
                     nroOS = 456789,

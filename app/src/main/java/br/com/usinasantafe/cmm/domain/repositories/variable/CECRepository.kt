@@ -7,5 +7,5 @@ interface CECRepository {
     suspend fun get(): Result<PreCEC>
     suspend fun setDateExitMill(date: Date): Result<Boolean>
     suspend fun setDateFieldArrival(date: Date): Result<Boolean>
-    suspend fun setDateExitArrival(date: Date): Result<Boolean>
+    suspend fun setDateExitField(date: Date): Result<Boolean>
 }

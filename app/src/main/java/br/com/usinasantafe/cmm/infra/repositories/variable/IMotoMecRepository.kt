@@ -1,13 +1,14 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.NoteMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
@@ -20,8 +21,9 @@ import javax.inject.Inject
 class IMotoMecRepository @Inject constructor(
     private val headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource,
     private val headerMotoMecRoomDatasource: HeaderMotoMecRoomDatasource,
-    private val noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource,
-    private val noteMotoMecRoomDatasource: NoteMotoMecRoomDatasource,
+    private val itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource,
+    private val itemMotoMecRoomDatasource: ItemMotoMecRoomDatasource,
+    private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
 
@@ -266,7 +268,7 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun setNroOSNote(nroOS: Int): Result<Boolean> {
         try {
-            val resultClean = noteMotoMecSharedPreferencesDatasource.clean()
+            val resultClean = itemMotoMecSharedPreferencesDatasource.clean()
             resultClean.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -281,7 +283,7 @@ class IMotoMecRepository @Inject constructor(
                 )
             }
             val statusCon = resultGetStatusCon.getOrNull()!!
-            val result = noteMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
+            val result = itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
                 nroOS = nroOS,
                 statusCon = statusCon
             )
@@ -301,7 +303,7 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun setIdActivityNote(id: Int): Result<Boolean> {
-        val result = noteMotoMecSharedPreferencesDatasource.setIdActivity(id)
+        val result = itemMotoMecSharedPreferencesDatasource.setIdActivity(id)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -313,7 +315,7 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun saveNote(idHeader: Int): Result<Boolean> {
         try {
-            val resultGet = noteMotoMecSharedPreferencesDatasource.get()
+            val resultGet = itemMotoMecSharedPreferencesDatasource.get()
             resultGet.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -322,7 +324,7 @@ class IMotoMecRepository @Inject constructor(
             }
             val modelSharedPreferences = resultGet.getOrNull()!!
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
-            val result = noteMotoMecRoomDatasource.save(
+            val result = itemMotoMecRoomDatasource.save(
                 entity.entityToRoomModel(
                     idHeader = idHeader
                 )
@@ -350,7 +352,7 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun getIdActivityNote(): Result<Int> {
-        val result = noteMotoMecSharedPreferencesDatasource.getIdActivity()
+        val result = itemMotoMecSharedPreferencesDatasource.getIdActivity()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -362,7 +364,7 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun setIdStop(id: Int): Result<Boolean> {
-        val result = noteMotoMecSharedPreferencesDatasource.setIdStop(id)
+        val result = itemMotoMecSharedPreferencesDatasource.setIdStop(id)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -373,7 +375,7 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean> {
-        val result = noteMotoMecRoomDatasource.checkHasByIdHeader(idHeader)
+        val result = itemMotoMecRoomDatasource.checkHasByIdHeader(idHeader)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -397,7 +399,7 @@ class IMotoMecRepository @Inject constructor(
             }
             val modelRetrofitList =
                 resultListHeaderSend.getOrNull()!!.map {
-                    val resultListNoteSend = noteMotoMecRoomDatasource.listByIdHeaderAndSend(it.id!!)
+                    val resultListNoteSend = itemMotoMecRoomDatasource.listByIdHeaderAndSend(it.id!!)
                     resultListNoteSend.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -424,7 +426,7 @@ class IMotoMecRepository @Inject constructor(
             for(headerMotoMec in headerMotoMecRetrofitList){
                 val noteMotoMecRetrofitList = headerMotoMec.noteMotoMecList
                 for(noteMotoMec in noteMotoMecRetrofitList){
-                    val result = noteMotoMecRoomDatasource.setSentNote(
+                    val result = itemMotoMecRoomDatasource.setSentNote(
                         id = noteMotoMec.id,
                         idServ = noteMotoMec.idServ
                     )
@@ -455,9 +457,9 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<NoteMotoMec>> {
+    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> {
         try {
-            val resultNoteList = noteMotoMecRoomDatasource.listByIdHeader(idHeader)
+            val resultNoteList = itemMotoMecRoomDatasource.listByIdHeader(idHeader)
             resultNoteList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -478,7 +480,7 @@ class IMotoMecRepository @Inject constructor(
         idHeader: Int,
         idStop: Int
     ): Result<Boolean> {
-        val result = noteMotoMecRoomDatasource.hasByIdStopAndIdHeader(
+        val result = itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(
             idStop,
             idHeader
         )
@@ -491,8 +493,8 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<NoteMotoMec> {
-        val result = noteMotoMecRoomDatasource.getLastByIdHeader(idHeader)
+    override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> {
+        val result = itemMotoMecRoomDatasource.getLastByIdHeader(idHeader)
         result.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -501,6 +503,17 @@ class IMotoMecRepository @Inject constructor(
         }
         val entity = result.getOrNull()!!
         return Result.success(entity.roomModelToEntity())
+    }
+
+    override suspend fun hasCouplingTrailerImplement(): Result<Boolean> {
+        val result = trailerSharedPreferencesDatasource.has()
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
     }
 
 

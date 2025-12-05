@@ -13,11 +13,7 @@ interface CompostingModule {
 
     @Binds
     @Singleton
-    fun bindCheckHasLoadingComposting(usecase: ICheckHasLoadingComposting): CheckHasLoadingComposting
-
-    @Binds
-    @Singleton
-    fun bindCheckInitialLoading(usecase: ICheckInitialLoading): CheckInitialLoading
+    fun bindCheckInitialLoading(usecase: IHasCompostingInputLoadSentOpen): HasCompostingInputLoadSentOpen
 
     @Binds
     @Singleton

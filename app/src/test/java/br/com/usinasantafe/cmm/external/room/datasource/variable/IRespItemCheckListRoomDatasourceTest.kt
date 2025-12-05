@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.DatabaseRoom
-import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
-import br.com.usinasantafe.cmm.infra.models.room.variable.RespItemCheckListRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -21,9 +21,9 @@ import kotlin.test.assertEquals
 @Config(sdk = [34])
 class IRespItemCheckListRoomDatasourceTest {
 
-    private lateinit var respItemCheckListDao: RespItemCheckListDao
+    private lateinit var itemRespCheckListDao: ItemRespCheckListDao
     private lateinit var db: DatabaseRoom
-    private lateinit var datasource: IRespItemCheckListRoomDatasource
+    private lateinit var datasource: IItemRespCheckListRoomDatasource
 
     @Before
     fun setup() {
@@ -31,8 +31,8 @@ class IRespItemCheckListRoomDatasourceTest {
         db = Room.inMemoryDatabaseBuilder(
             context, DatabaseRoom::class.java
         ).allowMainThreadQueries().build()
-        respItemCheckListDao = db.respItemCheckListDao()
-        datasource = IRespItemCheckListRoomDatasource(respItemCheckListDao)
+        itemRespCheckListDao = db.respItemCheckListDao()
+        datasource = IItemRespCheckListRoomDatasource(itemRespCheckListDao)
     }
 
     @After
@@ -43,13 +43,13 @@ class IRespItemCheckListRoomDatasourceTest {
     @Test
     fun `save - Check save and data`() =
         runTest {
-            val listBefore = respItemCheckListDao.all()
+            val listBefore = itemRespCheckListDao.all()
             assertEquals(
                 listBefore.size,
                 0
             )
             val result = datasource.save(
-                RespItemCheckListRoomModel(
+                ItemRespCheckListRoomModel(
                     idItem = 1,
                     option = OptionRespCheckList.ACCORDING,
                     idHeader = 1
@@ -63,7 +63,7 @@ class IRespItemCheckListRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = respItemCheckListDao.all()
+            val listAfter = itemRespCheckListDao.all()
             assertEquals(
                 listAfter.size,
                 1
@@ -90,8 +90,8 @@ class IRespItemCheckListRoomDatasourceTest {
     @Test
     fun `listByIdHeader - Check return empty list if not have resp of header field`() =
         runTest {
-            respItemCheckListDao.insert(
-                RespItemCheckListRoomModel(
+            itemRespCheckListDao.insert(
+                ItemRespCheckListRoomModel(
                     idItem = 1,
                     option = OptionRespCheckList.ACCORDING,
                     idHeader = 1
@@ -111,15 +111,15 @@ class IRespItemCheckListRoomDatasourceTest {
     @Test
     fun `listByIdHeader - Check return list if have resp of header field`() =
         runTest {
-            respItemCheckListDao.insert(
-                RespItemCheckListRoomModel(
+            itemRespCheckListDao.insert(
+                ItemRespCheckListRoomModel(
                     idItem = 1,
                     option = OptionRespCheckList.ACCORDING,
                     idHeader = 1
                 )
             )
-            respItemCheckListDao.insert(
-                RespItemCheckListRoomModel(
+            itemRespCheckListDao.insert(
+                ItemRespCheckListRoomModel(
                     idItem = 1,
                     option = OptionRespCheckList.ACCORDING,
                     idHeader = 2
@@ -133,7 +133,7 @@ class IRespItemCheckListRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 listOf(
-                    RespItemCheckListRoomModel(
+                    ItemRespCheckListRoomModel(
                         id = 2,
                         idItem = 1,
                         option = OptionRespCheckList.ACCORDING,
@@ -146,15 +146,15 @@ class IRespItemCheckListRoomDatasourceTest {
     @Test
     fun `setIdServById - Check alter data if process execute successfully`() =
         runTest {
-            respItemCheckListDao.insert(
-                RespItemCheckListRoomModel(
+            itemRespCheckListDao.insert(
+                ItemRespCheckListRoomModel(
                     id = 1,
                     idHeader = 1,
                     idItem = 1,
                     option = OptionRespCheckList.ACCORDING
                 )
             )
-            val listBefore = respItemCheckListDao.all()
+            val listBefore = itemRespCheckListDao.all()
             assertEquals(
                 listBefore.size,
                 1
@@ -192,7 +192,7 @@ class IRespItemCheckListRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val listAfter = respItemCheckListDao.all()
+            val listAfter = itemRespCheckListDao.all()
             assertEquals(
                 listAfter.size,
                 1

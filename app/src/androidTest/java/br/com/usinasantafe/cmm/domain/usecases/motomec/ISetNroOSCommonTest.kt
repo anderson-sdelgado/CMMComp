@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
@@ -31,7 +31,7 @@ class ISetNroOSCommonTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
@@ -127,7 +127,7 @@ class ISetNroOSCommonTest {
                 modelHeaderBefore,
                 HeaderMotoMecSharedPreferencesModel()
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -181,7 +181,7 @@ class ISetNroOSCommonTest {
                 modelHeaderBefore,
                 HeaderMotoMecSharedPreferencesModel()
             )
-            val resultNoteGetBefore = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetBefore.isSuccess,
                 true
@@ -213,7 +213,7 @@ class ISetNroOSCommonTest {
                 modelHeaderAfter.nroOS,
                 123456
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
@@ -261,7 +261,7 @@ class ISetNroOSCommonTest {
                 modelHeaderBefore.nroOS,
                 123456
             )
-            noteMotoMecSharedPreferencesDatasource.save(
+            itemMotoMecSharedPreferencesDatasource.save(
                 NoteMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     statusCon = true
@@ -303,7 +303,7 @@ class ISetNroOSCommonTest {
                 modelHeaderAfter.statusCon,
                 false
             )
-            val resultNoteGetAfter = noteMotoMecSharedPreferencesDatasource.get()
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true

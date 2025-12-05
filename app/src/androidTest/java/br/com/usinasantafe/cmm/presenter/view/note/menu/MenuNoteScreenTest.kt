@@ -12,8 +12,8 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.ItemMenuDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMechanicDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
@@ -21,8 +21,8 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomMode
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ItemMenuRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMechanicRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -66,13 +66,13 @@ class MenuNoteScreenTest {
     lateinit var functionStopDao: FunctionStopDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMechanicDao: NoteMechanicDao
+    lateinit var mechanicDao: MechanicDao
 
     @Test
     fun check_msg_if_not_have_data_in_config_shared_preferences() =
@@ -558,8 +558,8 @@ class MenuNoteScreenTest {
             )
         )
 
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 id = 1,
                 idHeader = 1,
                 nroOS = 123456,
@@ -571,24 +571,24 @@ class MenuNoteScreenTest {
 
         if (level == 2) return
 
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
                 item = 1,
                 dateHourFinish = null
             )
         )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 2,
                 os = 123456,
                 item = 1,
                 dateHourFinish = null
             )
         )
-        noteMechanicDao.insert(
-            NoteMechanicRoomModel(
+        mechanicDao.insert(
+            MechanicRoomModel(
                 idHeader = 1,
                 os = 123456,
                 item = 1,

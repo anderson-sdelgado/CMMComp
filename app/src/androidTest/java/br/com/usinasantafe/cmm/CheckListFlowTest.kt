@@ -13,11 +13,11 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.RespItemCheckListDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.RespItemCheckListSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
@@ -158,13 +158,13 @@ class CheckListFlowTest {
     lateinit var headerCheckListSharedPreferencesDatasource: HeaderCheckListSharedPreferencesDatasource
 
     @Inject
-    lateinit var respItemCheckListSharedPreferencesDatasource: RespItemCheckListSharedPreferencesDatasource
+    lateinit var itemRespCheckListSharedPreferencesDatasource: ItemRespCheckListSharedPreferencesDatasource
 
     @Inject
     lateinit var headerCheckListDao: HeaderCheckListDao
 
     @Inject
-    lateinit var respItemCheckListDao: RespItemCheckListDao
+    lateinit var itemRespCheckListDao: ItemRespCheckListDao
 
     @Before
     fun setup() {
@@ -330,7 +330,7 @@ class CheckListFlowTest {
             2200
         )
 
-        val resultListResp = respItemCheckListSharedPreferencesDatasource.list()
+        val resultListResp = itemRespCheckListSharedPreferencesDatasource.list()
         assertEquals(
             resultListResp.isSuccess,
             true
@@ -405,7 +405,7 @@ class CheckListFlowTest {
             2200
         )
 
-        val resultListRespFinish = respItemCheckListSharedPreferencesDatasource.list()
+        val resultListRespFinish = itemRespCheckListSharedPreferencesDatasource.list()
         assertEquals(
             resultListRespFinish.isSuccess,
             true
@@ -484,7 +484,7 @@ class CheckListFlowTest {
             StatusSend.SEND
         )
 
-        val respListRoom = respItemCheckListDao.all()
+        val respListRoom = itemRespCheckListDao.all()
         assertEquals(
             respListRoom.size,
             5

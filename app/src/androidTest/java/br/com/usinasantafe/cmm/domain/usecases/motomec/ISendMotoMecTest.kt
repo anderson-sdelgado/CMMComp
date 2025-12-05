@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -35,7 +35,7 @@ class ISendMotoMecTest {
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Test
     fun check_return_failure_if_not_have_data() =
@@ -173,7 +173,7 @@ class ISendMotoMecTest {
                 headerModelBefore.idServ,
                 null
             )
-            val noteListBefore = noteMotoMecDao.all()
+            val noteListBefore = itemMotoMecDao.all()
             assertEquals(
                 noteListBefore.size,
                 1
@@ -267,7 +267,7 @@ class ISendMotoMecTest {
                 headerModelAfter.idServ,
                 1
             )
-            val noteListAfter = noteMotoMecDao.all()
+            val noteListAfter = itemMotoMecDao.all()
             assertEquals(
                 noteListAfter.size,
                 1
@@ -335,8 +335,8 @@ class ISendMotoMecTest {
                 statusCon = true
             )
         )
-        noteMotoMecDao.insert(
-            NoteMotoMecRoomModel(
+        itemMotoMecDao.insert(
+            ItemMotoMecRoomModel(
                 id = 1,
                 idHeader = 1,
                 nroOS = 123456,

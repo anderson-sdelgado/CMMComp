@@ -13,10 +13,10 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.RActivityStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
@@ -59,7 +59,7 @@ class NoteFlowTest {
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -68,7 +68,7 @@ class NoteFlowTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
     lateinit var equipDao: EquipDao
@@ -134,7 +134,7 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        val resultEntityWithNroOS = noteMotoMecSharedPreferencesDatasource.get()
+        val resultEntityWithNroOS = itemMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultEntityWithNroOS.isSuccess,
             true
@@ -170,7 +170,7 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        val resultEntityWithIdActivity = noteMotoMecSharedPreferencesDatasource.get()
+        val resultEntityWithIdActivity = itemMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultEntityWithIdActivity.isSuccess,
             true
@@ -188,7 +188,7 @@ class NoteFlowTest {
             entityWithIdActivity.idStop,
             null
         )
-        val listNote = noteMotoMecDao.all()
+        val listNote = itemMotoMecDao.all()
         assertEquals(
             listNote.size,
             1
@@ -245,7 +245,7 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        val resultEntityWithIdActivityStop = noteMotoMecSharedPreferencesDatasource.get()
+        val resultEntityWithIdActivityStop = itemMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultEntityWithIdActivityStop.isSuccess,
             true
@@ -285,7 +285,7 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        val resultEntityWithIdStop = noteMotoMecSharedPreferencesDatasource.get()
+        val resultEntityWithIdStop = itemMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultEntityWithIdStop.isSuccess,
             true
@@ -303,7 +303,7 @@ class NoteFlowTest {
             entityWithIdStop.idStop,
             1
         )
-        val listNoteStop = noteMotoMecDao.all()
+        val listNoteStop = itemMotoMecDao.all()
         assertEquals(
             listNote.size,
             1

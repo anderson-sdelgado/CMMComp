@@ -2,9 +2,9 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.stable.RItemMenuStopDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.NoteMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.NoteMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RItemMenuStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
@@ -39,10 +39,10 @@ class ISetNoteMotoMecTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecSharedPreferencesDatasource: NoteMotoMecSharedPreferencesDatasource
+    lateinit var itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var noteMotoMecDao: NoteMotoMecDao
+    lateinit var itemMotoMecDao: ItemMotoMecDao
 
     @Inject
     lateinit var rItemMenuStopDao: RItemMenuStopDao
@@ -282,7 +282,7 @@ class ISetNoteMotoMecTest {
             StatusSend.SEND
         )
 
-        val resultNoteSharedPreferencesModel = noteMotoMecSharedPreferencesDatasource.get()
+        val resultNoteSharedPreferencesModel = itemMotoMecSharedPreferencesDatasource.get()
         assertEquals(
             resultNoteSharedPreferencesModel.isSuccess,
             true
@@ -301,7 +301,7 @@ class ISetNoteMotoMecTest {
             idStop
         )
 
-        val noteRoomModelList = noteMotoMecDao.all()
+        val noteRoomModelList = itemMotoMecDao.all()
         assertEquals(
             noteRoomModelList.size,
             1

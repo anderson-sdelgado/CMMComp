@@ -3,19 +3,19 @@ package br.com.usinasantafe.cmm.domain.entities.variable
 import java.util.Date
 
 data class PreCEC(
-    val nroEquip: Int? = null,
-    val libEquip: Int? = null,
-    val regColab: Long? = null,
-    val nroTrailer1: Int? = null,
-    val libTrailer1: Int? = null,
-    val nroTrailer2: Int? = null,
-    val libTrailer2: Int? = null,
-    val nroTrailer3: Int? = null,
-    val libTrailer3: Int? = null,
-    val nroTrailer4: Int? = null,
-    val libTrailer4: Int? = null,
-    val dateFieldArrival: Date? = null,
-    val dateFieldExit: Date? = null,
-    val dateMillExit: Date? = null,
-    val nroTurn: Int? = null
+    var nroEquip: Int? = null,
+    var libEquip: Int? = null,
+    var regColab: Long? = null,
+    var nroTrailer1: Int? = null,
+    var libTrailer1: Int? = null,
+    var nroTrailer2: Int? = null,
+    var libTrailer2: Int? = null,
+    var nroTrailer3: Int? = null,
+    var libTrailer3: Int? = null,
+    var nroTrailer4: Int? = null,
+    var libTrailer4: Int? = null,
+    var dateExitMill: Date? = null,
+    var dateFieldArrival: Date? = null,
+    var dateExitField: Date? = null,
+    var nroTurn: Int? = null
 )

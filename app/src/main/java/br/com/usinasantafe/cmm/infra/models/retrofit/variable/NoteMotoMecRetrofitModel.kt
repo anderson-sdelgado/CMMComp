@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
-import br.com.usinasantafe.cmm.infra.models.room.variable.NoteMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -19,7 +19,7 @@ data class NoteMotoMecRetrofitModelInput(
     val idServ: Int
 )
 
-fun NoteMotoMecRoomModel.roomModelToRetrofitModel(): NoteMotoMecRetrofitModelOutput {
+fun ItemMotoMecRoomModel.roomModelToRetrofitModel(): NoteMotoMecRetrofitModelOutput {
     return with(this) {
         NoteMotoMecRetrofitModelOutput(
             id = this.id!!,

@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
-import br.com.usinasantafe.cmm.domain.entities.variable.NoteMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
@@ -58,13 +58,13 @@ class IHistoryListTest {
     fun `Check return failure if have error in StopRepository getById`() =
         runTest {
             val list = listOf(
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 1,
                     nroOS = 123456,
                     idActivity = 1,
                     idStop = 1
                 ),
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 2,
                     nroOS = 123456,
                     idActivity = 1
@@ -103,13 +103,13 @@ class IHistoryListTest {
     fun `Check return failure if have error in ActivityRepository getById`() =
         runTest {
             val list = listOf(
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 1,
                     nroOS = 123456,
                     idActivity = 1,
                     idStop = 1
                 ),
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 2,
                     nroOS = 123456,
                     idActivity = 1
@@ -159,14 +159,14 @@ class IHistoryListTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             val list = listOf(
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 1,
                     nroOS = 123456,
                     idActivity = 1,
                     idStop = 1,
                     dateHour = Date(1761046154000)
                 ),
-                NoteMotoMec(
+                ItemMotoMec(
                     id = 2,
                     nroOS = 123456,
                     idActivity = 1,
