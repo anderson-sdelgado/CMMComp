@@ -24,7 +24,7 @@ class IHeaderCheckListRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun checkSend(): Result<Boolean> {
+    override suspend fun hasSend(): Result<Boolean> {
         try {
             val check = headerCheckListDao.countByStatusSend(StatusSend.SEND) > 0
             return Result.success(check)

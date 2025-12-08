@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.work.WorkManager
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.lib.BASE_DB
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES
 import dagger.Module

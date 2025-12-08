@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.external.room
 
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.*
 import dagger.Module
 import dagger.Provides

@@ -5,14 +5,14 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusComposting
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TB_COMPOSTING_INPUT
+import br.com.usinasantafe.cmm.lib.TB_COMPOUND_COMPOSTING
 
-@Entity(tableName = TB_COMPOSTING_INPUT)
-data class CompostingInputRoomModel(
+@Entity(tableName = TB_COMPOUND_COMPOSTING)
+data class CompoundCompostingRoomModel(
     @PrimaryKey
     var id: Int? = null,
+    var idWill: Int? = null,
     var status: Status = Status.OPEN,
     var statusSend: StatusSend = StatusSend.SEND,
-    val statusComposting: StatusComposting = StatusComposting.LOAD
+    var statusComposting: StatusComposting = StatusComposting.LOAD
 )
-

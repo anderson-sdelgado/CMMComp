@@ -32,4 +32,12 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindRespItemCheckListRoomDatasource(dataSource: IItemRespCheckListRoomDatasource): ItemRespCheckListRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindInputCompostingRoomDatasource(dataSource: IInputCompostingRoomDatasource): InputCompostingRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindCompoundCompostingRoomDatasource(dataSource: ICompoundCompostingRoomDatasource): CompoundCompostingRoomDatasource
+
 }

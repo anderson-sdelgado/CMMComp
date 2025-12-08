@@ -11,7 +11,7 @@ import br.com.usinasantafe.cmm.di.provider.DefaultRetrofit
 import br.com.usinasantafe.cmm.di.provider.PersistenceModule
 import br.com.usinasantafe.cmm.di.provider.ShortTimeoutHttpClient
 import br.com.usinasantafe.cmm.di.provider.ShortTimeoutRetrofit
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext

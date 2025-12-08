@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "f7237713aedd8dda3e108a9af8a6ca84",
+    "identityHash": "5855d7f806f81d77b2564a97659cc455",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -653,7 +653,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_note_moto_mec",
+        "tableName": "tb_item_moto_mec",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, `idEquipTrans` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -789,7 +789,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_resp_item_check_list",
+        "tableName": "tb_item_resp_check_list",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -833,7 +833,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "tb_note_mechanic",
+        "tableName": "tb_mechanic",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `os` INTEGER NOT NULL, `item` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
@@ -898,7 +898,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f7237713aedd8dda3e108a9af8a6ca84')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5855d7f806f81d77b2564a97659cc455')"
     ]
   }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
-import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
+import br.com.usinasantafe.cmm.domain.usecases.composting.HasWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
@@ -85,8 +85,8 @@ class MenuNoteViewModel @Inject constructor(
     private val setDatePreCEC: SetDatePreCEC, // ok
     private val hasCouplingTrailer: HasCouplingTrailer, // ok
     private val getFlowComposting: GetFlowComposting, // ok
-    private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen,
-    private val checkWill: CheckWill,
+    private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen, // ok
+    private val hasWill: HasWill,
     private val uncouplingTrailer: UncouplingTrailer
 ) : ViewModel() {
 
@@ -255,7 +255,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleShowInfoWill(): Boolean {
-        val check = checkWill().getOrElse {
+        val check = hasWill().getOrElse {
             handleFailure(it)
             return false
         }

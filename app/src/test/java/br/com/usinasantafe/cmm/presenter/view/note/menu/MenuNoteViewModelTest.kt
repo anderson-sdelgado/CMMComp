@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
-import br.com.usinasantafe.cmm.domain.usecases.composting.CheckWill
+import br.com.usinasantafe.cmm.domain.usecases.composting.HasWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
@@ -73,7 +73,7 @@ class MenuNoteViewModelTest {
     private val hasCouplingTrailer = mock<HasCouplingTrailer>()
     private val getFlowComposting = mock<GetFlowComposting>()
     private val hasCompostingInputLoadSentOpen = mock<HasCompostingInputLoadSentOpen>()
-    private val checkWill = mock<CheckWill>()
+    private val hasWill = mock<HasWill>()
     private val uncouplingTrailer = mock<UncouplingTrailer>()
 
     private val viewModel = MenuNoteViewModel(
@@ -90,7 +90,7 @@ class MenuNoteViewModelTest {
         hasCouplingTrailer = hasCouplingTrailer,
         getFlowComposting = getFlowComposting,
         hasCompostingInputLoadSentOpen = hasCompostingInputLoadSentOpen,
-        checkWill = checkWill,
+        hasWill = hasWill,
         uncouplingTrailer = uncouplingTrailer
     )
 
@@ -2139,7 +2139,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                checkWill()
+                hasWill()
             ).thenReturn(
                 resultFailure(
                     context = "CheckWill",
@@ -2177,7 +2177,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                checkWill()
+                hasWill()
             ).thenReturn(
                 Result.success(false)
             )
@@ -2211,7 +2211,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                checkWill()
+                hasWill()
             ).thenReturn(
                 Result.success(true)
             )

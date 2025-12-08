@@ -758,7 +758,7 @@ class ICheckListRepositoryTest {
     fun `checkSend - Check return failure if have error in HeaderCheckListRoomDatasource checkSend`() =
         runTest {
             whenever(
-                headerCheckListRoomDatasource.checkSend()
+                headerCheckListRoomDatasource.hasSend()
             ).thenReturn(
                 resultFailure(
                     "IHeaderCheckListRoomDatasource.checkSend",
@@ -785,7 +785,7 @@ class ICheckListRepositoryTest {
     fun `checkSend - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerCheckListRoomDatasource.checkSend()
+                headerCheckListRoomDatasource.hasSend()
             ).thenReturn(
                 Result.success(true)
             )

@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.external.room
+package br.com.usinasantafe.cmm.lib
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
@@ -8,7 +8,6 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.*
 import br.com.usinasantafe.cmm.external.room.dao.variable.*
 import br.com.usinasantafe.cmm.infra.models.room.stable.*
 import br.com.usinasantafe.cmm.infra.models.room.variable.*
-import br.com.usinasantafe.cmm.lib.VERSION_DB
 import java.util.Date
 
 @Database(
@@ -32,6 +31,8 @@ import java.util.Date
         HeaderCheckListRoomModel::class,
         ItemRespCheckListRoomModel::class,
         MechanicRoomModel::class,
+        InputCompostingRoomModel::class,
+        CompoundCompostingRoomModel::class
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -56,6 +57,8 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun headerCheckListDao(): HeaderCheckListDao
     abstract fun respItemCheckListDao(): ItemRespCheckListDao
     abstract fun noteMechanicDao(): MechanicDao
+    abstract fun inputCompostingDao(): InputCompostingDao
+    abstract fun compoundCompostingDao(): CompoundCompostingDao
 }
 
 class Converters {

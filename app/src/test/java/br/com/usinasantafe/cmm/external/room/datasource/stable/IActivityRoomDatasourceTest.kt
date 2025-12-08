@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.room.datasource.stable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.ActivityDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import kotlinx.coroutines.test.runTest

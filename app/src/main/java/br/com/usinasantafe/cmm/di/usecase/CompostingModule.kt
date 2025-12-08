@@ -17,7 +17,7 @@ interface CompostingModule {
 
     @Binds
     @Singleton
-    fun bindCheckWill(usecase: ICheckWill): CheckWill
+    fun bindCheckWill(usecase: IHasWill): HasWill
 
     @Binds
     @Singleton

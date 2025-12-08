@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.room.datasource.variable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -90,9 +90,9 @@ class IHeaderCheckListRoomDatasourceTest {
         }
 
     @Test
-    fun `checkByStatusSend - Check return false when list is empty`() =
+    fun `hasSend - Check return false when list is empty`() =
         runTest {
-            val result = datasource.checkSend()
+            val result = datasource.hasSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -104,7 +104,7 @@ class IHeaderCheckListRoomDatasourceTest {
         }
 
     @Test
-    fun `checkByStatusSend - Check return true when list is not empty`() =
+    fun `hasSend - Check return true when list is not empty`() =
         runTest {
             headerCheckListDao.insert(
                 HeaderCheckListRoomModel(
@@ -114,7 +114,7 @@ class IHeaderCheckListRoomDatasourceTest {
                     dateHour = Date(1760711032)
                 )
             )
-            val result = datasource.checkSend()
+            val result = datasource.hasSend()
             assertEquals(
                 result.isSuccess,
                 true

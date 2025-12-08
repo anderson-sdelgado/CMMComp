@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.room.datasource.variable
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.lib.Status

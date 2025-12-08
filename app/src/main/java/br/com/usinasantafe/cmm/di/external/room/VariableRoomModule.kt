@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.di.external.room
 
-import br.com.usinasantafe.cmm.external.room.DatabaseRoom
+import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.variable.*
 import dagger.Module
 import dagger.Provides
@@ -42,4 +42,15 @@ object VariableRoomModule {
         return database.respItemCheckListDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideInputComposting(database: DatabaseRoom): InputCompostingDao {
+        return database.inputCompostingDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompoundComposting(database: DatabaseRoom): CompoundCompostingDao {
+        return database.compoundCompostingDao()
+    }
 }

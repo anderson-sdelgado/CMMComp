@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomMod
 
 interface HeaderCheckListRoomDatasource {
     suspend fun save(headerCheckListRoomModel: HeaderCheckListRoomModel): Result<Long>
-    suspend fun checkSend(): Result<Boolean>
+    suspend fun hasSend(): Result<Boolean>
     suspend fun listBySend(): Result<List<HeaderCheckListRoomModel>>
     suspend fun setSentAndIdServById(
         id: Int,
