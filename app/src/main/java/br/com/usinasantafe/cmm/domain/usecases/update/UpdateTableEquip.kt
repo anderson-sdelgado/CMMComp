@@ -14,18 +14,17 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-interface UpdateTableEquipByIdEquip {
+interface UpdateTableEquip {
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel>
 }
 
-class IUpdateTableEquipByIdEquip @Inject constructor(
+class IUpdateTableEquip @Inject constructor(
     private val getToken: GetToken,
     private val equipRepository: EquipRepository,
-    private val configRepository: ConfigRepository,
-): UpdateTableEquipByIdEquip {
+): UpdateTableEquip {
 
     override suspend fun invoke(
         sizeAll: Float,
@@ -56,26 +55,8 @@ class IUpdateTableEquipByIdEquip @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultGetConfig = configRepository.get()
-        resultGetConfig.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val config = resultGetConfig.getOrNull()!!
-        val resultGetList = equipRepository.listByIdEquip(
-            token = token,
-            idEquip = config.idEquip!!
+        val resultGetList = equipRepository.listAll(
+            token = token
         )
         resultGetList.onFailure {
             val failure = failure(getClassAndMethod(), it)

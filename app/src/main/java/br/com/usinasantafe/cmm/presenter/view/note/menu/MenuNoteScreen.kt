@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.BuildConfig
 import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.domain.errors.removeRepeatedCalls
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
@@ -89,9 +90,9 @@ fun MenuNoteScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.menuList(BuildConfig.FLAVOR_app)
                 viewModel.descrEquip()
                 viewModel.flowEquipNote()
+                viewModel.menuList(BuildConfig.FLAVOR_app)
             }
 
             MenuNoteContent(
@@ -268,7 +269,7 @@ fun MenuNoteContent(
                 text = when(errors) {
                     Errors.INVALID -> stringResource(
                         id = R.string.text_selection_option_invalid,
-                        failure
+                        removeRepeatedCalls(failure)
                     )
                     Errors.HEADER_EMPTY -> stringResource(id = R.string.text_header_empty)
                     Errors.NOTE_MECHANICAL_OPEN -> stringResource(id = R.string.text_msg_note_mechanic_open)
@@ -281,7 +282,7 @@ fun MenuNoteContent(
                     Errors.LAST_NOTE_WORK -> stringResource(id = R.string.text_msg_without_note_stop)
                     else -> stringResource(
                         id = R.string.text_failure,
-                        failure
+                        removeRepeatedCalls(failure)
                     )
                 }
             } else {

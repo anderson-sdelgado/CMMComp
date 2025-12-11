@@ -34,7 +34,7 @@ class IListActivity @Inject constructor(
                 )
             }
             val config = resultGetConfig.getOrNull()!!
-            val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(config.idEquip!!)
+            val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(config.equip!!.id)
             resultGetREquipActivityList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

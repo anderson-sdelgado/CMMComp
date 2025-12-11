@@ -1,11 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -14,58 +16,18 @@ import org.mockito.kotlin.whenever
 
 class IGetTurnListTest {
 
-    private val configRepository = mock<ConfigRepository>()
     private val turnRepository = mock<TurnRepository>()
     private val equipRepository = mock<EquipRepository>()
     private val usecase = IListTurn(
-        configRepository = configRepository,
         turnRepository = turnRepository,
         equipRepository = equipRepository
     )
 
     @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
-        runTest {
-            whenever(
-                configRepository.get()
-            ).thenReturn(
-                resultFailure(
-                    "ConfigRepository.get",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IListTurn -> ConfigRepository.get"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in EquipRepository getCodTurnEquipByIdEquip`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 1,
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getCodTurnEquipByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getCodTurnEquip()
             ).thenReturn(
                 resultFailure(
                     "EquipRepository.getCodTurnEquipByIdEquip",
@@ -92,18 +54,7 @@ class IGetTurnListTest {
     fun `Check return failure if have error in TurnRepository getListByCodTurnEquip`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 1,
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getCodTurnEquipByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getCodTurnEquip()
             ).thenReturn(
                 Result.success(10)
             )
@@ -137,18 +88,7 @@ class IGetTurnListTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 1,
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getCodTurnEquipByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getCodTurnEquip()
             ).thenReturn(
                 Result.success(10)
             )

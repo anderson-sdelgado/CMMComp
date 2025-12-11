@@ -1,34 +1,32 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_CONFIG
-import br.com.usinasantafe.cmm.lib.FlagUpdate
-import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_EQUIP
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
-import java.util.Date
 import javax.inject.Inject
-import androidx.core.content.edit
 
-class IConfigSharedPreferencesDatasource @Inject constructor(
+class IEquipSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
-): ConfigSharedPreferencesDatasource {
+): EquipSharedPreferencesDatasource {
 
-    override suspend fun get(): Result<ConfigSharedPreferencesModel?> {
+    fun get(): Result<EquipSharedPreferencesModel?> {
         try {
-            val config = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_CONFIG,
+            val string = sharedPreferences.getString(
+                BASE_SHARE_PREFERENCES_TABLE_EQUIP,
                 null
             )
-            if(config.isNullOrEmpty())
+            if(string.isNullOrEmpty())
                 return Result.success(null)
             return Result.success(
                 Gson().fromJson(
-                    config,
-                    ConfigSharedPreferencesModel::class.java
+                    string,
+                    EquipSharedPreferencesModel::class.java
                 )
             )
         } catch (e: Exception){
@@ -39,26 +37,11 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun has(): Result<Boolean> {
-        try {
-            val result = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_CONFIG,
-                null
-            )
-            return Result.success(result != null)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
-    }
-
-    override suspend fun save(model: ConfigSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: EquipSharedPreferencesModel): Result<Boolean> {
         try {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_CONFIG,
+                    BASE_SHARE_PREFERENCES_TABLE_EQUIP,
                     Gson().toJson(model)
                 )
             }
@@ -71,17 +54,112 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
+    override suspend fun getId(): Result<Int> {
         try {
-            val resultConfig = get()
-            resultConfig.onFailure {
+            val result = get()
+            result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = it
                 )
             }
-            val model = resultConfig.getOrNull()!!
-            model.flagUpdate = flagUpdate
+            val model = result.getOrNull()!!
+            return Result.success(model.id)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getNro(): Result<Long> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.nro)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getDescrClass(): Result<String> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.descrClass)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getCodTurnEquip(): Result<Int> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.codTurnEquip)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getHourMeter(): Result<Double> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.hourMeter)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun updateHourMeter(hourMeter: Double): Result<Boolean> {
+        try {
+            val resultGet = get()
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            model.hourMeter = hourMeter
             val resultSave = save(model)
             resultSave.onFailure {
                 return resultFailure(
@@ -89,26 +167,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
-    }
-
-    override suspend fun getPassword(): Result<String> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.password)
+            return resultSave
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -117,7 +176,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getFlagUpdate(): Result<FlagUpdate> {
+    override suspend fun getTypeEquip(): Result<TypeEquip> {
         try {
             val result = get()
             result.onFailure {
@@ -127,7 +186,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             }
             val model = result.getOrNull()!!
-            return Result.success(model.flagUpdate)
+            return Result.success(model.typeEquip)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -136,7 +195,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getNumber(): Result<Long> {
+    override suspend fun getIdCheckList(): Result<Int> {
         try {
             val result = get()
             result.onFailure {
@@ -146,7 +205,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             }
             val model = result.getOrNull()!!
-            return Result.success(model.number)
+            return Result.success(model.idCheckList)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -155,34 +214,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean> {
-        try {
-            val resultConfig = get()
-            resultConfig.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultConfig.getOrNull()!!
-            model.statusSend = statusSend
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
-    }
-
-    override suspend fun getIdTurnCheckListLast(): Result<Int?> {
+    override suspend fun getFlagMechanic(): Result<Boolean> {
         try {
             val result = get()
             result.onFailure {
@@ -192,7 +224,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             }
             val model = result.getOrNull()!!
-            return Result.success(model.idTurnCheckListLast)
+            return Result.success(model.flagMechanic)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -201,7 +233,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getDateCheckListLast(): Result<Date> {
+    override suspend fun getFlagTire(): Result<Boolean> {
         try {
             val result = get()
             result.onFailure {
@@ -211,7 +243,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                 )
             }
             val model = result.getOrNull()!!
-            return Result.success(model.dateLastCheckList!!)
+            return Result.success(model.flagTire)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

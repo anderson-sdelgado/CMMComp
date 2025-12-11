@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.configuration.config
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
@@ -10,7 +11,7 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
@@ -25,6 +26,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -47,7 +49,7 @@ class ConfigViewModelTest {
     private val saveDataConfig = mock<SaveDataConfig>()
     private val updateTableActivity = mock<UpdateTableActivity>()
     private val updateTableColab = mock<UpdateTableColab>()
-    private val updateTableEquipByIdEquip = mock<UpdateTableEquipByIdEquip>()
+    private val updateTableEquip = mock<UpdateTableEquip>()
     private val updateTableItemCheckListByNroEquip = mock<UpdateTableItemCheckListByNroEquip>()
     private val updateTableRActivityStop = mock<UpdateTableRActivityStop>()
     private val updateTableREquipActivityByIdEquip = mock<UpdateTableREquipActivityByIdEquip>()
@@ -69,7 +71,7 @@ class ConfigViewModelTest {
         saveDataConfig = saveDataConfig,
         updateTableActivity = updateTableActivity,
         updateTableColab = updateTableColab,
-        updateTableEquipByIdEquip = updateTableEquipByIdEquip,
+        updateTableEquip = updateTableEquip,
         updateTableItemCheckListByNroEquip = updateTableItemCheckListByNroEquip,
         updateTableRActivityStop = updateTableRActivityStop,
         updateTableREquipActivityByIdEquip = updateTableREquipActivityByIdEquip,
@@ -287,7 +289,19 @@ class ConfigViewModelTest {
                 Result.success(
                     Config(
                         idServ = 1,
-                        idEquip = 1
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
                     )
                 )
             )
@@ -295,12 +309,23 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
                     checkMotoMec = true,
-                    idBD = 1,
-                    idEquip = 1
+                    idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
                 )
             ).thenReturn(
                 resultFailure(
@@ -381,7 +406,19 @@ class ConfigViewModelTest {
                 Result.success(
                     Config(
                         idServ = 1,
-                        idEquip = 1
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
                     )
                 )
             )
@@ -389,12 +426,23 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
                     checkMotoMec = true,
-                    idBD = 1,
-                    idEquip = 1
+                    idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
                 )
             ).thenReturn(
                 Result.success(true)
@@ -558,7 +606,7 @@ class ConfigViewModelTest {
             wheneverSuccessActivity()
             wheneverSuccessColab()
             whenever(
-                updateTableEquipByIdEquip(
+                updateTableEquip(
                     sizeAll = sizeAll,
                     count = (qtdBefore + 1)
                 )
@@ -1196,7 +1244,19 @@ class ConfigViewModelTest {
                 Result.success(
                     Config(
                         idServ = 1,
-                        idEquip = 1
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
                     )
                 )
             )
@@ -1204,12 +1264,23 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
                     checkMotoMec = true,
-                    idBD = 1,
-                    idEquip = 1
+                    idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
                 )
             ).thenReturn(
                 Result.success(true)
@@ -1312,7 +1383,19 @@ class ConfigViewModelTest {
                 Result.success(
                     Config(
                         idServ = 1,
-                        idEquip = 1
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
                     )
                 )
             )
@@ -1320,12 +1403,23 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
                     checkMotoMec = true,
-                    idBD = 1,
-                    idEquip = 1
+                    idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
                 )
             ).thenReturn(
                 Result.success(true)
@@ -1625,7 +1719,7 @@ class ConfigViewModelTest {
     private fun wheneverSuccessEquip() =
         runTest {
             whenever(
-                updateTableEquipByIdEquip(
+                updateTableEquip(
                     sizeAll = sizeAll,
                     count = ++contUpdate
                 )

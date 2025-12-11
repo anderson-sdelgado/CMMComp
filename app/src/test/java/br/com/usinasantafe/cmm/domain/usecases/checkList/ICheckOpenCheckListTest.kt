@@ -23,44 +23,10 @@ class ICheckOpenCheckListTest {
     )
 
     @Test
-    fun `Check return failure if have error in ConfigRepository getIdEquip`() =
-        runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                resultFailure(
-                    context = "IConfigRepository.getIdEquip",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ICheckOpenCheckList -> IConfigRepository.getIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in EquipRepository getIdCheckListByIdEquip`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 resultFailure(
                     context = "IEquipRepository.getIdCheckListByIdEquip",
@@ -87,14 +53,7 @@ class ICheckOpenCheckListTest {
     fun `Check return false if idCheckList is 0`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(0)
             )
@@ -113,14 +72,7 @@ class ICheckOpenCheckListTest {
     fun `Check return failure if have error in ConfigRepository getIdTurnCheckListLast`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(1)
             )
@@ -151,14 +103,7 @@ class ICheckOpenCheckListTest {
     fun `Check return true if idTurnCheckListLast is null`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(1)
             )
@@ -182,14 +127,7 @@ class ICheckOpenCheckListTest {
     fun `Check return failure if have error in MotoMecRepository getIdTurnHeader`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -226,14 +164,7 @@ class ICheckOpenCheckListTest {
     fun `Check return true if idTurnCheckListLast is different of idTurnCheckList`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -262,14 +193,7 @@ class ICheckOpenCheckListTest {
     fun `Check return failure if have error in ConfigRepository getDateCheckListLast()`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -307,61 +231,11 @@ class ICheckOpenCheckListTest {
             )
         }
 
-//    @Test
-//    fun `Check return false if dateCheckListLast is equal of date now`() =
-//        runTest {
-//            whenever(
-//                configRepository.getIdEquip()
-//            ).thenReturn(
-//                Result.success(1)
-//            )
-//            whenever(
-//                equipRepository.getIdCheckListByIdEquip(
-//                    idEquip = 1
-//                )
-//            ).thenReturn(
-//                Result.success(10)
-//            )
-//            whenever(
-//                configRepository.getIdTurnCheckListLast()
-//            ).thenReturn(
-//                Result.success(1)
-//            )
-//            whenever(
-//                motoMecRepository.getIdTurnHeader()
-//            ).thenReturn(
-//                Result.success(1)
-//            )
-//            whenever(
-//                configRepository.getDateCheckListLast()
-//            ).thenReturn(
-//                Result.success(
-//                    Date(1750793470000)
-//                )
-//            )
-//            val result = usecase()
-//            assertEquals(
-//                result.isSuccess,
-//                true
-//            )
-//            assertEquals(
-//                result.getOrNull()!!,
-//                false
-//            )
-//        }
-
     @Test
     fun `Check return true if dateCheckListLast is different of date now`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(
-                    idEquip = 1
-                )
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )

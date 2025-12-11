@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
@@ -9,6 +10,7 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -122,7 +124,19 @@ class IUpdateTableREquipActivityByIdEquipTest {
     fun `Check return failure if have error in REquipActivityRepository getListByIdEquip`() =
         runTest {
             val config = Config(
-                idEquip = 10
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             whenever(
                 getToken()
@@ -180,7 +194,19 @@ class IUpdateTableREquipActivityByIdEquipTest {
     fun `Check return failure if have error in REquipActivityRepository deleteAll`() =
         runTest {
             val config = Config(
-                idEquip = 10
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             val list = listOf(
                 REquipActivity(
@@ -261,7 +287,19 @@ class IUpdateTableREquipActivityByIdEquipTest {
     fun `Check return failure if have error in REquipActivityRepository addAll`() =
         runTest {
             val config = Config(
-                idEquip = 10
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             val list = listOf(
                 REquipActivity(

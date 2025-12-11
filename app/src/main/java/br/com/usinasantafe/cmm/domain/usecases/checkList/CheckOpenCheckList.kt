@@ -22,14 +22,7 @@ class ICheckOpenCheckList @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> {
         try {
-            val resultGetIdEquip = configRepository.getIdEquip()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(resultGetIdEquip.getOrNull()!!)
+            val resultGetIdCheckList = equipRepository.getIdCheckList()
             resultGetIdCheckList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

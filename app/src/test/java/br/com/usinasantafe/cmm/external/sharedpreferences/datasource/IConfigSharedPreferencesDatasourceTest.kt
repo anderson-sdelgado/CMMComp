@@ -4,8 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -13,6 +15,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import java.util.Date
+import kotlin.Long
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
@@ -34,6 +37,12 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `get - Check return data correct the Config SharedPreferences internal`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
+                number = 1,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -67,6 +76,12 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `has - Check return true if have data`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
+                number = 1,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -103,7 +118,13 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `getPassword - Check return correct if function execute successfully`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
-                password = "12345"
+                number = 1,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT
             )
             datasource.save(data)
             val result = datasource.getPassword()
@@ -135,6 +156,13 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `getFlagUpdate - Check return correct if function execute successfully`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
+                number = 1,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT,
                 flagUpdate = FlagUpdate.UPDATED
             )
             datasource.save(data)
@@ -171,7 +199,13 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `getNumber - Check return correct if function execute successfully`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
-                number = 16997417840
+                number = 16997417840,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT
             )
             datasource.save(data)
             val result = datasource.getNumber()
@@ -186,46 +220,17 @@ class IConfigSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `getIdEquip - Check return failure if field is null`() =
-        runTest {
-            val result = datasource.getIdEquip()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigSharedPreferencesDatasource.getIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
-            )
-        }
-
-    @Test
-    fun `getIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            val data = ConfigSharedPreferencesModel(
-                idEquip = 1
-            )
-            datasource.save(data)
-            val result = datasource.getIdEquip()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                1
-            )
-        }
-
-    @Test
     fun `getIdTurnCheckListLast - Check return null if idTurnCheckListLast not is null`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
-                idTurnCheckListLast = 1
+                number = 16997417840,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT,
+                idTurnCheckListLast = 1,
             )
             datasource.save(data)
             val result = datasource.getIdTurnCheckListLast()
@@ -261,6 +266,13 @@ class IConfigSharedPreferencesDatasourceTest {
     fun `getDateCheckListLast - Check return correct if function execute successfully`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT,
                 dateLastCheckList = Date(1750857777000)
             )
             datasource.save(data)
@@ -276,46 +288,17 @@ class IConfigSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `getNroEquip - Check return failure if field is null`() =
-        runTest {
-            val result = datasource.getNroEquip()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigSharedPreferencesDatasource.getNroEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
-            )
-        }
-
-    @Test
-    fun `getNroEquip - Check return correct if function execute successfully`() =
-        runTest {
-            val data = ConfigSharedPreferencesModel(
-                nroEquip = 100L
-            )
-            datasource.save(data)
-            val result = datasource.getNroEquip()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                100L
-            )
-        }
-
-    @Test
     fun `setFlagUpdate - Check return data correct the Config SharedPreferences internal`() =
         runTest {
             val data = ConfigSharedPreferencesModel(
-                statusSend = StatusSend.SENT
+                number = 16997417840,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = "PMM",
+                statusSend = StatusSend.SENT,
+                dateLastCheckList = Date(1750857777000)
             )
             datasource.save(data)
             val resultBefore = datasource.get()

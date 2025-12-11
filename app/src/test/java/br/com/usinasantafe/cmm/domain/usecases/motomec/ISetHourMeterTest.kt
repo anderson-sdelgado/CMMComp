@@ -101,9 +101,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 resultFailure(
@@ -143,9 +142,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 Result.success(true)
@@ -190,9 +188,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 Result.success(true)
@@ -298,9 +295,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 resultFailure(
@@ -343,9 +339,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 Result.success(true)
@@ -393,9 +388,8 @@ class ISetHourMeterTest {
                 Result.success(1)
             )
             whenever(
-                equipRepository.updateHourMeterByIdEquip(
-                    hourMeter = 10000.0,
-                    idEquip = 1
+                equipRepository.updateHourMeter(
+                    hourMeter = 10000.0
                 )
             ).thenReturn(
                 Result.success(true)

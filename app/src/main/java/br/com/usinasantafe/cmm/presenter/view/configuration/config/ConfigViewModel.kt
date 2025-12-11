@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquipByIdEquip
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
@@ -82,7 +82,7 @@ class ConfigViewModel @Inject constructor(
     private val saveDataConfig: SaveDataConfig,
     private val updateTableActivity: UpdateTableActivity,
     private val updateTableColab: UpdateTableColab,
-    private val updateTableEquipByIdEquip: UpdateTableEquipByIdEquip,
+    private val updateTableEquip: UpdateTableEquip,
     private val updateTableFunctionActivity: UpdateTableFunctionActivity,
     private val updateTableFunctionStop: UpdateTableFunctionStop,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
@@ -166,11 +166,13 @@ class ConfigViewModel @Inject constructor(
         val s = uiState.value
         val sizeToken = 3f
 
-        emit(s.copy(
-            flagProgress = true,
-            levelUpdate = LevelUpdate.GET_TOKEN,
-            currentProgress = percentage(1f, sizeToken)
-        ))
+        emit(
+            s.copy(
+                flagProgress = true,
+                levelUpdate = LevelUpdate.GET_TOKEN,
+                currentProgress = percentage(1f, sizeToken)
+            )
+        )
 
         val sendResult = sendDataConfig(
             number = s.number,
@@ -198,10 +200,9 @@ class ConfigViewModel @Inject constructor(
             password = s.password,
             version = s.version,
             app = s.app,
-            nroEquip = s.nroEquip,
             checkMotoMec = s.checkMotoMec,
-            idBD = config.idServ ?: 0,
-            idEquip = config.idEquip ?: 0
+            idServ = config.idServ ?: 0,
+            equip = config.equip!!
         )
 
         saveResult.getOrElse {
@@ -240,7 +241,7 @@ class ConfigViewModel @Inject constructor(
         val steps = listOf(
             updateTableActivity(size, 1f),
             updateTableColab(size, 2f),
-            updateTableEquipByIdEquip(size, 3f),
+            updateTableEquip(size, 3f),
             updateTableFunctionActivity(size, 4f),
             updateTableFunctionStop(size, 5f),
             updateTableItemCheckListByNroEquip(size, 6f),

@@ -73,19 +73,19 @@ data class MenuNoteState(
 
 @HiltViewModel
 class MenuNoteViewModel @Inject constructor(
-    private val listItemMenu: ListItemMenu, //ok
-    private val getDescrEquip: GetDescrEquip, //ok
-    private val checkHasNoteMotoMec: CheckHasNoteMotoMec, //ok
-    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic, //ok
-    private val getFlowEquip: GetFlowEquip, //ok
-    private val getStatusTranshipment: GetStatusTranshipment, //ok
-    private val checkTypeLastNote: CheckTypeLastNote, // ok
-    private val finishNoteMechanic: FinishNoteMechanic, // ok
-    private val setNoteMotoMec: SetNoteMotoMec, // ok
-    private val setDatePreCEC: SetDatePreCEC, // ok
-    private val hasCouplingTrailer: HasCouplingTrailer, // ok
-    private val getFlowComposting: GetFlowComposting, // ok
-    private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen, // ok
+    private val listItemMenu: ListItemMenu,
+    private val getDescrEquip: GetDescrEquip,
+    private val checkHasNoteMotoMec: CheckHasNoteMotoMec,
+    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic,
+    private val getFlowEquip: GetFlowEquip,
+    private val getStatusTranshipment: GetStatusTranshipment,
+    private val checkTypeLastNote: CheckTypeLastNote,
+    private val finishNoteMechanic: FinishNoteMechanic,
+    private val setNoteMotoMec: SetNoteMotoMec,
+    private val setDatePreCEC: SetDatePreCEC,
+    private val hasCouplingTrailer: HasCouplingTrailer,
+    private val getFlowComposting: GetFlowComposting,
+    private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen,
     private val hasWill: HasWill,
     private val uncouplingTrailer: UncouplingTrailer
 ) : ViewModel() {

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowEquipNote
@@ -12,13 +13,13 @@ interface GetFlowEquip {
 }
 
 class IGetFlowEquip @Inject constructor(
-    private val configRepository: ConfigRepository,
     private val motoMecRepository: MotoMecRepository,
+    private val equipRepository: EquipRepository,
 ): GetFlowEquip {
 
     override suspend fun invoke(): Result<FlowEquipNote> {
         try {
-            val resultGetIdEquipConfig = configRepository.getIdEquip()
+            val resultGetIdEquipConfig = equipRepository.getIdEquipMain()
             resultGetIdEquipConfig.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

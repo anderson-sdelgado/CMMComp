@@ -25,10 +25,14 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
+import br.com.usinasantafe.cmm.utils.dataMenu
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -74,8 +78,10 @@ class MenuNoteScreenTest {
     @Inject
     lateinit var mechanicDao: MechanicDao
 
+    ////////////////////////////////////////// PMM ////////////////////////////////////////////////
+
     @Test
-    fun check_msg_if_not_have_data_in_config_shared_preferences() =
+    fun pmm_check_msg_if_not_have_data_in_config_shared_preferences() =
         runTest(
             timeout = 10.minutes
         ) {
@@ -87,106 +93,105 @@ class MenuNoteScreenTest {
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IConfigRepository.getIdEquip -> IConfigSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_msg_if_not_have_data_in_moto_mec_shared_preferences() =
+    fun pmm_check_msg_if_not_have_id_equip_in_moto_mec_shared_preferences() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(1)
+            registerPMM(1)
 
             setContent()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> IEquipRepository.getDescrByIdEquip -> IEquipRoomDatasource.getDescrByIdEquip -> java.lang.NullPointerException: Attempt to invoke virtual method 'long br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()' on a null object reference")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_msg_if_not_have_data_in_equip_room() =
+    fun pmm_check_msg_if_not_have_equip_in_moto_mec_room() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(2)
+            registerPMM(2)
 
             setContent()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IEquipRepository.getTypeEquipByIdEquip -> IEquipRoomDatasource.getTypeEquipByIdEquip -> java.lang.NullPointerException: Attempt to invoke virtual method 'br.com.usinasantafe.cmm.utils.TypeEquip br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getTypeEquip()' on a null object reference")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getId -> java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Integer br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()' on a null object reference")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_msg_if_not_have_id_activity_in_config_shared_preferences() =
+    fun pmm_check_msg_if_not_have_data_in_equip_room() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(3)
+            registerPMM(3)
 
             setContent()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity -> java.lang.NullPointerException")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IListItemMenu.pmmList -> IEquipRepository.getTypeEquipByIdEquip -> IEquipRoomDatasource.getTypeEquipByIdEquip -> java.lang.NullPointerException: Attempt to invoke virtual method 'br.com.usinasantafe.cmm.lib.TypeEquip br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getTypeEquip()' on a null object reference")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_msg_if_not_have_data_in_header_moto_mec_room() =
+    fun pmm_check_msg_if_not_have_id_activity_in_header_moto_mec_shared_preferences() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(4)
-            initialRegisterSec(1)
+            registerPMM(4)
 
             setContent()
 
             composeTestRule.waitUntilTimeout(3_000)
 
             composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
-            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IMotoMecRepository.checkNoteHasByIdStop -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen -> java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Integer br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()' on a null object reference")
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity -> java.lang.NullPointerException")
 
             composeTestRule.waitUntilTimeout(3_000)
 
         }
 
     @Test
-    fun check_msg_list_if_not_have_data_in_item_menu_pmm_room() =
+    fun pmm_check_msg_if_not_have_item_menu_room() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(4)
+            registerPMM(5)
 
             setContent()
 
@@ -200,14 +205,14 @@ class MenuNoteScreenTest {
         }
 
     @Test
-    fun check_return_list_if_menu_basic() =
+    fun pmm_check_return_list_if_menu_basic() =
         runTest(
             timeout = 10.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(5)
+            registerPMM(6)
 
             setContent()
 
@@ -216,19 +221,19 @@ class MenuNoteScreenTest {
         }
 
     @Test
-    fun check_return_list_if_menu_is_all_and_equip_normal() =
+    fun pmm_check_return_list_if_menu_is_all_but_without_reel_and_equip_normal() =
         runTest(
             timeout = 2.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(
-                level = 5,
+            registerPMM(
+                level = 6,
                 flagMechanic = true,
                 flagTire = true
             )
-            initialRegisterSec(2)
+            registerSecPMM(1)
 
             setContent()
 
@@ -237,20 +242,41 @@ class MenuNoteScreenTest {
         }
 
     @Test
-    fun check_return_list_if_menu_is_all_and_equip_fert() =
+    fun pmm_check_return_list_if_menu_is_all_and_equip_normal_() =
         runTest(
             timeout = 2.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(
-                level = 5,
+            registerPMM(
+                level = 6,
+                flagMechanic = true,
+                flagTire = true
+            )
+            registerSecPMM(2)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+    @Test
+    fun pmm_check_return_list_if_menu_is_all_and_equip_fert() =
+        runTest(
+            timeout = 2.minutes
+        ) {
+
+            hiltRule.inject()
+
+            registerPMM(
+                level = 6,
                 flagMechanic = true,
                 flagTire = true,
                 typeEquip = TypeEquip.FERT
             )
-            initialRegisterSec(2)
+            registerSecPMM(2)
 
             setContent()
 
@@ -259,21 +285,21 @@ class MenuNoteScreenTest {
         }
 
     @Test
-    fun check_return_list_if_menu_is_all_and_equip_fert_and_return_list() =
+    fun pmm_check_return_list_if_menu_is_all_and_equip_fert_and_return_list() =
         runTest(
             timeout = 2.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(
-                level = 5,
+            registerPMM(
+                level = 6,
                 flagMechanic = true,
                 flagTire = true,
                 typeEquip = TypeEquip.FERT,
                 idEquip = 10
             )
-            initialRegisterSec(2)
+            registerSecPMM(2)
 
             setContent()
 
@@ -282,21 +308,21 @@ class MenuNoteScreenTest {
         }
 
     @Test
-    fun check_msg_in_click_if_have_note_mechanic_open() =
+    fun pmm_check_msg_in_click_if_have_note_mechanic_open() =
         runTest(
             timeout = 2.minutes
         ) {
 
             hiltRule.inject()
 
-            initialRegister(
-                level = 5,
+            registerPMM(
+                level = 6,
                 flagMechanic = true,
                 flagTire = true,
                 typeEquip = TypeEquip.FERT,
                 idEquip = 10
             )
-            initialRegisterSec(3)
+            registerSecPMM(3)
 
             setContent()
 
@@ -312,6 +338,305 @@ class MenuNoteScreenTest {
             composeTestRule.waitUntilTimeout()
 
         }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////// ECM ////////////////////////////////////////////////
+
+    @Test
+    fun ecm_check_msg_failure_if_not_have_data_in_item_menu_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun ecm_check_msg_failure_list_if_not_have_data_in_config_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerECM(1)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IConfigRepository.getIdEquip -> IConfigSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun ecm_check_msg_failure_list_if_not_have_data_in_header_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerECM(2)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun ecm_check_msg_failure_list_if_not_have_data_in_equip_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerECM(3)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun ecm_check_return_list_if_have_data() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerECM(4)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////// PCOMP ////////////////////////////////////////////////
+
+    @Test
+    fun pcomp_check_msg_failure_if_not_have_data_in_header_moto_mec_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> IListItemMenu -> IMotoMecRepository.getFlowCompostingHeader -> IHeaderMotoMecRoomDatasource.getFlowComposting -> java.lang.NullPointerException: Attempt to invoke virtual method 'br.com.usinasantafe.cmm.lib.FlowComposting br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getFlowComposting()' on a null object reference")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_input_check_msg_failure_if_not_have_data_in_item_menu_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(1, FlowComposting.INPUT)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_input_check_msg_failure_if_not_have_data_in_config_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(2, FlowComposting.INPUT)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IConfigRepository.getIdEquip -> IConfigSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_input_check_msg_failure_if_not_have_data_in_header_moto_mec_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(3, FlowComposting.INPUT)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_input_check_msg_failure_if_not_have_data_in_equip_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(4, FlowComposting.INPUT)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> IEquipRepository.getDescrByIdEquip -> IEquipRoomDatasource.getDescrByIdEquip -> java.lang.NullPointerException: Attempt to invoke virtual method 'long br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()' on a null object reference")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+
+        }
+
+    @Test
+    fun pcomp_input_check_return_list_if_have_data() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(5, FlowComposting.INPUT)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+
+    @Test
+    fun pcomp_compound_check_msg_failure_if_not_have_data_in_item_menu_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(1, FlowComposting.COMPOUND)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_compound_check_msg_failure_if_not_have_data_in_config_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(2, FlowComposting.COMPOUND)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IConfigRepository.getIdEquip -> IConfigSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_compound_check_msg_failure_if_not_have_data_in_header_moto_mec_shared_preferences() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(3, FlowComposting.COMPOUND)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteScreenKt.MenuNoteScreen -> MenuNoteViewModel.flowEquipNote -> IGetFlowEquip -> IMotoMecRepository.getIdEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdEquip -> java.lang.NullPointerException")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+        }
+
+    @Test
+    fun pcomp_compound_check_msg_failure_if_not_have_data_in_equip_room() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(4, FlowComposting.COMPOUND)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertIsDisplayed()
+            composeTestRule.onNodeWithTag("text_alert_dialog_simple").assertTextEquals("FALHA INESPERADA NO APLICATIVO! POR FAVOR ENTRE EM CONTATO COM TI. MenuNoteViewModel.descrEquip -> IGetDescrEquip -> IEquipRepository.getDescrByIdEquip -> IEquipRoomDatasource.getDescrByIdEquip -> java.lang.NullPointerException: Attempt to invoke virtual method 'long br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()' on a null object reference")
+
+            composeTestRule.waitUntilTimeout(3_000)
+
+
+        }
+
+    @Test
+    fun pcomp_compound_check_return_list_if_have_data() =
+        runTest {
+
+            hiltRule.inject()
+
+            registerPCOMP(5, FlowComposting.COMPOUND)
+
+            setContent()
+
+            composeTestRule.waitUntilTimeout(10_000)
+
+        }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun setContent() {
         composeTestRule.setContent {
@@ -338,7 +663,7 @@ class MenuNoteScreenTest {
         }
     }
 
-    private suspend fun initialRegister(
+    private suspend fun registerPMM(
         level: Int,
         typeEquip: TypeEquip = TypeEquip.NORMAL,
         flagMechanic: Boolean = false,
@@ -369,6 +694,22 @@ class MenuNoteScreenTest {
 
         if (level == 2) return
 
+        headerMotoMecDao.insert(
+            HeaderMotoMecRoomModel(
+                id = 1,
+                regOperator = 19759,
+                idEquip = 20,
+                typeEquip = TypeEquip.NORMAL,
+                idTurn = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                hourMeterInitial = 1000.0,
+                statusCon = true
+            )
+        )
+
+        if (level == 3) return
+
         equipDao.insertAll(
             listOf(
                 EquipRoomModel(
@@ -383,11 +724,24 @@ class MenuNoteScreenTest {
                     classify = 1,
                     flagMechanic = flagMechanic,
                     flagTire = flagTire,
+                ),
+                EquipRoomModel(
+                    id = 10,
+                    nro = 200L,
+                    codClass = 1,
+                    descrClass = "CARRETEL",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = typeEquip,
+                    hourMeter = 1000.0,
+                    classify = 1,
+                    flagMechanic = flagMechanic,
+                    flagTire = flagTire,
                 )
             )
         )
 
-        if (level == 3) return
+        if (level == 4) return
 
         headerMotoMecSharedPreferencesDatasource.save(
             HeaderMotoMecSharedPreferencesModel(
@@ -396,122 +750,21 @@ class MenuNoteScreenTest {
             )
         )
 
-        if (level == 4) return
+        if (level == 5) return
 
+        val gson = Gson()
+        val itemTypeItemMenu = object : TypeToken<List<ItemMenuRoomModel>>() {}.type
+        val itemMenuRoomModel = gson.fromJson<List<ItemMenuRoomModel>>(dataMenu, itemTypeItemMenu)
         itemMenuDao.insertAll(
-            listOf(
-                ItemMenuRoomModel(
-                    id = 1,
-                    descr = "TRABALHANDO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 2,
-                    descr = "PARADO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 3,
-                    descr = "RENDIMENTO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 4,
-                    descr = "NOVO TRANSBORDO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 5,
-                    descr = "TROCAR IMPLEMENTO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 6,
-                    descr = "RECOLHIMENTO MANGUEIRA",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 7,
-                    descr = "APONTAR MANUTENÇÃO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 8,
-                    descr = "FINALIZAR MANUTENÇÃO",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 9,
-                    descr = "CALIBRAGEM DE PNEU",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 10,
-                    descr = "TROCA DE PNEU",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 11,
-                    descr = "APONTAR CARRETEL",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 12,
-                    descr = "FINALIZAR BOLETIM",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                ),
-                ItemMenuRoomModel(
-                    id = 13,
-                    descr = "RETORNAR PRA LISTA",
-                    idType = 1,
-                    pos = 1,
-                    idFunction = 1,
-                    idApp = 1,
-                )
-            )
+            itemMenuRoomModel
         )
 
-        if (level == 5) return
+        if (level == 6) return
 
     }
 
-    private suspend fun initialRegisterSec(level: Int) {
+    private suspend fun registerSecPMM(level: Int) {
+
         functionActivityDao.insertAll(
             listOf(
                 FunctionActivityRoomModel(
@@ -543,20 +796,6 @@ class MenuNoteScreenTest {
         )
 
         if (level == 1) return
-
-        headerMotoMecDao.insert(
-            HeaderMotoMecRoomModel(
-                id = 1,
-                regOperator = 19759,
-                idEquip = 20,
-                typeEquip = TypeEquip.NORMAL,
-                idTurn = 1,
-                nroOS = 123456,
-                idActivity = 1,
-                hourMeterInitial = 1000.0,
-                statusCon = true
-            )
-        )
 
         itemMotoMecDao.insert(
             ItemMotoMecRoomModel(
@@ -599,5 +838,138 @@ class MenuNoteScreenTest {
         if (level == 3) return
 
     }
+
+    private suspend fun registerECM(level: Int){
+
+        val gson = Gson()
+        val itemTypeItemMenu = object : TypeToken<List<ItemMenuRoomModel>>() {}.type
+        val itemMenuRoomModel = gson.fromJson<List<ItemMenuRoomModel>>(dataMenu, itemTypeItemMenu)
+        itemMenuDao.insertAll(
+            itemMenuRoomModel
+        )
+
+        if (level == 1) return
+
+        configSharedPreferencesDatasource.save(
+            ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "12345",
+                nroEquip = 310,
+                app = "PMM",
+                version = "1.00",
+                checkMotoMec = false,
+                idServ = 1,
+                idEquip = 20
+            )
+        )
+
+        if (level == 2) return
+
+        headerMotoMecSharedPreferencesDatasource.save(
+            HeaderMotoMecSharedPreferencesModel(
+                idEquip = 20,
+            )
+        )
+
+        if (level == 3) return
+
+        equipDao.insertAll(
+            listOf(
+                EquipRoomModel(
+                    id = 20,
+                    nro = 2200L,
+                    codClass = 1,
+                    descrClass = "CAMINHAO",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 1000.0,
+                    classify = 1,
+                    flagMechanic = false,
+                    flagTire = false,
+                ),
+            )
+        )
+
+        if (level == 4) return
+
+    }
+
+    private suspend fun registerPCOMP(
+        level: Int,
+        flowComposting: FlowComposting
+    ){
+
+        headerMotoMecDao.insert(
+            HeaderMotoMecRoomModel(
+                id = 1,
+                regOperator = 19759,
+                idEquip = 20,
+                typeEquip = TypeEquip.NORMAL,
+                flowComposting = flowComposting,
+                idTurn = 1,
+                nroOS = 123456,
+                idActivity = 1,
+                hourMeterInitial = 1000.0,
+                statusCon = true
+            )
+        )
+
+        if (level == 1) return
+
+        val gson = Gson()
+        val itemTypeItemMenu = object : TypeToken<List<ItemMenuRoomModel>>() {}.type
+        val itemMenuRoomModel = gson.fromJson<List<ItemMenuRoomModel>>(dataMenu, itemTypeItemMenu)
+        itemMenuDao.insertAll(
+            itemMenuRoomModel
+        )
+
+        if (level == 2) return
+
+        configSharedPreferencesDatasource.save(
+            ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "12345",
+                nroEquip = 310,
+                app = "PMM",
+                version = "1.00",
+                checkMotoMec = false,
+                idServ = 1,
+                idEquip = 20
+            )
+        )
+
+        if (level == 3) return
+
+        headerMotoMecSharedPreferencesDatasource.save(
+            HeaderMotoMecSharedPreferencesModel(
+                idEquip = 20,
+            )
+        )
+
+        if (level == 4) return
+
+        equipDao.insertAll(
+            listOf(
+                EquipRoomModel(
+                    id = 20,
+                    nro = 2200L,
+                    codClass = 1,
+                    descrClass = "CAMINHAO",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 1000.0,
+                    classify = 1,
+                    flagMechanic = false,
+                    flagTire = false,
+                ),
+            )
+        )
+
+        if (level == 5) return
+
+    }
+
 
 }

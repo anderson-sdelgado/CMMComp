@@ -516,5 +516,16 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
+    override suspend fun uncouplingTrailerImplement(): Result<Boolean> {
+        val result = trailerSharedPreferencesDatasource.clean()
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
+    }
+
 
 }

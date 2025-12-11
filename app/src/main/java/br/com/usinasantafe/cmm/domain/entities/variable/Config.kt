@@ -8,7 +8,6 @@ import java.util.Date
 data class Config(
     var number: Long? = null,
     val nroEquip: Long? = null,
-    val idEquip: Int? = null,
     var password: String? = null,
     var checkMotoMec: Boolean? = true,
     var idServ: Int? = null,

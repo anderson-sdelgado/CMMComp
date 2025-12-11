@@ -5,16 +5,37 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IEquipRepository @Inject constructor(
     private val equipRetrofitDatasource: EquipRetrofitDatasource,
-    private val equipRoomDatasource: EquipRoomDatasource
+    private val equipRoomDatasource: EquipRoomDatasource,
+    private val equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 ): EquipRepository {
+
+    override suspend fun saveEquipMain(entity: Equip): Result<Boolean> {
+        try{
+            val result = equipSharedPreferencesDatasource.save(entity.entityToSharedPreferencesModel())
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return result
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 
     override suspend fun addAll(list: List<Equip>): Result<Boolean> {
         try {
@@ -46,14 +67,12 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun listByIdEquip(
-        token: String,
-        idEquip: Int
+    override suspend fun listAll(
+        token: String
     ): Result<List<Equip>> {
         try {
-            val result = equipRetrofitDatasource.listByIdEquip(
-                token = token,
-                idEquip = idEquip
+            val result = equipRetrofitDatasource.listAll(
+                token = token
             )
             result.onFailure {
                 return resultFailure(
@@ -71,9 +90,49 @@ class IEquipRepository @Inject constructor(
         }
     }
 
+    override suspend fun getIdEquipMain(): Result<Int> {
+        val result = equipSharedPreferencesDatasource.getId()
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+        return result
+    }
+
+    override suspend fun getNroEquipMain(): Result<Long> {
+        val result = equipSharedPreferencesDatasource.getNro()
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
+    }
+
     override suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String> {
+        val resultGetId = equipSharedPreferencesDatasource.getId()
+        resultGetId.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        val idEquipSharedPreferences = resultGetId.getOrNull()!!
+        if(idEquip == idEquipSharedPreferences) {
+            val result = equipSharedPreferencesDatasource.getDescrClass()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return result
+        }
         val result = equipRoomDatasource.getDescrByIdEquip(idEquip)
         result.onFailure {
                 return resultFailure(
@@ -84,10 +143,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getCodTurnEquipByIdEquip(
-        idEquip: Int
-    ): Result<Int> {
-        val result = equipRoomDatasource.getCodTurnEquipByIdEquip(idEquip)
+    override suspend fun getCodTurnEquip(): Result<Int> {
+        val result = equipSharedPreferencesDatasource.getCodTurnEquip()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -97,8 +154,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getHourMeterByIdEquip(idEquip: Int): Result<Double> {
-        val result = equipRoomDatasource.getHourMeterByIdEquip(idEquip)
+    override suspend fun getHourMeter(): Result<Double> {
+        val result = equipSharedPreferencesDatasource.getHourMeter()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -108,14 +165,10 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun updateHourMeterByIdEquip(
-        hourMeter: Double,
-        idEquip: Int
+    override suspend fun updateHourMeter(
+        hourMeter: Double
     ): Result<Boolean> {
-        val result = equipRoomDatasource.updateHourMeterByIdEquip(
-            hourMeter = hourMeter,
-            idEquip = idEquip
-        )
+        val result = equipSharedPreferencesDatasource.updateHourMeter(hourMeter)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -125,8 +178,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getTypeEquipByIdEquip(idEquip: Int): Result<TypeEquip> {
-        val result = equipRoomDatasource.getTypeEquipByIdEquip(idEquip)
+    override suspend fun getTypeEquip(): Result<TypeEquip> {
+        val result = equipSharedPreferencesDatasource.getTypeEquip()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -136,8 +189,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getIdCheckListByIdEquip(idEquip: Int): Result<Int> {
-        val result = equipRoomDatasource.getIdCheckListByIdEquip(idEquip)
+    override suspend fun getIdCheckList(): Result<Int> {
+        val result = equipSharedPreferencesDatasource.getIdCheckList()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -147,8 +200,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getFlagMechanicByIdEquip(idEquip: Int): Result<Boolean> {
-        val result = equipRoomDatasource.getFlagMechanicByIdEquip(idEquip)
+    override suspend fun getFlagMechanic(): Result<Boolean> {
+        val result = equipSharedPreferencesDatasource.getFlagMechanic()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -158,8 +211,8 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getFlagTireByIdEquip(idEquip: Int): Result<Boolean> {
-        val result = equipRoomDatasource.getFlagTireByIdEquip(idEquip)
+    override suspend fun getFlagTire(): Result<Boolean> {
+        val result = equipSharedPreferencesDatasource.getFlagTire()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

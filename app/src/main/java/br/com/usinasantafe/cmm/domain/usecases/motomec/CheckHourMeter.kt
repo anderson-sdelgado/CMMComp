@@ -18,7 +18,6 @@ interface CheckHourMeter {
 }
 
 class ICheckHourMeter @Inject constructor(
-    private val motoMecRepository: MotoMecRepository,
     private val equipRepository: EquipRepository,
 ): CheckHourMeter {
 
@@ -34,15 +33,7 @@ class ICheckHourMeter @Inject constructor(
             formatDecimal.decimalFormatSymbols = DecimalFormatSymbols(locale)
             val measureInput = formatNumber.parse(measure)!!
             val measureInputDouble = measureInput.toDouble()
-            val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultGetHourMeterByIdEquip = equipRepository.getHourMeterByIdEquip(idEquip)
+            val resultGetHourMeterByIdEquip = equipRepository.getHourMeter()
             resultGetHourMeterByIdEquip.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

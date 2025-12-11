@@ -29,7 +29,7 @@ class ITrailerSharedPreferencesDatasourceTest {
     }
 
     @Test
-    fun `Check save, get, has data and clean table`() =
+    fun `Check save, get, has data table`() =
         runTest {
             val resultHasBefore = datasource.has()
             assertEquals(
@@ -81,6 +81,90 @@ class ITrailerSharedPreferencesDatasourceTest {
             assertEquals(
                 resultHas.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `Check clean table`() =
+        runTest {
+            val resultHasBefore = datasource.has()
+            assertEquals(
+                resultHasBefore.isSuccess,
+                true
+            )
+            assertEquals(
+                resultHasBefore.getOrNull()!!,
+                false
+            )
+            val resultSave = datasource.add(
+                TrailerSharedPreferencesModel(
+                    idEquip = 1,
+                    pos = 1
+                )
+            )
+            assertEquals(
+                resultSave.isSuccess,
+                true
+            )
+            assertEquals(
+                resultSave.getOrNull()!!,
+                true
+            )
+            val resultList = datasource.list()
+            assertEquals(
+                resultList.isSuccess,
+                true
+            )
+            val listBefore = resultList.getOrNull()!!
+            assertEquals(
+                listBefore.size,
+                1
+            )
+            val model = listBefore[0]
+            assertEquals(
+                model.idEquip,
+                1
+            )
+            assertEquals(
+                model.pos,
+                1
+            )
+            val resultHas = datasource.has()
+            assertEquals(
+                resultHas.isSuccess,
+                true
+            )
+            assertEquals(
+                resultHas.getOrNull()!!,
+                true
+            )
+            val resultClean = datasource.clean()
+            assertEquals(
+                resultClean.isSuccess,
+                true
+            )
+            assertEquals(
+                resultClean.getOrNull()!!,
+                true
+            )
+            val resultHasAfter = datasource.has()
+            assertEquals(
+                resultHasAfter.isSuccess,
+                true
+            )
+            assertEquals(
+                resultHasAfter.getOrNull()!!,
+                false
+            )
+            val resultListAfter = datasource.list()
+            assertEquals(
+                resultListAfter.isSuccess,
+                true
+            )
+            val listAfter = resultListAfter.getOrNull()!!
+            assertEquals(
+                listAfter.size,
+                0
             )
         }
 }

@@ -108,15 +108,6 @@ class IListItemMenu @Inject constructor(
     }
 
     private suspend fun pmmList(): Result<List<ItemMenuModel>> {
-        val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-        resultGetIdEquipMotoMec.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        val idEquip = resultGetIdEquipMotoMec.getOrNull()!!
-
         val resultIdHeader = motoMecRepository.getIdByHeaderOpen()
         resultIdHeader.onFailure {
             return resultFailure(
@@ -132,7 +123,7 @@ class IListItemMenu @Inject constructor(
         list.add(typeListPMM.find { it.second == ITEM_NORMAL }!!)
 
         //PERFORMANCE, TRANSHIPMENT, IMPLEMENT, HOSE_COLLECTION
-        val resultTypeEquip = equipRepository.getTypeEquipByIdEquip(idEquip)
+        val resultTypeEquip = equipRepository.getTypeEquip()
         resultTypeEquip.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -171,7 +162,7 @@ class IListItemMenu @Inject constructor(
         }
 
         //MECHANICAL
-        val resultGetFlagMechanic = equipRepository.getFlagMechanicByIdEquip(idEquip) //ok
+        val resultGetFlagMechanic = equipRepository.getFlagMechanic() //ok
         resultGetFlagMechanic.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -182,7 +173,7 @@ class IListItemMenu @Inject constructor(
         if (flagMechanic) list.add(typeListPMM.find { it.second == MECHANICAL }!!)
 
         //TIRE
-        val resultGetFlagTire = equipRepository.getFlagTireByIdEquip(idEquip)
+        val resultGetFlagTire = equipRepository.getFlagTire()
         resultGetFlagTire.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),

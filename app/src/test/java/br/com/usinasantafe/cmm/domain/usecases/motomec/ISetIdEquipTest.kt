@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
@@ -14,58 +15,18 @@ import org.mockito.kotlin.whenever
 
 class ISetIdEquipTest {
 
-    private val configRepository = mock<ConfigRepository>()
     private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
     private val usecase = ISetIdEquip(
         motoMecRepository = motoMecRepository,
-        configRepository = configRepository,
         equipRepository = equipRepository
     )
-
-    @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
-        runTest {
-            whenever(
-                configRepository.get()
-            ).thenReturn(
-                resultFailure(
-                    "ConfigRepository.get",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetIdEquip -> ConfigRepository.get"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
 
     @Test
     fun `Check return failure if have error in EquipRepository getTypeByIdEquip`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 10
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(
-                    idEquip = 10
-                )
+                equipRepository.getTypeEquip()
             ).thenReturn(
                 resultFailure(
                     "EquipRepository.getTypeByIdEquip",
@@ -92,18 +53,7 @@ class ISetIdEquipTest {
     fun `Check return failure if have error in HeaderMotoMecRepository setIdEquip`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 10
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(
-                    idEquip = 10
-                )
+                equipRepository.getTypeEquip()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
@@ -138,18 +88,7 @@ class ISetIdEquipTest {
     fun `Check return correct if function execute successfully and typeEquip is 1`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 10,
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(
-                    idEquip = 10
-                )
+                equipRepository.getTypeEquip()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
@@ -176,18 +115,7 @@ class ISetIdEquipTest {
     fun `Check return correct if function execute successfully and typeEquip is 3`() =
         runTest {
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(
-                    Config(
-                        idEquip = 10,
-                    )
-                )
-            )
-            whenever(
-                equipRepository.getTypeEquipByIdEquip(
-                    idEquip = 10
-                )
+                equipRepository.getTypeEquip()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )

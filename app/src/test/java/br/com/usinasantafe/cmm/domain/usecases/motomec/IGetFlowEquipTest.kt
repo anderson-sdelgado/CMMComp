@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowEquipNote
@@ -14,19 +15,20 @@ class IGetFlowEquipTest {
 
     private val configRepository = mock<ConfigRepository>()
     private val motoMecRepository = mock<MotoMecRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val usecase = IGetFlowEquip(
-        configRepository = configRepository,
-        motoMecRepository = motoMecRepository
+        motoMecRepository = motoMecRepository,
+        equipRepository = equipRepository
     )
 
     @Test
     fun `Check return failure if have error in ConfigRepository getIdEquip`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 resultFailure(
-                    "IConfigRepository.getIdEquip",
+                    "IEquipRepository.getIdEquipMain",
                     "-",
                     Exception()
                 )
@@ -38,7 +40,7 @@ class IGetFlowEquipTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetFlowEquip -> IConfigRepository.getIdEquip"
+                "IGetFlowEquip -> IEquipRepository.getIdEquipMain"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -50,7 +52,7 @@ class IGetFlowEquipTest {
     fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 Result.success(1)
             )
@@ -82,7 +84,7 @@ class IGetFlowEquipTest {
     fun `Check return MAIN if idEquip Config and idEquipHeader MotoMec are equals`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 Result.success(1)
             )
@@ -106,7 +108,7 @@ class IGetFlowEquipTest {
     fun `Check return SECONDARY if idEquip Config and idEquipHeader MotoMec are not equals`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 Result.success(1)
             )

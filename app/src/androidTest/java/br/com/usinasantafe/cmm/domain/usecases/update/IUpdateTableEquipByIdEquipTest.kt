@@ -26,7 +26,7 @@ class IUpdateTableEquipByIdEquipTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: UpdateTableEquipByIdEquip
+    lateinit var usecase: UpdateTableEquip
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
@@ -304,11 +304,10 @@ class IUpdateTableEquipByIdEquipTest {
             ConfigSharedPreferencesModel(
                 app = "CMM",
                 idServ = 1,
-                nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",
                 password = "12345",
-                idEquip = 1
+                checkMotoMec = true
             )
         )
     }

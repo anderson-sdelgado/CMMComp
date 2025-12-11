@@ -1,8 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -98,6 +100,19 @@ class ISendDataConfigTest {
                 Result.success(
                     Config(
                         idServ = 1,
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
                     )
                 )
             )
@@ -116,6 +131,19 @@ class ISendDataConfigTest {
                 result.getOrNull()!!,
                 Config(
                     idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
                 )
             )
         }

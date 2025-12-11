@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.lib.StatusSend
 import java.util.Date
 
 interface ConfigSharedPreferencesDatasource {
-    suspend fun get(): Result<ConfigSharedPreferencesModel>
+    suspend fun get(): Result<ConfigSharedPreferencesModel?>
     suspend fun has(): Result<Boolean>
     suspend fun save(model: ConfigSharedPreferencesModel): Result<Boolean>
     suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean>
@@ -14,9 +14,6 @@ interface ConfigSharedPreferencesDatasource {
     suspend fun getFlagUpdate(): Result<FlagUpdate>
     suspend fun getNumber(): Result<Long>
     suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean>
-    suspend fun getIdEquip(): Result<Int>
     suspend fun getIdTurnCheckListLast(): Result<Int?>
     suspend fun getDateCheckListLast(): Result<Date>
-    suspend fun getNroEquip(): Result<Long>
-
 }

@@ -39,4 +39,9 @@ interface SharedPreferencesDatasourceModule {
     @Binds
     @Singleton
     fun bindTrailerSharedPreferencesDatasource(dataSource: ITrailerSharedPreferencesDatasource): TrailerSharedPreferencesDatasource
+
+    @Binds
+    @Singleton
+    fun bindEquipSharedPreferencesDatasource(dataSource: IEquipSharedPreferencesDatasource): EquipSharedPreferencesDatasource
+
 }

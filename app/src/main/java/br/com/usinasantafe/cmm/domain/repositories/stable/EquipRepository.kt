@@ -4,35 +4,25 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRepository {
+    suspend fun saveEquipMain(entity: Equip): Result<Boolean>
     suspend fun addAll(list: List<Equip>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun listByIdEquip(
-        token: String,
-        idEquip: Int
+    suspend fun listAll(
+        token: String
     ): Result<List<Equip>>
+    suspend fun getIdEquipMain(): Result<Int>
+    suspend fun getNroEquipMain(): Result<Long>
     suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String>
-    suspend fun getCodTurnEquipByIdEquip(
-        idEquip: Int
-    ): Result<Int>
-    suspend fun getHourMeterByIdEquip(
-        idEquip: Int
+    suspend fun getCodTurnEquip(): Result<Int>
+    suspend fun getHourMeter(
     ): Result<Double>
-    suspend fun updateHourMeterByIdEquip(
-        hourMeter: Double,
-        idEquip: Int
+    suspend fun updateHourMeter(
+        hourMeter: Double
     ): Result<Boolean>
-    suspend fun getTypeEquipByIdEquip(
-        idEquip: Int
-    ): Result<TypeEquip>
-    suspend fun getIdCheckListByIdEquip(
-        idEquip: Int
-    ): Result<Int>
-    suspend fun getFlagMechanicByIdEquip(
-        idEquip: Int
-    ): Result<Boolean>
-    suspend fun getFlagTireByIdEquip(
-        idEquip: Int
-    ): Result<Boolean>
+    suspend fun getTypeEquip(): Result<TypeEquip>
+    suspend fun getIdCheckList(): Result<Int>
+    suspend fun getFlagMechanic(): Result<Boolean>
+    suspend fun getFlagTire(): Result<Boolean>
 }

@@ -29,7 +29,7 @@ class IGetItemCheckList @Inject constructor(
     override suspend fun invoke(pos: Int): Result<ItemCheckListModel> {
         try {
             if(pos == 1) {
-                val resultGetNroEquip = configRepository.getNroEquip()
+                val resultGetNroEquip = equipRepository.getNroEquipMain()
                 resultGetNroEquip.onFailure {
                     return resultFailure(
                         context = getClassAndMethod(),
@@ -75,15 +75,7 @@ class IGetItemCheckList @Inject constructor(
                     )
                 }
             }
-            val resultGetIdEquip = configRepository.getIdEquip()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
+            val resultGetIdCheckList = equipRepository.getIdCheckList()
             resultGetIdCheckList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

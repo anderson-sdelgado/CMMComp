@@ -117,15 +117,6 @@ class ISetRespItemCheckListTest {
             ).thenReturn(
                 Result.success(true)
             )
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigRepository.getIdEquip",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 pos = 1,
                 id = 1,
@@ -163,12 +154,7 @@ class ISetRespItemCheckListTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getIdCheckListByIdEquip",
@@ -213,12 +199,7 @@ class ISetRespItemCheckListTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -268,12 +249,7 @@ class ISetRespItemCheckListTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -328,12 +304,7 @@ class ISetRespItemCheckListTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )
@@ -380,12 +351,7 @@ class ISetRespItemCheckListTest {
                 Result.success(true)
             )
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(10)
             )

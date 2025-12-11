@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 
 
 data class ConfigRetrofitModelOutput(
@@ -12,7 +14,7 @@ data class ConfigRetrofitModelOutput(
 
 data class ConfigRetrofitModelInput(
     val idServ: Int,
-    val idEquip: Int
+    val equip: EquipRetrofitModel
 )
 
 fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
@@ -31,10 +33,9 @@ fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
 fun ConfigRetrofitModelInput.retrofitToEntity(): Config {
 
     require(idServ != 0) { "The field 'idServ' cannot is null." }
-    require(idEquip != 0) { "The field 'idEquip' cannot is null." }
 
     return Config(
             idServ = idServ,
-            idEquip = idEquip
+            equip = equip.retrofitModelToEntity(),
         )
 }

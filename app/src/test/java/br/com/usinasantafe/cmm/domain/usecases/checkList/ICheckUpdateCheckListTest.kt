@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -13,11 +14,11 @@ import org.mockito.kotlin.whenever
 class ICheckUpdateCheckListTest {
 
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
-    private val configRepository = mock<ConfigRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val getToken = mock<GetToken>()
     private val usecase = ICheckUpdateCheckList(
         itemCheckListRepository = itemCheckListRepository,
-        configRepository = configRepository,
+        equipRepository = equipRepository,
         getToken = getToken
     )
 
@@ -25,10 +26,10 @@ class ICheckUpdateCheckListTest {
     fun `Check return failure if have error in ConfigRepository getNroEquip`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 resultFailure(
-                    "IConfigRepository.getNroEquip",
+                    "IEquipRepository.getNroEquipMain",
                     "-",
                     Exception()
                 )
@@ -40,7 +41,7 @@ class ICheckUpdateCheckListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckUpdateCheckList -> IConfigRepository.getNroEquip"
+                "ICheckUpdateCheckList -> IEquipRepository.getNroEquipMain"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -52,7 +53,7 @@ class ICheckUpdateCheckListTest {
     fun `Check return failure if have error in GetToken `() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )
@@ -84,7 +85,7 @@ class ICheckUpdateCheckListTest {
     fun `Check return failure if have error in CheckListRepository checkUpdateByNroEquip`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )
@@ -124,7 +125,7 @@ class ICheckUpdateCheckListTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )

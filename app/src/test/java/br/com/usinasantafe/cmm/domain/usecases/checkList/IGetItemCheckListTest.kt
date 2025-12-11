@@ -33,41 +33,10 @@ class IGetItemCheckListTest {
         turnRepository = turnRepository
     )
 
-    @Test
-    fun `Check return failure if have error in ConfigRepository getNroEquip and pos is 1`() =
-        runTest {
-            whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigRepository.getNroEquip",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetItemCheckList -> IConfigRepository.getNroEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
 
     @Test
     fun `Check return failure if have error in MotoMecRepository getRegOperator and pos is 1`() =
         runTest {
-            whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
             whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
@@ -95,11 +64,6 @@ class IGetItemCheckListTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository getIdTurnHeader and pos is 1`() =
         runTest {
-            whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
             whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
@@ -132,11 +96,6 @@ class IGetItemCheckListTest {
     @Test
     fun `Check return failure if have error in TurnRepository geNroTurnByIdTurn and pos is 1`() =
         runTest {
-            whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
             whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
@@ -174,11 +133,6 @@ class IGetItemCheckListTest {
     @Test
     fun `Check return failure if have error in CheckListRepository saveHeader and pos is 1`() =
         runTest {
-            whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
             whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
@@ -239,11 +193,6 @@ class IGetItemCheckListTest {
     fun `Check return failure if have error in ConfigRepository getIdEquip and pos is 1`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
-            whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
@@ -267,15 +216,6 @@ class IGetItemCheckListTest {
                     Result.success(true)
                 )
             }
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigRepository.getIdEquip",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(1)
             assertEquals(
                 result.isFailure,
@@ -308,11 +248,6 @@ class IGetItemCheckListTest {
     fun `Check return failure if have error in EquipRepository getIdCheckListByIdEquip and pos is 1`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
-            whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
@@ -337,12 +272,7 @@ class IGetItemCheckListTest {
                 )
             }
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getIdCheckListByIdEquip",
@@ -382,11 +312,6 @@ class IGetItemCheckListTest {
     fun `Check return failure if have error in ItemCheckListRepository listByIdCheckList and pos is 1`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
-            whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
@@ -411,12 +336,7 @@ class IGetItemCheckListTest {
                 )
             }
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(20)
             )
@@ -461,11 +381,6 @@ class IGetItemCheckListTest {
     fun `Check return data correct if process execute successfully and pos is 1`() =
         runTest {
             whenever(
-                configRepository.getNroEquip()
-            ).thenReturn(
-                Result.success(2200L)
-            )
-            whenever(
                 motoMecRepository.getRegOperatorHeader()
             ).thenReturn(
                 Result.success(19759)
@@ -490,12 +405,7 @@ class IGetItemCheckListTest {
                 )
             }
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(20)
             )
@@ -542,42 +452,10 @@ class IGetItemCheckListTest {
         }
 
     @Test
-    fun `Check return failure if have error in ConfigRepository getIdEquip and pos is greater than 1`() =
-        runTest {
-            whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigRepository.getIdEquip",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(2)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IGetItemCheckList -> IConfigRepository.getIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in EquipRepository getIdCheckListByIdEquip and pos is greater than 1`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getIdCheckListByIdEquip",
@@ -604,12 +482,7 @@ class IGetItemCheckListTest {
     fun `Check return failure if have error in ItemCheckListRepository listByIdCheckList and pos is greater than 1`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(20)
             )
@@ -641,12 +514,7 @@ class IGetItemCheckListTest {
     fun `Check return data correct if process execute successfully and pos is greater than 1`() =
         runTest {
             whenever(
-                configRepository.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                equipRepository.getIdCheckListByIdEquip(1)
+                equipRepository.getIdCheckList()
             ).thenReturn(
                 Result.success(20)
             )

@@ -21,7 +21,7 @@ interface UpdateModule {
 
     @Binds
     @Singleton
-    fun bindUpdateTableEquip(usecase: IUpdateTableEquipByIdEquip): UpdateTableEquipByIdEquip
+    fun bindUpdateTableEquip(usecase: IUpdateTableEquip): UpdateTableEquip
 
     @Binds
     @Singleton

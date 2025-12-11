@@ -1,14 +1,18 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -60,6 +64,12 @@ class IConfigRepositoryTest {
             ).thenReturn(
                 Result.success(
                     ConfigSharedPreferencesModel(
+                        number = 16997417840,
+                        password = "123456",
+                        checkMotoMec = true,
+                        idServ = 1,
+                        version = "1.00",
+                        app = "PMM",
                         statusSend = StatusSend.SENT
                     )
                 )
@@ -157,7 +167,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> IConfigRetrofitDatasource.recoverToken"
+                "IConfigRepository.send -> IConfigRetrofitDatasource.recoverToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -176,7 +186,19 @@ class IConfigRepositoryTest {
             )
             val retrofitModelInput = ConfigRetrofitModelInput(
                 idServ = 1,
-                idEquip = 10
+                equip = EquipRetrofitModel(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = 1,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = 0,
+                    flagTire = 0
+                )
             )
             val entity = Config(
                 number = 16997417840,
@@ -200,7 +222,19 @@ class IConfigRepositoryTest {
                 result.getOrNull()!!,
                 Config(
                     idServ = 1,
-                    idEquip = 10
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = false,
+                        flagTire = false
+                    )
                 )
             )
         }
@@ -215,7 +249,6 @@ class IConfigRepositoryTest {
                         password = "12345",
                         version = "1.00",
                         app = "PMM",
-                        nroEquip = 310,
                         checkMotoMec = false,
                         idServ = 1
                     )
@@ -259,12 +292,12 @@ class IConfigRepositoryTest {
                 configSharedPreferencesDatasource.save(
                     ConfigSharedPreferencesModel(
                         number = 16997417840,
-                        password = "12345",
+                        password = "123456",
+                        checkMotoMec = true,
+                        idServ = 1,
                         version = "1.00",
                         app = "PMM",
-                        nroEquip = 310,
-                        checkMotoMec = false,
-                        idServ = 1
+                        statusSend = StatusSend.SENT,
                     )
                 )
             ).thenReturn(
@@ -524,52 +557,6 @@ class IConfigRepositoryTest {
         }
 
     @Test
-    fun `getIdEquip - Check return failure if have error in ConfigSharedPreferencesDatasource getIdEquip`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.getIdEquip()
-            ).thenReturn(
-                resultFailure(
-                    "ConfigSharedPreferencesDatasource.getIdEquip",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = repository.getIdEquip()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.getIdEquip -> ConfigSharedPreferencesDatasource.getIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `getIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.getIdEquip()
-            ).thenReturn(
-                Result.success(1)
-            )
-            val result = repository.getIdEquip()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                1
-            )
-        }
-
-    @Test
         fun `getIdTurnCheckListLast - Check return failure if have error in ConfigSharedPreferencesDatasource getIdTurnCheckListLast`() =
             runTest {
                 whenever(
@@ -682,49 +669,4 @@ class IConfigRepositoryTest {
             )
         }
 
-    @Test
-    fun `getNroEquip - Check return failure if have error in ConfigSharedPreferencesDatasource getNroEquip`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.getNroEquip()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigSharedPreferencesDatasource.getNroEquip",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = repository.getNroEquip()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRepository.getNroEquip -> IConfigSharedPreferencesDatasource.getNroEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `getNroEquip - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                configSharedPreferencesDatasource.getNroEquip()
-            ).thenReturn(
-                Result.success(100L)
-            )
-            val result = repository.getNroEquip()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                100L
-            )
-        }
 }

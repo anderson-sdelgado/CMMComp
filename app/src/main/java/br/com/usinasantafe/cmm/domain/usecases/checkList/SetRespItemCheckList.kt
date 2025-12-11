@@ -53,15 +53,7 @@ class ISetRespItemCheckList @Inject constructor(
                     cause = it
                 )
             }
-            val resultGetIdEquip = configRepository.getIdEquip()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultGetIdCheckList = equipRepository.getIdCheckListByIdEquip(idEquip)
+            val resultGetIdCheckList = equipRepository.getIdCheckList()
             resultGetIdCheckList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

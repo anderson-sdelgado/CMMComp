@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.update
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemCheckList
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -21,11 +22,11 @@ class IUpdateTableItemCheckListByNroEquipTest {
 
     private val getToken = mock<GetToken>()
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
-    private val configRepository = mock<ConfigRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val updateTableItemCheckList = IUpdateTableItemCheckListByNroEquip(
         getToken = getToken,
         itemCheckListRepository = itemCheckListRepository,
-        configRepository = configRepository
+        equipRepository = equipRepository
     )
 
     @Test
@@ -79,10 +80,10 @@ class IUpdateTableItemCheckListByNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 resultFailure(
-                    "IConfigRepository.getNroEquip",
+                    "IEquipRepository.getNroEquipMain",
                     "-",
                     Exception()
                 )
@@ -111,7 +112,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableItemCheckListByNroEquip -> IConfigRepository.getNroEquip -> java.lang.Exception",
+                    failure = "IUpdateTableItemCheckListByNroEquip -> IEquipRepository.getNroEquipMain -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -126,7 +127,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )
@@ -188,7 +189,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )
@@ -266,7 +267,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.getNroEquip()
+                equipRepository.getNroEquipMain()
             ).thenReturn(
                 Result.success(1L)
             )

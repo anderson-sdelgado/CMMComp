@@ -1,7 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -12,15 +14,15 @@ interface SaveDataConfig {
         password: String,
         version: String,
         app: String,
-        nroEquip: String,
         checkMotoMec: Boolean,
-        idBD: Int,
-        idEquip: Int,
+        idServ: Int,
+        equip: Equip,
     ): Result<Boolean>
 }
 
 class ISaveDataConfig @Inject constructor(
-    private val configRepository: ConfigRepository
+    private val configRepository: ConfigRepository,
+    private val equipRepository: EquipRepository
 ): SaveDataConfig {
 
     override suspend fun invoke(
@@ -28,10 +30,9 @@ class ISaveDataConfig @Inject constructor(
         password: String,
         version: String,
         app: String,
-        nroEquip: String,
         checkMotoMec: Boolean,
-        idBD: Int,
-        idEquip: Int
+        idServ: Int,
+        equip: Equip
     ): Result<Boolean> {
         try {
             val entity = Config(
@@ -39,19 +40,24 @@ class ISaveDataConfig @Inject constructor(
                 password = password,
                 version = version,
                 app = app.uppercase(),
-                nroEquip = nroEquip.toLong(),
                 checkMotoMec = checkMotoMec,
-                idServ = idBD,
-                idEquip = idEquip
+                idServ = idServ
             )
-            val result = configRepository.save(entity)
-            result.onFailure {
+            val resultSaveConfig = configRepository.save(entity)
+            resultSaveConfig.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = it
                 )
             }
-            return result
+            val resultSaveEquip = equipRepository.saveEquipMain(equip)
+            resultSaveEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return resultSaveEquip
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

@@ -23,9 +23,8 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.listByIdEquip(
-                token = "TOKEN",
-                idEquip = 10
+            val result = datasource.listAll(
+                token = "TOKEN"
             )
             assertEquals(
                 true,
@@ -55,9 +54,8 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.listByIdEquip(
-                token = "TOKEN",
-                idEquip = 10
+            val result = datasource.listAll(
+                token = "TOKEN"
             )
             assertEquals(
                 true,
@@ -88,9 +86,8 @@ class IEquipRetrofitDatasourceTest {
             )
             val service = retrofit.create(EquipApi::class.java)
             val datasource = IEquipRetrofitDatasource(service)
-            val result = datasource.listByIdEquip(
-                token = "TOKEN",
-                idEquip = 10
+            val result = datasource.listAll(
+                token = "TOKEN"
             )
             assertEquals(
                 result.isSuccess,

@@ -44,17 +44,8 @@ class ISetHourMeter @Inject constructor(
                     cause = it
                 )
             }
-            val resultGetIdEquip = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultUpdateHourMeterByIdEquip = equipRepository.updateHourMeterByIdEquip(
-                hourMeter = hourMeterInputDouble,
-                idEquip = idEquip
+            val resultUpdateHourMeterByIdEquip = equipRepository.updateHourMeter(
+                hourMeter = hourMeterInputDouble
             )
             resultUpdateHourMeterByIdEquip.onFailure {
                 return resultFailure(

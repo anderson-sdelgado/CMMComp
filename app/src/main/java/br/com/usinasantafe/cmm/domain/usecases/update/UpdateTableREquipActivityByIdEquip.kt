@@ -75,7 +75,7 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         val config = resultGetConfig.getOrNull()!!
         val resultGetList = rEquipActivityRepository.listByIdEquip(
             token = token,
-            idEquip = config.idEquip!!
+            idEquip = config.equip!!.id
         )
         resultGetList.onFailure {
             val failure = failure(getClassAndMethod(), it)

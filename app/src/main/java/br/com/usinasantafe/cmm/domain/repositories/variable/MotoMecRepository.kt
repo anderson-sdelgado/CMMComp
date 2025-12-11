@@ -46,4 +46,5 @@ interface MotoMecRepository {
     ): Result<Boolean>
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun hasCouplingTrailerImplement(): Result<Boolean>
+    suspend fun uncouplingTrailerImplement(): Result<Boolean>
 }

@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.domain.errors.failure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
@@ -25,7 +25,7 @@ interface UpdateTableItemCheckListByNroEquip {
 class IUpdateTableItemCheckListByNroEquip @Inject constructor(
     private val getToken: GetToken,
     private val itemCheckListRepository: ItemCheckListRepository,
-    private val configRepository: ConfigRepository
+    private val equipRepository: EquipRepository,
 ): UpdateTableItemCheckListByNroEquip {
 
     override suspend fun invoke(
@@ -57,7 +57,7 @@ class IUpdateTableItemCheckListByNroEquip @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultGetNroEquip = configRepository.getNroEquip()
+        val resultGetNroEquip = equipRepository.getNroEquipMain()
         resultGetNroEquip.onFailure {
             val failure = failure(getClassAndMethod(), it)
             emit(

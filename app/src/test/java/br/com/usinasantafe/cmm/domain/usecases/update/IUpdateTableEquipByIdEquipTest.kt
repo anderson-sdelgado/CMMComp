@@ -23,11 +23,9 @@ class IUpdateTableEquipByIdEquipTest {
 
     private val getToken = mock<GetToken>()
     private val equipRepository = mock<EquipRepository>()
-    private val configRepository = mock<ConfigRepository>()
-    private val updateTableEquip = IUpdateTableEquipByIdEquip(
+    private val updateTableEquip = IUpdateTableEquip(
         getToken = getToken,
-        equipRepository = equipRepository,
-        configRepository = configRepository
+        equipRepository = equipRepository
     )
 
     @Test
@@ -73,57 +71,22 @@ class IUpdateTableEquipByIdEquipTest {
         }
 
     @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
-        runTest {
-            whenever(
-                getToken()
-            ).thenReturn(
-                Result.success("token")
-            )
-            whenever(
-                configRepository.get()
-            ).thenReturn(
-                resultFailure(
-                    "IConfigRepository.get",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = updateTableEquip(
-                sizeAll = 7f,
-                count = 1f
-            )
-            val list = result.toList()
-            assertEquals(
-                result.count(),
-                2
-            )
-            assertEquals(
-                list[0],
-                ResultUpdateModel(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
-                )
-            )
-            assertEquals(
-                list[1],
-                ResultUpdateModel(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IConfigRepository.get -> java.lang.Exception",
-                    currentProgress = 1f,
-                )
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in EquipRepository getListByIdEquip`() =
         runTest {
             val config = Config(
-                idEquip = 10
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             whenever(
                 getToken()
@@ -131,14 +94,8 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(config)
-            )
-            whenever(
-                equipRepository.listByIdEquip(
+                equipRepository.listAll(
                     token = "token",
-                    idEquip = 10
                 )
             ).thenReturn(
                 resultFailure(
@@ -181,7 +138,19 @@ class IUpdateTableEquipByIdEquipTest {
     fun `Check return failure if have error in EquipRepository deleteAll`() =
         runTest {
             val config = Config(
-                idEquip = 10
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             val list = listOf(
                 Equip(
@@ -204,14 +173,8 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(config)
-            )
-            whenever(
-                equipRepository.listByIdEquip(
+                equipRepository.listAll(
                     token = "token",
-                    idEquip = 10
                 )
             ).thenReturn(
                 Result.success(
@@ -270,7 +233,19 @@ class IUpdateTableEquipByIdEquipTest {
     fun `Check return failure if have error in EquipRepository addAll`() =
         runTest {
             val config = Config(
-                idEquip = 10,
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                ),
                 idServ = 1
             )
             val list = listOf(
@@ -294,14 +269,8 @@ class IUpdateTableEquipByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
-            ).thenReturn(
-                Result.success(config)
-            )
-            whenever(
-                equipRepository.listByIdEquip(
-                    token = "token",
-                    idEquip = 10
+                equipRepository.listAll(
+                    token = "token"
                 )
             ).thenReturn(
                 Result.success(

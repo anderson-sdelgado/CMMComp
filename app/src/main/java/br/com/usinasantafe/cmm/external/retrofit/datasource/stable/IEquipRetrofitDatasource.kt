@@ -11,14 +11,12 @@ class IEquipRetrofitDatasource @Inject constructor(
     private val equipApi: EquipApi
 ): EquipRetrofitDatasource {
 
-    override suspend fun listByIdEquip(
-        token: String,
-        idEquip: Int
+    override suspend fun listAll(
+        token: String
     ): Result<List<EquipRetrofitModel>> {
         try {
-            val response = equipApi.getListByIdEquip(
-                auth = token,
-                idEquip = idEquip
+            val response = equipApi.all(
+                auth = token
             )
             return Result.success(response.body()!!)
         } catch (e: Exception) {

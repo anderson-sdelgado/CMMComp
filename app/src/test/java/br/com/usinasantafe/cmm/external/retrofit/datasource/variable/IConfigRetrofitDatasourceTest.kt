@@ -12,65 +12,6 @@ import kotlin.test.assertEquals
 class IConfigRetrofitDatasourceTest {
 
     @Test
-    fun `recoverToken - Check return correct if function execute successfully`() =
-        runTest {
-            val retrofitModelOutput = ConfigRetrofitModelOutput(
-                number = 16997417840,
-                nroEquip = 310,
-                version = "1.00",
-                app = "PMM"
-            )
-            val server = MockWebServer()
-            server.start()
-            server.enqueue(MockResponse().setBody("""{"idBD":1}"""))
-            val retrofit = provideRetrofitTest(server.url("/").toString())
-            val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(service)
-            val result = dataSource.recoverToken(retrofitModelOutput)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            val retrofitModelInput = result.getOrNull()
-            assertEquals(
-                retrofitModelInput?.idServ,
-                1
-            )
-            server.shutdown()
-        }
-
-    @Test
-    fun `recoverToken - Check return failure if have error 404`() =
-        runTest {
-            val retrofitModelOutput = ConfigRetrofitModelOutput(
-                number = 16997417840,
-                nroEquip = 310,
-                version = "1.00",
-                app = "PMM"
-            )
-            val server = MockWebServer()
-            server.start()
-            server.enqueue(MockResponse().setResponseCode(404))
-            val retrofit = provideRetrofitTest(server.url("/").toString())
-            val service = retrofit.create(ConfigApi::class.java)
-            val dataSource = IConfigRetrofitDatasource(service)
-            val result = dataSource.recoverToken(retrofitModelOutput)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IConfigRetrofitDatasource.recoverToken"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause!!.toString(),
-                "java.lang.NullPointerException"
-            )
-            server.shutdown()
-        }
-
-    @Test
     fun `recoverToken - Check return failure if have failure Connection`() =
         runTest {
             val retrofitModelOutput = ConfigRetrofitModelOutput(
@@ -131,5 +72,86 @@ class IConfigRetrofitDatasourceTest {
             )
             server.shutdown()
         }
+
+    @Test
+    fun `recoverToken - Check return failure if have error 404`() =
+        runTest {
+            val retrofitModelOutput = ConfigRetrofitModelOutput(
+                number = 16997417840,
+                nroEquip = 310,
+                version = "1.00",
+                app = "PMM"
+            )
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(MockResponse().setResponseCode(404))
+            val retrofit = provideRetrofitTest(server.url("/").toString())
+            val service = retrofit.create(ConfigApi::class.java)
+            val dataSource = IConfigRetrofitDatasource(service)
+            val result = dataSource.recoverToken(retrofitModelOutput)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRetrofitDatasource.recoverToken"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause!!.toString(),
+                "java.lang.NullPointerException"
+            )
+            server.shutdown()
+        }
+
+    @Test
+    fun `recoverToken - Check return correct if function execute successfully`() =
+        runTest {
+            val retrofitModelOutput = ConfigRetrofitModelOutput(
+                number = 16997417840,
+                nroEquip = 310,
+                version = "1.00",
+                app = "PMM"
+            )
+            val server = MockWebServer()
+            server.start()
+            server.enqueue(MockResponse().setBody(result))
+            val retrofit = provideRetrofitTest(server.url("/").toString())
+            val service = retrofit.create(ConfigApi::class.java)
+            val dataSource = IConfigRetrofitDatasource(service)
+            val result = dataSource.recoverToken(retrofitModelOutput)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val retrofitModelInput = result.getOrNull()
+            assertEquals(
+                retrofitModelInput?.idServ,
+                16
+            )
+            assertEquals(
+                retrofitModelInput?.equip?.id,
+                10
+            )
+            server.shutdown()
+        }
+
+    private val result = """
+        {
+            "idServ": 16,
+            "equip": {
+                "id": 10,
+                "nro": 2200,
+                "classify": 1,
+                "codClass": 8,
+                "descrClass": "CAVALO CANAVIEIRO",
+                "codTurnEquip": 22,
+                "idCheckList": 3522,
+                "typeFert": 0,
+                "hourMeter": 0,
+                "flagMechanic": 0
+            }
+        }
+    """.trimIndent()
 
 }

@@ -13,24 +13,13 @@ interface ListTurn {
 }
 
 class IListTurn @Inject constructor(
-    private val configRepository: ConfigRepository,
     private val equipRepository: EquipRepository,
     private val turnRepository: TurnRepository
 ): ListTurn {
 
     override suspend fun invoke(): Result<List<Turn>> {
         try {
-            val resultGetConfig = configRepository.get()
-            resultGetConfig.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val config = resultGetConfig.getOrNull()!!
-            val resultGetCodTurnEquip = equipRepository.getCodTurnEquipByIdEquip(
-                idEquip = config.idEquip!!
-            )
+            val resultGetCodTurnEquip = equipRepository.getCodTurnEquip()
             resultGetCodTurnEquip.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

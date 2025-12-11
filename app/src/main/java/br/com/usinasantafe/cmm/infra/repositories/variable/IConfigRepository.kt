@@ -146,17 +146,6 @@ class IConfigRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getIdEquip(): Result<Int> {
-        val result = configSharedPreferencesDatasource.getIdEquip()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
-    }
-
     override suspend fun getIdTurnCheckListLast(): Result<Int?> {
         val result = configSharedPreferencesDatasource.getIdTurnCheckListLast()
         result.onFailure {
@@ -179,14 +168,4 @@ class IConfigRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getNroEquip(): Result<Long> {
-        val result = configSharedPreferencesDatasource.getNroEquip()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
-    }
 }

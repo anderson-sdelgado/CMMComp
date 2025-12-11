@@ -15,8 +15,6 @@ interface ConfigRepository {
     suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean>
     suspend fun getNumber(): Result<Long>
     suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean>
-    suspend fun getIdEquip(): Result<Int>
     suspend fun getIdTurnCheckListLast(): Result<Int?>
     suspend fun getDateCheckListLast(): Result<Date>
-    suspend fun getNroEquip(): Result<Long>
 }

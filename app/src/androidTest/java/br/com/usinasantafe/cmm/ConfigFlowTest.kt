@@ -37,7 +37,7 @@ import br.com.usinasantafe.cmm.lib.WEB_ALL_ITEM_MENU
 import br.com.usinasantafe.cmm.lib.WEB_ALL_R_ACTIVITY_STOP
 import br.com.usinasantafe.cmm.lib.WEB_ALL_R_ITEM_MENU_STOP
 import br.com.usinasantafe.cmm.lib.WEB_ALL_STOP
-import br.com.usinasantafe.cmm.lib.WEB_EQUIP_LIST_BY_ID_EQUIP
+import br.com.usinasantafe.cmm.lib.WEB_ALL_EQUIP
 import br.com.usinasantafe.cmm.lib.WEB_ALL_TURN
 import br.com.usinasantafe.cmm.lib.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.lib.WEB_R_EQUIP_ACTIVITY_LIST_BY_ID_EQUIP
@@ -208,7 +208,7 @@ class ConfigFlowTest {
                         "/$WEB_SAVE_TOKEN" -> MockResponse().setBody(resultToken)
                         "/$WEB_ALL_ACTIVITY" -> MockResponse().setBody(resultActivity)
                         "/$WEB_ALL_COLAB" -> MockResponse().setBody(resultColab)
-                        "/$WEB_EQUIP_LIST_BY_ID_EQUIP" -> MockResponse().setBody(resultEquip)
+                        "/$WEB_ALL_EQUIP" -> MockResponse().setBody(resultEquip)
                         "/$WEB_ALL_FUNCTION_ACTIVITY" -> MockResponse().setBody(resultFunctionActivity)
                         "/$WEB_ALL_FUNCTION_STOP" -> MockResponse().setBody(resultFunctionStop)
                         "/$WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP" -> MockResponse().setBody(resultItemCheckList)

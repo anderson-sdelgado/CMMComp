@@ -4,8 +4,10 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -17,9 +19,11 @@ class IEquipRepositoryTest {
 
     private val equipRetrofitDatasource = mock<EquipRetrofitDatasource>()
     private val equipRoomDatasource = mock<EquipRoomDatasource>()
+    private val equipSharedPreferencesDatasource = mock<EquipSharedPreferencesDatasource>()
     private val repository = IEquipRepository(
         equipRetrofitDatasource = equipRetrofitDatasource,
-        equipRoomDatasource = equipRoomDatasource
+        equipRoomDatasource = equipRoomDatasource,
+        equipSharedPreferencesDatasource = equipSharedPreferencesDatasource
     )
 
     @Test
@@ -175,23 +179,21 @@ class IEquipRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return failure if have error`() =
+    fun `listAll - Check return failure if have error`() =
         runTest {
             whenever(
-                equipRetrofitDatasource.listByIdEquip(
-                    token = "token",
-                    idEquip = 10
+                equipRetrofitDatasource.listAll(
+                    token = "token"
                 )
             ).thenReturn(
                 resultFailure(
-                    "IEquipRetrofitDatasource.listByIdEquip",
+                    "IEquipRetrofitDatasource.listAll",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.listByIdEquip(
-                token = "token",
-                idEquip = 10
+            val result = repository.listAll(
+                token = "token"
             )
             assertEquals(
                 result.isFailure,
@@ -199,7 +201,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip"
+                "IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -208,7 +210,7 @@ class IEquipRepositoryTest {
         }
 
     @Test
-    fun `getListByIdEquip - Check return true if function execute successfully`() =
+    fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 EquipRetrofitModel(
@@ -241,18 +243,16 @@ class IEquipRepositoryTest {
                 )
             )
             whenever(
-                equipRetrofitDatasource.listByIdEquip(
-                    token = "token",
-                    idEquip = 10
+                equipRetrofitDatasource.listAll(
+                    token = "token"
                 )
             ).thenReturn(
                 Result.success(
                     retrofitModelList
                 )
             )
-            val result = repository.listByIdEquip(
-                token = "token",
-                idEquip = 10
+            val result = repository.listAll(
+                token = "token"
             )
             assertEquals(
                 result.isSuccess,
@@ -268,10 +268,10 @@ class IEquipRepositoryTest {
     fun `getDescrByIdEquip - Check return failure if have error in EquipRoomDatasource getDescrByIdEquip`() =
         runTest {
             whenever(
-                equipRoomDatasource.getDescrByIdEquip(1)
+                equipSharedPreferencesDatasource.getDescrClass()
             ).thenReturn(
                 resultFailure(
-                    "EquipRoomDatasource.getDescrByIdEquip",
+                    "EquipSharedPreferencesDatasource.getDescrClass",
                     "-",
                     Exception()
                 )
@@ -283,7 +283,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.getDescrByIdEquip -> EquipRoomDatasource.getDescrByIdEquip"
+                "IEquipRepository.getDescrByIdEquip -> EquipSharedPreferencesDatasource.getDescrClass"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -322,7 +322,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getCodTurnEquipByIdEquip(1)
+            val result = repository.getCodTurnEquip()
             assertEquals(
                 result.isFailure,
                 true
@@ -345,7 +345,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(1)
             )
-            val result = repository.getCodTurnEquipByIdEquip(1)
+            val result = repository.getCodTurnEquip()
             assertEquals(
                 result.isSuccess,
                 true
@@ -368,7 +368,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getHourMeterByIdEquip(1)
+            val result = repository.getHourMeter()
             assertEquals(
                 result.isFailure,
                 true
@@ -391,7 +391,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(1.0)
             )
-            val result = repository.getHourMeterByIdEquip(1)
+            val result = repository.getHourMeter()
             assertEquals(
                 result.isSuccess,
                 true
@@ -418,9 +418,8 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.updateHourMeterByIdEquip(
-                hourMeter = 1.0,
-                idEquip = 1
+            val result = repository.updateHourMeter(
+                hourMeter = 1.0
             )
             assertEquals(
                 result.isFailure,
@@ -448,7 +447,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getTypeEquipByIdEquip(1)
+            val result = repository.getTypeEquip()
             assertEquals(
                 result.isFailure,
                 true
@@ -471,7 +470,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
-            val result = repository.getTypeEquipByIdEquip(1)
+            val result = repository.getTypeEquip()
             assertEquals(
                 result.isSuccess,
                 true
@@ -494,7 +493,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getIdCheckListByIdEquip(1)
+            val result = repository.getIdCheckList()
             assertEquals(
                 result.isFailure,
                 true
@@ -517,7 +516,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(10)
             )
-            val result = repository.getIdCheckListByIdEquip(1)
+            val result = repository.getIdCheckList()
             assertEquals(
                 result.isSuccess,
                 true
@@ -540,7 +539,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getFlagMechanicByIdEquip(1)
+            val result = repository.getFlagMechanic()
             assertEquals(
                 result.isFailure,
                 true
@@ -563,7 +562,7 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.getFlagMechanicByIdEquip(1)
+            val result = repository.getFlagMechanic()
             assertEquals(
                 result.isSuccess,
                 true
@@ -586,7 +585,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getFlagTireByIdEquip(1)
+            val result = repository.getFlagTire()
             assertEquals(
                 result.isFailure,
                 true
@@ -609,7 +608,105 @@ class IEquipRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.getFlagTireByIdEquip(1)
+            val result = repository.getFlagTire()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `saveEquipMain - Check return failure if have error in EquipSharedPreferencesDatasource save`() =
+        runTest {
+            val entity = Equip(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquip.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+            val model = EquipSharedPreferencesModel(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquip.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+            whenever(
+                equipSharedPreferencesDatasource.save(model)
+            ).thenReturn(
+                resultFailure(
+                    "IEquipSharedPreferencesDatasource.save",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveEquipMain(entity)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.saveEquipMain -> IEquipSharedPreferencesDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveEquipMain - Check return correct if function execute successfully`() =
+        runTest {
+            val entity = Equip(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquip.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+            val model = EquipSharedPreferencesModel(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquip.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+            whenever(
+                equipSharedPreferencesDatasource.save(model)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.saveEquipMain(entity)
             assertEquals(
                 result.isSuccess,
                 true

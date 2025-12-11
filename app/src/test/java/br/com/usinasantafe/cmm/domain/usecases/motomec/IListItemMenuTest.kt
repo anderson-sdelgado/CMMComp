@@ -126,7 +126,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(2)
             whenever(
-                equipRepository.getTypeEquipByIdEquip(1)
+                equipRepository.getTypeEquip()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getTypeEquipByIdEquip",
@@ -210,7 +210,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(5)
             whenever(
-                equipRepository.getFlagMechanicByIdEquip(1)
+                equipRepository.getFlagMechanic()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getFlagMechanicByIdEquip",
@@ -238,7 +238,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(6)
             whenever(
-                equipRepository.getFlagTireByIdEquip(1)
+                equipRepository.getFlagTire()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getFlagTireByIdEquip",
@@ -881,7 +881,7 @@ class IListItemMenuTest {
         if(level == 2) return
 
         whenever(
-            equipRepository.getTypeEquipByIdEquip(1)
+            equipRepository.getTypeEquip()
         ).thenReturn(
             Result.success(typeEquip)
         )
@@ -905,7 +905,7 @@ class IListItemMenuTest {
         if(level == 5) return
 
         whenever(
-            equipRepository.getFlagMechanicByIdEquip(1)
+            equipRepository.getFlagMechanic()
         ).thenReturn(
             Result.success(flagMechanic)
         )
@@ -913,7 +913,7 @@ class IListItemMenuTest {
         if(level == 6) return
 
         whenever(
-            equipRepository.getFlagTireByIdEquip(1)
+            equipRepository.getFlagTire()
         ).thenReturn(
             Result.success(flagTire)
         )

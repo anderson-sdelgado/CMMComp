@@ -2296,4 +2296,50 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `uncouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.uncouplingTrailerImplement()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.uncouplingTrailerImplement -> ITrailerSharedPreferencesDatasource.clean"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `uncouplingTrailerImplement - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.uncouplingTrailerImplement()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }
