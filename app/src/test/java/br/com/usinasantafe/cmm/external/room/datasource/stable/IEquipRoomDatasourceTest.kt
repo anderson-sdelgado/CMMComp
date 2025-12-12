@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -54,26 +54,14 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     ),
                     EquipRoomModel(
                         id = 1,
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )
@@ -87,7 +75,7 @@ class IEquipRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
+                "android.database.sqlite.SQLiteConstraintException: DB[1] step() [INSERT OR ABORT INTO `tb_equip` (`id`,`nro`,`codClass`,`descrClass`,`typeEquip`) VALUES (?,?,?,?,?)]DB[1][C] [UNIQUE constraint failed: tb_equip.id] (code 1555 SQLITE_CONSTRAINT_PRIMARYKEY)"
             )
             val qtdAfter = equipDao.all().size
             assertEquals(
@@ -111,26 +99,14 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 20,
                         codClass = 20,
                         descrClass = "TRATOR 2",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )
@@ -142,52 +118,52 @@ class IEquipRoomDatasourceTest {
                 result.getOrNull()!!,
                 true
             )
-            val qtdAfter = equipDao.all().size
-            assertEquals(
-                qtdAfter,
-                2
-            )
             val list = equipDao.all()
             assertEquals(
-                list[0].id,
+                list.size,
+                2
+            )
+            val model1 = list[0]
+            assertEquals(
+                model1.id,
                 1
             )
             assertEquals(
-                list[0].nro,
+                model1.nro,
                 10
             )
             assertEquals(
-                list[0].codClass,
+                model1.codClass,
                 20
             )
             assertEquals(
-                list[0].descrClass,
+                model1.descrClass,
                 "TRATOR"
             )
             assertEquals(
-                list[0].hourMeter,
-                0.0,
-                0.0
+                model1.typeEquip,
+                TypeEquipSecondary.REEL
             )
+            val model2 = list[1]
             assertEquals(
-                list[0].flagMechanic,
-                true
-            )
-            assertEquals(
-                list[1].id,
+                model2.id,
                 2
             )
             assertEquals(
-                list[1].nro,
+                model2.nro,
                 20
             )
             assertEquals(
-                list[1].codClass,
+                model2.codClass,
                 20
                 )
             assertEquals(
-                list[1].descrClass,
+                model2.descrClass,
                 "TRATOR 2"
+            )
+            assertEquals(
+                model2.typeEquip,
+                TypeEquipSecondary.REEL
             )
         }
 
@@ -201,13 +177,7 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )
@@ -246,7 +216,7 @@ class IEquipRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getDescrClass()\" because \"model\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()\" because \"model\" is null"
             )
         }
 
@@ -260,13 +230,7 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )
@@ -283,375 +247,6 @@ class IEquipRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 "10 - TRATOR"
-            )
-        }
-
-    @Test
-    fun `getCodTurnEquipByIdEquip- Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getCodTurnEquipByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getCodTurnEquipByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getCodTurnEquip()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getCodTurnEquipByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getCodTurnEquipByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                1
-            )
-        }
-
-    @Test
-    fun `getMeasureByIdEquip - Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getHourMeterByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getMeasureByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getMeasurement()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getMeasureByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getHourMeterByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                10000.0,
-                0.0
-            )
-        }
-
-    @Test
-    fun `updateHourMeterByIdEquip - Check alter data`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.updateHourMeterByIdEquip(
-                hourMeter = 20000.0,
-                idEquip = 1
-            )
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                true
-            )
-            val qtdAfter = equipDao.all().size
-            assertEquals(
-                qtdAfter,
-                1
-            )
-        }
-
-    @Test
-    fun `getTypeFertByIdEquip - Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getTypeEquipByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getTypeFertByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getTypeFert()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getTypeFertByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getTypeEquipByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                TypeEquip.NORMAL
-            )
-        }
-
-    @Test
-    fun `getIdCheckListByIdEquip - Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getIdCheckListByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getIdCheckListByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getIdCheckList()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getIdCheckListByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getIdCheckListByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                1
-            )
-        }
-
-    @Test
-    fun `getFlagMechanicByIdEquip - Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getFlagMechanicByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getFlagMechanicByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getFlagMechanic()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getFlagMechanicByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = false,
-                        flagTire = true
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getFlagMechanicByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                false
-            )
-        }
-
-    @Test
-    fun `getFlagTireByIdEquip - Check return failure if not have data`() =
-        runTest {
-            val result = datasource.getFlagTireByIdEquip(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IEquipRoomDatasource.getFlagTireByIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getFlagTire()\" because \"model\" is null"
-            )
-        }
-
-    @Test
-    fun `getFlagTireByIdEquip - Check return correct if function execute successfully`() =
-        runTest {
-            equipDao.insertAll(
-                listOf(
-                    EquipRoomModel(
-                        id = 1,
-                        nro = 10,
-                        codClass = 20,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = false,
-                        flagTire = false
-                    )
-                )
-            )
-            val qtdBefore = equipDao.all().size
-            assertEquals(
-                qtdBefore,
-                1
-            )
-            val result = datasource.getFlagTireByIdEquip(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                false
             )
         }
 

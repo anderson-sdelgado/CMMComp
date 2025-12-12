@@ -1,9 +1,28 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 
-data class EquipRetrofitModel(
+data class EquipMainRetrofitModel(
+    val id: Int,
+    val nro: Long,
+    val codClass: Int,
+    val descrClass: String,
+    val typeEquip: Int,
+)
+
+fun EquipMainRetrofitModel.retrofitModelToEntity(): Equip {
+    return Equip(
+        id = this.id,
+        nro = this.nro,
+        codClass = this.codClass,
+        descrClass = this.descrClass,
+        typeEquipSecondary = TypeEquipSecondary.entries[this.typeEquip - 1],
+    )
+}
+
+data class EquipSecondaryRetrofitModel(
     val id: Int,
     val nro: Long,
     val codClass: Int,
@@ -17,15 +36,15 @@ data class EquipRetrofitModel(
     val flagTire: Int
 )
 
-fun EquipRetrofitModel.retrofitModelToEntity(): Equip {
+fun EquipSecondaryRetrofitModel.retrofitModelToEntity(): Equip {
     return Equip(
         id = this.id,
         nro = this.nro,
         codClass = this.codClass,
         descrClass = this.descrClass,
+        typeEquipMain = TypeEquipMain.entries[this.typeEquip - 1],
         codTurnEquip = this.codTurnEquip,
         idCheckList = this.idCheckList,
-        typeEquip = TypeEquip.entries[this.typeEquip - 1],
         hourMeter = this.hourMeter,
         classify = this.classify,
         flagMechanic = this.flagMechanic != 0,

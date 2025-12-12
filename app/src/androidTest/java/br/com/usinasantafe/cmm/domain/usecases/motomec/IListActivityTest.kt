@@ -76,7 +76,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -103,7 +108,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -135,7 +145,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -181,7 +196,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -278,7 +298,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -368,7 +393,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -472,7 +502,12 @@ class IListActivityTest {
         runTest {
             val resultConfigSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(

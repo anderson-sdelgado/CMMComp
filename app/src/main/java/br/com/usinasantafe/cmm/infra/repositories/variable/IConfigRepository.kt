@@ -29,7 +29,7 @@ class IConfigRepository @Inject constructor(
                     cause = it
                 )
             }
-            val config = result.getOrNull()!!
+            val config = result.getOrNull() ?: return Result.success(Config())
             return Result.success(config.sharedPreferencesModelToEntity())
         } catch (e: Exception){
             return resultFailure(

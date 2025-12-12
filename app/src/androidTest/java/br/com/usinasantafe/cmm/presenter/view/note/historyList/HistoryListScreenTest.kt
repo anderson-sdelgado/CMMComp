@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -141,7 +141,7 @@ class HistoryListScreenTest {
             HeaderMotoMecRoomModel(
                 regOperator = 19759,
                 idEquip = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,

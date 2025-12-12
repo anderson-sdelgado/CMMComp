@@ -4,7 +4,8 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -87,13 +88,7 @@ class ICheckHourMeterTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )
@@ -129,13 +124,7 @@ class ICheckHourMeterTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 5000.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL,
                     )
                 )
             )

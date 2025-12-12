@@ -32,7 +32,7 @@ class IEquipRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRetrofitDatasource.recoverAll"
+                "IEquipRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -63,7 +63,7 @@ class IEquipRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRetrofitDatasource.recoverAll"
+                "IEquipRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -115,28 +115,7 @@ class IEquipRetrofitDatasourceTest {
                 "Classe 1"
             )
             assertEquals(
-                list[0].codTurnEquip,
-                1
-            )
-            assertEquals(
-                list[0].idCheckList,
-                1
-            )
-            assertEquals(
                 list[0].typeEquip,
-                1
-            )
-            assertEquals(
-                list[0].hourMeter,
-                100.0,
-                0.0
-            )
-            assertEquals(
-                list[0].classify,
-                1
-            )
-            assertEquals(
-                list[0].flagMechanic,
                 1
             )
             assertEquals(
@@ -156,29 +135,8 @@ class IEquipRetrofitDatasourceTest {
                 "Classe 2"
             )
             assertEquals(
-                list[1].codTurnEquip,
-                2
-            )
-            assertEquals(
-                list[1].idCheckList,
-                2
-            )
-            assertEquals(
                 list[1].typeEquip,
                 2
-            )
-            assertEquals(
-                list[1].hourMeter,
-                200.0,
-                0.0
-            )
-            assertEquals(
-                list[1].classify,
-                2
-            )
-            assertEquals(
-                list[1].flagMechanic,
-                0
             )
             server.shutdown()
         }
@@ -186,7 +144,7 @@ class IEquipRetrofitDatasourceTest {
 
 val resultEquipRetrofit = """
     [
-      {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourmeter":100.0,"measurement":200.0,"type":1,"classify":1,"flagApontMecan":1,"flagApontPneu":1},
-      {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":2,"typeEquip":2,"hourmeter":200.0,"measurement":300.0,"type":2,"classify":2,"flagApontMecan":0,"flagApontPneu":0}
+      {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","typeEquip":1},
+      {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","typeEquip":2}
     ]
 """.trimIndent()

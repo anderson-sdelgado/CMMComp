@@ -21,8 +21,8 @@ data class ConfigSharedPreferencesModel(
 fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
     return with(this) {
         Config(
-            password = password,
             number = number,
+            password = password,
             checkMotoMec = checkMotoMec,
             idServ = idServ,
             version = version,
@@ -38,8 +38,8 @@ fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
 fun Config.entityToSharedPreferencesModel(): ConfigSharedPreferencesModel {
     return with(this) {
         ConfigSharedPreferencesModel(
-            password = password!!,
             number = number!!,
+            password = password!!,
             checkMotoMec = checkMotoMec!!,
             idServ = idServ!!,
             version = version!!,

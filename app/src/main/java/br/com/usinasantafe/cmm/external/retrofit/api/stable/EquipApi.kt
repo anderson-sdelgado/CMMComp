@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.external.retrofit.api.stable
 
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipMainRetrofitModel
 
 import br.com.usinasantafe.cmm.lib.WEB_ALL_EQUIP
 import retrofit2.Response
@@ -12,6 +12,6 @@ interface EquipApi {
     @POST(WEB_ALL_EQUIP)
     suspend fun all(
         @Header("Authorization") auth: String
-    ): Response<List<EquipRetrofitModel>>
+    ): Response<List<EquipMainRetrofitModel>>
 
 }

@@ -16,6 +16,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ROSActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
@@ -23,10 +24,12 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.lib.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -76,24 +79,6 @@ class HeaderInitialFlowTest {
                     {
                         "regColab":19759,
                         "nameColab":"ANDERSON DA SILVA DELGADO"
-                    }
-                ]
-            """.trimIndent()
-
-        private val jsonUpdateEquip = """
-                [
-                    {
-                        "id":30,
-                        "nro":2200,
-                        "codClass":1,
-                        "descrClass":"TRATOR",
-                        "codTurnEquip":1,
-                        "idCheckList":0,
-                        "typeEquip":1,
-                        "hourMeter":100.0,
-                        "measure":200.0,
-                        "classify":1,
-                        "flagMechanic":True
                     }
                 ]
             """.trimIndent()
@@ -184,6 +169,9 @@ class HeaderInitialFlowTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 
     @Inject
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
@@ -567,12 +555,16 @@ class HeaderInitialFlowTest {
             10000.0
         )
 
-        val equip = equipDao.getByIdEquip(30)
+        val resultGetHourMeter = equipSharedPreferencesDatasource.getHourMeter()
         assertEquals(
-            equip.hourMeter,
-            10000.0,
-            0.0
+            resultGetHourMeter.isSuccess,
+            true
         )
+        val hourMeter = resultGetHourMeter.getOrNull()!!
+        assertEquals(
+            hourMeter,
+            10000.0,
+            0.0        )
 
         val headerMotoMecList = headerMotoMecDao.all()
         assertEquals(
@@ -621,14 +613,28 @@ class HeaderInitialFlowTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 number = 16997417840,
-                nroEquip = 2200,
                 password = "12345",
-                idEquip = 30,
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
                 app = "PMM",
                 flagUpdate = FlagUpdate.UPDATED
+            )
+        )
+
+        equipSharedPreferencesDatasource.save(
+            EquipSharedPreferencesModel(
+                id = 30,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 0,
+                typeEquip = TypeEquipMain.NORMAL,
+                hourMeter = 100.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
             )
         )
 
@@ -639,10 +645,6 @@ class HeaderInitialFlowTest {
         val itemTypeColab = object : TypeToken<List<ColabRoomModel>>() {}.type
         val colabList = gson.fromJson<List<ColabRoomModel>>(jsonUpdateColab, itemTypeColab)
         colabDao.insertAll(colabList)
-
-        val itemTypeEquip = object : TypeToken<List<EquipRoomModel>>() {}.type
-        val equipList = gson.fromJson<List<EquipRoomModel>>(jsonUpdateEquip, itemTypeEquip)
-        equipDao.insertAll(equipList)
 
         val itemTypeREquipActivity = object : TypeToken<List<REquipActivityRoomModel>>() {}.type
         val rEquipActivityList = gson.fromJson<List<REquipActivityRoomModel>>(jsonUpdateREquipActivity, itemTypeREquipActivity)

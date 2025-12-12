@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -39,7 +39,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -78,7 +78,7 @@ class IEquipSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 model.typeEquip,
-                TypeEquip.NORMAL
+                TypeEquipMain.NORMAL
             )
             assertEquals(
                 model.hourMeter,
@@ -99,7 +99,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getDescrClass return correct`() =
+    fun `Check getDescr return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -108,21 +108,21 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
                 flagTire = true
             )
             datasource.save(data)
-            val result = datasource.getDescrClass()
+            val result = datasource.getDescr()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                "TRATOR"
+                "2200 - TRATOR"
             )
         }
 
@@ -136,7 +136,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -164,7 +164,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -192,7 +192,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -238,7 +238,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -252,7 +252,7 @@ class IEquipSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                TypeEquip.NORMAL
+                TypeEquipMain.NORMAL
             )
         }
 
@@ -266,7 +266,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -294,7 +294,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = false,
@@ -322,7 +322,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = false,
@@ -350,7 +350,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -378,7 +378,7 @@ class IEquipSharedPreferencesDatasourceTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 5,
                 idCheckList = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquip = TypeEquipMain.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,

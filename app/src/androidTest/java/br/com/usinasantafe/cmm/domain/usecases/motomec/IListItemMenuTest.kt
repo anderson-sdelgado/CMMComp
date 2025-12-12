@@ -54,7 +54,8 @@ import br.com.usinasantafe.cmm.lib.TIRE_CHANGE
 import br.com.usinasantafe.cmm.lib.TIRE_INFLATION
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.UNCOUPLING_COURTYARD
 import br.com.usinasantafe.cmm.lib.UNCOUPLING_FIELD
@@ -379,7 +380,7 @@ class IListItemMenuTest {
                 level = 5,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquip = TypeEquip.FERT
+                typeEquipMain = TypeEquipMain.FERT
             )
             initialRegisterSec(2)
             val result = usecase("pmm")
@@ -795,7 +796,7 @@ class IListItemMenuTest {
 
     private suspend fun initialRegister(
         level: Int,
-        typeEquip: TypeEquip = TypeEquip.NORMAL,
+        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         flowComposting: FlowComposting? = null
@@ -814,7 +815,7 @@ class IListItemMenuTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 flowComposting = flowComposting,
                 idTurn = 1,
                 nroOS = 123456,
@@ -833,13 +834,7 @@ class IListItemMenuTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = typeEquip,
-                    hourMeter = 1000.0,
-                    classify = 1,
-                    flagMechanic = flagMechanic,
-                    flagTire = flagTire,
+                    TypeEquipSecondary.REEL
                 )
             )
         )

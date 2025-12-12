@@ -1,18 +1,17 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipSecondaryRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -105,7 +104,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IConfigRepository.get -> IConfigSharedPreferencesDatasource.has"
+                "IConfigRepository.hasConfig -> IConfigSharedPreferencesDatasource.has"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -186,7 +185,7 @@ class IConfigRepositoryTest {
             )
             val retrofitModelInput = ConfigRetrofitModelInput(
                 idServ = 1,
-                equip = EquipRetrofitModel(
+                equip = EquipSecondaryRetrofitModel(
                     id = 10,
                     nro = 2200,
                     codClass = 1,
@@ -229,7 +228,7 @@ class IConfigRepositoryTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
+                        typeEquipMain = TypeEquipMain.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = false,
@@ -292,12 +291,11 @@ class IConfigRepositoryTest {
                 configSharedPreferencesDatasource.save(
                     ConfigSharedPreferencesModel(
                         number = 16997417840,
-                        password = "123456",
+                        password = "12345",
                         checkMotoMec = true,
-                        idServ = 1,
                         version = "1.00",
                         app = "PMM",
-                        statusSend = StatusSend.SENT,
+                        idServ = 1,
                     )
                 )
             ).thenReturn(
@@ -307,11 +305,11 @@ class IConfigRepositoryTest {
                 Config(
                     number = 16997417840,
                     password = "12345",
+                    checkMotoMec = true,
                     version = "1.00",
                     app = "PMM",
+                    idServ = 1,
                     nroEquip = 310,
-                    checkMotoMec = false,
-                    idServ = 1
                 )
             )
             assertEquals(

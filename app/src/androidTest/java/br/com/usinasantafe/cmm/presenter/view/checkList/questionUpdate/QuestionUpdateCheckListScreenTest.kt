@@ -172,9 +172,7 @@ class QuestionUpdateCheckListScreenTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 number = 16997417840,
-                nroEquip = 2200,
                 password = "12345",
-                idEquip = 1,
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",

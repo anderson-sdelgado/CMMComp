@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.domain.errors.failure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
@@ -23,7 +23,7 @@ interface UpdateTableREquipActivityByIdEquip {
 
 class IUpdateTableREquipActivityByIdEquip @Inject constructor(
     private val getToken: GetToken,
-    private val configRepository: ConfigRepository,
+    private val equipRepository: EquipRepository,
     private val rEquipActivityRepository: REquipActivityRepository,
 ): UpdateTableREquipActivityByIdEquip {
 
@@ -56,8 +56,8 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
             return@flow
         }
         val token = resultGetToken.getOrNull()!!
-        val resultGetConfig = configRepository.get()
-        resultGetConfig.onFailure {
+        val resultGetId = equipRepository.getIdEquipMain()
+        resultGetId.onFailure {
             val failure = failure(getClassAndMethod(), it)
             emit(
                 ResultUpdateModel(
@@ -72,10 +72,10 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
             )
             return@flow
         }
-        val config = resultGetConfig.getOrNull()!!
+        val idEquip = resultGetId.getOrNull()!!
         val resultGetList = rEquipActivityRepository.listByIdEquip(
             token = token,
-            idEquip = config.equip!!.id
+            idEquip = idEquip
         )
         resultGetList.onFailure {
             val failure = failure(getClassAndMethod(), it)

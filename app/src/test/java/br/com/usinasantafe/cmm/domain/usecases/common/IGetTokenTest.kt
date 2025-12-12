@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.token
 import kotlinx.coroutines.test.runTest
@@ -13,8 +14,10 @@ import org.mockito.kotlin.whenever
 class IGetTokenTest {
 
     private val configRepository = mock<ConfigRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val usecase = IGetToken(
-        configRepository = configRepository
+        configRepository = configRepository,
+        equipRepository = equipRepository
     )
 
     @Test
@@ -45,6 +48,44 @@ class IGetTokenTest {
         }
 
     @Test
+    fun `Check return failure if have error in EquipRepository getNroEquipMain`() =
+        runTest {
+            val config = Config(
+                app = "PMM",
+                idServ = 1,
+                nroEquip = 1,
+                number = 1
+            )
+            whenever(
+                configRepository.get()
+            ).thenReturn(
+                Result.success(config)
+            )
+            whenever(
+                equipRepository.getNroEquipMain()
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRepository.getNroEquipMain",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IGetToken -> IEquipRepository.getNroEquipMain"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if get return config with field empty`() =
         runTest {
             val config = Config(
@@ -57,6 +98,11 @@ class IGetTokenTest {
                 configRepository.get()
             ).thenReturn(
                 Result.success(config)
+            )
+            whenever(
+                equipRepository.getNroEquipMain()
+            ).thenReturn(
+                Result.success(1)
             )
             val result = usecase()
             assertEquals(
@@ -88,17 +134,22 @@ class IGetTokenTest {
             ).thenReturn(
                 Result.success(config)
             )
+            whenever(
+                equipRepository.getNroEquipMain()
+            ).thenReturn(
+                Result.success(1)
+            )
             val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true
             )
             val token = token(
-                app = config.app!!,
-                idBD = config.idServ!!,
-                nroEquip = config.nroEquip!!,
-                number = config.number!!,
-                version = config.version!!
+                app = "PMM",
+                idServ = 1,
+                nroEquip = 1,
+                number = 1,
+                version = "1.00"
             )
             assertEquals(
                 result.getOrNull()!!,

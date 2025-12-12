@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -71,7 +71,7 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
         runTest {
             val data = HeaderMotoMecSharedPreferencesModel(
                 idEquip = 100,
-                typeEquip = TypeEquip.NORMAL
+                typeEquipMain = TypeEquipMain.NORMAL
             )
             datasource.save(data)
             val resultGetBefore = datasource.get()
@@ -86,7 +86,7 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             )
             val result = datasource.setDataEquip(
                 idEquip = 200,
-                typeEquip = TypeEquip.FERT
+                typeEquipMain = TypeEquipMain.FERT
             )
             assertEquals(
                 result.isSuccess,
@@ -103,8 +103,8 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
                 200
             )
             assertEquals(
-                modelAfter.typeEquip,
-                TypeEquip.FERT
+                modelAfter.typeEquipMain,
+                TypeEquipMain.FERT
             )
         }
 

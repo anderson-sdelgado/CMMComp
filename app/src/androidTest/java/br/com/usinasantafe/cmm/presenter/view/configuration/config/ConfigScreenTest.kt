@@ -26,7 +26,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.lib.WEB_ALL_COLAB
@@ -1251,9 +1251,7 @@ class ConfigScreenTest {
                 config,
                 ConfigSharedPreferencesModel(
                     number = 16997417840,
-                    nroEquip = 2200,
                     password = "12345",
-                    idEquip = 1,
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
@@ -2529,26 +2527,6 @@ class ConfigScreenTest {
             equipRoomModel1.descrClass,
             "Classe 1"
         )
-        assertEquals(
-            equipRoomModel1.codTurnEquip,
-            1
-        )
-        assertEquals(
-            equipRoomModel1.idCheckList,
-            1
-        )
-        assertEquals(
-            equipRoomModel1.typeEquip,
-            TypeEquip.NORMAL
-        )
-        assertEquals(
-            equipRoomModel1.hourMeter,
-            100.0
-        )
-        assertEquals(
-            equipRoomModel1.classify,
-            1
-        )
         val equipRoomModel2 = equipRoomModelList[1]
         assertEquals(
             equipRoomModel2.id,
@@ -2565,26 +2543,6 @@ class ConfigScreenTest {
         assertEquals(
             equipRoomModel2.descrClass,
             "Classe 2"
-        )
-        assertEquals(
-            equipRoomModel2.codTurnEquip,
-            2
-        )
-        assertEquals(
-            equipRoomModel2.idCheckList,
-            1
-        )
-        assertEquals(
-            equipRoomModel2.typeEquip,
-            TypeEquip.NORMAL
-        )
-        assertEquals(
-            equipRoomModel2.hourMeter,
-            100.0
-        )
-        assertEquals(
-            equipRoomModel2.classify,
-            1
         )
 
         if(level == 3) return

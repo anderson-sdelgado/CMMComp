@@ -15,6 +15,7 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderCheckListDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
@@ -24,11 +25,13 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.lib.WEB_CHECK_CHECK_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.lib.WEB_ITEM_CHECK_LIST_LIST_BY_NRO_EQUIP
 import br.com.usinasantafe.cmm.lib.WEB_OS_LIST_BY_NRO_OS
@@ -146,7 +149,7 @@ class CheckListFlowTest {
     lateinit var colabDao: ColabDao
 
     @Inject
-    lateinit var equipDao: EquipDao
+    lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 
     @Inject
     lateinit var rEquipActivityDao: REquipActivityDao
@@ -384,8 +387,95 @@ class CheckListFlowTest {
         composeTestRule.onNodeWithText("CONFORME (OK)")
             .performClick()
 
-        composeTestRule.waitUntilTimeout()
+        composeTestRule.waitUntilTimeout(10_000)
 
+        asserts()
+
+        composeTestRule.waitUntilTimeout(3_000)
+
+    }
+
+    private suspend fun initialRegister() {
+
+        configSharedPreferencesDatasource.save(
+            ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "12345",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.0",
+                app = "PMM",
+                flagUpdate = FlagUpdate.UPDATED
+            )
+        )
+
+        activityDao.insertAll(
+            listOf(
+                ActivityRoomModel(
+                    idActivity = 10,
+                    codActivity = 20,
+                    descrActivity = "ATIVIDADE 1"
+                ),
+                ActivityRoomModel(
+                    idActivity = 20,
+                    codActivity = 30,
+                    descrActivity = "ATIVIDADE 2"
+                )
+            )
+        )
+
+        colabDao.insertAll(
+            listOf(
+                ColabRoomModel(
+                    regColab = 19759,
+                    nameColab = "ANDERSON DA SILVA DELGADO"
+                )
+            )
+        )
+
+        equipSharedPreferencesDatasource.save(
+            EquipSharedPreferencesModel(
+                id = 30,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquipMain.NORMAL,
+                hourMeter = 100.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+        )
+
+        rEquipActivityDao.insertAll(
+            listOf(
+                REquipActivityRoomModel(
+                    idEquip = 30,
+                    idActivity = 10
+                ),
+                REquipActivityRoomModel(
+                    idEquip = 30,
+                    idActivity = 20
+                )
+            )
+        )
+
+        turnDao.insertAll(
+            listOf(
+                TurnRoomModel(
+                    idTurn = 1,
+                    codTurnEquip = 1,
+                    nroTurn = 1,
+                    descrTurn = "TURNO 1"
+                )
+            )
+        )
+
+    }
+
+    private suspend fun asserts(){
         val resultGetHeaderFinish = headerCheckListSharedPreferencesDatasource.get()
         assertEquals(
             resultGetHeaderFinish.isSuccess,
@@ -553,92 +643,6 @@ class CheckListFlowTest {
         assertEquals(
             respRoom5.option,
             OptionRespCheckList.ACCORDING
-        )
-
-        composeTestRule.waitUntilTimeout(3_000)
-
-    }
-
-    private suspend fun initialRegister() {
-
-        configSharedPreferencesDatasource.save(
-            ConfigSharedPreferencesModel(
-                number = 16997417840,
-                nroEquip = 2200,
-                password = "12345",
-                idEquip = 30,
-                checkMotoMec = true,
-                idServ = 1,
-                version = "1.0",
-                app = "PMM",
-                flagUpdate = FlagUpdate.UPDATED
-            )
-        )
-
-        activityDao.insertAll(
-            listOf(
-                ActivityRoomModel(
-                    idActivity = 10,
-                    codActivity = 20,
-                    descrActivity = "ATIVIDADE 1"
-                ),
-                ActivityRoomModel(
-                    idActivity = 20,
-                    codActivity = 30,
-                    descrActivity = "ATIVIDADE 2"
-                )
-            )
-        )
-
-        colabDao.insertAll(
-            listOf(
-                ColabRoomModel(
-                    regColab = 19759,
-                    nameColab = "ANDERSON DA SILVA DELGADO"
-                )
-            )
-        )
-
-        equipDao.insertAll(
-            listOf(
-                EquipRoomModel(
-                    id = 30,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 100.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
-        )
-
-        rEquipActivityDao.insertAll(
-            listOf(
-                REquipActivityRoomModel(
-                    idEquip = 30,
-                    idActivity = 10
-                ),
-                REquipActivityRoomModel(
-                    idEquip = 30,
-                    idActivity = 20
-                )
-            )
-        )
-
-        turnDao.insertAll(
-            listOf(
-                TurnRoomModel(
-                    idTurn = 1,
-                    codTurnEquip = 1,
-                    nroTurn = 1,
-                    descrTurn = "TURNO 1"
-                )
-            )
         )
 
     }

@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_EQUIP
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -92,7 +92,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getDescrClass(): Result<String> {
+    override suspend fun getDescr(): Result<String> {
         try {
             val result = get()
             result.onFailure {
@@ -102,7 +102,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
                 )
             }
             val model = result.getOrNull()!!
-            return Result.success(model.descrClass)
+            return Result.success("${model.nro} - ${model.descrClass}")
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -176,7 +176,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getTypeEquip(): Result<TypeEquip> {
+    override suspend fun getTypeEquip(): Result<TypeEquipMain> {
         try {
             val result = get()
             result.onFailure {

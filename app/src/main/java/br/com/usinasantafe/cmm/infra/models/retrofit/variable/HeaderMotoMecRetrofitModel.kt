@@ -38,7 +38,7 @@ fun HeaderMotoMecRoomModel.roomModelToRetrofitModel(
             id = this.id!!,
             regOperator = this.regOperator,
             idEquip = this.idEquip,
-            typeEquip = this.typeEquip.ordinal + 1,
+            typeEquip = this.typeEquipMain.ordinal + 1,
             idTurn = this.idTurn,
             nroOS = this.nroOS,
             idActivity = this.idActivity,

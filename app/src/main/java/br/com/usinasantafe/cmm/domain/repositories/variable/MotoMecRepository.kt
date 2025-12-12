@@ -2,13 +2,13 @@ package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.lib.FlowComposting
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 
 interface MotoMecRepository {
     suspend fun setRegOperatorHeader(regOperator: Int): Result<Boolean>
     suspend fun setDataEquipHeader(
         idEquip: Int,
-        typeEquip: TypeEquip
+        typeEquipMain: TypeEquipMain
     ): Result<Boolean>
     suspend fun setIdTurnHeader(idTurn: Int): Result<Boolean>
     suspend fun setNroOSHeader(nroOS: Int): Result<Boolean>
@@ -18,7 +18,7 @@ interface MotoMecRepository {
     suspend fun getIdEquipHeader(): Result<Int>
     suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Boolean>
     suspend fun saveHeader(): Result<Boolean>
-    suspend fun checkHeaderOpen(): Result<Boolean>
+    suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean>
     suspend fun finishHeader(): Result<Boolean>

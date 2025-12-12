@@ -260,12 +260,10 @@ class ISendCheckListTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                nroEquip = 310,
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
-                idEquip = 20
             )
         )
 

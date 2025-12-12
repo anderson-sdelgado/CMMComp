@@ -11,9 +11,9 @@ fun token(
     version: String,
     nroEquip: Long,
     app: String,
-    idBD: Int,
+    idServ: Int,
 ): String {
-    var token = "$app-$version-$number-$nroEquip-$idBD"
+    var token = "$app-$version-$number-$nroEquip-$idServ"
     val messageDigest = MessageDigest.getInstance("MD5")
     messageDigest.update(token.toByteArray(), 0, token.length)
     val bigInteger = BigInteger(1, messageDigest.digest())

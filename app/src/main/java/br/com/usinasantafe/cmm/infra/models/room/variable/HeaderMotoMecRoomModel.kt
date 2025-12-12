@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TB_HEADER_MOTO_MEC
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import java.util.Date
 
 @Entity(tableName = TB_HEADER_MOTO_MEC)
@@ -16,7 +16,7 @@ data class HeaderMotoMecRoomModel(
     var id: Int? = null,
     val regOperator: Int,
     val idEquip: Int,
-    val typeEquip: TypeEquip,
+    val typeEquipMain: TypeEquipMain,
     val idTurn: Int,
     val nroOS: Int,
     val idActivity: Int,
@@ -37,7 +37,7 @@ fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
             id = this.id,
             regOperator = this.regOperator!!,
             idEquip = this.idEquip!!,
-            typeEquip = this.typeEquip!!,
+            typeEquipMain = this.typeEquipMain!!,
             idTurn = this.idTurn!!,
             nroOS = this.nroOS!!,
             idActivity = this.idActivity!!,

@@ -46,9 +46,6 @@ class ICheckAccessInitialTest {
     @Test
     fun check_return_false_if_flag_update_is_outdated() =
         runTest {
-            configSharedPreferencesDatasource.save(
-                ConfigSharedPreferencesModel()
-            )
             val result = usecase()
             assertEquals(
                 result.isSuccess,
@@ -65,6 +62,12 @@ class ICheckAccessInitialTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
+                    number = 16997417840,
+                    password = "12345",
+                    checkMotoMec = true,
+                    idServ = 1,
+                    app = "PMM",
+                    version = "1.00",
                     flagUpdate = FlagUpdate.UPDATED
                 )
             )

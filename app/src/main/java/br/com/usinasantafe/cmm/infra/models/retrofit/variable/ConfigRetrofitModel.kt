@@ -1,7 +1,8 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipMainRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipSecondaryRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 
 
@@ -14,7 +15,7 @@ data class ConfigRetrofitModelOutput(
 
 data class ConfigRetrofitModelInput(
     val idServ: Int,
-    val equip: EquipRetrofitModel
+    val equip: EquipSecondaryRetrofitModel
 )
 
 fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {

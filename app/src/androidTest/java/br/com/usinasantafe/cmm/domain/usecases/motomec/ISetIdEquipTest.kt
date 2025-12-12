@@ -5,7 +5,8 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -43,7 +44,12 @@ class ISetIdEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 200
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             val resultGetBefore = headerMotoMecSharedPreferencesDatasource.get()
@@ -76,7 +82,12 @@ class ISetIdEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 10
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             equipDao.insertAll(
@@ -86,13 +97,7 @@ class ISetIdEquipTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     ),
                 )
             )
@@ -107,7 +112,7 @@ class ISetIdEquipTest {
                 null
             )
             assertEquals(
-                modelBefore.typeEquip,
+                modelBefore.typeEquipMain,
                 null
             )
             val result = usecase()
@@ -130,8 +135,8 @@ class ISetIdEquipTest {
                 10
             )
             assertEquals(
-                modelAfter.typeEquip,
-                TypeEquip.NORMAL
+                modelAfter.typeEquipMain,
+                TypeEquipMain.NORMAL
             )
         }
 

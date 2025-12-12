@@ -47,6 +47,11 @@ class ICheckPasswordTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
+                    app = "PMM",
+                    idServ = 1,
+                    checkMotoMec = true,
+                    version = "1.00",
+                    number = 123456,
                     password = "12345"
                 )
             )
@@ -66,6 +71,11 @@ class ICheckPasswordTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
+                    app = "PMM",
+                    idServ = 1,
+                    checkMotoMec = true,
+                    version = "1.00",
+                    number = 123456,
                     password = "12345"
                 )
             )

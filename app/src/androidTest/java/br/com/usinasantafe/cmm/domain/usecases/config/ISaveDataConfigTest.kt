@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -56,12 +58,23 @@ class ISaveDataConfigTest {
             val result = usecase(
                 number = "16997417840",
                 password = "12345",
-                nroEquip = "310",
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1,
-                idEquip = 20
+                idServ = 1,
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquipMain = TypeEquipMain.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             assertEquals(
                 result.isSuccess,
@@ -95,10 +108,6 @@ class ISaveDataConfigTest {
                 "12345"
             )
             assertEquals(
-                config.nroEquip,
-                310L
-            )
-            assertEquals(
                 config.app,
                 "PMM"
                 )
@@ -112,14 +121,25 @@ class ISaveDataConfigTest {
     fun check_return_failure_if_input_data_is_incorrect() =
         runTest {
             val result = usecase(
-                number = "16997417840a",
+                number = "16997417840",
                 password = "12345",
-                nroEquip = "310",
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
-                idBD = 1,
-                idEquip = 20
+                idServ = 1,
+                equip = Equip(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "TRATOR",
+                    codTurnEquip = 1,
+                    idCheckList = 1,
+                    typeEquipMain = TypeEquipMain.NORMAL,
+                    hourMeter = 5000.0,
+                    classify = 1,
+                    flagMechanic = true,
+                    flagTire = true
+                )
             )
             assertEquals(
                 result.isFailure,

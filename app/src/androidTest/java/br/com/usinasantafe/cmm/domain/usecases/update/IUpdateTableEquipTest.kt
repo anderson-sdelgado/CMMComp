@@ -4,9 +4,13 @@ import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -20,7 +24,7 @@ import javax.inject.Inject
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class IUpdateTableEquipByIdEquipTest {
+class IUpdateTableEquipTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
@@ -30,6 +34,9 @@ class IUpdateTableEquipByIdEquipTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 
     @Inject
     lateinit var equipDao: EquipDao
@@ -65,7 +72,7 @@ class IUpdateTableEquipByIdEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IGetToken -> java.lang.NullPointerException",
+                    failure = "IUpdateTableEquip -> IGetToken -> IConfigRepository.get -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -105,7 +112,7 @@ class IUpdateTableEquipByIdEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip -> java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080",
+                    failure = "IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.net.ConnectException: Failed to connect to localhost/127.0.0.1:8080",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -152,7 +159,7 @@ class IUpdateTableEquipByIdEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
+                    failure = "IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -199,7 +206,7 @@ class IUpdateTableEquipByIdEquipTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.listByIdEquip -> IEquipRetrofitDatasource.listByIdEquip -> java.lang.NullPointerException",
+                    failure = "IUpdateTableEquip -> IEquipRepository.listAll -> IEquipRetrofitDatasource.listAll -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -283,19 +290,14 @@ class IUpdateTableEquipByIdEquipTest {
                 "Classe 1"
             )
             assertEquals(
-                roomModel.hourMeter,
-                100.0,
-                0.0
-            )
-            assertEquals(
-                roomModel.flagMechanic,
-                true
+                roomModel.typeEquip,
+                TypeEquipSecondary.REEL
             )
         }
 
     private val resultEquipRetrofit = """
         [
-          {"id":1,"nro":10,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1,"flagMechanic":1}
+          {"id":1,"nro":10,"codClass":1,"descrClass":"Classe 1","typeEquip":1}
         ]
     """.trimIndent()
 
@@ -308,6 +310,21 @@ class IUpdateTableEquipByIdEquipTest {
                 version = "1.0",
                 password = "12345",
                 checkMotoMec = true
+            )
+        )
+        equipSharedPreferencesDatasource.save(
+            EquipSharedPreferencesModel(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquipMain.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
             )
         )
     }

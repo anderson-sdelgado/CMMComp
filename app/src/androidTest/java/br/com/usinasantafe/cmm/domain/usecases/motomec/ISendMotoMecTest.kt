@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -310,12 +310,10 @@ class ISendMotoMecTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                nroEquip = 310,
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
-                idEquip = 20
             )
         )
 
@@ -326,7 +324,7 @@ class ISendMotoMecTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,

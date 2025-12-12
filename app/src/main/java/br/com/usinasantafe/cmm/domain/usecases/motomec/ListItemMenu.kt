@@ -23,7 +23,7 @@ import br.com.usinasantafe.cmm.lib.REEL
 import br.com.usinasantafe.cmm.lib.TIRE
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.appList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -132,7 +132,7 @@ class IListItemMenu @Inject constructor(
         }
         val typeEquip = resultTypeEquip.getOrNull()!!
         when (typeEquip) {
-            TypeEquip.NORMAL -> {
+            TypeEquipMain.NORMAL -> {
                 val resultGetIdActivity = motoMecRepository.getIdActivityHeader()
                 resultGetIdActivity.onFailure {
                     return resultFailure(
@@ -158,7 +158,7 @@ class IListItemMenu @Inject constructor(
                     }
                 }
             }
-            TypeEquip.FERT -> list.add(typeListPMM.find { it.second == FERTIGATION }!!)
+            TypeEquipMain.FERT -> list.add(typeListPMM.find { it.second == FERTIGATION }!!)
         }
 
         //MECHANICAL

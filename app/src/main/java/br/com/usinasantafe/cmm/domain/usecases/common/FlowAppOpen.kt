@@ -18,7 +18,7 @@ class IFlowAppOpen @Inject constructor(
 
     override suspend fun invoke(): Result<FlowApp> {
         try {
-            val resultCheckMotoMecOpen = motoMecRepository.checkHeaderOpen()
+            val resultCheckMotoMecOpen = motoMecRepository.hasHeaderOpen()
             resultCheckMotoMecOpen.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -53,7 +53,7 @@ class ICheckHeaderSendTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 19759,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,

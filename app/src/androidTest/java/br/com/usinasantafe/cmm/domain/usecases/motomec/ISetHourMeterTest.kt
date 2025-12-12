@@ -8,7 +8,8 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.Status
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -113,13 +114,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 100.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     )
                 )
             )
@@ -132,11 +127,6 @@ class ISetHourMeterTest {
             assertEquals(
                 equipBefore.id,
                 1
-            )
-            assertEquals(
-                equipBefore.hourMeter,
-                100.0,
-                0.0
             )
             val result = usecase("2000,0")
             assertEquals(
@@ -172,11 +162,6 @@ class ISetHourMeterTest {
             assertEquals(
                 equipAfter.id,
                 1
-            )
-            assertEquals(
-                equipAfter.hourMeter,
-                2000.0,
-                0.0
             )
             val listHeaderAfter = headerMotoMecDao.all()
             assertEquals(
@@ -237,13 +222,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 100.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     )
                 )
             )
@@ -256,11 +235,6 @@ class ISetHourMeterTest {
             assertEquals(
                 equipBefore.id,
                 1
-            )
-            assertEquals(
-                equipBefore.hourMeter,
-                100.0,
-                0.0
             )
             val result = usecase("dd20d00as0")
             assertEquals(
@@ -305,7 +279,7 @@ class ISetHourMeterTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123456,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -360,13 +334,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 2000.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     )
                 )
             )
@@ -379,11 +347,6 @@ class ISetHourMeterTest {
             assertEquals(
                 equipBefore.id,
                 1
-            )
-            assertEquals(
-                equipBefore.hourMeter,
-                2000.0,
-                0.0
             )
             val result = usecase(
                 hourMeter = "3.000,0",
@@ -438,11 +401,6 @@ class ISetHourMeterTest {
             assertEquals(
                 equipAfter.id,
                 1
-            )
-            assertEquals(
-                equipAfter.hourMeter,
-                3000.0,
-                0.0
             )
         }
 }

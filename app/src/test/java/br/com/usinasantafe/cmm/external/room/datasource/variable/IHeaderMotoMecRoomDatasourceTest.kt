@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -55,7 +55,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -134,7 +134,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -189,7 +189,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -234,7 +234,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -300,7 +300,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -362,7 +362,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -429,7 +429,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -470,7 +470,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -556,7 +556,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -614,7 +614,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -682,7 +682,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -727,7 +727,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 19859,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -772,7 +772,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 19859,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -803,7 +803,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 19859,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     flowComposting = FlowComposting.INPUT,
                     idTurn = 1,
                     nroOS = 123456,

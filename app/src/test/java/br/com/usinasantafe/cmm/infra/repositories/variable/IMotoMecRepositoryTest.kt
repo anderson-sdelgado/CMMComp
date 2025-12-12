@@ -18,7 +18,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedP
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -133,7 +133,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setDataEquip(
                     idEquip = 12345,
-                    typeEquip = TypeEquip.NORMAL
+                    typeEquipMain = TypeEquipMain.NORMAL
                 )
             ).thenReturn(
                 resultFailure(
@@ -144,7 +144,7 @@ class IMotoMecRepositoryTest {
             )
             val result = repository.setDataEquipHeader(
                 idEquip = 12345,
-                typeEquip = TypeEquip.NORMAL
+                typeEquipMain = TypeEquipMain.NORMAL
             )
             assertEquals(
                 result.isFailure,
@@ -166,14 +166,14 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setDataEquip(
                     idEquip = 12345,
-                    typeEquip = TypeEquip.NORMAL
+                    typeEquipMain = TypeEquipMain.NORMAL
                 )
             ).thenReturn(
                 Result.success(true)
             )
             val result = repository.setDataEquipHeader(
                 idEquip = 12345,
-                typeEquip = TypeEquip.NORMAL
+                typeEquipMain = TypeEquipMain.NORMAL
             )
             assertEquals(
                 result.isSuccess,
@@ -500,7 +500,7 @@ class IMotoMecRepositoryTest {
             val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
                 regOperator = 12345,
                 idEquip = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -571,7 +571,7 @@ class IMotoMecRepositoryTest {
             val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
                 regOperator = 12345,
                 idEquip = 1,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -640,7 +640,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.checkHeaderOpen()
+            val result = repository.hasHeaderOpen()
             assertEquals(
                 result.isFailure,
                 true
@@ -663,7 +663,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkHeaderOpen()
+            val result = repository.hasHeaderOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -1467,7 +1467,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1518,7 +1518,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1597,7 +1597,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1696,7 +1696,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1803,7 +1803,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,

@@ -7,7 +7,8 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -63,7 +64,12 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -90,7 +96,12 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -104,13 +115,7 @@ class IListTurnTest {
                         nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     )
                 )
             )
@@ -130,7 +135,12 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    idEquip = 1,
+                    app = "CMM",
+                    idServ = 1,
+                    number = 16997417840,
+                    version = "1.0",
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             assertEquals(
@@ -144,13 +154,7 @@ class IListTurnTest {
                         nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 0.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
+                        typeEquip = TypeEquipSecondary.REEL
                     )
                 )
             )

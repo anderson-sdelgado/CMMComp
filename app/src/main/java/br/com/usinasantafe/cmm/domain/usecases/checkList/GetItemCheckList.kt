@@ -20,7 +20,6 @@ interface GetItemCheckList {
 class IGetItemCheckList @Inject constructor(
     private val itemCheckListRepository: ItemCheckListRepository,
     private val checkListRepository: CheckListRepository,
-    private val configRepository: ConfigRepository,
     private val equipRepository: EquipRepository,
     private val motoMecRepository: MotoMecRepository,
     private val turnRepository: TurnRepository

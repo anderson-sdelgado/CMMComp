@@ -2,9 +2,10 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip // Import da entidade de domínio Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip // Import da entidade de domínio Equip
 import br.com.usinasantafe.cmm.lib.TB_EQUIP // Import da constante do nome da tabela
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 
 @Entity(tableName = TB_EQUIP)
 data class EquipRoomModel (
@@ -13,13 +14,7 @@ data class EquipRoomModel (
     val nro: Long,
     val codClass: Int,
     val descrClass: String,
-    val codTurnEquip: Int,
-    val idCheckList: Int,
-    val typeEquip: TypeEquip,
-    var hourMeter: Double,
-    val classify: Int,
-    val flagMechanic: Boolean,
-    val flagTire: Boolean
+    val typeEquip: TypeEquipSecondary
 )
 
 fun EquipRoomModel.roomModelToEntity(): Equip {
@@ -29,13 +24,7 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
             nro = this.nro,
             codClass = this.codClass,
             descrClass = this.descrClass,
-            codTurnEquip = this.codTurnEquip,
-            idCheckList = this.idCheckList,
-            typeEquip = this.typeEquip,
-            hourMeter = this.hourMeter,
-            classify = this.classify,
-            flagMechanic = this.flagMechanic,
-            flagTire = this.flagTire
+            typeEquipSecondary = this.typeEquip
         )
     }
 }
@@ -47,13 +36,7 @@ fun Equip.entityEquipToRoomModel(): EquipRoomModel {
             nro = this.nro,
             codClass = this.codClass,
             descrClass = this.descrClass,
-            codTurnEquip = this.codTurnEquip,
-            idCheckList = this.idCheckList,
-            typeEquip = this.typeEquip,
-            hourMeter = this.hourMeter,
-            classify = this.classify,
-            flagMechanic = this.flagMechanic,
-            flagTire = this.flagTire
+            typeEquip = this.typeEquipSecondary!!
         )
     }
 }

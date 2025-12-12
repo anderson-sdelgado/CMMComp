@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.lib.FlowComposting
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -47,11 +47,11 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun setDataEquipHeader(
         idEquip: Int,
-        typeEquip: TypeEquip
+        typeEquipMain: TypeEquipMain
     ): Result<Boolean> {
         val result = headerMotoMecSharedPreferencesDatasource.setDataEquip(
             idEquip = idEquip,
-            typeEquip = typeEquip
+            typeEquipMain = typeEquipMain
         )
         result.onFailure {
                 return resultFailure(
@@ -167,7 +167,7 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun checkHeaderOpen(): Result<Boolean> {
+    override suspend fun hasHeaderOpen(): Result<Boolean> {
         val result = headerMotoMecRoomDatasource.checkOpen()
         result.onFailure {
                 return resultFailure(

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import java.util.Date

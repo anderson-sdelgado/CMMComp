@@ -24,7 +24,8 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -397,9 +398,7 @@ class ItemCheckListScreenTest {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
                 number = 16997417840,
-                nroEquip = 2200,
                 password = "12345",
-                idEquip = 10,
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
@@ -414,7 +413,7 @@ class ItemCheckListScreenTest {
             HeaderMotoMecRoomModel(
                 regOperator = 123465,
                 idEquip = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -452,13 +451,7 @@ class ItemCheckListScreenTest {
                     nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
+                    typeEquip = TypeEquipSecondary.REEL
                 )
             )
         )

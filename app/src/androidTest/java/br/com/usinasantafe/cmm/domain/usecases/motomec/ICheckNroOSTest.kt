@@ -156,11 +156,10 @@ class ICheckNroOSTest {
                 ConfigSharedPreferencesModel(
                     app = "CMM",
                     idServ = 1,
-                    nroEquip = 2200,
                     number = 16997417840,
                     version = "1.0",
                     password = "12345",
-                    idEquip = 1
+                    checkMotoMec = true
                 )
             )
             val result = usecase(
@@ -199,11 +198,10 @@ class ICheckNroOSTest {
                 ConfigSharedPreferencesModel(
                     app = "CMM",
                     idServ = 1,
-                    nroEquip = 2200,
                     number = 16997417840,
                     version = "1.0",
                     password = "12345",
-                    idEquip = 1
+                    checkMotoMec = true
                 )
             )
             val result = usecase(
@@ -246,11 +244,10 @@ class ICheckNroOSTest {
                 ConfigSharedPreferencesModel(
                     app = "CMM",
                     idServ = 1,
-                    nroEquip = 2200,
                     number = 16997417840,
                     version = "1.0",
                     password = "12345",
-                    idEquip = 1
+                    checkMotoMec = true
                 )
             )
             val result = usecase(
@@ -285,11 +282,10 @@ class ICheckNroOSTest {
                 ConfigSharedPreferencesModel(
                     app = "CMM",
                     idServ = 1,
-                    nroEquip = 2200,
                     number = 16997417840,
                     version = "1.0",
                     password = "12345",
-                    idEquip = 1
+                    checkMotoMec = true
                 )
             )
             val result = usecase(
@@ -330,11 +326,10 @@ class ICheckNroOSTest {
                 ConfigSharedPreferencesModel(
                     app = "CMM",
                     idServ = 1,
-                    nroEquip = 2200,
                     number = 16997417840,
                     version = "1.0",
                     password = "12345",
-                    idEquip = 1
+                    checkMotoMec = true
                 )
             )
             val result = usecase(

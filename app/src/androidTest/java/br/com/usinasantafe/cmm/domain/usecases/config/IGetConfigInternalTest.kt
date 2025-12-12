@@ -48,6 +48,11 @@ class IGetConfigInternalTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
+                    app = "PMM",
+                    idServ = 1,
+                    checkMotoMec = true,
+                    version = "1.00",
+                    number = 123456,
                     password = "12345"
                 )
             )
@@ -71,9 +76,11 @@ class IGetConfigInternalTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 310,
+                    app = "PMM",
+                    idServ = 1,
                     checkMotoMec = true,
+                    version = "1.00",
+                    number = 123456,
                     password = "12345"
                 )
             )

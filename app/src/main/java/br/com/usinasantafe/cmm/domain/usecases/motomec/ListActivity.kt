@@ -3,10 +3,10 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -16,7 +16,7 @@ interface ListActivity {
 }
 
 class IListActivity @Inject constructor(
-    private val configRepository: ConfigRepository,
+    private val equipRepository: EquipRepository,
     private val motoMecRepository: MotoMecRepository,
     private val rEquipActivityRepository: REquipActivityRepository,
     private val osRepository: OSRepository,
@@ -26,15 +26,15 @@ class IListActivity @Inject constructor(
 
     override suspend fun invoke(): Result<List<Activity>> {
         try {
-            val resultGetConfig = configRepository.get()
-            resultGetConfig.onFailure {
+            val resultGetIdEquip = equipRepository.getIdEquipMain()
+            resultGetIdEquip.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
                     cause = it
                 )
             }
-            val config = resultGetConfig.getOrNull()!!
-            val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(config.equip!!.id)
+            val idEquip = resultGetIdEquip.getOrNull()!!
+            val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip)
             resultGetREquipActivityList.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

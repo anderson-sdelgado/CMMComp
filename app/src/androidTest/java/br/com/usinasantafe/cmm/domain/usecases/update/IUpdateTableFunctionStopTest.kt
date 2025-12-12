@@ -3,10 +3,13 @@ package br.com.usinasantafe.cmm.domain.usecases.update
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -31,6 +34,9 @@ class IUpdateTableFunctionStopTest {
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
+
+    @Inject
+    lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 
     @Inject
     lateinit var functionStopDao: FunctionStopDao
@@ -66,7 +72,7 @@ class IUpdateTableFunctionStopTest {
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableFunctionStop -> IGetToken -> java.lang.NullPointerException",
+                    failure = "IUpdateTableFunctionStop -> IGetToken -> IConfigRepository.get -> java.lang.NullPointerException",
                     currentProgress = 1f,
                     levelUpdate = null,
                 )
@@ -265,11 +271,25 @@ class IUpdateTableFunctionStopTest {
             ConfigSharedPreferencesModel(
                 app = "CMM",
                 idServ = 1,
-                nroEquip = 2200,
                 number = 16997417840,
                 version = "1.0",
                 password = "12345",
-                idEquip = 1
+                checkMotoMec = true
+            )
+        )
+        equipSharedPreferencesDatasource.save(
+            EquipSharedPreferencesModel(
+                id = 10,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 1,
+                idCheckList = 1,
+                typeEquip = TypeEquipMain.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
             )
         )
     }

@@ -1,13 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
-import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test

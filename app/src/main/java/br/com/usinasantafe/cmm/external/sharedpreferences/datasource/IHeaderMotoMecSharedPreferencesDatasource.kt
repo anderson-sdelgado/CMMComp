@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -85,7 +85,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun setDataEquip(
         idEquip: Int,
-        typeEquip: TypeEquip
+        typeEquipMain: TypeEquipMain
     ): Result<Boolean> {
         try {
             val resultGet = get()
@@ -97,7 +97,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
             }
             val model = resultGet.getOrNull()!!
             model.idEquip = idEquip
-            model.typeEquip = typeEquip
+            model.typeEquipMain = typeEquipMain
             val resultSave = save(model)
             resultSave.onFailure {
                 return resultFailure(

@@ -7,7 +7,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -162,7 +162,7 @@ class ISetNroOSCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -236,7 +236,7 @@ class ISetNroOSCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,

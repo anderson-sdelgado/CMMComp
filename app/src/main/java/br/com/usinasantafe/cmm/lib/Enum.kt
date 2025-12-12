@@ -16,7 +16,8 @@ enum class TypeNote { WORK, STOP }
 enum class TypeActivity { PERFORMANCE, TRANSHIPMENT, IMPLEMENT, REEL, WINDROW, TRANSPORT_SUGARCANE }
 enum class TypeStop { CHECKLIST, IMPLEMENT, CALIBRATION, REEL }
 
-enum class TypeEquip { NORMAL, FERT }
+enum class TypeEquipMain { NORMAL, FERT }
+enum class TypeEquipSecondary { REEL, TRANSHIPMENT, IMPLEMENT, MOTOR_PUMP, CHARGER, TRAILER }
 enum class LevelUpdate { RECOVERY, CLEAN, SAVE, GET_TOKEN, SAVE_TOKEN, FINISH_UPDATE_INITIAL, FINISH_UPDATE_COMPLETED }
 enum class OptionRespCheckList { ACCORDING, ANALYZE, REPAIR }
 

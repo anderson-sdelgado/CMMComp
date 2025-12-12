@@ -1,6 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -26,13 +28,32 @@ class ISendDataConfigTest {
         hiltRule.inject()
     }
 
+    private val result = """
+        {
+            "idServ": 16,
+            "equip": {
+                "id": 2065,
+                "nro": 2200,
+                "classify": 1,
+                "codClass": 8,
+                "descrClass": "CAVALO CANAVIEIRO",
+                "codTurnEquip": 22,
+                "idCheckList": 3522,
+                "typeEquip": 1,
+                "hourMeter": 0,
+                "flagMechanic": 0,
+                "flagTire": 0
+            }
+        }
+    """.trimIndent()
+
     @Test
     fun check_return_true_and_data_returned() =
         runTest {
             val server = MockWebServer()
             server.start(8080)
             server.enqueue(
-                MockResponse().setBody("""{"idBD":1,"idEquip":1}""")
+                MockResponse().setBody(result)
             )
             val result = usecase(
                 number = "16997417840",
@@ -48,8 +69,20 @@ class ISendDataConfigTest {
             assertEquals(
                 result.getOrNull()!!,
                 Config(
-                    idServ = 1,
-                    idEquip = 1
+                    idServ = 16,
+                    equip = Equip(
+                        id = 2065,
+                        nro = 2200,
+                        codClass = 8,
+                        descrClass = "CAVALO CANAVIEIRO",
+                        codTurnEquip = 22,
+                        idCheckList = 3522,
+                        typeEquipMain = TypeEquipMain.NORMAL,
+                        hourMeter = 0.0,
+                        classify = 1,
+                        flagMechanic = false,
+                        flagTire = false
+                    )
                 )
             )
             server.shutdown()
@@ -80,7 +113,7 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception: idEquip is 0"
+                "java.lang.IllegalArgumentException: The field 'idServ' cannot is null."
             )
             server.shutdown()
         }

@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.StatusTranshipment
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -142,7 +142,7 @@ class IGetStatusTranshipmentTest {
             HeaderMotoMecRoomModel(
                 regOperator = 19759,
                 idEquip = 10,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,

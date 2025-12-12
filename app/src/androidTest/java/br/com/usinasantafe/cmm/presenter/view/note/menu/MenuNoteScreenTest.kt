@@ -27,7 +27,8 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.dataMenu
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -274,7 +275,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquip = TypeEquip.FERT
+                typeEquipMain = TypeEquipMain.FERT
             )
             registerSecPMM(2)
 
@@ -296,7 +297,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquip = TypeEquip.FERT,
+                typeEquipMain = TypeEquipMain.FERT,
                 idEquip = 10
             )
             registerSecPMM(2)
@@ -319,7 +320,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquip = TypeEquip.FERT,
+                typeEquipMain = TypeEquipMain.FERT,
                 idEquip = 10
             )
             registerSecPMM(3)
@@ -665,7 +666,7 @@ class MenuNoteScreenTest {
 
     private suspend fun registerPMM(
         level: Int,
-        typeEquip: TypeEquip = TypeEquip.NORMAL,
+        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         idEquip: Int = 20,
@@ -675,12 +676,10 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                nroEquip = 310,
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
-                idEquip = idEquip
             )
         )
 
@@ -699,7 +698,7 @@ class MenuNoteScreenTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -717,26 +716,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = typeEquip,
-                    hourMeter = 1000.0,
-                    classify = 1,
-                    flagMechanic = flagMechanic,
-                    flagTire = flagTire,
-                ),
-                EquipRoomModel(
-                    id = 10,
-                    nro = 200L,
-                    codClass = 1,
-                    descrClass = "CARRETEL",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = typeEquip,
-                    hourMeter = 1000.0,
-                    classify = 1,
-                    flagMechanic = flagMechanic,
-                    flagTire = flagTire,
+                    typeEquip = TypeEquipSecondary.REEL
                 )
             )
         )
@@ -854,12 +834,10 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                nroEquip = 310,
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
-                idEquip = 20
             )
         )
 
@@ -880,13 +858,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 1000.0,
-                    classify = 1,
-                    flagMechanic = false,
-                    flagTire = false,
+                    typeEquip = TypeEquipSecondary.REEL
                 ),
             )
         )
@@ -905,7 +877,7 @@ class MenuNoteScreenTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquip = TypeEquip.NORMAL,
+                typeEquipMain = TypeEquipMain.NORMAL,
                 flowComposting = flowComposting,
                 idTurn = 1,
                 nroOS = 123456,
@@ -930,12 +902,10 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                nroEquip = 310,
                 app = "PMM",
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
-                idEquip = 20
             )
         )
 
@@ -956,13 +926,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 1000.0,
-                    classify = 1,
-                    flagMechanic = false,
-                    flagTire = false,
+                    typeEquip = TypeEquipSecondary.REEL
                 ),
             )
         )

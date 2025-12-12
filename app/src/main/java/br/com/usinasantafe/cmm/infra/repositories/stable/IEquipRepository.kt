@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -113,7 +113,7 @@ class IEquipRepository @Inject constructor(
     }
 
     override suspend fun getDescrByIdEquip(
-        idEquip: Int
+        idEquip: Int?
     ): Result<String> {
         val resultGetId = equipSharedPreferencesDatasource.getId()
         resultGetId.onFailure {
@@ -123,8 +123,8 @@ class IEquipRepository @Inject constructor(
             )
         }
         val idEquipSharedPreferences = resultGetId.getOrNull()!!
-        if(idEquip == idEquipSharedPreferences) {
-            val result = equipSharedPreferencesDatasource.getDescrClass()
+        if((idEquip == null) || (idEquip == idEquipSharedPreferences)) {
+            val result = equipSharedPreferencesDatasource.getDescr()
             result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -178,7 +178,7 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getTypeEquip(): Result<TypeEquip> {
+    override suspend fun getTypeEquip(): Result<TypeEquipMain> {
         val result = equipSharedPreferencesDatasource.getTypeEquip()
         result.onFailure {
                 return resultFailure(

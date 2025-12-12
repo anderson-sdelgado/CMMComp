@@ -21,7 +21,7 @@ import br.com.usinasantafe.cmm.lib.REEL
 import br.com.usinasantafe.cmm.lib.TIRE
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.appList
@@ -568,7 +568,7 @@ class IListItemMenuTest {
                 flagMechanic = true,
                 flagTire = true,
                 flagReel = true,
-                typeEquip = TypeEquip.FERT
+                typeEquipMain = TypeEquipMain.FERT
             )
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -860,7 +860,7 @@ class IListItemMenuTest {
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         flagReel: Boolean = false,
-        typeEquip: TypeEquip = TypeEquip.NORMAL,
+        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
         list: List<FunctionActivity> = emptyList(),
     ) {
 
@@ -883,7 +883,7 @@ class IListItemMenuTest {
         whenever(
             equipRepository.getTypeEquip()
         ).thenReturn(
-            Result.success(typeEquip)
+            Result.success(typeEquipMain)
         )
 
         if(level == 3) return

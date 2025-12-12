@@ -1,15 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -19,7 +18,7 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class IUpdateTableEquipByIdEquipTest {
+class IUpdateTableEquipTest {
 
     private val getToken = mock<GetToken>()
     private val equipRepository = mock<EquipRepository>()
@@ -61,33 +60,19 @@ class IUpdateTableEquipByIdEquipTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> GetToken -> java.lang.Exception",
+                    failure = "IUpdateTableEquip -> GetToken -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
         }
 
     @Test
-    fun `Check return failure if have error in EquipRepository getListByIdEquip`() =
+    fun `Check return failure if have error in EquipRepository listAll`() =
         runTest {
-            val config = Config(
-                equip = Equip(
-                    id = 10,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
             whenever(
                 getToken()
             ).thenReturn(
@@ -99,7 +84,7 @@ class IUpdateTableEquipByIdEquipTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "IEquipRepository.getListByIdEquip",
+                    "IEquipRepository.listAll",
                     "-",
                     Exception()
                 )
@@ -125,10 +110,11 @@ class IUpdateTableEquipByIdEquipTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.getListByIdEquip -> java.lang.Exception",
+                    failure = "IUpdateTableEquip -> IEquipRepository.listAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -137,21 +123,6 @@ class IUpdateTableEquipByIdEquipTest {
     @Test
     fun `Check return failure if have error in EquipRepository deleteAll`() =
         runTest {
-            val config = Config(
-                equip = Equip(
-                    id = 10,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
             val list = listOf(
                 Equip(
                     id = 1,
@@ -160,7 +131,7 @@ class IUpdateTableEquipByIdEquipTest {
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,
@@ -220,10 +191,11 @@ class IUpdateTableEquipByIdEquipTest {
             assertEquals(
                 resultList[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.deleteAll -> java.lang.Exception",
+                    failure = "IUpdateTableEquip -> IEquipRepository.deleteAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -240,7 +212,7 @@ class IUpdateTableEquipByIdEquipTest {
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
                     flagMechanic = true,
@@ -256,7 +228,7 @@ class IUpdateTableEquipByIdEquipTest {
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
+                    typeEquipMain = TypeEquipMain.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,
@@ -330,10 +302,11 @@ class IUpdateTableEquipByIdEquipTest {
             assertEquals(
                 resultList[3],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableEquipByIdEquip -> IEquipRepository.addAll -> java.lang.Exception",
+                    failure = "IUpdateTableEquip -> IEquipRepository.addAll -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )

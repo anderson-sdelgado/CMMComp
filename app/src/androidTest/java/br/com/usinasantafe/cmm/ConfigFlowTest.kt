@@ -20,6 +20,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RItemMenuStopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
+import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IEquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN
@@ -27,7 +28,7 @@ import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TE
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.lib.WEB_ALL_COLAB
@@ -72,6 +73,9 @@ class ConfigFlowTest {
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource
 
     @Inject
+    lateinit var equipSharedPreferencesDatasource: IEquipSharedPreferencesDatasource
+
+    @Inject
     lateinit var activityDao: ActivityDao
 
     @Inject
@@ -111,8 +115,24 @@ class ConfigFlowTest {
 
         private lateinit var mockWebServer: MockWebServer
 
-        private val resultToken = """{"idServ":1,"idEquip":1}""".trimIndent()
-
+        private val resultToken = """
+            {
+                "idServ": 16,
+                "equip": {
+                    "id": 2065,
+                    "nro": 2200,
+                    "classify": 1,
+                    "codClass": 8,
+                    "descrClass": "CAVALO CANAVIEIRO",
+                    "codTurnEquip": 22,
+                    "idCheckList": 3522,
+                    "typeEquip": 1,
+                    "hourMeter": 0,
+                    "flagMechanic": 0,
+                    "flagTire": 0
+                }
+            }
+        """.trimIndent()
         private val resultActivity = """
             [
                 {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
@@ -129,8 +149,8 @@ class ConfigFlowTest {
 
         private val resultEquip = """
             [
-              {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","codTurnEquip":1,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1},
-              {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","codTurnEquip":2,"idCheckList":1,"typeEquip":1,"hourMeter":100.0,"classify":1}
+              {"id":1,"nro":1000001,"codClass":1,"descrClass":"Classe 1","typeEquip":1},
+              {"id":2,"nro":1000002,"codClass":2,"descrClass":"Classe 2","typeEquip":1}
             ]
         """.trimIndent()
 
@@ -385,6 +405,88 @@ class ConfigFlowTest {
 
 
     private suspend fun asserts() {
+        val resultGetConfig = configSharedPreferencesDatasource.get()
+        assertEquals(
+            resultGetConfig.isSuccess,
+            true
+        )
+        val config = resultGetConfig.getOrNull()!!
+        assertEquals(
+            config.idServ,
+            16
+        )
+        assertEquals(
+            config.number,
+            16997417840
+        )
+        assertEquals(
+            config.password,
+            "12345"
+        )
+        assertEquals(
+            config.checkMotoMec,
+            true
+        )
+        assertEquals(
+            config.version,
+            "1.0"
+        )
+        assertEquals(
+            config.app,
+            "PMM"
+        )
+
+        val resultGetEquip = equipSharedPreferencesDatasource.get()
+        assertEquals(
+            resultGetEquip.isSuccess,
+            true
+        )
+        val equip = resultGetEquip.getOrNull()!!
+        assertEquals(
+            equip.id,
+            2065
+        )
+        assertEquals(
+            equip.nro,
+            2200
+        )
+        assertEquals(
+            equip.classify,
+            1
+        )
+        assertEquals(
+            equip.codClass,
+            8
+        )
+        assertEquals(
+            equip.descrClass,
+            "CAVALO CANAVIEIRO"
+        )
+        assertEquals(
+            equip.typeEquip,
+            TypeEquipMain.NORMAL
+        )
+        assertEquals(
+            equip.idCheckList,
+            3522
+        )
+        assertEquals(
+            equip.codTurnEquip,
+            22
+        )
+        assertEquals(
+            equip.hourMeter,
+            0.0
+        )
+        assertEquals(
+            equip.flagMechanic,
+            false
+        )
+        assertEquals(
+            equip.flagTire,
+            false
+        )
+
 
         val activityRoomModelList = activityDao.all()
         assertEquals(
@@ -464,26 +566,6 @@ class ConfigFlowTest {
             equipRoomModel1.descrClass,
             "Classe 1"
         )
-        assertEquals(
-            equipRoomModel1.codTurnEquip,
-            1
-        )
-        assertEquals(
-            equipRoomModel1.idCheckList,
-            1
-        )
-        assertEquals(
-            equipRoomModel1.typeEquip,
-            TypeEquip.NORMAL
-        )
-        assertEquals(
-            equipRoomModel1.hourMeter,
-            100.0
-        )
-        assertEquals(
-            equipRoomModel1.classify,
-            1
-        )
         val equipRoomModel2 = equipRoomModelList[1]
         assertEquals(
             equipRoomModel2.id,
@@ -500,26 +582,6 @@ class ConfigFlowTest {
         assertEquals(
             equipRoomModel2.descrClass,
             "Classe 2"
-        )
-        assertEquals(
-            equipRoomModel2.codTurnEquip,
-            2
-        )
-        assertEquals(
-            equipRoomModel2.idCheckList,
-            1
-        )
-        assertEquals(
-            equipRoomModel2.typeEquip,
-            TypeEquip.NORMAL
-        )
-        assertEquals(
-            equipRoomModel2.hourMeter,
-            100.0
-        )
-        assertEquals(
-            equipRoomModel2.classify,
-            1
         )
 
         val functionActivityRoomModelList = functionActivityDao.all()

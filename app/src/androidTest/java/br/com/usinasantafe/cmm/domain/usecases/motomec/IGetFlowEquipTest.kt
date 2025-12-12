@@ -58,15 +58,12 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 30,
-                    checkMotoMec = true,
+                    app = "CMM",
                     idServ = 1,
+                    number = 16997417840,
                     version = "1.0",
-                    app = "PMM",
-                    flagUpdate = FlagUpdate.UPDATED
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             val result = usecase()
@@ -89,15 +86,12 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 30,
-                    checkMotoMec = true,
+                    app = "CMM",
                     idServ = 1,
+                    number = 16997417840,
                     version = "1.0",
-                    app = "PMM",
-                    flagUpdate = FlagUpdate.UPDATED
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             headerMotoMecSharedPreferencesDatasource.save(
@@ -121,15 +115,12 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    number = 16997417840,
-                    nroEquip = 2200,
-                    password = "12345",
-                    idEquip = 30,
-                    checkMotoMec = true,
+                    app = "CMM",
                     idServ = 1,
+                    number = 16997417840,
                     version = "1.0",
-                    app = "PMM",
-                    flagUpdate = FlagUpdate.UPDATED
+                    password = "12345",
+                    checkMotoMec = true
                 )
             )
             headerMotoMecSharedPreferencesDatasource.save(

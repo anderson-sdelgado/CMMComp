@@ -48,6 +48,12 @@ class IGetStatusSendTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
+                    app = "PMM",
+                    idServ = 1,
+                    checkMotoMec = true,
+                    version = "1.00",
+                    number = 123456,
+                    password = "123456",
                     statusSend = StatusSend.SENT
                 )
             )

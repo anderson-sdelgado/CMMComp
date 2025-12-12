@@ -1,16 +1,17 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -24,11 +25,11 @@ class IUpdateTableREquipActivityByIdEquipTest {
 
     private val getToken = mock<GetToken>()
     private val rEquipActivityRepository = mock<REquipActivityRepository>()
-    private val configRepository = mock<ConfigRepository>()
+    private val equipRepository = mock<EquipRepository>()
     private val usecase = IUpdateTableREquipActivityByIdEquip(
         getToken = getToken,
         rEquipActivityRepository = rEquipActivityRepository,
-        configRepository = configRepository
+        equipRepository = equipRepository
     )
 
     @Test
@@ -64,6 +65,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -74,7 +76,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
         }
 
     @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
+    fun `Check return failure if have error in EquipRepository getIdEquipMain`() =
         runTest {
             whenever(
                 getToken()
@@ -82,10 +84,10 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 resultFailure(
-                    "IConfigRepository.get",
+                    "IEquipRepository.getIdEquipMain",
                     "-",
                     Exception()
                 )
@@ -111,10 +113,11 @@ class IUpdateTableREquipActivityByIdEquipTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "IUpdateTableREquipActivityByIdEquip -> IConfigRepository.get -> java.lang.Exception",
+                    failure = "IUpdateTableREquipActivityByIdEquip -> IEquipRepository.getIdEquipMain -> java.lang.Exception",
                     currentProgress = 1f,
                 )
             )
@@ -123,30 +126,15 @@ class IUpdateTableREquipActivityByIdEquipTest {
     @Test
     fun `Check return failure if have error in REquipActivityRepository getListByIdEquip`() =
         runTest {
-            val config = Config(
-                equip = Equip(
-                    id = 10,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
             whenever(
                 getToken()
             ).thenReturn(
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(config)
+                Result.success(10)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(
@@ -181,6 +169,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
             assertEquals(
                 list[1],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -193,21 +182,6 @@ class IUpdateTableREquipActivityByIdEquipTest {
     @Test
     fun `Check return failure if have error in REquipActivityRepository deleteAll`() =
         runTest {
-            val config = Config(
-                equip = Equip(
-                    id = 10,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
             val list = listOf(
                 REquipActivity(
                     idREquipActivity = 1,
@@ -221,9 +195,9 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(config)
+                Result.success(10)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(
@@ -274,6 +248,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
             assertEquals(
                 resultList[2],
                 ResultUpdateModel(
+                    flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -286,21 +261,6 @@ class IUpdateTableREquipActivityByIdEquipTest {
     @Test
     fun `Check return failure if have error in REquipActivityRepository addAll`() =
         runTest {
-            val config = Config(
-                equip = Equip(
-                    id = 10,
-                    nro = 2200,
-                    codClass = 1,
-                    descrClass = "TRATOR",
-                    codTurnEquip = 1,
-                    idCheckList = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    hourMeter = 5000.0,
-                    classify = 1,
-                    flagMechanic = true,
-                    flagTire = true
-                )
-            )
             val list = listOf(
                 REquipActivity(
                     idREquipActivity = 1,
@@ -314,9 +274,9 @@ class IUpdateTableREquipActivityByIdEquipTest {
                 Result.success("token")
             )
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(config)
+                Result.success(10)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(
@@ -378,16 +338,17 @@ class IUpdateTableREquipActivityByIdEquipTest {
                     currentProgress = updatePercentage(3f, 1f, 7f)
                 )
             )
-//            assertEquals(
-//                resultList[3],
-//                ResultUpdateModel(
-//                    errors = Errors.UPDATE,
-//                    flagDialog = true,
-//                    flagFailure = true,
-//                    failure = "IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.addAll -> java.lang.Exception",
-//                    currentProgress = 1f,
-//                )
-//            )
+            assertEquals(
+                resultList[3],
+                ResultUpdateModel(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "IUpdateTableREquipActivityByIdEquip -> IREquipActivityRepository.addAll -> java.lang.Exception",
+                    currentProgress = 1f,
+                )
+            )
         }
 
 }

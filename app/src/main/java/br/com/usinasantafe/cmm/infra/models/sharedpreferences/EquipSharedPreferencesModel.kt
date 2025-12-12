@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Equip
-import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.TypeEquipMain
 
 data class EquipSharedPreferencesModel(
     val id: Int,
@@ -10,7 +10,7 @@ data class EquipSharedPreferencesModel(
     val descrClass: String,
     val codTurnEquip: Int,
     val idCheckList: Int,
-    val typeEquip: TypeEquip,
+    val typeEquip: TypeEquipMain,
     var hourMeter: Double,
     val classify: Int,
     val flagMechanic: Boolean,
@@ -26,7 +26,7 @@ fun EquipSharedPreferencesModel.sharedPreferencesModelToEntity(): Equip {
             descrClass = descrClass,
             codTurnEquip = codTurnEquip,
             idCheckList = idCheckList,
-            typeEquip = typeEquip,
+            typeEquipMain = typeEquip,
             hourMeter = hourMeter,
             classify = classify,
             flagMechanic = flagMechanic,
@@ -42,13 +42,13 @@ fun Equip.entityToSharedPreferencesModel(): EquipSharedPreferencesModel {
             nro = nro,
             codClass = codClass,
             descrClass = descrClass,
-            codTurnEquip = codTurnEquip,
-            idCheckList = idCheckList,
-            typeEquip = typeEquip,
-            hourMeter = hourMeter,
-            classify = classify,
-            flagMechanic = flagMechanic,
-            flagTire = flagTire
-            )
+            codTurnEquip = codTurnEquip!!,
+            idCheckList = idCheckList!!,
+            typeEquip = typeEquipMain!!,
+            hourMeter = hourMeter!!,
+            classify = classify!!,
+            flagMechanic = flagMechanic!!,
+            flagTire = flagTire!!
+        )
     }
 }
