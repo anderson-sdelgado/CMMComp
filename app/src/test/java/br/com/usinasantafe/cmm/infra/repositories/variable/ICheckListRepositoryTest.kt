@@ -766,7 +766,7 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.checkSend()
+            val result = repository.hasSend()
             assertEquals(
                 result.isFailure,
                 true
@@ -789,7 +789,7 @@ class ICheckListRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkSend()
+            val result = repository.hasSend()
             assertEquals(
                 result.isSuccess,
                 true

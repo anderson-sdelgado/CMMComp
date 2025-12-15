@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
@@ -28,11 +29,13 @@ class IListActivityTest {
     private val configRepository = mock<ConfigRepository>()
     private val rOSActivityRepository = mock<ROSActivityRepository>()
     private val rEquipActivityRepository = mock<REquipActivityRepository>()
+    private val equipRepository = mock<EquipRepository>()
+
     private val usecase = IListActivity(
+        equipRepository = equipRepository,
         motoMecRepository = motoMecRepository,
         osRepository = osRepository,
         activityRepository = activityRepository,
-        configRepository = configRepository,
         rOSActivityRepository = rOSActivityRepository,
         rEquipActivityRepository = rEquipActivityRepository
     )

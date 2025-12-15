@@ -5,16 +5,16 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckSendMotoMec {
+interface HasSendMotoMec {
     suspend operator fun invoke(): Result<Boolean>
 }
 
-class ICheckSendMotoMec @Inject constructor(
+class IHasSendMotoMec @Inject constructor(
     private val motoMecRepository: MotoMecRepository
-): CheckSendMotoMec {
+): HasSendMotoMec {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = motoMecRepository.checkHeaderSend()
+        val result = motoMecRepository.hasHeaderSend()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

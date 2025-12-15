@@ -22,13 +22,14 @@ interface MotoMecRepository {
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean>
     suspend fun finishHeader(): Result<Boolean>
-    suspend fun checkHeaderSend(): Result<Boolean>
+    suspend fun hasHeaderSend(): Result<Boolean>
     suspend fun setStatusConHeader(status: Boolean): Result<Boolean>
     suspend fun getIdTurnHeader(): Result<Int>
     suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
     suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
     suspend fun setIdActivityNote(id: Int): Result<Boolean>
+    suspend fun setNroTranshipmentNote(nroTranshipment: Long): Result<Boolean>
     suspend fun saveNote(
         idHeader: Int
     ): Result<Boolean>

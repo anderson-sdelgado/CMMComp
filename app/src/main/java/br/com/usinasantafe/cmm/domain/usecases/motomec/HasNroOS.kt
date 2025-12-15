@@ -12,20 +12,20 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 import kotlin.onFailure
 
-interface CheckNroOS {
+interface HasNroOS {
     suspend operator fun invoke(
         nroOS: String,
         flowApp: FlowApp
     ): Result<Boolean>
 }
 
-class ICheckNroOS @Inject constructor(
+class IHasNroOS @Inject constructor(
     private val checkNetwork: CheckNetwork,
     private val osRepository: OSRepository,
     private val rOSActivityRepository: ROSActivityRepository,
     private val getToken: GetToken,
     private val motoMecRepository: MotoMecRepository
-): CheckNroOS {
+): HasNroOS {
 
     override suspend fun invoke(
         nroOS: String,

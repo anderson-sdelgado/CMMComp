@@ -211,7 +211,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun checkHeaderSend(): Result<Boolean> {
+    override suspend fun hasHeaderSend(): Result<Boolean> {
         val result = headerMotoMecRoomDatasource.checkSend()
         result.onFailure {
                 return resultFailure(
@@ -311,6 +311,10 @@ class IMotoMecRepository @Inject constructor(
                 )
             }
         return result
+    }
+
+    override suspend fun setNroTranshipmentNote(nroTranshipment: Long): Result<Boolean> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun saveNote(idHeader: Int): Result<Boolean> {

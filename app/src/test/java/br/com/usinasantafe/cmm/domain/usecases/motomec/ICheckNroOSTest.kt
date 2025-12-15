@@ -23,7 +23,7 @@ class ICheckNroOSTest {
     private val rOSActivityRepository = mock<ROSActivityRepository>()
     private val getToken = mock<GetToken>()
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ICheckNroOS(
+    private val usecase = IHasNroOS(
         checkNetwork = checkNetwork,
         osRepository = osRepository,
         rOSActivityRepository = rOSActivityRepository,

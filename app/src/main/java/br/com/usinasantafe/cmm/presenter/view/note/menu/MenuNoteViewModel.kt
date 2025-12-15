@@ -7,12 +7,12 @@ import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHasNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.CheckHasNoteOpenMechanic
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckTypeLastNote
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
@@ -75,11 +75,11 @@ data class MenuNoteState(
 class MenuNoteViewModel @Inject constructor(
     private val listItemMenu: ListItemMenu,
     private val getDescrEquip: GetDescrEquip,
-    private val checkHasNoteMotoMec: CheckHasNoteMotoMec,
-    private val checkHasNoteOpenMechanic: CheckHasNoteOpenMechanic,
+    private val hasNoteMotoMec: HasNoteMotoMec,
+    private val hasNoteOpenMechanic: HasNoteOpenMechanic,
     private val getFlowEquip: GetFlowEquip,
     private val getStatusTranshipment: GetStatusTranshipment,
-    private val checkTypeLastNote: CheckTypeLastNote,
+    private val getTypeLastNote: GetTypeLastNote,
     private val finishNoteMechanic: FinishNoteMechanic,
     private val setNoteMotoMec: SetNoteMotoMec,
     private val setDatePreCEC: SetDatePreCEC,
@@ -356,7 +356,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleNoteMechanical(): Boolean {
-        val typeNote = checkTypeLastNote().getOrElse {
+        val typeNote = getTypeLastNote().getOrElse {
             handleFailure(it)
             return false
         }
@@ -437,7 +437,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun checkHasNote(): Boolean? {
-        val result = checkHasNoteMotoMec()
+        val result = hasNoteMotoMec()
         result.onFailure {
             handleFailure(it)
             return null
@@ -446,7 +446,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun checkHasOpenMechanic(): Boolean? {
-        val result = checkHasNoteOpenMechanic()
+        val result = hasNoteOpenMechanic()
         result.onFailure {
             handleFailure(it)
             return null

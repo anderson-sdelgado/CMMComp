@@ -824,7 +824,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.checkHeaderSend()
+            val result = repository.hasHeaderSend()
             assertEquals(
                 result.isFailure,
                 true
@@ -847,7 +847,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkHeaderSend()
+            val result = repository.hasHeaderSend()
             assertEquals(
                 result.isSuccess,
                 true

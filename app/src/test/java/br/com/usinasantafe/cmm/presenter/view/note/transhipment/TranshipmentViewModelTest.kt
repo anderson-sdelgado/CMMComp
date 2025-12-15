@@ -1,19 +1,25 @@
-package br.com.usinasantafe.cmm.presenter.view.header.operator
+package br.com.usinasantafe.cmm.presenter.view.note.transhipment
 
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.motomec.HasRegColab
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.presenter.Args
+import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -21,35 +27,44 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class OperatorHeaderViewModelTest {
+class TranshipmentViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val updateTableColab = mock<UpdateTableColab>()
-    private val hasRegColab = mock<HasRegColab>()
-    private val setRegOperator = mock<SetRegOperator>()
-    private val viewModel = OperatorHeaderViewModel(
-        updateTableColab = updateTableColab,
-        hasRegColab = hasRegColab,
-        setRegOperator = setRegOperator
+    private val updateTableEquip = mock<UpdateTableEquip>()
+    private val hasEquipSecondary = mock<HasEquipSecondary>()
+    private val setNroTranshipment = mock<SetNroTranshipment>()
+    private fun createViewModel(
+        savedStateHandle: SavedStateHandle = SavedStateHandle(
+            mapOf(
+                Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
+            )
+        )
+    ) = TranshipmentViewModel(
+        savedStateHandle,
+        updateTableEquip = updateTableEquip,
+        hasEquipSecondary = hasEquipSecondary,
+        setNroTranshipment = setNroTranshipment
     )
 
     @Test
     fun `setTextField - Check add char`() {
+        val viewModel = createViewModel()
         viewModel.setTextField(
             "1",
             TypeButton.NUMERIC
         )
         assertEquals(
             "1",
-            viewModel.uiState.value.regColab
+            viewModel.uiState.value.nroEquip
         )
     }
 
     @Test
     fun `setTextField - Check remover char`() {
+        val viewModel = createViewModel()
         viewModel.setTextField(
             "19759",
             TypeButton.NUMERIC
@@ -71,13 +86,14 @@ class OperatorHeaderViewModelTest {
             TypeButton.NUMERIC
         )
         assertEquals(
-            viewModel.uiState.value.regColab,
+            viewModel.uiState.value.nroEquip,
             "191"
         )
     }
 
     @Test
     fun `setTextField - Check msg of empty field`() {
+        val viewModel = createViewModel()
         viewModel.setTextField(
             "OK",
             TypeButton.OK
@@ -93,10 +109,10 @@ class OperatorHeaderViewModelTest {
     }
 
     @Test
-    fun `setTextField - Check return failure usecase if have error in usecase CleanColab`() =
+    fun `setTextField - Check return failure usecase if have error in usecase CleanEquip`() =
         runTest {
             whenever(
-                updateTableColab(
+                updateTableEquip(
                     count = 1f,
                     sizeAll = 4f
                 )
@@ -105,36 +121,37 @@ class OperatorHeaderViewModelTest {
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
+                        tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
                     ResultUpdateModel(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "CleanColab -> java.lang.NullPointerException",
+                        failure = "CleanEquip -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
             )
+            val viewModel = createViewModel()
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(result.count(), 2)
             assertEquals(
                 result[0],
-                OperatorHeaderState(
+                TranshipmentState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_equip",
                     currentProgress = percentage(1f, 4f)
                 )
             )
             assertEquals(
                 result[1],
-                OperatorHeaderState(
+                TranshipmentState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
-                    failure = "OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
+                    failure = "TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
                     currentProgress = 1f,
                 )
             )
@@ -148,7 +165,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException"
             )
         }
 
@@ -156,7 +173,7 @@ class OperatorHeaderViewModelTest {
     fun `setTextField - Check return success in updateAllDatabase`() =
         runTest {
             whenever(
-                updateTableColab(
+                updateTableEquip(
                     count = 1f,
                     sizeAll = 4f
                 )
@@ -165,55 +182,56 @@ class OperatorHeaderViewModelTest {
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
+                        tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_colab",
+                        tableUpdate = "tb_equip",
                         currentProgress = percentage(2f, 4f)
                     ),
                     ResultUpdateModel(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_colab",
+                        tableUpdate = "tb_equip",
                         currentProgress = percentage(3f, 4f)
                     ),
                 )
             )
+            val viewModel = createViewModel()
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(result.count(), 4)
             assertEquals(
                 result[0],
-                OperatorHeaderState(
+                TranshipmentState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_equip",
                     currentProgress = percentage(1f, 4f)
                 )
             )
             assertEquals(
                 result[1],
-                OperatorHeaderState(
+                TranshipmentState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_equip",
                     currentProgress = percentage(2f, 4f),
                 )
             )
             assertEquals(
                 result[2],
-                OperatorHeaderState(
+                TranshipmentState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
+                    tableUpdate = "tb_equip",
                     currentProgress = percentage(3f, 4f),
                 )
             )
             assertEquals(
                 result[3],
-                OperatorHeaderState(
+                TranshipmentState(
                     flagDialog = true,
                     flagProgress = false,
                     flagFailure = false,
@@ -234,6 +252,7 @@ class OperatorHeaderViewModelTest {
     @Test
     fun `setTextField - Check return failure if field is empty`() =
         runTest {
+            val viewModel = createViewModel()
             viewModel.setTextField(
                 "OK",
                 TypeButton.OK
@@ -252,7 +271,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> Field Empty!"
+                "TranshipmentViewModel.setTextField -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -265,19 +284,23 @@ class OperatorHeaderViewModelTest {
         }
 
     @Test
-    fun `setTextField - Check return failure if have error in usecase HasRegOperator`() =
+    fun `setTextField - Check return failure if have error in usecase HasEquipSecondary`() =
         runTest {
             whenever(
-                hasRegColab("19759")
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquipSecondary.TRANSHIPMENT
+                )
             ).thenReturn(
                 resultFailure(
-                    context = "ICheckRegOperator",
+                    context = "IHasEquipSecondary",
                     message = "-",
                     cause = Exception()
                 )
             )
+            val viewModel = createViewModel()
             viewModel.setTextField(
-                "19759",
+                "2200",
                 TypeButton.NUMERIC
             )
             viewModel.setTextField(
@@ -298,7 +321,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroTranshipment -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -314,12 +337,16 @@ class OperatorHeaderViewModelTest {
     fun `setTextField - Check return false if not have reg in table`() =
         runTest {
             whenever(
-                hasRegColab("19759")
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquipSecondary.TRANSHIPMENT
+                )
             ).thenReturn(
                 Result.success(false)
             )
+            val viewModel = createViewModel()
             viewModel.setTextField(
-                "19759",
+                "2200",
                 TypeButton.NUMERIC
             )
             viewModel.setTextField(
@@ -333,7 +360,7 @@ class OperatorHeaderViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagFailure,
                 true
-                )
+            )
             assertEquals(
                 viewModel.uiState.value.errors,
                 Errors.INVALID
@@ -345,24 +372,31 @@ class OperatorHeaderViewModelTest {
         }
 
     @Test
-    fun `setTextField - Check return failure if have error in usecase SetRegOperator`() =
+    fun `setTextField - Check return failure if have error in usecase SetNroTranshipment`() =
         runTest {
             whenever(
-                hasRegColab("19759")
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquipSecondary.TRANSHIPMENT
+                )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                setRegOperator("19759")
+                setNroTranshipment(
+                    nroTranshipment = "2200",
+                    flowApp = FlowApp.NOTE_WORK
+                )
             ).thenReturn(
                 resultFailure(
-                    context = "ISetRegOperator",
+                    context = "ISetNroTranshipment",
                     message = "-",
                     cause = Exception()
                 )
             )
+            val viewModel = createViewModel()
             viewModel.setTextField(
-                "19759",
+                "2200",
                 TypeButton.NUMERIC
             )
             viewModel.setTextField(
@@ -383,7 +417,7 @@ class OperatorHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroTranshipment -> ISetNroTranshipment -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -399,17 +433,24 @@ class OperatorHeaderViewModelTest {
     fun `setTextField - Check access release if executed successfully`() =
         runTest {
             whenever(
-                hasRegColab("19759")
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquipSecondary.TRANSHIPMENT
+                )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                setRegOperator("19759")
+                setNroTranshipment(
+                    nroTranshipment = "2200",
+                    flowApp = FlowApp.NOTE_WORK
+                )
             ).thenReturn(
                 Result.success(true)
             )
+            val viewModel = createViewModel()
             viewModel.setTextField(
-                "19759",
+                "2200",
                 TypeButton.NUMERIC
             )
             viewModel.setTextField(

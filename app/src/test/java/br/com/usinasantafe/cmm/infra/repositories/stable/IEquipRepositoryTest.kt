@@ -866,4 +866,62 @@ class IEquipRepositoryTest {
             )
         }
 
+    @Test
+    fun `hasEquipSecondary - Check return failure if have error in EquipRoomDatasource hasByNroEquipAndTypeEquip`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.hasByNroEquipAndTypeEquip(
+                    nroEquip = 2200L,
+                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRoomDatasource.hasByNroEquipAndTypeEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasEquipSecondary(
+                nroEquip = 2200L,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.hasEquipSecondary -> IEquipRoomDatasource.hasByNroEquipAndTypeEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasEquipSecondary - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.hasByNroEquipAndTypeEquip(
+                    nroEquip = 2200L,
+                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasEquipSecondary(
+                nroEquip = 2200L,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntit
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -219,6 +220,23 @@ class IEquipRepository @Inject constructor(
                     cause = it
                 )
             }
+        return result
+    }
+
+    override suspend fun hasEquipSecondary(
+        nroEquip: Long,
+        typeEquip: TypeEquipSecondary
+    ): Result<Boolean> {
+        val result = equipRoomDatasource.hasByNroEquipAndTypeEquip(
+            nroEquip = nroEquip,
+            typeEquip = typeEquip
+        )
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
         return result
     }
 

@@ -17,27 +17,27 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckHasNoteMotoMec(usecase: ICheckHasNoteMotoMec): CheckHasNoteMotoMec
+    fun bindCheckHasNoteMotoMec(usecase: IHasNoteMotoMec): HasNoteMotoMec
 
     @Binds
     @Singleton
-    fun bindCheckMeasure(usecase: ICheckHourMeter): CheckHourMeter
+    fun bindCheckHourMeter(usecase: ICheckHourMeter): CheckHourMeter
 
     @Binds
     @Singleton
-    fun bindCheckNroOS(usecase: ICheckNroOS): CheckNroOS
+    fun bindCheckNroOS(usecase: IHasNroOS): HasNroOS
 
     @Binds
     @Singleton
-    fun bindCheckRegOperator(usecase: ICheckRegOperator): CheckRegOperator
+    fun bindCheckRegOperator(usecase: IHasRegColab): HasRegColab
 
     @Binds
     @Singleton
-    fun bindCheckSendMotoMec(usecase: ICheckSendMotoMec): CheckSendMotoMec
+    fun bindCheckSendMotoMec(usecase: IHasSendMotoMec): HasSendMotoMec
 
     @Binds
     @Singleton
-    fun bindCheckTypeLastNote(usecase: ICheckTypeLastNote): CheckTypeLastNote
+    fun bindCheckTypeLastNote(usecase: IGetTypeLastNote): GetTypeLastNote
 
     @Binds
     @Singleton
@@ -110,5 +110,13 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindUncouplingTrailer(usecase: IUncouplingTrailer): UncouplingTrailer
+
+    @Binds
+    @Singleton
+    fun bindCheckTypeTranshipmentInActivity(usecase: ICheckTypeTranshipmentInActivity): CheckTypeTranshipmentInActivity
+
+    @Binds
+    @Singleton
+    fun bindSetNroTranshipment(usecase: ISetNroTranshipment): SetNroTranshipment
 
 }

@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 
 interface EquipRepository {
     suspend fun saveEquipMain(entity: Equip): Result<Boolean>
@@ -25,4 +26,8 @@ interface EquipRepository {
     suspend fun getIdCheckList(): Result<Int>
     suspend fun getFlagMechanic(): Result<Boolean>
     suspend fun getFlagTire(): Result<Boolean>
+    suspend fun hasEquipSecondary(
+        nroEquip: Long,
+        typeEquip: TypeEquipSecondary
+    ): Result<Boolean>
 }

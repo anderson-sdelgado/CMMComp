@@ -6,13 +6,13 @@ import br.com.usinasantafe.cmm.lib.TypeNote
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckTypeLastNote {
+interface GetTypeLastNote {
     suspend operator fun invoke(): Result<TypeNote?>
 }
 
-class ICheckTypeLastNote @Inject constructor(
+class IGetTypeLastNote @Inject constructor(
     private val motoMecRepository: MotoMecRepository
-): CheckTypeLastNote {
+): GetTypeLastNote {
 
     override suspend fun invoke(): Result<TypeNote?> {
         try {

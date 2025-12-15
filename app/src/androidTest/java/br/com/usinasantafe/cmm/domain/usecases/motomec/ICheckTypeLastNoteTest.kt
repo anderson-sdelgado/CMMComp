@@ -23,7 +23,7 @@ class ICheckTypeLastNoteTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckTypeLastNote
+    lateinit var usecase: GetTypeLastNote
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao

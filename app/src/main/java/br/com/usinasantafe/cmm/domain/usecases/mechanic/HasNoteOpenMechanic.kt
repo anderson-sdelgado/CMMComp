@@ -6,14 +6,14 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckHasNoteOpenMechanic {
+interface HasNoteOpenMechanic {
     suspend operator fun invoke(): Result<Boolean>
 }
 
-class ICheckHasNoteOpenMechanic @Inject constructor(
+class IHasNoteOpenMechanic @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
     private val mechanicRepository: MechanicRepository
-): CheckHasNoteOpenMechanic {
+): HasNoteOpenMechanic {
 
     override suspend fun invoke(): Result<Boolean> {
         try {
@@ -25,7 +25,7 @@ class ICheckHasNoteOpenMechanic @Inject constructor(
                 )
             }
             val idHeader = resultGetIdHeader.getOrNull()!!
-            val resultGetCheck = mechanicRepository.checkNoteOpenByIdHeader(idHeader)
+            val resultGetCheck = mechanicRepository.hasNoteOpenByIdHeader(idHeader)
             resultGetCheck.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

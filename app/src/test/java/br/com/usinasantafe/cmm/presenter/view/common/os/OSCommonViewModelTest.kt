@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.os
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.presenter.Args
@@ -25,7 +25,7 @@ class OSCommonViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val checkNroOS = mock<CheckNroOS>()
+    private val hasNroOS = mock<HasNroOS>()
     private val setNroOS = mock<SetNroOS>()
     private val getNroOSHeader = mock<GetNroOSHeader>()
     private fun createViewModel(
@@ -36,7 +36,7 @@ class OSCommonViewModelTest {
         )
     ) = OSCommonViewModel(
         savedStateHandle,
-        checkNroOS = checkNroOS,
+        hasNroOS = hasNroOS,
         setNroOS = setNroOS,
         getNroOSHeader = getNroOSHeader
     )
@@ -104,7 +104,7 @@ class OSCommonViewModelTest {
     fun `setNroOS - Check return failure if have error in CheckNroOS`() =
         runTest {
             whenever(
-                checkNroOS(
+                hasNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.HEADER_INITIAL
                 )
@@ -146,7 +146,7 @@ class OSCommonViewModelTest {
     fun `setNroOS - Check return invalid if data is not found`() =
         runTest {
             whenever(
-                checkNroOS(
+                hasNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.HEADER_INITIAL
                 )
@@ -184,7 +184,7 @@ class OSCommonViewModelTest {
     fun `setNroOS - Check return failure if have error in SetNroOS`() =
         runTest {
             whenever(
-                checkNroOS(
+                hasNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.HEADER_INITIAL
                 )
@@ -233,7 +233,7 @@ class OSCommonViewModelTest {
     fun `setNroOS - Check return correct if function execute successfully - HEADER_INITIAL`() =
         runTest {
             whenever(
-                checkNroOS(
+                hasNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.HEADER_INITIAL
                 )
@@ -272,7 +272,7 @@ class OSCommonViewModelTest {
     fun `setNroOS - Check return correct if function execute successfully - NOTE_WORK`() =
         runTest {
             whenever(
-                checkNroOS(
+                hasNroOS(
                     nroOS = "123456",
                     flowApp = FlowApp.NOTE_WORK
                 )

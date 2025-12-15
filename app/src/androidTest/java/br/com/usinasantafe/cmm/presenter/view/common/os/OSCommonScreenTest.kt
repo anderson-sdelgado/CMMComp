@@ -9,7 +9,7 @@ import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.HiltTestActivity
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
@@ -42,7 +42,7 @@ class OSCommonScreenTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var checkNroOS: CheckNroOS
+    lateinit var hasNroOS: HasNroOS
 
     @Inject
     lateinit var setNroOS: SetNroOS
@@ -145,7 +145,7 @@ class OSCommonScreenTest {
                             FLOW_APP_ARG to flowApp.ordinal
                         )
                     ),
-                    checkNroOS = checkNroOS,
+                    hasNroOS = hasNroOS,
                     setNroOS = setNroOS,
                     getNroOSHeader = getNroOSHeader
                 ),

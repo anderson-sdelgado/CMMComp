@@ -19,7 +19,7 @@ class ICheckSendCheckListTest {
     fun `Check return failure if have error in CheckListRepository checkSend`() =
         runTest {
             whenever(
-                checkListRepository.checkSend()
+                checkListRepository.hasSend()
             ).thenReturn(
                 resultFailure(
                     "ICheckListRepository.checkSend",
@@ -46,7 +46,7 @@ class ICheckSendCheckListTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                checkListRepository.checkSend()
+                checkListRepository.hasSend()
             ).thenReturn(
                 Result.success(true)
             )

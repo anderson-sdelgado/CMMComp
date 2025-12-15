@@ -18,7 +18,7 @@ class ICheckRegOperatorTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckRegOperator
+    lateinit var usecase: HasRegColab
 
     @Inject
     lateinit var colabDao: ColabDao

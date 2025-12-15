@@ -5,13 +5,13 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckHasNoteMotoMec {
+interface HasNoteMotoMec {
     suspend operator fun invoke(): Result<Boolean>
 }
 
-class ICheckHasNoteMotoMec @Inject constructor(
+class IHasNoteMotoMec @Inject constructor(
     private val motoMecRepository: MotoMecRepository
-): CheckHasNoteMotoMec {
+): HasNoteMotoMec {
 
     override suspend fun invoke(): Result<Boolean> {
         try {

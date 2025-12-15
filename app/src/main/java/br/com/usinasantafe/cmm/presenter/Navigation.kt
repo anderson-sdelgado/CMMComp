@@ -17,6 +17,7 @@ import br.com.usinasantafe.cmm.presenter.Screens.SPLASH_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.STOP_LIST_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TURN_LIST_HEADER_SCREEN
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Screens.TRANSHIPMENT_NOTE_SCREEN
 
 object Screens {
     const val SPLASH_SCREEN = "splash"
@@ -33,6 +34,7 @@ object Screens {
     const val STOP_LIST_NOTE_SCREEN = "stopListNoteScreen"
     const val QUESTION_UPDATE_CHECK_LIST_SCREEN = "questionUpdateCheckListScreen"
     const val ITEM_CHECK_LIST_SCREEN = "itemCheckListScreen"
+    const val TRANSHIPMENT_NOTE_SCREEN = "transhipmentNoteScreen"
 }
 
 object Args {
@@ -54,6 +56,7 @@ object Routes {
     const val STOP_LIST_NOTE_ROUTE = STOP_LIST_NOTE_SCREEN
     const val QUESTION_UPDATE_CHECK_LIST_ROUTE = QUESTION_UPDATE_CHECK_LIST_SCREEN
     const val ITEM_CHECK_LIST_ROUTE = ITEM_CHECK_LIST_SCREEN
+    const val TRANSHIPMENT_NOTE_ROUTE = "$TRANSHIPMENT_NOTE_SCREEN/{$FLOW_APP_ARG}"
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -112,7 +115,7 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(TURN_LIST_HEADER_SCREEN)
     }
 
-    fun navigateToMeasureHeader(
+    fun navigateToHourMeterHeader(
         flowApp: Int = FlowApp.HEADER_INITIAL.ordinal
     ) {
         navController.navigate("${HOUR_METER_HEADER_SCREEN}/${flowApp}")
@@ -130,6 +133,13 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate(STOP_LIST_NOTE_SCREEN)
     }
 
+    fun navigateToTranshipment(
+        flowApp: Int
+    ) {
+        navController.navigate("$TRANSHIPMENT_NOTE_SCREEN/${flowApp}")
+    }
+
+
     ////////////////////////////////////////////////////////////////////
 
     ///////////////////////// Check List ///////////////////////////////
@@ -141,6 +151,7 @@ class NavigationActions(private val navController: NavHostController) {
     fun navigateToItemCheckList() {
         navController.navigate(ITEM_CHECK_LIST_SCREEN)
     }
+
 
     ////////////////////////////////////////////////////////////////////
 

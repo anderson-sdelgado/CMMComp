@@ -5,7 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import br.com.usinasantafe.cmm.domain.usecases.config.SetStatusSend
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckSendMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasSendMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SendMotoMec
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 
@@ -17,13 +17,13 @@ import timber.log.Timber
 class ProcessWorkManager @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val checkSendMotoMec: CheckSendMotoMec,
+    private val hasSendMotoMec: HasSendMotoMec,
     private val sendMotoMec: SendMotoMec,
     private val setStatusSend: SetStatusSend
 ) : CoroutineWorker(appContext, workerParams) {
 
     override suspend fun doWork(): Result {
-        val resultMotoMecCheckSend = checkSendMotoMec()
+        val resultMotoMecCheckSend = hasSendMotoMec()
         resultMotoMecCheckSend.onFailure {
             val failure =
                 "${getClassAndMethod()} -> ${it.message} -> ${it.cause.toString()}"

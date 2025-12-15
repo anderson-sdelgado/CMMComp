@@ -22,7 +22,7 @@ class ICheckHasNoteOpenMechanicTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ICheckHasNoteOpenMechanic
+    lateinit var usecase: IHasNoteOpenMechanic
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao

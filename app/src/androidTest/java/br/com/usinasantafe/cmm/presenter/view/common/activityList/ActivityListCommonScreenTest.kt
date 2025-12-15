@@ -242,7 +242,8 @@ class ActivityListCommonScreenTest {
                 onNavOS = {},
                 onNavMeasure = {},
                 onNavStopList = {},
-                onMenuNote = {},
+                onNavMenuNote = {},
+                onNavTranshipment = {}
             )
         }
     }

@@ -217,7 +217,7 @@ class IColabRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.checkByReg(19759)
+            val result = repository.hasByReg(19759)
             assertEquals(
                 result.isFailure,
                 true
@@ -240,7 +240,7 @@ class IColabRepositoryTest {
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkByReg(19759)
+            val result = repository.hasByReg(19759)
             assertEquals(
                 result.isSuccess,
                 true

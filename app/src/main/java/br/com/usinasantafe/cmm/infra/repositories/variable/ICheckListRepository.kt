@@ -166,7 +166,7 @@ class ICheckListRepository @Inject constructor(
         return result
     }
 
-    override suspend fun checkSend(): Result<Boolean> {
+    override suspend fun hasSend(): Result<Boolean> {
         val result = headerCheckListRoomDatasource.hasSend()
         result.onFailure {
                 return resultFailure(

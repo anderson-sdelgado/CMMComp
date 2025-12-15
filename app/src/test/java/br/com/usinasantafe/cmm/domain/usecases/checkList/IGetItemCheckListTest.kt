@@ -27,7 +27,6 @@ class IGetItemCheckListTest {
     private val usecase = IGetItemCheckList(
         itemCheckListRepository = itemCheckListRepository,
         checkListRepository = checkListRepository,
-        configRepository = configRepository,
         equipRepository = equipRepository,
         motoMecRepository = motoMecRepository,
         turnRepository = turnRepository

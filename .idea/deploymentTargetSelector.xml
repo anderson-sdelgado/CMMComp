@@ -13,7 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="flow()">
+      <SelectionState runConfigName="check_return_true_if_have_data_equals_data_field()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

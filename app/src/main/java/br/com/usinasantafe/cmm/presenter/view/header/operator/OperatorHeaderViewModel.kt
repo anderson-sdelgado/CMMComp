@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckRegOperator
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasRegColab
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
@@ -61,7 +61,7 @@ fun ResultUpdateModel.toOperator(
 @HiltViewModel
 class OperatorHeaderViewModel @Inject constructor(
     private val updateTableColab: UpdateTableColab,
-    private val checkRegOperator: CheckRegOperator,
+    private val hasRegColab: HasRegColab,
     private val setRegOperator: SetRegOperator
 ) : ViewModel() {
 
@@ -82,16 +82,16 @@ class OperatorHeaderViewModel @Inject constructor(
     ) {
         when (typeButton) {
             TypeButton.NUMERIC -> {
-                val matricColab = addTextField(uiState.value.regColab, text)
+                val value = addTextField(uiState.value.regColab, text)
                 _uiState.update {
-                    it.copy(regColab = matricColab)
+                    it.copy(regColab = value)
                 }
             }
 
             TypeButton.CLEAN -> {
-                val matricColab = clearTextField(uiState.value.regColab)
+                val value = clearTextField(uiState.value.regColab)
                 _uiState.update {
-                    it.copy(regColab = matricColab)
+                    it.copy(regColab = value)
                 }
             }
 
@@ -114,12 +114,12 @@ class OperatorHeaderViewModel @Inject constructor(
     }
 
     private fun setRegOperatorHeader() = viewModelScope.launch {
-        val resultCheck = checkRegOperator(uiState.value.regColab)
-        resultCheck.onFailure {
+        val resultHas = hasRegColab(uiState.value.regColab)
+        resultHas.onFailure {
             handleFailure(it)
             return@launch
         }
-        val check = resultCheck.getOrNull()!!
+        val check = resultHas.getOrNull()!!
         if (check) {
             val resultSet = setRegOperator(uiState.value.regColab)
             resultSet.onFailure {

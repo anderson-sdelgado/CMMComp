@@ -179,7 +179,7 @@ class IGetStatusTranshipmentTest {
                 nroOS = 123456,
                 idActivity = 1,
                 idStop = 1,
-                idEquipTrans = 1,
+                nroEquipTranshipment = 1,
                 dateHour = Date(),
                 statusCon = true
             )
@@ -206,7 +206,7 @@ class IGetStatusTranshipmentTest {
                 nroOS = 123456,
                 idActivity = 1,
                 idStop = 1,
-                idEquipTrans = 10,
+                nroEquipTranshipment = 10,
                 dateHour = Date(1764342015000),
                 statusCon = true
             )

@@ -29,6 +29,7 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.msg
 
 @Composable
 fun TurnListHeaderScreen(
@@ -144,16 +145,7 @@ fun TurnListHeaderContent(
                     )
                 }
             } else {
-                when(levelUpdate){
-                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                    null -> failure
-                }
+                msg(levelUpdate, failure, tableUpdate)
             }
             AlertDialogSimpleDesign(
                 text = text,
@@ -162,16 +154,7 @@ fun TurnListHeaderContent(
         }
 
         if (flagProgress) {
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
+            val msgProgress = msg(levelUpdate, failure, tableUpdate)
             AlertDialogProgressDesign(
                 currentProgress = currentProgress,
                 msgProgress = msgProgress

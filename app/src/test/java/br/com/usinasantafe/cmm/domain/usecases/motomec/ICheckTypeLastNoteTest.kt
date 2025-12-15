@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class ICheckTypeLastNoteTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ICheckTypeLastNote(
+    private val usecase = IGetTypeLastNote(
         motoMecRepository = motoMecRepository
     )
 

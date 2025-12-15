@@ -1,9 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -16,6 +18,7 @@ interface SetIdActivityCommon {
 
 class ISetIdActivityCommon @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
+    private val functionActivityRepository: FunctionActivityRepository,
     private val startWorkManager: StartWorkManager
 ): SetIdActivityCommon {
 
@@ -40,6 +43,17 @@ class ISetIdActivityCommon @Inject constructor(
                 )
             }
             if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
+            val resultListFunctionActivity =
+                functionActivityRepository.listByIdActivity(id)
+            resultListFunctionActivity.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val functionActivityList = resultListFunctionActivity.getOrNull()!!
+            val ret = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
+            if(ret) return Result.success(false)
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
             resultGetId.onFailure {
                 return resultFailure(

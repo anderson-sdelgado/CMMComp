@@ -11,7 +11,7 @@ import org.mockito.kotlin.whenever
 class ICheckHeaderSendTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ICheckSendMotoMec(
+    private val usecase = IHasSendMotoMec(
         motoMecRepository = motoMecRepository
     )
 
@@ -19,7 +19,7 @@ class ICheckHeaderSendTest {
     fun `Check return failure if have error in `() =
         runTest {
             whenever(
-                motoMecRepository.checkHeaderSend()
+                motoMecRepository.hasHeaderSend()
             ).thenReturn(
                 resultFailure(
                     context = "HeaderMotoMecRepository.checkHeaderOpen",
@@ -46,7 +46,7 @@ class ICheckHeaderSendTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.checkHeaderSend()
+                motoMecRepository.hasHeaderSend()
             ).thenReturn(
                 Result.success(true)
             )

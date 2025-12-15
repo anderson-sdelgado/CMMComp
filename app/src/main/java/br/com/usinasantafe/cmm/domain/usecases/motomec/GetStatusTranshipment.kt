@@ -43,7 +43,7 @@ class IGetStatusTranshipment @Inject constructor(
             }
             val noteLast = resultGetNoteLast.getOrNull()!!
             if(noteLast.idStop == null) return Result.success(StatusTranshipment.WITHOUT_NOTE)
-            if((noteLast.idEquipTrans != null ) && (noteLast.dateHour > adjDate(-10))){
+            if((noteLast.nroEquipTranshipment != null ) && (noteLast.dateHour > adjDate(-10))){
                 return Result.success(StatusTranshipment.TIME_INVALID)
             }
             return Result.success(StatusTranshipment.OK)

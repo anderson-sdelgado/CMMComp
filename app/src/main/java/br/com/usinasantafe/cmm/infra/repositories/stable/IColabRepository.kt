@@ -66,7 +66,7 @@ class IColabRepository @Inject constructor(
         }
     }
 
-    override suspend fun checkByReg(reg: Int): Result<Boolean> {
+    override suspend fun hasByReg(reg: Int): Result<Boolean> {
         val result = colabRoomDatasource.checkByReg(reg)
         result.onFailure {
                 return resultFailure(

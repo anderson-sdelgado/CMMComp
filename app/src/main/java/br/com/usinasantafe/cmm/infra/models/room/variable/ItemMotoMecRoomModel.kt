@@ -22,7 +22,7 @@ data class ItemMotoMecRoomModel(
     val status: Status = Status.CLOSE,
     val statusCon: Boolean = false,
     var idServ: Int? = null,
-    val idEquipTrans: Int? = null,
+    val nroEquipTranshipment: Long? = null,
 )
 
 fun ItemMotoMec.entityToRoomModel(
@@ -37,7 +37,7 @@ fun ItemMotoMec.entityToRoomModel(
             idStop = this.idStop,
             statusCon = this.statusCon!!,
             dateHour = dateHour,
-            idEquipTrans = this.idEquipTrans
+            nroEquipTranshipment = this.nroEquipTranshipment
         )
     }
 }
@@ -51,7 +51,7 @@ fun ItemMotoMecRoomModel.roomModelToEntity(): ItemMotoMec {
             idStop = this.idStop,
             statusCon = this.statusCon,
             dateHour = this.dateHour,
-            idEquipTrans = this.idEquipTrans
+            nroEquipTranshipment = this.nroEquipTranshipment
         )
     }
 }

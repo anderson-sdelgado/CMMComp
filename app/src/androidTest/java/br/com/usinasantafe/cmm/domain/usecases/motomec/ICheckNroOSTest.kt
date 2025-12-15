@@ -32,7 +32,7 @@ class ICheckNroOSTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: ICheckNroOS
+    lateinit var usecase: IHasNroOS
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

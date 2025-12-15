@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class ICheckHasNoteMotoMecTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ICheckHasNoteMotoMec(
+    private val usecase = IHasNoteMotoMec(
         motoMecRepository = motoMecRepository
     )
 

@@ -5,17 +5,17 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface CheckRegOperator {
+interface HasRegColab {
     suspend operator fun invoke(regOperator: String): Result<Boolean>
 }
 
-class ICheckRegOperator @Inject constructor(
+class IHasRegColab @Inject constructor(
     private val colabRepository: ColabRepository
-): CheckRegOperator {
+): HasRegColab {
 
     override suspend fun invoke(regOperator: String): Result<Boolean> {
         try {
-            val result = colabRepository.checkByReg(
+            val result = colabRepository.hasByReg(
                 regOperator.toInt()
             )
             result.onFailure {

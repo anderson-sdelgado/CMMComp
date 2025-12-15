@@ -7,7 +7,7 @@ data class ItemMotoMec(
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var idStop: Int? = null,
-    val idEquipTrans: Int? = null,
+    val nroEquipTranshipment: Long? = null,
     var statusCon: Boolean? = false,
     var dateHour: Date = Date()
 )

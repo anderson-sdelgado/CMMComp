@@ -11,7 +11,7 @@ import org.mockito.kotlin.whenever
 class ICheckRegOperatorTest {
 
     private val colabRepository = mock<ColabRepository>()
-    private val usecase = ICheckRegOperator(
+    private val usecase = IHasRegColab(
         colabRepository = colabRepository
     )
 
@@ -37,7 +37,7 @@ class ICheckRegOperatorTest {
     fun `Check return failure if have error in ColabRepository checkReg`() =
         runTest {
             whenever(
-                colabRepository.checkByReg(19759)
+                colabRepository.hasByReg(19759)
             ).thenReturn(
                 resultFailure(
                     "ColabRepository.checkReg",
@@ -64,7 +64,7 @@ class ICheckRegOperatorTest {
     fun `Check return false if not have matric in database`() =
         runTest {
             whenever(
-                colabRepository.checkByReg(19759)
+                colabRepository.hasByReg(19759)
             ).thenReturn(
                 Result.success(false)
             )
@@ -83,7 +83,7 @@ class ICheckRegOperatorTest {
     fun `Check return true if have matric in database`() =
         runTest {
             whenever(
-                colabRepository.checkByReg(19759)
+                colabRepository.hasByReg(19759)
             ).thenReturn(
                 Result.success(true)
             )

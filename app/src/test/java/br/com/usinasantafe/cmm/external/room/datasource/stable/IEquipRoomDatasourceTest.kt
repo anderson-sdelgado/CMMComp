@@ -250,4 +250,119 @@ class IEquipRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `hasByNroEquipAndTypeEquip - Check return false if not have data`() =
+        runTest {
+            val result = datasource.hasByNroEquipAndTypeEquip(
+                nroEquip = 10,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroEquipAndTypeEquip - Check return false if have data but not typeEquip is equals`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquipSecondary.REEL
+                    )
+                )
+            )
+            val result = datasource.hasByNroEquipAndTypeEquip(
+                nroEquip = 10,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroEquipAndTypeEquip - Check return false if have data but not nroEquip is equals`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 2200,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquipSecondary.REEL
+                    ),
+                    EquipRoomModel(
+                        id = 2,
+                        nro = 200,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    )
+                )
+            )
+            val result = datasource.hasByNroEquipAndTypeEquip(
+                nroEquip = 10,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroEquipAndTypeEquip - Check return true if have data equals data field`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 2200,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquipSecondary.REEL
+                    ),
+                    EquipRoomModel(
+                        id = 2,
+                        nro = 200,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    )
+                )
+            )
+            val result = datasource.hasByNroEquipAndTypeEquip(
+                nroEquip = 200,
+                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

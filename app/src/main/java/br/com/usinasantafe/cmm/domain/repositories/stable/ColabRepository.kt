@@ -6,5 +6,5 @@ interface ColabRepository {
     suspend fun addAll(list: List<Colab>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
     suspend fun listAll(token: String): Result<List<Colab>>
-    suspend fun checkByReg(reg: Int): Result<Boolean>
+    suspend fun hasByReg(reg: Int): Result<Boolean>
 }

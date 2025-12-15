@@ -30,6 +30,7 @@ fun getClassAndMethod(): String {
                     !it.contains("access") &&
                     !it.contains("Test") &&
                     !it.contains("handleFailure") &&
+                    !it.contains("DefaultImpls") &&
                     !it.endsWith("Failure") &&
                     !it.endsWith("getClassAndMethod") &&
                     !it.endsWith("default")

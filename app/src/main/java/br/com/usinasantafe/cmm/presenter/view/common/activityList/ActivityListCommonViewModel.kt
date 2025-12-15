@@ -110,6 +110,14 @@ class ActivityListCommonViewModel @Inject constructor(
             handleFailure(it)
             return@launch
         }
+        val check = result.getOrNull()!!
+        if(!check) {
+            _uiState.update {
+                it.copy(
+                    flowApp = FlowApp.TRANSHIPMENT
+                )
+            }
+        }
         _uiState.update {
             it.copy(
                 flagAccess = true

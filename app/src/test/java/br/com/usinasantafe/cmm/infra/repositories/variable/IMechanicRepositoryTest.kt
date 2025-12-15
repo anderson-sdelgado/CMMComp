@@ -27,7 +27,7 @@ class IMechanicRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.checkNoteOpenByIdHeader(1)
+            val result = repository.hasNoteOpenByIdHeader(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -50,7 +50,7 @@ class IMechanicRepositoryTest {
             ).thenReturn(
                 Result.success(false)
             )
-            val result = repository.checkNoteOpenByIdHeader(1)
+            val result = repository.hasNoteOpenByIdHeader(1)
             assertEquals(
                 result.isSuccess,
                 true

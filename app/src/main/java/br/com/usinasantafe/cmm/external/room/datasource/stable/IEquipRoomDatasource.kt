@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -40,6 +41,21 @@ class IEquipRoomDatasource @Inject constructor(
         try {
             val model = equipDao.getByIdEquip(id)
             return Result.success("${model.nro} - ${model.descrClass}")
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun hasByNroEquipAndTypeEquip(
+        nroEquip: Long,
+        typeEquip: TypeEquipSecondary
+    ): Result<Boolean> {
+        try {
+            val count = equipDao.countByNroEquipAndTypeEquip(nroEquip, typeEquip)
+            return Result.success(count > 0)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

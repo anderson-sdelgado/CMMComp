@@ -87,4 +87,5 @@
     <string name="text_msg_need_coupling_trailer">POR FAVOR! ENGATE CARRETA(S) PARA DEPOIS DESENGATÁ-LAS.</string>
     <string name="text_msg_uncoupling_trailer">FOI REALIZADO COM SUCESSO O DESENGATE AS CARRETAS.</string>
     <string name="text_msg_without_note_stop">POR FAVOR, REALIZE UMA PARADA PARA REALIZAR UM APONTAMENTO DE MANUTENÇÃO.</string>
+    <string name="text_title_transhipment">TRANSBORDO</string>
 </resources>

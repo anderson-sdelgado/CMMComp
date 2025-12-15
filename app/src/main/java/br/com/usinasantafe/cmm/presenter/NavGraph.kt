@@ -38,6 +38,8 @@ import br.com.usinasantafe.cmm.presenter.view.note.menu.MenuNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.note.stopList.StopListNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.view.note.transhipment.TranshipmentScreen
 
 @Composable
 fun NavigationGraph(
@@ -175,13 +177,18 @@ fun NavigationGraph(
                     )
                 },
                 onNavMeasure = {
-                    navActions.navigateToMeasureHeader()
+                    navActions.navigateToHourMeterHeader()
                 },
                 onNavStopList = {
                     navActions.navigateToStopListNote()
                 },
-                onMenuNote = {
+                onNavMenuNote = {
                     navActions.navigateToMenuNote()
+                },
+                onNavTranshipment = {
+                    navActions.navigateToTranshipment(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
+                    )
                 }
             )
         }
@@ -225,12 +232,16 @@ fun NavigationGraph(
                     )
                 },
                 onNavMeasure = {
-                    navActions.navigateToMeasureHeader(
+                    navActions.navigateToHourMeterHeader(
                         flowApp = FlowApp.HEADER_FINISH.ordinal
                     )
                 },
+                onNavTranshipment = {
+                    navActions.navigateToTranshipment(
+                        flowApp = FlowApp.TRANSHIPMENT.ordinal
+                    )
+                },
                 onNavListReel = {},
-                onNavTranshipment = {},
                 onNavTrailer = {},
                 onNavOSListFertigation = {},
                 onNavMenuCertificate = {},
@@ -252,6 +263,24 @@ fun NavigationGraph(
                 onNavActivityList = {
                     navActions.navigateToActivityListCommon(
                         flowApp = FlowApp.NOTE_STOP.ordinal
+                    )
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                }
+            )
+        }
+
+        composable(
+            TRANSHIPMENT_NOTE_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
+            )
+        ) { entry ->
+            TranshipmentScreen(
+                onNavActivityList = {
+                    navActions.navigateToActivityListCommon(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
                     )
                 },
                 onNavMenuNote = {

@@ -337,6 +337,37 @@ class ActivityListCommonViewModelTest {
         }
 
     @Test
+    fun `setIdActivity - Check flowApp TRANSHIPMENT if function execute successfully and return false  - NOTE_WORK`() =
+        runTest {
+            whenever(
+                setIdActivityCommon(
+                    id = 1,
+                    flowApp = FlowApp.NOTE_WORK
+                )
+            ).thenReturn(
+                Result.success(
+                    false
+                )
+            )
+            val viewModel = createViewModel(
+                SavedStateHandle(
+                    mapOf(
+                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
+                    )
+                )
+            )
+            viewModel.setIdActivity(1)
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.flowApp,
+                FlowApp.TRANSHIPMENT
+            )
+        }
+
+    @Test
     fun `setIdActivity - Check return correct if function execute successfully - NOTE_WORK`() =
         runTest {
             whenever(
@@ -360,6 +391,10 @@ class ActivityListCommonViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
+            )
+            assertEquals(
+                viewModel.uiState.value.flowApp,
+                FlowApp.NOTE_WORK
             )
         }
 

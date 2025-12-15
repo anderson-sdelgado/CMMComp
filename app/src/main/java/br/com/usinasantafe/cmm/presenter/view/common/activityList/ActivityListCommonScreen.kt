@@ -30,6 +30,7 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.msg
 
 @Composable
 fun ActivityListCommonScreen(
@@ -37,7 +38,8 @@ fun ActivityListCommonScreen(
     onNavOS: () -> Unit,
     onNavMeasure: () -> Unit,
     onNavStopList: () -> Unit,
-    onMenuNote: () -> Unit
+    onNavMenuNote: () -> Unit,
+    onNavTranshipment: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -65,7 +67,8 @@ fun ActivityListCommonScreen(
                 onNavOS = onNavOS,
                 onNavMeasure = onNavMeasure,
                 onNavStopList = onNavStopList,
-                onMenuNote = onMenuNote,
+                onNavMenuNote = onNavMenuNote,
+                onNavTranshipment = onNavTranshipment,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -91,7 +94,8 @@ fun ActivityListCommonScreenContent(
     onNavOS: () -> Unit,
     onNavMeasure: () -> Unit,
     onNavStopList: () -> Unit,
-    onMenuNote: () -> Unit,
+    onNavMenuNote: () -> Unit,
+    onNavTranshipment: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -133,7 +137,7 @@ fun ActivityListCommonScreenContent(
                 when(flowApp) {
                     FlowApp.HEADER_INITIAL,
                     FlowApp.NOTE_WORK -> onNavOS()
-                    FlowApp.NOTE_STOP -> onMenuNote()
+                    FlowApp.NOTE_STOP -> onNavMenuNote()
                     else -> {}
                 }
             },
@@ -160,16 +164,7 @@ fun ActivityListCommonScreenContent(
                     )
                 }
             } else {
-                when(levelUpdate){
-                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                    null -> failure
-                }
+                msg(levelUpdate, failure, tableUpdate)
             }
             AlertDialogSimpleDesign(
                 text = text,
@@ -178,16 +173,7 @@ fun ActivityListCommonScreenContent(
         }
 
         if (flagProgress) {
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
+            val msgProgress = msg(levelUpdate, failure, tableUpdate)
             AlertDialogProgressDesign(
                 currentProgress = currentProgress,
                 msgProgress = msgProgress
@@ -200,7 +186,7 @@ fun ActivityListCommonScreenContent(
         if(flagAccess) {
             when(flowApp){
                 FlowApp.HEADER_INITIAL -> onNavMeasure()
-                FlowApp.NOTE_WORK -> onMenuNote()
+                FlowApp.NOTE_WORK -> onNavMenuNote()
                 FlowApp.NOTE_STOP -> onNavStopList()
                 else -> {}
             }
@@ -240,7 +226,8 @@ fun ActivityListCommonPagePreviewWithData() {
                 onNavOS = {},
                 onNavMeasure = {},
                 onNavStopList = {},
-                onMenuNote = {},
+                onNavMenuNote = {},
+                onNavTranshipment = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -279,7 +266,8 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                 onNavOS = {},
                 onNavMeasure = {},
                 onNavStopList = {},
-                onMenuNote = {},
+                onNavMenuNote = {},
+                onNavTranshipment = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -318,7 +306,8 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
                 onNavOS = {},
                 onNavMeasure = {},
                 onNavStopList = {},
-                onMenuNote = {},
+                onNavMenuNote = {},
+                onNavTranshipment = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -357,7 +346,8 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
                 onNavOS = {},
                 onNavMeasure = {},
                 onNavStopList = {},
-                onMenuNote = {},
+                onNavMenuNote = {},
+                onNavTranshipment = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

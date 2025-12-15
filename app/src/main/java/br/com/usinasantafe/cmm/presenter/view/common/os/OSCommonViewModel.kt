@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.os
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckNroOS
+import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
@@ -35,7 +35,7 @@ data class OSCommonState(
 @HiltViewModel
 class OSCommonViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
-    private val checkNroOS: CheckNroOS,
+    private val hasNroOS: HasNroOS,
     private val setNroOS: SetNroOS,
     private val getNroOSHeader: GetNroOSHeader
 ) : ViewModel() {
@@ -110,7 +110,7 @@ class OSCommonViewModel @Inject constructor(
                 msgProgress = "Verificando OS no Web Service",
             )
         }
-        val resultCheck = checkNroOS(
+        val resultCheck = hasNroOS(
             nroOS = uiState.value.nroOS,
             flowApp = uiState.value.flowApp
         )

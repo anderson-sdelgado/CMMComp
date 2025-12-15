@@ -13,7 +13,7 @@ class ICheckHasNoteOpenMechanicTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val mechanicRepository = mock<MechanicRepository>()
-    private val usecase = ICheckHasNoteOpenMechanic(
+    private val usecase = IHasNoteOpenMechanic(
         motoMecRepository = motoMecRepository,
         mechanicRepository = mechanicRepository
     )
@@ -54,7 +54,7 @@ class ICheckHasNoteOpenMechanicTest {
                 Result.success(1)
             )
             whenever(
-                mechanicRepository.checkNoteOpenByIdHeader(1)
+                mechanicRepository.hasNoteOpenByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "IMechanicRepository.checkNoteOpenByIdHeader",
@@ -86,7 +86,7 @@ class ICheckHasNoteOpenMechanicTest {
                 Result.success(1)
             )
             whenever(
-                mechanicRepository.checkNoteOpenByIdHeader(1)
+                mechanicRepository.hasNoteOpenByIdHeader(1)
             ).thenReturn(
                 Result.success(true)
             )

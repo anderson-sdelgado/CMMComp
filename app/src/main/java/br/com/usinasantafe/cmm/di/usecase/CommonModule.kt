@@ -27,4 +27,8 @@ interface CommonModule {
     @Singleton
     fun bindGetToken(usecase: IGetToken): GetToken
 
+    @Binds
+    @Singleton
+    fun bindHasEquipSecondary(usecase: IHasEquipSecondary): HasEquipSecondary
+
 }
