@@ -117,6 +117,6 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindSetNroTranshipment(usecase: ISetNroTranshipment): SetNroTranshipment
+    fun bindSetNroTranshipment(usecase: ISetNroEquipTranshipment): SetNroEquipTranshipment
 
 }

@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class IRespItemCheckListSharedPreferencesDatasourceTest {
+class IItemRespCheckListSharedPreferencesDatasourceTest {
 
     private lateinit var context: Context
     private lateinit var sharedPreferences: SharedPreferences

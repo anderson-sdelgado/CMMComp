@@ -13,7 +13,7 @@ import br.com.usinasantafe.cmm.lib.TB_HEADER_MOTO_MEC
 interface HeaderMotoMecDao {
 
     @Insert
-    suspend fun insert(model: HeaderMotoMecRoomModel)
+    suspend fun insert(model: HeaderMotoMecRoomModel): Long
 
     @Update
     suspend fun update(model: HeaderMotoMecRoomModel)

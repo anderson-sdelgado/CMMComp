@@ -2342,4 +2342,50 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `setNroEquipTranshipmentNote - Check return failure if have error in ItemMotoMecDatasource setNroEquipTranshipment`() =
+        runTest {
+            whenever(
+                itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(200)
+            ).thenReturn(
+                resultFailure(
+                    "IItemMotoMecDatasource.setNroEquipTranshipment",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setNroEquipTranshipmentNote(200)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.setNroEquipTranshipmentNote -> IItemMotoMecDatasource.setNroEquipTranshipment"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setNroEquipTranshipmentNote - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(200)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.setNroEquipTranshipmentNote(200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

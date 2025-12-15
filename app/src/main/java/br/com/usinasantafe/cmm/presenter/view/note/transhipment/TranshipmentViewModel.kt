@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroEquipTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -68,7 +68,7 @@ class TranshipmentViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
     private val updateTableEquip: UpdateTableEquip,
     private val hasEquipSecondary: HasEquipSecondary,
-    private val setNroTranshipment: SetNroTranshipment,
+    private val setNroEquipTranshipment: SetNroEquipTranshipment,
 ) : ViewModel() {
 
     private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
@@ -116,7 +116,7 @@ class TranshipmentViewModel @Inject constructor(
                     handleFailure("Field Empty!", Errors.FIELD_EMPTY)
                     return
                 }
-                setNroTranshipment()
+                setNroEquipTranshipment()
             }
 
             TypeButton.UPDATE -> {
@@ -129,7 +129,7 @@ class TranshipmentViewModel @Inject constructor(
         }
     }
 
-    private fun setNroTranshipment() = viewModelScope.launch {
+    private fun setNroEquipTranshipment() = viewModelScope.launch {
         val resultHas = hasEquipSecondary(
             nroEquip =  uiState.value.nroEquip,
             typeEquip = TypeEquipSecondary.TRANSHIPMENT
@@ -140,8 +140,8 @@ class TranshipmentViewModel @Inject constructor(
         }
         val check = resultHas.getOrNull()!!
         if (check) {
-            val resultSet = setNroTranshipment(
-                nroTranshipment = uiState.value.nroEquip,
+            val resultSet = setNroEquipTranshipment(
+                nroEquipTranshipment = uiState.value.nroEquip,
                 flowApp = uiState.value.flowApp
             )
             resultSet.onFailure {

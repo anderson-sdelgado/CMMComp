@@ -27,6 +27,13 @@ class IFlowAppOpen @Inject constructor(
             }
             val checkMotoMecOpen = resultCheckMotoMecOpen.getOrNull()!!
             if(!checkMotoMecOpen) return Result.success(FlowApp.HEADER_INITIAL)
+            val resultRefresh = motoMecRepository.refreshHeaderOpen()
+            resultRefresh.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             val resultCheckCheckListOpen = checkListRepository.checkOpen()
             resultCheckCheckListOpen.onFailure {
                 return resultFailure(

@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquipMain
 
 interface MotoMecRepository {
+    suspend fun refreshHeaderOpen(): Result<Boolean>
     suspend fun setRegOperatorHeader(regOperator: Int): Result<Boolean>
     suspend fun setDataEquipHeader(
         idEquip: Int,
@@ -29,7 +30,7 @@ interface MotoMecRepository {
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
     suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
     suspend fun setIdActivityNote(id: Int): Result<Boolean>
-    suspend fun setNroTranshipmentNote(nroTranshipment: Long): Result<Boolean>
+    suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): Result<Boolean>
     suspend fun saveNote(
         idHeader: Int
     ): Result<Boolean>

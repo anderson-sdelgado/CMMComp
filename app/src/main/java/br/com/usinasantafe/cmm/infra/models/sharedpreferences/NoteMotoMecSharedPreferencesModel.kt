@@ -6,6 +6,7 @@ data class NoteMotoMecSharedPreferencesModel(
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var idStop: Int? = null,
+    var nroEquipTranshipment: Long? = null,
     var statusCon: Boolean? = null,
 )
 
@@ -15,6 +16,7 @@ fun NoteMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): ItemMoto
             nroOS = nroOS,
             idActivity = idActivity,
             idStop = idStop,
+            nroEquipTranshipment = nroEquipTranshipment,
             statusCon = statusCon
         )
     }
@@ -26,6 +28,7 @@ fun ItemMotoMec.entityToSharedPreferencesModel(): NoteMotoMecSharedPreferencesMo
             nroOS = nroOS,
             idActivity = idActivity,
             idStop = idStop,
+            nroEquipTranshipment = nroEquipTranshipment,
             statusCon = statusCon
         )
     }

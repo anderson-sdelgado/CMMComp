@@ -14,7 +14,7 @@ interface EquipRepository {
     suspend fun getIdEquipMain(): Result<Int>
     suspend fun getNroEquipMain(): Result<Long>
     suspend fun getDescrByIdEquip(
-        idEquip: Int?
+        idEquip: Int
     ): Result<String>
     suspend fun getCodTurnEquip(): Result<Int>
     suspend fun getHourMeter(

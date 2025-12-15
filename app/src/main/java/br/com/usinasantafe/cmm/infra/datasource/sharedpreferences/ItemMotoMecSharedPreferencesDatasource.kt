@@ -13,4 +13,5 @@ interface ItemMotoMecSharedPreferencesDatasource {
     suspend fun getIdActivity(): Result<Int>
     suspend fun setIdStop(id: Int): Result<Boolean>
     suspend fun clean(): Result<Boolean>
+    suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): Result<Boolean>
 }

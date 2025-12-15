@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroEquipTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -13,13 +13,11 @@ import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -35,7 +33,7 @@ class TranshipmentViewModelTest {
 
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val hasEquipSecondary = mock<HasEquipSecondary>()
-    private val setNroTranshipment = mock<SetNroTranshipment>()
+    private val setNroEquipTranshipment = mock<SetNroEquipTranshipment>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -46,7 +44,7 @@ class TranshipmentViewModelTest {
         savedStateHandle,
         updateTableEquip = updateTableEquip,
         hasEquipSecondary = hasEquipSecondary,
-        setNroTranshipment = setNroTranshipment
+        setNroEquipTranshipment = setNroEquipTranshipment
     )
 
     @Test
@@ -383,7 +381,7 @@ class TranshipmentViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroTranshipment(
+                setNroEquipTranshipment(
                     nroTranshipment = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )
@@ -441,7 +439,7 @@ class TranshipmentViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroTranshipment(
+                setNroEquipTranshipment(
                     nroTranshipment = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )

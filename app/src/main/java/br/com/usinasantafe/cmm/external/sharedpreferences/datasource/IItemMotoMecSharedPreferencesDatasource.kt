@@ -176,4 +176,31 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
             )
         }
     }
+
+    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): Result<Boolean> {
+        try {
+            val resultGet = get()
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            model.nroEquipTranshipment = nroEquipTranshipment
+            val resultSave = save(model)
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 }

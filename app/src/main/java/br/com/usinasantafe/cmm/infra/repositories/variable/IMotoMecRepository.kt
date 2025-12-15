@@ -12,6 +12,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedP
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
+import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquipMain
@@ -26,6 +27,31 @@ class IMotoMecRepository @Inject constructor(
     private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
+    override suspend fun refreshHeaderOpen(): Result<Boolean> {
+        try {
+            val resultGetOpen = headerMotoMecRoomDatasource.getOpen()
+            resultGetOpen.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = resultGetOpen.getOrNull()!!
+            val resultSave = headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences())
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return resultSave
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 
     override suspend fun setRegOperatorHeader(regOperator: Int): Result<Boolean> {
         val resultClean = headerMotoMecSharedPreferencesDatasource.clean()
@@ -158,6 +184,14 @@ class IMotoMecRepository @Inject constructor(
                     cause = it
                 )
             }
+            val id = resultAdd.getOrNull()!!
+            val resulSetId = headerMotoMecSharedPreferencesDatasource.setId(id.toInt())
+            resulSetId.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
             return Result.success(true)
         } catch (e: Exception){
             return resultFailure(
@@ -179,7 +213,7 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun getIdByHeaderOpen(): Result<Int> {
-        val result = headerMotoMecRoomDatasource.getId()
+        val result = headerMotoMecSharedPreferencesDatasource.getId()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -275,7 +309,7 @@ class IMotoMecRepository @Inject constructor(
                     cause = it
                 )
             }
-            val resultGetStatusCon = headerMotoMecRoomDatasource.getStatusCon()
+            val resultGetStatusCon = headerMotoMecSharedPreferencesDatasource.getStatusCon()
             resultGetStatusCon.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -313,8 +347,15 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun setNroTranshipmentNote(nroTranshipment: Long): Result<Boolean> {
-        TODO("Not yet implemented")
+    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): Result<Boolean> {
+        val result = itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquipTranshipment)
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
     }
 
     override suspend fun saveNote(idHeader: Int): Result<Boolean> {

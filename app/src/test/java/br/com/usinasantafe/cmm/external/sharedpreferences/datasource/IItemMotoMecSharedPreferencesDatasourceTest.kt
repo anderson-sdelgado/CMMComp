@@ -10,11 +10,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.intArrayOf
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class INoteMotoMecSharedPreferencesDatasourceTest {
+class IItemMotoMecSharedPreferencesDatasourceTest {
 
     private lateinit var context : Context
     private lateinit var sharedPreferences: SharedPreferences
@@ -220,7 +221,39 @@ class INoteMotoMecSharedPreferencesDatasourceTest {
                 NoteMotoMecSharedPreferencesModel()
             )
         }
+
+    @Test
+    fun `setNroEquipTranshipment - Check alter data correct`() =
+        runTest {
+            val data = NoteMotoMecSharedPreferencesModel(
+                nroEquipTranshipment = 100
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.nroEquipTranshipment,
+                100
+            )
+            val result = datasource.setNroEquipTranshipment(200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.nroEquipTranshipment,
+                200
+            )
+        }
+
 }
-
-
-

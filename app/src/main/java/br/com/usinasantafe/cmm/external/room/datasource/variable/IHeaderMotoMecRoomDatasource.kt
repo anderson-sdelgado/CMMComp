@@ -17,10 +17,22 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun save(
         headerMotoMecRoomModel: HeaderMotoMecRoomModel
-    ): Result<Boolean> {
+    ): Result<Long> {
         try {
-            headerMotoMecDao.insert(headerMotoMecRoomModel)
-            return Result.success(true)
+            val id = headerMotoMecDao.insert(headerMotoMecRoomModel)
+            return Result.success(id)
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getOpen(): Result<HeaderMotoMecRoomModel> {
+        try {
+            val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            return Result.success(roomModel)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

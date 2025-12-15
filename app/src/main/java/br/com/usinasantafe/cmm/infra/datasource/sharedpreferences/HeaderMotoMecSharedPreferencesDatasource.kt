@@ -20,4 +20,7 @@ interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun clean(): Result<Boolean>
     suspend fun setStatusCon(status: Boolean): Result<Boolean>
     suspend fun getIdActivity(): Result<Int>
+    suspend fun getStatusCon(): Result<Boolean>
+    suspend fun getId(): Result<Int>
+    suspend fun setId(id: Int): Result<Boolean>
 }

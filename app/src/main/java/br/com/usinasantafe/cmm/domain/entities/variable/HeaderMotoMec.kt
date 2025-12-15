@@ -12,6 +12,6 @@ data class HeaderMotoMec(
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var hourMeter: Double? = null,
-    var statusCon: Boolean = true,
+    var statusCon: Boolean? = null,
     var flowComposting: FlowComposting? = null
 )

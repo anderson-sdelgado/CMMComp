@@ -323,4 +323,70 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
+    override suspend fun getStatusCon(): Result<Boolean> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.statusCon!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getId(): Result<Int> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = result.getOrNull()!!
+            return Result.success(model.id!!)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setId(id: Int): Result<Boolean> {
+        try {
+            val resultGet = get()
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            model.id = id
+            val resultSave = save(model)
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+
 }

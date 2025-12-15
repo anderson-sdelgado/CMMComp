@@ -114,7 +114,7 @@ class IEquipRepository @Inject constructor(
     }
 
     override suspend fun getDescrByIdEquip(
-        idEquip: Int?
+        idEquip: Int
     ): Result<String> {
         val resultGetId = equipSharedPreferencesDatasource.getId()
         resultGetId.onFailure {
@@ -124,7 +124,7 @@ class IEquipRepository @Inject constructor(
             )
         }
         val idEquipSharedPreferences = resultGetId.getOrNull()!!
-        if((idEquip == null) || (idEquip == idEquipSharedPreferences)) {
+        if(idEquip == idEquipSharedPreferences) {
             val result = equipSharedPreferencesDatasource.getDescr()
             result.onFailure {
                 return resultFailure(
