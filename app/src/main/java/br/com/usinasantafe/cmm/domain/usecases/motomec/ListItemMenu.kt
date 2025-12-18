@@ -23,7 +23,7 @@ import br.com.usinasantafe.cmm.lib.REEL
 import br.com.usinasantafe.cmm.lib.TIRE
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.appList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -123,7 +123,7 @@ class IListItemMenu @Inject constructor(
         list.add(typeListPMM.find { it.second == ITEM_NORMAL }!!)
 
         //PERFORMANCE, TRANSHIPMENT, IMPLEMENT, HOSE_COLLECTION
-        val resultTypeEquip = equipRepository.getTypeEquip()
+        val resultTypeEquip = equipRepository.getTypeEquipMain()
         resultTypeEquip.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -132,7 +132,7 @@ class IListItemMenu @Inject constructor(
         }
         val typeEquip = resultTypeEquip.getOrNull()!!
         when (typeEquip) {
-            TypeEquipMain.NORMAL -> {
+            TypeEquip.NORMAL -> {
                 val resultGetIdActivity = motoMecRepository.getIdActivityHeader()
                 resultGetIdActivity.onFailure {
                     return resultFailure(
@@ -158,7 +158,8 @@ class IListItemMenu @Inject constructor(
                     }
                 }
             }
-            TypeEquipMain.FERT -> list.add(typeListPMM.find { it.second == FERTIGATION }!!)
+            TypeEquip.REEL_FERT -> list.add(typeListPMM.find { it.second == FERTIGATION }!!)
+            else -> {}
         }
 
         //MECHANICAL

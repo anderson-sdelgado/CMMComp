@@ -27,8 +27,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.dataMenu
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -275,7 +274,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquipMain = TypeEquipMain.FERT
+                typeEquip = TypeEquip.REEL_FERT
             )
             registerSecPMM(2)
 
@@ -297,7 +296,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquipMain = TypeEquipMain.FERT,
+                typeEquip = TypeEquip.REEL_FERT,
                 idEquip = 10
             )
             registerSecPMM(2)
@@ -320,7 +319,7 @@ class MenuNoteScreenTest {
                 level = 6,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquipMain = TypeEquipMain.FERT,
+                typeEquip = TypeEquip.REEL_FERT,
                 idEquip = 10
             )
             registerSecPMM(3)
@@ -666,7 +665,7 @@ class MenuNoteScreenTest {
 
     private suspend fun registerPMM(
         level: Int,
-        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
+        typeEquip: TypeEquip = TypeEquip.NORMAL,
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         idEquip: Int = 20,
@@ -698,7 +697,7 @@ class MenuNoteScreenTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -716,7 +715,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    typeEquip = TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
                 )
             )
         )
@@ -858,7 +857,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    typeEquip = TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
                 ),
             )
         )
@@ -877,7 +876,7 @@ class MenuNoteScreenTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 flowComposting = flowComposting,
                 idTurn = 1,
                 nroOS = 123456,
@@ -926,7 +925,7 @@ class MenuNoteScreenTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    typeEquip = TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
                 ),
             )
         )

@@ -24,8 +24,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -413,7 +412,7 @@ class ItemCheckListScreenTest {
             HeaderMotoMecRoomModel(
                 regOperator = 123465,
                 idEquip = 10,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -451,7 +450,7 @@ class ItemCheckListScreenTest {
                     nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
-                    typeEquip = TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
                 )
             )
         )

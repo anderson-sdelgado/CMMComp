@@ -20,7 +20,6 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
@@ -29,7 +28,7 @@ import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.Status
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.lib.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -630,7 +629,7 @@ class HeaderInitialFlowTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 0,
-                typeEquip = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 100.0,
                 classify = 1,
                 flagMechanic = true,

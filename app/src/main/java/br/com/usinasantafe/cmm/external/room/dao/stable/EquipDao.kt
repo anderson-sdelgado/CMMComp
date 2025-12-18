@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Update
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.lib.TB_EQUIP
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 @Dao
 interface EquipDao {
@@ -29,7 +29,10 @@ interface EquipDao {
     @Query("SELECT COUNT(id) FROM $TB_EQUIP WHERE nro = :nro AND typeEquip = :typeEquip")
     suspend fun countByNroEquipAndTypeEquip(
         nro: Long,
-        typeEquip: TypeEquipSecondary
+        typeEquip: TypeEquip
     ): Int
+
+    @Query("SELECT * FROM $TB_EQUIP WHERE nro = :nro")
+    suspend fun getByNroEquip(nro: Long): EquipRoomModel
 
 }

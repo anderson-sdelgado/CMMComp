@@ -19,9 +19,6 @@ interface CommonModule {
     @Singleton
     fun bindFlowAppOpen(usecase: IFlowAppOpen): FlowAppOpen
 
-    @Binds
-    @Singleton
-    fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
 
     @Binds
     @Singleton

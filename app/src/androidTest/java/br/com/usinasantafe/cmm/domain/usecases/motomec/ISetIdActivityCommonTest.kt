@@ -6,9 +6,9 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecS
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -84,7 +84,7 @@ class ISetIdActivityCommonTest {
             val modelNoteAfter = resultNoteGetAfter.getOrNull()!!
             assertEquals(
                 modelNoteAfter,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
         }
 
@@ -133,7 +133,7 @@ class ISetIdActivityCommonTest {
             val modelNoteAfter = resultNoteGetAfter.getOrNull()!!
             assertEquals(
                 modelNoteAfter,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
         }
 
@@ -158,7 +158,7 @@ class ISetIdActivityCommonTest {
             val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
             assertEquals(
                 modelNoteBefore,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(
                 id = 1,
@@ -203,7 +203,7 @@ class ISetIdActivityCommonTest {
                 )
             )
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
             )
@@ -265,7 +265,7 @@ class ISetIdActivityCommonTest {
     fun check_return_failure_if_data_header_is_empty_note_work() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456
                 )
             )
@@ -309,7 +309,7 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -342,7 +342,7 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -351,7 +351,7 @@ class ISetIdActivityCommonTest {
                 )
             )
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456
                 )
             )
@@ -433,7 +433,7 @@ class ISetIdActivityCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -442,7 +442,7 @@ class ISetIdActivityCommonTest {
                 )
             )
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     idActivity = 1
                 )

@@ -5,12 +5,14 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckOpenCheckList
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -29,6 +31,8 @@ class HourMeterHeaderViewModelTest {
     private val checkHourMeter = mock<CheckHourMeter>()
     private val setHourMeter = mock<SetHourMeter>()
     private val checkOpenCheckList = mock<CheckOpenCheckList>()
+    private val getTypeEquip = mock<GetTypeEquip>()
+
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -39,7 +43,8 @@ class HourMeterHeaderViewModelTest {
         savedStateHandle,
         checkHourMeter = checkHourMeter,
         setHourMeter = setHourMeter,
-        checkOpenCheckList = checkOpenCheckList
+        checkOpenCheckList = checkOpenCheckList,
+        getTypeEquip = getTypeEquip
     )
     
     @Test
@@ -139,6 +144,54 @@ class HourMeterHeaderViewModelTest {
         }
 
     @Test
+    fun `setHourMeterHeader - Check return failure if have error in GetTypeEquip - FlowApp HEADER_INITIAL`() =
+        runTest {
+            whenever(
+                checkHourMeter("10.000,0")
+            ).thenReturn(
+                Result.success(
+                    CheckMeasureModel(
+                        measureBD = "5.0000,0",
+                        check = true
+                    )
+                )
+            )
+            whenever(
+                getTypeEquip()
+            ).thenReturn(
+                resultFailure(
+                    context = "IGetTypeEquip",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField("1", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("OK", TypeButton.OK)
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> HourMeterHeaderViewModel.setHourMeterHeader -> IGetTypeEquip -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+        }
+
+    @Test
     fun `setHourMeterHeader - Check return failure if have error in SetHourMeterInitial - FlowApp HEADER_INITIAL`() =
         runTest {
             whenever(
@@ -152,7 +205,15 @@ class HourMeterHeaderViewModelTest {
                 )
             )
             whenever(
-                setHourMeter(hourMeter = "10.000,0")
+                getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.REEL_FERT)
+            )
+            whenever(
+                setHourMeter(
+                    hourMeter = "10.000,0",
+                    flowApp = FlowApp.REEL_FERT
+                )
             ).thenReturn(
                 resultFailure(
                     context = "ISetHourMeter",
@@ -184,6 +245,58 @@ class HourMeterHeaderViewModelTest {
                 viewModel.uiState.value.flagAccess,
                 false
             )
+            assertEquals(
+                viewModel.uiState.value.flowApp,
+                FlowApp.REEL_FERT
+            )
+        }
+
+    @Test
+    fun `setHourMeterHeader - Check return correct if function execute successfully and TypeEquip is REEL_FERT - FlowApp HEADER_INITIAL`() =
+        runTest {
+            whenever(
+                checkHourMeter("10.000,0")
+            ).thenReturn(
+                Result.success(
+                    CheckMeasureModel(
+                        measureBD = "5.0000,0",
+                        check = true
+                    )
+                )
+            )
+            whenever(
+                getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.REEL_FERT)
+            )
+            whenever(
+                setHourMeter(
+                    hourMeter = "10.000,0",
+                    flowApp = FlowApp.REEL_FERT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField("1", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("0", TypeButton.NUMERIC)
+            viewModel.setTextField("OK", TypeButton.OK)
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.flowApp,
+                FlowApp.REEL_FERT
+            )
         }
 
     @Test
@@ -198,6 +311,11 @@ class HourMeterHeaderViewModelTest {
                         check = true
                     )
                 )
+            )
+            whenever(
+                getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 setHourMeter("10.000,0")
@@ -253,6 +371,11 @@ class HourMeterHeaderViewModelTest {
                 )
             )
             whenever(
+                getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.NORMAL)
+            )
+            whenever(
                 setHourMeter("10.000,0")
             ).thenReturn(
                 Result.success(true)
@@ -296,6 +419,11 @@ class HourMeterHeaderViewModelTest {
                         check = true
                     )
                 )
+            )
+            whenever(
+                getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 setHourMeter("10.000,0")
@@ -428,6 +556,10 @@ class HourMeterHeaderViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
+            )
+            assertEquals(
+                viewModel.uiState.value.flowApp,
+                FlowApp.HEADER_FINISH
             )
         }
 

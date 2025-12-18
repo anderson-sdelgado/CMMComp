@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
@@ -12,6 +13,7 @@ import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -66,6 +68,7 @@ class ActivityListCommonViewModel @Inject constructor(
     private val listActivity: ListActivity,
     private val updateTableActivity: UpdateTableActivity,
     private val setIdActivityCommon: SetIdActivityCommon,
+    private val getTypeEquip: GetTypeEquip
 ) : ViewModel() {
 
     private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
@@ -114,7 +117,30 @@ class ActivityListCommonViewModel @Inject constructor(
         if(!check) {
             _uiState.update {
                 it.copy(
-                    flowApp = FlowApp.TRANSHIPMENT
+                    flowApp = FlowApp.TRANSHIPMENT,
+                    flagAccess = true
+                )
+            }
+            return@launch
+        }
+        if(uiState.value.flowApp == FlowApp.HEADER_INITIAL){
+            _uiState.update {
+                it.copy(
+                    flagAccess = true
+                )
+            }
+            return@launch
+        }
+        val resultGetType = getTypeEquip()
+        resultGetType.onFailure {
+            handleFailure(it)
+            return@launch
+        }
+        val typeEquip = resultGetType.getOrNull()!!
+        if(typeEquip == TypeEquip.REEL_FERT) {
+            _uiState.update {
+                it.copy(
+                    flowApp = FlowApp.REEL_FERT
                 )
             }
         }

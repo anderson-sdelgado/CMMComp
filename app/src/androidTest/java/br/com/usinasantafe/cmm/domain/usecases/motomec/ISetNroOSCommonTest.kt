@@ -5,9 +5,9 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecS
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -135,7 +135,7 @@ class ISetNroOSCommonTest {
             val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
             assertEquals(
                 modelNoteBefore,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(
                 nroOS = "123456",
@@ -162,7 +162,7 @@ class ISetNroOSCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -189,7 +189,7 @@ class ISetNroOSCommonTest {
             val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
             assertEquals(
                 modelNoteBefore,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(
                 nroOS = "123456",
@@ -236,7 +236,7 @@ class ISetNroOSCommonTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -262,7 +262,7 @@ class ISetNroOSCommonTest {
                 123456
             )
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     statusCon = true
                 )

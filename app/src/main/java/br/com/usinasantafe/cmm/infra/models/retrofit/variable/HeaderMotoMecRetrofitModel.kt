@@ -20,6 +20,7 @@ data class HeaderMotoMecRetrofitModelOutput(
     var number: Long,
     var status: Int,
     var statusCon: Int,
+    var idEquipMotorPump: Int? = null,
     var noteMotoMecList: List<NoteMotoMecRetrofitModelOutput>
 )
 
@@ -38,7 +39,7 @@ fun HeaderMotoMecRoomModel.roomModelToRetrofitModel(
             id = this.id!!,
             regOperator = this.regOperator,
             idEquip = this.idEquip,
-            typeEquip = this.typeEquipMain.ordinal + 1,
+            typeEquip = this.typeEquip.ordinal + 1,
             idTurn = this.idTurn,
             nroOS = this.nroOS,
             idActivity = this.idActivity,
@@ -57,6 +58,7 @@ fun HeaderMotoMecRoomModel.roomModelToRetrofitModel(
             status = this.status.ordinal + 1,
             statusCon = if (this.statusCon) 1 else 0,
             number = number,
+            idEquipMotorPump = this.idEquipMotorPump,
             noteMotoMecList = noteMotoMecList
         )
     }

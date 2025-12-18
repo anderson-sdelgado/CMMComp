@@ -33,10 +33,10 @@ class ISetHourMeter @Inject constructor(
             val formatNumber = NumberFormat.getInstance(locale)
             val hourMeterInput = formatNumber.parse(hourMeter)!!
             val hourMeterInputDouble = hourMeterInput.toDouble()
-            val resultSetHourMeter = if(flowApp == FlowApp.HEADER_INITIAL) {
-                motoMecRepository.setHourMeterInitialHeader(hourMeterInputDouble)
-            } else {
+            val resultSetHourMeter = if(flowApp == FlowApp.HEADER_FINISH) {
                 motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble)
+            } else {
+                motoMecRepository.setHourMeterInitialHeader(hourMeterInputDouble)
             }
             resultSetHourMeter.onFailure {
                 return resultFailure(
@@ -53,14 +53,15 @@ class ISetHourMeter @Inject constructor(
                     cause = it
                 )
             }
+            if(flowApp == FlowApp.REEL_FERT) return Result.success(true)
             if(flowApp == FlowApp.HEADER_INITIAL) {
                 val resultSaveHeader = motoMecRepository.saveHeader()
                 resultSaveHeader.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
                 startWorkManager()
                 return resultSaveHeader
             }

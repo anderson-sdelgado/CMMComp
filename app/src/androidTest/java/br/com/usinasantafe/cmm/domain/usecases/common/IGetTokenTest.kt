@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.token
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -102,7 +102,7 @@ class IGetTokenTest {
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquip = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
                     flagMechanic = true,

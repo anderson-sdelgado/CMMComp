@@ -1,11 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetDescrEquip
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -26,7 +26,6 @@ class IGetDescrEquipTest {
 
     @Inject
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
-
 
     @Inject
     lateinit var equipDao: EquipDao
@@ -94,7 +93,7 @@ class IGetDescrEquipTest {
                         nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     )
                 )
             )

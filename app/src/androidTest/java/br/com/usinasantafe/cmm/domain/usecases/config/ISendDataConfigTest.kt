@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -77,7 +77,7 @@ class ISendDataConfigTest {
                         descrClass = "CAVALO CANAVIEIRO",
                         codTurnEquip = 22,
                         idCheckList = 3522,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 0.0,
                         classify = 1,
                         flagMechanic = false,

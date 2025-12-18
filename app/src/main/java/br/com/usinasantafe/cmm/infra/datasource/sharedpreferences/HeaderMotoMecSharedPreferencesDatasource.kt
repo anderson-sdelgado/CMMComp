@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel>
@@ -9,8 +9,9 @@ interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun setRegOperator(regOperator: Int): Result<Boolean>
     suspend fun setDataEquip(
         idEquip: Int,
-        typeEquipMain: TypeEquipMain
+        typeEquip: TypeEquip
     ): Result<Boolean>
+    suspend fun getTypeEquip(): Result<TypeEquip>
     suspend fun setIdTurn(idTurn: Int): Result<Boolean>
     suspend fun setNroOS(nroOS: Int): Result<Boolean>
     suspend fun setIdActivity(idActivity: Int): Result<Boolean>
@@ -23,4 +24,5 @@ interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun getStatusCon(): Result<Boolean>
     suspend fun getId(): Result<Int>
     suspend fun setId(id: Int): Result<Boolean>
+    suspend fun setIdEquipMotorPump(idEquip: Int): Result<Boolean>
 }

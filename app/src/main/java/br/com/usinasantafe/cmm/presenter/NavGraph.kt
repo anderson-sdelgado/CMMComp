@@ -189,7 +189,8 @@ fun NavigationGraph(
                     navActions.navigateToTranshipment(
                         flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
                     )
-                }
+                },
+                onNavNozzleList = {}
             )
         }
 

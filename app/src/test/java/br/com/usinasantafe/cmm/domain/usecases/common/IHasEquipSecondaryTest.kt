@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
@@ -21,7 +21,7 @@ class IHasEquipSecondaryTest {
         runTest {
             val result = usecase(
                 nroEquip = "2200aL",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isFailure,
@@ -43,7 +43,7 @@ class IHasEquipSecondaryTest {
             whenever(
                 equipRepository.hasEquipSecondary(
                     nroEquip = 2200,
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 resultFailure(
@@ -54,7 +54,7 @@ class IHasEquipSecondaryTest {
             )
             val result = usecase(
                 nroEquip = "2200",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isFailure,
@@ -76,14 +76,14 @@ class IHasEquipSecondaryTest {
             whenever(
                 equipRepository.hasEquipSecondary(
                     nroEquip = 2200,
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             val result = usecase(
                 nroEquip = "2200",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,

@@ -3,17 +3,12 @@ package br.com.usinasantafe.cmm.domain.usecases.checkList
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.Date
 import javax.inject.Inject
 import kotlin.test.assertEquals
 

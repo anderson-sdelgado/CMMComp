@@ -49,6 +49,7 @@ const val TB_ITEM_RESP_CHECK_LIST = "tb_item_resp_check_list"
 const val TB_MECHANIC = "tb_mechanic"
 const val TB_INPUT_COMPOSTING = "tb_input_composting"
 const val TB_COMPOUND_COMPOSTING = "tb_compound_composting"
+const val TB_PERFORMANCE = "tb_performance"
 
 const val WEB_ALL_ACTIVITY = "activity.php"
 const val WEB_ALL_BOCAL = "bocal.php"

@@ -5,13 +5,13 @@ import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipSecondaryRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipMainRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -185,7 +185,7 @@ class IConfigRepositoryTest {
             )
             val retrofitModelInput = ConfigRetrofitModelInput(
                 idServ = 1,
-                equip = EquipSecondaryRetrofitModel(
+                equip = EquipMainRetrofitModel(
                     id = 10,
                     nro = 2200,
                     codClass = 1,
@@ -228,7 +228,7 @@ class IConfigRepositoryTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = false,

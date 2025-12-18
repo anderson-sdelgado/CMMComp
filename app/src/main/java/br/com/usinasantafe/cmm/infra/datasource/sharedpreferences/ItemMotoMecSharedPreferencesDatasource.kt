@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 
 interface ItemMotoMecSharedPreferencesDatasource {
-    suspend fun get(): Result<NoteMotoMecSharedPreferencesModel>
-    suspend fun save(model: NoteMotoMecSharedPreferencesModel): Result<Boolean>
+    suspend fun get(): Result<ItemMotoMecSharedPreferencesModel>
+    suspend fun save(model: ItemMotoMecSharedPreferencesModel): Result<Boolean>
     suspend fun setNroOSAndStatusCon(
         nroOS: Int,
         statusCon: Boolean

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -23,7 +23,7 @@ class ISetIdEquipTest {
     fun `Check return failure if have error in EquipRepository getTypeByIdEquip`() =
         runTest {
             whenever(
-                equipRepository.getTypeEquip()
+                equipRepository.getTypeEquipMain()
             ).thenReturn(
                 resultFailure(
                     "EquipRepository.getTypeByIdEquip",
@@ -50,14 +50,14 @@ class ISetIdEquipTest {
     fun `Check return failure if have error in HeaderMotoMecRepository setIdEquip`() =
         runTest {
             whenever(
-                equipRepository.getTypeEquip()
+                equipRepository.getTypeEquipMain()
             ).thenReturn(
-                Result.success(TypeEquipMain.NORMAL)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL
+                    typeEquip = TypeEquip.NORMAL
                 )
             ).thenReturn(
                 resultFailure(
@@ -85,14 +85,14 @@ class ISetIdEquipTest {
     fun `Check return correct if function execute successfully and typeEquip is 1`() =
         runTest {
             whenever(
-                equipRepository.getTypeEquip()
+                equipRepository.getTypeEquipMain()
             ).thenReturn(
-                Result.success(TypeEquipMain.NORMAL)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL
+                    typeEquip = TypeEquip.NORMAL
                 )
             ).thenReturn(
                 Result.success(true)
@@ -112,14 +112,14 @@ class ISetIdEquipTest {
     fun `Check return correct if function execute successfully and typeEquip is 3`() =
         runTest {
             whenever(
-                equipRepository.getTypeEquip()
+                equipRepository.getTypeEquipMain()
             ).thenReturn(
-                Result.success(TypeEquipMain.NORMAL)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 motoMecRepository.setDataEquipHeader(
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.FERT
+                    typeEquip = TypeEquip.REEL_FERT
                 )
             ).thenReturn(
                 Result.success(true)

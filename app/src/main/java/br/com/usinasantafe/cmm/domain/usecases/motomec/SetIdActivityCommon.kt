@@ -52,8 +52,18 @@ class ISetIdActivityCommon @Inject constructor(
                 )
             }
             val functionActivityList = resultListFunctionActivity.getOrNull()!!
-            val ret = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
-            if(ret) return Result.success(false)
+            val checkTranshipment = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
+            if(checkTranshipment) return Result.success(false)
+            val checkPerformance = functionActivityList.any { it.typeActivity == TypeActivity.PERFORMANCE }
+            if(checkPerformance){
+                val result = motoMecRepository.insertInitialPerformance()
+                result.onFailure {
+                    return resultFailure(
+                        context = getClassAndMethod(),
+                        cause = it
+                    )
+                }
+            }
             val resultGetId = motoMecRepository.getIdByHeaderOpen()
             resultGetId.onFailure {
                 return resultFailure(

@@ -28,7 +28,7 @@ import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TE
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.WEB_ALL_ACTIVITY
 import br.com.usinasantafe.cmm.lib.WEB_ALL_COLAB
@@ -464,7 +464,7 @@ class ConfigFlowTest {
         )
         assertEquals(
             equip.typeEquip,
-            TypeEquipMain.NORMAL
+            TypeEquip.NORMAL
         )
         assertEquals(
             equip.idCheckList,

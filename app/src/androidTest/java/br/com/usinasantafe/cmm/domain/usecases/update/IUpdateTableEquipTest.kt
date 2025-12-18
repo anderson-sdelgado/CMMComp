@@ -9,8 +9,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -291,7 +290,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 roomModel.typeEquip,
-                TypeEquipSecondary.REEL
+                TypeEquip.REEL_FERT
             )
         }
 
@@ -320,7 +319,7 @@ class IUpdateTableEquipTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,

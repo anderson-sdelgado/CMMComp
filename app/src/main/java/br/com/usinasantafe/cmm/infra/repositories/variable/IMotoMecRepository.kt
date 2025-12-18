@@ -15,7 +15,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.lib.FlowComposting
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -73,12 +73,23 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun setDataEquipHeader(
         idEquip: Int,
-        typeEquipMain: TypeEquipMain
+        typeEquip: TypeEquip
     ): Result<Boolean> {
         val result = headerMotoMecSharedPreferencesDatasource.setDataEquip(
             idEquip = idEquip,
-            typeEquipMain = typeEquipMain
+            typeEquip = typeEquip
         )
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+        return result
+    }
+
+    override suspend fun getTypeEquipHeader(): Result<TypeEquip> {
+        val result = headerMotoMecSharedPreferencesDatasource.getTypeEquip()
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -225,6 +236,17 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean> {
         val result = headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter)
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+        return result
+    }
+
+    override suspend fun setIdEquipMotorPumpHeader(idEquip: Int): Result<Boolean> {
+        val result = headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(idEquip)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -572,5 +594,23 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
+    override suspend fun insertInitialPerformance(): Result<Boolean> {
+        try {
+            val resultHeaderSharedPreferences = headerMotoMecSharedPreferencesDatasource.get()
+            resultHeaderSharedPreferences.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val headerModel = resultHeaderSharedPreferences.getOrNull()!!
+
+        } catch (e: Exception) {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
 
 }

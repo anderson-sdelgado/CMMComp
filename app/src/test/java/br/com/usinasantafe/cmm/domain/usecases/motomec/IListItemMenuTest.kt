@@ -21,7 +21,7 @@ import br.com.usinasantafe.cmm.lib.REEL
 import br.com.usinasantafe.cmm.lib.TIRE
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.appList
@@ -126,7 +126,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(2)
             whenever(
-                equipRepository.getTypeEquip()
+                equipRepository.getTypeEquipMain()
             ).thenReturn(
                 resultFailure(
                     "IEquipRepository.getTypeEquipByIdEquip",
@@ -568,7 +568,7 @@ class IListItemMenuTest {
                 flagMechanic = true,
                 flagTire = true,
                 flagReel = true,
-                typeEquipMain = TypeEquipMain.FERT
+                typeEquip = TypeEquip.REEL_FERT
             )
 
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -860,7 +860,7 @@ class IListItemMenuTest {
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         flagReel: Boolean = false,
-        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
+        typeEquip: TypeEquip = TypeEquip.NORMAL,
         list: List<FunctionActivity> = emptyList(),
     ) {
 
@@ -881,9 +881,9 @@ class IListItemMenuTest {
         if(level == 2) return
 
         whenever(
-            equipRepository.getTypeEquip()
+            equipRepository.getTypeEquipMain()
         ).thenReturn(
-            Result.success(typeEquipMain)
+            Result.success(typeEquip)
         )
 
         if(level == 3) return

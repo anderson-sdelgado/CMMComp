@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class EquipSharedPreferencesModel(
     val id: Int,
@@ -10,7 +10,7 @@ data class EquipSharedPreferencesModel(
     val descrClass: String,
     val codTurnEquip: Int,
     val idCheckList: Int,
-    val typeEquip: TypeEquipMain,
+    val typeEquip: TypeEquip,
     var hourMeter: Double,
     val classify: Int,
     val flagMechanic: Boolean,
@@ -26,7 +26,7 @@ fun EquipSharedPreferencesModel.sharedPreferencesModelToEntity(): Equip {
             descrClass = descrClass,
             codTurnEquip = codTurnEquip,
             idCheckList = idCheckList,
-            typeEquipMain = typeEquip,
+            typeEquip = typeEquip,
             hourMeter = hourMeter,
             classify = classify,
             flagMechanic = flagMechanic,
@@ -44,7 +44,7 @@ fun Equip.entityToSharedPreferencesModel(): EquipSharedPreferencesModel {
             descrClass = descrClass,
             codTurnEquip = codTurnEquip!!,
             idCheckList = idCheckList!!,
-            typeEquip = typeEquipMain!!,
+            typeEquip = typeEquip!!,
             hourMeter = hourMeter!!,
             classify = classify!!,
             flagMechanic = flagMechanic!!,

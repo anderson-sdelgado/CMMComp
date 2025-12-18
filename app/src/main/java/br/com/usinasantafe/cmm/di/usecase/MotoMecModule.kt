@@ -119,4 +119,15 @@ interface MotoMecModule {
     @Singleton
     fun bindSetNroTranshipment(usecase: ISetNroEquipTranshipment): SetNroEquipTranshipment
 
+    @Binds
+    @Singleton
+    fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
+
+    @Binds
+    @Singleton
+    fun bindGetTypeEquip(usecase: IGetTypeEquip): GetTypeEquip
+
+    @Binds
+    @Singleton
+    fun bindSetIdEquipMotorPump(usecase: ISetIdEquipMotorPump): SetIdEquipMotorPump
 }

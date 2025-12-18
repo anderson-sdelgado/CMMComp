@@ -26,7 +26,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -296,7 +296,7 @@ class ConfigViewModelTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -320,7 +320,7 @@ class ConfigViewModelTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = true,
@@ -413,7 +413,7 @@ class ConfigViewModelTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -437,7 +437,7 @@ class ConfigViewModelTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = true,
@@ -1251,7 +1251,7 @@ class ConfigViewModelTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -1275,7 +1275,7 @@ class ConfigViewModelTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = true,
@@ -1390,7 +1390,7 @@ class ConfigViewModelTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -1414,7 +1414,7 @@ class ConfigViewModelTest {
                         descrClass = "TRATOR",
                         codTurnEquip = 1,
                         idCheckList = 1,
-                        typeEquipMain = TypeEquipMain.NORMAL,
+                        typeEquip = TypeEquip.NORMAL,
                         hourMeter = 5000.0,
                         classify = 1,
                         flagMechanic = true,

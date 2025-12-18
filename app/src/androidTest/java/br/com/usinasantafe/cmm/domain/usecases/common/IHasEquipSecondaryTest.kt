@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -34,7 +34,7 @@ class IHasEquipSecondaryTest {
     runTest {
         val result = usecase(
             nroEquip = "10",
-            typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            typeEquip = TypeEquip.TRANSHIPMENT
         )
         assertEquals(
             result.isSuccess,
@@ -56,13 +56,13 @@ class IHasEquipSecondaryTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )
             val result = usecase(
                 nroEquip = "10",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -84,20 +84,20 @@ class IHasEquipSecondaryTest {
                         nro = 2200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                        typeEquip = TypeEquip.TRANSHIPMENT
                     )
                 )
             )
             val result = usecase(
                 nroEquip = "10",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -119,20 +119,20 @@ class IHasEquipSecondaryTest {
                         nro = 2200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                        typeEquip = TypeEquip.TRANSHIPMENT
                     )
                 )
             )
             val result = usecase(
                 nroEquip = "200",
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,

@@ -2,10 +2,9 @@ package br.com.usinasantafe.cmm.infra.models.room.stable
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import br.com.usinasantafe.cmm.domain.entities.variable.Equip // Import da entidade de domínio Equip
-import br.com.usinasantafe.cmm.lib.TB_EQUIP // Import da constante do nome da tabela
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.TB_EQUIP
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 @Entity(tableName = TB_EQUIP)
 data class EquipRoomModel (
@@ -14,7 +13,7 @@ data class EquipRoomModel (
     val nro: Long,
     val codClass: Int,
     val descrClass: String,
-    val typeEquip: TypeEquipSecondary
+    val typeEquip: TypeEquip
 )
 
 fun EquipRoomModel.roomModelToEntity(): Equip {
@@ -24,7 +23,7 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
             nro = this.nro,
             codClass = this.codClass,
             descrClass = this.descrClass,
-            typeEquipSecondary = this.typeEquip
+            typeEquip = this.typeEquip
         )
     }
 }
@@ -36,7 +35,7 @@ fun Equip.entityEquipToRoomModel(): EquipRoomModel {
             nro = this.nro,
             codClass = this.codClass,
             descrClass = this.descrClass,
-            typeEquip = this.typeEquipSecondary!!
+            typeEquip = this.typeEquip!!
         )
     }
 }

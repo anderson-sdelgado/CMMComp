@@ -5,8 +5,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -97,7 +96,7 @@ class ISetIdEquipTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     ),
                 )
             )
@@ -112,7 +111,7 @@ class ISetIdEquipTest {
                 null
             )
             assertEquals(
-                modelBefore.typeEquipMain,
+                modelBefore.typeEquip,
                 null
             )
             val result = usecase()
@@ -135,8 +134,8 @@ class ISetIdEquipTest {
                 10
             )
             assertEquals(
-                modelAfter.typeEquipMain,
-                TypeEquipMain.NORMAL
+                modelAfter.typeEquip,
+                TypeEquip.NORMAL
             )
         }
 

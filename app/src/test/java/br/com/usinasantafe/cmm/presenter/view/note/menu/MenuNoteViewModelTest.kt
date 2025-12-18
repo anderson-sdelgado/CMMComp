@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.menu
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
-import br.com.usinasantafe.cmm.domain.usecases.common.GetDescrEquip
+import br.com.usinasantafe.cmm.domain.usecases.motomec.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting

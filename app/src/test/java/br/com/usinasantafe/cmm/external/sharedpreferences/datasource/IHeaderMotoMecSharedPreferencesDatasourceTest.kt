@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -71,7 +71,7 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
         runTest {
             val data = HeaderMotoMecSharedPreferencesModel(
                 idEquip = 100,
-                typeEquipMain = TypeEquipMain.NORMAL
+                typeEquip = TypeEquip.NORMAL
             )
             datasource.save(data)
             val resultGetBefore = datasource.get()
@@ -86,7 +86,7 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             )
             val result = datasource.setDataEquip(
                 idEquip = 200,
-                typeEquipMain = TypeEquipMain.FERT
+                typeEquip = TypeEquip.REEL_FERT
             )
             assertEquals(
                 result.isSuccess,
@@ -103,8 +103,8 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
                 200
             )
             assertEquals(
-                modelAfter.typeEquipMain,
-                TypeEquipMain.FERT
+                modelAfter.typeEquip,
+                TypeEquip.REEL_FERT
             )
         }
 
@@ -442,6 +442,40 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 1
+            )
+        }
+
+    @Test
+    fun `setIdEquipMotorPump - Check alter data correct`() =
+        runTest {
+            val data = HeaderMotoMecSharedPreferencesModel(
+                idEquipMotorPump = 10
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idEquipMotorPump,
+                10
+            )
+            val result = datasource.setIdEquipMotorPump(20)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.idEquipMotorPump,
+                20
             )
         }
 

@@ -4,8 +4,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -37,7 +36,7 @@ class IEquipRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun getDescrByIdEquip(id: Int): Result<String> {
+    override suspend fun getDescrById(id: Int): Result<String> {
         try {
             val model = equipDao.getByIdEquip(id)
             return Result.success("${model.nro} - ${model.descrClass}")
@@ -49,13 +48,25 @@ class IEquipRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun hasByNroEquipAndTypeEquip(
+    override suspend fun hasByNroAndType(
         nroEquip: Long,
-        typeEquip: TypeEquipSecondary
+        typeEquip: TypeEquip
     ): Result<Boolean> {
         try {
             val count = equipDao.countByNroEquipAndTypeEquip(nroEquip, typeEquip)
             return Result.success(count > 0)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getIdByNro(nro: Long): Result<Int> {
+        try {
+            val model = equipDao.getByNroEquip(nro)
+            return Result.success(model.id)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

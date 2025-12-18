@@ -1,19 +1,19 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
-import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class HeaderMotoMecSharedPreferencesModel(
     var id: Int? = null,
     var regOperator: Int? = null,
     var idEquip: Int? = null,
-    var typeEquipMain: TypeEquipMain? = null,
+    var typeEquip: TypeEquip? = null,
     var idTurn: Int? = null,
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var hourMeter: Double? = null,
-    var statusCon: Boolean? = null
+    var statusCon: Boolean? = null,
+    var idEquipMotorPump: Int? = null
 )
 
 fun HeaderMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): HeaderMotoMec {
@@ -22,12 +22,13 @@ fun HeaderMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): Header
             id = id,
             regOperator = regOperator,
             idEquip = idEquip,
-            typeEquipMain = typeEquipMain,
+            typeEquip = typeEquip,
             idTurn = idTurn,
             nroOS = nroOS,
             idActivity = idActivity,
             hourMeter = hourMeter,
-            statusCon = statusCon
+            statusCon = statusCon,
+            idEquipMotorPump = idEquipMotorPump
         )
     }
 }

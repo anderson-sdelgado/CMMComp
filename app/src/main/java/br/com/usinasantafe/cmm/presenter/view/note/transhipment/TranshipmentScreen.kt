@@ -95,7 +95,6 @@ fun TranshipmentContent(
                 id = R.string.text_title_transhipment
             )
         )
-
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
@@ -126,7 +125,7 @@ fun TranshipmentContent(
                 when (errors) {
                     Errors.FIELD_EMPTY -> stringResource(
                         id = R.string.text_field_empty,
-                        stringResource(id = R.string.text_title_operator)
+                        stringResource(id = R.string.text_title_transhipment)
                     )
                     Errors.UPDATE -> stringResource(
                         id = R.string.text_update_failure,
@@ -135,7 +134,7 @@ fun TranshipmentContent(
                     Errors.INVALID -> stringResource(
                         id = R.string.text_input_data_invalid,
                         stringResource(
-                            id = R.string.text_title_operator
+                            id = R.string.text_title_transhipment
                         )
                     )
                     else -> stringResource(

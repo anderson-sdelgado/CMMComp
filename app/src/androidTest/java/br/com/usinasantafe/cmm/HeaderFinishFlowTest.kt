@@ -22,8 +22,7 @@ import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.Status
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -229,7 +228,7 @@ class HeaderFinishFlowTest {
             HeaderMotoMecRoomModel(
                 regOperator = 19759,
                 idEquip = 10,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -258,7 +257,7 @@ class HeaderFinishFlowTest {
                     nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
-                    typeEquip = TypeEquipSecondary.REEL,
+                    typeEquip = TypeEquip.REEL_FERT,
                 )
             )
         )

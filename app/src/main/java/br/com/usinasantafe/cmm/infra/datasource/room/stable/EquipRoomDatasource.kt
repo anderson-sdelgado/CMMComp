@@ -1,16 +1,15 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.stable
 
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRoomDatasource {
     suspend fun addAll(list: List<EquipRoomModel>): Result<Boolean>
     suspend fun deleteAll(): Result<Boolean>
-    suspend fun getDescrByIdEquip(id: Int): Result<String>
-    suspend fun hasByNroEquipAndTypeEquip(
+    suspend fun getDescrById(id: Int): Result<String>
+    suspend fun hasByNroAndType(
         nroEquip: Long,
-        typeEquip: TypeEquipSecondary
+        typeEquip: TypeEquip
     ): Result<Boolean>
-
+    suspend fun getIdByNro(nro: Long): Result<Int>
 }

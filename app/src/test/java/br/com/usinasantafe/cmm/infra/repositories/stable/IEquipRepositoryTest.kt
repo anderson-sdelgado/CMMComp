@@ -5,11 +5,10 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipMainRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipSecondaryRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -36,7 +35,7 @@ class IEquipRepositoryTest {
                     nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             )
             val entityList = listOf(
@@ -45,7 +44,7 @@ class IEquipRepositoryTest {
                     nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
-                    typeEquipSecondary = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             )
             whenever(
@@ -81,7 +80,7 @@ class IEquipRepositoryTest {
                     nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             )
             val entityList = listOf(
@@ -90,7 +89,7 @@ class IEquipRepositoryTest {
                     nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
-                    typeEquipSecondary = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             )
             whenever(
@@ -190,7 +189,7 @@ class IEquipRepositoryTest {
     fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
-                EquipMainRetrofitModel(
+                EquipSecondaryRetrofitModel(
                     id = 1,
                     nro = 10,
                     codClass = 100,
@@ -204,7 +203,7 @@ class IEquipRepositoryTest {
                     nro = 10,
                     codClass = 100,
                     descrClass = "CAMINHAO",
-                    typeEquipSecondary = TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
 
                 )
             )
@@ -414,7 +413,7 @@ class IEquipRepositoryTest {
                 Result.success(10)
             )
             whenever(
-                equipRoomDatasource.getDescrByIdEquip(1)
+                equipRoomDatasource.getDescrById(1)
             ).thenReturn(
                 resultFailure(
                     "IEquipRoomDatasource.getDescrByIdEquip",
@@ -446,7 +445,7 @@ class IEquipRepositoryTest {
                 Result.success(10)
             )
             whenever(
-                equipRoomDatasource.getDescrByIdEquip(1)
+                equipRoomDatasource.getDescrById(1)
             ).thenReturn(
                 Result.success("TRATOR")
             )
@@ -596,7 +595,7 @@ class IEquipRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getTypeEquip()
+            val result = repository.getTypeEquipMain()
             assertEquals(
                 result.isFailure,
                 true
@@ -617,16 +616,16 @@ class IEquipRepositoryTest {
             whenever(
                 equipSharedPreferencesDatasource.getTypeEquip()
             ).thenReturn(
-                Result.success(TypeEquipMain.NORMAL)
+                Result.success(TypeEquip.NORMAL)
             )
-            val result = repository.getTypeEquip()
+            val result = repository.getTypeEquipMain()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                TypeEquipMain.NORMAL
+                TypeEquip.NORMAL
             )
         }
 
@@ -778,7 +777,7 @@ class IEquipRepositoryTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -791,7 +790,7 @@ class IEquipRepositoryTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -831,7 +830,7 @@ class IEquipRepositoryTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -844,7 +843,7 @@ class IEquipRepositoryTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,
@@ -870,9 +869,9 @@ class IEquipRepositoryTest {
     fun `hasEquipSecondary - Check return failure if have error in EquipRoomDatasource hasByNroEquipAndTypeEquip`() =
         runTest {
             whenever(
-                equipRoomDatasource.hasByNroEquipAndTypeEquip(
+                equipRoomDatasource.hasByNroAndType(
                     nroEquip = 2200L,
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 resultFailure(
@@ -883,7 +882,7 @@ class IEquipRepositoryTest {
             )
             val result = repository.hasEquipSecondary(
                 nroEquip = 2200L,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isFailure,
@@ -903,16 +902,16 @@ class IEquipRepositoryTest {
     fun `hasEquipSecondary - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                equipRoomDatasource.hasByNroEquipAndTypeEquip(
+                equipRoomDatasource.hasByNroAndType(
                     nroEquip = 2200L,
-                    typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                    typeEquip = TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             val result = repository.hasEquipSecondary(
                 nroEquip = 2200L,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -921,6 +920,52 @@ class IEquipRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `getIdByNro - Check return failure if have error in EquipRoomDatasource getIdByNro`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getIdByNro(200)
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRoomDatasource.getIdByNro",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdByNro(200)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.getIdByNro -> IEquipRoomDatasource.getIdByNro"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdByNro - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getIdByNro(2200)
+            ).thenReturn(
+                Result.success(20)
+            )
+            val result = repository.getIdByNro(2200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                20
             )
         }
 

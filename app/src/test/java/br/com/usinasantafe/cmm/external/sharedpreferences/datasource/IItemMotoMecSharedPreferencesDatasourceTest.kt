@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -31,7 +31,7 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
     @Test
     fun `setNroOS - Check alter data correct`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 nroOS = 123456,
                 statusCon = false
             )
@@ -77,7 +77,7 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
     @Test
     fun `setIdActivity - Check alter data correct`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 idActivity = 1,
             )
             datasource.save(data)
@@ -129,7 +129,7 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
     @Test
     fun `getIdActivity - Check return correct if function execute successfully`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 idActivity = 1
             )
             datasource.save(data)
@@ -147,7 +147,7 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
     @Test
     fun `setIdStop - Check alter data correct`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 idStop = 1
             )
             datasource.save(data)
@@ -181,7 +181,7 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
     @Test
     fun `clean - Check clean table`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 nroOS = 123456,
                 idActivity = 1,
                 idStop = 1
@@ -218,14 +218,14 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
             val modelAfter = resultGetAfter.getOrNull()!!
             assertEquals(
                 modelAfter,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
         }
 
     @Test
     fun `setNroEquipTranshipment - Check alter data correct`() =
         runTest {
-            val data = NoteMotoMecSharedPreferencesModel(
+            val data = ItemMotoMecSharedPreferencesModel(
                 nroEquipTranshipment = 100
             )
             datasource.save(data)

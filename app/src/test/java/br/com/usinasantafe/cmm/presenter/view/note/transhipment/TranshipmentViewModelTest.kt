@@ -10,7 +10,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.utils.percentage
@@ -287,7 +287,7 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquipSecondary.TRANSHIPMENT
+                    TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 resultFailure(
@@ -319,7 +319,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroTranshipment -> IHasEquipSecondary -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -337,7 +337,7 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquipSecondary.TRANSHIPMENT
+                    TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 Result.success(false)
@@ -375,14 +375,14 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquipSecondary.TRANSHIPMENT
+                    TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
                 setNroEquipTranshipment(
-                    nroTranshipment = "2200",
+                    nroEquipTranshipment = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(
@@ -415,7 +415,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroTranshipment -> ISetNroTranshipment -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> ISetNroTranshipment -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
@@ -433,14 +433,14 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquipSecondary.TRANSHIPMENT
+                    TypeEquip.TRANSHIPMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
                 setNroEquipTranshipment(
-                    nroTranshipment = "2200",
+                    nroEquipTranshipment = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(

@@ -12,7 +12,7 @@ import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.ECM
 import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -186,7 +186,7 @@ class ISetNoteMotoMecTest {
             HeaderMotoMecRoomModel(
                 regOperator = 19759,
                 idEquip = 10,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -250,8 +250,8 @@ class ISetNoteMotoMecTest {
             10
         )
         assertEquals(
-            headerRoomModel.typeEquipMain,
-            TypeEquipMain.NORMAL
+            headerRoomModel.typeEquip,
+            TypeEquip.NORMAL
         )
         assertEquals(
             headerRoomModel.idTurn,

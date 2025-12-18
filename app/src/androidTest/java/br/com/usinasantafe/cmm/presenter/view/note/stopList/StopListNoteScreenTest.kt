@@ -18,7 +18,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSha
 import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.WEB_ALL_R_ACTIVITY_STOP
@@ -411,7 +411,7 @@ class StopListNoteScreenTest {
     private suspend fun initialRegister(level: Int) {
 
         itemMotoMecSharedPreferencesDatasource.save(
-            NoteMotoMecSharedPreferencesModel(
+            ItemMotoMecSharedPreferencesModel(
                 idActivity = 1,
             )
         )

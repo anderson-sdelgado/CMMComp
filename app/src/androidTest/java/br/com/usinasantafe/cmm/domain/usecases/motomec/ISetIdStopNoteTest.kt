@@ -4,8 +4,8 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -49,7 +49,7 @@ class ISetIdStopNoteTest {
             val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
             assertEquals(
                 modelNoteBefore,
-                NoteMotoMecSharedPreferencesModel()
+                ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(1)
             assertEquals(
@@ -80,7 +80,7 @@ class ISetIdStopNoteTest {
     fun check_return_true_and_data_returned() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456,
                     idActivity = 1,
                     statusCon = false
@@ -90,7 +90,7 @@ class ISetIdStopNoteTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123465,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
@@ -14,7 +14,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ItemMotoMecSharedPreferencesDatasource {
 
-    override suspend fun get(): Result<NoteMotoMecSharedPreferencesModel> {
+    override suspend fun get(): Result<ItemMotoMecSharedPreferencesModel> {
         try {
             val noteMotoMec = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
@@ -22,12 +22,12 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
             )
             if(noteMotoMec.isNullOrEmpty())
                 return Result.success(
-                    NoteMotoMecSharedPreferencesModel()
+                    ItemMotoMecSharedPreferencesModel()
                 )
             return Result.success(
                 Gson().fromJson(
                     noteMotoMec,
-                    NoteMotoMecSharedPreferencesModel::class.java
+                    ItemMotoMecSharedPreferencesModel::class.java
                 )
             )
         } catch (e: Exception){
@@ -38,7 +38,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun save(model: NoteMotoMecSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: ItemMotoMecSharedPreferencesModel): Result<Boolean> {
         try {
             sharedPreferences.edit {
                 putString(

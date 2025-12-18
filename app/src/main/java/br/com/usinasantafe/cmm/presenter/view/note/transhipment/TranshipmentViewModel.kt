@@ -10,7 +10,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
@@ -116,7 +116,7 @@ class TranshipmentViewModel @Inject constructor(
                     handleFailure("Field Empty!", Errors.FIELD_EMPTY)
                     return
                 }
-                setNroEquipTranshipment()
+                setNroEquip()
             }
 
             TypeButton.UPDATE -> {
@@ -129,10 +129,10 @@ class TranshipmentViewModel @Inject constructor(
         }
     }
 
-    private fun setNroEquipTranshipment() = viewModelScope.launch {
+    private fun setNroEquip() = viewModelScope.launch {
         val resultHas = hasEquipSecondary(
             nroEquip =  uiState.value.nroEquip,
-            typeEquip = TypeEquipSecondary.TRANSHIPMENT
+            typeEquip = TypeEquip.TRANSHIPMENT
         )
         resultHas.onFailure {
             handleFailure(it)

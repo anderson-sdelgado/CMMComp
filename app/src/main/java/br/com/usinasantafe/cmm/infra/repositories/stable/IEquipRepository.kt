@@ -9,8 +9,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -113,6 +112,7 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
+
     override suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String> {
@@ -134,7 +134,7 @@ class IEquipRepository @Inject constructor(
             }
             return result
         }
-        val result = equipRoomDatasource.getDescrByIdEquip(idEquip)
+        val result = equipRoomDatasource.getDescrById(idEquip)
         result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -179,7 +179,7 @@ class IEquipRepository @Inject constructor(
         return result
     }
 
-    override suspend fun getTypeEquip(): Result<TypeEquipMain> {
+    override suspend fun getTypeEquipMain(): Result<TypeEquip> {
         val result = equipSharedPreferencesDatasource.getTypeEquip()
         result.onFailure {
                 return resultFailure(
@@ -225,12 +225,23 @@ class IEquipRepository @Inject constructor(
 
     override suspend fun hasEquipSecondary(
         nroEquip: Long,
-        typeEquip: TypeEquipSecondary
+        typeEquip: TypeEquip
     ): Result<Boolean> {
-        val result = equipRoomDatasource.hasByNroEquipAndTypeEquip(
+        val result = equipRoomDatasource.hasByNroAndType(
             nroEquip = nroEquip,
             typeEquip = typeEquip
         )
+        result.onFailure {
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = it
+            )
+        }
+        return result
+    }
+
+    override suspend fun getIdByNro(nroEquip: Long): Result<Int> {
+        val result = equipRoomDatasource.getIdByNro(nroEquip)
         result.onFailure {
             return resultFailure(
                 context = getClassAndMethod(),

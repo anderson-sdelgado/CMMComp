@@ -14,11 +14,11 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofi
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -133,7 +133,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setDataEquip(
                     idEquip = 12345,
-                    typeEquipMain = TypeEquipMain.NORMAL
+                    typeEquip = TypeEquip.NORMAL
                 )
             ).thenReturn(
                 resultFailure(
@@ -144,7 +144,7 @@ class IMotoMecRepositoryTest {
             )
             val result = repository.setDataEquipHeader(
                 idEquip = 12345,
-                typeEquipMain = TypeEquipMain.NORMAL
+                typeEquip = TypeEquip.NORMAL
             )
             assertEquals(
                 result.isFailure,
@@ -166,14 +166,14 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setDataEquip(
                     idEquip = 12345,
-                    typeEquipMain = TypeEquipMain.NORMAL
+                    typeEquip = TypeEquip.NORMAL
                 )
             ).thenReturn(
                 Result.success(true)
             )
             val result = repository.setDataEquipHeader(
                 idEquip = 12345,
-                typeEquipMain = TypeEquipMain.NORMAL
+                typeEquip = TypeEquip.NORMAL
             )
             assertEquals(
                 result.isSuccess,
@@ -500,11 +500,12 @@ class IMotoMecRepositoryTest {
             val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
                 regOperator = 12345,
                 idEquip = 1,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 1.0
+                hourMeter = 1.0,
+                statusCon = true
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.get()
@@ -571,11 +572,12 @@ class IMotoMecRepositoryTest {
             val modelSharedPreferences = HeaderMotoMecSharedPreferencesModel(
                 regOperator = 12345,
                 idEquip = 1,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 1.0
+                hourMeter = 1.0,
+                statusCon = true
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.get()
@@ -588,7 +590,7 @@ class IMotoMecRepositoryTest {
                         capture()
                     )
                 ).thenReturn(
-                    Result.success(true)
+                    Result.success(1)
                 )
             }
             val result = repository.saveHeader()
@@ -647,7 +649,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.checkHeaderOpen -> IHeaderMotoMecRoomDatasource.checkHeaderOpen"
+                "IMotoMecRepository.hasHeaderOpen -> IHeaderMotoMecRoomDatasource.checkHeaderOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -678,10 +680,10 @@ class IMotoMecRepositoryTest {
     fun `getIdByHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByHeaderOpen`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getId()
+                headerMotoMecSharedPreferencesDatasource.getId()
             ).thenReturn(
                 resultFailure(
-                    context = "IHeaderMotoMecRoomDatasource.getIdByHeaderOpen",
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getId",
                     message = "-",
                     cause = Exception()
                 )
@@ -693,7 +695,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+                "IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -705,7 +707,7 @@ class IMotoMecRepositoryTest {
     fun `getIdByHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.getId()
+                headerMotoMecSharedPreferencesDatasource.getId()
             ).thenReturn(
                 Result.success(1)
             )
@@ -831,7 +833,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.checkHeaderSend -> IHeaderMotoMecRoomDatasource.checkHeaderSend"
+                "IMotoMecRepository.hasHeaderSend -> IHeaderMotoMecRoomDatasource.checkHeaderSend"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -894,10 +896,10 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusCon()
+                headerMotoMecSharedPreferencesDatasource.getStatusCon()
             ).thenReturn(
                 resultFailure(
-                    context = "IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen",
+                    context = "IHeaderMotoMecSharedPreferencesDatasource.getStatusCon",
                     message = "-",
                     cause = Exception()
                 )
@@ -909,7 +911,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setNroOSNote -> IHeaderMotoMecRoomDatasource.getStatusConByHeaderOpen"
+                "IMotoMecRepository.setNroOSNote -> IHeaderMotoMecSharedPreferencesDatasource.getStatusCon"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -926,7 +928,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusCon()
+                headerMotoMecSharedPreferencesDatasource.getStatusCon()
             ).thenReturn(
                 Result.success(true)
             )
@@ -966,7 +968,7 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             whenever(
-                headerMotoMecRoomDatasource.getStatusCon()
+                headerMotoMecSharedPreferencesDatasource.getStatusCon()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1069,7 +1071,7 @@ class IMotoMecRepositoryTest {
                 itemMotoMecSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(
-                    NoteMotoMecSharedPreferencesModel()
+                    ItemMotoMecSharedPreferencesModel()
                 )
             )
             val result = repository.saveNote(1)
@@ -1090,7 +1092,7 @@ class IMotoMecRepositoryTest {
     @Test
     fun `saveNote - Check return failure if have error in NoteMotoMecRoomDatasource save`() =
         runTest {
-            val modelSharedPreferences = NoteMotoMecSharedPreferencesModel(
+            val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
                 nroOS = 123456,
                 idActivity = 1,
                 statusCon = true
@@ -1142,7 +1144,7 @@ class IMotoMecRepositoryTest {
     @Test
     fun `saveNote - Check return failure if have error in HeaderMotoMecRoomDatasource setSendHeader`() =
         runTest {
-            val modelSharedPreferences = NoteMotoMecSharedPreferencesModel(
+            val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
                 nroOS = 123456,
                 idActivity = 1,
                 statusCon = true
@@ -1199,7 +1201,7 @@ class IMotoMecRepositoryTest {
     @Test
     fun `saveNote - Check return correct if function execute successfully`() =
         runTest {
-            val modelSharedPreferences = NoteMotoMecSharedPreferencesModel(
+            val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
                 nroOS = 123456,
                 idActivity = 1,
                 statusCon = true
@@ -1467,7 +1469,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1518,7 +1520,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1597,7 +1599,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1696,7 +1698,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -1803,7 +1805,7 @@ class IMotoMecRepositoryTest {
                     id = 1,
                     regOperator = 19759,
                     idEquip = 10,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
@@ -2033,7 +2035,8 @@ class IMotoMecRepositoryTest {
                     nroOS = 123456,
                     idActivity = 1,
                     idStop = null,
-                    dateHour = Date(1750422691)
+                    dateHour = Date(1750422691),
+                    statusCon = true
                 )
             )
             whenever(
@@ -2241,12 +2244,14 @@ class IMotoMecRepositoryTest {
                 result.isSuccess,
                 true
             )
+            val entity = result.getOrNull()!!
             assertEquals(
-                result.getOrNull()!!,
-                ItemMotoMec(
-                    nroOS = 123456,
-                    idActivity = 1,
-                )
+                entity.nroOS,
+                123456
+            )
+            assertEquals(
+                entity.idActivity,
+                1
             )
         }
 
@@ -2378,6 +2383,98 @@ class IMotoMecRepositoryTest {
                 Result.success(true)
             )
             val result = repository.setNroEquipTranshipmentNote(200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `getTypeEquipHeader - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource getTypeEquip`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getTypeEquip()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecSharedPreferencesDatasource.getTypeEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getTypeEquipHeader()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getTypeEquipHeader -> IHeaderMotoMecSharedPreferencesDatasource.getTypeEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getTypeEquipHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.getTypeEquip()
+            ).thenReturn(
+                Result.success(TypeEquip.NORMAL)
+            )
+            val result = repository.getTypeEquipHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                TypeEquip.NORMAL
+            )
+        }
+
+    @Test
+    fun `setIdEquipMotorPumpHeader - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource setIdEquipMotorPump`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(10)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecSharedPreferencesDatasource.setIdEquipMotorPump",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setIdEquipMotorPumpHeader(10)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.setIdEquipMotorPumpHeader -> IHeaderMotoMecSharedPreferencesDatasource.setIdEquipMotorPump"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setIdEquipMotorPumpHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(10)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.setIdEquipMotorPumpHeader(10)
             assertEquals(
                 result.isSuccess,
                 true

@@ -7,8 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -115,7 +114,7 @@ class IListTurnTest {
                         nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )
@@ -154,7 +153,7 @@ class IListTurnTest {
                         nro = 200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )

@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -54,14 +54,14 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     ),
                     EquipRoomModel(
                         id = 1,
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     )
                 )
             )
@@ -99,14 +99,14 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 20,
                         codClass = 20,
                         descrClass = "TRATOR 2",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     )
                 )
             )
@@ -142,7 +142,7 @@ class IEquipRoomDatasourceTest {
             )
             assertEquals(
                 model1.typeEquip,
-                TypeEquipSecondary.REEL
+                TypeEquip.REEL_FERT
             )
             val model2 = list[1]
             assertEquals(
@@ -163,7 +163,7 @@ class IEquipRoomDatasourceTest {
             )
             assertEquals(
                 model2.typeEquip,
-                TypeEquipSecondary.REEL
+                TypeEquip.REEL_FERT
             )
         }
 
@@ -177,7 +177,7 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     )
                 )
             )
@@ -203,9 +203,9 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `getDescrByIdEquip - Check return failure if not have data`() =
+    fun `getDescrById - Check return failure if not have data`() =
         runTest {
-            val result = datasource.getDescrByIdEquip(1)
+            val result = datasource.getDescrById(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -221,7 +221,7 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `getDescrByIdEquip - Check return correct if function execute successfully`() =
+    fun `getDescrById - Check return correct if function execute successfully`() =
         runTest {
             equipDao.insertAll(
                 listOf(
@@ -230,7 +230,7 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL,
+                        typeEquip = TypeEquip.REEL_FERT,
                     )
                 )
             )
@@ -239,7 +239,7 @@ class IEquipRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.getDescrByIdEquip(1)
+            val result = datasource.getDescrById(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -251,11 +251,11 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `hasByNroEquipAndTypeEquip - Check return false if not have data`() =
+    fun `hasByNroAndTypeEquip - Check return false if not have data`() =
         runTest {
-            val result = datasource.hasByNroEquipAndTypeEquip(
+            val result = datasource.hasByNroAndType(
                 nroEquip = 10,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -268,7 +268,7 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `hasByNroEquipAndTypeEquip - Check return false if have data but not typeEquip is equals`() =
+    fun `hasByNroAndType - Check return false if have data but not typeEquip is equals`() =
         runTest {
             equipDao.insertAll(
                 listOf(
@@ -277,13 +277,13 @@ class IEquipRoomDatasourceTest {
                         nro = 10,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )
-            val result = datasource.hasByNroEquipAndTypeEquip(
+            val result = datasource.hasByNroAndType(
                 nroEquip = 10,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -296,7 +296,7 @@ class IEquipRoomDatasourceTest {
         }
 
     @Test
-    fun `hasByNroEquipAndTypeEquip - Check return false if have data but not nroEquip is equals`() =
+    fun `hasByNroAndType - Check return false if have data but not nroEquip is equals`() =
         runTest {
             equipDao.insertAll(
                 listOf(
@@ -305,20 +305,20 @@ class IEquipRoomDatasourceTest {
                         nro = 2200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                        typeEquip = TypeEquip.TRANSHIPMENT
                     )
                 )
             )
-            val result = datasource.hasByNroEquipAndTypeEquip(
+            val result = datasource.hasByNroAndType(
                 nroEquip = 10,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -340,20 +340,20 @@ class IEquipRoomDatasourceTest {
                         nro = 2200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     ),
                     EquipRoomModel(
                         id = 2,
                         nro = 200,
                         codClass = 20,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                        typeEquip = TypeEquip.TRANSHIPMENT
                     )
                 )
             )
-            val result = datasource.hasByNroEquipAndTypeEquip(
+            val result = datasource.hasByNroAndType(
                 nroEquip = 200,
-                typeEquip = TypeEquipSecondary.TRANSHIPMENT
+                typeEquip = TypeEquip.TRANSHIPMENT
             )
             assertEquals(
                 result.isSuccess,
@@ -362,6 +362,54 @@ class IEquipRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `getIdByNro - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getIdByNro(2200)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getIdByNro"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getId()\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `getIdByNro - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 20,
+                        nro = 2200,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquip.REEL_FERT,
+                    )
+                )
+            )
+            val qtdBefore = equipDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getIdByNro(2200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                20
             )
         }
 

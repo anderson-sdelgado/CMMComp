@@ -27,8 +27,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPrefer
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.lib.FlagUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.lib.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -362,7 +361,7 @@ class NoteFlowTest {
             HeaderMotoMecRoomModel(
                 regOperator = 123465,
                 idEquip = 1,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
@@ -391,7 +390,7 @@ class NoteFlowTest {
                     nro = 2200,
                     codClass = 1,
                     descrClass = "TRATOR",
-                    typeEquip = TypeEquipSecondary.REEL,
+                    typeEquip = TypeEquip.REEL_FERT,
                 )
             )
         )

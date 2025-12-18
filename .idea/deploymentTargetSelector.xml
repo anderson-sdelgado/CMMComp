@@ -13,19 +13,10 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_value_nro_transhipment_is_incorrect()">
+      <SelectionState runConfigName="check_return_failure_if_not_have_data()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_id_activity_in_header_shared_preferences() (1)">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_status_con_in_header_shared_preferences()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_in_header_moto_mec_room()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_true_and_check_data_if_process_execute_successfully()">
+      <SelectionState runConfigName="check_return_true_and_data_alter_if_process_execute_successfully()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

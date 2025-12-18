@@ -8,7 +8,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
@@ -131,7 +131,7 @@ class IUpdateTableEquipTest {
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,
@@ -212,7 +212,7 @@ class IUpdateTableEquipTest {
                     descrClass = "TRATOR",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 5000.0,
                     classify = 1,
                     flagMechanic = true,
@@ -228,7 +228,7 @@ class IUpdateTableEquipTest {
                     descrClass = "CAMINHAO",
                     codTurnEquip = 1,
                     idCheckList = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     hourMeter = 10000.0,
                     classify = 1,
                     flagMechanic = true,

@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -85,7 +85,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun setDataEquip(
         idEquip: Int,
-        typeEquipMain: TypeEquipMain
+        typeEquip: TypeEquip
     ): Result<Boolean> {
         try {
             val resultGet = get()
@@ -97,7 +97,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
             }
             val model = resultGet.getOrNull()!!
             model.idEquip = idEquip
-            model.typeEquipMain = typeEquipMain
+            model.typeEquip = typeEquip
             val resultSave = save(model)
             resultSave.onFailure {
                 return resultFailure(
@@ -106,6 +106,25 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                 )
             }
             return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun getTypeEquip(): Result<TypeEquip> {
+        try {
+            val result = get()
+            result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val headerMotoMec = result.getOrNull()!!
+            return Result.success(headerMotoMec.typeEquip!!)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -372,6 +391,33 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
             }
             val model = resultGet.getOrNull()!!
             model.id = id
+            val resultSave = save(model)
+            resultSave.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return Result.success(true)
+        } catch (e: Exception){
+            return resultFailure(
+                context = getClassAndMethod(),
+                cause = e
+            )
+        }
+    }
+
+    override suspend fun setIdEquipMotorPump(idEquip: Int): Result<Boolean> {
+        try {
+            val resultGet = get()
+            resultGet.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val model = resultGet.getOrNull()!!
+            model.idEquipMotorPump = idEquip
             val resultSave = save(model)
             resultSave.onFailure {
                 return resultFailure(

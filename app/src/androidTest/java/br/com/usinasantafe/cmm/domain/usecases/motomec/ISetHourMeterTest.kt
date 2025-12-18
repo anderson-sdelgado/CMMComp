@@ -8,8 +8,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.Status
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -114,7 +113,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )
@@ -222,7 +221,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )
@@ -279,7 +278,7 @@ class ISetHourMeterTest {
                 HeaderMotoMecRoomModel(
                     regOperator = 123456,
                     idEquip = 1,
-                    typeEquipMain = TypeEquipMain.NORMAL,
+                    typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
                     nroOS = 1,
                     idActivity = 1,
@@ -334,7 +333,7 @@ class ISetHourMeterTest {
                         nro = 2200,
                         codClass = 1,
                         descrClass = "TRATOR",
-                        typeEquip = TypeEquipSecondary.REEL
+                        typeEquip = TypeEquip.REEL_FERT
                     )
                 )
             )

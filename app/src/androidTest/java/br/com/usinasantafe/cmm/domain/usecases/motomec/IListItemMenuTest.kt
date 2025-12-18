@@ -54,8 +54,7 @@ import br.com.usinasantafe.cmm.lib.TIRE_CHANGE
 import br.com.usinasantafe.cmm.lib.TIRE_INFLATION
 import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
 import br.com.usinasantafe.cmm.lib.TypeActivity
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.UNCOUPLING_COURTYARD
 import br.com.usinasantafe.cmm.lib.UNCOUPLING_FIELD
@@ -380,7 +379,7 @@ class IListItemMenuTest {
                 level = 5,
                 flagMechanic = true,
                 flagTire = true,
-                typeEquipMain = TypeEquipMain.FERT
+                typeEquip = TypeEquip.REEL_FERT
             )
             initialRegisterSec(2)
             val result = usecase("pmm")
@@ -796,7 +795,7 @@ class IListItemMenuTest {
 
     private suspend fun initialRegister(
         level: Int,
-        typeEquipMain: TypeEquipMain = TypeEquipMain.NORMAL,
+        typeEquip: TypeEquip = TypeEquip.NORMAL,
         flagMechanic: Boolean = false,
         flagTire: Boolean = false,
         flowComposting: FlowComposting? = null
@@ -815,7 +814,7 @@ class IListItemMenuTest {
                 id = 1,
                 regOperator = 19759,
                 idEquip = 20,
-                typeEquipMain = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 flowComposting = flowComposting,
                 idTurn = 1,
                 nroOS = 123456,
@@ -834,7 +833,7 @@ class IListItemMenuTest {
                     nro = 2200L,
                     codClass = 1,
                     descrClass = "CAMINHAO",
-                    TypeEquipSecondary.REEL
+                    typeEquip = TypeEquip.REEL_FERT
                 )
             )
         )

@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPrefere
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -285,7 +285,7 @@ class IUpdateTableFunctionStopTest {
                 descrClass = "TRATOR",
                 codTurnEquip = 1,
                 idCheckList = 1,
-                typeEquip = TypeEquipMain.NORMAL,
+                typeEquip = TypeEquip.NORMAL,
                 hourMeter = 5000.0,
                 classify = 1,
                 flagMechanic = true,

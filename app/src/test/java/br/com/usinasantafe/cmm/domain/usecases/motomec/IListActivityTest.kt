@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityReposito
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -123,7 +123,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -171,7 +171,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -224,7 +224,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -284,7 +284,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -352,7 +352,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -456,7 +456,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -534,7 +534,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,
@@ -634,7 +634,7 @@ class IListActivityTest {
                             descrClass = "TRATOR",
                             codTurnEquip = 1,
                             idCheckList = 1,
-                            typeEquipMain = TypeEquipMain.NORMAL,
+                            typeEquip = TypeEquip.NORMAL,
                             hourMeter = 5000.0,
                             classify = 1,
                             flagMechanic = true,

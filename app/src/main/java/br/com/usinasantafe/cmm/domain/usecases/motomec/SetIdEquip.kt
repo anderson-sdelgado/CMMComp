@@ -25,7 +25,7 @@ class ISetIdEquip @Inject constructor(
                 )
             }
             val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultGetTypeEquip = equipRepository.getTypeEquip()
+            val resultGetTypeEquip = equipRepository.getTypeEquipMain()
             resultGetTypeEquip.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -35,7 +35,7 @@ class ISetIdEquip @Inject constructor(
             val typeEquip = resultGetTypeEquip.getOrNull()!!
             val resultSetIdEquip = motoMecRepository.setDataEquipHeader(
                 idEquip = idEquip,
-                typeEquipMain = typeEquip
+                typeEquip = typeEquip
             )
             resultSetIdEquip.onFailure {
                 return resultFailure(

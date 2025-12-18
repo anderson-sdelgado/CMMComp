@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.NoteMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -60,7 +60,7 @@ class IGetStopListTest {
     fun check_return_empty_list_if_not_have_data_in_table_r_activity_stop() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
             )
@@ -79,7 +79,7 @@ class IGetStopListTest {
     fun check_return_empty_list_if_not_have_data_in_table_stop() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
             )
@@ -122,7 +122,7 @@ class IGetStopListTest {
     fun check_return_true_and_data_returned() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
-                NoteMotoMecSharedPreferencesModel(
+                ItemMotoMecSharedPreferencesModel(
                     idActivity = 1
                 )
             )

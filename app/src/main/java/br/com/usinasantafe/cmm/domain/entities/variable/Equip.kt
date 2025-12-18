@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
-import br.com.usinasantafe.cmm.lib.TypeEquipMain
-import br.com.usinasantafe.cmm.lib.TypeEquipSecondary
+import br.com.usinasantafe.cmm.lib.TypeEquip
 
 data class Equip(
     val id: Int,
@@ -10,8 +9,7 @@ data class Equip(
     val descrClass: String,
     val codTurnEquip: Int? = null,
     val idCheckList: Int? = null,
-    val typeEquipMain: TypeEquipMain? = null,
-    val typeEquipSecondary: TypeEquipSecondary? = null,
+    val typeEquip: TypeEquip? = null,
     val hourMeter: Double? = null,
     val classify: Int? = null,
     val flagMechanic: Boolean? = null,
