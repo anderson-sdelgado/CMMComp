@@ -654,7 +654,7 @@ class MenuNoteScreenTest {
                 onNavImplement = {},
                 onNavOSMechanical = {},
                 onNavTranshipment = {},
-                onNavOSListPerformance = {},
+                onNavPerformanceList = {},
                 onNavUncouplingTrailer = {},
                 onNavOSListFertigation = {},
                 onNavInfoLoadingCompound = {},

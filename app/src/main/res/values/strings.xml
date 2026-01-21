@@ -89,4 +89,8 @@
     <string name="text_msg_without_note_stop">POR FAVOR, REALIZE UMA PARADA PARA REALIZAR UM APONTAMENTO DE MANUTENÇÃO.</string>
     <string name="text_title_transhipment">TRANSBORDO</string>
     <string name="text_title_motor_pump">MOTOBOMBA</string>
+    <string name="text_item_nro_os">NRO OS: %1$s</string>
+    <string name="text_item_value_performance">REND.: %1$s</string>
+    <string name="text_title_performance">RENDIMENTO(S)</string>
+    <string name="text_msg_no_data_performance">NÃO CONTÉM RENDIMENTO ADICIONADO.</string>">
 </resources>

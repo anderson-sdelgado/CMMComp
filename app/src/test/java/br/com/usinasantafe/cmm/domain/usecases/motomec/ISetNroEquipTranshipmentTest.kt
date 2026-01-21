@@ -187,7 +187,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 nroEquipTranshipment = "20df0",
@@ -229,7 +229,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
@@ -279,7 +279,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
@@ -334,7 +334,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
@@ -394,7 +394,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
@@ -409,7 +409,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.saveNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 nroEquipTranshipment = "200",
@@ -421,7 +421,7 @@ class ISetNroEquipTranshipmentTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

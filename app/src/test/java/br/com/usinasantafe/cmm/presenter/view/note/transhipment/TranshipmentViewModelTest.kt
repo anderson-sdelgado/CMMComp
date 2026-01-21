@@ -444,7 +444,7 @@ class TranshipmentViewModelTest {
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val viewModel = createViewModel()
             viewModel.setTextField(

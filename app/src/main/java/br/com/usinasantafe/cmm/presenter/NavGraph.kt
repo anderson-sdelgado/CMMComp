@@ -212,6 +212,9 @@ fun NavigationGraph(
                 },
                 onNavQuestionUpdateCheckList = {
                     navActions.navigateToQuestionUpdateCheckList()
+                },
+                onNavMotorPump = {
+                    navActions.navigateToMotorPump()
                 }
             )
         }
@@ -251,7 +254,7 @@ fun NavigationGraph(
                 onNavEquipTire = {},
                 onNavInfoLocalSugarcaneLoading = {},
                 onNavUncouplingTrailer = {},
-                onNavOSListPerformance = {},
+                onNavPerformanceList = {},
                 onNavHistory = {},
                 onNavProduct = {},
                 onNavWill = {},

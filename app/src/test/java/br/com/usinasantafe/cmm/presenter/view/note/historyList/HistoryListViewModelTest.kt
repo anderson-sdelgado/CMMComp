@@ -37,7 +37,7 @@ class HistoryListViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.recoverHistoryList()
+            viewModel.recoverList()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -56,7 +56,7 @@ class HistoryListViewModelTest {
             ).thenReturn(
                 Result.success(emptyList())
             )
-            viewModel.recoverHistoryList()
+            viewModel.recoverList()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -85,7 +85,7 @@ class HistoryListViewModelTest {
                     )
                 )
             )
-            viewModel.recoverHistoryList()
+            viewModel.recoverList()
             val list = viewModel.uiState.value.historyList
             assertEquals(
                 list.size,

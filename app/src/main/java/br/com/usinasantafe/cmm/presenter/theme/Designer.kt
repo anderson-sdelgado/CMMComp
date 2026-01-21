@@ -119,6 +119,51 @@ fun ItemHistoryListDesign(
 }
 
 @Composable
+fun ItemPerformanceListDesign(
+    id: Int = 0,
+    nroOS: Int,
+    value: Double?,
+    font: Int = 22,
+    padding: Int = 8,
+    setActionItem: () -> Unit
+) {
+    return  Column(
+        modifier = Modifier
+            .testTag("item_list_$id")
+            .padding(vertical = padding.dp)
+            .clickable {
+                setActionItem()
+            }
+    ) {
+        Text(
+            textAlign = TextAlign.Left,
+            text = stringResource(
+                id = R.string.text_item_nro_os,
+                nroOS
+            ),
+            style = TextStyle(
+                fontSize = font.sp,
+                fontWeight = FontWeight.Bold,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = stringResource(
+                id = R.string.text_item_value_performance,
+                value?.toString() ?: ""
+            ),
+            style = TextStyle(
+                fontSize = font.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 fun TitleDesign(
     text: String,
     font: Int = 30,

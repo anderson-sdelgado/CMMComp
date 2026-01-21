@@ -17,6 +17,10 @@ import br.com.usinasantafe.cmm.presenter.Screens.SPLASH_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.STOP_LIST_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TURN_LIST_HEADER_SCREEN
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
+import br.com.usinasantafe.cmm.presenter.Screens.MOTOR_PUMP_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.PERFORMANCE_LIST_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.PERFORMANCE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TRANSHIPMENT_NOTE_SCREEN
 
 object Screens {
@@ -35,10 +39,14 @@ object Screens {
     const val QUESTION_UPDATE_CHECK_LIST_SCREEN = "questionUpdateCheckListScreen"
     const val ITEM_CHECK_LIST_SCREEN = "itemCheckListScreen"
     const val TRANSHIPMENT_NOTE_SCREEN = "transhipmentNoteScreen"
+    const val PERFORMANCE_LIST_SCREEN = "performanceListScreen"
+    const val PERFORMANCE_SCREEN = "performanceScreen"
+    const val MOTOR_PUMP_SCREEN = "motorPumpScreen"
 }
 
 object Args {
     const val FLOW_APP_ARG = "flowApp"
+    const val ID_ARG = "id"
 }
 
 object Routes {
@@ -57,6 +65,9 @@ object Routes {
     const val QUESTION_UPDATE_CHECK_LIST_ROUTE = QUESTION_UPDATE_CHECK_LIST_SCREEN
     const val ITEM_CHECK_LIST_ROUTE = ITEM_CHECK_LIST_SCREEN
     const val TRANSHIPMENT_NOTE_ROUTE = "$TRANSHIPMENT_NOTE_SCREEN/{$FLOW_APP_ARG}"
+    const val PERFORMANCE_LIST_ROUTE = PERFORMANCE_LIST_SCREEN
+    const val PERFORMANCE_ROUTE = "$PERFORMANCE_SCREEN/{$ID_ARG}"
+    const val MOTOR_PUMP_ROUTE = MOTOR_PUMP_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -121,6 +132,11 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("${HOUR_METER_HEADER_SCREEN}/${flowApp}")
     }
 
+    fun navigateToMotorPump() {
+        navController.navigate(MOTOR_PUMP_SCREEN)
+    }
+
+
     ////////////////////////////////////////////////////////////////////
 
     /////////////////////////// Note ///////////////////////////////////
@@ -139,6 +155,15 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("$TRANSHIPMENT_NOTE_SCREEN/${flowApp}")
     }
 
+    fun navigatePerformanceList() {
+        navController.navigate(PERFORMANCE_LIST_SCREEN)
+    }
+
+    fun navigatePerformance(
+        id: Int
+    ) {
+        navController.navigate("$PERFORMANCE_SCREEN/{$id}")
+    }
 
     ////////////////////////////////////////////////////////////////////
 
@@ -151,7 +176,6 @@ class NavigationActions(private val navController: NavHostController) {
     fun navigateToItemCheckList() {
         navController.navigate(ITEM_CHECK_LIST_SCREEN)
     }
-
 
     ////////////////////////////////////////////////////////////////////
 

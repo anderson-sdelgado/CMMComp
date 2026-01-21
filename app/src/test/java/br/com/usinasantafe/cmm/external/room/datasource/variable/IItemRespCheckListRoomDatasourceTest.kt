@@ -19,7 +19,7 @@ import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class IRespItemCheckListRoomDatasourceTest {
+class IItemRespCheckListRoomDatasourceTest {
 
     private lateinit var itemRespCheckListDao: ItemRespCheckListDao
     private lateinit var db: DatabaseRoom

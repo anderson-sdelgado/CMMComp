@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 
 interface HeaderMotoMecRoomDatasource {
@@ -8,7 +9,7 @@ interface HeaderMotoMecRoomDatasource {
     suspend fun getOpen(): Result<HeaderMotoMecRoomModel>
     suspend fun checkOpen(): Result<Boolean>
     suspend fun getId(): Result<Int>
-    suspend fun setHourMeterFinish(hourMeter: Double): Result<Boolean>
+    suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult
     suspend fun finish(): Result<Boolean>
     suspend fun checkSend(): Result<Boolean>
     suspend fun listSend(): Result<List<HeaderMotoMecRoomModel>>

@@ -6,17 +6,21 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.PerformanceRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import java.util.Date
 import javax.inject.Inject
 
 class IMotoMecRepository @Inject constructor(
@@ -25,6 +29,7 @@ class IMotoMecRepository @Inject constructor(
     private val itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource,
     private val itemMotoMecRoomDatasource: ItemMotoMecRoomDatasource,
     private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
+    private val performanceRoomDatasource: PerformanceRoomDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
     override suspend fun refreshHeaderOpen(): Result<Boolean> {
@@ -132,7 +137,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun setIdActivityHeader(idActivity: Int): Result<Boolean> {
+    override suspend fun setIdActivityHeader(idActivity: Int): EmptyResult {
         val result = headerMotoMecSharedPreferencesDatasource.setIdActivity(idActivity)
         result.onFailure {
                 return resultFailure(
@@ -165,7 +170,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Boolean> {
+    override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Unit> {
         val result = headerMotoMecSharedPreferencesDatasource.setHourMeter(hourMeter)
         result.onFailure {
                 return resultFailure(
@@ -176,7 +181,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun saveHeader(): Result<Boolean> {
+    override suspend fun saveHeader(): EmptyResult {
         try {
             val resultGet = headerMotoMecSharedPreferencesDatasource.get()
             resultGet.onFailure {
@@ -203,7 +208,7 @@ class IMotoMecRepository @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -234,7 +239,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean> {
+    override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult {
         val result = headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter)
         result.onFailure {
                 return resultFailure(
@@ -358,7 +363,7 @@ class IMotoMecRepository @Inject constructor(
         }
     }
 
-    override suspend fun setIdActivityNote(id: Int): Result<Boolean> {
+    override suspend fun setIdActivityNote(id: Int): EmptyResult {
         val result = itemMotoMecSharedPreferencesDatasource.setIdActivity(id)
         result.onFailure {
                 return resultFailure(
@@ -380,7 +385,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun saveNote(idHeader: Int): Result<Boolean> {
+    override suspend fun saveNote(idHeader: Int): EmptyResult {
         try {
             val resultGet = itemMotoMecSharedPreferencesDatasource.get()
             resultGet.onFailure {
@@ -409,7 +414,7 @@ class IMotoMecRepository @Inject constructor(
                     cause = it
                 )
             }
-            return result
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -594,7 +599,7 @@ class IMotoMecRepository @Inject constructor(
         return result
     }
 
-    override suspend fun insertInitialPerformance(): Result<Boolean> {
+    override suspend fun insertInitialPerformance(): Result<Unit> {
         try {
             val resultHeaderSharedPreferences = headerMotoMecSharedPreferencesDatasource.get()
             resultHeaderSharedPreferences.onFailure {
@@ -604,7 +609,19 @@ class IMotoMecRepository @Inject constructor(
                 )
             }
             val headerModel = resultHeaderSharedPreferences.getOrNull()!!
-
+            val resultInsert = performanceRoomDatasource.insert(
+                PerformanceRoomModel(
+                    nroOS = headerModel.nroOS!!,
+                    idHeader = headerModel.id!!,
+                )
+            )
+            resultInsert.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            return resultInsert
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

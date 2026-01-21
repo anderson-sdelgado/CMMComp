@@ -67,8 +67,7 @@ class ActivityListCommonViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
     private val listActivity: ListActivity,
     private val updateTableActivity: UpdateTableActivity,
-    private val setIdActivityCommon: SetIdActivityCommon,
-    private val getTypeEquip: GetTypeEquip
+    private val setIdActivityCommon: SetIdActivityCommon
 ) : ViewModel() {
 
     private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
@@ -113,39 +112,10 @@ class ActivityListCommonViewModel @Inject constructor(
             handleFailure(it)
             return@launch
         }
-        val check = result.getOrNull()!!
-        if(!check) {
-            _uiState.update {
-                it.copy(
-                    flowApp = FlowApp.TRANSHIPMENT,
-                    flagAccess = true
-                )
-            }
-            return@launch
-        }
-        if(uiState.value.flowApp == FlowApp.HEADER_INITIAL){
-            _uiState.update {
-                it.copy(
-                    flagAccess = true
-                )
-            }
-            return@launch
-        }
-        val resultGetType = getTypeEquip()
-        resultGetType.onFailure {
-            handleFailure(it)
-            return@launch
-        }
-        val typeEquip = resultGetType.getOrNull()!!
-        if(typeEquip == TypeEquip.REEL_FERT) {
-            _uiState.update {
-                it.copy(
-                    flowApp = FlowApp.REEL_FERT
-                )
-            }
-        }
+        val flowApp = result.getOrNull()!!
         _uiState.update {
             it.copy(
+                flowApp = flowApp,
                 flagAccess = true
             )
         }

@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -64,12 +65,12 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setHourMeterFinish(hourMeter: Double): Result<Boolean> {
+    override suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult {
         try {
             val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
             roomModel.hourMeterFinish = hourMeter
             headerMotoMecDao.update(roomModel)
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

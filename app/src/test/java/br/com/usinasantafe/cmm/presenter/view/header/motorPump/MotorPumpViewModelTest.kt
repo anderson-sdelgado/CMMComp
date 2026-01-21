@@ -423,7 +423,7 @@ class MotorPumpViewModelTest {
                     nroEquip = "2200"
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.setTextField(
                 "2200",

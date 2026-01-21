@@ -53,4 +53,10 @@ object VariableRoomModule {
     fun provideCompoundComposting(database: DatabaseRoom): CompoundCompostingDao {
         return database.compoundCompostingDao()
     }
+
+    @Provides
+    @Singleton
+    fun providePerformance(database: DatabaseRoom): PerformanceDao {
+        return database.performanceDao()
+    }
 }

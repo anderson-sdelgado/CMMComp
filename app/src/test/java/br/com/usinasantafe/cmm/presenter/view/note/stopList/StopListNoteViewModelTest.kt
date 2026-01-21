@@ -447,7 +447,7 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 Result.success(
-                    true
+                    Unit
                 )
             )
             viewModel.setIdStop(1)

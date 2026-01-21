@@ -215,7 +215,7 @@ class IEquipSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultAfter = datasource.getHourMeter()
             assertEquals(

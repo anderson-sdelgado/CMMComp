@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -168,7 +169,7 @@ class IEquipRepository @Inject constructor(
 
     override suspend fun updateHourMeter(
         hourMeter: Double
-    ): Result<Boolean> {
+    ): EmptyResult {
         val result = equipSharedPreferencesDatasource.updateHourMeter(hourMeter)
         result.onFailure {
                 return resultFailure(
@@ -176,7 +177,7 @@ class IEquipRepository @Inject constructor(
                     cause = it
                 )
             }
-        return result
+        return Result.success(Unit)
     }
 
     override suspend fun getTypeEquipMain(): Result<TypeEquip> {

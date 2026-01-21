@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -187,7 +188,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdActivity(idActivity: Int): Result<Boolean> {
+    override suspend fun setIdActivity(idActivity: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -205,7 +206,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -252,7 +253,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setHourMeter(hourMeter: Double): Result<Boolean> {
+    override suspend fun setHourMeter(hourMeter: Double): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -270,7 +271,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

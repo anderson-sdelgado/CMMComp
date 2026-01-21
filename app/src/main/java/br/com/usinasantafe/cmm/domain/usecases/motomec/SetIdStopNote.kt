@@ -9,7 +9,7 @@ import javax.inject.Inject
 interface SetIdStopNote {
     suspend operator fun invoke(
         id: Int
-    ): Result<Boolean>
+    ): Result<Unit>
 }
 
 class ISetIdStopNote @Inject constructor(
@@ -19,7 +19,7 @@ class ISetIdStopNote @Inject constructor(
 
     override suspend fun invoke(
         id: Int
-    ): Result<Boolean> {
+    ): Result<Unit> {
         try {
             val resultSet = motoMecRepository.setIdStop(id)
             resultSet.onFailure {

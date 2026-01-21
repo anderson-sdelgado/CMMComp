@@ -3,12 +3,13 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetNoteMotoMec {
-    suspend operator fun invoke(item: ItemMenuModel): Result<Boolean>
+    suspend operator fun invoke(item: ItemMenuModel): EmptyResult
 }
 
 class ISetNoteMotoMec @Inject constructor(
@@ -16,7 +17,7 @@ class ISetNoteMotoMec @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
 ): SetNoteMotoMec {
 
-    override suspend fun invoke(item: ItemMenuModel): Result<Boolean> {
+    override suspend fun invoke(item: ItemMenuModel): EmptyResult {
         return runCatching {
             val idStop = rItemMenuStopRepository.getIdStopByIdFunctionAndIdApp(
                 idFunction = item.function.first,
@@ -34,10 +35,9 @@ class ISetNoteMotoMec @Inject constructor(
                 motoMecRepository.setIdStop(idStop).getOrThrow()
             }
 
-            // The last expression is the success value for runCatching
             motoMecRepository.saveNote(idHeader).getOrThrow()
         }.fold(
-            onSuccess = { Result.success(it) },
+            onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
         )
     }

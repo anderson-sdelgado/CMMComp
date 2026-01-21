@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_EQUIP
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
@@ -149,7 +150,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun updateHourMeter(hourMeter: Double): Result<Boolean> {
+    override suspend fun updateHourMeter(hourMeter: Double): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -167,7 +168,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return resultSave
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

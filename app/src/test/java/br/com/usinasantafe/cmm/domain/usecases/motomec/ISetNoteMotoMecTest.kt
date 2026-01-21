@@ -358,7 +358,7 @@ class ISetNoteMotoMecTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdStop(1)
@@ -426,7 +426,7 @@ class ISetNoteMotoMecTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdStop(1)
@@ -499,7 +499,7 @@ class ISetNoteMotoMecTest {
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdStop(1)
@@ -509,7 +509,7 @@ class ISetNoteMotoMecTest {
             whenever(
                 motoMecRepository.saveNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 ItemMenuModel(
@@ -526,7 +526,7 @@ class ISetNoteMotoMecTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

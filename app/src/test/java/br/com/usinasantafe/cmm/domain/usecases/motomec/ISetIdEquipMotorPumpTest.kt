@@ -151,7 +151,7 @@ class ISetIdEquipMotorPumpTest {
             whenever(
                 motoMecRepository.saveHeader()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase("2200")
             assertEquals(
@@ -160,7 +160,7 @@ class ISetIdEquipMotorPumpTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

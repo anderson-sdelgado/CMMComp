@@ -33,7 +33,7 @@ class HistoryListViewModel @Inject constructor(
         }
     }
 
-    fun recoverHistoryList() = viewModelScope.launch {
+    fun recoverList() = viewModelScope.launch {
         val result = listHistory()
         if(result.isFailure) {
             val error = result.exceptionOrNull()!!

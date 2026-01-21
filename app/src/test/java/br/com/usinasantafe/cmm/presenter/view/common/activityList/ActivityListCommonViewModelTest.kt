@@ -5,7 +5,6 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
@@ -13,7 +12,6 @@ import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -35,7 +33,6 @@ class ActivityListCommonViewModelTest {
     private val updateTableActivity = mock<UpdateTableActivity>()
     private val listActivity = mock<ListActivity>()
     private val setIdActivityCommon = mock<SetIdActivityCommon>()
-    private val getTypeEquip = mock<GetTypeEquip>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -46,8 +43,7 @@ class ActivityListCommonViewModelTest {
         savedStateHandle,
         updateTableActivity = updateTableActivity,
         listActivity = listActivity,
-        setIdActivityCommon = setIdActivityCommon,
-        getTypeEquip = getTypeEquip
+        setIdActivityCommon = setIdActivityCommon
     )
 
     @Test
@@ -261,7 +257,10 @@ class ActivityListCommonViewModelTest {
     fun `setIdActivity - Check return failure if have error in SetIdActivityCommon - HEADER_DEFAULT`() =
         runTest {
             whenever(
-                setIdActivityCommon(1)
+                setIdActivityCommon(
+                    id = 1,
+                    flowApp = FlowApp.HEADER_INITIAL
+                )
             ).thenReturn(
                 resultFailure(
                     context = "GetActivityList",
@@ -289,10 +288,13 @@ class ActivityListCommonViewModelTest {
     fun `setIdActivity - Check return correct if function execute successfully - HEADER_DEFAULT`() =
         runTest {
             whenever(
-                setIdActivityCommon(1)
+                setIdActivityCommon(
+                    id = 1,
+                    flowApp = FlowApp.HEADER_INITIAL
+                )
             ).thenReturn(
                 Result.success(
-                    true
+                    FlowApp.HEADER_INITIAL
                 )
             )
             val viewModel = createViewModel()
@@ -301,193 +303,9 @@ class ActivityListCommonViewModelTest {
                 viewModel.uiState.value.flagAccess,
                 true
             )
-        }
-
-    @Test
-    fun `setIdActivity - Check return failure if have error in SetIdActivityCommon - NOTE_WORK`() =
-        runTest {
-            whenever(
-                setIdActivityCommon(
-                    id = 1,
-                    flowApp = FlowApp.NOTE_WORK
-                )
-            ).thenReturn(
-                resultFailure(
-                    context = "GetActivityList",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val viewModel = createViewModel(
-                SavedStateHandle(
-                    mapOf(
-                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
-                    )
-                )
-            )
-            viewModel.setIdActivity(1)
-            assertEquals(
-                viewModel.uiState.value.flagDialog,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "ActivityListCommonViewModel.setIdActivity -> GetActivityList -> java.lang.Exception"
-            )
-            assertEquals(
-                viewModel.uiState.value.flagFailure,
-                true
-            )
-        }
-
-    @Test
-    fun `setIdActivity - Check flowApp TRANSHIPMENT if function execute successfully and return false  - NOTE_WORK`() =
-        runTest {
-            whenever(
-                setIdActivityCommon(
-                    id = 1,
-                    flowApp = FlowApp.NOTE_WORK
-                )
-            ).thenReturn(
-                Result.success(
-                    false
-                )
-            )
-            val viewModel = createViewModel(
-                SavedStateHandle(
-                    mapOf(
-                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
-                    )
-                )
-            )
-            viewModel.setIdActivity(1)
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                true
-            )
             assertEquals(
                 viewModel.uiState.value.flowApp,
-                FlowApp.TRANSHIPMENT
-            )
-        }
-
-    @Test
-    fun `setIdActivity - Check return failure if have error in GetTypeEquip - NOTE_WORK`() =
-        runTest {
-            whenever(
-                setIdActivityCommon(
-                    id = 1,
-                    flowApp = FlowApp.NOTE_WORK
-                )
-            ).thenReturn(
-                Result.success(
-                    true
-                )
-            )
-            whenever(
-                getTypeEquip()
-            ).thenReturn(
-                resultFailure(
-                    context = "GetTypeEquip",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val viewModel = createViewModel(
-                SavedStateHandle(
-                    mapOf(
-                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
-                    )
-                )
-            )
-            viewModel.setIdActivity(1)
-            assertEquals(
-                viewModel.uiState.value.flagDialog,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "ActivityListCommonViewModel.setIdActivity -> GetTypeEquip -> java.lang.Exception"
-            )
-            assertEquals(
-                viewModel.uiState.value.flagFailure,
-                true
-            )
-        }
-
-    @Test
-    fun `setIdActivity - Check flowApp REEL_FERT if function execute successfully and GetTypeEquip return TypeEquip REEL_FERT  - NOTE_WORK`() =
-        runTest {
-            whenever(
-                setIdActivityCommon(
-                    id = 1,
-                    flowApp = FlowApp.NOTE_WORK
-                )
-            ).thenReturn(
-                Result.success(
-                    true
-                )
-            )
-            whenever(
-                getTypeEquip()
-            ).thenReturn(
-                Result.success(
-                    TypeEquip.REEL_FERT
-                )
-            )
-            val viewModel = createViewModel(
-                SavedStateHandle(
-                    mapOf(
-                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
-                    )
-                )
-            )
-            viewModel.setIdActivity(1)
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.flowApp,
-                FlowApp.REEL_FERT
-            )
-        }
-
-    @Test
-    fun `setIdActivity - Check return correct if function execute successfully - NOTE_WORK`() =
-        runTest {
-            whenever(
-                setIdActivityCommon(
-                    id = 1,
-                    flowApp = FlowApp.NOTE_WORK
-                )
-            ).thenReturn(
-                Result.success(
-                    true
-                )
-            )
-            whenever(
-                getTypeEquip()
-            ).thenReturn(
-                Result.success(
-                    TypeEquip.NORMAL
-                )
-            )
-            val viewModel = createViewModel(
-                SavedStateHandle(
-                    mapOf(
-                        Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
-                    )
-                )
-            )
-            viewModel.setIdActivity(1)
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.flowApp,
-                FlowApp.NOTE_WORK
+                FlowApp.HEADER_INITIAL
             )
         }
 

@@ -70,7 +70,7 @@ fun MenuNoteScreen(
     onNavActivityList: () -> Unit,
     onNavMeasure: () -> Unit,
     onNavListReel: () -> Unit,
-    onNavOSListPerformance: () -> Unit,
+    onNavPerformanceList: () -> Unit,
     onNavTranshipment: () -> Unit,
     onNavImplement: () -> Unit,
     onNavOSListFertigation: () -> Unit,
@@ -128,7 +128,7 @@ fun MenuNoteScreen(
                                         }
                                     }
                                     STOP -> onNavActivityList()
-                                    PERFORMANCE -> onNavOSListPerformance()
+                                    PERFORMANCE -> onNavPerformanceList()
                                     TRANSHIPMENT -> onNavTranshipment()
                                     HOSE_COLLECTION -> onNavOSListFertigation()
                                     IMPLEMENT -> onNavImplement()

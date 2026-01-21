@@ -12,7 +12,7 @@ data class HeaderMotoMecSharedPreferencesModel(
     var nroOS: Int? = null,
     var idActivity: Int? = null,
     var hourMeter: Double? = null,
-    var statusCon: Boolean? = null,
+    var statusCon: Boolean? = true,
     var idEquipMotorPump: Int? = null
 )
 

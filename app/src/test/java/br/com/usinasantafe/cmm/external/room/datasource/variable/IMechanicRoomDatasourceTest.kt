@@ -21,7 +21,7 @@ import kotlin.test.assertNotNull
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class INoteMechanicRoomDatasourceTest {
+class IMechanicRoomDatasourceTest {
 
     private lateinit var mechanicDao: MechanicDao
     private lateinit var db: DatabaseRoom

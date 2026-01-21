@@ -3,12 +3,13 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdEquipMotorPump {
-    suspend operator fun invoke(nroEquip: String): Result<Boolean>
+    suspend operator fun invoke(nroEquip: String): EmptyResult
 }
 
 class ISetIdEquipMotorPump @Inject constructor(
@@ -17,7 +18,7 @@ class ISetIdEquipMotorPump @Inject constructor(
     private val startWorkManager: StartWorkManager
 ): SetIdEquipMotorPump {
 
-    override suspend fun invoke(nroEquip: String): Result<Boolean> {
+    override suspend fun invoke(nroEquip: String): EmptyResult {
         try {
             val resultGetIdEquip = equipRepository.getIdByNro(nroEquip.toLong())
             resultGetIdEquip.onFailure {

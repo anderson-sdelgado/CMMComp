@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
@@ -15,14 +16,14 @@ interface MotoMecRepository {
     suspend fun setIdTurnHeader(idTurn: Int): Result<Boolean>
     suspend fun setNroOSHeader(nroOS: Int): Result<Boolean>
     suspend fun getNroOSHeader(): Result<Int>
-    suspend fun setIdActivityHeader(idActivity: Int): Result<Boolean>
+    suspend fun setIdActivityHeader(idActivity: Int): EmptyResult
     suspend fun getIdActivityHeader(): Result<Int>
     suspend fun getIdEquipHeader(): Result<Int>
-    suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Boolean>
-    suspend fun saveHeader(): Result<Boolean>
+    suspend fun setHourMeterInitialHeader(hourMeter: Double): EmptyResult
+    suspend fun saveHeader(): EmptyResult
     suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdByHeaderOpen(): Result<Int>
-    suspend fun setHourMeterFinishHeader(hourMeter: Double): Result<Boolean>
+    suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
     suspend fun setIdEquipMotorPumpHeader(idEquip: Int): Result<Boolean>
     suspend fun finishHeader(): Result<Boolean>
     suspend fun hasHeaderSend(): Result<Boolean>
@@ -31,11 +32,11 @@ interface MotoMecRepository {
     suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
     suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
-    suspend fun setIdActivityNote(id: Int): Result<Boolean>
+    suspend fun setIdActivityNote(id: Int): EmptyResult
     suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): Result<Boolean>
     suspend fun saveNote(
         idHeader: Int
-    ): Result<Boolean>
+    ): EmptyResult
     suspend fun getIdActivityNote(): Result<Int>
     suspend fun setIdStop(id: Int): Result<Boolean>
     suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean>
@@ -51,5 +52,5 @@ interface MotoMecRepository {
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun hasCouplingTrailerImplement(): Result<Boolean>
     suspend fun uncouplingTrailerImplement(): Result<Boolean>
-    suspend fun insertInitialPerformance(): Result<Boolean>
+    suspend fun insertInitialPerformance(): Result<Unit>
 }

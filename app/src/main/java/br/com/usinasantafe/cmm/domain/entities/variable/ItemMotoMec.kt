@@ -8,6 +8,6 @@ data class ItemMotoMec(
     var idActivity: Int? = null,
     var idStop: Int? = null,
     val nroEquipTranshipment: Long? = null,
-    var statusCon: Boolean? = false,
+    var statusCon: Boolean? = true,
     var dateHour: Date = Date()
 )

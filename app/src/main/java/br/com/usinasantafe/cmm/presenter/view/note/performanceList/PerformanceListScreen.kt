@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.note.historyList
+package br.com.usinasantafe.cmm.presenter.view.note.performanceList
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -26,34 +26,34 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
+import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemHistoryListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemPerformanceListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.lib.STOP
-import br.com.usinasantafe.cmm.lib.WORK
+import br.com.usinasantafe.cmm.presenter.view.note.historyList.HistoryListContent
 
 @Composable
-fun HistoryListScreen(
-    viewModel: HistoryListViewModel = hiltViewModel(),
-    onNavMenuNote: () -> Unit
+fun PerformanceListScreen(
+    viewModel: PerformanceListViewModel = hiltViewModel(),
+    onNavMenuNote: () -> Unit,
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+
             LaunchedEffect(Unit) {
                 viewModel.recoverList()
             }
 
-            HistoryListContent(
-                historyList = uiState.historyList,
+            PerformanceListContent(
+                performanceList = uiState.performanceList,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
-                onNavMenuNote = onNavMenuNote,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -61,12 +61,11 @@ fun HistoryListScreen(
 }
 
 @Composable
-fun HistoryListContent(
-    historyList: List<ItemHistoryScreenModel>,
+fun PerformanceListContent(
+    performanceList: List<ItemPerformanceScreenModel>,
     setCloseDialog: () -> Unit,
     flagDialog: Boolean,
     failure: String,
-    onNavMenuNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -75,10 +74,10 @@ fun HistoryListContent(
     ) {
         TitleDesign(
             text = stringResource(
-                id = R.string.text_title_history
+                id = R.string.text_title_performance
             )
         )
-        if(historyList.isEmpty()){
+        if (performanceList.isEmpty()) {
             Column(
                 modifier = modifier
                     .fillMaxWidth()
@@ -88,7 +87,7 @@ fun HistoryListContent(
             ) {
                 Text(
                     text = stringResource(
-                        id = R.string.text_msg_no_data_history
+                        id = R.string.text_msg_no_data_performance
                     ),
                     textAlign = TextAlign.Center,
                     style = TextStyle(
@@ -104,12 +103,10 @@ fun HistoryListContent(
                 modifier = Modifier
                     .weight(1f),
             ) {
-                items(historyList) { item ->
-                    ItemHistoryListDesign(
-                        function = item.function,
-                        descr = item.descr,
-                        dateHour = item.dateHour,
-                        detail = item.detail,
+                items(performanceList) { item ->
+                    ItemPerformanceListDesign(
+                        nroOS = item.nroOS,
+                        value = item.value,
                         setActionItem = {},
                         font = 26
                     )
@@ -117,7 +114,7 @@ fun HistoryListContent(
             }
         }
         Button(
-            onClick = onNavMenuNote,
+            onClick = {},
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -128,7 +125,7 @@ fun HistoryListContent(
         }
         BackHandler {}
 
-        if(flagDialog) {
+        if (flagDialog) {
             AlertDialogSimpleDesign(
                 text = stringResource(
                     id = R.string.text_failure,
@@ -137,36 +134,47 @@ fun HistoryListContent(
                 setCloseDialog = setCloseDialog
             )
         }
+    }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PerformanceListPagePreview() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            PerformanceListContent(
+                performanceList = emptyList(),
+                setCloseDialog = {},
+                flagDialog = false,
+                failure = "",
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryListPagePreview() {
+fun PerformanceListPagePreviewWithData() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            HistoryListContent(
-                historyList = listOf(
-                    ItemHistoryScreenModel(
+            PerformanceListContent(
+                performanceList = listOf(
+                    ItemPerformanceScreenModel(
                         id = 1,
-                        function = 1 to WORK,
-                        descr = "ATIVIDADE: TRANPORTE DE CANA",
-                        dateHour = "21/10/2025 15:23",
-                        detail = ""
+                        nroOS = 123456,
+                        value = null
                     ),
-                    ItemHistoryScreenModel(
+                    ItemPerformanceScreenModel(
                         id = 2,
-                        function = 2 to STOP,
-                        descr = "PARADA: CHUVA",
-                        dateHour = "21/10/2025 15:23",
-                        detail = "Teste\nTeste"
+                        nroOS = 456123,
+                        value = 10.0
                     )
                 ),
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
-                onNavMenuNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -175,32 +183,25 @@ fun HistoryListPagePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HistoryListPagePreviewNoData() {
+fun PerformanceListPagePreviewFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            HistoryListContent(
-                historyList = listOf(),
-                setCloseDialog = {},
-                flagDialog = false,
-                failure = "",
-                onNavMenuNote = {},
-                modifier = Modifier.padding(innerPadding)
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun HistoryListPagePreviewFailure() {
-    CMMTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            HistoryListContent(
-                historyList = listOf(),
+            PerformanceListContent(
+                performanceList = listOf(
+                    ItemPerformanceScreenModel(
+                        id = 1,
+                        nroOS = 123456,
+                        value = null
+                    ),
+                    ItemPerformanceScreenModel(
+                        id = 2,
+                        nroOS = 456123,
+                        value = 10.0
+                    )
+                ),
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
-                onNavMenuNote = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

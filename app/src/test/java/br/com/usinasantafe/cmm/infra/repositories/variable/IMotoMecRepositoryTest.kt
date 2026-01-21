@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.PerformanceRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
@@ -13,6 +14,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.NoteMotoMecRetrofi
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
@@ -35,13 +37,15 @@ class IMotoMecRepositoryTest {
     private val itemMotoMecRoomDatasource = mock<ItemMotoMecRoomDatasource>()
     private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
     private val motoMecRetrofitDatasource = mock<MotoMecRetrofitDatasource>()
+    private val performanceRoomDatasource = mock<PerformanceRoomDatasource>()
     private val repository = IMotoMecRepository(
         headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource,
         headerMotoMecRoomDatasource = headerMotoMecRoomDatasource,
         itemMotoMecSharedPreferencesDatasource = itemMotoMecSharedPreferencesDatasource,
         itemMotoMecRoomDatasource = itemMotoMecRoomDatasource,
         trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource,
-        motoMecRetrofitDatasource = motoMecRetrofitDatasource
+        motoMecRetrofitDatasource = motoMecRetrofitDatasource,
+        performanceRoomDatasource = performanceRoomDatasource
     )
 
     @Test
@@ -429,7 +433,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setHourMeter(1.0)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setHourMeterInitialHeader(1.0)
             assertEquals(
@@ -438,7 +442,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -600,7 +604,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+               Unit
             )
             val model = modelCaptor.firstValue
             assertEquals(
@@ -755,7 +759,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecRoomDatasource.setHourMeterFinish(1.0)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setHourMeterFinishHeader(1.0)
             assertEquals(
@@ -764,7 +768,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -1024,7 +1028,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.setIdActivity(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setIdActivityNote(1)
             assertEquals(
@@ -1033,7 +1037,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -1230,7 +1234,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val model = modelCaptor.firstValue
             assertEquals(
@@ -2482,6 +2486,125 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 true
+            )
+        }
+
+    @Test
+    fun `insertInitialPerformance - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource get`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecSharedPreferencesDatasource.get",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.insertInitialPerformance()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.insertInitialPerformance -> IHeaderMotoMecSharedPreferencesDatasource.get"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `insertInitialPerformance - Check return failure if have error in PerformanceRoomDatasource insert`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    HeaderMotoMecSharedPreferencesModel(
+                        nroOS = 123456,
+                        id = 1
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<PerformanceRoomModel>().apply {
+                whenever(
+                    performanceRoomDatasource.insert(
+                        capture()
+                    )
+                ).thenReturn(
+                    resultFailure(
+                        "IPerformanceRoomDatasource.insert",
+                        "-",
+                        Exception()
+                    )
+                )
+            }
+            val result = repository.insertInitialPerformance()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.insertInitialPerformance -> IPerformanceRoomDatasource.insert"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+        }
+
+    @Test
+    fun `insertInitialPerformance - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecSharedPreferencesDatasource.get()
+            ).thenReturn(
+                Result.success(
+                    HeaderMotoMecSharedPreferencesModel(
+                        nroOS = 123456,
+                        id = 1
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<PerformanceRoomModel>().apply {
+                whenever(
+                    performanceRoomDatasource.insert(
+                        capture()
+                    )
+                ).thenReturn(
+                    Result.success(Unit)
+                )
+            }
+            val result = repository.insertInitialPerformance()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
             )
         }
 

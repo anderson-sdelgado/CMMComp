@@ -32,7 +32,8 @@ import java.util.Date
         ItemRespCheckListRoomModel::class,
         MechanicRoomModel::class,
         InputCompostingRoomModel::class,
-        CompoundCompostingRoomModel::class
+        CompoundCompostingRoomModel::class,
+        PerformanceRoomModel::class
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -59,6 +60,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun noteMechanicDao(): MechanicDao
     abstract fun inputCompostingDao(): InputCompostingDao
     abstract fun compoundCompostingDao(): CompoundCompostingDao
+    abstract fun performanceDao(): PerformanceDao
 }
 
 class Converters {

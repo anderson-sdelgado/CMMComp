@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRepository {
@@ -20,7 +21,7 @@ interface EquipRepository {
     ): Result<Double>
     suspend fun updateHourMeter(
         hourMeter: Double
-    ): Result<Boolean>
+    ): EmptyResult
     suspend fun getTypeEquipMain(): Result<TypeEquip>
     suspend fun getIdCheckList(): Result<Int>
     suspend fun getFlagMechanic(): Result<Boolean>

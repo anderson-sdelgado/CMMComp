@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -87,7 +88,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdActivity(id: Int): Result<Boolean> {
+    override suspend fun setIdActivity(id: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -105,7 +106,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

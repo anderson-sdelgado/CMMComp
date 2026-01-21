@@ -1,13 +1,17 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -38,6 +42,12 @@ class ISetIdActivityCommonTest {
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
+
+    @Inject
+    lateinit var performanceDao: PerformanceDao
+
+    @Inject
+    lateinit var functionActivityDao: FunctionActivityDao
 
     @Before
     fun setUp() {
@@ -260,9 +270,182 @@ class ISetIdActivityCommonTest {
                 2
             )
         }
+    @Test
+    fun check_return_false_if_function_activity_have_transhipment_note_work() =
+        runTest {
+            itemMotoMecSharedPreferencesDatasource.save(
+                ItemMotoMecSharedPreferencesModel(
+                    nroOS = 123456
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.TRANSHIPMENT
+                    )
+                )
+            )
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetBefore.isSuccess,
+                true
+            )
+            val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
+            assertEquals(
+                modelNoteBefore.idActivity,
+                null
+            )
+            val listBefore = itemMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.NOTE_WORK
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
 
     @Test
-    fun check_return_failure_if_data_header_is_empty_note_work() =
+    fun check_return_failure_if_data_header_is_empty_and_function_activity_have_performance_note_work() =
+        runTest {
+            itemMotoMecSharedPreferencesDatasource.save(
+                ItemMotoMecSharedPreferencesModel(
+                    nroOS = 123456
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE
+                    )
+                )
+            )
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetBefore.isSuccess,
+                true
+            )
+            val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
+            assertEquals(
+                modelNoteBefore.idActivity,
+                null
+            )
+            val listBefore = itemMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.NOTE_WORK
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.insertInitialPerformance"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun check_return_failure_if_data_note_is_empty_and_function_activity_have_performance_note_work() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    nroOS = 12345,
+                    id = 1
+                )
+            )
+            itemMotoMecSharedPreferencesDatasource.save(
+                ItemMotoMecSharedPreferencesModel(
+                    nroOS = 123456
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE
+                    )
+                )
+            )
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetBefore.isSuccess,
+                true
+            )
+            val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
+            assertEquals(
+                modelNoteBefore.idActivity,
+                null
+            )
+            val listBefore = itemMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.NOTE_WORK
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.saveNote"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+            val list = performanceDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list.first()
+            assertEquals(
+                model.nroOS,
+                12345
+            )
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.id,
+                1
+            )
+            assertEquals(
+                model.value,
+                null
+            )
+        }
+
+    @Test
+    fun check_return_failure_if_data_header_shared_preferences_is_empty_note_work() =
         runTest {
             itemMotoMecSharedPreferencesDatasource.save(
                 ItemMotoMecSharedPreferencesModel(
@@ -294,27 +477,21 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> IHeaderMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getIdByHeaderOpen"
+                "ISetIdActivityCommon -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0"
+                "NullPointerException"
             )
         }
 
     @Test
-    fun check_return_failure_if_data_note_is_empty_note_work() =
+    fun check_return_failure_if_data_note_shared_preference_is_empty_note_work() =
         runTest {
-            headerMotoMecDao.insert(
-                HeaderMotoMecRoomModel(
-                    regOperator = 123465,
-                    idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    idTurn = 1,
-                    nroOS = 123456,
-                    idActivity = 1,
-                    hourMeterInitial = 10.0,
-                    statusCon = true
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    nroOS = 12345,
+                    id = 1
                 )
             )
             val result = usecase(
@@ -327,7 +504,44 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivity -> INoteMotoMecRepository.save"
+                "ISetIdActivityCommon -> IMotoMecRepository.saveNote"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun check_return_data_if_data_header_room_is_empty_note_work() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    nroOS = 12345,
+                    id = 1
+                )
+            )
+            itemMotoMecSharedPreferencesDatasource.save(
+                ItemMotoMecSharedPreferencesModel(
+                    nroOS = 123456
+                )
+            )
+            val listNoteBefore = itemMotoMecDao.all()
+            assertEquals(
+                listNoteBefore.size,
+                0
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.NOTE_WORK
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.saveNote"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -340,30 +554,26 @@ class ISetIdActivityCommonTest {
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
-                    regOperator = 123465,
+                    regOperator = 123456,
                     idEquip = 1,
                     typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
-                    nroOS = 123456,
+                    nroOS = 12345,
                     idActivity = 1,
                     hourMeterInitial = 10.0,
                     statusCon = true
+                )
+            )
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    nroOS = 12345,
+                    id = 1
                 )
             )
             itemMotoMecSharedPreferencesDatasource.save(
                 ItemMotoMecSharedPreferencesModel(
                     nroOS = 123456
                 )
-            )
-            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
-            assertEquals(
-                resultNoteGetBefore.isSuccess,
-                true
-            )
-            val modelNoteBefore = resultNoteGetBefore.getOrNull()!!
-            assertEquals(
-                modelNoteBefore.idActivity,
-                null
             )
             val listHeaderBefore = headerMotoMecDao.all()
             assertEquals(
@@ -424,6 +634,24 @@ class ISetIdActivityCommonTest {
                 modelNoteAfterList.idHeader,
                 1
             )
+            val resultModelHeaderAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultModelHeaderAfter.isSuccess,
+                true
+            )
+            val modelHeaderAfter = resultModelHeaderAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                1
+            )
+            assertEquals(
+                modelHeaderAfter.nroOS,
+                12345
+            )
+            assertEquals(
+                modelHeaderAfter.id,
+                1
+            )
         }
 
     @Test
@@ -431,14 +659,21 @@ class ISetIdActivityCommonTest {
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
-                    regOperator = 123465,
+                    regOperator = 123456,
                     idEquip = 1,
                     typeEquip = TypeEquip.NORMAL,
                     idTurn = 1,
-                    nroOS = 123456,
+                    nroOS = 12345,
                     idActivity = 1,
                     hourMeterInitial = 10.0,
                     statusCon = true
+                )
+            )
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    nroOS = 12345,
+                    id = 1,
+                    idActivity = 1
                 )
             )
             itemMotoMecSharedPreferencesDatasource.save(
@@ -522,6 +757,24 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 modelNoteAfterList.idHeader,
+                1
+            )
+            val resultModelHeaderAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+            resultModelHeaderAfter.isSuccess,
+            true
+            )
+            val modelHeaderAfter = resultModelHeaderAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                2
+            )
+            assertEquals(
+                modelHeaderAfter.nroOS,
+                12345
+            )
+            assertEquals(
+                modelHeaderAfter.id,
                 1
             )
         }

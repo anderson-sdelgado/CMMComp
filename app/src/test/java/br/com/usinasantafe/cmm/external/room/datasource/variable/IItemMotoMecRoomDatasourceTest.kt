@@ -20,7 +20,7 @@ import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class INoteMotoMecRoomDatasourceTest {
+class IItemMotoMecRoomDatasourceTest {
 
     private lateinit var itemMotoMecDao: ItemMotoMecDao
     private lateinit var db: DatabaseRoom

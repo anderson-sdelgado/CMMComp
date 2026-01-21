@@ -13,7 +13,7 @@ data class PerformanceRoomModel(
     val idHeader: Int,
     val nroOS: Int,
     var value: Double? = null,
-    val dateHour: Date
+    val dateHour: Date = Date()
 )
 
 fun Performance.entityToRoomModel(): PerformanceRoomModel {

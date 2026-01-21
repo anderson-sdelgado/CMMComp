@@ -130,7 +130,7 @@ class ISetIdStopNoteTest {
             whenever(
                 motoMecRepository.saveNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(1)
             assertEquals(
@@ -139,7 +139,7 @@ class ISetIdStopNoteTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

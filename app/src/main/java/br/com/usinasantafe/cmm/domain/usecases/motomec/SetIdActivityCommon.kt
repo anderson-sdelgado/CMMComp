@@ -6,14 +6,15 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdActivityCommon {
     suspend operator fun invoke(
         id: Int,
-        flowApp: FlowApp = FlowApp.HEADER_INITIAL
-    ): Result<Boolean>
+        flowApp: FlowApp
+    ): Result<FlowApp>
 }
 
 class ISetIdActivityCommon @Inject constructor(
@@ -25,7 +26,7 @@ class ISetIdActivityCommon @Inject constructor(
     override suspend fun invoke(
         id: Int,
         flowApp: FlowApp
-    ): Result<Boolean> {
+    ): Result<FlowApp> {
         try {
             val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
             resultHeaderSetId.onFailure {
@@ -34,7 +35,7 @@ class ISetIdActivityCommon @Inject constructor(
                     cause = it
                 )
             }
-            if(flowApp == FlowApp.HEADER_INITIAL) return resultHeaderSetId
+            if(flowApp == FlowApp.HEADER_INITIAL) return Result.success(flowApp)
             val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
             resultNoteSetId.onFailure {
                 return resultFailure(
@@ -42,7 +43,7 @@ class ISetIdActivityCommon @Inject constructor(
                     cause = it
                 )
             }
-            if(flowApp != FlowApp.NOTE_WORK) return resultNoteSetId
+            if(flowApp == FlowApp.NOTE_STOP) return Result.success(flowApp)
             val resultListFunctionActivity =
                 functionActivityRepository.listByIdActivity(id)
             resultListFunctionActivity.onFailure {
@@ -53,7 +54,7 @@ class ISetIdActivityCommon @Inject constructor(
             }
             val functionActivityList = resultListFunctionActivity.getOrNull()!!
             val checkTranshipment = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
-            if(checkTranshipment) return Result.success(false)
+            if(checkTranshipment) return Result.success(FlowApp.TRANSHIPMENT)
             val checkPerformance = functionActivityList.any { it.typeActivity == TypeActivity.PERFORMANCE }
             if(checkPerformance){
                 val result = motoMecRepository.insertInitialPerformance()
@@ -80,7 +81,16 @@ class ISetIdActivityCommon @Inject constructor(
                 )
             }
             startWorkManager()
-            return resultSave
+            val resultGetTypeEquip = motoMecRepository.getTypeEquipHeader()
+            resultGetTypeEquip.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+            val typeEquip = resultGetTypeEquip.getOrNull()!!
+            if(typeEquip == TypeEquip.REEL_FERT) return Result.success(FlowApp.REEL_FERT)
+            return Result.success(flowApp)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

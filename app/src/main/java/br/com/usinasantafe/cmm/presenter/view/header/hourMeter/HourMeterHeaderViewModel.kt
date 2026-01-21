@@ -3,9 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.header.hourMeter
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckOpenCheckList
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextFieldComma
@@ -13,7 +11,6 @@ import br.com.usinasantafe.cmm.presenter.theme.clearTextFieldComma
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,8 +35,6 @@ class HourMeterHeaderViewModel @Inject constructor(
     saveStateHandle: SavedStateHandle,
     private val checkHourMeter: CheckHourMeter,
     private val setHourMeter: SetHourMeter,
-    private val checkOpenCheckList: CheckOpenCheckList,
-    private val getTypeEquip: GetTypeEquip
 ) : ViewModel() {
 
     private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
@@ -116,21 +111,6 @@ class HourMeterHeaderViewModel @Inject constructor(
 
     fun setHourMeterHeader() =
         viewModelScope.launch {
-            if(uiState.value.flowApp == FlowApp.HEADER_INITIAL){
-                val result = getTypeEquip()
-                result.onFailure {
-                    handleFailure(it)
-                    return@launch
-                }
-                val typeEquip = result.getOrNull()!!
-                if(typeEquip == TypeEquip.REEL_FERT){
-                    _uiState.update {
-                        it.copy(
-                            flowApp = FlowApp.REEL_FERT
-                        )
-                    }
-                }
-            }
             val resultSet = setHourMeter(
                 hourMeter = uiState.value.hourMeter,
                 flowApp = uiState.value.flowApp
@@ -139,22 +119,7 @@ class HourMeterHeaderViewModel @Inject constructor(
                 handleFailure(it)
                 return@launch
             }
-            if((uiState.value.flowApp == FlowApp.HEADER_FINISH) || (uiState.value.flowApp == FlowApp.REEL_FERT)){
-                _uiState.update {
-                    it.copy(
-                        flagDialog = false,
-                        flagAccess = true
-                    )
-                }
-                return@launch
-            }
-            val resultCheckOpenCheckList = checkOpenCheckList()
-            resultCheckOpenCheckList.onFailure {
-                handleFailure(it)
-                return@launch
-            }
-            val check = resultCheckOpenCheckList.getOrNull()!!
-            val flowApp = if(check) FlowApp.CHECK_LIST else uiState.value.flowApp
+            val flowApp = resultSet.getOrNull()!!
             _uiState.update {
                 it.copy(
                     flagDialog = false,

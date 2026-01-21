@@ -1242,7 +1242,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -1324,7 +1324,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -1650,7 +1650,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.menuList("ecm")
             viewModel.setSelection(1)
@@ -2011,7 +2011,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.menuList("pcomp")
             viewModel.setSelection(1)
@@ -2103,7 +2103,7 @@ class MenuNoteViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.menuList("pcomp")
             viewModel.setSelection(1)

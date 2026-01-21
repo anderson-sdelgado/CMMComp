@@ -40,4 +40,8 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindCompoundCompostingRoomDatasource(dataSource: ICompoundCompostingRoomDatasource): CompoundCompostingRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindPerformanceRoomDatasource(dataSource: IPerformanceRoomDatasource): PerformanceRoomDatasource
+
 }

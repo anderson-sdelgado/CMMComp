@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 interface ItemMotoMecSharedPreferencesDatasource {
     suspend fun get(): Result<ItemMotoMecSharedPreferencesModel>
@@ -9,7 +10,7 @@ interface ItemMotoMecSharedPreferencesDatasource {
         nroOS: Int,
         statusCon: Boolean
     ): Result<Boolean>
-    suspend fun setIdActivity(id: Int): Result<Boolean>
+    suspend fun setIdActivity(id: Int): EmptyResult
     suspend fun getIdActivity(): Result<Int>
     suspend fun setIdStop(id: Int): Result<Boolean>
     suspend fun clean(): Result<Boolean>

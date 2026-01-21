@@ -40,7 +40,8 @@ fun HourMeterHeaderScreen(
     onNavActivityList: () -> Unit,
     onNavMenuNote: () -> Unit,
     onNavInitialMenu: () -> Unit,
-    onNavQuestionUpdateCheckList: () -> Unit
+    onNavQuestionUpdateCheckList: () -> Unit,
+    onNavMotorPump: () -> Unit,
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -60,6 +61,7 @@ fun HourMeterHeaderScreen(
                 onNavMenuNote = onNavMenuNote,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavQuestionUpdateCheckList = onNavQuestionUpdateCheckList,
+                onNavMotorPump = onNavMotorPump,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -82,6 +84,7 @@ fun HourMeterHeaderContent(
     onNavMenuNote: () -> Unit,
     onNavInitialMenu: () -> Unit,
     onNavQuestionUpdateCheckList: () -> Unit,
+    onNavMotorPump: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -119,6 +122,7 @@ fun HourMeterHeaderContent(
             when(flowApp){
                 FlowApp.HEADER_INITIAL -> onNavActivityList()
                 FlowApp.HEADER_FINISH -> onNavMenuNote()
+                FlowApp.REEL_FERT -> onNavMotorPump()
                 else -> {}
             }
 
@@ -192,6 +196,7 @@ fun HourMeterHeaderPagePreview() {
                 onNavMenuNote = {},
                 onNavInitialMenu = {},
                 onNavQuestionUpdateCheckList = {},
+                onNavMotorPump = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -218,6 +223,7 @@ fun HourMeterHeaderPagePreviewEmpty() {
                 onNavMenuNote = {},
                 onNavInitialMenu = {},
                 onNavQuestionUpdateCheckList = {},
+                onNavMotorPump = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -244,6 +250,7 @@ fun HourMeterHeaderPagePreviewInvalid() {
                 onNavMenuNote = {},
                 onNavInitialMenu = {},
                 onNavQuestionUpdateCheckList = {},
+                onNavMotorPump = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -270,6 +277,7 @@ fun HourMeterHeaderPagePreviewFailure() {
                 onNavMenuNote = {},
                 onNavInitialMenu = {},
                 onNavQuestionUpdateCheckList = {},
+                onNavMotorPump = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
