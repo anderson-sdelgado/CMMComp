@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.variable
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.retrofit.api.variable.MotoMecApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelInput

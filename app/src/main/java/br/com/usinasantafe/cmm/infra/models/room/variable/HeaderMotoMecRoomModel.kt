@@ -35,21 +35,22 @@ data class HeaderMotoMecRoomModel(
 )
 
 fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
-    return with(this) {
-        HeaderMotoMecRoomModel(
-            id = this.id,
-            regOperator = this.regOperator!!,
-            idEquip = this.idEquip!!,
-            typeEquip = this.typeEquip!!,
-            idTurn = this.idTurn!!,
-            nroOS = this.nroOS!!,
-            idActivity = this.idActivity!!,
-            hourMeterInitial = this.hourMeter!!,
-            flowComposting = this.flowComposting,
-            statusCon = this.statusCon!!,
-            idEquipMotorPump = this.idEquipMotorPump
-        )
-    }
+    fun <T> T?.required(field: String): T =
+        this ?: throw NullPointerException("$field is required")
+
+    return HeaderMotoMecRoomModel(
+        id = id,
+        regOperator = regOperator.required("regOperator"),
+        idEquip = idEquip.required("idEquip"),
+        typeEquip = typeEquip.required("typeEquip"),
+        idTurn = idTurn.required("idTurn"),
+        nroOS = nroOS.required("nroOS"),
+        idActivity = idActivity.required("idActivity"),
+        hourMeterInitial = hourMeter.required("hourMeter"),
+        flowComposting = flowComposting,
+        statusCon = statusCon.required("statusCon"),
+        idEquipMotorPump = idEquipMotorPump
+    )
 }
 
 fun HeaderMotoMecRoomModel.roomModelToSharedPreferences(): HeaderMotoMecSharedPreferencesModel {

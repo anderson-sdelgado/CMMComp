@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.external.retrofit.datasource.stable
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.retrofit.api.stable.StopApi
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.StopRetrofitModel

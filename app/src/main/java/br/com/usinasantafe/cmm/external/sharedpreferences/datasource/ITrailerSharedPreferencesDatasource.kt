@@ -2,10 +2,11 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.TrailerSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_TRAILER_LIST
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -46,7 +47,7 @@ class ITrailerSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun clean(): Result<Boolean> {
+    override suspend fun clean(): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -54,7 +55,7 @@ class ITrailerSharedPreferencesDatasource @Inject constructor(
                     null
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

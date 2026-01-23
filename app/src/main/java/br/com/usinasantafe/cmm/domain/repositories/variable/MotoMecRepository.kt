@@ -25,15 +25,15 @@ interface MotoMecRepository {
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
     suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult
-    suspend fun finishHeader(): Result<Boolean>
+    suspend fun finishHeader(): EmptyResult
     suspend fun hasHeaderSend(): Result<Boolean>
-    suspend fun setStatusConHeader(status: Boolean): Result<Boolean>
+    suspend fun setStatusConHeader(status: Boolean): EmptyResult
     suspend fun getIdTurnHeader(): Result<Int>
     suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
     suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
     suspend fun setIdActivityNote(id: Int): EmptyResult
-    suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): Result<Boolean>
+    suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult
     suspend fun saveNote(
         idHeader: Int
     ): EmptyResult
@@ -43,7 +43,7 @@ interface MotoMecRepository {
     suspend fun send(
         number: Long,
         token: String
-    ): Result<Boolean>
+    ): EmptyResult
     suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>>
     suspend fun hasNoteByIdStopAndIdHeader(
         idHeader: Int,
@@ -51,6 +51,6 @@ interface MotoMecRepository {
     ): Result<Boolean>
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun hasCouplingTrailerImplement(): Result<Boolean>
-    suspend fun uncouplingTrailerImplement(): Result<Boolean>
+    suspend fun uncouplingTrailerImplement(): EmptyResult
     suspend fun insertInitialPerformance(): Result<Unit>
 }

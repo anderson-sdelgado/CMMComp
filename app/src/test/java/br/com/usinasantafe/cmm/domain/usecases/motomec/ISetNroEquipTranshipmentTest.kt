@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowApp
 import kotlinx.coroutines.test.runTest
@@ -284,7 +284,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -339,7 +339,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -399,7 +399,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.getIdByHeaderOpen()

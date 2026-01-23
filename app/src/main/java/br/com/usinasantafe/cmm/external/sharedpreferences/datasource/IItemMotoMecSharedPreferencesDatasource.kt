@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
@@ -178,7 +178,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): Result<Boolean> {
+    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -196,7 +196,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

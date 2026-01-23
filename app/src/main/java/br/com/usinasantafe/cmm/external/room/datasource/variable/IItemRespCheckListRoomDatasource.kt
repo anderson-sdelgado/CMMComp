@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.variable
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemRespCheckListDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemRespCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel

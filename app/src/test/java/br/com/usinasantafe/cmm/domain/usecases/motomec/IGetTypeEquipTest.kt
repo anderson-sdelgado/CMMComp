@@ -1,40 +1,41 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.lib.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
-class ISetIdTurnTest  {
+class IGetTypeEquipTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = ISetIdTurn(
+    private val usecase = IGetTypeEquip(
         motoMecRepository = motoMecRepository
     )
 
     @Test
-    fun `Check return failure if have error in HeaderMotoMecRepository setIdTurn`() =
+    fun `Check return failure if have error in MotoMecRepository getTypeEquipHeader`() =
         runTest {
             whenever(
-                motoMecRepository.setIdTurnHeader(1)
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 resultFailure(
-                    "IHeaderMotoMecRepository.setIdTurn",
-                    "-",
-                    Exception()
+                    context = "MotoMecRepository.getTypeEquipHeader",
+                    message = "-",
+                    cause = Exception()
                 )
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdTurn -> IHeaderMotoMecRepository.setIdTurn"
+                "IGetTypeEquip -> MotoMecRepository.getTypeEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -46,18 +47,19 @@ class ISetIdTurnTest  {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.setIdTurnHeader(1)
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
-                Result.success(Unit)
+                Result.success(TypeEquip.NORMAL)
             )
-            val result = usecase(1)
+            val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                Unit
+                TypeEquip.NORMAL
             )
         }
+
 }

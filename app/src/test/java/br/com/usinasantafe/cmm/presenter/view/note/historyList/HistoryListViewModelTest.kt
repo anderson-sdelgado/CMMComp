@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.note.historyList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListHistory
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
 import br.com.usinasantafe.cmm.lib.WORK

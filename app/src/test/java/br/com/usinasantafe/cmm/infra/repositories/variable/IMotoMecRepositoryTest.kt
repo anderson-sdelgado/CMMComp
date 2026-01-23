@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
@@ -81,7 +81,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setRegOperator(12345)
@@ -113,12 +113,12 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setRegOperator(12345)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setRegOperatorHeader(12345)
             assertEquals(
@@ -127,7 +127,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull(),
-                true
+                Unit
             )
         }
 
@@ -173,7 +173,7 @@ class IMotoMecRepositoryTest {
                     typeEquip = TypeEquip.NORMAL
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setDataEquipHeader(
                 idEquip = 12345,
@@ -185,7 +185,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -222,7 +222,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setIdTurn(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setIdTurnHeader(1)
             assertEquals(
@@ -231,7 +231,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -268,7 +268,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setNroOS(12345)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setNroOSHeader(12345)
             assertEquals(
@@ -277,7 +277,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -490,11 +490,11 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.saveHeader"
+                "IMotoMecRepository.saveHeader -> entityToRoomModel"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
+                "java.lang.NullPointerException: regOperator is required"
             )
         }
 
@@ -805,7 +805,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecRoomDatasource.finish()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.finishHeader()
             assertEquals(
@@ -814,7 +814,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
     
@@ -1085,11 +1085,11 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.saveNote"
+                "IMotoMecRepository.saveNote -> entityToRoomModel"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
+                "java.lang.NullPointerException: nroOS is required"
             )
         }
 
@@ -1422,7 +1422,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setStatusCon(true)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setStatusConHeader(true)
             assertEquals(
@@ -1431,7 +1431,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -1896,7 +1896,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -2338,7 +2338,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 trailerSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.uncouplingTrailerImplement()
             assertEquals(
@@ -2347,7 +2347,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -2384,7 +2384,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(200)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setNroEquipTranshipmentNote(200)
             assertEquals(
@@ -2393,7 +2393,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -2476,7 +2476,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(10)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setIdEquipMotorPumpHeader(10)
             assertEquals(
@@ -2485,7 +2485,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

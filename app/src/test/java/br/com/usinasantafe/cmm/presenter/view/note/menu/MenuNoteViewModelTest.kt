@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.note.menu
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.cec.SetDatePreCEC
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoadSentOpen
@@ -437,7 +437,7 @@ class MenuNoteViewModelTest {
             whenever(
                 uncouplingTrailer()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.onDialogCheck(
                 1 to UNCOUPLING_TRAILER

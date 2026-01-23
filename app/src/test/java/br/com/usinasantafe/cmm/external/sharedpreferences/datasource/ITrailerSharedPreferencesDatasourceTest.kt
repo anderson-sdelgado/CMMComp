@@ -145,7 +145,7 @@ class ITrailerSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultClean.getOrNull()!!,
-                true
+                Unit
             )
             val resultHasAfter = datasource.has()
             assertEquals(

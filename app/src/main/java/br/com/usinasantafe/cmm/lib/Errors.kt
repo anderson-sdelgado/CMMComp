@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.domain.errors
+package br.com.usinasantafe.cmm.lib
 
 fun resultFailure(
     context: String,
@@ -40,7 +40,7 @@ class AppError(
     context: String,
     message: String?,
     cause: Throwable? = null
-) : Exception(removeRepeatedCalls("$context${if (message == null) " -> Unknown Error" else if (message == "-") "" else " -> $message"}"), cause)
+) : Exception(removeRepeatedCalls("$context${if (message == null) "" else if (message == "-") "" else " -> $message"}"), cause)
 
 fun failure(classAndMethod: String, error: Throwable) : String {
     return removeRepeatedCalls("$classAndMethod -> ${error.message} -> ${error.cause.toString()}")
@@ -57,4 +57,12 @@ fun removeRepeatedCalls(path: String): String {
     }
 
     return result.joinToString(" -> ")
+}
+
+inline fun <T> runMapper(mapperName: String = Throwable().stackTrace[1].methodName, block: () -> T): T {
+    return try {
+        block()
+    } catch (e: Exception) {
+        throw Exception(mapperName, e)
+    }
 }

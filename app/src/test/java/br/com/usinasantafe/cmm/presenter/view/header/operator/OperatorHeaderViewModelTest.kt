@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasRegColab
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
@@ -406,7 +406,7 @@ class OperatorHeaderViewModelTest {
             whenever(
                 setRegOperator("19759")
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.setTextField(
                 "19759",

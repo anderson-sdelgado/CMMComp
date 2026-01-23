@@ -1,13 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowApp
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISetNroOSCommonTest {
 
@@ -29,7 +29,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNroOSCommon"
+                "ISetNroOS -> toInt"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -59,7 +59,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNroOSCommon -> HeaderMotoMecRepository.setNroOS"
+                "ISetNroOS -> HeaderMotoMecRepository.setNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -73,7 +73,7 @@ class ISetNroOSCommonTest {
             whenever(
                 motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 nroOS = "123456",
@@ -85,7 +85,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -111,7 +111,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNroOSCommon -> HeaderMotoMecRepository.setNroOS"
+                "ISetNroOS -> HeaderMotoMecRepository.setNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -125,7 +125,7 @@ class ISetNroOSCommonTest {
             whenever(
                 motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroOSNote(123456)
@@ -146,7 +146,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNroOSCommon -> NoteMotoMecRepository.setNroOS"
+                "ISetNroOS -> NoteMotoMecRepository.setNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -160,7 +160,7 @@ class ISetNroOSCommonTest {
             whenever(
                 motoMecRepository.setNroOSHeader(123456)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setNroOSNote(123456)
@@ -177,7 +177,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

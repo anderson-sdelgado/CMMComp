@@ -19,7 +19,7 @@ interface HeaderMotoMecSharedPreferencesDatasource {
     suspend fun getNroOS(): Result<Int>
     suspend fun getIdEquip(): Result<Int>
     suspend fun setHourMeter(hourMeter: Double): EmptyResult
-    suspend fun clean(): Result<Boolean>
+    suspend fun clean(): EmptyResult
     suspend fun setStatusCon(status: Boolean): EmptyResult
     suspend fun getIdActivity(): Result<Int>
     suspend fun getStatusCon(): Result<Boolean>

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.header.turnList
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
@@ -298,7 +298,7 @@ class TurnListHeaderViewModelTest {
                     id = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.setIdTurnHeader(1)
             assertEquals(

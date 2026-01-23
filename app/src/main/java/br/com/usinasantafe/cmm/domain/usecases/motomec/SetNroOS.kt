@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
 
 interface SetNroOS {
@@ -23,13 +25,14 @@ class ISetNroOS @Inject constructor(
         flowApp: FlowApp
     ): EmptyResult {
         return runCatching {
-            motoMecRepository.setNroOSHeader(
+            val nroOSInt = runCatching {
                 nroOS.toInt()
-            ).getOrThrow()
+            }.getOrElse { e ->
+                throw Exception(::toInt.name, e)
+            }
+            motoMecRepository.setNroOSHeader(nroOSInt).getOrThrow()
             if (flowApp == FlowApp.HEADER_INITIAL) return Result.success(Unit)
-            motoMecRepository.setNroOSNote(
-                nroOS.toInt()
-            ).getOrThrow()
+            motoMecRepository.setNroOSNote(nroOSInt).getOrThrow()
         }.fold(
             onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }

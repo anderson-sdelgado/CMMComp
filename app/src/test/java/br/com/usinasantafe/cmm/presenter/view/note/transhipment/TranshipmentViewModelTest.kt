@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.transhipment
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroEquipTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip

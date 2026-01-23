@@ -1,20 +1,19 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.StatusTranshipment
-import kotlinx.coroutines.test.runTest
+import br.com.usinasantafe.cmm.lib.TypeNote
+import br.com.usinasantafe.cmm.lib.resultFailure
 import org.mockito.Mockito.mock
+import kotlinx.coroutines.test.runTest
+import org.junit.Test
 import org.mockito.kotlin.whenever
-import java.util.Date
-import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class IGetStatusTranshipmentTest {
+class IGetTypeLastNoteTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = IGetStatusTranshipment(
+    private val usecase = IGetTypeLastNote(
         motoMecRepository = motoMecRepository
     )
 
@@ -32,16 +31,16 @@ class IGetStatusTranshipmentTest {
             )
             val result = usecase()
             assertEquals(
-                true,
-                result.isFailure
+                result.isFailure,
+                true
             )
             assertEquals(
-                "IGetStatusTranshipment -> IMotoMecRepository.getIdByHeaderOpen",
-                result.exceptionOrNull()!!.message!!
+                result.exceptionOrNull()!!.message,
+                "IGetTypeLastNote -> IMotoMecRepository.getIdByHeaderOpen"
             )
             assertEquals(
-                "java.lang.Exception",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
             )
         }
 
@@ -69,7 +68,7 @@ class IGetStatusTranshipmentTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStatusTranshipment -> IMotoMecRepository.hasNoteByIdHeader"
+                "IGetTypeLastNote -> IMotoMecRepository.hasNoteByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -78,7 +77,7 @@ class IGetStatusTranshipmentTest {
         }
 
     @Test
-    fun `Check return StatusTranshipment WITHOUT_NOTE if function execute successfully and return false`() =
+    fun `Check return null if MotoMecRepository hasNoteByIdHeader return false`() =
         runTest {
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -96,8 +95,8 @@ class IGetStatusTranshipmentTest {
                 true
             )
             assertEquals(
-                result.getOrNull()!!,
-                StatusTranshipment.WITHOUT_NOTE
+                result.getOrNull(),
+                null
             )
         }
 
@@ -130,7 +129,7 @@ class IGetStatusTranshipmentTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetStatusTranshipment -> IMotoMecRepository.getNoteLastByIdHeader"
+                "IGetTypeLastNote -> IMotoMecRepository.getNoteLastByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -139,7 +138,7 @@ class IGetStatusTranshipmentTest {
         }
 
     @Test
-    fun `Check return  StatusTranshipment WITHOUT_NOTE if function execute successfully and last Note is type WORK`() =
+    fun `Check return TypeNote WORK if noteLast idStop is null`() =
         runTest {
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -155,11 +154,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    ItemMotoMec(
-                        id = 1,
-                        nroOS = 123456,
-                        idActivity = 1
-                    )
+                    ItemMotoMec()
                 )
             )
             val result = usecase()
@@ -169,12 +164,12 @@ class IGetStatusTranshipmentTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                StatusTranshipment.WITHOUT_NOTE
+                TypeNote.WORK
             )
         }
 
     @Test
-    fun `Check return  StatusTranshipment TIME_INVALID if function execute successfully and idEquipTrans is not null and last dateHour note minor than dateHour now minus 10 minutes`() =
+    fun `Check return TypeNote STOP if noteLast idStop is not null`() =
         runTest {
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -190,14 +185,7 @@ class IGetStatusTranshipmentTest {
                 motoMecRepository.getNoteLastByIdHeader(1)
             ).thenReturn(
                 Result.success(
-                    ItemMotoMec(
-                        id = 1,
-                        nroOS = 123456,
-                        idActivity = 1,
-                        idStop = 1,
-                        nroEquipTranshipment = 1,
-                        dateHour = Date()
-                    )
+                    ItemMotoMec(idStop = 1)
                 )
             )
             val result = usecase()
@@ -207,85 +195,7 @@ class IGetStatusTranshipmentTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                StatusTranshipment.TIME_INVALID
+                TypeNote.STOP
             )
         }
-
-    @Test
-    fun `Check return  StatusTranshipment OK if function execute successfully and idEquipTrans is null and last dateHour note minor than dateHour now minus 10 minutes`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdByHeaderOpen()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.hasNoteByIdHeader(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                motoMecRepository.getNoteLastByIdHeader(1)
-            ).thenReturn(
-                Result.success(
-                    ItemMotoMec(
-                        id = 1,
-                        nroOS = 123456,
-                        idActivity = 1,
-                        idStop = 1,
-                        dateHour = Date()
-                    )
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                StatusTranshipment.OK
-            )
-        }
-
-    @Test
-    fun `Check return  StatusTranshipment OK if function execute successfully and idEquipTrans is not null and last dateHour note greater than dateHour now minus 10 minutes`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdByHeaderOpen()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.hasNoteByIdHeader(1)
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                motoMecRepository.getNoteLastByIdHeader(1)
-            ).thenReturn(
-                Result.success(
-                    ItemMotoMec(
-                        id = 1,
-                        nroOS = 123456,
-                        idActivity = 1,
-                        idStop = 1,
-                        nroEquipTranshipment = 1,
-                        dateHour = Date(1763476202000)
-                    )
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                StatusTranshipment.OK
-            )
-        }
-
-
 }
-

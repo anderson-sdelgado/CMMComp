@@ -5,25 +5,24 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
-import br.com.usinasantafe.cmm.lib.TypeNote
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import java.util.Date
 import javax.inject.Inject
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ICheckTypeLastNoteTest {
+class IHasNoteMotoMecTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: GetTypeLastNote
+    lateinit var usecase: IHasNoteMotoMec
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
@@ -46,7 +45,7 @@ class ICheckTypeLastNoteTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckTypeLastNote -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getId"
+                "ICheckHasNoteMotoMec -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -55,89 +54,70 @@ class ICheckTypeLastNoteTest {
         }
 
     @Test
-    fun check_return_null_if_not_have_data_in_note_moto_mec_room() =
+    fun check_return_false_if_not_have_data_in_note_moto_mec_room() =
         runTest {
-            initialRegister(1)
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19759,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    hourMeterFinish = 20.0,
+                    dateHourInitial = Date(1748359002),
+                    dateHourFinish = Date(1748359002),
+                    statusCon = true
+                )
+            )
             val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
-                result.getOrNull(),
-                null
+                result.getOrNull()!!,
+                false
             )
         }
 
     @Test
-    fun check_return_STOP_if_have_last_note_moto_mec_room_is_STOP() =
-    runTest {
-        initialRegister(2)
-        val result = usecase()
-        assertEquals(
-            result.isSuccess,
-            true
-        )
-        assertEquals(
-            result.getOrNull(),
-            TypeNote.STOP
-        )
-    }
-
-    @Test
-    fun check_return_WORK_if_have_last_note_moto_mec_room_is_WORK() =
+    fun check_return_true_if_have_data_in_note_moto_mec_room() =
         runTest {
-            initialRegister(3)
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19759,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    hourMeterFinish = 20.0,
+                    dateHourInitial = Date(1748359002),
+                    dateHourFinish = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            itemMotoMecDao.insert(
+                ItemMotoMecRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    statusCon = true
+                )
+
+            )
             val result = usecase()
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
-                result.getOrNull(),
-                TypeNote.WORK
+                result.getOrNull()!!,
+                true
             )
         }
-
-    private suspend fun initialRegister(level: Int) {
-
-        headerMotoMecDao.insert(
-            HeaderMotoMecRoomModel(
-                regOperator = 19759,
-                idEquip = 10,
-                typeEquip = TypeEquip.NORMAL,
-                idTurn = 1,
-                nroOS = 123456,
-                idActivity = 1,
-                hourMeterInitial = 10000.0,
-                dateHourInitial = Date(1748359002),
-                statusCon = true
-            )
-        )
-
-        if(level == 1) return
-
-        itemMotoMecDao.insert(
-            ItemMotoMecRoomModel(
-                idHeader = 1,
-                nroOS = 123456,
-                idActivity = 1,
-                idStop = 2,
-            )
-        )
-
-        if(level == 2) return
-
-        itemMotoMecDao.insert(
-            ItemMotoMecRoomModel(
-                idHeader = 1,
-                nroOS = 123456,
-                idActivity = 1,
-                idStop = null,
-            )
-        )
-
-        if(level == 3) return
-    }
 
 }

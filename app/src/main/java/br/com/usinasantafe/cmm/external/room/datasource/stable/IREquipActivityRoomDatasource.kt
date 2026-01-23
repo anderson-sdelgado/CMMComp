@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.REquipActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel

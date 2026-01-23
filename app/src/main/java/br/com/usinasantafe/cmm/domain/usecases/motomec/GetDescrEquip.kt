@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -16,31 +16,12 @@ class IGetDescrEquip @Inject constructor(
 ): GetDescrEquip {
 
     override suspend fun invoke(): Result<String> {
-        try {
-            val resultGetIdEquipMotoMec = motoMecRepository.getIdEquipHeader()
-            resultGetIdEquipMotoMec.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquipMotoMec.getOrNull()!!
-            val result = equipRepository.getDescrByIdEquip(
-                idEquip = idEquip
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val description = result.getOrNull()!!
-            return Result.success(description)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val idEquip = motoMecRepository.getIdEquipHeader().getOrThrow()
+            equipRepository.getDescrByIdEquip(idEquip = idEquip).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 }

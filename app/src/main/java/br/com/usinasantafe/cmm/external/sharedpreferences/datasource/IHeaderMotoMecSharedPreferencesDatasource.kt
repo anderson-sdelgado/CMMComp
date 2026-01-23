@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
@@ -280,7 +280,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun clean(): Result<Boolean> {
+    override suspend fun clean(): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -288,7 +288,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     null
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

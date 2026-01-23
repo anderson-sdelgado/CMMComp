@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MechanicRepository
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock

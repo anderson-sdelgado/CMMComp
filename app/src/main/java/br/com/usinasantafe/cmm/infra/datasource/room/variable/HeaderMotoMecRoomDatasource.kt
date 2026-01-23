@@ -10,7 +10,7 @@ interface HeaderMotoMecRoomDatasource {
     suspend fun checkOpen(): Result<Boolean>
     suspend fun getId(): Result<Int>
     suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult
-    suspend fun finish(): Result<Boolean>
+    suspend fun finish(): EmptyResult
     suspend fun checkSend(): Result<Boolean>
     suspend fun listSend(): Result<List<HeaderMotoMecRoomModel>>
     suspend fun getStatusCon(): Result<Boolean>

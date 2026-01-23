@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
@@ -8,7 +8,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ICheckHasNoteMotoMecTest {
+class IHasNoteMotoMecTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = IHasNoteMotoMec(

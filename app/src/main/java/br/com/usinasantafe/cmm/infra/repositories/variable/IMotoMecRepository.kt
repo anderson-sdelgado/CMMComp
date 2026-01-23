@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
@@ -20,7 +20,6 @@ import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import java.util.Date
 import javax.inject.Inject
 import kotlin.getOrThrow
 
@@ -37,18 +36,20 @@ class IMotoMecRepository @Inject constructor(
         return runCatching {
             val model = headerMotoMecRoomDatasource.getOpen().getOrThrow()
             headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setRegOperatorHeader(regOperator: Int): EmptyResult {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.clean().getOrThrow()
             headerMotoMecSharedPreferencesDatasource.setRegOperator(regOperator).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setDataEquipHeader(
@@ -60,256 +61,234 @@ class IMotoMecRepository @Inject constructor(
                 idEquip = idEquip,
                 typeEquip = typeEquip
             ).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getTypeEquipHeader(): Result<TypeEquip> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.getTypeEquip().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setIdTurnHeader(idTurn: Int): EmptyResult {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.setIdTurn(idTurn).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setNroOSHeader(nroOS: Int): EmptyResult {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.setNroOS(nroOS).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getNroOSHeader(): Result<Int> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.getNroOS().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setIdActivityHeader(idActivity: Int): EmptyResult {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.setIdActivity(idActivity).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getIdActivityHeader(): Result<Int> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.getIdActivity().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getIdEquipHeader(): Result<Int> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.getIdEquip().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Unit> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.setHourMeter(hourMeter).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun saveHeader(): EmptyResult {
         return runCatching {
             val modelSharedPreferences = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
-            val modelRoom = entity.entityToRoomModel()
+            val modelRoom = runCatching {
+                entity.entityToRoomModel()
+            }.getOrElse { e ->
+                throw Exception(entity::entityToRoomModel.name, e)
+            }
             val id = headerMotoMecRoomDatasource.save(modelRoom).getOrThrow()
             headerMotoMecSharedPreferencesDatasource.setId(id.toInt()).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasHeaderOpen(): Result<Boolean> {
         return runCatching {
             headerMotoMecRoomDatasource.checkOpen().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getIdByHeaderOpen(): Result<Int> {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.getId().getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult {
         return runCatching {
             headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult {
         return runCatching {
             headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(idEquip).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun finishHeader(): Result<Boolean> {
-        val result = headerMotoMecRoomDatasource.finish()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun finishHeader(): EmptyResult {
+        return runCatching {
+            headerMotoMecRoomDatasource.finish().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasHeaderSend(): Result<Boolean> {
-        val result = headerMotoMecRoomDatasource.checkSend()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            headerMotoMecRoomDatasource.checkSend().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun setStatusConHeader(status: Boolean): Result<Boolean> {
-        val result = headerMotoMecSharedPreferencesDatasource.setStatusCon(status)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun setStatusConHeader(status: Boolean): EmptyResult {
+        return runCatching {
+            headerMotoMecSharedPreferencesDatasource.setStatusCon(status).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getIdTurnHeader(): Result<Int> {
-        val result = headerMotoMecRoomDatasource.getIdTurn()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            headerMotoMecRoomDatasource.getIdTurn().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getRegOperatorHeader(): Result<Int> {
-        val result = headerMotoMecRoomDatasource.getRegOperator()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            headerMotoMecRoomDatasource.getRegOperator().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getFlowCompostingHeader(): Result<FlowComposting> {
-        val result = headerMotoMecRoomDatasource.getFlowComposting()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            headerMotoMecRoomDatasource.getFlowComposting().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setNroOSNote(nroOS: Int): Result<Boolean> {
-        try {
-            val resultClean = itemMotoMecSharedPreferencesDatasource.clean()
-            resultClean.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultGetStatusCon = headerMotoMecSharedPreferencesDatasource.getStatusCon()
-            resultGetStatusCon.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val statusCon = resultGetStatusCon.getOrNull()!!
-            val result = itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
+        return runCatching {
+            itemMotoMecSharedPreferencesDatasource.clean().getOrThrow()
+            val statusCon = headerMotoMecSharedPreferencesDatasource.getStatusCon().getOrThrow()
+            itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
                 nroOS = nroOS,
                 statusCon = statusCon
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            ).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setIdActivityNote(id: Int): EmptyResult {
-        val result = itemMotoMecSharedPreferencesDatasource.setIdActivity(id)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            itemMotoMecSharedPreferencesDatasource.setIdActivity(id).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): Result<Boolean> {
-        val result = itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquipTranshipment)
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult {
+        return runCatching {
+            itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquipTranshipment).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun saveNote(idHeader: Int): EmptyResult {
         return runCatching {
-
             val modelSharedPreferences = itemMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
-            itemMotoMecRoomDatasource.save(
-                entity.entityToRoomModel(
-                    idHeader = idHeader
-                )
-            ).getOrThrow()
+            val modelRoom = runCatching {
+                entity.entityToRoomModel(idHeader = idHeader)
+            }.getOrElse { e ->
+                throw Exception(entity::entityToRoomModel.name, e)
+            }
+            itemMotoMecRoomDatasource.save(modelRoom).getOrThrow()
             headerMotoMecRoomDatasource.setSend(idHeader).getOrThrow()
-            return Result.success(Unit)
-
         }.fold(
             onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
@@ -317,210 +296,130 @@ class IMotoMecRepository @Inject constructor(
     }
 
     override suspend fun getIdActivityNote(): Result<Int> {
-        val result = itemMotoMecSharedPreferencesDatasource.getIdActivity()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
-
+        return runCatching {
+            itemMotoMecSharedPreferencesDatasource.getIdActivity().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun setIdStop(id: Int): EmptyResult {
-        val result = itemMotoMecSharedPreferencesDatasource.setIdStop(id)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            itemMotoMecSharedPreferencesDatasource.setIdStop(id).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean> {
-        val result = itemMotoMecRoomDatasource.checkHasByIdHeader(idHeader)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            itemMotoMecRoomDatasource.checkHasByIdHeader(idHeader).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun send(
         number: Long,
         token: String
-    ): Result<Boolean> {
-        try {
-            val resultListHeaderSend = headerMotoMecRoomDatasource.listSend()
-            resultListHeaderSend.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+    ): EmptyResult {
+        return runCatching {
+            val resultListHeaderSend = headerMotoMecRoomDatasource.listSend().getOrThrow()
             val modelRetrofitList =
-                resultListHeaderSend.getOrNull()!!.map {
-                    val resultListNoteSend = itemMotoMecRoomDatasource.listByIdHeaderAndSend(it.id!!)
-                    resultListNoteSend.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-                    val noteMotoMecList = resultListNoteSend.getOrNull()!!
+                resultListHeaderSend.map {
+                    val noteMotoMecList = itemMotoMecRoomDatasource.listByIdHeaderAndSend(it.id!!).getOrThrow()
                     it.roomModelToRetrofitModel(
                         number = number,
                         noteMotoMecList = noteMotoMecList.map { note -> note.roomModelToRetrofitModel() }
                     )
                 }
-            val resultSend = motoMecRetrofitDatasource.send(
+            val headerMotoMecRetrofitList = motoMecRetrofitDatasource.send(
                 token = token,
                 modelList = modelRetrofitList
-            )
-            resultSend.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMecRetrofitList = resultSend.getOrNull()!!
+            ).getOrThrow()
             for(headerMotoMec in headerMotoMecRetrofitList){
                 val noteMotoMecRetrofitList = headerMotoMec.noteMotoMecList
                 for(noteMotoMec in noteMotoMecRetrofitList){
-                    val result = itemMotoMecRoomDatasource.setSentNote(
+                    itemMotoMecRoomDatasource.setSentNote(
                         id = noteMotoMec.id,
                         idServ = noteMotoMec.idServ
-                    )
-                    result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+                    ).getOrThrow()
                 }
-                val result = headerMotoMecRoomDatasource.setSent(
+                headerMotoMecRoomDatasource.setSent(
                     id = headerMotoMec.id,
                     idServ = headerMotoMec.idServ
-                )
-                result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+                ).getOrThrow()
             }
-            }
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> {
-        try {
-            val resultNoteList = itemMotoMecRoomDatasource.listByIdHeader(idHeader)
-            resultNoteList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultNoteList.getOrNull()!!
-            return Result.success(list.map { it.roomModelToEntity() })
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            itemMotoMecRoomDatasource.listByIdHeader(idHeader).getOrThrow().map{ it.roomModelToEntity() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasNoteByIdStopAndIdHeader(
         idHeader: Int,
         idStop: Int
     ): Result<Boolean> {
-        val result = itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(
-            idStop,
-            idHeader
+        return runCatching {
+            itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(idStop, idHeader).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
         )
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
     }
 
     override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> {
-        val result = itemMotoMecRoomDatasource.getLastByIdHeader(idHeader)
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        val entity = result.getOrNull()!!
-        return Result.success(entity.roomModelToEntity())
+        return runCatching {
+            itemMotoMecRoomDatasource.getLastByIdHeader(idHeader).getOrThrow().roomModelToEntity()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasCouplingTrailerImplement(): Result<Boolean> {
-        val result = trailerSharedPreferencesDatasource.has()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            trailerSharedPreferencesDatasource.has().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun uncouplingTrailerImplement(): Result<Boolean> {
-        val result = trailerSharedPreferencesDatasource.clean()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+    override suspend fun uncouplingTrailerImplement(): EmptyResult {
+        return runCatching {
+            trailerSharedPreferencesDatasource.clean().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun insertInitialPerformance(): Result<Unit> {
-        try {
-            val resultHeaderSharedPreferences = headerMotoMecSharedPreferencesDatasource.get()
-            resultHeaderSharedPreferences.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerModel = resultHeaderSharedPreferences.getOrNull()!!
-            val resultInsert = performanceRoomDatasource.insert(
+    override suspend fun insertInitialPerformance(): EmptyResult {
+        return runCatching {
+            val headerModel = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
+            performanceRoomDatasource.insert(
                 PerformanceRoomModel(
                     nroOS = headerModel.nroOS!!,
                     idHeader = headerModel.id!!,
                 )
-            )
-            resultInsert.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return resultInsert
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            ).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

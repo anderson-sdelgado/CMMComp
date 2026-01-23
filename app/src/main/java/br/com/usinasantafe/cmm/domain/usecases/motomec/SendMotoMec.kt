@@ -1,14 +1,15 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SendMotoMec {
-    suspend operator fun invoke(): Result<Boolean>
+    suspend operator fun invoke(): EmptyResult
 }
 
 class ISendMotoMec @Inject constructor(
@@ -17,7 +18,7 @@ class ISendMotoMec @Inject constructor(
     private val getToken: GetToken
 ): SendMotoMec {
 
-    override suspend fun invoke(): Result<Boolean> {
+    override suspend fun invoke(): EmptyResult {
         try {
             val resultGet = configRepository.getNumber()
             resultGet.onFailure {

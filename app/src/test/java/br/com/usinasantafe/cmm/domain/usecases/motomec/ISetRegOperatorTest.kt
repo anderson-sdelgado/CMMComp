@@ -1,12 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISetRegOperatorTest {
 
@@ -66,7 +66,7 @@ class ISetRegOperatorTest {
             whenever(
                 motoMecRepository.setRegOperatorHeader(19759)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase("19759")
             assertEquals(
@@ -75,7 +75,7 @@ class ISetRegOperatorTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

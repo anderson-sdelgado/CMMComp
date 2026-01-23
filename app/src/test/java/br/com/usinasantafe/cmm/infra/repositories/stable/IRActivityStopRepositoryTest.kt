@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RActivityStop
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RActivityStopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.RActivityStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RActivityStopRetrofitModel

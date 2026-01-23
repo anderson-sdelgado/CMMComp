@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.splash
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.domain.usecases.common.FlowAppOpen
 import br.com.usinasantafe.cmm.lib.FlowApp

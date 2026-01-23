@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.configuration.initial
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cmm.lib.StatusSend

@@ -28,14 +28,17 @@ data class ItemMotoMecRoomModel(
 fun ItemMotoMec.entityToRoomModel(
     idHeader: Int
 ): ItemMotoMecRoomModel{
+    fun <T> T?.required(field: String): T =
+        this ?: throw NullPointerException("$field is required")
+
     return with(this){
         ItemMotoMecRoomModel(
             id = this.id,
             idHeader = idHeader,
-            nroOS = this.nroOS!!,
-            idActivity = this.idActivity!!,
+            nroOS = this.nroOS.required("nroOS"),
+            idActivity = this.idActivity.required("idActivity"),
             idStop = this.idStop,
-            statusCon = this.statusCon!!,
+            statusCon = this.statusCon.required("statusCon"),
             dateHour = dateHour,
             nroEquipTranshipment = this.nroEquipTranshipment
         )

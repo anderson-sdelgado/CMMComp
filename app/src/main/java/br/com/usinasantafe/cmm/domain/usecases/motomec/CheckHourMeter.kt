@@ -1,8 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.text.DecimalFormat
@@ -24,7 +23,7 @@ class ICheckHourMeter @Inject constructor(
     override suspend fun invoke(
         measure: String,
     ): Result<CheckMeasureModel> {
-        try {
+        return runCatching {
             val measureBD: String
             var check = true
             val locale = Locale.Builder().setLanguage("pt").setRegion("BR").build()
@@ -33,28 +32,14 @@ class ICheckHourMeter @Inject constructor(
             formatDecimal.decimalFormatSymbols = DecimalFormatSymbols(locale)
             val measureInput = formatNumber.parse(measure)!!
             val measureInputDouble = measureInput.toDouble()
-            val resultGetHourMeterByIdEquip = equipRepository.getHourMeter()
-            resultGetHourMeterByIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val measureBDDouble = resultGetHourMeterByIdEquip.getOrNull()!!
+            val measureBDDouble = equipRepository.getHourMeter().getOrThrow()
             measureBD = formatDecimal.format(measureBDDouble)
             if(measureInputDouble < measureBDDouble) check = false
-            return Result.success(
-                CheckMeasureModel(
-                    measureBD = measureBD,
-                    check = check
-                )
-            )
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            CheckMeasureModel(measureBD = measureBD, check = check)
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

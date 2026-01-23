@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.header.motorPump
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdEquipMotorPump
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip

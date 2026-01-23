@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.os
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
@@ -243,7 +243,7 @@ class OSCommonViewModelTest {
             whenever(
                 setNroOS("123456")
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val viewModel = createViewModel()
             viewModel.setTextField(
@@ -285,7 +285,7 @@ class OSCommonViewModelTest {
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val viewModel = createViewModel(
                 SavedStateHandle(
