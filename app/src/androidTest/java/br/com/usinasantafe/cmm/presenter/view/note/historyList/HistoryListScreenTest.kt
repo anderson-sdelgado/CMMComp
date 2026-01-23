@@ -131,7 +131,9 @@ class HistoryListScreenTest {
 
     private fun setContent(){
         composeTestRule.setContent {
-            HistoryListScreen()
+            HistoryListScreen(
+                onNavMenuNote = {}
+            )
         }
     }
 

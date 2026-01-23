@@ -218,7 +218,7 @@ class IFunctionActivityRepositoryTest {
     fun `listByIdActivity - Check return failure if have error in FunctionActivityRoomDatasource listByIdActivity`() =
         runTest {
             whenever(
-                functionActivityRoomDatasource.listByIdActivity(1)
+                functionActivityRoomDatasource.listById(1)
             ).thenReturn(
                 resultFailure(
                     "IFunctionActivityRoomDatasource.listByIdActivity",
@@ -226,14 +226,14 @@ class IFunctionActivityRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.listByIdActivity(1)
+            val result = repository.listById(1)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IFunctionActivityRepository.listByIdActivity -> IFunctionActivityRoomDatasource.listByIdActivity"
+                "IFunctionActivityRepository.listById -> IFunctionActivityRoomDatasource.listByIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -259,11 +259,11 @@ class IFunctionActivityRepositoryTest {
                 )
             )
             whenever(
-                functionActivityRoomDatasource.listByIdActivity(1)
+                functionActivityRoomDatasource.listById(1)
             ).thenReturn(
                 Result.success(roomModelList)
             )
-            val result = repository.listByIdActivity(1)
+            val result = repository.listById(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -273,5 +273,65 @@ class IFunctionActivityRepositoryTest {
                 entityList
             )
         }
+
+    @Test
+    fun `hasByIdAndType - Check return failure if have error in FunctionActivityRoomDatasource hasByIdAndType`() =
+        runTest {
+            whenever(
+                functionActivityRoomDatasource.hasByIdAndType(
+                    1,
+                    TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IFunctionActivityRoomDatasource.hasByIdAndType",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasByIdAndType(
+                1,
+                TypeActivity.PERFORMANCE
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFunctionActivityRepository.hasByIdAndType -> IFunctionActivityRoomDatasource.hasByIdAndType"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasByIdAndType - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                functionActivityRoomDatasource.hasByIdAndType(
+                    1,
+                    TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasByIdAndType(
+                1,
+                TypeActivity.PERFORMANCE
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+
 
 }

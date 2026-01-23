@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoom
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityFunctionActivityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -64,9 +65,9 @@ class IFunctionActivityRepository @Inject constructor(
         }
     }
 
-    override suspend fun listByIdActivity(idActivity: Int): Result<List<FunctionActivity>> {
+    override suspend fun listById(idActivity: Int): Result<List<FunctionActivity>> {
         try {
-            val result = functionActivityRoomDatasource.listByIdActivity(idActivity)
+            val result = functionActivityRoomDatasource.listById(idActivity)
             result.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),
@@ -81,5 +82,22 @@ class IFunctionActivityRepository @Inject constructor(
                 cause = e
             )
         }
+    }
+
+    override suspend fun hasByIdAndType(
+        idActivity: Int,
+        typeActivity: TypeActivity
+    ): Result<Boolean> {
+        val result = functionActivityRoomDatasource.hasByIdAndType(
+            idActivity = idActivity,
+            typeActivity = typeActivity
+        )
+        result.onFailure {
+                return resultFailure(
+                    context = getClassAndMethod(),
+                    cause = it
+                )
+            }
+        return result
     }
 }

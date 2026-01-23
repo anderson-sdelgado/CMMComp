@@ -1,56 +1,52 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetIdStopNote {
     suspend operator fun invoke(
         id: Int
-    ): Result<Unit>
+    ): EmptyResult
 }
 
 class ISetIdStopNote @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
+    private val functionActivityRepository: FunctionActivityRepository,
     private val startWorkManager: StartWorkManager
 ): SetIdStopNote {
 
     override suspend fun invoke(
         id: Int
-    ): Result<Unit> {
-        try {
-            val resultSet = motoMecRepository.setIdStop(id)
-            resultSet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+    ): EmptyResult {
+        return runCatching {
+
+            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
+
+            motoMecRepository.setIdStop(id).getOrThrow()
+            motoMecRepository.saveNote(idHeader).getOrThrow()
+
+            val checkPerformance = functionActivityRepository.hasByIdAndType(
+                idActivity = idActivity,
+                typeActivity = TypeActivity.PERFORMANCE
+            ).getOrThrow()
+
+            if(checkPerformance) {
+                motoMecRepository.insertInitialPerformance().getOrThrow()
             }
-            val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idHeader = resultGetId.getOrNull()!!
-            val resultSave = motoMecRepository.saveNote(idHeader)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+
             startWorkManager()
-            return resultSave
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

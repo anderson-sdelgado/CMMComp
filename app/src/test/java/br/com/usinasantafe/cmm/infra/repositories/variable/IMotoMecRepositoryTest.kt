@@ -1330,7 +1330,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.setIdStop(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setIdStop(1)
             assertEquals(
@@ -1339,7 +1339,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

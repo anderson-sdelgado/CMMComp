@@ -1,10 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.RItemMenuStopDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.RItemMenuStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
@@ -12,6 +15,7 @@ import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.ECM
 import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
 import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -24,13 +28,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ISetNoteMotoMecTest {
+class ISetNoteTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SetNoteMotoMec
+    lateinit var usecase: SetNote
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
@@ -47,13 +51,19 @@ class ISetNoteMotoMecTest {
     @Inject
     lateinit var rItemMenuStopDao: RItemMenuStopDao
 
+    @Inject
+    lateinit var performanceDao: PerformanceDao
+
+    @Inject
+    lateinit var functionActivityDao: FunctionActivityDao
+
     @Before
     fun setUp() {
         hiltRule.inject()
     }
 
     @Test
-    fun check_return_failure_if_not_have_data_in_header_moto_mec_room() =
+    fun check_return_failure_if_not_have_id_in_header_moto_mec_shared_preferences() =
         runTest {
             val result = usecase(
                 ItemMenuModel(
@@ -70,16 +80,16 @@ class ISetNoteMotoMecTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNoteMotoMec -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecRoomDatasource.getId"
+                "ISetNote -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Integer br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()' on a null object reference"
+                "java.lang.NullPointerException"
             )
         }
 
     @Test
-    fun check_return_failure_if_not_have_data_in_header_moto_mec_shared_preferences() =
+    fun check_return_failure_if_not_have_nro_os_in_header_moto_mec_shared_preferences() =
         runTest {
             initialRegister(1)
             val result = usecase(
@@ -97,7 +107,7 @@ class ISetNoteMotoMecTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNoteMotoMec -> IMotoMecRepository.getNroOSHeader -> IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
+                "ISetNote -> IMotoMecRepository.getNroOSHeader -> IHeaderMotoMecSharedPreferencesDatasource.getNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -124,7 +134,7 @@ class ISetNoteMotoMecTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNoteMotoMec -> IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity"
+                "ISetNote -> IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -133,7 +143,7 @@ class ISetNoteMotoMecTest {
         }
 
     @Test
-    fun check_return_success_if_execute_process_successfully_and_stop_is_null() =
+    fun check_return_failure_if_not_have_data_in_header_moto_mec_room() =
         runTest {
             initialRegister(3)
             val result = usecase(
@@ -146,18 +156,21 @@ class ISetNoteMotoMecTest {
                 )
             )
             assertEquals(
-                result.isSuccess,
+                result.isFailure,
                 true
             )
             assertEquals(
-                result.getOrNull()!!,
-                true
+                result.exceptionOrNull()!!.message,
+                "ISetNote -> IMotoMecRepository.saveNote -> IHeaderMotoMecRoomDatasource.setSend"
             )
-            asserts()
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Attempt to invoke virtual method 'void br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.setStatusSend(br.com.usinasantafe.cmm.lib.StatusSend)' on a null object reference"
+            )
         }
 
     @Test
-    fun check_return_success_if_execute_process_successfully_and_stop_is_not_null() =
+    fun check_return_success_if_execute_process_successfully_and_stop_is_null() =
         runTest {
             initialRegister(4)
             val result = usecase(
@@ -175,12 +188,90 @@ class ISetNoteMotoMecTest {
             )
             assertEquals(
                 result.getOrNull()!!,
+                Unit
+            )
+            asserts()
+        }
+
+    @Test
+    fun check_return_success_if_execute_process_successfully_and_stop_is_not_null() =
+        runTest {
+            initialRegister(5)
+            val result = usecase(
+                ItemMenuModel(
+                    id = 1,
+                    descr = "Item 1",
+                    function = 1 to ITEM_NORMAL,
+                    type = 1 to ITEM_NORMAL,
+                    app = 2 to ECM
+                )
+            )
+            assertEquals(
+                result.isSuccess,
                 true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
             )
             asserts(idStop = 20)
         }
 
+    @Test
+    fun check_return_success_if_execute_process_successfully_and_stop_is_not_null_and_insert_performance() =
+        runTest {
+            initialRegister(6)
+            val result = usecase(
+                ItemMenuModel(
+                    id = 1,
+                    descr = "Item 1",
+                    function = 1 to ITEM_NORMAL,
+                    type = 1 to ITEM_NORMAL,
+                    app = 2 to ECM
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+            asserts(
+                idStop = 20,
+                hasPerformance = true
+            )
+        }
+
     private suspend fun initialRegister(level: Int) {
+
+        headerMotoMecSharedPreferencesDatasource.save(
+            HeaderMotoMecSharedPreferencesModel(
+                id = 1
+            )
+        )
+
+        if(level == 1) return
+
+        headerMotoMecSharedPreferencesDatasource.save(
+            HeaderMotoMecSharedPreferencesModel(
+                id = 1,
+                nroOS = 123456
+            )
+        )
+
+        if(level == 2) return
+
+        headerMotoMecSharedPreferencesDatasource.save(
+            HeaderMotoMecSharedPreferencesModel(
+                id = 1,
+                nroOS = 123456,
+                idActivity = 1
+            )
+        )
+
+        if(level == 3) return
 
         headerMotoMecDao.insert(
             HeaderMotoMecRoomModel(
@@ -193,28 +284,11 @@ class ISetNoteMotoMecTest {
                 hourMeterInitial = 10000.0,
                 dateHourInitial = Date(1748359002),
                 statusCon = true,
-                statusSend = StatusSend.SENT
+                statusSend = StatusSend.SEND
             )
         )
 
-        if(level == 1) return
-
-        headerMotoMecSharedPreferencesDatasource.save(
-            HeaderMotoMecSharedPreferencesModel(
-                nroOS = 123456
-            )
-        )
-
-        if(level == 2) return
-
-        headerMotoMecSharedPreferencesDatasource.save(
-            HeaderMotoMecSharedPreferencesModel(
-                nroOS = 123456,
-                idActivity = 1
-            )
-        )
-
-        if(level == 3) return
+        if(level == 4) return
 
         rItemMenuStopDao.insertAll(
             listOf(
@@ -227,12 +301,25 @@ class ISetNoteMotoMecTest {
             )
         )
 
-        if(level == 4) return
+        if(level == 5) return
+
+        functionActivityDao.insertAll(
+            listOf(
+                FunctionActivityRoomModel(
+                    idFunctionActivity = 1,
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE
+                )
+            )
+        )
+
+        if(level == 6) return
 
     }
 
     private suspend fun asserts(
-        idStop: Int? = null
+        idStop: Int? = null,
+        hasPerformance: Boolean = false
     ){
 
         val headerRoomModelList = headerMotoMecDao.all()
@@ -323,7 +410,32 @@ class ISetNoteMotoMecTest {
             noteRoomModel.idHeader,
             1
         )
-
+        if(!hasPerformance) {
+            val performanceRoomModelList = performanceDao.all()
+            assertEquals(
+                performanceRoomModelList.size,
+                0
+            )
+        } else {
+            val performanceRoomModelList = performanceDao.all()
+            assertEquals(
+                performanceRoomModelList.size,
+                1
+            )
+            val performanceRoomModel = performanceRoomModelList[0]
+            assertEquals(
+                performanceRoomModel.nroOS,
+                123456
+            )
+            assertEquals(
+                performanceRoomModel.idHeader,
+                1
+            )
+            assertEquals(
+                performanceRoomModel.value,
+                null
+            )
+        }
     }
 
 }

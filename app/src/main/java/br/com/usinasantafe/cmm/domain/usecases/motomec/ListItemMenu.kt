@@ -141,7 +141,7 @@ class IListItemMenu @Inject constructor(
                     )
                 }
                 val resultListFunctionActivity =
-                    functionActivityRepository.listByIdActivity(resultGetIdActivity.getOrNull()!!) //ok
+                    functionActivityRepository.listById(resultGetIdActivity.getOrNull()!!) //ok
                 resultListFunctionActivity.onFailure {
                     return resultFailure(
                         context = getClassAndMethod(),

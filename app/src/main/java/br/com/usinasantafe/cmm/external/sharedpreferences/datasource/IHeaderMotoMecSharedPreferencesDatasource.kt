@@ -40,7 +40,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setRegOperator(regOperator: Int): Result<Boolean> {
+    override suspend fun setRegOperator(regOperator: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -58,7 +58,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -67,7 +67,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -75,7 +75,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -87,7 +87,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun setDataEquip(
         idEquip: Int,
         typeEquip: TypeEquip
-    ): Result<Boolean> {
+    ): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -106,7 +106,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -134,7 +134,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdTurn(idTurn: Int): Result<Boolean> {
+    override suspend fun setIdTurn(idTurn: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -152,7 +152,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -161,7 +161,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setNroOS(nroOS: Int): Result<Boolean> {
+    override suspend fun setNroOS(nroOS: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -179,7 +179,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -297,7 +297,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setStatusCon(status: Boolean): Result<Boolean> {
+    override suspend fun setStatusCon(status: Boolean): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -315,7 +315,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -381,7 +381,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setId(id: Int): Result<Boolean> {
+    override suspend fun setId(id: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -399,7 +399,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -408,7 +408,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdEquipMotorPump(idEquip: Int): Result<Boolean> {
+    override suspend fun setIdEquipMotorPump(idEquip: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -426,7 +426,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

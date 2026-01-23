@@ -239,7 +239,7 @@ class ISetNroEquipTranshipmentTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultItemMotoMecSharedPreferencesModel = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(

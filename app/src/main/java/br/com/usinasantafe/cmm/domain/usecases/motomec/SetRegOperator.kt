@@ -2,13 +2,14 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SetRegOperator {
     suspend operator fun invoke(
         regOperator: String
-    ): Result<Boolean>
+    ): EmptyResult
 }
 
 class ISetRegOperator @Inject constructor(
@@ -17,7 +18,7 @@ class ISetRegOperator @Inject constructor(
 
     override suspend fun invoke(
         regOperator: String
-    ): Result<Boolean> {
+    ): EmptyResult {
         try {
             val result = motoMecRepository.setRegOperatorHeader(
                 regOperator.toInt()

@@ -15,7 +15,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
@@ -81,7 +81,7 @@ class MenuNoteViewModel @Inject constructor(
     private val getStatusTranshipment: GetStatusTranshipment,
     private val getTypeLastNote: GetTypeLastNote,
     private val finishNoteMechanic: FinishNoteMechanic,
-    private val setNoteMotoMec: SetNoteMotoMec,
+    private val setNote: SetNote,
     private val setDatePreCEC: SetDatePreCEC,
     private val hasCouplingTrailer: HasCouplingTrailer,
     private val getFlowComposting: GetFlowComposting,
@@ -314,7 +314,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleSetNote(item: ItemMenuModel) {
-        setNoteMotoMec(item).onFailure {
+        setNote(item).onFailure {
             handleFailure(it)
             return
         }

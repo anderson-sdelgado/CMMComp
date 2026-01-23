@@ -67,14 +67,14 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore,
                 HeaderMotoMecSharedPreferencesModel()
             )
-            val result = usecase(1)
+            val result = usecase(1, FlowApp.HEADER_INITIAL)
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.HEADER_INITIAL
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -116,14 +116,14 @@ class ISetIdActivityCommonTest {
                 modelHeaderBefore.idActivity,
                 1
             )
-            val result = usecase(2)
+            val result = usecase(2, FlowApp.HEADER_INITIAL)
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.HEADER_INITIAL
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -180,7 +180,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.NOTE_STOP
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -247,7 +247,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.NOTE_STOP
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -312,7 +312,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                false
+                FlowApp.NOTE_WORK
             )
         }
 
@@ -600,7 +600,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.NOTE_WORK
             )
             val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -721,7 +721,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                FlowApp.NOTE_WORK
             )
             val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(

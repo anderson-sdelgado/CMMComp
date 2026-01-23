@@ -1,0 +1,1006 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 999,
+    "identityHash": "ff501c281c3f75fe2f1ea3b0655380da",
+    "entities": [
+      {
+        "tableName": "tb_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idActivity` INTEGER NOT NULL, `codActivity` INTEGER NOT NULL, `descrActivity` TEXT NOT NULL, PRIMARY KEY(`idActivity`))",
+        "fields": [
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codActivity",
+            "columnName": "codActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrActivity",
+            "columnName": "descrActivity",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idActivity"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_colab",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`regColab` INTEGER NOT NULL, `nameColab` TEXT NOT NULL, PRIMARY KEY(`regColab`))",
+        "fields": [
+          {
+            "fieldPath": "regColab",
+            "columnName": "regColab",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nameColab",
+            "columnName": "nameColab",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "regColab"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_equip",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nro` INTEGER NOT NULL, `codClass` INTEGER NOT NULL, `descrClass` TEXT NOT NULL, `typeEquip` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nro",
+            "columnName": "nro",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codClass",
+            "columnName": "codClass",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrClass",
+            "columnName": "descrClass",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeEquip",
+            "columnName": "typeEquip",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_function_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idFunctionActivity` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `typeActivity` TEXT NOT NULL, PRIMARY KEY(`idFunctionActivity`))",
+        "fields": [
+          {
+            "fieldPath": "idFunctionActivity",
+            "columnName": "idFunctionActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeActivity",
+            "columnName": "typeActivity",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idFunctionActivity"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_function_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idFunctionStop` INTEGER NOT NULL, `idStop` INTEGER NOT NULL, `typeStop` TEXT NOT NULL, PRIMARY KEY(`idFunctionStop`))",
+        "fields": [
+          {
+            "fieldPath": "idFunctionStop",
+            "columnName": "idFunctionStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeStop",
+            "columnName": "typeStop",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idFunctionStop"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item_check_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idItemCheckList` INTEGER NOT NULL, `idCheckList` INTEGER NOT NULL, `descrItemCheckList` TEXT NOT NULL, PRIMARY KEY(`idItemCheckList`))",
+        "fields": [
+          {
+            "fieldPath": "idItemCheckList",
+            "columnName": "idItemCheckList",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idCheckList",
+            "columnName": "idCheckList",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrItemCheckList",
+            "columnName": "descrItemCheckList",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idItemCheckList"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item_menu",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `descr` TEXT NOT NULL, `idType` INTEGER NOT NULL, `pos` INTEGER NOT NULL, `idFunction` INTEGER NOT NULL, `idApp` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descr",
+            "columnName": "descr",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idType",
+            "columnName": "idType",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pos",
+            "columnName": "pos",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idFunction",
+            "columnName": "idFunction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idApp",
+            "columnName": "idApp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_os",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idPropAgr` INTEGER NOT NULL, `areaOS` REAL NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
+        "fields": [
+          {
+            "fieldPath": "idOS",
+            "columnName": "idOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idLibOS",
+            "columnName": "idLibOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idPropAgr",
+            "columnName": "idPropAgr",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "areaOS",
+            "columnName": "areaOS",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idEquip",
+            "columnName": "idEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idOS"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idStop` INTEGER NOT NULL, `codStop` INTEGER NOT NULL, `descrStop` TEXT NOT NULL, PRIMARY KEY(`idStop`))",
+        "fields": [
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codStop",
+            "columnName": "codStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrStop",
+            "columnName": "descrStop",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idStop"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_r_activity_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idRActivityStop` INTEGER PRIMARY KEY AUTOINCREMENT, `idActivity` INTEGER NOT NULL, `idStop` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idRActivityStop",
+            "columnName": "idRActivityStop",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "idRActivityStop"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_r_equip_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idREquipActivity` INTEGER PRIMARY KEY AUTOINCREMENT, `idEquip` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idREquipActivity",
+            "columnName": "idREquipActivity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idEquip",
+            "columnName": "idEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "idREquipActivity"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_r_os_activity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idROSActivity` INTEGER PRIMARY KEY AUTOINCREMENT, `idOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "idROSActivity",
+            "columnName": "idROSActivity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idOS",
+            "columnName": "idOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "idROSActivity"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_r_item_menu_stop",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `idFunction` INTEGER NOT NULL, `idApp` INTEGER NOT NULL, `idStop` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idFunction",
+            "columnName": "idFunction",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idApp",
+            "columnName": "idApp",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_turn",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idTurn` INTEGER NOT NULL, `codTurnEquip` INTEGER NOT NULL, `nroTurn` INTEGER NOT NULL, `descrTurn` TEXT NOT NULL, PRIMARY KEY(`idTurn`))",
+        "fields": [
+          {
+            "fieldPath": "idTurn",
+            "columnName": "idTurn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "codTurnEquip",
+            "columnName": "codTurnEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroTurn",
+            "columnName": "nroTurn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descrTurn",
+            "columnName": "descrTurn",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "idTurn"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_header_moto_mec",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `flowComposting` TEXT, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER, `idEquipMotorPump` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "regOperator",
+            "columnName": "regOperator",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idEquip",
+            "columnName": "idEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "typeEquip",
+            "columnName": "typeEquip",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idTurn",
+            "columnName": "idTurn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "flowComposting",
+            "columnName": "flowComposting",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hourMeterInitial",
+            "columnName": "hourMeterInitial",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hourMeterFinish",
+            "columnName": "hourMeterFinish",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateHourInitial",
+            "columnName": "dateHourInitial",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHourFinish",
+            "columnName": "dateHourFinish",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "statusCon",
+            "columnName": "statusCon",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idEquipMotorPump",
+            "columnName": "idEquipMotorPump",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item_moto_mec",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, `nroEquipTranshipment` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idActivity",
+            "columnName": "idActivity",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idStop",
+            "columnName": "idStop",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusCon",
+            "columnName": "statusCon",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nroEquipTranshipment",
+            "columnName": "nroEquipTranshipment",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_header_check_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `nroEquip` INTEGER NOT NULL, `regOperator` INTEGER NOT NULL, `nroTurn` INTEGER NOT NULL, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "nroEquip",
+            "columnName": "nroEquip",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "regOperator",
+            "columnName": "regOperator",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroTurn",
+            "columnName": "nroTurn",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_item_resp_check_list",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `idItem` INTEGER NOT NULL, `option` TEXT NOT NULL, `idServ` INTEGER, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idItem",
+            "columnName": "idItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "option",
+            "columnName": "option",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_mechanic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `os` INTEGER NOT NULL, `item` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "os",
+            "columnName": "os",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "item",
+            "columnName": "item",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHourInitial",
+            "columnName": "dateHourInitial",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dateHourFinish",
+            "columnName": "dateHourFinish",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_input_composting",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idWill` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, `statusComposting` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idWill",
+            "columnName": "idWill",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusComposting",
+            "columnName": "statusComposting",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_compound_composting",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idWill` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, `statusComposting` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idWill",
+            "columnName": "idWill",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusSend",
+            "columnName": "statusSend",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statusComposting",
+            "columnName": "statusComposting",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_performance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `value` REAL, `dateHour` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff501c281c3f75fe2f1ea3b0655380da')"
+    ]
+  }
+}

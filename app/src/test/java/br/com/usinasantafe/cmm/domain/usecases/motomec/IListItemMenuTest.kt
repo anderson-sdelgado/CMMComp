@@ -182,7 +182,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(4)
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 resultFailure(
                     "IFunctionActivityRepository.listByIdActivity",
@@ -897,7 +897,7 @@ class IListItemMenuTest {
         if(level == 4) return
 
         whenever(
-            functionActivityRepository.listByIdActivity(1)
+            functionActivityRepository.listById(1)
         ).thenReturn(
             Result.success(list)
         )

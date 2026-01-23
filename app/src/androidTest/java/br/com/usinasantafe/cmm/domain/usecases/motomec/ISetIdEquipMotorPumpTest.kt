@@ -151,7 +151,7 @@ class ISetIdEquipMotorPumpTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultHeaderSharedPreferences = headerSharedPreferencesDatasource.get()
             assertEquals(

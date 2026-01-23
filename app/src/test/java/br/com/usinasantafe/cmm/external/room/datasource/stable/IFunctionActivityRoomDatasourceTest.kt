@@ -150,7 +150,7 @@ class IFunctionFunctionActivityRoomDatasourceTest {
     @Test
     fun `listByIdActivity - Check return emptyList if not have row`() =
         runTest {
-            val result = datasource.listByIdActivity(1)
+            val result = datasource.listById(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -183,7 +183,7 @@ class IFunctionFunctionActivityRoomDatasourceTest {
                     ),
                 )
             )
-            val result = datasource.listByIdActivity(1)
+            val result = datasource.listById(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -205,6 +205,103 @@ class IFunctionFunctionActivityRoomDatasourceTest {
             assertEquals(
                 model.typeActivity,
                 TypeActivity.PERFORMANCE
+            )
+        }
+
+    @Test
+    fun `hasByIdAndType - Check return false if not have data in table`() =
+        runTest {
+            val result = datasource.hasByIdAndType(
+                1,
+                TypeActivity.PERFORMANCE
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdAndType - Check return false if not have data equals fielded`() =
+        runTest {
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.IMPLEMENT,
+                    ),
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 2,
+                        idActivity = 2,
+                        typeActivity = TypeActivity.PERFORMANCE,
+                    ),
+                )
+            )
+            val result = datasource.hasByIdAndType(
+                1,
+                TypeActivity.PERFORMANCE
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdAndType - Check return true if have data equals fielded`() =
+        runTest {
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.IMPLEMENT,
+                    ),
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 2,
+                        idActivity = 2,
+                        typeActivity = TypeActivity.PERFORMANCE,
+                    ),
+                )
+            )
+
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 3,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE,
+                    ),
+                )
+            )
+            val result = datasource.hasByIdAndType(
+                1,
+                TypeActivity.PERFORMANCE
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 }

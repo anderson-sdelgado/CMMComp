@@ -152,7 +152,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 resultFailure(
                     "IFunctionActivityRepository.listByIdActivity",
@@ -192,7 +192,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -232,7 +232,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -285,7 +285,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -343,7 +343,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(emptyList())
             )
@@ -388,7 +388,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(emptyList())
             )
@@ -438,7 +438,7 @@ class ISetIdActivityCommonTest {
                 Result.success(Unit)
             )
             whenever(
-                functionActivityRepository.listByIdActivity(1)
+                functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(emptyList())
             )

@@ -45,7 +45,7 @@ class ISetIdActivityCommon @Inject constructor(
             }
             if(flowApp == FlowApp.NOTE_STOP) return Result.success(flowApp)
             val resultListFunctionActivity =
-                functionActivityRepository.listByIdActivity(id)
+                functionActivityRepository.listById(id)
             resultListFunctionActivity.onFailure {
                 return resultFailure(
                     context = getClassAndMethod(),

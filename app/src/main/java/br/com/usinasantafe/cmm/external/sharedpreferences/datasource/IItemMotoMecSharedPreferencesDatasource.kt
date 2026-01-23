@@ -134,7 +134,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setIdStop(id: Int): Result<Boolean> {
+    override suspend fun setIdStop(id: Int): EmptyResult {
         try {
             val resultGet = get()
             resultGet.onFailure {
@@ -152,7 +152,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

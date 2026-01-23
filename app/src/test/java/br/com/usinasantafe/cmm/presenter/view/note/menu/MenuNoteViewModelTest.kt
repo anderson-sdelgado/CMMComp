@@ -15,7 +15,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNoteMotoMec
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
@@ -68,7 +68,7 @@ class MenuNoteViewModelTest {
     private val getStatusTranshipment = mock<GetStatusTranshipment>()
     private val getTypeLastNote = mock<GetTypeLastNote>()
     private val finishNoteMechanic = mock<FinishNoteMechanic>()
-    private val setNoteMotoMec = mock<SetNoteMotoMec>()
+    private val setNote = mock<SetNote>()
     private val setDatePreCEC = mock<SetDatePreCEC>()
     private val hasCouplingTrailer = mock<HasCouplingTrailer>()
     private val getFlowComposting = mock<GetFlowComposting>()
@@ -85,7 +85,7 @@ class MenuNoteViewModelTest {
         getStatusTranshipment = getStatusTranshipment,
         getTypeLastNote = getTypeLastNote,
         finishNoteMechanic = finishNoteMechanic,
-        setNoteMotoMec = setNoteMotoMec,
+        setNote = setNote,
         setDatePreCEC = setDatePreCEC,
         hasCouplingTrailer = hasCouplingTrailer,
         getFlowComposting = getFlowComposting,
@@ -1191,7 +1191,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(1 to ITEM_NORMAL)
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1232,7 +1232,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(1 to ITEM_NORMAL)
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1273,7 +1273,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(6 to WEIGHING)
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1314,7 +1314,7 @@ class MenuNoteViewModelTest {
         runTest {
             wheneverBasicECM(6 to WEIGHING)
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1586,7 +1586,7 @@ class MenuNoteViewModelTest {
                 Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1640,7 +1640,7 @@ class MenuNoteViewModelTest {
                 Result.success(StatusPreCEC.FIELD_ARRIVAL)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -1955,7 +1955,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -2001,7 +2001,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -2047,7 +2047,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",
@@ -2093,7 +2093,7 @@ class MenuNoteViewModelTest {
                 Result.success(FlowComposting.COMPOUND)
             )
             whenever(
-                setNoteMotoMec(
+                setNote(
                     ItemMenuModel(
                         id = 1,
                         descr = "TRABALHANDO",

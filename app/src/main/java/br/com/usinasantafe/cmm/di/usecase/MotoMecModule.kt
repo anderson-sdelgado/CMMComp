@@ -97,7 +97,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindSetNoteMotoMec(usecase: ISetNoteMotoMec): SetNoteMotoMec
+    fun bindSetNoteMotoMec(usecase: ISetNote): SetNote
 
     @Binds
     @Singleton
@@ -113,10 +113,6 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckTypeTranshipmentInActivity(usecase: ICheckTypeTranshipmentInActivity): CheckTypeTranshipmentInActivity
-
-    @Binds
-    @Singleton
     fun bindSetNroTranshipment(usecase: ISetNroEquipTranshipment): SetNroEquipTranshipment
 
     @Binds
@@ -126,4 +122,8 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindSetIdEquipMotorPump(usecase: ISetIdEquipMotorPump): SetIdEquipMotorPump
+
+    @Binds
+    @Singleton
+    fun bindGetTypeEquip(usecase: IGetTypeEquip): GetTypeEquip
 }

@@ -6,15 +6,15 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface MotoMecRepository {
-    suspend fun refreshHeaderOpen(): Result<Boolean>
-    suspend fun setRegOperatorHeader(regOperator: Int): Result<Boolean>
+    suspend fun refreshHeaderOpen(): EmptyResult
+    suspend fun setRegOperatorHeader(regOperator: Int): EmptyResult
     suspend fun setDataEquipHeader(
         idEquip: Int,
         typeEquip: TypeEquip
-    ): Result<Boolean>
+    ): EmptyResult
     suspend fun getTypeEquipHeader(): Result<TypeEquip>
-    suspend fun setIdTurnHeader(idTurn: Int): Result<Boolean>
-    suspend fun setNroOSHeader(nroOS: Int): Result<Boolean>
+    suspend fun setIdTurnHeader(idTurn: Int): EmptyResult
+    suspend fun setNroOSHeader(nroOS: Int): EmptyResult
     suspend fun getNroOSHeader(): Result<Int>
     suspend fun setIdActivityHeader(idActivity: Int): EmptyResult
     suspend fun getIdActivityHeader(): Result<Int>
@@ -24,7 +24,7 @@ interface MotoMecRepository {
     suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
-    suspend fun setIdEquipMotorPumpHeader(idEquip: Int): Result<Boolean>
+    suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult
     suspend fun finishHeader(): Result<Boolean>
     suspend fun hasHeaderSend(): Result<Boolean>
     suspend fun setStatusConHeader(status: Boolean): Result<Boolean>
@@ -38,7 +38,7 @@ interface MotoMecRepository {
         idHeader: Int
     ): EmptyResult
     suspend fun getIdActivityNote(): Result<Int>
-    suspend fun setIdStop(id: Int): Result<Boolean>
+    suspend fun setIdStop(id: Int): EmptyResult
     suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun send(
         number: Long,

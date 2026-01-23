@@ -1,21 +1,24 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.errors.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface SetNoteMotoMec {
+interface SetNote {
     suspend operator fun invoke(item: ItemMenuModel): EmptyResult
 }
 
-class ISetNoteMotoMec @Inject constructor(
+class ISetNote @Inject constructor(
     private val rItemMenuStopRepository: RItemMenuStopRepository,
     private val motoMecRepository: MotoMecRepository,
-): SetNoteMotoMec {
+    private val functionActivityRepository: FunctionActivityRepository,
+): SetNote {
 
     override suspend fun invoke(item: ItemMenuModel): EmptyResult {
         return runCatching {
@@ -36,6 +39,16 @@ class ISetNoteMotoMec @Inject constructor(
             }
 
             motoMecRepository.saveNote(idHeader).getOrThrow()
+
+            val checkPerformance = functionActivityRepository.hasByIdAndType(
+                idActivity = idActivity,
+                typeActivity = TypeActivity.PERFORMANCE
+            ).getOrThrow()
+
+            if(checkPerformance) {
+                motoMecRepository.insertInitialPerformance().getOrThrow()
+            }
+
         }.fold(
             onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }

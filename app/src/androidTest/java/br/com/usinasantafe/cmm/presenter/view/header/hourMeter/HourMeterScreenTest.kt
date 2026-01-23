@@ -250,7 +250,8 @@ class HourMeterScreenTest {
                 onNavActivityList = {},
                 onNavMenuNote = {},
                 onNavInitialMenu = {},
-                onNavQuestionUpdateCheckList = {}
+                onNavQuestionUpdateCheckList = {},
+                onNavMotorPump = {}
             )
         }
     }
