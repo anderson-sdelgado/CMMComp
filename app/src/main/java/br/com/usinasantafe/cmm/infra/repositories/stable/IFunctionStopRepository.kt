@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionStopRetr
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityFunctionStopToRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -15,64 +16,43 @@ class IFunctionStopRepository @Inject constructor(
     private val functionStopRetrofitDatasource: FunctionStopRetrofitDatasource,
     private val functionStopRoomDatasource: FunctionStopRoomDatasource
 ): FunctionStopRepository {
-    override suspend fun addAll(list: List<FunctionStop>): Result<Boolean> {
-        try {
+
+    override suspend fun addAll(list: List<FunctionStop>): EmptyResult {
+        return runCatching {
             val roomModelList = list.map { it.entityFunctionStopToRoomModel() }
-            val result = functionStopRoomDatasource.addAll(roomModelList)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            functionStopRoomDatasource.addAll(roomModelList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
-        val result = functionStopRoomDatasource.deleteAll()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun deleteAll(): EmptyResult {
+        return runCatching {
+            functionStopRoomDatasource.deleteAll().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun listAll(token: String): Result<List<FunctionStop>> {
-        try {
-            val result = functionStopRetrofitDatasource.listAll(token)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val modelList = functionStopRetrofitDatasource.listAll(token).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun getIdStopByType(typeStop: TypeStop): Result<Int?> {
-        val result = functionStopRoomDatasource.getIdStopByType(typeStop)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            functionStopRoomDatasource.getIdStopByType(typeStop).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

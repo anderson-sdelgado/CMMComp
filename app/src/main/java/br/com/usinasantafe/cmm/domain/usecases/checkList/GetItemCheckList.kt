@@ -25,82 +25,31 @@ class IGetItemCheckList @Inject constructor(
 ): GetItemCheckList {
 
     override suspend fun invoke(pos: Int): Result<ItemCheckListModel> {
-        try {
+        return runCatching {
             if(pos == 1) {
-                val resultGetNroEquip = equipRepository.getNroEquipMain()
-                resultGetNroEquip.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val nroEquip = resultGetNroEquip.getOrNull()!!
-                val resultGetRegOperator = motoMecRepository.getRegOperatorHeader()
-                resultGetRegOperator.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val regOperator = resultGetRegOperator.getOrNull()!!
-                val resultGetIdTurn = motoMecRepository.getIdTurnHeader()
-                resultGetIdTurn.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val idTurn = resultGetIdTurn.getOrNull()!!
-                val resultGetNroTurn = turnRepository.getNroTurnByIdTurn(idTurn)
-                resultGetNroTurn.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val nroTurn = resultGetNroTurn.getOrNull()!!
-                val resultSaveHeader = checkListRepository.saveHeader(
+                val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
+                val regOperator = motoMecRepository.getRegOperatorHeader().getOrThrow()
+                val idTurn = motoMecRepository.getIdTurnHeader().getOrThrow()
+                val nroTurn = turnRepository.getNroTurnByIdTurn(idTurn).getOrThrow()
+                checkListRepository.saveHeader(
                     HeaderCheckList(
                         nroEquip = nroEquip,
                         regOperator = regOperator,
                         nroTurn = nroTurn
                     )
-                )
-                resultSaveHeader.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
+                ).getOrThrow()
             }
-            val resultGetIdCheckList = equipRepository.getIdCheckList()
-            resultGetIdCheckList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idCheckList = resultGetIdCheckList.getOrNull()!!
-            val resultListCheckList = itemCheckListRepository.listByIdCheckList(idCheckList)
-            resultListCheckList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultListCheckList.getOrNull()!!
+            val idCheckList = equipRepository.getIdCheckList().getOrThrow()
+            val list = itemCheckListRepository.listByIdCheckList(idCheckList).getOrThrow()
             val entity = list[pos - 1]
-            val model = ItemCheckListModel(
+            ItemCheckListModel(
                 id = entity.idItemCheckList,
                 descr = entity.descrItemCheckList
             )
-            return Result.success(model)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

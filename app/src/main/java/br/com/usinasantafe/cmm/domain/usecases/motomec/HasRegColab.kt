@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ColabRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
 
 interface HasRegColab {
@@ -14,23 +15,17 @@ class IHasRegColab @Inject constructor(
 ): HasRegColab {
 
     override suspend fun invoke(regOperator: String): Result<Boolean> {
-        try {
-            val result = colabRepository.hasByReg(
+        return runCatching {
+            val regOperatorInt = runCatching {
                 regOperator.toInt()
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+            }.getOrElse { e ->
+                throw Exception(::toInt.name, e)
             }
-            return result
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            colabRepository.hasByReg(regOperatorInt).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

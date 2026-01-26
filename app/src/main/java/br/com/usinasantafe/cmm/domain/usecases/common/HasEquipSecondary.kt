@@ -4,6 +4,8 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import com.google.common.primitives.UnsignedBytes.toInt
+import com.google.common.primitives.UnsignedInts.toLong
 import javax.inject.Inject
 
 interface HasEquipSecondary {
@@ -21,24 +23,20 @@ class IHasEquipSecondary @Inject constructor(
         nroEquip: String,
         typeEquip: TypeEquip
     ): Result<Boolean> {
-        try {
-            val result = equipRepository.hasEquipSecondary(
-                nroEquip = nroEquip.toLong(),
-                typeEquip = typeEquip
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+        return runCatching {
+            val nroEquipLong = runCatching {
+                nroEquip.toLong()
+            }.getOrElse { e ->
+                throw Exception(::toLong.name, e)
             }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            equipRepository.hasEquipSecondary(
+                nroEquip = nroEquipLong,
+                typeEquip = typeEquip
+            ).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

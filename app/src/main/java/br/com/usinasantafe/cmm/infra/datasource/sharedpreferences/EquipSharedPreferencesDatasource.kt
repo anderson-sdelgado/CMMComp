@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipSharedPreferencesDatasource {
-    suspend fun save(model: EquipSharedPreferencesModel): Result<Boolean>
+    suspend fun save(model: EquipSharedPreferencesModel): EmptyResult
     suspend fun getId(): Result<Int>
     suspend fun getNro(): Result<Long>
     suspend fun getDescr(): Result<String>

@@ -14,34 +14,15 @@ class ICheckPassword @Inject constructor(
 ): CheckPassword {
 
     override suspend fun invoke(password: String): Result<Boolean> {
-        try {
-            val resultHasConfig = configRepository.hasConfig()
-            resultHasConfig.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val hasConfig = resultHasConfig.getOrNull()!!
-            if (!hasConfig)
-                return Result.success(true)
-            val resultGetPassword = configRepository.getPassword()
-            resultGetPassword.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val passwordConfig = resultGetPassword.getOrNull()!!
-            if (passwordConfig == password)
-                return Result.success(true)
-            return Result.success(false)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val hasConfig = configRepository.hasConfig().getOrThrow()
+            if (!hasConfig) return Result.success(true)
+            val passwordConfig = configRepository.getPassword().getOrThrow()
+            passwordConfig == password
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -299,7 +299,7 @@ class IConfigRepositoryTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.save(
                 Config(
@@ -318,7 +318,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -353,7 +353,7 @@ class IConfigRepositoryTest {
         whenever(
             configSharedPreferencesDatasource.setFlagUpdate(FlagUpdate.UPDATED)
         ).thenReturn(
-            Result.success(true)
+            Result.success(Unit)
         )
         val result = repository.setFlagUpdate(FlagUpdate.UPDATED)
         assertEquals(
@@ -362,7 +362,7 @@ class IConfigRepositoryTest {
         )
         assertEquals(
             result.getOrNull()!!,
-            true
+            Unit
         )
     }
 
@@ -541,7 +541,7 @@ class IConfigRepositoryTest {
             whenever(
                 configSharedPreferencesDatasource.setStatusSend(StatusSend.SEND)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setStatusSend(StatusSend.SEND)
             assertEquals(
@@ -550,7 +550,7 @@ class IConfigRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

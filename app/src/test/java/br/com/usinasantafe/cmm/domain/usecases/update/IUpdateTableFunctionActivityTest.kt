@@ -213,7 +213,7 @@ class IUpdateTableFunctionActivityTest {
             whenever(
                 functionActivityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 functionActivityRepository.addAll(list)

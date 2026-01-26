@@ -103,7 +103,7 @@ class IColabRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = colabDao.all().size
             assertEquals(
@@ -152,7 +152,7 @@ class IColabRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = colabDao.all().size
             assertEquals(

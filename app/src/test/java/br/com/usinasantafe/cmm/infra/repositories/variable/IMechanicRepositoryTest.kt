@@ -34,7 +34,7 @@ class IMechanicRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMechanicRepository.checkNoteOpenByIdHeader -> INoteMechanicRoomDatasource.checkNoteOpenByIdHeader"
+                "IMechanicRepository.hasNoteOpenByIdHeader -> INoteMechanicRoomDatasource.checkNoteOpenByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -94,7 +94,7 @@ class IMechanicRepositoryTest {
             whenever(
                 mechanicRoomDatasource.setFinishNote()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setFinishNote()
             assertEquals(
@@ -103,7 +103,7 @@ class IMechanicRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

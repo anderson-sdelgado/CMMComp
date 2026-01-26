@@ -93,7 +93,7 @@ class EquipHeaderViewModelTest {
             whenever(
                 setIdEquip()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.setIdEquipHeader()
             assertEquals(

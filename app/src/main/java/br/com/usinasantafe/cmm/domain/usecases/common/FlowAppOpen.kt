@@ -17,39 +17,17 @@ class IFlowAppOpen @Inject constructor(
 ): FlowAppOpen {
 
     override suspend fun invoke(): Result<FlowApp> {
-        try {
-            val resultCheckMotoMecOpen = motoMecRepository.hasHeaderOpen()
-            resultCheckMotoMecOpen.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val checkMotoMecOpen = resultCheckMotoMecOpen.getOrNull()!!
-            if(!checkMotoMecOpen) return Result.success(FlowApp.HEADER_INITIAL)
-            val resultRefresh = motoMecRepository.refreshHeaderOpen()
-            resultRefresh.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultCheckCheckListOpen = checkListRepository.checkOpen()
-            resultCheckCheckListOpen.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val checkCheckListOpen = resultCheckCheckListOpen.getOrNull()!!
-            if(checkCheckListOpen) return Result.success(FlowApp.CHECK_LIST)
-            return Result.success(FlowApp.NOTE_WORK)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val hasMotoMecOpen = motoMecRepository.hasHeaderOpen().getOrThrow()
+            if(!hasMotoMecOpen) return Result.success(FlowApp.HEADER_INITIAL)
+            motoMecRepository.refreshHeaderOpen().getOrThrow()
+            val hasCheckListOpen = checkListRepository.hasOpen().getOrThrow()
+            if(hasCheckListOpen) return Result.success(FlowApp.CHECK_LIST)
+            FlowApp.NOTE_WORK
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

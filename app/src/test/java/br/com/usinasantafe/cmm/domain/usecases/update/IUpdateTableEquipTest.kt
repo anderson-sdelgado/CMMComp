@@ -252,7 +252,7 @@ class IUpdateTableEquipTest {
             whenever(
                 equipRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.addAll(list)

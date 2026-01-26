@@ -139,7 +139,7 @@ class ISendCheckListTest {
                     token = "TOKEN"
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase()
             assertEquals(
@@ -148,7 +148,7 @@ class ISendCheckListTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

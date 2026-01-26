@@ -135,7 +135,7 @@ class IMechanicRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = mechanicDao.all()
             assertEquals(

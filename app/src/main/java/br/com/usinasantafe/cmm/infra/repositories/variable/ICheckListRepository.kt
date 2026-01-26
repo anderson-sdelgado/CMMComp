@@ -13,6 +13,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofi
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -24,229 +25,120 @@ class ICheckListRepository @Inject constructor(
     private val checkListRetrofitDatasource: CheckListRetrofitDatasource
 ): CheckListRepository {
 
-    override suspend fun saveHeader(entity: HeaderCheckList): Result<Boolean> {
-        try {
-            val resultClean = headerCheckListSharedPreferencesDatasource.clean()
-            resultClean.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+    override suspend fun saveHeader(entity: HeaderCheckList): EmptyResult {
+        return runCatching {
+            headerCheckListSharedPreferencesDatasource.clean().getOrThrow()
             val model = entity.entityToSharedPreferencesModel()
-            val resultSave = headerCheckListSharedPreferencesDatasource.save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return resultSave
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            headerCheckListSharedPreferencesDatasource.save(model).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun cleanResp(): Result<Boolean> {
-        val result = itemRespCheckListSharedPreferencesDatasource.clean()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun cleanResp(): EmptyResult {
+        return runCatching {
+            itemRespCheckListSharedPreferencesDatasource.clean().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun saveResp(entity: ItemRespCheckList): Result<Boolean> {
-        try {
-            val result = itemRespCheckListSharedPreferencesDatasource.add(
+    override suspend fun saveResp(entity: ItemRespCheckList): EmptyResult {
+        return runCatching {
+            itemRespCheckListSharedPreferencesDatasource.add(
                 model = entity.entityToSharedPreferencesModel()
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            ).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun saveCheckList(): Result<Boolean> {
-        try {
-            val resultGet = headerCheckListSharedPreferencesDatasource.get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val modelSharedPreferences = resultGet.getOrNull()!!
+    override suspend fun saveCheckList(): EmptyResult {
+        return runCatching {
+            val modelSharedPreferences = headerCheckListSharedPreferencesDatasource.get().getOrThrow()
             val entityHeader = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = entityHeader.entityToRoomModel()
-            val resultSaveHeader = headerCheckListRoomDatasource.save(modelRoom)
-            resultSaveHeader.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val id = resultSaveHeader.getOrNull()!!.toInt()
-            val resultListResp = itemRespCheckListSharedPreferencesDatasource.list()
-            resultListResp.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultListResp.getOrNull()!!
+            val id = headerCheckListRoomDatasource.save(modelRoom).getOrThrow().toInt()
+            val list = itemRespCheckListSharedPreferencesDatasource.list().getOrThrow()
             for(model in list) {
                 val entity = model.sharedPreferencesModelToEntity()
-                val resultSave = itemRespCheckListRoomDatasource.save(
+                itemRespCheckListRoomDatasource.save(
                     itemRespCheckListRoomModel = entity.entityToRoomModel(id)
-                )
-                resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+                ).getOrThrow()
             }
-            }
-            val resultHeaderClean = headerCheckListSharedPreferencesDatasource.clean()
-            resultHeaderClean.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultRespItemClean = itemRespCheckListSharedPreferencesDatasource.clean()
-            resultRespItemClean.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            headerCheckListSharedPreferencesDatasource.clean().getOrThrow()
+            itemRespCheckListSharedPreferencesDatasource.clean().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun delLastRespItem(): Result<Boolean> {
-        val result = itemRespCheckListSharedPreferencesDatasource.delLast()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun delLastRespItem(): EmptyResult {
+        return runCatching {
+            itemRespCheckListSharedPreferencesDatasource.delLast().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun checkOpen(): Result<Boolean> {
-        val result = headerCheckListSharedPreferencesDatasource.checkOpen()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun hasOpen(): Result<Boolean> {
+        return runCatching {
+            headerCheckListSharedPreferencesDatasource.hasOpen().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasSend(): Result<Boolean> {
-        val result = headerCheckListRoomDatasource.hasSend()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            headerCheckListRoomDatasource.hasSend().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun send(
         number: Long,
         token: String
-    ): Result<Boolean> {
-        try {
-            val resultListSend = headerCheckListRoomDatasource.listBySend() //ok
-            resultListSend.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+    ): EmptyResult {
+        return runCatching {
+            val list = headerCheckListRoomDatasource.listBySend().getOrThrow()
             val modelRetrofitList =
-                resultListSend.getOrNull()!!.map {
-                    val resultRespItemList = itemRespCheckListRoomDatasource.listByIdHeader(it.id!!)
-                    resultRespItemList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-                    val respItemRoomList = resultRespItemList.getOrNull()!!
+                list.map {
+                    val respItemRoomList = itemRespCheckListRoomDatasource.listByIdHeader(it.id!!).getOrThrow()
                     it.roomModelToRetrofitModel(
                         number = number,
                         respItemList = respItemRoomList.map { resp -> resp.roomModelToRetrofitModel() }
                     )
                 }
-            val resultSend = checkListRetrofitDatasource.send(
+            val headerCheckListRetrofitList = checkListRetrofitDatasource.send(
                 token = token,
                 modelList = modelRetrofitList
-            )
-            resultSend.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerCheckListRetrofitList = resultSend.getOrNull()!!
+            ).getOrThrow()
             for(headerCheckList in headerCheckListRetrofitList){
                 val respItemCheckListRetrofitList = headerCheckList.respItemList
                 for(respItemCheckList in respItemCheckListRetrofitList){
-                    val result = itemRespCheckListRoomDatasource.setIdServById(
+                    itemRespCheckListRoomDatasource.setIdServById(
                         id = respItemCheckList.id,
                         idServ = respItemCheckList.idServ
-                    )
-                    result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+                    ).getOrThrow()
                 }
-                val result = headerCheckListRoomDatasource.setSentAndIdServById(
+                headerCheckListRoomDatasource.setSentAndIdServById(
                     id = headerCheckList.id,
                     idServ = headerCheckList.idServ
-                )
-                result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+                ).getOrThrow()
             }
-            }
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

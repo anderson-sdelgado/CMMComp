@@ -37,12 +37,8 @@ class ISetIdStopNote @Inject constructor(
                 typeActivity = TypeActivity.PERFORMANCE
             ).getOrThrow()
 
-            if(checkPerformance) {
-                motoMecRepository.insertInitialPerformance().getOrThrow()
-            }
-
+            if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
             startWorkManager()
-
         }.fold(
             onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }

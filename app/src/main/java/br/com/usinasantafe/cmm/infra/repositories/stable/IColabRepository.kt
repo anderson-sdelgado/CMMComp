@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ColabRetrofitDat
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityColabToRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -15,65 +16,43 @@ class IColabRepository @Inject constructor(
     private val colabRoomDatasource: ColabRoomDatasource
 ) : ColabRepository {
 
-    override suspend fun addAll(list: List<Colab>): Result<Boolean> {
-        try {
+    override suspend fun addAll(list: List<Colab>): EmptyResult {
+        return runCatching {
             val roomModelList = list.map { it.entityColabToRoomModel() }
-            val result = colabRoomDatasource.addAll(roomModelList)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            colabRoomDatasource.addAll(roomModelList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
-        val result = colabRoomDatasource.deleteAll()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun deleteAll(): EmptyResult {
+        return runCatching {
+            colabRoomDatasource.deleteAll().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun listAll(
         token: String
     ): Result<List<Colab>> {
-        try {
-            val result = colabRetrofitDatasource.listAll(token)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val modelList = colabRetrofitDatasource.listAll(token).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasByReg(reg: Int): Result<Boolean> {
-        val result = colabRoomDatasource.checkByReg(reg)
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+        return runCatching {
+            colabRoomDatasource.checkByReg(reg).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 }

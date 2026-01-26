@@ -83,7 +83,7 @@ class IFunctionStopRepositoryTest {
             whenever(
                 functionStopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -92,7 +92,7 @@ class IFunctionStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -129,7 +129,7 @@ class IFunctionStopRepositoryTest {
             whenever(
                 functionStopRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -138,7 +138,7 @@ class IFunctionStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

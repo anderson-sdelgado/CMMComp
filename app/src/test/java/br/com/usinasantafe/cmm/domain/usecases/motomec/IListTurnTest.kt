@@ -10,7 +10,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class IGetTurnListTest {
+class IListTurnTest {
 
     private val turnRepository = mock<TurnRepository>()
     private val equipRepository = mock<EquipRepository>()

@@ -48,7 +48,7 @@ class IDelLastRespItemCheckListTest {
             whenever(
                 checkListRepository.delLastRespItem()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase()
             assertEquals(
@@ -57,7 +57,7 @@ class IDelLastRespItemCheckListTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

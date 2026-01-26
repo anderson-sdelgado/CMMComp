@@ -5,9 +5,9 @@ import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRepository {
-    suspend fun saveEquipMain(entity: Equip): Result<Boolean>
-    suspend fun addAll(list: List<Equip>): Result<Boolean>
-    suspend fun deleteAll(): Result<Boolean>
+    suspend fun saveEquipMain(entity: Equip): EmptyResult
+    suspend fun addAll(list: List<Equip>): EmptyResult
+    suspend fun deleteAll(): EmptyResult
     suspend fun listAll(
         token: String
     ): Result<List<Equip>>

@@ -4,10 +4,10 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.StatusSend
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISetStatusSendTest {
 
@@ -35,7 +35,7 @@ class ISetStatusSendTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetStatusSend -> ISetStatusSend"
+                "ISetStatusSend"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -49,7 +49,7 @@ class ISetStatusSendTest {
             whenever(
                 configRepository.setStatusSend(StatusSend.SEND)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(StatusSend.SEND)
             assertEquals(
@@ -58,7 +58,7 @@ class ISetStatusSendTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

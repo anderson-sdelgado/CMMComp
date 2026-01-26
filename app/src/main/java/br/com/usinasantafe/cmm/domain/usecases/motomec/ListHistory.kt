@@ -24,54 +24,24 @@ class IListHistory @Inject constructor(
 ): ListHistory {
 
     override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> {
-        try {
-            val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val id = resultGetId.getOrNull()!!
-            val resultNoteList = motoMecRepository.noteListByIdHeader(id)
-            resultNoteList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val listNoteList = resultNoteList.getOrNull()!!
-            val itemHistoryList = listNoteList.map { item ->
-
+        return runCatching {
+            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val listNoteList = motoMecRepository.noteListByIdHeader(id).getOrThrow()
+            listNoteList.map { item ->
                 val function = if(item.idStop == null) {
                     functionListPMM.find { it.second == WORK }!!
                 } else {
                     functionListPMM.find { it.second == STOP }!!
                 }
                 val descr = if(item.idStop != null) {
-                    val resultStop = stopRepository.getById(item.idStop!!)
-                    resultStop.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-                    resultStop.getOrNull()!!.descrStop
+                    stopRepository.getById(item.idStop!!).getOrThrow().descrStop
                 } else {
-                    val resultActivity = activityRepository.getById(item.idActivity!!)
-                    resultActivity.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-                    resultActivity.getOrNull()!!.descrActivity
+                    activityRepository.getById(item.idActivity!!).getOrThrow().descrActivity
                 }
                 val dateHour = SimpleDateFormat(
                     "dd/MM/yyyy HH:mm",
                     Locale.Builder().setLanguage("pt").setRegion("BR").build()
                 ).format(item.dateHour)
-
                 ItemHistoryScreenModel(
                     id = item.id!!,
                     function = function,
@@ -80,13 +50,10 @@ class IListHistory @Inject constructor(
                     detail = ""
                 )
             }
-            return Result.success(itemHistoryList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

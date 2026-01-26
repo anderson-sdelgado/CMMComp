@@ -82,7 +82,7 @@ class IActivityRepositoryTest {
             whenever(
                 activityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -91,7 +91,7 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -128,7 +128,7 @@ class IActivityRepositoryTest {
             whenever(
                 activityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -137,7 +137,7 @@ class IActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

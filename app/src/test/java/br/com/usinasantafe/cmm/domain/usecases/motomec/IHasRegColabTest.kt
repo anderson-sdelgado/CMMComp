@@ -8,7 +8,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class ICheckRegOperatorTest {
+class IHasRegColabTest {
 
     private val colabRepository = mock<ColabRepository>()
     private val usecase = IHasRegColab(
@@ -25,7 +25,7 @@ class ICheckRegOperatorTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckRegOperator"
+                "IHasRegColab -> toInt"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -52,7 +52,7 @@ class ICheckRegOperatorTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckRegOperator -> ColabRepository.checkReg"
+                "IHasRegColab -> ColabRepository.checkReg"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

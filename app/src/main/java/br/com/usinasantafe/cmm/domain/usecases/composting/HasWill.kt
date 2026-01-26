@@ -16,22 +16,13 @@ class IHasWill @Inject constructor(
 ): HasWill {
 
     override suspend fun invoke(): Result<Boolean> {
-        val resultGetFlow = motoMecRepository.getFlowCompostingHeader()
-        resultGetFlow.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        val flow = resultGetFlow.getOrThrow()
-        val result = compostingRepository.hasWill(flow)
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            val flow = motoMecRepository.getFlowCompostingHeader().getOrThrow()
+            compostingRepository.hasWill(flow).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

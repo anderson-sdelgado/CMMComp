@@ -2,17 +2,18 @@ package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 interface CheckListRepository {
-    suspend fun saveHeader(entity: HeaderCheckList): Result<Boolean>
-    suspend fun cleanResp(): Result<Boolean>
-    suspend fun saveResp(entity: ItemRespCheckList): Result<Boolean>
-    suspend fun saveCheckList(): Result<Boolean>
-    suspend fun delLastRespItem(): Result<Boolean>
-    suspend fun checkOpen(): Result<Boolean>
+    suspend fun saveHeader(entity: HeaderCheckList): EmptyResult
+    suspend fun cleanResp(): EmptyResult
+    suspend fun saveResp(entity: ItemRespCheckList): EmptyResult
+    suspend fun saveCheckList(): EmptyResult
+    suspend fun delLastRespItem(): EmptyResult
+    suspend fun hasOpen(): Result<Boolean>
     suspend fun hasSend(): Result<Boolean>
     suspend fun send(
         number: Long,
         token: String
-    ): Result<Boolean>
+    ): EmptyResult
 }

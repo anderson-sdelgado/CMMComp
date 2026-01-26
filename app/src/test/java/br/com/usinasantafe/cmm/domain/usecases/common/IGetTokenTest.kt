@@ -111,11 +111,11 @@ class IGetTokenTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IGetToken"
+                "IGetToken -> token"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
+                "java.lang.NullPointerException: version is required"
             )
         }
 

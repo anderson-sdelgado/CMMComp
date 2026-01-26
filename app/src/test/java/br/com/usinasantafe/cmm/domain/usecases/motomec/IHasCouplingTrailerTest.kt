@@ -42,4 +42,23 @@ class IHasCouplingTrailerTest {
             )
         }
 
+    @Test
+    fun `Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                motoMecRepository.hasCouplingTrailerImplement()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

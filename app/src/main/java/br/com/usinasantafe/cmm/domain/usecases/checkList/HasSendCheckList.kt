@@ -14,14 +14,12 @@ class ICheckSendCheckList @Inject constructor(
 ): CheckSendCheckList {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = checkListRepository.hasSend()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            checkListRepository.hasSend().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

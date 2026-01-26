@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -17,7 +18,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
 
     private val typeToken = object : TypeToken<List<RespItemCheckListSharedPreferencesModel>>() {}.type
 
-    override suspend fun add(model: RespItemCheckListSharedPreferencesModel): Result<Boolean> {
+    override suspend fun add(model: RespItemCheckListSharedPreferencesModel): EmptyResult {
         try {
             val resultList = list()
             resultList.onFailure {
@@ -37,7 +38,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
                 )
             }
             mutableList.clear()
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -46,7 +47,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun clean(): Result<Boolean> {
+    override suspend fun clean(): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -54,7 +55,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
                     null
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -81,7 +82,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun delLast(): Result<Boolean> {
+    override suspend fun delLast(): EmptyResult {
         try {
             val resultList = list()
             resultList.onFailure {
@@ -102,7 +103,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
                 )
             }
             mutableList.clear()
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

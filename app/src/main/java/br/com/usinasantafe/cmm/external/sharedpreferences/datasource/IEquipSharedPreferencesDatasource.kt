@@ -38,7 +38,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun save(model: EquipSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: EquipSharedPreferencesModel): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -46,7 +46,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),

@@ -78,7 +78,7 @@ class IColabRepositoryTest {
             whenever(
                 colabRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -87,7 +87,7 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -124,7 +124,7 @@ class IColabRepositoryTest {
             whenever(
                 colabRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -133,7 +133,7 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

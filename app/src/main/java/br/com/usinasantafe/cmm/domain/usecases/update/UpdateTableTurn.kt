@@ -6,7 +6,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TB_STOP
 import br.com.usinasantafe.cmm.lib.TB_TURN
+import br.com.usinasantafe.cmm.presenter.model.emitFailure
+import br.com.usinasantafe.cmm.presenter.model.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
@@ -29,96 +32,21 @@ class IUpdateTableTurn @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(1f, count, sizeAll),
-                tableUpdate = TB_TURN,
-                levelUpdate = LevelUpdate.RECOVERY
-            )
+        return@flow runCatching {
+            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_TURN)
+            val token = getToken().getOrThrow()
+            val entityList = turnRepository.listAll(token).getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_TURN)
+            turnRepository.deleteAll().getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_TURN)
+            turnRepository.addAll(entityList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = {
+                val failure = failure(getClassAndMethod(), it)
+                emitFailure(failure)
+            }
         )
-        val resultGetToken = getToken()
-        resultGetToken.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val token = resultGetToken.getOrNull()!!
-        val resultRecoverAll = turnRepository.listAll(token)
-        resultRecoverAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(2f, count, sizeAll),
-                tableUpdate = TB_TURN,
-                levelUpdate = LevelUpdate.CLEAN
-            )
-        )
-        val resultDeleteAll = turnRepository.deleteAll()
-        resultDeleteAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(3f, count, sizeAll),
-                tableUpdate = TB_TURN,
-                levelUpdate = LevelUpdate.SAVE
-            )
-        )
-        val entityList = resultRecoverAll.getOrNull()!!
-        val resultAddAll = turnRepository.addAll(entityList)
-        resultAddAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
     }
 
 }

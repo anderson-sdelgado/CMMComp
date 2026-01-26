@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoom
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityFunctionActivityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -16,88 +17,55 @@ class IFunctionActivityRepository @Inject constructor(
     private val functionActivityRetrofitDatasource: FunctionActivityRetrofitDatasource,
     private val functionActivityRoomDatasource: FunctionActivityRoomDatasource
 ): FunctionActivityRepository {
-    override suspend fun addAll(list: List<FunctionActivity>): Result<Boolean> {
-        try {
+
+    override suspend fun addAll(list: List<FunctionActivity>): EmptyResult {
+        return runCatching {
             val roomModelList = list.map { it.entityFunctionActivityToRoomModel() }
-            val result = functionActivityRoomDatasource.addAll(roomModelList)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            functionActivityRoomDatasource.addAll(roomModelList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
-        val result = functionActivityRoomDatasource.deleteAll()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
+    override suspend fun deleteAll(): EmptyResult {
+        return runCatching {
+            functionActivityRoomDatasource.deleteAll().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun listAll(token: String): Result<List<FunctionActivity>> {
-        try {
-            val result = functionActivityRetrofitDatasource.listAll(token)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val modelList = functionActivityRetrofitDatasource.listAll(token).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun listById(idActivity: Int): Result<List<FunctionActivity>> {
-        try {
-            val result = functionActivityRoomDatasource.listById(idActivity)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val modelList = functionActivityRoomDatasource.listById(idActivity).getOrThrow()
+            modelList.map { it.roomModelToEntity() }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasByIdAndType(
         idActivity: Int,
         typeActivity: TypeActivity
     ): Result<Boolean> {
-        val result = functionActivityRoomDatasource.hasByIdAndType(
-            idActivity = idActivity,
-            typeActivity = typeActivity
+        return runCatching {
+            functionActivityRoomDatasource.hasByIdAndType(idActivity, typeActivity).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
         )
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
     }
 }

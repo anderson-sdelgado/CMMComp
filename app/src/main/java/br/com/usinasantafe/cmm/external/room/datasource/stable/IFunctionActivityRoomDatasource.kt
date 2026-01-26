@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -12,10 +13,10 @@ class IFunctionActivityRoomDatasource @Inject constructor(
     private val functionActivityDao: FunctionActivityDao
 ) : FunctionActivityRoomDatasource {
 
-    override suspend fun addAll(list: List<FunctionActivityRoomModel>): Result<Boolean> {
+    override suspend fun addAll(list: List<FunctionActivityRoomModel>): EmptyResult {
         try {
             functionActivityDao.insertAll(list)
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -24,10 +25,10 @@ class IFunctionActivityRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
+    override suspend fun deleteAll(): EmptyResult {
         try {
             functionActivityDao.deleteAll()
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

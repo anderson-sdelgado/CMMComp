@@ -4,10 +4,10 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISetFinishUpdateAllTableTest {
 
@@ -53,7 +53,7 @@ class ISetFinishUpdateAllTableTest {
                     FlagUpdate.UPDATED
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase()
             assertEquals(
@@ -62,7 +62,7 @@ class ISetFinishUpdateAllTableTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 }

@@ -68,7 +68,7 @@ class IUpdateTableActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository recoverAll`() =
+    fun `Check return failure if have error in ActivityRepository recoverAll`() =
         runTest {
             whenever(
                 getToken()
@@ -115,7 +115,7 @@ class IUpdateTableActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository deleteAll`() =
+    fun `Check return failure if have error in ActivityRepository deleteAll`() =
         runTest {
             val list = listOf(
                 Activity(
@@ -185,7 +185,7 @@ class IUpdateTableActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in AtividadeRepository addAll`() =
+    fun `Check return failure if have error in ActivityRepository addAll`() =
         runTest {
             val list = listOf(
                 Activity(
@@ -209,7 +209,7 @@ class IUpdateTableActivityTest {
             whenever(
                 activityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 activityRepository.addAll(list)

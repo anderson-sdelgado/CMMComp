@@ -17,41 +17,17 @@ class ICheckUpdateCheckList @Inject constructor(
     private val getToken: GetToken
 ): CheckUpdateCheckList {
     override suspend fun invoke(): Result<Boolean> {
-        try {
-            val resultGetNroEquip = equipRepository.getNroEquipMain()
-            resultGetNroEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val nroEquip = resultGetNroEquip.getOrNull()!!
-            val resultGetToken = getToken()
-            resultGetToken.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val token = resultGetToken.getOrNull()!!
-            val resultCheckUpdateByNroEquip = itemCheckListRepository.checkUpdateByNroEquip(
+        return runCatching {
+            val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
+            val token = getToken().getOrThrow()
+            itemCheckListRepository.checkUpdateByNroEquip(
                 token,
                 nroEquip
-            )
-            resultCheckUpdateByNroEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val check = resultCheckUpdateByNroEquip.getOrNull()!!
-            return Result.success(check)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            ).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

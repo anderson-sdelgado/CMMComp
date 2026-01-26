@@ -15,33 +15,16 @@ class ICheckAccessInitial @Inject constructor(
 ): CheckAccessInitial {
 
     override suspend fun invoke(): Result<Boolean> {
-        try {
-            val resultCheckHasConfig = configRepository.hasConfig()
-            resultCheckHasConfig.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val hasConfig = resultCheckHasConfig.getOrNull()!!
-            if (!hasConfig)
-                return Result.success(false)
-            val resultGetFlagUpdate = configRepository.getFlagUpdate()
-            resultGetFlagUpdate.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val flagUpdate = resultGetFlagUpdate.getOrNull()!!
-            val check = flagUpdate == FlagUpdate.UPDATED
-            return Result.success(check)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val hasConfig = configRepository.hasConfig().getOrThrow()
+            if (!hasConfig) return Result.success(false)
+            if (!hasConfig) return Result.success(false)
+            val flagUpdate = configRepository.getFlagUpdate().getOrThrow()
+            flagUpdate == FlagUpdate.UPDATED
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -19,39 +19,38 @@ class ISetDatePreCEC @Inject constructor(
 ): SetDatePreCEC {
 
     override suspend fun invoke(item: ItemMenuModel): Result<StatusPreCEC> {
+        return runCatching {
 
-        val result = cecRepository.get()
-        result.onFailure {
-            return resultFailure(context = getClassAndMethod(), cause = it)
-        }
-        val model = result.getOrNull()!!
-        val currentStatus = when {
-            model.dateExitMill == null -> StatusPreCEC.EXIT_MILL
-            model.dateFieldArrival == null -> StatusPreCEC.FIELD_ARRIVAL
-            else -> StatusPreCEC.EXIT_FIELD
-        }
+            val model = cecRepository.get().getOrThrow()
 
-        val expectedStatus = when (item.type.second) {
-            EXIT_MILL -> StatusPreCEC.EXIT_MILL
-            FIELD_ARRIVAL -> StatusPreCEC.FIELD_ARRIVAL
-            else -> StatusPreCEC.EXIT_FIELD
-        }
+            val currentStatus = when {
+                model.dateExitMill == null -> StatusPreCEC.EXIT_MILL
+                model.dateFieldArrival == null -> StatusPreCEC.FIELD_ARRIVAL
+                else -> StatusPreCEC.EXIT_FIELD
+            }
 
-        if (currentStatus != expectedStatus) {
-            return Result.success(currentStatus)
-        }
+            val expectedStatus = when (item.type.second) {
+                EXIT_MILL -> StatusPreCEC.EXIT_MILL
+                FIELD_ARRIVAL -> StatusPreCEC.FIELD_ARRIVAL
+                else -> StatusPreCEC.EXIT_FIELD
+            }
 
-        val updateResult = when(item.type.second) {
-            EXIT_MILL -> cecRepository.setDateExitMill(Date())
-            FIELD_ARRIVAL -> cecRepository.setDateFieldArrival(Date())
-            else -> cecRepository.setDateExitField(Date())
-        }
+            if (currentStatus != expectedStatus) {
+                return Result.success(currentStatus)
+            }
 
-        updateResult.onFailure {
-            return resultFailure(context = getClassAndMethod(), cause = it)
-        }
+            when(item.type.second) {
+                EXIT_MILL -> cecRepository.setDateExitMill(Date())
+                FIELD_ARRIVAL -> cecRepository.setDateFieldArrival(Date())
+                else -> cecRepository.setDateExitField(Date())
+            }.getOrThrow()
 
-        return Result.success(currentStatus)
+            currentStatus
+
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

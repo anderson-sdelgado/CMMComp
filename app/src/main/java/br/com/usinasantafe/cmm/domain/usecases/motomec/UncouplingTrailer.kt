@@ -15,14 +15,12 @@ class IUncouplingTrailer @Inject constructor(
 ): UncouplingTrailer {
 
     override suspend fun invoke(): EmptyResult {
-        val result = motoMecRepository.uncouplingTrailerImplement()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            motoMecRepository.uncouplingTrailerImplement().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

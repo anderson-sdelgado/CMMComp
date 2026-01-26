@@ -16,7 +16,7 @@ import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 
-class ICheckNroOSTest {
+class IHasNroOSTest {
 
     private val checkNetwork = mock<CheckNetwork>()
     private val osRepository = mock<OSRepository>()
@@ -53,7 +53,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IROSActivityRepository.deleteAll"
+                "IHasNroOS -> IROSActivityRepository.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -88,7 +88,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IOSRepository.deleteAll"
+                "IHasNroOS -> IOSRepository.deleteAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -118,7 +118,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IOSRepository.checkNroOS"
+                "IHasNroOS -> IOSRepository.checkNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -180,7 +180,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IMotoMecRepository.setStatusConHeader"
+                "IHasNroOS -> IMotoMecRepository.setStatusConHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -252,7 +252,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> GetToken"
+                "IHasNroOS -> GetToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -300,7 +300,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IOSRepository.getListByNroOS"
+                "IHasNroOS -> IOSRepository.getListByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -357,7 +357,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IMotoMecRepository.setStatusConHeader"
+                "IHasNroOS -> IMotoMecRepository.setStatusConHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -500,7 +500,7 @@ class ICheckNroOSTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IROSAtivRepository.getListByNroOS",
+                    context = "IROSActivityRepository.listByNroOS",
                     message = "-",
                     cause = Exception()
                 )
@@ -515,7 +515,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IROSAtivRepository.getListByNroOS"
+                "IHasNroOS -> IROSActivityRepository.listByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -670,7 +670,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IOSRepository.add"
+                "IHasNroOS -> IOSRepository.add"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -782,7 +782,7 @@ class ICheckNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckNroOS -> IROSActivityRepository.addAll"
+                "IHasNroOS -> IROSActivityRepository.addAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

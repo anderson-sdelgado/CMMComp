@@ -17,31 +17,13 @@ class IListTurn @Inject constructor(
 ): ListTurn {
 
     override suspend fun invoke(): Result<List<Turn>> {
-        try {
-            val resultGetCodTurnEquip = equipRepository.getCodTurnEquip()
-            resultGetCodTurnEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val codTurnEquip = resultGetCodTurnEquip.getOrNull()!!
-            val resultGetTurnList = turnRepository.listByCodTurnEquip(
-                codTurnEquip = codTurnEquip
-            )
-            resultGetTurnList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return resultGetTurnList
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val codTurnEquip = equipRepository.getCodTurnEquip().getOrThrow()
+            turnRepository.listByCodTurnEquip(codTurnEquip = codTurnEquip).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

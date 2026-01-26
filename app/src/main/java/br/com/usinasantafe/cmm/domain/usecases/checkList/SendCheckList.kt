@@ -4,11 +4,12 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface SendCheckList {
-    suspend operator fun invoke(): Result<Boolean>
+    suspend operator fun invoke(): EmptyResult
 }
 
 class ISendCheckList @Inject constructor(
@@ -17,41 +18,15 @@ class ISendCheckList @Inject constructor(
     private val getToken: GetToken
 ): SendCheckList {
 
-    override suspend fun invoke(): Result<Boolean> {
-        try {
-            val resultGet = configRepository.getNumber()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val number = resultGet.getOrNull()!!
-            val resultToken = getToken()
-            resultToken.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val token = resultToken.getOrNull()!!
-            val result = checkListRepository.send(
-                number = number,
-                token = token
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+    override suspend fun invoke(): EmptyResult {
+        return runCatching {
+            val number = configRepository.getNumber().getOrThrow()
+            val token = getToken().getOrThrow()
+            checkListRepository.send(number = number, token = token).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

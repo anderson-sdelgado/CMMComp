@@ -32,10 +32,13 @@ class IMotoMecRepository @Inject constructor(
     private val performanceRoomDatasource: PerformanceRoomDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
+
     override suspend fun refreshHeaderOpen(): EmptyResult {
         return runCatching {
             val model = headerMotoMecRoomDatasource.getOpen().getOrThrow()
-            headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
+            headerMotoMecSharedPreferencesDatasource.save(
+                model.roomModelToSharedPreferences()
+            ).getOrThrow()
         }.fold(
             onSuccess = { Result.success(Unit) },
             onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }

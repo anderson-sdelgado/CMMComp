@@ -207,7 +207,7 @@ class IUpdateTableColabTest {
             whenever(
                 colabRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 colabRepository.addAll(list)

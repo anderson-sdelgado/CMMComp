@@ -14,29 +14,13 @@ class IHasNoteMotoMec @Inject constructor(
 ): HasNoteMotoMec {
 
     override suspend fun invoke(): Result<Boolean> {
-        try {
-            val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            if (resultGetId.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultGetId.exceptionOrNull()!!
-                )
-            }
-            val id = resultGetId.getOrNull()!!
-            val resultCheck = motoMecRepository.hasNoteByIdHeader(id)
-            if (resultCheck.isFailure) {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = resultCheck.exceptionOrNull()!!
-                )
-            }
-            return resultCheck
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            motoMecRepository.hasNoteByIdHeader(id).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -184,7 +184,7 @@ class ICECRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICECRepository.setDateExitArrival -> IPreCECSharedPreferencesDatasource.setDateExitArrival"
+                "ICECRepository.setDateExitField -> IPreCECSharedPreferencesDatasource.setDateExitArrival"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

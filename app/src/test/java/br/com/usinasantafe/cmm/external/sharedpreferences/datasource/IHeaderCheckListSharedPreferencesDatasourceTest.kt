@@ -45,7 +45,7 @@ class IHeaderCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultSave.getOrNull()!!,
-                true
+                Unit
             )
             val resultGet = datasource.get()
             assertEquals(
@@ -88,7 +88,7 @@ class IHeaderCheckListSharedPreferencesDatasourceTest {
     @Test
     fun `Check return false if not have data in header check list`() =
         runTest {
-            val result = datasource.checkOpen()
+            val result = datasource.hasOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -109,7 +109,7 @@ class IHeaderCheckListSharedPreferencesDatasourceTest {
                 dateHour = Date(1760546436)
             )
             datasource.save(data)
-            val result = datasource.checkOpen()
+            val result = datasource.hasOpen()
             assertEquals(
                 result.isSuccess,
                 true

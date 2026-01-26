@@ -7,10 +7,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISaveDataConfigTest {
 
@@ -51,7 +51,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISaveDataConfig"
+                "ISaveDataConfig -> toLong"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -132,7 +132,7 @@ class ISaveDataConfigTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.saveEquipMain(
@@ -208,7 +208,7 @@ class ISaveDataConfigTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.saveEquipMain(
@@ -227,7 +227,7 @@ class ISaveDataConfigTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 number = "16997417840",
@@ -256,7 +256,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

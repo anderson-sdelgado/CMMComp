@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.token
+import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
 
 interface GetToken {
@@ -17,37 +18,26 @@ class IGetToken @Inject constructor(
 ): GetToken {
 
     override suspend fun invoke(): Result<String> {
-        try {
-            val resultGet = configRepository.get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
+        return runCatching {
+            val entity = configRepository.get().getOrThrow()
+            val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
+            runCatching {
+                fun <T> T?.required(field: String): T =
+                    this ?: throw NullPointerException("$field is required")
+                token(
+                    app = entity.app.required("app"),
+                    idServ = entity.idServ.required("idServ"),
+                    nroEquip = nroEquip,
+                    number = entity.number.required("number"),
+                    version = entity.version.required("version")
                 )
+            }.getOrElse { e ->
+                throw Exception("token", e)
             }
-            val entity = resultGet.getOrNull()!!
-            val resultGetNroEquip = equipRepository.getNroEquipMain()
-            resultGetNroEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val nroEquip = resultGetNroEquip.getOrNull()!!
-            val token = token(
-                app = entity.app!!,
-                idServ = entity.idServ!!,
-                nroEquip = nroEquip,
-                number = entity.number!!,
-                version = entity.version!!
-            )
-            return Result.success(token)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

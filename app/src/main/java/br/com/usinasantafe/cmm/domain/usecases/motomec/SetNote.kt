@@ -45,9 +45,7 @@ class ISetNote @Inject constructor(
                 typeActivity = TypeActivity.PERFORMANCE
             ).getOrThrow()
 
-            if(checkPerformance) {
-                motoMecRepository.insertInitialPerformance().getOrThrow()
-            }
+            if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
 
         }.fold(
             onSuccess = { Result.success(Unit) },

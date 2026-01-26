@@ -445,7 +445,7 @@ class ConfigViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")
@@ -1283,7 +1283,7 @@ class ConfigViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -1422,7 +1422,7 @@ class ConfigViewModelTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             wheneverSuccessActivity()
             wheneverSuccessColab()
@@ -1439,7 +1439,7 @@ class ConfigViewModelTest {
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.onNumberChanged("16997417840")
             viewModel.onPasswordChanged("12345")

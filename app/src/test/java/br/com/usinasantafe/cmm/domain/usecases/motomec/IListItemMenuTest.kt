@@ -67,33 +67,6 @@ class IListItemMenuTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader - PMM`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdEquipHeader()
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.getIdEquipHeader",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase("pmm")
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IListItemMenu -> IListItemMenu.pmmList -> IMotoMecRepository.getIdEquipHeader"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen - PMM`() =
         runTest {
             wheneverRegister(1)

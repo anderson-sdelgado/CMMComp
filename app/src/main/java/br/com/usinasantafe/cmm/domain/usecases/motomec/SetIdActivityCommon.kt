@@ -27,76 +27,26 @@ class ISetIdActivityCommon @Inject constructor(
         id: Int,
         flowApp: FlowApp
     ): Result<FlowApp> {
-        try {
-            val resultHeaderSetId = motoMecRepository.setIdActivityHeader(id)
-            resultHeaderSetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+        return runCatching {
+            motoMecRepository.setIdActivityHeader(id).getOrThrow()
             if(flowApp == FlowApp.HEADER_INITIAL) return Result.success(flowApp)
-            val resultNoteSetId = motoMecRepository.setIdActivityNote(id)
-            resultNoteSetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+            motoMecRepository.setIdActivityNote(id).getOrThrow()
             if(flowApp == FlowApp.NOTE_STOP) return Result.success(flowApp)
-            val resultListFunctionActivity =
-                functionActivityRepository.listById(id)
-            resultListFunctionActivity.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val functionActivityList = resultListFunctionActivity.getOrNull()!!
+            val functionActivityList = functionActivityRepository.listById(id).getOrThrow()
             val checkTranshipment = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
             if(checkTranshipment) return Result.success(FlowApp.TRANSHIPMENT)
             val checkPerformance = functionActivityList.any { it.typeActivity == TypeActivity.PERFORMANCE }
-            if(checkPerformance){
-                val result = motoMecRepository.insertInitialPerformance()
-                result.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-            }
-            val resultGetId = motoMecRepository.getIdByHeaderOpen()
-            resultGetId.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idHeader = resultGetId.getOrNull()!!
-            val resultSave = motoMecRepository.saveNote(idHeader)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+            if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
+            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            motoMecRepository.saveNote(idHeader).getOrThrow()
             startWorkManager()
-            val resultGetTypeEquip = motoMecRepository.getTypeEquipHeader()
-            resultGetTypeEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val typeEquip = resultGetTypeEquip.getOrNull()!!
+            val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()
             if(typeEquip == TypeEquip.REEL_FERT) return Result.success(FlowApp.REEL_FERT)
-            return Result.success(flowApp)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            flowApp
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

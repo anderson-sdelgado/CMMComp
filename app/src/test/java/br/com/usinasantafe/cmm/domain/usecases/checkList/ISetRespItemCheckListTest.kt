@@ -17,13 +17,11 @@ import kotlin.test.assertEquals
 class ISetRespItemCheckListTest {
 
     private val checkListRepository = mock<CheckListRepository>()
-    private val configRepository = mock<ConfigRepository>()
     private val equipRepository = mock<EquipRepository>()
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
     private val startWorkManager = mock<StartWorkManager>()
     private val usecase = ISetRespItemCheckList(
         checkListRepository = checkListRepository,
-        configRepository = configRepository,
         equipRepository = equipRepository,
         itemCheckListRepository = itemCheckListRepository,
         startWorkManager = startWorkManager
@@ -70,7 +68,7 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
@@ -101,42 +99,6 @@ class ISetRespItemCheckListTest {
         }
 
     @Test
-    fun `Check return failure if have error in ConfigRepository getIdEquip`() =
-        runTest {
-            val entity = ItemRespCheckList(
-                idItem = 1,
-                option = OptionRespCheckList.ACCORDING
-            )
-            whenever(
-                checkListRepository.cleanResp()
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                checkListRepository.saveResp(entity)
-            ).thenReturn(
-                Result.success(true)
-            )
-            val result = usecase(
-                pos = 1,
-                id = 1,
-                option = OptionRespCheckList.ACCORDING
-            )
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetRespItemCheckList -> IConfigRepository.getIdEquip"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in EquipRepository getIdCheckListByIdEquip`() =
         runTest {
             val entity = ItemRespCheckList(
@@ -146,12 +108,12 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.getIdCheckList()
@@ -191,12 +153,12 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.getIdCheckList()
@@ -241,12 +203,12 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.getIdCheckList()
@@ -296,12 +258,12 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.getIdCheckList()
@@ -316,7 +278,7 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.saveCheckList()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 pos = 1,
@@ -343,12 +305,12 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.cleanResp()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 checkListRepository.saveResp(entity)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 equipRepository.getIdCheckList()
@@ -363,7 +325,7 @@ class ISetRespItemCheckListTest {
             whenever(
                 checkListRepository.saveCheckList()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 pos = 1,

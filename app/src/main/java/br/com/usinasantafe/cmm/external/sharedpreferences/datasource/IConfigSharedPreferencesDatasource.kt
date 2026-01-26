@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import java.util.Date
 import javax.inject.Inject
 import androidx.core.content.edit
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 class IConfigSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
@@ -54,7 +55,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun save(model: ConfigSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: ConfigSharedPreferencesModel): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -62,7 +63,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -71,7 +72,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): Result<Boolean> {
+    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): EmptyResult {
         try {
             val resultConfig = get()
             resultConfig.onFailure {
@@ -89,7 +90,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -155,7 +156,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun setStatusSend(statusSend: StatusSend): Result<Boolean> {
+    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult {
         try {
             val resultConfig = get()
             resultConfig.onFailure {
@@ -173,7 +174,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
                     cause = it
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

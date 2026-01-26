@@ -5,10 +5,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class ISetIdEquipTest {
 
@@ -20,8 +20,40 @@ class ISetIdEquipTest {
     )
 
     @Test
+    fun `Check return failure if have error in EquipRepository getIdEquipMain`() =
+        runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRepository.getIdEquipMain",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdEquip -> IEquipRepository.getIdEquipMain"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in EquipRepository getTypeByIdEquip`() =
         runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
             whenever(
                 equipRepository.getTypeEquipMain()
             ).thenReturn(
@@ -49,6 +81,11 @@ class ISetIdEquipTest {
     @Test
     fun `Check return failure if have error in HeaderMotoMecRepository setIdEquip`() =
         runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
             whenever(
                 equipRepository.getTypeEquipMain()
             ).thenReturn(
@@ -85,6 +122,11 @@ class ISetIdEquipTest {
     fun `Check return correct if function execute successfully and typeEquip is 1`() =
         runTest {
             whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
+            whenever(
                 equipRepository.getTypeEquipMain()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
@@ -104,13 +146,18 @@ class ISetIdEquipTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
     @Test
     fun `Check return correct if function execute successfully and typeEquip is 3`() =
         runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
             whenever(
                 equipRepository.getTypeEquipMain()
             ).thenReturn(
@@ -131,7 +178,7 @@ class ISetIdEquipTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 }

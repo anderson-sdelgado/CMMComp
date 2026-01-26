@@ -31,7 +31,7 @@ class ISetIdEquipMotorPumpTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdEquipMotorPump"
+                "ISetIdEquipMotorPump -> toLong"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

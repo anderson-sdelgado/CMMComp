@@ -25,69 +25,25 @@ class IListActivity @Inject constructor(
 ): ListActivity {
 
     override suspend fun invoke(): Result<List<Activity>> {
-        try {
-            val resultGetIdEquip = equipRepository.getIdEquipMain()
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultGetREquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip)
-            resultGetREquipActivityList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val rEquipActivityList = resultGetREquipActivityList.getOrNull()!!
+        return runCatching {
+            val idEquip = equipRepository.getIdEquipMain().getOrThrow()
+            val rEquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip).getOrThrow()
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
-            val resultGetNroOS = motoMecRepository.getNroOSHeader()
-            resultGetNroOS.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val nroOS = resultGetNroOS.getOrNull()!!
-            val resultGetListByNroOS = osRepository.listByNroOS(nroOS)
-            resultGetListByNroOS.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultGetListByNroOS.getOrNull()!!
+            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
+            val list = osRepository.listByNroOS(nroOS).getOrThrow()
             if (list.isNotEmpty()) {
                 val os = list.first()
-                val resultGetListByNroOSActivity = rOSActivityRepository.listByIdOS(
+                val rOSActivityList = rOSActivityRepository.listByIdOS(
                     idOS = os.idOS
-                )
-                resultGetListByNroOSActivity.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-                val rOSActivityList = resultGetListByNroOSActivity.getOrNull()!!
+                ).getOrThrow()
                 val idActivityOSList = rOSActivityList.map { it.idActivity }
                 idActivityEquipList = idActivityEquipList.intersect(idActivityOSList.toSet()).toList()
             }
-            val resultGetActivityListByIdEquip = activityRepository.listByIdList(idActivityEquipList)
-            resultGetActivityListByIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return resultGetActivityListByIdEquip
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            activityRepository.listByIdList(idActivityEquipList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -19,7 +19,7 @@ class ISetRegOperator @Inject constructor(
     override suspend fun invoke(
         regOperator: String
     ): EmptyResult {
-        try {
+        return runCatching {
             val result = motoMecRepository.setRegOperatorHeader(
                 regOperator.toInt()
             )
@@ -30,12 +30,10 @@ class ISetRegOperator @Inject constructor(
                 )
             }
             return result
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

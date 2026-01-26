@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -38,7 +39,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun save(model: HeaderCheckListSharedPreferencesModel): Result<Boolean> {
+    override suspend fun save(model: HeaderCheckListSharedPreferencesModel): EmptyResult {
         try {
             sharedPreferences.edit {
                 putString(
@@ -46,7 +47,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception){
             return resultFailure(
                 context = getClassAndMethod(),
@@ -72,7 +73,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
         }
     }
 
-    override suspend fun checkOpen(): Result<Boolean> {
+    override suspend fun hasOpen(): Result<Boolean> {
         try {
             val model = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,

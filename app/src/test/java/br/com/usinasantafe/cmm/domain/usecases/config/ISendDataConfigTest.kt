@@ -34,7 +34,7 @@ class ISendDataConfigTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendDataConfig"
+                "ISendDataConfig -> number.toLong"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

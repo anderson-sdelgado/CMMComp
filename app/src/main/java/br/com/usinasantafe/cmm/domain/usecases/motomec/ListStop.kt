@@ -19,45 +19,21 @@ class IListStop @Inject constructor(
 ): ListStop {
 
     override suspend fun invoke(): Result<List<StopScreenModel>> {
-        try {
-            val resultGetIdActivity = motoMecRepository.getIdActivityNote()
-            resultGetIdActivity.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idActivity = resultGetIdActivity.getOrNull()!!
-            val resultListByIdActivity = rActivityStopRepository.listByIdActivity(idActivity)
-            resultListByIdActivity.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultListByIdActivity.getOrNull()!!
+        return runCatching {
+            val idActivity = motoMecRepository.getIdActivityNote().getOrThrow()
+            val list = rActivityStopRepository.listByIdActivity(idActivity).getOrThrow()
             val idList = list.map { it.idStop }
-            val resultListByIdList = stopRepository.listByIdList(idList)
-            resultListByIdList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val stopList = resultListByIdList.getOrNull()!!
-            val stopScreenModelList = stopList.map {
+            val stopList = stopRepository.listByIdList(idList).getOrThrow()
+            stopList.map {
                 StopScreenModel(
                     id = it.idStop,
                     descr = "${it.codStop} - ${it.descrStop}",
                 )
             }
-            return Result.success(stopScreenModelList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -33,134 +33,48 @@ class ISetHourMeter @Inject constructor(
         hourMeter: String,
         flowApp: FlowApp
     ): Result<FlowApp> {
-        try {
+        return runCatching {
             val locale = Locale.Builder().setLanguage("pt").setRegion("BR").build()
             val formatNumber = NumberFormat.getInstance(locale)
             val hourMeterInput = formatNumber.parse(hourMeter)!!
             val hourMeterInputDouble = hourMeterInput.toDouble()
-
-            val resultUpdateHourMeterByIdEquip = equipRepository.updateHourMeter(
-                hourMeter = hourMeterInputDouble
-            )
-            resultUpdateHourMeterByIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-
+            equipRepository.updateHourMeter(hourMeterInputDouble).getOrThrow()
             if(flowApp == FlowApp.HEADER_INITIAL) {
-                val resultSetHourMeter = motoMecRepository.setHourMeterInitialHeader(hourMeterInputDouble)
-                resultSetHourMeter.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val resultGetTypeEquip = motoMecRepository.getTypeEquipHeader()
-                resultGetTypeEquip.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val typeEquip = resultGetTypeEquip.getOrNull()!!
+                motoMecRepository.setHourMeterInitialHeader(hourMeterInputDouble).getOrThrow()
+                val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()
                 if(typeEquip == TypeEquip.REEL_FERT) return Result.success(FlowApp.REEL_FERT)
-                val resultSaveHeader = motoMecRepository.saveHeader()
-                resultSaveHeader.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
+                motoMecRepository.saveHeader().getOrThrow()
                 startWorkManager()
-                val resultCheckOpenCheckList = checkOpenCheckList()
-                resultCheckOpenCheckList.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-                val check = resultCheckOpenCheckList.getOrNull()!!
+                val check = checkOpenCheckList().getOrThrow()
                 if(check) return Result.success(FlowApp.CHECK_LIST)
                 return Result.success(flowApp)
             }
-
-            val resultSetHourMeter = motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble)
-            resultSetHourMeter.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            resultSetHourMeter.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultFinishHeader = motoMecRepository.finishHeader()
-            resultFinishHeader.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+            motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble).getOrThrow()
+            motoMecRepository.finishHeader().getOrThrow()
             startWorkManager()
-            return Result.success(flowApp)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            flowApp
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     private suspend fun checkOpenCheckList(): Result<Boolean> {
-        try {
-            val resultGetIdCheckList = equipRepository.getIdCheckList()
-            resultGetIdCheckList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            if (resultGetIdCheckList.getOrNull()!! == 0) return Result.success(false)
-            val resultGetIdTurnCheckListLast = configRepository.getIdTurnCheckListLast()
-            resultGetIdTurnCheckListLast.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idTurnCheckListLast = resultGetIdTurnCheckListLast.getOrNull() ?: return Result.success(true)
-            val resultGetIdTurnHeader = motoMecRepository.getIdTurnHeader()
-            resultGetIdTurnHeader.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idTurnHeader = resultGetIdTurnHeader.getOrNull()!!
+        return runCatching {
+            val idCheckList = equipRepository.getIdCheckList().getOrThrow()
+            if (idCheckList == 0) return Result.success(false)
+            val idTurnCheckListLastOrNull = configRepository.getIdTurnCheckListLast().getOrThrow()
+            val idTurnCheckListLast = idTurnCheckListLastOrNull ?: return Result.success(true)
+            val idTurnHeader = motoMecRepository.getIdTurnHeader().getOrThrow()
             if (idTurnHeader != idTurnCheckListLast) return Result.success(true)
-            val resultGetDateCheckListLast = configRepository.getDateCheckListLast()
-            resultGetDateCheckListLast.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+            val dateCheckListLast = configRepository.getDateCheckListLast().getOrThrow()
             val dateNow = Date()
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val dateCheckListLast = resultGetDateCheckListLast.getOrNull()!!
-            if(dateFormat.format(dateNow) == dateFormat.format(dateCheckListLast)) return Result.success(false)
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            dateFormat.format(dateNow) != dateFormat.format(dateCheckListLast)
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

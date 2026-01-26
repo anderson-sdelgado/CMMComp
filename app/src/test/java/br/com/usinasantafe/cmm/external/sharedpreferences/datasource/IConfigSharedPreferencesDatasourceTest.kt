@@ -319,7 +319,7 @@ class IConfigSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultAfter = datasource.get()
             assertEquals(

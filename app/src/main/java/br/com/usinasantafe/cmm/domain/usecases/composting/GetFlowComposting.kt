@@ -15,14 +15,12 @@ class IGetFlowComposting @Inject constructor(
 ): GetFlowComposting {
 
     override suspend fun invoke(): Result<FlowComposting> {
-        val result = motoMecRepository.getFlowCompostingHeader()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            motoMecRepository.getFlowCompostingHeader().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

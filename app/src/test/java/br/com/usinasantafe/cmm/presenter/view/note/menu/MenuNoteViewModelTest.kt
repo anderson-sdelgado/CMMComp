@@ -387,7 +387,7 @@ class MenuNoteViewModelTest {
             whenever(
                 finishNoteMechanic()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.onDialogCheck(
                 1 to FINISH_MECHANICAL

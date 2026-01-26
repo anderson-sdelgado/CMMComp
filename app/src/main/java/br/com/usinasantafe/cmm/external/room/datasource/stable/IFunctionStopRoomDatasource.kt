@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionStopDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionStopRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -12,10 +13,10 @@ class IFunctionStopRoomDatasource @Inject constructor(
     private val functionStopDao: FunctionStopDao
 ): FunctionStopRoomDatasource {
 
-    override suspend fun addAll(list: List<FunctionStopRoomModel>): Result<Boolean> {
+    override suspend fun addAll(list: List<FunctionStopRoomModel>): EmptyResult {
         try {
             functionStopDao.insertAll(list)
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -24,10 +25,10 @@ class IFunctionStopRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
+    override suspend fun deleteAll(): EmptyResult {
         try {
             functionStopDao.deleteAll()
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

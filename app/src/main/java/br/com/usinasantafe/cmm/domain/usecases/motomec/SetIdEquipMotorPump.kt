@@ -6,6 +6,8 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import com.google.common.primitives.UnsignedBytes.toInt
+import com.google.common.primitives.UnsignedInts.toLong
 import javax.inject.Inject
 
 interface SetIdEquipMotorPump {
@@ -19,37 +21,20 @@ class ISetIdEquipMotorPump @Inject constructor(
 ): SetIdEquipMotorPump {
 
     override suspend fun invoke(nroEquip: String): EmptyResult {
-        try {
-            val resultGetIdEquip = equipRepository.getIdByNro(nroEquip.toLong())
-            resultGetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
+        return runCatching {
+            val nroEquipLong = runCatching {
+                nroEquip.toLong()
+            }.getOrElse { e ->
+                throw Exception(::toLong.name, e)
             }
-            val idEquip = resultGetIdEquip.getOrNull()!!
-            val resultSetIdEquip = motoMecRepository.setIdEquipMotorPumpHeader(idEquip)
-            resultSetIdEquip.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultSaveHeader = motoMecRepository.saveHeader()
-            resultSaveHeader.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
+            val idEquip = equipRepository.getIdByNro(nroEquipLong).getOrThrow()
+            motoMecRepository.setIdEquipMotorPumpHeader(idEquip).getOrThrow()
+            motoMecRepository.saveHeader().getOrThrow()
             startWorkManager()
-            return resultSaveHeader
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

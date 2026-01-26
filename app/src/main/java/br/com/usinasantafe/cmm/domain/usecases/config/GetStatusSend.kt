@@ -15,22 +15,12 @@ class IGetStatusSend @Inject constructor(
 ): GetStatusSend {
 
     override suspend fun invoke(): Result<StatusSend> {
-        try {
-            val result = configRepository.get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val config = result.getOrNull()!!
-            return Result.success(config.statusSend)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+        return runCatching {
+            configRepository.get().getOrThrow().statusSend
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -107,7 +107,7 @@ class IActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = activityDao.all().size
             assertEquals(

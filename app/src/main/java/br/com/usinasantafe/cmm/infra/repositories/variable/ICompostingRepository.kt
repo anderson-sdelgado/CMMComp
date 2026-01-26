@@ -13,38 +13,27 @@ class ICompostingRepository @Inject constructor(
     private val compoundCompostingRoomDatasource: CompoundCompostingRoomDatasource
 ): CompostingRepository {
     override suspend fun hasCompostingInputLoadSent(): Result<Boolean> {
-        val result = inputCompostingRoomDatasource.hasSentLoad()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            inputCompostingRoomDatasource.hasSentLoad().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
     override suspend fun hasWill(flowComposting: FlowComposting): Result<Boolean> {
-        when(flowComposting){
-            FlowComposting.INPUT -> {
-                val result = inputCompostingRoomDatasource.hasWill()
-                result.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
+        return runCatching {
+            when(flowComposting){
+                FlowComposting.INPUT -> {
+                    inputCompostingRoomDatasource.hasWill().getOrThrow()
                 }
-                return result
-            }
-            FlowComposting.COMPOUND -> {
-                val result = compoundCompostingRoomDatasource.hasWill()
-                result.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
+                FlowComposting.COMPOUND -> {
+                    compoundCompostingRoomDatasource.hasWill().getOrThrow()
                 }
-                return result
             }
-        }
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 }

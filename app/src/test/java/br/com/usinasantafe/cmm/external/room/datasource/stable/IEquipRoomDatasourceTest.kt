@@ -116,7 +116,7 @@ class IEquipRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = equipDao.all()
             assertEquals(
@@ -193,7 +193,7 @@ class IEquipRoomDatasourceTest {
                 )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = equipDao.all().size
             assertEquals(

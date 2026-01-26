@@ -17,9 +17,10 @@ class ISetIdTurn @Inject constructor(
     override suspend fun invoke(id: Int): EmptyResult {
         return runCatching {
             motoMecRepository.setIdTurnHeader(id).getOrThrow()
-        }.onFailure {
-            resultFailure(context = getClassAndMethod(), cause = it)
-        }
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

@@ -109,7 +109,7 @@ class IFunctionStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = functionStopDao.all().size
             assertEquals(

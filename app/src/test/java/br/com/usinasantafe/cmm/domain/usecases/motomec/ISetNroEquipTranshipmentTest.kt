@@ -199,7 +199,7 @@ class ISetNroEquipTranshipmentTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetNroEquipTranshipment"
+                "ISetNroEquipTranshipment -> toLong"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

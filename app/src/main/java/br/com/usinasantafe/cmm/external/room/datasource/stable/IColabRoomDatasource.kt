@@ -4,16 +4,17 @@ import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 class IColabRoomDatasource @Inject constructor(
     private val colabDao: ColabDao
 ) : ColabRoomDatasource {
-    override suspend fun addAll(list: List<ColabRoomModel>): Result<Boolean> {
+    override suspend fun addAll(list: List<ColabRoomModel>): EmptyResult {
         try {
             colabDao.insertAll(list)
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),
@@ -22,10 +23,10 @@ class IColabRoomDatasource @Inject constructor(
         }
     }
 
-    override suspend fun deleteAll(): Result<Boolean> {
+    override suspend fun deleteAll(): EmptyResult {
         try {
             colabDao.deleteAll()
-            return Result.success(true)
+            return Result.success(Unit)
         } catch (e: Exception) {
             return resultFailure(
                 context = getClassAndMethod(),

@@ -128,7 +128,7 @@ class ICheckListRepositoryTest {
             whenever(
                 headerCheckListSharedPreferencesDatasource.save(entity.entityToSharedPreferencesModel())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.saveHeader(entity)
             assertEquals(
@@ -137,7 +137,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -190,7 +190,7 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.add(model)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.saveResp(entity)
             assertEquals(
@@ -199,7 +199,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -222,7 +222,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.clearResp -> IRespItemCheckListSharedPreferencesDatasource.clean"
+                "ICheckListRepository.cleanResp -> IRespItemCheckListSharedPreferencesDatasource.clean"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -236,7 +236,7 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.cleanResp()
             assertEquals(
@@ -245,7 +245,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -649,7 +649,7 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.saveCheckList()
             assertEquals(
@@ -658,7 +658,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -695,7 +695,7 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.delLast()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.delLastRespItem()
             assertEquals(
@@ -704,7 +704,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -712,7 +712,7 @@ class ICheckListRepositoryTest {
     fun `checkOpen - Check return failure if have error in HeaderCheckListSharedPreferencesDatasource checkOpen`() =
         runTest {
             whenever(
-                headerCheckListSharedPreferencesDatasource.checkOpen()
+                headerCheckListSharedPreferencesDatasource.hasOpen()
             ).thenReturn(
                 resultFailure(
                     "IHeaderCheckListSharedPreferencesDatasource.checkOpen",
@@ -720,14 +720,14 @@ class ICheckListRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.checkOpen()
+            val result = repository.hasOpen()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.checkOpen -> IHeaderCheckListSharedPreferencesDatasource.checkOpen"
+                "ICheckListRepository.hasOpen -> IHeaderCheckListSharedPreferencesDatasource.checkOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -739,11 +739,11 @@ class ICheckListRepositoryTest {
     fun `checkOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerCheckListSharedPreferencesDatasource.checkOpen()
+                headerCheckListSharedPreferencesDatasource.hasOpen()
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkOpen()
+            val result = repository.hasOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -773,7 +773,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckListRepository.checkSend -> IHeaderCheckListRoomDatasource.checkSend"
+                "ICheckListRepository.hasSend -> IHeaderCheckListRoomDatasource.checkSend"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -1206,7 +1206,7 @@ class ICheckListRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

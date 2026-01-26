@@ -6,7 +6,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityReposi
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 import br.com.usinasantafe.cmm.lib.TB_FUNCTION_ACTIVITY
+import br.com.usinasantafe.cmm.presenter.model.emitFailure
+import br.com.usinasantafe.cmm.presenter.model.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
@@ -29,96 +32,21 @@ class IUpdateTableFunctionActivity @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(1f, count, sizeAll),
-                tableUpdate = TB_FUNCTION_ACTIVITY,
-                levelUpdate = LevelUpdate.RECOVERY
-            )
+        return@flow runCatching {
+            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_FUNCTION_ACTIVITY)
+            val token = getToken().getOrThrow()
+            val entityList = functionActivityRepository.listAll(token).getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_FUNCTION_ACTIVITY)
+            functionActivityRepository.deleteAll().getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_FUNCTION_ACTIVITY)
+            functionActivityRepository.addAll(entityList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = {
+                val failure = failure(getClassAndMethod(), it)
+                emitFailure(failure)
+            }
         )
-        val resultGetToken = getToken()
-        resultGetToken.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val token = resultGetToken.getOrNull()!!
-        val resultRecoverAll = functionActivityRepository.listAll(token)
-        resultRecoverAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(2f, count, sizeAll),
-                tableUpdate = TB_FUNCTION_ACTIVITY,
-                levelUpdate = LevelUpdate.CLEAN
-            )
-        )
-        val resultDeleteAll = functionActivityRepository.deleteAll()
-        resultDeleteAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(3f, count, sizeAll),
-                tableUpdate = TB_FUNCTION_ACTIVITY,
-                levelUpdate = LevelUpdate.SAVE
-            )
-        )
-        val entityList = resultRecoverAll.getOrNull()!!
-        val resultAddAll = functionActivityRepository.addAll(entityList)
-        resultAddAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
     }
 
 }

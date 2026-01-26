@@ -48,7 +48,7 @@ class IFinishNoteMechanicalTest {
             whenever(
                 mechanicRepository.setFinishNote()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase()
             assertEquals(
@@ -57,7 +57,7 @@ class IFinishNoteMechanicalTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

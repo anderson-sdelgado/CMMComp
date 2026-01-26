@@ -8,7 +8,7 @@ import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 
-class ICheckHeaderSendTest {
+class IHasSendMotoMecTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val usecase = IHasSendMotoMec(
@@ -16,7 +16,7 @@ class ICheckHeaderSendTest {
     )
 
     @Test
-    fun `Check return failure if have error in `() =
+    fun `Check return failure if have error in MotoMecRepository hasHeaderSend`() =
         runTest {
             whenever(
                 motoMecRepository.hasHeaderSend()
@@ -34,7 +34,7 @@ class ICheckHeaderSendTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHeaderSend -> HeaderMotoMecRepository.checkHeaderOpen"
+                "IHasSendMotoMec -> HeaderMotoMecRepository.checkHeaderOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

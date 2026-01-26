@@ -16,7 +16,7 @@ import java.util.Date
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class IHistoryListTest {
+class IListHistoryTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val activityRepository = mock<ActivityRepository>()
@@ -28,8 +28,40 @@ class IHistoryListTest {
     )
 
     @Test
+    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListHistory -> IMotoMecRepository.getIdByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in MotoMecRepository noteList`() =
         runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
@@ -46,7 +78,7 @@ class IHistoryListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHistoryList -> IMotoMecRepository.noteList"
+                "IListHistory -> IMotoMecRepository.noteList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -71,6 +103,11 @@ class IHistoryListTest {
                 )
             )
             whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 motoMecRepository.noteListByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
@@ -91,7 +128,7 @@ class IHistoryListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHistoryList -> IStopRepository.getById"
+                "IListHistory -> IStopRepository.getById"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -114,6 +151,11 @@ class IHistoryListTest {
                     nroOS = 123456,
                     idActivity = 1
                 )
+            )
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
             )
             whenever(
                 motoMecRepository.noteListByIdHeader(1)
@@ -147,7 +189,7 @@ class IHistoryListTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHistoryList -> IActivityRepository.getById"
+                "IListHistory -> IActivityRepository.getById"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -172,6 +214,11 @@ class IHistoryListTest {
                     idActivity = 1,
                     dateHour = Date(1761132554000)
                 )
+            )
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
             )
             whenever(
                 motoMecRepository.noteListByIdHeader(1)
@@ -238,11 +285,11 @@ class IHistoryListTest {
             )
             assertEquals(
                 model1.function.first,
-                1
+                2
             )
             assertEquals(
                 model1.function.second,
-                WORK
+                STOP
             )
             assertEquals(
                 model2.descr,

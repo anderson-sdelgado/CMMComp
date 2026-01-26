@@ -21,7 +21,6 @@ interface SetRespItemCheckList {
 
 class ISetRespItemCheckList @Inject constructor(
     private val checkListRepository: CheckListRepository,
-    private val configRepository: ConfigRepository,
     private val equipRepository: EquipRepository,
     private val itemCheckListRepository: ItemCheckListRepository,
     private val startWorkManager: StartWorkManager
@@ -32,61 +31,25 @@ class ISetRespItemCheckList @Inject constructor(
         id: Int,
         option: OptionRespCheckList
     ): Result<Boolean> {
-        try {
-            if(pos == 1) {
-                val resultClean = checkListRepository.cleanResp()
-                resultClean.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
-            }
+        return runCatching {
+            if(pos == 1) checkListRepository.cleanResp().getOrThrow()
             val entity = ItemRespCheckList(
                 idItem = id,
                 option = option
             )
-            val resultSave = checkListRepository.saveResp(entity)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val resultGetIdCheckList = equipRepository.getIdCheckList()
-            resultGetIdCheckList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val idCheckList = resultGetIdCheckList.getOrNull()!!
-            val resultCount = itemCheckListRepository.countByIdCheckList(idCheckList)
-            resultCount.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val count = resultCount.getOrNull()!!
+            checkListRepository.saveResp(entity).getOrThrow()
+            val idCheckList = equipRepository.getIdCheckList().getOrThrow()
+            val count = itemCheckListRepository.countByIdCheckList(idCheckList).getOrThrow()
             val check =  pos < count
             if(!check) {
-                val resultSave = checkListRepository.saveCheckList()
-                resultSave.onFailure {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = it
-                    )
-                }
+                checkListRepository.saveCheckList().getOrThrow()
                 startWorkManager()
             }
-            return Result.success(check)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
-        }
+            check
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

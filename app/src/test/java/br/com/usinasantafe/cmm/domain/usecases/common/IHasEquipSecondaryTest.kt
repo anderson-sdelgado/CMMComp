@@ -29,7 +29,7 @@ class IHasEquipSecondaryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHasEquipSecondary"
+                "IHasEquipSecondary -> toLong"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

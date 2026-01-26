@@ -7,7 +7,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityReposito
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 import br.com.usinasantafe.cmm.lib.TB_R_EQUIP_ACTIVITY
+import br.com.usinasantafe.cmm.presenter.model.emitFailure
+import br.com.usinasantafe.cmm.presenter.model.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
@@ -31,116 +34,22 @@ class IUpdateTableREquipActivityByIdEquip @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(1f, count, sizeAll),
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = TB_R_EQUIP_ACTIVITY
-            )
+        return@flow runCatching {
+            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_R_EQUIP_ACTIVITY)
+            val token = getToken().getOrThrow()
+            val idEquip = equipRepository.getIdEquipMain().getOrThrow()
+            val entityList = rEquipActivityRepository.listByIdEquip(token, idEquip).getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_R_EQUIP_ACTIVITY)
+            rEquipActivityRepository.deleteAll().getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_R_EQUIP_ACTIVITY)
+            rEquipActivityRepository.addAll(entityList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = {
+                val failure = failure(getClassAndMethod(), it)
+                emitFailure(failure)
+            }
         )
-        val resultGetToken = getToken()
-        resultGetToken.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val token = resultGetToken.getOrNull()!!
-        val resultGetId = equipRepository.getIdEquipMain()
-        resultGetId.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val idEquip = resultGetId.getOrNull()!!
-        val resultGetList = rEquipActivityRepository.listByIdEquip(
-            token = token,
-            idEquip = idEquip
-        )
-        resultGetList.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(2f, count, sizeAll),
-                levelUpdate = LevelUpdate.CLEAN,
-                tableUpdate = TB_R_EQUIP_ACTIVITY
-            )
-        )
-        val resultDeleteAll = rEquipActivityRepository.deleteAll()
-        resultDeleteAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(3f, count, sizeAll),
-                levelUpdate = LevelUpdate.SAVE,
-                tableUpdate = TB_R_EQUIP_ACTIVITY
-            )
-        )
-        val entityList = resultGetList.getOrNull()!!
-        val resultAddAll = rEquipActivityRepository.addAll(entityList)
-        resultAddAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
     }
 
 }

@@ -1,10 +1,11 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.EmptyResult
 
 interface ItemRespCheckListSharedPreferencesDatasource {
-    suspend fun add(model: RespItemCheckListSharedPreferencesModel): Result<Boolean>
-    suspend fun clean(): Result<Boolean>
+    suspend fun add(model: RespItemCheckListSharedPreferencesModel): EmptyResult
+    suspend fun clean(): EmptyResult
     suspend fun list(): Result<List<RespItemCheckListSharedPreferencesModel>>
-    suspend fun delLast(): Result<Boolean>
+    suspend fun delLast(): EmptyResult
 }

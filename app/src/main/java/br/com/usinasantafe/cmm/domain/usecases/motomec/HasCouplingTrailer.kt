@@ -14,14 +14,12 @@ class IHasCouplingTrailer @Inject constructor(
 ): HasCouplingTrailer {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = motoMecRepository.hasCouplingTrailerImplement()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            motoMecRepository.hasCouplingTrailerImplement().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

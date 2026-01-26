@@ -95,7 +95,7 @@ class IEquipRepositoryTest {
             whenever(
                 equipRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -104,7 +104,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -141,7 +141,7 @@ class IEquipRepositoryTest {
             whenever(
                 equipRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -150,7 +150,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -602,7 +602,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IEquipRepository.getTypeEquip -> EquipSharedPreferencesDatasource.getTypeEquip"
+                "IEquipRepository.getTypeEquipMain -> EquipSharedPreferencesDatasource.getTypeEquip"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -852,7 +852,7 @@ class IEquipRepositoryTest {
             whenever(
                 equipSharedPreferencesDatasource.save(model)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.saveEquipMain(entity)
             assertEquals(
@@ -861,7 +861,7 @@ class IEquipRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

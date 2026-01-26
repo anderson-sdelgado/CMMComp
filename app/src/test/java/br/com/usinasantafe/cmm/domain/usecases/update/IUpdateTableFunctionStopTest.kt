@@ -213,7 +213,7 @@ class IUpdateTableFunctionStopTest {
             whenever(
                 functionStopRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 functionStopRepository.addAll(list)

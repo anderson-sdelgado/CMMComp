@@ -9,7 +9,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ICheckHasNoteOpenMechanicTest {
+class IHasNoteOpenMechanicTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val mechanicRepository = mock<MechanicRepository>()
@@ -37,7 +37,7 @@ class ICheckHasNoteOpenMechanicTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHasNoteOpenMechanic -> IMotoMecRepository.getIdByHeaderOpen"
+                "IHasNoteOpenMechanic -> IMotoMecRepository.getIdByHeaderOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -69,7 +69,7 @@ class ICheckHasNoteOpenMechanicTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHasNoteOpenMechanic -> IMechanicRepository.checkNoteOpenByIdHeader"
+                "IHasNoteOpenMechanic -> IMechanicRepository.checkNoteOpenByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

@@ -14,14 +14,12 @@ class IHasCompostingInputLoadSentOpen @Inject constructor(
 ): HasCompostingInputLoadSentOpen {
 
     override suspend fun invoke(): Result<Boolean> {
-        val result = compostingRepository.hasCompostingInputLoadSent()
-        result.onFailure {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = it
-            )
-        }
-        return result
+        return runCatching {
+            compostingRepository.hasCompostingInputLoadSent().getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(it) },
+            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
+        )
     }
 
 }

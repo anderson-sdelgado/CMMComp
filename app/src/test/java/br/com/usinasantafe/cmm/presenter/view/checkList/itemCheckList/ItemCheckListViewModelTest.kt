@@ -239,7 +239,7 @@ class ItemCheckListViewModelTest {
             whenever(
                 delLastRespItemCheckList()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             viewModel.get(3)
             assertEquals(

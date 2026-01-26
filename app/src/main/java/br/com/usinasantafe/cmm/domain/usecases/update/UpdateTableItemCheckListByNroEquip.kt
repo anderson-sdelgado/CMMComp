@@ -7,7 +7,10 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepositor
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TB_COLAB
 import br.com.usinasantafe.cmm.lib.TB_ITEM_CHECK_LIST
+import br.com.usinasantafe.cmm.presenter.model.emitFailure
+import br.com.usinasantafe.cmm.presenter.model.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.Flow
@@ -32,116 +35,22 @@ class IUpdateTableItemCheckListByNroEquip @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(1f, count, sizeAll),
-                tableUpdate = TB_ITEM_CHECK_LIST,
-                levelUpdate = LevelUpdate.RECOVERY
-            )
+        return@flow runCatching {
+            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_ITEM_CHECK_LIST)
+            val token = getToken().getOrThrow()
+            val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
+            val entityList = itemCheckListRepository.listByNroEquip(token, nroEquip).getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_ITEM_CHECK_LIST)
+            itemCheckListRepository.deleteAll().getOrThrow()
+            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_ITEM_CHECK_LIST)
+            itemCheckListRepository.addAll(entityList).getOrThrow()
+        }.fold(
+            onSuccess = { Result.success(Unit) },
+            onFailure = {
+                val failure = failure(getClassAndMethod(), it)
+                emitFailure(failure)
+            }
         )
-        val resultGetToken = getToken()
-        resultGetToken.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val token = resultGetToken.getOrNull()!!
-        val resultGetNroEquip = equipRepository.getNroEquipMain()
-        resultGetNroEquip.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        val nroEquip = resultGetNroEquip.getOrNull()!!
-        val resultRecoverAll = itemCheckListRepository.listByNroEquip(
-            token = token,
-            nroEquip = nroEquip
-        )
-        resultRecoverAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(2f, count, sizeAll),
-                tableUpdate = TB_ITEM_CHECK_LIST,
-                levelUpdate = LevelUpdate.CLEAN
-            )
-        )
-        val resultDeleteAll = itemCheckListRepository.deleteAll()
-        resultDeleteAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
-        emit(
-            ResultUpdateModel(
-                flagProgress = true,
-                currentProgress = updatePercentage(3f, count, sizeAll),
-                tableUpdate = TB_ITEM_CHECK_LIST,
-                levelUpdate = LevelUpdate.SAVE
-            )
-        )
-        val entityList = resultRecoverAll.getOrNull()!!
-        val resultAddAll = itemCheckListRepository.addAll(entityList)
-        resultAddAll.onFailure {
-            val failure = failure(getClassAndMethod(), it)
-            emit(
-                ResultUpdateModel(
-                    flagProgress = true,
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = failure,
-                    levelUpdate = null,
-                    currentProgress = 1f,
-                )
-            )
-            return@flow
-        }
     }
 
 }

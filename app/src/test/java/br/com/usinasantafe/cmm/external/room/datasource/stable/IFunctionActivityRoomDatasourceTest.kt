@@ -109,7 +109,7 @@ class IFunctionFunctionActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = functionActivityDao.all().size
             assertEquals(

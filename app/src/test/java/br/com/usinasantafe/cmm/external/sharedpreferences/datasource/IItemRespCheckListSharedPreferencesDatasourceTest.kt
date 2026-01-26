@@ -47,7 +47,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultAdd1.getOrNull()!!,
-                true
+                Unit
             )
             val resultAdd2 = datasource.add(model2)
             assertEquals(
@@ -56,7 +56,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultAdd2.getOrNull()!!,
-                true
+                Unit
             )
             val resultList = datasource.list()
             assertEquals(
@@ -93,7 +93,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultClean.getOrNull()!!,
-                true
+                Unit
             )
             val resultListAfterClean = datasource.list()
             assertEquals(
@@ -126,7 +126,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultSave1.getOrNull()!!,
-                true
+                Unit
             )
             val resultSave2 = datasource.add(model2)
             assertEquals(
@@ -135,7 +135,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultSave2.getOrNull()!!,
-                true
+                Unit
             )
             val resultListBefore = datasource.list()
             assertEquals(
@@ -172,7 +172,7 @@ class IItemRespCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultDeleteLast.getOrNull()!!,
-                true
+                Unit
             )
             val resultListAfter = datasource.list()
             assertEquals(

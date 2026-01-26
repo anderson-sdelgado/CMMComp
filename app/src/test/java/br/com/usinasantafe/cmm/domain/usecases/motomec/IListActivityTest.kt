@@ -26,7 +26,6 @@ class IListActivityTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val osRepository = mock<OSRepository>()
     private val activityRepository= mock<ActivityRepository>()
-    private val configRepository = mock<ConfigRepository>()
     private val rOSActivityRepository = mock<ROSActivityRepository>()
     private val rEquipActivityRepository = mock<REquipActivityRepository>()
     private val equipRepository = mock<EquipRepository>()
@@ -85,10 +84,10 @@ class IListActivityTest {
     fun `Check return failure if have error in ConfigRepository get`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
                 resultFailure(
-                    context = "ConfigRepository.get",
+                    context = "EquipRepository.getIdEquipMain",
                     message = "-",
                     cause = Exception()
                 )
@@ -100,7 +99,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> ConfigRepository.get"
+                "IListActivity -> EquipRepository.getIdEquipMain"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -112,25 +111,9 @@ class IListActivityTest {
     fun `Check return failure if have error in REquipActivityRepository getListByIdEquip`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -160,25 +143,9 @@ class IListActivityTest {
     fun `Check return failure if have error in HeaderMotoMecRepository getNroOS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -213,25 +180,9 @@ class IListActivityTest {
     fun `Check return failure if have error in OSRepository getListByNroOS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -273,25 +224,9 @@ class IListActivityTest {
     fun `Check return failure if have error in ActivityRepository getListByListId without OS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -341,25 +276,9 @@ class IListActivityTest {
     fun `Check return list if function execute successfully without OS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -445,25 +364,9 @@ class IListActivityTest {
     fun `Check return failure if have error in ROSActivityRepository getListByIdOS with OS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -523,25 +426,9 @@ class IListActivityTest {
     fun `Check return failure if have error in ActivityRepository getListByListId with OS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
@@ -623,25 +510,9 @@ class IListActivityTest {
     fun `Check return list if function execute successfully with OS`() =
         runTest {
             whenever(
-                configRepository.get()
+                equipRepository.getIdEquipMain()
             ).thenReturn(
-                Result.success(
-                    Config(
-                        equip = Equip(
-                            id = 10,
-                            nro = 2200,
-                            codClass = 1,
-                            descrClass = "TRATOR",
-                            codTurnEquip = 1,
-                            idCheckList = 1,
-                            typeEquip = TypeEquip.NORMAL,
-                            hourMeter = 5000.0,
-                            classify = 1,
-                            flagMechanic = true,
-                            flagTire = true
-                        )
-                    )
-                )
+                Result.success(1)
             )
             whenever(
                 rEquipActivityRepository.listByIdEquip(1)
