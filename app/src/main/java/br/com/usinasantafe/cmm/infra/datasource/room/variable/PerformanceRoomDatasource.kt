@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface PerformanceRoomDatasource {
     suspend fun insert(model: PerformanceRoomModel): EmptyResult

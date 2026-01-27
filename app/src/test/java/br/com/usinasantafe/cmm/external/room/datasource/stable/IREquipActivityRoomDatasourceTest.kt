@@ -107,7 +107,7 @@ class IREquipActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = rEquipActivityDao.all()
             assertEquals(
@@ -166,7 +166,7 @@ class IREquipActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = rEquipActivityDao.all().size
             assertEquals(

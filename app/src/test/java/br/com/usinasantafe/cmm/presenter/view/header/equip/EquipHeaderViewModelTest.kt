@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.header.equip
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi

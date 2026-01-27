@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.token
-import com.google.common.primitives.UnsignedBytes.toInt
+import br.com.usinasantafe.cmm.utils.tryCatch
 import javax.inject.Inject
 
 interface GetToken {
@@ -17,13 +18,11 @@ class IGetToken @Inject constructor(
     private val equipRepository: EquipRepository
 ): GetToken {
 
-    override suspend fun invoke(): Result<String> {
-        return runCatching {
+    override suspend fun invoke(): Result<String> =
+        call(getClassAndMethod()) {
             val entity = configRepository.get().getOrThrow()
             val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
-            runCatching {
-                fun <T> T?.required(field: String): T =
-                    this ?: throw NullPointerException("$field is required")
+            tryCatch("token") {
                 token(
                     app = entity.app.required("app"),
                     idServ = entity.idServ.required("idServ"),
@@ -31,13 +30,7 @@ class IGetToken @Inject constructor(
                     number = entity.number.required("number"),
                     version = entity.version.required("version")
                 )
-            }.getOrElse { e ->
-                throw Exception("token", e)
             }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

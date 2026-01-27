@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.variable
 
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface MechanicRoomDatasource {
     suspend fun checkNoteOpenByIdHeader(idHeader: Int): Result<Boolean>

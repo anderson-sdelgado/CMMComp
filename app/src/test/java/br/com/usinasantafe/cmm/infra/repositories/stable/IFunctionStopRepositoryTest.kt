@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionStop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.FunctionStopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.FunctionStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.FunctionStopRetrofitModel

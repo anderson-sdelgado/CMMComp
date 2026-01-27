@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.CompoundCompostingRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.InputCompostingRoomDatasource
 import br.com.usinasantafe.cmm.lib.FlowComposting

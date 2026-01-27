@@ -1,14 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 interface SetRespItemCheckList {
@@ -30,8 +29,8 @@ class ISetRespItemCheckList @Inject constructor(
         pos: Int,
         id: Int,
         option: OptionRespCheckList
-    ): Result<Boolean> {
-        return runCatching {
+    ): Result<Boolean> =
+        call(getClassAndMethod()) {
             if(pos == 1) checkListRepository.cleanResp().getOrThrow()
             val entity = ItemRespCheckList(
                 idItem = id,
@@ -46,10 +45,6 @@ class ISetRespItemCheckList @Inject constructor(
                 startWorkManager()
             }
             check
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

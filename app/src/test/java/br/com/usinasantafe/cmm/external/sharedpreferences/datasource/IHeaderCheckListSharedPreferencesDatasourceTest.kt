@@ -72,7 +72,7 @@ class IHeaderCheckListSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultClean.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfterClean = datasource.get()
             assertEquals(

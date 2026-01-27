@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RItemMenuStop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
@@ -214,7 +214,7 @@ class IUpdateTableRItemMenuStopTest {
             whenever(
                 rItemMenuStopRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rItemMenuStopRepository.addAll(list)

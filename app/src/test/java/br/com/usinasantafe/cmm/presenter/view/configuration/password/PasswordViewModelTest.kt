@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.configuration.password
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.CheckPassword
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

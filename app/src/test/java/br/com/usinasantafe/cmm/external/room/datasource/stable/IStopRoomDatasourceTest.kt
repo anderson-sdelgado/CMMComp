@@ -102,7 +102,7 @@ class IStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = stopDao.all()
             assertEquals(
@@ -161,7 +161,7 @@ class IStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = stopDao.all().size
             assertEquals(

@@ -280,13 +280,12 @@ class ConfigViewModel @Inject constructor(
         errors: Errors = Errors.EXCEPTION,
         emit: Boolean = false
     ): ConfigState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
+        Timber.e(message)
 
         val newState = _uiState.value.copy(
             flagDialog = true,
             flagFailure = true,
-            failure = failMsg,
+            failure = message,
             errors = errors,
             flagProgress = false,
             currentProgress = 1f

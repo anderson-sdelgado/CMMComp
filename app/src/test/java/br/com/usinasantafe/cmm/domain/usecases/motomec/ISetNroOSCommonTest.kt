@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowApp
 import kotlinx.coroutines.test.runTest
@@ -165,7 +165,7 @@ class ISetNroOSCommonTest {
             whenever(
                 motoMecRepository.setNroOSNote(123456)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 nroOS = "123456",

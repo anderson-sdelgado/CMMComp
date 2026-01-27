@@ -1,12 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.lib.EXIT_MILL
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.StatusPreCEC
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import java.util.Date
 import javax.inject.Inject
 
@@ -18,8 +18,8 @@ class ISetDatePreCEC @Inject constructor(
     private val cecRepository: CECRepository
 ): SetDatePreCEC {
 
-    override suspend fun invoke(item: ItemMenuModel): Result<StatusPreCEC> {
-        return runCatching {
+    override suspend fun invoke(item: ItemMenuModel): Result<StatusPreCEC> =
+        call(getClassAndMethod()) {
 
             val model = cecRepository.get().getOrThrow()
 
@@ -36,7 +36,7 @@ class ISetDatePreCEC @Inject constructor(
             }
 
             if (currentStatus != expectedStatus) {
-                return Result.success(currentStatus)
+                return@call currentStatus
             }
 
             when(item.type.second) {
@@ -47,10 +47,6 @@ class ISetDatePreCEC @Inject constructor(
 
             currentStatus
 
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

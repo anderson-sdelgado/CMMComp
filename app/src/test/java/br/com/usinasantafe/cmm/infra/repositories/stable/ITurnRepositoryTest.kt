@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.lib.resultFailure
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.TurnoRetrofitDatasource
+import br.com.usinasantafe.cmm.utils.resultFailure
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.TurnRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.TurnRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.TurnRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
@@ -15,9 +15,9 @@ import kotlin.test.assertEquals
 class ITurnRepositoryTest {
 
     private val turnRoomDatasource = mock<TurnRoomDatasource>()
-    private val turnoRetrofitDatasource = mock<TurnoRetrofitDatasource>()
+    private val turnRetrofitDatasource = mock<TurnRetrofitDatasource>()
     private val repository = ITurnRepository(
-        turnoRetrofitDatasource = turnoRetrofitDatasource,
+        turnRetrofitDatasource = turnRetrofitDatasource,
         turnRoomDatasource = turnRoomDatasource
     )
 
@@ -86,7 +86,7 @@ class ITurnRepositoryTest {
             whenever(
                 turnRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -95,7 +95,7 @@ class ITurnRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -132,7 +132,7 @@ class ITurnRepositoryTest {
             whenever(
                 turnRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -141,7 +141,7 @@ class ITurnRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -149,7 +149,7 @@ class ITurnRepositoryTest {
     fun `recoverAll - Check return failure if have error`() =
         runTest {
             whenever(
-                turnoRetrofitDatasource.listAll("token")
+                turnRetrofitDatasource.listAll("token")
             ).thenReturn(
                 resultFailure(
                     context = "ITurnRetrofitDatasource.recoverAll",
@@ -164,7 +164,7 @@ class ITurnRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ITurnRepository.recoverAll -> ITurnRetrofitDatasource.recoverAll"
+                "ITurnRepository.listAll -> ITurnRetrofitDatasource.recoverAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -204,7 +204,7 @@ class ITurnRepositoryTest {
                 )
             )
             whenever(
-                turnoRetrofitDatasource.listAll("token")
+                turnRetrofitDatasource.listAll("token")
             ).thenReturn(
                 Result.success(
                     retrofitModelList

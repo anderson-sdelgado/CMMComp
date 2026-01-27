@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Colab
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ColabRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ColabRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ColabRetrofitModel
@@ -224,7 +224,7 @@ class IColabRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IColabRepository.checkByReg -> ColabRoomDatasource.checkReg"
+                "IColabRepository.hasByReg -> ColabRoomDatasource.checkReg"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

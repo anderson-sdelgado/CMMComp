@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -69,7 +69,6 @@ class ISaveDataConfigTest {
                         password = "12345",
                         version = "1.00",
                         app = "PMM",
-                        nroEquip = 310,
                         checkMotoMec = false,
                         idServ = 1,
                     )

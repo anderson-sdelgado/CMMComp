@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TB_HEADER_MOTO_MEC
 import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.utils.required
 import java.util.Date
 import kotlin.Int
 
@@ -35,9 +36,6 @@ data class HeaderMotoMecRoomModel(
 )
 
 fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
-    fun <T> T?.required(field: String): T =
-        this ?: throw NullPointerException("$field is required")
-
     return HeaderMotoMecRoomModel(
         id = id,
         regOperator = regOperator.required("regOperator"),

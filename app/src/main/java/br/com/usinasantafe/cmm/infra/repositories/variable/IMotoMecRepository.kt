@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
@@ -16,10 +15,11 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 import kotlin.getOrThrow
 
@@ -33,117 +33,68 @@ class IMotoMecRepository @Inject constructor(
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
 
-    override suspend fun refreshHeaderOpen(): EmptyResult {
-        return runCatching {
+    override suspend fun refreshHeaderOpen(): EmptyResult =
+        call(getClassAndMethod()) {
             val model = headerMotoMecRoomDatasource.getOpen().getOrThrow()
-            headerMotoMecSharedPreferencesDatasource.save(
-                model.roomModelToSharedPreferences()
-            ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+            headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
+        }
 
-    override suspend fun setRegOperatorHeader(regOperator: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setRegOperatorHeader(regOperator: Int): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.clean().getOrThrow()
             headerMotoMecSharedPreferencesDatasource.setRegOperator(regOperator).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun setDataEquipHeader(
         idEquip: Int,
         typeEquip: TypeEquip
-    ): EmptyResult {
-        return runCatching {
-            headerMotoMecSharedPreferencesDatasource.setDataEquip(
-                idEquip = idEquip,
-                typeEquip = typeEquip
-            ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+    ): EmptyResult =
+        call(getClassAndMethod()) {
+            headerMotoMecSharedPreferencesDatasource.setDataEquip(idEquip, typeEquip).getOrThrow()
+        }
 
-    override suspend fun getTypeEquipHeader(): Result<TypeEquip> {
-        return runCatching {
+    override suspend fun getTypeEquipHeader(): Result<TypeEquip> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getTypeEquip().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setIdTurnHeader(idTurn: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setIdTurnHeader(idTurn: Int): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setIdTurn(idTurn).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setNroOSHeader(nroOS: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setNroOSHeader(nroOS: Int): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setNroOS(nroOS).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getNroOSHeader(): Result<Int> {
-        return runCatching {
+    override suspend fun getNroOSHeader(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getNroOS().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setIdActivityHeader(idActivity: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setIdActivityHeader(idActivity: Int): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setIdActivity(idActivity).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdActivityHeader(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdActivityHeader(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getIdActivity().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdEquipHeader(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdEquipHeader(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getIdEquip().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Unit> {
-        return runCatching {
+    override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Unit> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setHourMeter(hourMeter).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun saveHeader(): EmptyResult {
-        return runCatching {
+    override suspend fun saveHeader(): EmptyResult =
+        call(getClassAndMethod()) {
             val modelSharedPreferences = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = runCatching {
@@ -153,136 +104,77 @@ class IMotoMecRepository @Inject constructor(
             }
             val id = headerMotoMecRoomDatasource.save(modelRoom).getOrThrow()
             headerMotoMecSharedPreferencesDatasource.setId(id.toInt()).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasHeaderOpen(): Result<Boolean> {
-        return runCatching {
+    override suspend fun hasHeaderOpen(): Result<Boolean> =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.checkOpen().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdByHeaderOpen(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdByHeaderOpen(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getId().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult {
-        return runCatching {
+    override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(idEquip).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun finishHeader(): EmptyResult {
-        return runCatching {
+    override suspend fun finishHeader(): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.finish().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasHeaderSend(): Result<Boolean> {
-        return runCatching {
-            headerMotoMecRoomDatasource.checkSend().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+    override suspend fun hasHeaderSend(): Result<Boolean> =
+        call(getClassAndMethod()) {
+            headerMotoMecRoomDatasource.hasSend().getOrThrow()
+        }
 
-    override suspend fun setStatusConHeader(status: Boolean): EmptyResult {
-        return runCatching {
+    override suspend fun setStatusConHeader(status: Boolean): EmptyResult =
+        call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.setStatusCon(status).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdTurnHeader(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdTurnHeader(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.getIdTurn().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getRegOperatorHeader(): Result<Int> {
-        return runCatching {
+    override suspend fun getRegOperatorHeader(): Result<Int> =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.getRegOperator().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getFlowCompostingHeader(): Result<FlowComposting> {
-        return runCatching {
+    override suspend fun getFlowCompostingHeader(): Result<FlowComposting> =
+        call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.getFlowComposting().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setNroOSNote(nroOS: Int): Result<Boolean> {
-        return runCatching {
+    override suspend fun setNroOSNote(nroOS: Int): EmptyResult =
+        call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.clean().getOrThrow()
             val statusCon = headerMotoMecSharedPreferencesDatasource.getStatusCon().getOrThrow()
-            itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
-                nroOS = nroOS,
-                statusCon = statusCon
-            ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+            itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(nroOS, statusCon).getOrThrow()
+        }
 
-    override suspend fun setIdActivityNote(id: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setIdActivityNote(id: Int): EmptyResult =
+        call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.setIdActivity(id).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult {
-        return runCatching {
+    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult =
+        call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquipTranshipment).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun saveNote(idHeader: Int): EmptyResult {
-        return runCatching {
+    override suspend fun saveNote(idHeader: Int): EmptyResult =
+        call(getClassAndMethod()) {
             val modelSharedPreferences = itemMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = runCatching {
@@ -292,44 +184,28 @@ class IMotoMecRepository @Inject constructor(
             }
             itemMotoMecRoomDatasource.save(modelRoom).getOrThrow()
             headerMotoMecRoomDatasource.setSend(idHeader).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdActivityNote(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdActivityNote(): Result<Int> =
+        call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.getIdActivity().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setIdStop(id: Int): EmptyResult {
-        return runCatching {
+    override suspend fun setIdStop(id: Int): EmptyResult =
+        call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.setIdStop(id).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean> {
-        return runCatching {
-            itemMotoMecRoomDatasource.checkHasByIdHeader(idHeader).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+    override suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean> =
+        call(getClassAndMethod()) {
+            itemMotoMecRoomDatasource.hasByIdHeader(idHeader).getOrThrow()
+        }
 
     override suspend fun send(
         number: Long,
         token: String
-    ): EmptyResult {
-        return runCatching {
+    ): EmptyResult =
+        call(getClassAndMethod()) {
             val resultListHeaderSend = headerMotoMecRoomDatasource.listSend().getOrThrow()
             val modelRetrofitList =
                 resultListHeaderSend.map {
@@ -356,62 +232,38 @@ class IMotoMecRepository @Inject constructor(
                     idServ = headerMotoMec.idServ
                 ).getOrThrow()
             }
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> {
-        return runCatching {
+    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> =
+        call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.listByIdHeader(idHeader).getOrThrow().map{ it.roomModelToEntity() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun hasNoteByIdStopAndIdHeader(
         idHeader: Int,
         idStop: Int
-    ): Result<Boolean> {
-        return runCatching {
+    ): Result<Boolean> =
+        call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.hasByIdStopAndIdHeader(idStop, idHeader).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> {
-        return runCatching {
+    override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> =
+        call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.getLastByIdHeader(idHeader).getOrThrow().roomModelToEntity()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasCouplingTrailerImplement(): Result<Boolean> {
-        return runCatching {
+    override suspend fun hasCouplingTrailerImplement(): Result<Boolean> =
+        call(getClassAndMethod()) {
             trailerSharedPreferencesDatasource.has().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun uncouplingTrailerImplement(): EmptyResult {
-        return runCatching {
+    override suspend fun uncouplingTrailerImplement(): EmptyResult =
+        call(getClassAndMethod()) {
             trailerSharedPreferencesDatasource.clean().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun insertInitialPerformance(): EmptyResult {
-        return runCatching {
+    override suspend fun insertInitialPerformance(): EmptyResult =
+        call(getClassAndMethod()) {
             val headerModel = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
             performanceRoomDatasource.insert(
                 PerformanceRoomModel(
@@ -419,10 +271,6 @@ class IMotoMecRepository @Inject constructor(
                     idHeader = headerModel.id!!,
                 )
             ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

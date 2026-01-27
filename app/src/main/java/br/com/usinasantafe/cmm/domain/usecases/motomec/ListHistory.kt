@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -8,6 +7,7 @@ import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
 import br.com.usinasantafe.cmm.lib.STOP
 import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.functionListPMM
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -23,8 +23,8 @@ class IListHistory @Inject constructor(
     private val stopRepository: StopRepository
 ): ListHistory {
 
-    override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> {
-        return runCatching {
+    override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> =
+        call(getClassAndMethod()) {
             val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
             val listNoteList = motoMecRepository.noteListByIdHeader(id).getOrThrow()
             listNoteList.map { item ->
@@ -50,10 +50,6 @@ class IListHistory @Inject constructor(
                     detail = ""
                 )
             }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

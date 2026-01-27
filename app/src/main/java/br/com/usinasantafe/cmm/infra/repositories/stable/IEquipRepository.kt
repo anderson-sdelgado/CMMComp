@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
@@ -9,9 +8,10 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityEquipToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 class IEquipRepository @Inject constructor(
@@ -20,170 +20,103 @@ class IEquipRepository @Inject constructor(
     private val equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 ): EquipRepository {
 
-    override suspend fun saveEquipMain(entity: Equip): EmptyResult {
-        return runCatching {
+    override suspend fun saveEquipMain(entity: Equip): EmptyResult =
+        call(getClassAndMethod()) {
             val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
             equipSharedPreferencesDatasource.save(sharedPreferencesModel).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun addAll(list: List<Equip>): EmptyResult {
-        return runCatching {
+    override suspend fun addAll(list: List<Equip>): EmptyResult  =
+        call(getClassAndMethod()) {
             val roomModelList = list.map { it.entityEquipToRoomModel() }
             equipRoomDatasource.addAll(roomModelList).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun deleteAll(): EmptyResult {
-        return runCatching {
+    override suspend fun deleteAll(): EmptyResult  =
+        call(getClassAndMethod()) {
             equipRoomDatasource.deleteAll().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun listAll(
         token: String
-    ): Result<List<Equip>> {
-        return runCatching {
+    ): Result<List<Equip>>  =
+        call(getClassAndMethod()) {
             val modelList = equipRetrofitDatasource.listAll(token).getOrThrow()
              modelList.map { it.retrofitModelToEntity() }
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdEquipMain(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdEquipMain(): Result<Int> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getId().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getNroEquipMain(): Result<Long> {
-        return runCatching {
+    override suspend fun getNroEquipMain(): Result<Long> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getNro().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 
     override suspend fun getDescrByIdEquip(
         idEquip: Int
-    ): Result<String> {
-        return runCatching {
+    ): Result<String> =
+        call(getClassAndMethod()) {
             val idEquipSharedPreferences = equipSharedPreferencesDatasource.getId().getOrThrow()
             if(idEquip == idEquipSharedPreferences) {
                 val descr = equipSharedPreferencesDatasource.getDescr().getOrThrow()
-                return Result.success(descr)
+                return@call descr
             }
             equipRoomDatasource.getDescrById(idEquip).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getCodTurnEquip(): Result<Int> {
-        return runCatching {
+    override suspend fun getCodTurnEquip(): Result<Int> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getCodTurnEquip().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getHourMeter(): Result<Double> {
-        return runCatching {
+    override suspend fun getHourMeter(): Result<Double> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getHourMeter().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun updateHourMeter(
         hourMeter: Double
-    ): EmptyResult {
-        return runCatching {
+    ): EmptyResult =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.updateHourMeter(hourMeter).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getTypeEquipMain(): Result<TypeEquip> {
-        return runCatching {
+    override suspend fun getTypeEquipMain(): Result<TypeEquip> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getTypeEquip().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdCheckList(): Result<Int> {
-        return runCatching {
+    override suspend fun getIdCheckList(): Result<Int> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getIdCheckList().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getFlagMechanic(): Result<Boolean> {
-        return runCatching {
+    override suspend fun getFlagMechanic(): Result<Boolean> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getFlagMechanic().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getFlagTire(): Result<Boolean> {
-        return runCatching {
+    override suspend fun getFlagTire(): Result<Boolean> =
+        call(getClassAndMethod()) {
             equipSharedPreferencesDatasource.getFlagTire().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun hasEquipSecondary(
         nroEquip: Long,
         typeEquip: TypeEquip
-    ): Result<Boolean> {
-        return runCatching {
-            equipRoomDatasource.hasByNroAndType(
-                nroEquip = nroEquip,
-                typeEquip = typeEquip
-            ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+    ): Result<Boolean> =
+        call(getClassAndMethod()) {
+            equipRoomDatasource.hasByNroAndType(nroEquip, typeEquip).getOrThrow()
+        }
 
-    override suspend fun getIdByNro(nroEquip: Long): Result<Int> {
-        return runCatching {
+    override suspend fun getIdByNro(nroEquip: Long): Result<Int> =
+        call(getClassAndMethod()) {
             equipRoomDatasource.getIdByNro(nroEquip).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 
 }

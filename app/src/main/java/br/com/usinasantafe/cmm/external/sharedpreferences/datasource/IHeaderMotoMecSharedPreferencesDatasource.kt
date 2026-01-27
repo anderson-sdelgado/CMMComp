@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
@@ -10,430 +9,141 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.result
 
 class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): HeaderMotoMecSharedPreferencesDatasource {
 
-    override suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel> {
-        try {
+    override suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel> =
+        result(getClassAndMethod()) {
             val model = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                 null
             )
-            if(model.isNullOrEmpty())
-                return Result.success(
-                    HeaderMotoMecSharedPreferencesModel()
-                )
-            return Result.success(
-                Gson().fromJson(
-                    model,
-                    HeaderMotoMecSharedPreferencesModel::class.java
-                )
-            )
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
+            if(model.isNullOrEmpty()) HeaderMotoMecSharedPreferencesModel()
+            Gson().fromJson(
+                model,
+                HeaderMotoMecSharedPreferencesModel::class.java
             )
         }
-    }
 
-    override suspend fun setRegOperator(regOperator: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setRegOperator(regOperator: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.regOperator = regOperator
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): EmptyResult {
-        try {
+    override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): EmptyResult =
+        result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
                     BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                     Gson().toJson(model)
                 )
             }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
     override suspend fun setDataEquip(
         idEquip: Int,
         typeEquip: TypeEquip
-    ): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    ): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.idEquip = idEquip
             model.typeEquip = typeEquip
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun getTypeEquip(): Result<TypeEquip> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMec = result.getOrNull()!!
-            return Result.success(headerMotoMec.typeEquip!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getTypeEquip(): Result<TypeEquip> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().typeEquip!!
         }
-    }
 
-    override suspend fun setIdTurn(idTurn: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setIdTurn(idTurn: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.idTurn = idTurn
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun setNroOS(nroOS: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setNroOS(nroOS: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.nroOS = nroOS
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun setIdActivity(idActivity: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.idActivity = idActivity
-            val resultSave = save(headerMotoMec)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun setIdActivity(idActivity: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idActivity = idActivity
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun getNroOS(): Result<Int> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMec = result.getOrNull()!!
-            return Result.success(headerMotoMec.nroOS!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getNroOS(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().nroOS!!
         }
-    }
 
-    override suspend fun getIdEquip(): Result<Int> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.idEquip!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getIdEquip(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idEquip!!
         }
-    }
 
-    override suspend fun setHourMeter(hourMeter: Double): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.hourMeter = hourMeter
-            val resultSave = save(headerMotoMec)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun setHourMeter(hourMeter: Double): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.hourMeter = hourMeter
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun clean(): EmptyResult {
-        try {
+    override suspend fun clean(): EmptyResult =
+        result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
                     BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                     null
                 )
             }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun setStatusCon(status: Boolean): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val headerMotoMec = resultGet.getOrNull()!!
-            headerMotoMec.statusCon = status
-            val resultSave = save(headerMotoMec)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun setStatusCon(status: Boolean): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.statusCon = status
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun getIdActivity(): Result<Int> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.idActivity!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getIdActivity(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idActivity!!
         }
-    }
 
-    override suspend fun getStatusCon(): Result<Boolean> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.statusCon!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getStatusCon(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().statusCon!!
         }
-    }
 
-    override suspend fun getId(): Result<Int> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.id!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getId(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().id!!
         }
-    }
 
-    override suspend fun setId(id: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setId(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.id = id
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun setIdEquipMotorPump(idEquip: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setIdEquipMotorPump(idEquip: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.idEquipMotorPump = idEquip
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
-
 
 }

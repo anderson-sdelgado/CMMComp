@@ -1,13 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -24,8 +24,8 @@ class IListActivity @Inject constructor(
     private val activityRepository: ActivityRepository,
 ): ListActivity {
 
-    override suspend fun invoke(): Result<List<Activity>> {
-        return runCatching {
+    override suspend fun invoke(): Result<List<Activity>> =
+        call(getClassAndMethod()) {
             val idEquip = equipRepository.getIdEquipMain().getOrThrow()
             val rEquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip).getOrThrow()
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
@@ -40,10 +40,6 @@ class IListActivity @Inject constructor(
                 idActivityEquipList = idActivityEquipList.intersect(idActivityOSList.toSet()).toList()
             }
             activityRepository.listByIdList(idActivityEquipList).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.REquipActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.REquipActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.REquipActivityRetrofitModel
@@ -82,7 +82,7 @@ class IREquipActivityRepositoryTest {
             whenever(
                 rEquipActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -91,7 +91,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -128,7 +128,7 @@ class IREquipActivityRepositoryTest {
             whenever(
                 rEquipActivityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -137,7 +137,7 @@ class IREquipActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.StopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.StopRetrofitModel
@@ -82,7 +82,7 @@ class IStopRepositoryTest {
             whenever(
                 stopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -91,7 +91,7 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -128,7 +128,7 @@ class IStopRepositoryTest {
             whenever(
                 stopRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -137,7 +137,7 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -160,7 +160,7 @@ class IStopRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IStopRepository.recoverAll -> IStopRetrofitDatasource.recoverAll"
+                "IStopRepository.listAll -> IStopRetrofitDatasource.recoverAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

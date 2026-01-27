@@ -61,7 +61,7 @@ class IItemRespCheckListRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = itemRespCheckListDao.all()
             assertEquals(
@@ -190,7 +190,7 @@ class IItemRespCheckListRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = itemRespCheckListDao.all()
             assertEquals(

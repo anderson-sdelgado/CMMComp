@@ -38,7 +38,7 @@ class ISetCheckUpdateAllTableTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGet = configSharedPreferencesDatasource.get()
             assertEquals(

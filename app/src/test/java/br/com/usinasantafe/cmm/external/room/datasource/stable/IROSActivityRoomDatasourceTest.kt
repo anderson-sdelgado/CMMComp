@@ -102,7 +102,7 @@ class IROSActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = rOSActivityDao.listAll()
             assertEquals(
@@ -161,7 +161,7 @@ class IROSActivityRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = rOSActivityDao.listAll().size
             assertEquals(

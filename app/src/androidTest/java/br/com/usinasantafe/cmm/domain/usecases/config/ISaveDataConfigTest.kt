@@ -82,7 +82,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultHasAfter = configSharedPreferencesDatasource.has()
             assertEquals(

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
@@ -31,7 +31,7 @@ interface MotoMecRepository {
     suspend fun getIdTurnHeader(): Result<Int>
     suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
-    suspend fun setNroOSNote(nroOS: Int): Result<Boolean>
+    suspend fun setNroOSNote(nroOS: Int): EmptyResult
     suspend fun setIdActivityNote(id: Int): EmptyResult
     suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult
     suspend fun saveNote(

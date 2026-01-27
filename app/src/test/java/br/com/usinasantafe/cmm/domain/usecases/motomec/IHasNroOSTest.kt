@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.OS
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -67,7 +67,7 @@ class IHasNroOSTest {
             whenever(
                 rOSActivityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 osRepository.deleteAll()
@@ -640,7 +640,7 @@ class IHasNroOSTest {
             whenever(
                 osRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 osRepository.add(
@@ -734,7 +734,7 @@ class IHasNroOSTest {
             whenever(
                 osRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 osRepository.add(
@@ -748,12 +748,12 @@ class IHasNroOSTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rOSActivityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rOSActivityRepository.addAll(
@@ -846,7 +846,7 @@ class IHasNroOSTest {
             whenever(
                 osRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 osRepository.add(
@@ -860,12 +860,12 @@ class IHasNroOSTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rOSActivityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rOSActivityRepository.addAll(
@@ -878,7 +878,7 @@ class IHasNroOSTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 nroOS = "123456",

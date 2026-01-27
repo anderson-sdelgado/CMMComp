@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TB_ITEM_MOTO_MEC
+import br.com.usinasantafe.cmm.utils.required
 import java.util.Date
 
 
@@ -28,9 +29,6 @@ data class ItemMotoMecRoomModel(
 fun ItemMotoMec.entityToRoomModel(
     idHeader: Int
 ): ItemMotoMecRoomModel{
-    fun <T> T?.required(field: String): T =
-        this ?: throw NullPointerException("$field is required")
-
     return with(this){
         ItemMotoMecRoomModel(
             id = this.id,

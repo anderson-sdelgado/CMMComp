@@ -1,10 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.call
+import br.com.usinasantafe.cmm.utils.tryCatch
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
 
 interface SendDataConfig {
@@ -27,18 +27,15 @@ class ISendDataConfig @Inject constructor(
         nroEquip: String,
         app: String,
         version: String,
-    ): Result<Config> {
-        return runCatching {
-            val numberLong = runCatching {
+    ): Result<Config> =
+        call(getClassAndMethod()) {
+
+            val numberLong = tryCatch("number.toLong") {
                 number.toLong()
-            }.getOrElse { e ->
-                throw Exception("number.toLong", e)
             }
 
-            val nroEquipLong = runCatching {
+            val nroEquipLong = tryCatch("nroEquip.toLong") {
                 nroEquip.toLong()
-            }.getOrElse { e ->
-                throw Exception("nroEquip.toLong", e)
             }
 
             val entity = Config(
@@ -49,10 +46,6 @@ class ISendDataConfig @Inject constructor(
                 version = version
             )
             configRepository.send(entity).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

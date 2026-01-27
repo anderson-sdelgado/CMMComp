@@ -102,7 +102,7 @@ class IRActivityStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = rActivityStopDao.all()
             assertEquals(
@@ -161,7 +161,7 @@ class IRActivityStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = rActivityStopDao.all().size
             assertEquals(

@@ -48,7 +48,7 @@ class ISetRegOperatorTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -87,7 +87,7 @@ class ISetRegOperatorTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(

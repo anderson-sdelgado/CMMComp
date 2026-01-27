@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
@@ -106,7 +106,7 @@ class ICECRepositoryTest {
             whenever(
                 preCECSharedPreferencesDatasource.setDateExitMill(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setDateExitMill(Date())
             assertEquals(
@@ -115,7 +115,7 @@ class ICECRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -152,7 +152,7 @@ class ICECRepositoryTest {
             whenever(
                 preCECSharedPreferencesDatasource.setDateFieldArrival(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setDateFieldArrival(Date())
             assertEquals(
@@ -161,7 +161,7 @@ class ICECRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -198,7 +198,7 @@ class ICECRepositoryTest {
             whenever(
                 preCECSharedPreferencesDatasource.setDateExitField(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setDateExitField(Date())
             assertEquals(
@@ -207,7 +207,7 @@ class ICECRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

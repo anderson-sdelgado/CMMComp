@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RItemMenuStop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RItemMenuStopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.RItemMenuStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RItemMenuStopRetrofitModel
@@ -86,7 +86,7 @@ class IRItemMenuStopRepositoryTest {
             whenever(
                 rItemMenuStopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -95,7 +95,7 @@ class IRItemMenuStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -132,7 +132,7 @@ class IRItemMenuStopRepositoryTest {
             whenever(
                 rItemMenuStopRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -141,7 +141,7 @@ class IRItemMenuStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

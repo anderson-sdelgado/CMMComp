@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
@@ -9,199 +8,80 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.result
 
 class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ): ItemMotoMecSharedPreferencesDatasource {
 
-    override suspend fun get(): Result<ItemMotoMecSharedPreferencesModel> {
-        try {
+    override suspend fun get(): Result<ItemMotoMecSharedPreferencesModel> =
+        result(getClassAndMethod()) {
             val noteMotoMec = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                 null
             )
-            if(noteMotoMec.isNullOrEmpty())
-                return Result.success(
-                    ItemMotoMecSharedPreferencesModel()
-                )
-            return Result.success(
-                Gson().fromJson(
-                    noteMotoMec,
-                    ItemMotoMecSharedPreferencesModel::class.java
-                )
-            )
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
+            if(noteMotoMec.isNullOrEmpty()) return@result ItemMotoMecSharedPreferencesModel()
+            Gson().fromJson(
+                noteMotoMec,
+                ItemMotoMecSharedPreferencesModel::class.java
             )
         }
-    }
 
-    override suspend fun save(model: ItemMotoMecSharedPreferencesModel): Result<Boolean> {
-        try {
+    override suspend fun save(model: ItemMotoMecSharedPreferencesModel): EmptyResult =
+        result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
                     BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                     Gson().toJson(model)
                 )
             }
-            return Result.success(true)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
-
 
     override suspend fun setNroOSAndStatusCon(
         nroOS: Int,
         statusCon: Boolean
-    ): Result<Boolean> {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    ): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.nroOS = nroOS
             model.statusCon = statusCon
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(true)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun setIdActivity(id: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setIdActivity(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.idActivity = id
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun getIdActivity(): Result<Int> {
-        try {
-            val result = get()
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = result.getOrNull()!!
-            return Result.success(model.idActivity!!)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getIdActivity(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idActivity!!
         }
-    }
 
-    override suspend fun setIdStop(id: Int): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setIdStop(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.idStop = id
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 
-    override suspend fun clean(): Result<Boolean> {
-        try {
+    override suspend fun clean(): EmptyResult =
+        result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
                     BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                     null
                 )
             }
-            return Result.success(true)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): EmptyResult {
-        try {
-            val resultGet = get()
-            resultGet.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val model = resultGet.getOrNull()!!
+    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
             model.nroEquipTranshipment = nroEquipTranshipment
-            val resultSave = save(model)
-            resultSave.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            save(model).getOrThrow()
         }
-    }
 }

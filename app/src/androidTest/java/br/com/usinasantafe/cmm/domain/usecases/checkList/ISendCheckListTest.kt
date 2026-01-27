@@ -189,7 +189,7 @@ class ISendCheckListTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val headerListAfter = headerCheckListDao.all()
             assertEquals(

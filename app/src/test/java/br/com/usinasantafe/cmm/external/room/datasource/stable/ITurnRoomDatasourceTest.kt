@@ -111,7 +111,7 @@ class ITurnRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = turnDao.all().size
             assertEquals(
@@ -178,7 +178,7 @@ class ITurnRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = turnDao.all().size
             assertEquals(

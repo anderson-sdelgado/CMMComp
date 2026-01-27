@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList

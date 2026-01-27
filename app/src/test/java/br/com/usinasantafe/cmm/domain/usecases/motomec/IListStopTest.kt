@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RActivityStop
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.RActivityStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository

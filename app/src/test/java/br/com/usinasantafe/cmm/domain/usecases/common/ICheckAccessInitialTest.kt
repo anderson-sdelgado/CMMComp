@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import kotlinx.coroutines.test.runTest

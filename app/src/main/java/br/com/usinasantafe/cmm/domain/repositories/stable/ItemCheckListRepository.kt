@@ -1,10 +1,11 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemCheckList
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface ItemCheckListRepository {
-    suspend fun addAll(list: List<ItemCheckList>): Result<Boolean>
-    suspend fun deleteAll(): Result<Boolean>
+    suspend fun addAll(list: List<ItemCheckList>): EmptyResult
+    suspend fun deleteAll(): EmptyResult
     suspend fun listByNroEquip(
         token: String,
         nroEquip: Long

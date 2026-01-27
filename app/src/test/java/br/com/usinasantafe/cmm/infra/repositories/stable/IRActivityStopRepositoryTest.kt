@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.RActivityStop
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.RActivityStopRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.RActivityStopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.RActivityStopRetrofitModel
@@ -82,7 +82,7 @@ class IRActivityStopRepositoryTest {
             whenever(
                 rActivityStopRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -91,7 +91,7 @@ class IRActivityStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -128,7 +128,7 @@ class IRActivityStopRepositoryTest {
             whenever(
                 rActivityStopRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -137,7 +137,7 @@ class IRActivityStopRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -160,7 +160,7 @@ class IRActivityStopRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IRActivityStopRepository.recoverAll -> IRActivityStopRetrofitDatasource.recoverAll"
+                "IRActivityStopRepository.listAll -> IRActivityStopRetrofitDatasource.recoverAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

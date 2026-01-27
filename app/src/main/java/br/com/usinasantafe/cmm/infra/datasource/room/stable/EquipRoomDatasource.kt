@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.stable
 
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface EquipRoomDatasource {

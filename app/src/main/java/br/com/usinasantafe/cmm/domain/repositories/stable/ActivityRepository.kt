@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface ActivityRepository  {
     suspend fun addAll(list: List<Activity>): EmptyResult

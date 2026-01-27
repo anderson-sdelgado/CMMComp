@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface CheckListRepository {
     suspend fun saveHeader(entity: HeaderCheckList): EmptyResult

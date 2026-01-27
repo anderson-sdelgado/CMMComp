@@ -61,7 +61,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -100,7 +100,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -201,7 +201,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -287,7 +287,7 @@ class ISetNroOSCommonTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(

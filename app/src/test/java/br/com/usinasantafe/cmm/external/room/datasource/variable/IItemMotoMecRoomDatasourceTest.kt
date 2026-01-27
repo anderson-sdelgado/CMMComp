@@ -64,7 +64,7 @@ class IItemMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = itemMotoMecDao.all()
             assertEquals(
@@ -109,7 +109,7 @@ class IItemMotoMecRoomDatasourceTest {
     @Test
     fun `checkHasByIdHeader - Check return false if not has data`() =
         runTest {
-            val result = datasource.checkHasByIdHeader(1)
+            val result = datasource.hasByIdHeader(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -132,7 +132,7 @@ class IItemMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkHasByIdHeader(1)
+            val result = datasource.hasByIdHeader(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -263,7 +263,7 @@ class IItemMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = itemMotoMecDao.all()
             assertEquals(

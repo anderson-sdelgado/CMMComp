@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
@@ -13,8 +12,9 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofi
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 class ICheckListRepository @Inject constructor(
@@ -25,39 +25,27 @@ class ICheckListRepository @Inject constructor(
     private val checkListRetrofitDatasource: CheckListRetrofitDatasource
 ): CheckListRepository {
 
-    override suspend fun saveHeader(entity: HeaderCheckList): EmptyResult {
-        return runCatching {
+    override suspend fun saveHeader(entity: HeaderCheckList): EmptyResult =
+        call(getClassAndMethod()) {
             headerCheckListSharedPreferencesDatasource.clean().getOrThrow()
             val model = entity.entityToSharedPreferencesModel()
             headerCheckListSharedPreferencesDatasource.save(model).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun cleanResp(): EmptyResult {
-        return runCatching {
+    override suspend fun cleanResp(): EmptyResult =
+        call(getClassAndMethod()) {
             itemRespCheckListSharedPreferencesDatasource.clean().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun saveResp(entity: ItemRespCheckList): EmptyResult {
-        return runCatching {
+    override suspend fun saveResp(entity: ItemRespCheckList): EmptyResult =
+        call(getClassAndMethod()) {
             itemRespCheckListSharedPreferencesDatasource.add(
                 model = entity.entityToSharedPreferencesModel()
             ).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun saveCheckList(): EmptyResult {
-        return runCatching {
+    override suspend fun saveCheckList(): EmptyResult =
+        call(getClassAndMethod()) {
             val modelSharedPreferences = headerCheckListSharedPreferencesDatasource.get().getOrThrow()
             val entityHeader = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = entityHeader.entityToRoomModel()
@@ -71,44 +59,28 @@ class ICheckListRepository @Inject constructor(
             }
             headerCheckListSharedPreferencesDatasource.clean().getOrThrow()
             itemRespCheckListSharedPreferencesDatasource.clean().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun delLastRespItem(): EmptyResult {
-        return runCatching {
+    override suspend fun delLastRespItem(): EmptyResult =
+        call(getClassAndMethod()) {
             itemRespCheckListSharedPreferencesDatasource.delLast().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasOpen(): Result<Boolean> {
-        return runCatching {
+    override suspend fun hasOpen(): Result<Boolean> =
+        call(getClassAndMethod()) {
             headerCheckListSharedPreferencesDatasource.hasOpen().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasSend(): Result<Boolean> {
-        return runCatching {
+    override suspend fun hasSend(): Result<Boolean> =
+        call(getClassAndMethod()) {
             headerCheckListRoomDatasource.hasSend().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     override suspend fun send(
         number: Long,
         token: String
-    ): EmptyResult {
-        return runCatching {
+    ): EmptyResult =
+        call(getClassAndMethod()) {
             val list = headerCheckListRoomDatasource.listBySend().getOrThrow()
             val modelRetrofitList =
                 list.map {
@@ -135,10 +107,6 @@ class ICheckListRepository @Inject constructor(
                     idServ = headerCheckList.idServ
                 ).getOrThrow()
             }
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

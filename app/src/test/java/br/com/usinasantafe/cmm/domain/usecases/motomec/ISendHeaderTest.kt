@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -40,7 +40,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> ConfigRepository.getNumber"
+                "ISendMotoMec -> ConfigRepository.getNumber"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -72,7 +72,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> GetToken"
+                "ISendMotoMec -> GetToken"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -112,7 +112,7 @@ class ISendHeaderTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISendHeader -> MotoMecRepository.send"
+                "ISendMotoMec -> MotoMecRepository.send"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

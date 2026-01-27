@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.ConfigRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
@@ -9,10 +8,11 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.entityToRetrofitMo
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.retrofitToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import java.util.Date
 import javax.inject.Inject
 
@@ -21,108 +21,64 @@ class IConfigRepository @Inject constructor(
     private val configRetrofitDatasource: ConfigRetrofitDatasource,
 ): ConfigRepository {
 
-    override suspend fun get(): Result<Config> {
-        return runCatching {
-            val config = configSharedPreferencesDatasource.get().getOrThrow() ?: return Result.success(Config())
+    override suspend fun get(): Result<Config> =
+        call(getClassAndMethod()) {
+            val config = configSharedPreferencesDatasource.get().getOrThrow() ?: return@call Config()
             config.sharedPreferencesModelToEntity()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getFlagUpdate(): Result<FlagUpdate> {
-        return runCatching {
+    override suspend fun getFlagUpdate(): Result<FlagUpdate> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getFlagUpdate().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getPassword(): Result<String> {
-        return runCatching {
+    override suspend fun getPassword(): Result<String> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getPassword().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun hasConfig(): Result<Boolean> {
-        return runCatching {
+    override suspend fun hasConfig(): Result<Boolean> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.has().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun send(entity: Config): Result<Config> {
-        return runCatching {
+    override suspend fun send(entity: Config): Result<Config> =
+        call(getClassAndMethod()) {
             val configRetrofitModel = configRetrofitDatasource.recoverToken(
                 entity.entityToRetrofitModel()
             ).getOrThrow()
             configRetrofitModel.retrofitToEntity()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun save(entity: Config): EmptyResult {
-        return runCatching {
+    override suspend fun save(entity: Config): EmptyResult =
+        call(getClassAndMethod()) {
             val sharedPreferencesModel = entity.entityToSharedPreferencesModel()
             configSharedPreferencesDatasource.save(sharedPreferencesModel).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): EmptyResult {
-        return runCatching {
+    override suspend fun setFlagUpdate(flagUpdate: FlagUpdate): EmptyResult =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.setFlagUpdate(flagUpdate).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getNumber(): Result<Long> {
-        return runCatching {
+    override suspend fun getNumber(): Result<Long> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getNumber().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult {
-        return runCatching {
+    override suspend fun setStatusSend(statusSend: StatusSend): EmptyResult =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.setStatusSend(statusSend).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getIdTurnCheckListLast(): Result<Int?> {
-        return runCatching {
+    override suspend fun getIdTurnCheckListLast(): Result<Int?> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getIdTurnCheckListLast().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    override suspend fun getDateCheckListLast(): Result<Date> {
-        return runCatching {
+    override suspend fun getDateCheckListLast(): Result<Date> =
+        call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getDateCheckListLast().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

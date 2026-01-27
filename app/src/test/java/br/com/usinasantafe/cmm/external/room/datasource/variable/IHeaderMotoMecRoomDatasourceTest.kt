@@ -344,7 +344,7 @@ class IHeaderMotoMecRoomDatasourceTest {
     @Test
     fun `checkSend - Check return false if not have header to send`() =
         runTest {
-            val result = datasource.checkSend()
+            val result = datasource.hasSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -374,7 +374,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkSend()
+            val result = datasource.hasSend()
             assertEquals(
                 result.isSuccess,
                 true
@@ -589,7 +589,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = headerMotoMecDao.all()
             assertEquals(
@@ -643,7 +643,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = headerMotoMecDao.all()
             assertEquals(

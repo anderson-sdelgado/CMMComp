@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemRespCheckList
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.CheckListRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderCheckListRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemRespCheckListRoomDatasource
@@ -85,7 +85,7 @@ class ICheckListRepositoryTest {
             whenever(
                 headerCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListSharedPreferencesDatasource.save(entity.entityToSharedPreferencesModel())
@@ -123,7 +123,7 @@ class ICheckListRepositoryTest {
             whenever(
                 headerCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListSharedPreferencesDatasource.save(entity.entityToSharedPreferencesModel())
@@ -486,7 +486,7 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListRoomDatasource.save(itemRespCheckListRoomModel)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListSharedPreferencesDatasource.clean()
@@ -560,12 +560,12 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListRoomDatasource.save(itemRespCheckListRoomModel)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.clean()
@@ -639,12 +639,12 @@ class ICheckListRepositoryTest {
             whenever(
                 itemRespCheckListRoomDatasource.save(itemRespCheckListRoomModel)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 itemRespCheckListSharedPreferencesDatasource.clean()
@@ -1091,7 +1091,7 @@ class ICheckListRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListRoomDatasource.setSentAndIdServById(
@@ -1186,7 +1186,7 @@ class ICheckListRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerCheckListRoomDatasource.setSentAndIdServById(
@@ -1194,7 +1194,7 @@ class ICheckListRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.send(
                 number = 16997417840,

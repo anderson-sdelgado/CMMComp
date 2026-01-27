@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemMenuRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemMenuRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ItemMenuRetrofitModel
@@ -97,7 +97,7 @@ class IItemMenuRepositoryTest {
             whenever(
                 itemMenuRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -106,7 +106,7 @@ class IItemMenuRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -143,7 +143,7 @@ class IItemMenuRepositoryTest {
             whenever(
                 itemMenuRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -152,7 +152,7 @@ class IItemMenuRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

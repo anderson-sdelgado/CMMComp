@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.composting
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import kotlinx.coroutines.test.runTest

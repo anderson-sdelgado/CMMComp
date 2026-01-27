@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.TypeNote
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import org.mockito.Mockito.mock
 import kotlinx.coroutines.test.runTest
 import org.junit.Test

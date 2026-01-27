@@ -66,7 +66,7 @@ class IFinishNoteMechanicTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = mechanicDao.all()
             assertEquals(

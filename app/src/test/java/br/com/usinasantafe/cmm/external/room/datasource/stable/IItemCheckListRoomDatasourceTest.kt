@@ -108,7 +108,7 @@ class IItemCheckListRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = itemCheckListDao.all().size
             assertEquals(
@@ -146,7 +146,7 @@ class IItemCheckListRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = itemCheckListDao.all().size
             assertEquals(

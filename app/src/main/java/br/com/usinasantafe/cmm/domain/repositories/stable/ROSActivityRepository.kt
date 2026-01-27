@@ -1,10 +1,11 @@
 package br.com.usinasantafe.cmm.domain.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface ROSActivityRepository {
-    suspend fun addAll(list: List<ROSActivity>): Result<Boolean>
-    suspend fun deleteAll(): Result<Boolean>
+    suspend fun addAll(list: List<ROSActivity>): EmptyResult
+    suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<ROSActivity>>
     suspend fun listByNroOS(
         token: String,

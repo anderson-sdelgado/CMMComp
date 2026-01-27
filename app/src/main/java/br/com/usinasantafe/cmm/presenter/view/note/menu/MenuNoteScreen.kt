@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.BuildConfig
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.lib.removeRepeatedCalls
+import br.com.usinasantafe.cmm.utils.removeRepeatedCalls
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
@@ -34,7 +34,7 @@ class IHasNoteMotoMecTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHasNoteMotoMec -> IHeaderMotoMecRepository.getIdByHeaderOpen"
+                "IHasNoteMotoMec -> IHeaderMotoMecRepository.getIdByHeaderOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -66,7 +66,7 @@ class IHasNoteMotoMecTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHasNoteMotoMec -> IMotoMecRepository.hasNoteByIdHeader"
+                "IHasNoteMotoMec -> IMotoMecRepository.hasNoteByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

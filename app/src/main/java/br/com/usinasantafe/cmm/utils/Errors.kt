@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.lib
+package br.com.usinasantafe.cmm.utils
 
 fun resultFailure(
     context: String,
@@ -47,22 +47,10 @@ fun failure(classAndMethod: String, error: Throwable) : String {
 }
 
 fun removeRepeatedCalls(path: String): String {
-    val seen = mutableSetOf<String>()
-    val result = mutableListOf<String>()
+    val items = path.split(" -> ")
+    val counts = items.groupingBy { it }.eachCount()
 
-    path.split(" -> ").forEach { item ->
-        if (seen.add(item)) {
-            result.add(item)
-        }
-    }
-
-    return result.joinToString(" -> ")
-}
-
-inline fun <T> runMapper(mapperName: String = Throwable().stackTrace[1].methodName, block: () -> T): T {
-    return try {
-        block()
-    } catch (e: Exception) {
-        throw Exception(mapperName, e)
-    }
+    return items
+        .filter { counts[it] == 1 }
+        .joinToString(" -> ")
 }

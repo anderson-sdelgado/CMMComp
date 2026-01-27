@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionStopRepository
@@ -28,6 +27,7 @@ import br.com.usinasantafe.cmm.lib.TypeStop
 import br.com.usinasantafe.cmm.lib.appList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.lib.typeListPMM
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 interface ListItemMenu {
@@ -42,8 +42,8 @@ class IListItemMenu @Inject constructor(
     private val functionStopRepository: FunctionStopRepository
 ): ListItemMenu {
 
-    override suspend fun invoke(flavor: String): Result<List<ItemMenuModel>> {
-        return runCatching {
+    override suspend fun invoke(flavor: String): Result<List<ItemMenuModel>> =
+        call(getClassAndMethod()) {
             when(flavor.uppercase()){
                 PMM -> {
                     pmmList().getOrThrow()
@@ -63,21 +63,14 @@ class IListItemMenu @Inject constructor(
                     convertList(entityList = entityList)
                 }
                 else -> {
-                    return resultFailure(
-                        context = getClassAndMethod(),
-                        cause = Exception("Flavor not found")
-                    )
+                    throw Exception(getClassAndMethod(),Exception("Flavor not found"))
                 }
             }
 
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
-    private suspend fun pmmList(): Result<List<ItemMenuModel>> {
-        return runCatching {
+    private suspend fun pmmList(): Result<List<ItemMenuModel>> =
+        call(getClassAndMethod()) {
 
             val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
             val list: MutableList<Pair<Int, String>> = mutableListOf()
@@ -123,11 +116,7 @@ class IListItemMenu @Inject constructor(
             val entityList = itemMenuRepository.listByTypeList(typeList = list).getOrThrow()
             convertList(entityList = entityList)
 
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
     private fun convertList(entityList: List<ItemMenu>): List<ItemMenuModel> {
         return entityList.map { entity ->

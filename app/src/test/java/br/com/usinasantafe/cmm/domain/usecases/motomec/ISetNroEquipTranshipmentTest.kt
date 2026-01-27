@@ -1,8 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
@@ -12,48 +14,15 @@ import kotlin.test.assertEquals
 class ISetNroEquipTranshipmentTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
+    private val functionActivityRepository = mock<FunctionActivityRepository>()
     private val usecase = ISetNroEquipTranshipment(
-        motoMecRepository = motoMecRepository
+        motoMecRepository = motoMecRepository,
+        functionActivityRepository = functionActivityRepository
     )
-
-    @Test
-    fun `Check return failure if have error in MotoMeRepository getNroOSHeader and FlowApp TRANSHIPMENT`() =
-        runTest {
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMeRepository.getNroOSHeader",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(
-                nroEquipTranshipment = "200",
-                flowApp = FlowApp.TRANSHIPMENT
-            )
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetNroEquipTranshipment -> IMotoMeRepository.getNroOSHeader"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
 
     @Test
     fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
         runTest {
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(10_000)
-            )
             whenever(
                 motoMecRepository.getIdActivityHeader()
             ).thenReturn(
@@ -82,17 +51,52 @@ class ISetNroEquipTranshipmentTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository setNroOSNote`() =
+    fun `Check return failure if have error in MotoMeRepository getNroOSHeader and FlowApp TRANSHIPMENT`() =
         runTest {
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(10_000)
-            )
             whenever(
                 motoMecRepository.getIdActivityHeader()
             ).thenReturn(
                 Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMeRepository.getNroOSHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                nroEquipTranshipment = "200",
+                flowApp = FlowApp.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetNroEquipTranshipment -> IMotoMeRepository.getNroOSHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository setNroOSNote`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(10_000)
             )
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
@@ -137,7 +141,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -182,7 +186,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -209,7 +213,7 @@ class ISetNroEquipTranshipmentTest {
 
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository setnroEquipTranshipmentNote`() =
+    fun `Check return failure if have error in MotoMecRepository setNroEquipTranshipmentNote`() =
         runTest {
             whenever(
                 motoMecRepository.getNroOSHeader()
@@ -224,7 +228,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -274,7 +278,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -329,7 +333,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -374,7 +378,7 @@ class ISetNroEquipTranshipmentTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully`() =
+    fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType`() =
         runTest {
             whenever(
                 motoMecRepository.getNroOSHeader()
@@ -389,7 +393,7 @@ class ISetNroEquipTranshipmentTest {
             whenever(
                 motoMecRepository.setNroOSNote(10_000)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -408,6 +412,160 @@ class ISetNroEquipTranshipmentTest {
             )
             whenever(
                 motoMecRepository.saveNote(1)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IFunctionActivityRepository.hasByIdAndType",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                nroEquipTranshipment = "200",
+                flowApp = FlowApp.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetNroEquipTranshipment -> IFunctionActivityRepository.hasByIdAndType"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository insertInitialPerformance`() =
+        runTest {
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(10_000)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.setNroOSNote(10_000)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.setIdActivityNote(1)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.setNroEquipTranshipmentNote(200)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                motoMecRepository.insertInitialPerformance()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.insertInitialPerformance",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                nroEquipTranshipment = "200",
+                flowApp = FlowApp.TRANSHIPMENT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetNroEquipTranshipment -> IMotoMecRepository.insertInitialPerformance"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(10_000)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.setNroOSNote(10_000)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.setIdActivityNote(1)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.setNroEquipTranshipmentNote(200)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    idActivity = 1,
+                    typeActivity = TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                motoMecRepository.insertInitialPerformance()
             ).thenReturn(
                 Result.success(Unit)
             )

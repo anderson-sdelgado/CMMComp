@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
 import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.lib.ECM
 import br.com.usinasantafe.cmm.lib.EXIT_FIELD
@@ -388,7 +388,7 @@ class ISetDatePreCECTest {
             whenever(
                 cecRepository.setDateExitMill(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 ItemMenuModel(
@@ -424,7 +424,7 @@ class ISetDatePreCECTest {
             whenever(
                 cecRepository.setDateFieldArrival(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 ItemMenuModel(
@@ -461,7 +461,7 @@ class ISetDatePreCECTest {
             whenever(
                 cecRepository.setDateExitField(any())
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase(
                 ItemMenuModel(

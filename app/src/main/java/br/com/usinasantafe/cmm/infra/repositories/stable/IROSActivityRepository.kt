@@ -1,14 +1,15 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource // Import da datasource Retrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource // Import da datasource Room
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityROSActivityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 class IROSActivityRepository @Inject constructor(
@@ -16,98 +17,37 @@ class IROSActivityRepository @Inject constructor(
     private val rOSActivityRoomDatasource: ROSActivityRoomDatasource
 ) : ROSActivityRepository {
 
-    override suspend fun addAll(list: List<ROSActivity>): Result<Boolean> {
-        try {
-            val roomModelList = list.map { it.entityROSActivityToRoomModel() }
-            val result = rOSActivityRoomDatasource.addAll(roomModelList)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            return result
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun addAll(list: List<ROSActivity>): EmptyResult =
+        call(getClassAndMethod()) {
+            val modelList = list.map { it.entityROSActivityToRoomModel() }
+            rOSActivityRoomDatasource.addAll(modelList).getOrThrow()
         }
-    }
 
-    override suspend fun deleteAll(): Result<Boolean> {
-        val result = rOSActivityRoomDatasource.deleteAll()
-        result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-        return result
-    }
+    override suspend fun deleteAll(): EmptyResult =
+        call(getClassAndMethod()) {
+            rOSActivityRoomDatasource.deleteAll().getOrThrow()
+        }
 
     override suspend fun listAll(
         token: String
-    ): Result<List<ROSActivity>> {
-        try {
-            val result = rOSActivityRetrofitDatasource.listAll(token)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    ): Result<List<ROSActivity>> =
+        call(getClassAndMethod()) {
+            val modelList = rOSActivityRetrofitDatasource.listAll(token).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
         }
-    }
 
     override suspend fun listByNroOS(
         token: String,
         nroOS: Int
-    ): Result<List<ROSActivity>> {
-        try {
-            val result = rOSActivityRetrofitDatasource.listByNroOS(
-                token = token,
-                nroOS = nroOS
-            )
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.retrofitModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    ): Result<List<ROSActivity>> =
+        call(getClassAndMethod()) {
+            val modelList = rOSActivityRetrofitDatasource.listByNroOS(token, nroOS).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
         }
-    }
 
-    override suspend fun listByIdOS(idOS: Int): Result<List<ROSActivity>> {
-        try {
-            val result = rOSActivityRoomDatasource.listByIdOS(idOS)
-            result.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val entityList = result.getOrNull()!!.map { it.roomModelToEntity() }
-            return Result.success(entityList)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun listByIdOS(idOS: Int): Result<List<ROSActivity>> =
+        call(getClassAndMethod()) {
+            val modelList = rOSActivityRoomDatasource.listByIdOS(idOS).getOrThrow()
+            modelList.map { it.roomModelToEntity() }
         }
-    }
 }

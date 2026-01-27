@@ -132,7 +132,7 @@ class IItemMenuRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = itemMenuDao.all().size
             assertEquals(

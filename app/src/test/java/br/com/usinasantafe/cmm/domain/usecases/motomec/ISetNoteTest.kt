@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -295,7 +295,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -358,7 +358,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -426,7 +426,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -499,7 +499,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -580,7 +580,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
@@ -667,7 +667,7 @@ class ISetNoteTest {
             whenever(
                 motoMecRepository.setNroOSNote(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 motoMecRepository.setIdActivityNote(1)

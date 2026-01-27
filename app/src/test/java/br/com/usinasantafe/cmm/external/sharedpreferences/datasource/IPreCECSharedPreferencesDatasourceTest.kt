@@ -68,7 +68,7 @@ class IPreCECSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = datasource.get()
             assertEquals(
@@ -102,7 +102,7 @@ class IPreCECSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = datasource.get()
             assertEquals(
@@ -136,7 +136,7 @@ class IPreCECSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = datasource.get()
             assertEquals(

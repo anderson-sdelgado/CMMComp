@@ -1,10 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
@@ -23,20 +22,16 @@ class ISetNroOS @Inject constructor(
     override suspend fun invoke(
         nroOS: String,
         flowApp: FlowApp
-    ): EmptyResult {
-        return runCatching {
+    ): EmptyResult =
+        call(getClassAndMethod()) {
             val nroOSInt = runCatching {
                 nroOS.toInt()
             }.getOrElse { e ->
                 throw Exception(::toInt.name, e)
             }
             motoMecRepository.setNroOSHeader(nroOSInt).getOrThrow()
-            if (flowApp == FlowApp.HEADER_INITIAL) return Result.success(Unit)
+            if (flowApp == FlowApp.HEADER_INITIAL) return@call
             motoMecRepository.setNroOSNote(nroOSInt).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

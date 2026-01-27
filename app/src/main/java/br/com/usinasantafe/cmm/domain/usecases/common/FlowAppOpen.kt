@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.common
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -16,18 +16,14 @@ class IFlowAppOpen @Inject constructor(
     private val checkListRepository: CheckListRepository
 ): FlowAppOpen {
 
-    override suspend fun invoke(): Result<FlowApp> {
-        return runCatching {
+    override suspend fun invoke(): Result<FlowApp> =
+        call(getClassAndMethod()) {
             val hasMotoMecOpen = motoMecRepository.hasHeaderOpen().getOrThrow()
-            if(!hasMotoMecOpen) return Result.success(FlowApp.HEADER_INITIAL)
+            if(!hasMotoMecOpen) return@call FlowApp.HEADER_INITIAL
             motoMecRepository.refreshHeaderOpen().getOrThrow()
             val hasCheckListOpen = checkListRepository.hasOpen().getOrThrow()
-            if(hasCheckListOpen) return Result.success(FlowApp.CHECK_LIST)
+            if(hasCheckListOpen) return@call FlowApp.CHECK_LIST
             FlowApp.NOTE_WORK
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

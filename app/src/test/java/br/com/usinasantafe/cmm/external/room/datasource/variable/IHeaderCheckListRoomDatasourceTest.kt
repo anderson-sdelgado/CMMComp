@@ -226,7 +226,7 @@ class IHeaderCheckListRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val listAfter = headerCheckListDao.all()
             assertEquals(

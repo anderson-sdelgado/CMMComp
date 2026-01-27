@@ -1,60 +1,33 @@
 package br.com.usinasantafe.cmm.external.room.datasource.stable
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.StopRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.result
 import javax.inject.Inject
 
 class IStopRoomDatasource @Inject constructor(
     private val stopDao: StopDao
 ) : StopRoomDatasource {
-    override suspend fun addAll(list: List<StopRoomModel>): Result<Boolean> {
-        try {
+    override suspend fun addAll(list: List<StopRoomModel>): EmptyResult =
+        result(getClassAndMethod()) {
             stopDao.insertAll(list)
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun deleteAll(): Result<Boolean> {
-        try {
+    override suspend fun deleteAll(): EmptyResult =
+        result(getClassAndMethod()) {
             stopDao.deleteAll()
-            return Result.success(true)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun listByIdList(idList: List<Int>): Result<List<StopRoomModel>> {
-        try {
-            val list = stopDao.listByIdList(idList)
-            return Result.success(list)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun listByIdList(idList: List<Int>): Result<List<StopRoomModel>> =
+        result(getClassAndMethod()) {
+            stopDao.listByIdList(idList)
         }
-    }
 
-    override suspend fun getById(id: Int): Result<StopRoomModel> {
-        try {
-            val model = stopDao.getById(id)
-            return Result.success(model)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+    override suspend fun getById(id: Int): Result<StopRoomModel> =
+        result(getClassAndMethod()) {
+            stopDao.getById(id)
         }
-    }
 }

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel

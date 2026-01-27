@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
@@ -822,7 +822,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderSend - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderSend`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkSend()
+                headerMotoMecRoomDatasource.hasSend()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.checkHeaderSend",
@@ -849,7 +849,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderSend - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkSend()
+                headerMotoMecRoomDatasource.hasSend()
             ).thenReturn(
                 Result.success(true)
             )
@@ -897,7 +897,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.getStatusCon()
@@ -929,7 +929,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.getStatusCon()
@@ -969,7 +969,7 @@ class IMotoMecRepositoryTest {
             whenever(
                 itemMotoMecSharedPreferencesDatasource.clean()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecSharedPreferencesDatasource.getStatusCon()
@@ -982,7 +982,7 @@ class IMotoMecRepositoryTest {
                     statusCon = true
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.setNroOSNote(1)
             assertEquals(
@@ -991,7 +991,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -1162,7 +1162,7 @@ class IMotoMecRepositoryTest {
                 whenever(
                     itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
-                    Result.success(true)
+                    Result.success(Unit)
                 )
             }
             whenever(
@@ -1219,13 +1219,13 @@ class IMotoMecRepositoryTest {
                 whenever(
                     itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
-                    Result.success(true)
+                    Result.success(Unit)
                 )
             }
             whenever(
                 headerMotoMecRoomDatasource.setSend(1)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.saveNote(1)
             assertEquals(
@@ -1347,7 +1347,7 @@ class IMotoMecRepositoryTest {
     fun `checkHasByIdHeader - Check return failure if have error in noteMotoMecRoomDatasource checkHasNoteById`() =
         runTest {
             whenever(
-                itemMotoMecRoomDatasource.checkHasByIdHeader(1)
+                itemMotoMecRoomDatasource.hasByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     context = "INoteMotoMecRoomDatasource.checkHasByIdHeader",
@@ -1374,7 +1374,7 @@ class IMotoMecRepositoryTest {
     fun `checkHasByIdHeader - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                itemMotoMecRoomDatasource.checkHasByIdHeader(1)
+                itemMotoMecRoomDatasource.hasByIdHeader(1)
             ).thenReturn(
                 Result.success(true)
             )
@@ -1769,7 +1769,7 @@ class IMotoMecRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecRoomDatasource.setSent(
@@ -1876,7 +1876,7 @@ class IMotoMecRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 headerMotoMecRoomDatasource.setSent(
@@ -1884,7 +1884,7 @@ class IMotoMecRepositoryTest {
                     idServ = 1
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.send(
                 number = 16997417840,

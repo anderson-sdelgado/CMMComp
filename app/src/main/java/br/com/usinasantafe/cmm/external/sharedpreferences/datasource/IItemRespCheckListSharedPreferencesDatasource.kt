@@ -2,12 +2,12 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.result
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
@@ -18,16 +18,9 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
 
     private val typeToken = object : TypeToken<List<RespItemCheckListSharedPreferencesModel>>() {}.type
 
-    override suspend fun add(model: RespItemCheckListSharedPreferencesModel): EmptyResult {
-        try {
-            val resultList = list()
-            resultList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultList.getOrNull()!!
+    override suspend fun add(model: RespItemCheckListSharedPreferencesModel): EmptyResult =
+        result(getClassAndMethod()) {
+            val list = list().getOrThrow()
             var mutableList = list.toMutableList()
             if(list.isNotEmpty()) mutableList = list.toMutableList()
             mutableList.add(model)
@@ -38,60 +31,31 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
                 )
             }
             mutableList.clear()
-            return Result.success(Unit)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun clean(): EmptyResult {
-        try {
+    override suspend fun clean(): EmptyResult =
+        result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
                     BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                     null
                 )
             }
-            return Result.success(Unit)
-        } catch (e: Exception){
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
-    override suspend fun list(): Result<List<RespItemCheckListSharedPreferencesModel>> {
-        try {
+    override suspend fun list(): Result<List<RespItemCheckListSharedPreferencesModel>> =
+        result(getClassAndMethod()) {
             val result = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                 null
             )
-            if(result.isNullOrEmpty()) return Result.success(emptyList())
-            return Result.success(
-                Gson().fromJson(result, typeToken)
-            )
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
+            if(result.isNullOrEmpty()) return@result emptyList()
+            Gson().fromJson(result, typeToken)
         }
-    }
 
-    override suspend fun delLast(): EmptyResult {
-        try {
-            val resultList = list()
-            resultList.onFailure {
-                return resultFailure(
-                    context = getClassAndMethod(),
-                    cause = it
-                )
-            }
-            val list = resultList.getOrNull()!!
+    override suspend fun delLast(): EmptyResult =
+        result(getClassAndMethod()) {
+            val list = list().getOrThrow()
             var mutableList = list.toMutableList()
             if(list.isNotEmpty()) mutableList = list.toMutableList()
             val count = mutableList.count()
@@ -103,13 +67,6 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
                 )
             }
             mutableList.clear()
-            return Result.success(Unit)
-        } catch (e: Exception) {
-            return resultFailure(
-                context = getClassAndMethod(),
-                cause = e
-            )
         }
-    }
 
 }

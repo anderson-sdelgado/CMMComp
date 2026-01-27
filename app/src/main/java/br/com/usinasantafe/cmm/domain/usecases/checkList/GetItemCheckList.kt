@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderCheckList
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
@@ -9,8 +8,8 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
-import kotlin.onFailure
 
 interface GetItemCheckList {
     suspend operator fun invoke(pos: Int): Result<ItemCheckListModel>
@@ -24,8 +23,8 @@ class IGetItemCheckList @Inject constructor(
     private val turnRepository: TurnRepository
 ): GetItemCheckList {
 
-    override suspend fun invoke(pos: Int): Result<ItemCheckListModel> {
-        return runCatching {
+    override suspend fun invoke(pos: Int): Result<ItemCheckListModel> =
+        call(getClassAndMethod()) {
             if(pos == 1) {
                 val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
                 val regOperator = motoMecRepository.getRegOperatorHeader().getOrThrow()
@@ -46,10 +45,6 @@ class IGetItemCheckList @Inject constructor(
                 id = entity.idItemCheckList,
                 descr = entity.descrItemCheckList
             )
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

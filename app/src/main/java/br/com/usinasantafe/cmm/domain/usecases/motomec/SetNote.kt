@@ -1,12 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -20,8 +20,8 @@ class ISetNote @Inject constructor(
     private val functionActivityRepository: FunctionActivityRepository,
 ): SetNote {
 
-    override suspend fun invoke(item: ItemMenuModel): EmptyResult {
-        return runCatching {
+    override suspend fun invoke(item: ItemMenuModel): EmptyResult =
+        call(getClassAndMethod()) {
             val idStop = rItemMenuStopRepository.getIdStopByIdFunctionAndIdApp(
                 idFunction = item.function.first,
                 idApp = item.app.first
@@ -47,10 +47,6 @@ class ISetNote @Inject constructor(
 
             if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
 
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

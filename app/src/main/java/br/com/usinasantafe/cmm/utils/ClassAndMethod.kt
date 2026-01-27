@@ -31,6 +31,8 @@ fun getClassAndMethod(): String {
                     !it.contains("Test") &&
                     !it.contains("handleFailure") &&
                     !it.contains("DefaultImpls") &&
+                    !it.contains("SafeCallKt.call") &&
+                    !it.contains("Screen") &&
                     !it.endsWith("Failure") &&
                     !it.endsWith("getClassAndMethod") &&
                     !it.endsWith("default")

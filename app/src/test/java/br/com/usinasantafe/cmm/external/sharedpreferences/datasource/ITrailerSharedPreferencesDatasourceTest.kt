@@ -52,7 +52,7 @@ class ITrailerSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultSave.getOrNull()!!,
-                true
+                Unit
             )
             val resultList = datasource.list()
             assertEquals(
@@ -108,7 +108,7 @@ class ITrailerSharedPreferencesDatasourceTest {
             )
             assertEquals(
                 resultSave.getOrNull()!!,
-                true
+                Unit
             )
             val resultList = datasource.list()
             assertEquals(

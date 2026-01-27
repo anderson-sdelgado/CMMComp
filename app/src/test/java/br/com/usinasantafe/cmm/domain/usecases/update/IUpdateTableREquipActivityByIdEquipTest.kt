@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -287,7 +287,7 @@ class IUpdateTableREquipActivityByIdEquipTest {
             whenever(
                 rEquipActivityRepository.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             whenever(
                 rEquipActivityRepository.addAll(list)

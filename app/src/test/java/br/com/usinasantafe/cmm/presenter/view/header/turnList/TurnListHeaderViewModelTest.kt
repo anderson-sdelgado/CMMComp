@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.header.turnList
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn

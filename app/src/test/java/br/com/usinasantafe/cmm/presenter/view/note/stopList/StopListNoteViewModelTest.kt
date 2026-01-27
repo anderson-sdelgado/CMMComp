@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.stopList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdStopNote
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop

@@ -121,7 +121,7 @@ class ISetIdEquipTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultGetAfter = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(

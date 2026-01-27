@@ -1,9 +1,9 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.FlowEquipNote
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -16,15 +16,11 @@ class IGetFlowEquip @Inject constructor(
     private val equipRepository: EquipRepository,
 ): GetFlowEquip {
 
-    override suspend fun invoke(): Result<FlowEquipNote> {
-        return runCatching {
+    override suspend fun invoke(): Result<FlowEquipNote> =
+        call(getClassAndMethod()) {
             val idEquipConfig = equipRepository.getIdEquipMain().getOrThrow()
             val idEquipMotoMec = motoMecRepository.getIdEquipHeader().getOrThrow()
             if(idEquipConfig == idEquipMotoMec) FlowEquipNote.MAIN else FlowEquipNote.SECONDARY
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

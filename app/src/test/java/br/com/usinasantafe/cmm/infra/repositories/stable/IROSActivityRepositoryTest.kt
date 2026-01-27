@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
@@ -82,7 +82,7 @@ class IROSActivityRepositoryTest {
             whenever(
                 rOSActivityRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -91,7 +91,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -128,7 +128,7 @@ class IROSActivityRepositoryTest {
             whenever(
                 rOSActivityRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -137,7 +137,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -160,7 +160,7 @@ class IROSActivityRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IROSActivityRepository.recoverAll -> IROSActivityRetrofitDatasource.listAll"
+                "IROSActivityRepository.listAll -> IROSActivityRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),

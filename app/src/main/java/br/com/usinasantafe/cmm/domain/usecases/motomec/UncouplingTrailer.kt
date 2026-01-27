@@ -1,8 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -14,13 +14,9 @@ class IUncouplingTrailer @Inject constructor(
     private val motoMecRepository: MotoMecRepository
 ): UncouplingTrailer {
 
-    override suspend fun invoke(): EmptyResult {
-        return runCatching {
+    override suspend fun invoke(): EmptyResult =
+        call(getClassAndMethod()) {
             motoMecRepository.uncouplingTrailerImplement().getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(it) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

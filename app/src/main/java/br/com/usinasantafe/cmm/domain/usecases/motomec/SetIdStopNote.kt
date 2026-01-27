@@ -1,11 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.lib.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.lib.EmptyResult
+import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.TypeActivity
+import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
@@ -23,8 +23,8 @@ class ISetIdStopNote @Inject constructor(
 
     override suspend fun invoke(
         id: Int
-    ): EmptyResult {
-        return runCatching {
+    ): EmptyResult =
+        call(getClassAndMethod()) {
 
             val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
             val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
@@ -39,10 +39,6 @@ class ISetIdStopNote @Inject constructor(
 
             if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
             startWorkManager()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = { resultFailure(context = getClassAndMethod(), cause = it) }
-        )
-    }
+        }
 
 }

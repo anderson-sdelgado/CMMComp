@@ -47,7 +47,7 @@ class IDelLastRespItemCheckListTest {
             )
             assertEquals(
                 resultSave1.getOrNull()!!,
-                true
+                Unit
             )
             val resultSave2 = itemRespCheckListSharedPreferencesdatasource.add(model2)
             assertEquals(
@@ -56,7 +56,7 @@ class IDelLastRespItemCheckListTest {
             )
             assertEquals(
                 resultSave2.getOrNull()!!,
-                true
+                Unit
             )
             val resultListBefore = itemRespCheckListSharedPreferencesdatasource.list()
             assertEquals(
@@ -93,7 +93,7 @@ class IDelLastRespItemCheckListTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val resultListAfter = itemRespCheckListSharedPreferencesdatasource.list()
             assertEquals(

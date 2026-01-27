@@ -66,6 +66,6 @@ interface StableRetrofitDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindTurnRetrofitDatasource(dataSource: ITurnRetrofitDatasource): TurnoRetrofitDatasource
+    fun bindTurnRetrofitDatasource(dataSource: ITurnRetrofitDatasource): TurnRetrofitDatasource
 
 }

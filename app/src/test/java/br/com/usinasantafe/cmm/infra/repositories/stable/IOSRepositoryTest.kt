@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.OS
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.OSRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.OSRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
@@ -94,7 +94,7 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.addAll(roomModelList)
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.addAll(entityList)
             assertEquals(
@@ -103,7 +103,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -140,7 +140,7 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.deleteAll()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.deleteAll()
             assertEquals(
@@ -149,7 +149,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 
@@ -172,7 +172,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.recoverAll -> IOSRetrofitDatasource.listAll"
+                "IOSRepository.listAll -> IOSRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -494,7 +494,7 @@ class IOSRepositoryTest {
                     )
                 )
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = repository.add(
                 OS(
@@ -512,7 +512,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

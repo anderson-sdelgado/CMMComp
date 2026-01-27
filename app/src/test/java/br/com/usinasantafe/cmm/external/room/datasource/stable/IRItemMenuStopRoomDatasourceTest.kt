@@ -112,7 +112,7 @@ class IRItemMenuStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = rItemMenuStopDao.all()
             assertEquals(
@@ -180,7 +180,7 @@ class IRItemMenuStopRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = rItemMenuStopDao.all().size
             assertEquals(

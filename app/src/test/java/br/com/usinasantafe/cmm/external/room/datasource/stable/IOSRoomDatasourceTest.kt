@@ -119,7 +119,7 @@ class IOSRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = osDao.listAll()
             assertEquals(
@@ -207,7 +207,7 @@ class IOSRoomDatasourceTest {
                 )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val qtdAfter = osDao.listAll().size
             assertEquals(
@@ -314,7 +314,7 @@ class IOSRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
             val list = osDao.listAll()
             assertEquals(

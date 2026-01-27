@@ -1,11 +1,12 @@
 package br.com.usinasantafe.cmm.infra.datasource.room.stable
 
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
+import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface OSRoomDatasource {
-    suspend fun addAll(list: List<OSRoomModel>): Result<Boolean>
-    suspend fun deleteAll(): Result<Boolean>
+    suspend fun addAll(list: List<OSRoomModel>): EmptyResult
+    suspend fun deleteAll(): EmptyResult
     suspend fun checkNroOS(nroOS: Int): Result<Boolean>
-    suspend fun add(model: OSRoomModel): Result<Boolean>
+    suspend fun add(model: OSRoomModel): EmptyResult
     suspend fun listByNroOS(nroOS: Int): Result<List<OSRoomModel>>
 }

@@ -1,17 +1,13 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.lib.failure
 import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
 import br.com.usinasantafe.cmm.domain.repositories.stable.RActivityStopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
-import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 import br.com.usinasantafe.cmm.lib.TB_R_ACTIVITY_STOP
-import br.com.usinasantafe.cmm.presenter.model.emitFailure
 import br.com.usinasantafe.cmm.presenter.model.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import br.com.usinasantafe.cmm.utils.updatePercentage
+import br.com.usinasantafe.cmm.utils.flowCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -32,21 +28,19 @@ class IUpdateTableRActivityStop @Inject constructor(
         sizeAll: Float,
         count: Float
     ): Flow<ResultUpdateModel> = flow {
-        return@flow runCatching {
+        flowCall(getClassAndMethod()) {
+
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_R_ACTIVITY_STOP)
             val token = getToken().getOrThrow()
             val entityList = rActivityStopRepository.listAll(token).getOrThrow()
+
             emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_R_ACTIVITY_STOP)
             rActivityStopRepository.deleteAll().getOrThrow()
+
             emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_R_ACTIVITY_STOP)
             rActivityStopRepository.addAll(entityList).getOrThrow()
-        }.fold(
-            onSuccess = { Result.success(Unit) },
-            onFailure = {
-                val failure = failure(getClassAndMethod(), it)
-                emitFailure(failure)
-            }
-        )
+
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.config
 
-import br.com.usinasantafe.cmm.lib.resultFailure
+import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.lib.StatusSend
 import kotlinx.coroutines.test.runTest
