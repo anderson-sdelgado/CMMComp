@@ -2,7 +2,9 @@ package br.com.usinasantafe.cmm.presenter.view.note.performanceList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
+import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,8 +34,24 @@ class PerformanceListViewModel @Inject constructor(
     }
 
 
-    fun recoverList() = viewModelScope.launch {
+    fun performanceList() = viewModelScope.launch {
 
     }
 
+    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
+        val fail = "${getClassAndMethod()} -> $failure"
+        Timber.e(fail)
+        _uiState.update {
+            it.copy(
+                flagDialog = true,
+                failure = fail,
+                flagAccess = false,
+            )
+        }
+    }
+
+    private fun handleFailure(error: Throwable) {
+        val failure = "${error.message} -> ${error.cause.toString()}"
+        handleFailure(failure)
+    }
 }

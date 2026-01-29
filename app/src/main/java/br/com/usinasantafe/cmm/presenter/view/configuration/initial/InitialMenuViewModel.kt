@@ -37,38 +37,34 @@ class InitialMenuViewModel @Inject constructor(
         }
     }
 
-    fun recoverStatusSend() {
-        viewModelScope.launch {
-            val resultGetStatus = getStatusSend()
-            resultGetStatus.onFailure {
+    fun recoverStatusSend() = viewModelScope.launch {
+            runCatching {
+                getStatusSend().getOrThrow()
+            }.onSuccess { statusSend ->
+                _uiState.update {
+                    it.copy(
+                        statusSend = statusSend
+                    )
+                }
+            }.onFailure {
                 handleFailure(it)
-                return@launch
-            }
-            val result = resultGetStatus.getOrNull()!!
-            _uiState.update {
-                it.copy(
-                    statusSend = result
-                )
             }
         }
-    }
 
-    fun checkAccess() {
-        viewModelScope.launch {
-            val resultCheck = checkAccessInitial()
-            resultCheck.onFailure {
-                handleFailure(it)
-                return@launch
-            }
-            val statusAccess = resultCheck.getOrNull()!!
-            val statusDialog = !statusAccess
+
+    fun checkAccess() = viewModelScope.launch {
+        runCatching {
+            checkAccessInitial().getOrThrow()
+        }.onSuccess { check ->
             _uiState.update {
                 it.copy(
-                    flagDialog = statusDialog,
-                    flagAccess = statusAccess,
+                    flagDialog = !check,
+                    flagAccess = check,
                     flagFailure = false,
                 )
             }
+        }.onFailure {
+            handleFailure(it)
         }
     }
 

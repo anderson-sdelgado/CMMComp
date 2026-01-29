@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.FunctionStop
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionStopRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeStop
@@ -49,7 +49,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_function_stop",
@@ -58,7 +58,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -97,7 +97,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_function_stop",
@@ -106,7 +106,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -159,7 +159,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_function_stop",
@@ -168,7 +168,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_function_stop",
@@ -177,7 +177,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -235,7 +235,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_function_stop",
@@ -244,7 +244,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_function_stop",
@@ -253,7 +253,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_function_stop",
@@ -262,7 +262,7 @@ class IUpdateTableFunctionStopTest {
             )
             assertEquals(
                 resultList[3],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,

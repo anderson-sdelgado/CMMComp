@@ -1,11 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
-import br.com.usinasantafe.cmm.presenter.model.emitProgress
+import br.com.usinasantafe.cmm.utils.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.flowCall
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ interface UpdateTableActivity {
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdateModel>
+    ): Flow<UpdateStatusState>
 }
 
 class IUpdateTableActivity @Inject constructor(
@@ -27,7 +27,7 @@ class IUpdateTableActivity @Inject constructor(
     override suspend fun invoke(
         sizeAll: Float,
         count: Float
-    ): Flow<ResultUpdateModel> = flow {
+    ): Flow<UpdateStatusState> = flow {
         flowCall(getClassAndMethod()) {
 
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_ACTIVITY)

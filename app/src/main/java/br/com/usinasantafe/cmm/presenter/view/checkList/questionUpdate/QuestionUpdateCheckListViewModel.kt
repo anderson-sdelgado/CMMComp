@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -32,7 +32,7 @@ data class QuestionUpdateCheckListState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.toQuestion(
+fun UpdateStatusState.toQuestion(
     classAndMethod: String,
     currentState: QuestionUpdateCheckListState
 ): QuestionUpdateCheckListState {
@@ -93,7 +93,7 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
         classAndMethod: String,
         emitState: suspend (QuestionUpdateCheckListState) -> Unit
     ): Boolean {

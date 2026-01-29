@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -103,13 +103,13 @@ class MotorPumpViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -163,19 +163,19 @@ class MotorPumpViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_equip",

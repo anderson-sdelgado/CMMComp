@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
 import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
@@ -57,7 +57,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -66,7 +66,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -97,7 +97,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -106,7 +106,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -144,7 +144,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -153,7 +153,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -191,7 +191,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -200,7 +200,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -240,7 +240,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -249,7 +249,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_stop",
@@ -258,7 +258,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_stop",

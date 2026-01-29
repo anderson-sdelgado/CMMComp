@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.configuration.config
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
 import br.com.usinasantafe.cmm.domain.usecases.config.SaveDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
@@ -24,6 +24,9 @@ import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -42,37 +45,11 @@ data class ConfigState(
     val checkMotoMec: Boolean = true,
     val app: String = "",
     val version: String = "",
-    val flagDialog: Boolean = false,
-    val failure: String = "",
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-    val flagFailure: Boolean = false,
-    val errors: Errors = Errors.FIELD_EMPTY,
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<ConfigState> {
 
-fun ResultUpdateModel.toConfig(
-    classAndMethod: String,
-    current: ConfigState
-): ConfigState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): ConfigState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -92,19 +69,19 @@ class ConfigViewModel @Inject constructor(
     private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
-    private val setFinishUpdateAllTable: SetFinishUpdateAllTable
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ConfigState())
     val uiState = _uiState.asStateFlow()
 
+    private val state get() = _uiState.value
+
     private fun updateUi(block: ConfigState.() -> ConfigState) {
-        _uiState.update { it.block() }
+        _uiState.update(block)
     }
 
-
     fun setCloseDialog() = updateUi {
-        copy(flagDialog = false, flagFailure = false)
+        copy(status = status.copy(flagDialog = false, flagFailure = false))
     }
 
     fun onNumberChanged(v: String) = updateUi { copy(number = v) }
@@ -130,8 +107,10 @@ class ConfigViewModel @Inject constructor(
                     }
                 }
             },
-            onFailure = {
-                handleFailure(it)
+            onFailure = { throwable ->
+                _uiState.update {
+                    it.withFailure(getClassAndMethod(), throwable)
+                }
             }
         )
     }
@@ -143,9 +122,11 @@ class ConfigViewModel @Inject constructor(
         if (!uiState.value.isValid()) {
             updateUi {
                 copy(
-                    flagDialog = true,
-                    errors = Errors.FIELD_EMPTY,
-                    flagFailure = true
+                    status = status.copy(
+                        flagDialog = true,
+                        errors = Errors.FIELD_EMPTY,
+                        flagFailure = true
+                    )
                 )
             }
             return
@@ -153,8 +134,7 @@ class ConfigViewModel @Inject constructor(
 
         viewModelScope.launch {
             token().collect { state ->
-                _uiState.value = state
-                if (!state.flagFailure && state.currentProgress == 1f) {
+                if (!state.status.flagFailure && state.status.currentProgress == 1f) {
                     updateAllDatabase().collect { _uiState.value = it }
                 }
             }
@@ -163,82 +143,74 @@ class ConfigViewModel @Inject constructor(
 
     fun token(): Flow<ConfigState> = flow {
 
-        val s = uiState.value
+        runCatching {
         val sizeToken = 3f
 
         emit(
-            s.copy(
-                flagProgress = true,
-                levelUpdate = LevelUpdate.GET_TOKEN,
-                currentProgress = percentage(1f, sizeToken)
+            state.copy(
+                status = state.status.copy(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.GET_TOKEN,
+                    currentProgress = percentage(1f, sizeToken)
+                )
             )
         )
 
-        val sendResult = sendDataConfig(
-            number = s.number,
-            password = s.password,
-            nroEquip = s.nroEquip,
-            app = s.app,
-            version = s.version
-        )
-
-        val config = sendResult.getOrElse {
-            emit(handleFailure(it, Errors.TOKEN, true))
-            return@flow
-        }
+        val config = sendDataConfig(
+            number = state.number,
+            password = state.password,
+            nroEquip = state.nroEquip,
+            app = state.app,
+            version = state.version
+        ).getOrThrow()
 
         emit(
-            _uiState.value.copy(
-                flagProgress = true,
-                levelUpdate = LevelUpdate.SAVE_TOKEN,
-                currentProgress = percentage(2f, sizeToken)
+            state.copy(
+                status = state.status.copy(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE_TOKEN,
+                    currentProgress = percentage(2f, sizeToken)
+                )
             )
         )
 
-        val saveResult = saveDataConfig(
-            number = s.number,
-            password = s.password,
-            version = s.version,
-            app = s.app,
-            checkMotoMec = s.checkMotoMec,
+        saveDataConfig(
+            number = state.number,
+            password = state.password,
+            version = state.version,
+            app = state.app,
+            checkMotoMec = state.checkMotoMec,
             idServ = config.idServ ?: 0,
             equip = config.equip!!
-        )
+        ).getOrThrow()
 
-        saveResult.getOrElse {
-            emit(handleFailure(it, Errors.TOKEN, true))
-            return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                flagProgress = true,
-                currentProgress = 1f,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL
+        }.onSuccess {
+            emit(
+                state.copy(
+                    status = state.status.copy(
+                        flagProgress = true,
+                        currentProgress = 1f,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL
+                    )
+                )
             )
-        )
-    }
-
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (ConfigState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toConfig(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
+        }.onFailure {
+            emit(state.withFailure(getClassAndMethod(), it, Errors.TOKEN))
         }
-        return ok
     }
 
-    fun updateAllDatabase(): Flow<ConfigState> = flow {
-        val size = sizeUpdate(QTD_TABLE)
+    suspend fun updateAllDatabase(): Flow<ConfigState> =
+        executeUpdateSteps(
+            steps = listUpdate(),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
+        )
 
-        val steps = listOf(
+    private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
+        val size = sizeUpdate(QTD_TABLE)
+        return listOf(
             updateTableActivity(size, 1f),
             updateTableColab(size, 2f),
             updateTableEquip(size, 3f),
@@ -252,59 +224,6 @@ class ConfigViewModel @Inject constructor(
             updateTableStop(size, 11f),
             updateTableTurn(size, 12f)
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
-
-        setFinishUpdateAllTable().fold(
-            onSuccess = {
-                emit(_uiState.value.copy(
-                    tableUpdate = "",
-                    flagDialog = true,
-                    flagProgress = true,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f
-                ))
-            },
-            onFailure = {
-                emit(handleFailure(it, emit = true))
-            }
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): ConfigState {
-        Timber.e(message)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = message,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): ConfigState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
     }
 
 }

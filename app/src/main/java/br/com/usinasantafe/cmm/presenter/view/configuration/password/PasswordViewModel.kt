@@ -42,21 +42,18 @@ class PasswordViewModel @Inject constructor(
 
     fun checkAccess() =
         viewModelScope.launch {
-            val resultCheck = checkPassword(
-                password = _uiState.value.password
-            )
-            resultCheck.onFailure {
+            runCatching {
+                checkPassword(_uiState.value.password).getOrThrow()
+            }.onSuccess { check ->
+                _uiState.update {
+                    it.copy(
+                        flagDialog = !check,
+                        flagAccess = check,
+                        flagFailure = false,
+                    )
+                }
+            }.onFailure {
                 handleFailure(it)
-                return@launch
-            }
-            val statusAccess = resultCheck.getOrNull()!!
-            val statusDialog = !statusAccess
-            _uiState.update {
-                it.copy(
-                    flagDialog = statusDialog,
-                    flagAccess = statusAccess,
-                    flagFailure = false,
-                )
             }
         }
 

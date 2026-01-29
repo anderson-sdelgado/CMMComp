@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.common.activityList
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
@@ -56,13 +56,13 @@ class ActivityListCommonViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -117,19 +117,19 @@ class ActivityListCommonViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_colab",

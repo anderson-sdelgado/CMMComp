@@ -12,7 +12,9 @@ import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
+import br.com.usinasantafe.cmm.utils.collectUpdateStep
+import br.com.usinasantafe.cmm.utils.withFailure
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -23,45 +25,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class TranshipmentState(
     val flowApp: FlowApp = FlowApp.NOTE_WORK,
     val nroEquip: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val flagDialog: Boolean = false,
-    val failure: String = "",
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
+    val status: UpdateStatusState = UpdateStatusState()
 )
-
-fun ResultUpdateModel.toTranshipment(
-    classAndMethod: String,
-    current: TranshipmentState
-): TranshipmentState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
-}
 
 @HiltViewModel
 class TranshipmentViewModel @Inject constructor(
@@ -89,7 +60,12 @@ class TranshipmentViewModel @Inject constructor(
     }
 
     fun setCloseDialog() = updateUi {
-        copy(flagDialog = false, flagFailure = false)
+        copy(
+            status = status.copy(
+                flagDialog = false,
+                flagFailure = false
+            )
+        )
     }
 
     fun setTextField(
@@ -113,7 +89,15 @@ class TranshipmentViewModel @Inject constructor(
 
             TypeButton.OK -> {
                 if (uiState.value.nroEquip.isEmpty()) {
-                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
+                    _uiState.update {
+                        it.copy(
+                            status = it.status.withFailure(
+                                getClassAndMethod(),
+                                "Field Empty!",
+                                Errors.FIELD_EMPTY
+                            )
+                        )
+                    }
                     return
                 }
                 setNroEquip()
@@ -134,8 +118,15 @@ class TranshipmentViewModel @Inject constructor(
             nroEquip =  uiState.value.nroEquip,
             typeEquip = TypeEquip.TRANSHIPMENT
         )
-        resultHas.onFailure {
-            handleFailure(it)
+        resultHas.onFailure { itThrowable ->
+            _uiState.update {
+                it.copy(
+                    status = it.status.withFailure(
+                        getClassAndMethod(),
+                        itThrowable
+                    )
+                )
+            }
             return@launch
         }
         val check = resultHas.getOrNull()!!
@@ -144,35 +135,28 @@ class TranshipmentViewModel @Inject constructor(
                 nroEquipTranshipment = uiState.value.nroEquip,
                 flowApp = uiState.value.flowApp
             )
-            resultSet.onFailure {
-                handleFailure(it)
+            resultSet.onFailure { itThrowable ->
+                _uiState.update {
+                    it.copy(
+                        status = it.status.withFailure(
+                            getClassAndMethod(),
+                            itThrowable
+                        )
+                    )
+                }
                 return@launch
             }
         }
         _uiState.update {
             it.copy(
                 flagAccess = check,
-                flagDialog = !check,
-                flagFailure = !check,
-                errors = Errors.INVALID
+                status = it.status.copy(
+                    flagDialog = !check,
+                    flagFailure = !check,
+                    errors = Errors.INVALID
+                )
             )
         }
-    }
-
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (TranshipmentState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toTranshipment(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
     }
 
     fun updateAllDatabase(): Flow<TranshipmentState> = flow {
@@ -184,52 +168,31 @@ class TranshipmentViewModel @Inject constructor(
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
+            val ok = step.collectUpdateStep(
+                classAndMethod = getClassAndMethod(),
+                currentStatus = _uiState.value.status
+
+            ) {
+                emit(
+                    _uiState.value.copy(
+                        status = it
+                    )
+                )
+            }
             if (!ok) return@flow
         }
 
         emit(
             _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
+                status = _uiState.value.status.copy(
+                    flagDialog = true,
+                    flagProgress = false,
+                    flagFailure = false,
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                    currentProgress = 1f,
+                )
             )
         )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): TranshipmentState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): TranshipmentState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
     }
 
 }

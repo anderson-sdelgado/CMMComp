@@ -3,9 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.common.activityList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
@@ -13,7 +12,6 @@ import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +37,7 @@ data class ActivityListCommonState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.toActivity(
+fun UpdateStatusState.toActivity(
     classAndMethod: String,
     current: ActivityListCommonState
 ): ActivityListCommonState {
@@ -129,7 +127,7 @@ class ActivityListCommonViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
         classAndMethod: String,
         emitState: suspend (ActivityListCommonState) -> Unit
     ): Boolean {

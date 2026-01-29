@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.header.turnList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
@@ -14,11 +14,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class TurnListHeaderViewModelTest {
@@ -50,15 +50,15 @@ class TurnListHeaderViewModelTest {
             )
             viewModel.turnList()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TurnListHeaderViewModel.turnList -> GetTurnList -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
         }
@@ -138,13 +138,13 @@ class TurnListHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -158,29 +158,33 @@ class TurnListHeaderViewModelTest {
             assertEquals(
                 result[0],
                 TurnListHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 TurnListHeaderState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TurnListHeaderViewModel.updateDatabase -> TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
             )
         }
@@ -195,19 +199,19 @@ class TurnListHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_turn",
@@ -220,43 +224,51 @@ class TurnListHeaderViewModelTest {
             assertEquals(
                 result[0],
                 TurnListHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 TurnListHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(2f, 4f),
+                        status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(2f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 TurnListHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(3f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(3f, 4f),
                     )
+                )
             )
             assertEquals(
                 result[3],
                 TurnListHeaderState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
         }
@@ -277,15 +289,15 @@ class TurnListHeaderViewModelTest {
             )
             viewModel.setIdTurnHeader(1)
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TurnListHeaderViewModel.setIdTurnHeader -> SetIdTurn -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
         }

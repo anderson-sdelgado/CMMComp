@@ -2,60 +2,33 @@ package br.com.usinasantafe.cmm.presenter.view.header.operator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasRegColab
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class OperatorHeaderState(
     val regColab: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val flagDialog: Boolean = false,
-    val failure: String = "",
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<OperatorHeaderState> {
 
-fun ResultUpdateModel.toOperator(
-    classAndMethod: String,
-    current: OperatorHeaderState
-): OperatorHeaderState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): OperatorHeaderState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -68,12 +41,14 @@ class OperatorHeaderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OperatorHeaderState())
     val uiState = _uiState.asStateFlow()
 
+    private val state get() = _uiState.value
+
     private fun updateUi(block: OperatorHeaderState.() -> OperatorHeaderState) {
-        _uiState.update { it.block() }
+        _uiState.update(block)
     }
 
     fun setCloseDialog() = updateUi {
-        copy(flagDialog = false, flagFailure = false)
+        copy(status = status.copy(flagDialog = false, flagFailure = false))
     }
 
     fun setTextField(
@@ -81,28 +56,9 @@ class OperatorHeaderViewModel @Inject constructor(
         typeButton: TypeButton
     ) {
         when (typeButton) {
-            TypeButton.NUMERIC -> {
-                val value = addTextField(uiState.value.regColab, text)
-                _uiState.update {
-                    it.copy(regColab = value)
-                }
-            }
-
-            TypeButton.CLEAN -> {
-                val value = clearTextField(uiState.value.regColab)
-                _uiState.update {
-                    it.copy(regColab = value)
-                }
-            }
-
-            TypeButton.OK -> {
-                if (uiState.value.regColab.isEmpty()) {
-                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
-                    return
-                }
-                setRegOperatorHeader()
-            }
-
+            TypeButton.NUMERIC -> updateUi { copy(regColab = addTextField(regColab, text)) }
+            TypeButton.CLEAN -> updateUi { copy(regColab = clearTextField(regColab)) }
+            TypeButton.OK -> validateAndSetOperator()
             TypeButton.UPDATE -> {
                 viewModelScope.launch {
                     updateAllDatabase().collect { stateUpdate ->
@@ -113,101 +69,52 @@ class OperatorHeaderViewModel @Inject constructor(
         }
     }
 
+    private fun validateAndSetOperator() {
+        if (state.regColab.isBlank()) {
+            updateUi {
+                withFailure(
+                    getClassAndMethod(),
+                    "Field Empty!",
+                    Errors.FIELD_EMPTY
+                )
+            }
+            return
+        }
+        setRegOperatorHeader()
+    }
+
     private fun setRegOperatorHeader() = viewModelScope.launch {
-        val resultHas = hasRegColab(uiState.value.regColab)
-        resultHas.onFailure {
-            handleFailure(it)
-            return@launch
-        }
-        val check = resultHas.getOrNull()!!
-        if (check) {
-            val resultSet = setRegOperator(uiState.value.regColab)
-            resultSet.onFailure {
-                handleFailure(it)
-                return@launch
+        runCatching {
+            val check = hasRegColab(uiState.value.regColab).getOrThrow()
+            if (check) setRegOperator(uiState.value.regColab).getOrThrow()
+            check
+        }.onSuccess { check ->
+            updateUi {
+                copy(
+                    flagAccess = check,
+                    status = status.copy(
+                        flagDialog = !check,
+                        flagFailure = !check,
+                        errors = Errors.INVALID
+                    )
+                )
+            }
+        }.onFailure { throwable ->
+            _uiState.update {
+                it.withFailure(getClassAndMethod(), throwable)
             }
         }
-        _uiState.update {
-            it.copy(
-                flagAccess = check,
-                flagDialog = !check,
-                flagFailure = !check,
-                errors = Errors.INVALID
-            )
-        }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (OperatorHeaderState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toOperator(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
-    fun updateAllDatabase(): Flow<OperatorHeaderState> = flow {
-
-        val size = 4f
-
-        val steps = listOf(
-            updateTableColab(size, 1f),
+    suspend fun updateAllDatabase(): Flow<OperatorHeaderState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableColab(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
 
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
 
-        emit(
-            _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): OperatorHeaderState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): OperatorHeaderState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
-    }
 
 }

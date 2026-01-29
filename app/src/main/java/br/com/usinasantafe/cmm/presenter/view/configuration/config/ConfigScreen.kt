@@ -42,6 +42,12 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.errors
+import br.com.usinasantafe.cmm.lib.msg
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldConfigDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldPasswordDesign
+import org.w3c.dom.Text
 import kotlin.String
 
 const val TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN = "tag_number_text_field_config_screen"
@@ -77,15 +83,15 @@ fun ConfigScreen(
                 checkMotoMec = uiState.checkMotoMec,
                 onCheckMotoMecChanged = viewModel::onCheckMotoMecChanged,
                 onSaveAndUpdate = viewModel::onSaveAndUpdate,
-                flagProgress = uiState.flagProgress,
-                currentProgress = uiState.currentProgress,
-                levelUpdate = uiState.levelUpdate,
-                tableUpdate = uiState.tableUpdate,
-                flagDialog = uiState.flagDialog,
+                flagProgress = uiState.status.flagProgress,
+                currentProgress = uiState.status.currentProgress,
+                levelUpdate = uiState.status.levelUpdate,
+                tableUpdate = uiState.status.tableUpdate,
+                flagDialog = uiState.status.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
-                failure = uiState.failure,
+                flagFailure = uiState.status.flagFailure,
+                errors = uiState.status.errors,
+                failure = uiState.status.failure,
                 onNavInitialMenu = onNavInitialMenu,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -128,56 +134,27 @@ fun ConfigContent(
                 id = R.string.text_title_nro_aparelho
             )
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 24.sp
-            ),
+        TextFieldConfigDesign(
             value = number,
             onValueChange = onNumberChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN)
+            tag = TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
         )
         TitleDesign(
             text = stringResource(id = R.string.text_title_nro_equip)
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 24.sp
-            ),
+        TextFieldConfigDesign(
             value = nroEquip,
             onValueChange = onNroEquipChanged,
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN)
+            tag = TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         TitleDesign(
             text = stringResource(id = R.string.text_title_password)
         )
-        OutlinedTextField(
+        TextFieldPasswordDesign(
             value = password,
             onValueChange = onPasswordChanged,
-            textStyle = TextStyle(
-                fontSize = 24.sp
-            ),
-            modifier = Modifier
-                .fillMaxWidth()
-                .testTag(TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN)
+            tag = TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Row (
@@ -227,16 +204,7 @@ fun ConfigContent(
                     .height(30.dp),
             )
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
+            val msgProgress = msg(levelUpdate, failure, tableUpdate)
             Text(
                 text = msgProgress,
                 textAlign = TextAlign.Center,
@@ -246,27 +214,18 @@ fun ConfigContent(
         }
         BackHandler {}
     }
-    if(flagDialog) {
-        if(flagFailure){
-            val text = when(errors){
-                Errors.FIELD_EMPTY -> stringResource(id = R.string.text_field_empty_config)
-                Errors.TOKEN -> stringResource(id = R.string.text_recover_token, failure)
-                Errors.UPDATE -> stringResource(id = R.string.text_update_failure, failure)
-                Errors.EXCEPTION,
-                Errors.INVALID -> stringResource(id = R.string.text_failure, failure)
-                else -> ""
+    if (flagDialog) {
+        val text =
+            if (flagFailure) {
+                errors(errors, failure)
+            } else {
+                msg(levelUpdate, failure, tableUpdate)
             }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
-        } else {
-            AlertDialogSimpleDesign(
-                text = stringResource(id = R.string.text_config_success),
-                setCloseDialog = setCloseDialog,
-                setActionButtonOK = onNavInitialMenu,
-            )
-        }
+
+        AlertDialogSimpleDesign(
+            text = text,
+            setCloseDialog = setCloseDialog,
+        )
     }
 
 }

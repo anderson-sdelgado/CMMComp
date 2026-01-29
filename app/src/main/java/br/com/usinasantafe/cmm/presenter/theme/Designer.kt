@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,6 +23,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,6 +34,7 @@ import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.STOP
 import br.com.usinasantafe.cmm.lib.WORK
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
 
 @Composable
 fun ItemListDesign(
@@ -180,6 +187,92 @@ fun TitleDesign(
     )
 }
 
+
+@Composable
+fun TextFieldDesign(
+    value: String,
+    tag: String = ""
+) {
+    return OutlinedTextField(
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.None,
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Previous
+        ),
+        textStyle = TextStyle(
+            textAlign = TextAlign.Right,
+            fontSize = 28.sp,
+        ),
+        readOnly = true,
+        value = value,
+        onValueChange = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(tag)
+    )
+}
+
+@Composable
+fun TextFieldPasswordDesign(
+    value: String,
+    onValueChange: (String) -> Unit,
+    tag: String = ""
+) {
+    return OutlinedTextField(
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password
+        ),
+        textStyle = TextStyle(
+            fontSize = 24.sp
+        ),
+        visualTransformation = PasswordVisualTransformation(),
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth().testTag(tag)
+    )
+}
+
+@Composable
+fun TextFieldConfigDesign(
+    value: String,
+    onValueChange: (String) -> Unit,
+    tag: String = ""
+) {
+    return OutlinedTextField(
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.None,
+            autoCorrectEnabled = true,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        ),
+        textStyle = TextStyle(
+            textAlign = TextAlign.Right,
+            fontSize = 24.sp
+        ),
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag(tag)
+    )
+}
+
+@Composable
+fun TextFieldPasswordConfigDesign(
+    value: String,
+    onValueChange: (String) -> Unit,
+    tag: String = ""
+) {
+    return OutlinedTextField(
+        textStyle = TextStyle(
+            fontSize = 24.sp
+        ),
+        value = value,
+        onValueChange = onValueChange,
+        modifier = Modifier.fillMaxWidth().testTag(tag)
+    )
+}
 
 @Composable
 fun TextButtonDesign(text: String) {

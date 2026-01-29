@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.resultFailure
@@ -50,7 +50,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_equip",
@@ -59,7 +59,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -100,7 +100,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_equip",
@@ -109,7 +109,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -172,7 +172,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_equip",
@@ -181,7 +181,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_equip",
@@ -190,7 +190,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -274,7 +274,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_equip",
@@ -283,7 +283,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_equip",
@@ -292,7 +292,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_equip",
@@ -301,7 +301,7 @@ class IUpdateTableEquipTest {
             )
             assertEquals(
                 resultList[3],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,

@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.note.stopList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdStopNote
@@ -49,13 +49,13 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -109,19 +109,19 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(2f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_r_activity_stop",
@@ -136,13 +136,13 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(4f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -223,19 +223,19 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(1f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(2f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_r_activity_stop",
@@ -250,19 +250,19 @@ class StopListNoteViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(4f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(5f, 7f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_stop",

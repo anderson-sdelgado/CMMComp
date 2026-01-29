@@ -1,7 +1,5 @@
 package br.com.usinasantafe.cmm.utils
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
-import br.com.usinasantafe.cmm.presenter.model.emitFailure
 import kotlinx.coroutines.flow.FlowCollector
 
 suspend fun <T> call (
@@ -16,7 +14,7 @@ suspend fun <T> call (
     )
 }
 
-suspend fun FlowCollector<ResultUpdateModel>.flowCall(
+suspend fun FlowCollector<UpdateStatusState>.flowCall(
     context: String,
     block: suspend () -> Unit
 ) {

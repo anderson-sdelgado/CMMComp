@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -57,7 +57,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_check_list",
@@ -66,7 +66,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -97,7 +97,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_check_list",
@@ -106,7 +106,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -144,7 +144,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_check_list",
@@ -153,7 +153,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -191,7 +191,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_check_list",
@@ -200,7 +200,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     errors = Errors.UPDATE,
                     flagDialog = true,
@@ -241,7 +241,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_check_list",
@@ -250,7 +250,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_item_check_list",
@@ -259,7 +259,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
             )
             assertEquals(
                 list[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_item_check_list",

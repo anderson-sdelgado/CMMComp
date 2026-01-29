@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
@@ -88,13 +88,13 @@ class QuestionUpdateCheckListViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -148,19 +148,19 @@ class QuestionUpdateCheckListViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_item_check_list",

@@ -9,7 +9,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -36,7 +36,7 @@ data class MotorPumpState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.toMotorPump(
+fun UpdateStatusState.toMotorPump(
     classAndMethod: String,
     current: MotorPumpState
 ): MotorPumpState {
@@ -143,7 +143,7 @@ class MotorPumpViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
         classAndMethod: String,
         emitState: suspend (MotorPumpState) -> Unit
     ): Boolean {

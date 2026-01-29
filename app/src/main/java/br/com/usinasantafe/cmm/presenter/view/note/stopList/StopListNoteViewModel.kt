@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.stopList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdStopNote
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
@@ -36,7 +36,7 @@ data class StopListNoteState(
     val tableUpdate: String = "",
 )
 
-fun ResultUpdateModel.toStop(
+fun UpdateStatusState.toStop(
     classAndMethod: String,
     current: StopListNoteState
 ): StopListNoteState {
@@ -140,7 +140,7 @@ class StopListNoteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
+    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
         classAndMethod: String,
         emitState: suspend (StopListNoteState) -> Unit
     ): Boolean {

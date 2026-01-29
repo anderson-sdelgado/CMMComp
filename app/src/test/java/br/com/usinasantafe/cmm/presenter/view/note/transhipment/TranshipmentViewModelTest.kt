@@ -12,7 +12,7 @@ import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -97,11 +97,11 @@ class TranshipmentViewModelTest {
             TypeButton.OK
         )
         assertEquals(
-            viewModel.uiState.value.flagDialog,
+            viewModel.uiState.value.status.flagDialog,
             true
         )
         assertEquals(
-            viewModel.uiState.value.errors,
+            viewModel.uiState.value.status.errors,
             Errors.FIELD_EMPTY
         )
     }
@@ -116,13 +116,13 @@ class TranshipmentViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -137,20 +137,24 @@ class TranshipmentViewModelTest {
             assertEquals(
                 result[0],
                 TranshipmentState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 TranshipmentState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -158,11 +162,11 @@ class TranshipmentViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TranshipmentViewModel.setTextField -> TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException"
             )
         }
@@ -177,19 +181,19 @@ class TranshipmentViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_equip",
@@ -203,38 +207,46 @@ class TranshipmentViewModelTest {
             assertEquals(
                 result[0],
                 TranshipmentState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 TranshipmentState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(2f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(2f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 TranshipmentState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(3f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(3f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 TranshipmentState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -242,7 +254,7 @@ class TranshipmentViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
         }
@@ -256,23 +268,23 @@ class TranshipmentViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.FIELD_EMPTY
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TranshipmentViewModel.setTextField -> Field Empty!"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -306,23 +318,23 @@ class TranshipmentViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -352,15 +364,15 @@ class TranshipmentViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.INVALID
             )
             assertEquals(
@@ -402,23 +414,23 @@ class TranshipmentViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> ISetNroTranshipment -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -456,7 +468,7 @@ class TranshipmentViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 false
             )
             assertEquals(

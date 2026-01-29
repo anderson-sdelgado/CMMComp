@@ -29,7 +29,10 @@ import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldPasswordDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
+import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_PASSWORD_TEXT_FIELD_CONFIG_SCREEN
 
 const val TAG_PASSWORD_TEXT_FIELD_SCREEN = "tag_password_text_field_screen"
 
@@ -82,17 +85,10 @@ fun PasswordContent(
                 id = R.string.text_title_password
             )
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Password
-            ),
-            textStyle = TextStyle(
-                fontSize = 24.sp
-            ),
-            visualTransformation = PasswordVisualTransformation(),
+        TextFieldPasswordDesign(
             value = password,
             onValueChange = onPasswordChanged,
-            modifier = Modifier.fillMaxWidth().testTag(TAG_PASSWORD_TEXT_FIELD_SCREEN)
+            tag = TAG_PASSWORD_TEXT_FIELD_SCREEN
         )
         Row(
             modifier = Modifier

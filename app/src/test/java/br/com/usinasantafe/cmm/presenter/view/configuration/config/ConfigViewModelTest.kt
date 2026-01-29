@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.configuration.config
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.config.GetConfigInternal
@@ -78,7 +78,6 @@ class ConfigViewModelTest {
         updateTableRItemMenuStop = updateTableRItemMenuStop,
         updateTableStop = updateTableStop,
         updateTableTurn = updateTableTurn,
-        setFinishUpdateAllTable = setFinishUpdateAllTable,
         updateTableFunctionActivity = updateTableFunctionActivity,
         updateTableFunctionStop = updateTableFunctionStop,
         updateTableItemMenu = updateTableItemMenu
@@ -99,15 +98,15 @@ class ConfigViewModelTest {
             viewModel.returnDataConfig()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.flagDialog,
+                uiState.status.flagDialog,
                 true
             )
             assertEquals(
-                uiState.flagFailure,
+                uiState.status.flagFailure,
                 true
             )
             assertEquals(
-                uiState.failure,
+                uiState.status.failure,
                 "ConfigViewModel.returnDataConfig -> GetConfigInternal -> java.lang.Exception",
             )
         }
@@ -125,15 +124,15 @@ class ConfigViewModelTest {
             viewModel.returnDataConfig()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.flagDialog,
+                uiState.status.flagDialog,
                 false
             )
             assertEquals(
-                uiState.flagFailure,
+                uiState.status.flagFailure,
                 false
             )
             assertEquals(
-                uiState.failure,
+                uiState.status.failure,
                 ""
             )
             assertEquals(
@@ -164,15 +163,15 @@ class ConfigViewModelTest {
             viewModel.returnDataConfig()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.flagDialog,
+                uiState.status.flagDialog,
                 false
             )
             assertEquals(
-                uiState.flagFailure,
+                uiState.status.flagFailure,
                 false
             )
             assertEquals(
-                uiState.failure,
+                uiState.status.failure,
                 ""
             )
             assertEquals(
@@ -199,15 +198,15 @@ class ConfigViewModelTest {
             viewModel.onSaveAndUpdate()
             val uiState = viewModel.uiState.value
             assertEquals(
-                uiState.flagDialog,
+                uiState.status.flagDialog,
                 true
             )
             assertEquals(
-                uiState.flagFailure,
+                uiState.status.flagFailure,
                 true
             )
             assertEquals(
-                uiState.errors,
+                uiState.status.errors,
                 Errors.FIELD_EMPTY
             )
         }
@@ -247,9 +246,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.GET_TOKEN,
-                    currentProgress = percentage(1f, 3f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.GET_TOKEN,
+                        currentProgress = percentage(1f, 3f)
+                    )
                 )
             )
             assertEquals(
@@ -260,16 +261,18 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    errors = Errors.TOKEN,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.token -> SendDataConfig -> java.lang.Exception",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.TOKEN,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.token -> SendDataConfig -> java.lang.Exception",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.onSaveAndUpdate()
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.token -> SendDataConfig -> java.lang.Exception"
             )
         }
@@ -351,9 +354,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.GET_TOKEN,
-                    currentProgress = percentage(1f, 3f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.GET_TOKEN,
+                        currentProgress = percentage(1f, 3f)
+                    )
                 )
             )
             assertEquals(
@@ -364,9 +369,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE_TOKEN,
-                    currentProgress = percentage(2f, 3f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE_TOKEN,
+                        currentProgress = percentage(2f, 3f),
+                    )
                 )
             )
             assertEquals(
@@ -377,16 +384,18 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    errors = Errors.TOKEN,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.TOKEN,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.onSaveAndUpdate()
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.token -> SaveDataConfig -> java.lang.Exception"
             )
         }
@@ -464,9 +473,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.GET_TOKEN,
-                    currentProgress = percentage(1f, 3f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.GET_TOKEN,
+                        currentProgress = percentage(1f, 3f)
+                    )
                 )
             )
             assertEquals(
@@ -477,9 +488,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE_TOKEN,
-                    currentProgress = percentage(2f, 3f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE_TOKEN,
+                        currentProgress = percentage(2f, 3f),
+                    )
                 )
             )
             assertEquals(
@@ -490,9 +503,11 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
+                        currentProgress = 1f,
+                    )
                 )
             )
         }
@@ -508,13 +523,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_activity",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -530,19 +545,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanActivity -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanActivity -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -551,7 +570,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableColab`() =
         runTest {
             val qtdBefore = 1f
-            wheneverSuccessActivity()
+            wheneverSuccess("tb_activity")
             whenever(
                 updateTableColab(
                     sizeAll = sizeAll,
@@ -559,13 +578,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -578,23 +597,27 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
+            checkResultUpdate("tb_activity", result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -603,8 +626,8 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableEquip`() =
         runTest {
             val qtdBefore = 2f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
+            wheneverSuccess("tb_activity")
+            wheneverSuccess("tb_colab")
             whenever(
                 updateTableEquip(
                     sizeAll = sizeAll,
@@ -612,13 +635,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -631,24 +654,28 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
+            checkResultUpdate("tb_activity", result)
+            checkResultUpdate("tb_colab", result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -657,9 +684,9 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableFunctionActivity`() =
         runTest {
             val qtdBefore = 3f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
+            wheneverSuccess("tb_activity")
+            wheneverSuccess("tb_colab")
+            wheneverSuccess("tb_equip")
             whenever(
                 updateTableFunctionActivity(
                     sizeAll = sizeAll,
@@ -667,13 +694,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_activity",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -686,25 +713,29 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
+            checkResultUpdate("tb_activity", result)
+            checkResultUpdate("tb_colab", result)
+            checkResultUpdate("tb_equip", result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionActivity -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionActivity -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -713,10 +744,10 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableFunctionStop`() =
         runTest {
             val qtdBefore = 4f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
+            wheneverSuccess("tb_activity")
+            wheneverSuccess("tb_colab")
+            wheneverSuccess("tb_equip")
+            wheneverSuccess("tb_function_activity")
             whenever(
                 updateTableFunctionStop(
                     sizeAll = sizeAll,
@@ -724,13 +755,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_stop",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -743,26 +774,30 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
+            checkResultUpdate("tb_activity", result)
+            checkResultUpdate("tb_colab", result)
+            checkResultUpdate("tb_equip", result)
+            checkResultUpdate("tb_function_activity", result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionStop -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanFunctionStop -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -783,13 +818,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -810,19 +845,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemCheckList -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanItemCheckList -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -844,13 +883,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_menu",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -872,19 +911,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanItemMenu -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanItemMenu -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -907,13 +950,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -936,19 +979,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanRActivityStop -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanRActivityStop -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -972,13 +1019,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_equip_activity",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -1002,19 +1049,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanREquipActivity -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanREquipActivity -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -1039,13 +1090,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_item_menu_stop",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -1070,19 +1121,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanRItemMenuStop -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanRItemMenuStop -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -1108,13 +1163,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -1140,19 +1195,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanStop -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanStop -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -1179,13 +1238,13 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -1212,19 +1271,23 @@ class ConfigViewModelTest {
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "ConfigViewModel.updateAllDatabase -> CleanTurn -> java.lang.NullPointerException",
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanTurn -> java.lang.NullPointerException",
+                    )
                 )
             )
         }
@@ -1338,12 +1401,14 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    errors = Errors.EXCEPTION,
-                    flagFailure = true,
-                    flagDialog = true,
-                    flagProgress = false,
-                    currentProgress = 1f,
-                    failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    status = UpdateStatusState(
+                        errors = Errors.EXCEPTION,
+                        flagFailure = true,
+                        flagDialog = true,
+                        flagProgress = false,
+                        currentProgress = 1f,
+                        failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    )
                 )
             )
             viewModel.onSaveAndUpdate()
@@ -1356,14 +1421,16 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    errors = Errors.EXCEPTION,
-                    flagFailure = true,
-                    flagDialog = true,
-                    flagProgress = false,
-                    currentProgress = 1f,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_turn",
-                    failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    status = UpdateStatusState(
+                        errors = Errors.EXCEPTION,
+                        flagFailure = true,
+                        flagDialog = true,
+                        flagProgress = false,
+                        currentProgress = 1f,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_turn",
+                        failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    )
                 )
             )
         }
@@ -1473,12 +1540,13 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagDialog = true,
-                    flagProgress = true,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = true,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.onSaveAndUpdate()
@@ -1491,14 +1559,86 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagDialog = true,
-                    flagProgress = true,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = true,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
         }
+
+    private fun wheneverSuccess(table: String) =
+        runTest {
+            whenever(
+                updateTableActivity(
+                    sizeAll = sizeAll,
+                    count = ++contUpdate
+                )
+            ).thenReturn(
+                flowOf(
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contWhenever, sizeAll)
+                    ),
+                )
+            )
+        }
+
+
+    private fun checkResultUpdate(table: String, result: List<ConfigState>) =
+        runTest {
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
+                )
+            )
+            assertEquals(
+                result[contResult.toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = table,
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
+                )
+            )
+        }
+
 
     private fun wheneverSuccessActivity() =
         runTest {
@@ -1509,19 +1649,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_activity",
@@ -1536,28 +1676,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1572,10 +1718,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1586,10 +1734,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1600,10 +1750,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1617,19 +1769,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_colab",
@@ -1644,28 +1796,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1680,10 +1838,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1694,10 +1854,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1708,10 +1870,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1725,19 +1889,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_equip",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_equip",
@@ -1752,28 +1916,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1788,10 +1958,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1802,10 +1974,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1816,10 +1990,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1833,19 +2009,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_function_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_function_activity",
@@ -1860,28 +2036,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1896,10 +2078,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1910,10 +2094,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -1924,10 +2110,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_function_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -1941,19 +2129,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_function_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_function_stop",
@@ -1968,28 +2156,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2004,10 +2198,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2018,10 +2214,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2032,10 +2230,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_function_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_function_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2049,19 +2249,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_item_check_list",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_item_check_list",
@@ -2076,28 +2276,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2112,10 +2318,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2126,10 +2334,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2140,10 +2350,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2157,19 +2369,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_menu",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_item_menu",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_item_menu",
@@ -2184,28 +2396,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2220,10 +2438,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2234,10 +2454,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2248,10 +2470,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_menu",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_menu",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2265,19 +2489,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_stop",
@@ -2292,28 +2516,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2328,10 +2558,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2342,10 +2574,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2356,10 +2590,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2373,19 +2609,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_r_activity_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_r_activity_stop",
@@ -2400,28 +2636,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2436,10 +2678,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2450,10 +2694,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2464,10 +2710,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2481,19 +2729,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_equip_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_r_equip_activity",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_r_equip_activity",
@@ -2508,28 +2756,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2544,10 +2798,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2558,10 +2814,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2572,10 +2830,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_equip_activity",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_equip_activity",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2589,19 +2849,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_item_menu_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_r_item_menu_stop",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_r_item_menu_stop",
@@ -2616,28 +2876,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2652,10 +2918,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2666,10 +2934,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2680,10 +2950,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_item_menu_stop",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_item_menu_stop",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2697,19 +2969,19 @@ class ConfigViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_turn",
                         currentProgress = percentage(++contWhenever, sizeAll)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_turn",
@@ -2724,28 +2996,34 @@ class ConfigViewModelTest {
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
                 result[contResult.toInt()],
                 ConfigState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }
@@ -2760,10 +3038,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2774,10 +3054,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
             assertEquals(
@@ -2788,10 +3070,12 @@ class ConfigViewModelTest {
                     nroEquip = "310",
                     app = "pmm",
                     version = "1.00",
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_turn",
-                    currentProgress = percentage(++contResult, sizeAll)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_turn",
+                        currentProgress = percentage(++contResult, sizeAll)
+                    )
                 )
             )
         }

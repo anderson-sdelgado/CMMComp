@@ -4,24 +4,15 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
@@ -32,8 +23,10 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.lib.errors
 import br.com.usinasantafe.cmm.lib.msg
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 
 @Composable
 fun OperatorHeaderScreen(
@@ -48,15 +41,15 @@ fun OperatorHeaderScreen(
                 regColab = uiState.regColab,
                 setTextField = viewModel::setTextField,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.flagDialog,
+                flagDialog = uiState.status.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
-                failure = uiState.failure,
-                flagProgress = uiState.flagProgress,
-                levelUpdate = uiState.levelUpdate,
-                tableUpdate = uiState.tableUpdate,
-                currentProgress = uiState.currentProgress,
+                flagFailure = uiState.status.flagFailure,
+                errors = uiState.status.errors,
+                failure = uiState.status.failure,
+                flagProgress = uiState.status.flagProgress,
+                levelUpdate = uiState.status.levelUpdate,
+                tableUpdate = uiState.status.tableUpdate,
+                currentProgress = uiState.status.currentProgress,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavEquip = onNavEquip,
                 modifier = Modifier.padding(innerPadding)
@@ -92,22 +85,8 @@ fun OperatorHeaderContent(
                 id = R.string.text_title_operator
             )
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Previous
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 28.sp,
-            ),
-            readOnly = true,
-            value = regColab,
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
+        TextFieldDesign(
+            value = regColab
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ButtonsGenericNumeric(
@@ -118,30 +97,14 @@ fun OperatorHeaderContent(
         }
 
         if (flagDialog) {
-            val text = if (flagFailure) {
-                when (errors) {
-                    Errors.FIELD_EMPTY -> stringResource(
-                        id = R.string.text_field_empty,
-                        stringResource(id = R.string.text_title_operator)
-                    )
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    Errors.INVALID -> stringResource(
-                        id = R.string.text_input_data_invalid,
-                        stringResource(
-                            id = R.string.text_title_operator
-                        )
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
+            val value = stringResource(id = R.string.text_title_operator)
+
+            val text =
+                if (flagFailure) {
+                    errors(errors, failure, value)
+                } else {
+                    msg(levelUpdate, failure, tableUpdate)
                 }
-            } else {
-                msg(levelUpdate, failure, tableUpdate)
-            }
 
             AlertDialogSimpleDesign(
                 text = text,

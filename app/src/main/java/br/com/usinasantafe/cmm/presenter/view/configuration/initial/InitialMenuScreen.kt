@@ -122,28 +122,10 @@ fun InitialMenuContent(
         }
         Text(
             textAlign = TextAlign.Left,
-            text =
-            if(failure.isEmpty()) {
-                when (statusSend) {
-                    StatusSend.STARTED -> stringResource(id = R.string.text_status_started)
-                    StatusSend.SEND -> stringResource(id = R.string.text_status_send)
-                    StatusSend.SENT -> stringResource(id = R.string.text_status_sent)
-                }
-            } else {
-                "Failure: $failure"
-            }
+            text = textStatus(failure, statusSend )
             ,
             fontSize = 22.sp,
-            color =
-            if(failure.isEmpty()) {
-                when (statusSend) {
-                    StatusSend.STARTED -> Color.Red
-                    StatusSend.SEND -> Color.Red
-                    StatusSend.SENT -> Color.Green
-                }
-            } else {
-                Color.Red
-            }
+            color = colorStatus(failure, statusSend)
             , modifier = Modifier
                 .padding(vertical = 8.dp)
                 .fillMaxWidth()
@@ -171,6 +153,32 @@ fun InitialMenuContent(
         if(flagAccess) {
             onNavOperator()
         }
+    }
+}
+
+@Composable
+private fun colorStatus(failure: String, statusSend: StatusSend): Color {
+    return if(failure.isEmpty()) {
+        when (statusSend) {
+            StatusSend.STARTED -> Color.Red
+            StatusSend.SEND -> Color.Red
+            StatusSend.SENT -> Color.Green
+        }
+    } else {
+        Color.Red
+    }
+}
+
+@Composable
+private fun textStatus(failure: String, statusSend: StatusSend): String {
+    return if (failure.isEmpty()) {
+        when (statusSend) {
+            StatusSend.STARTED -> stringResource(id = R.string.text_status_started)
+            StatusSend.SEND -> stringResource(id = R.string.text_status_send)
+            StatusSend.SENT -> stringResource(id = R.string.text_status_sent)
+        }
+    } else {
+        "Failure: $failure"
     }
 }
 

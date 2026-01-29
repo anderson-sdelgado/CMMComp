@@ -30,10 +30,8 @@ import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemHistoryListDesign
 import br.com.usinasantafe.cmm.presenter.theme.ItemPerformanceListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
-import br.com.usinasantafe.cmm.presenter.view.note.historyList.HistoryListContent
 
 @Composable
 fun PerformanceListScreen(
@@ -46,7 +44,7 @@ fun PerformanceListScreen(
 
 
             LaunchedEffect(Unit) {
-                viewModel.recoverList()
+                viewModel.performanceList()
             }
 
             PerformanceListContent(

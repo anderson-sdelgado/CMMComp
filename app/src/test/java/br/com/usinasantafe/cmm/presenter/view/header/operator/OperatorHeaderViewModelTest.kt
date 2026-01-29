@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.presenter.view.header.operator
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasRegColab
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetRegOperator
@@ -83,11 +83,11 @@ class OperatorHeaderViewModelTest {
             TypeButton.OK
         )
         assertEquals(
-            viewModel.uiState.value.flagDialog,
+            viewModel.uiState.value.status.flagDialog,
             true
         )
         assertEquals(
-            viewModel.uiState.value.errors,
+            viewModel.uiState.value.status.errors,
             Errors.FIELD_EMPTY
         )
     }
@@ -102,13 +102,13 @@ class OperatorHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -121,21 +121,25 @@ class OperatorHeaderViewModelTest {
             assertEquals(result.count(), 2)
             assertEquals(
                 result[0],
-                OperatorHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(1f, 4f)
-                )
+            OperatorHeaderState(
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.RECOVERY,
+                            tableUpdate = "tb_colab",
+                            currentProgress = percentage(1f, 4f)
+                        )
+                 )
             )
             assertEquals(
                 result[1],
                 OperatorHeaderState(
+                    status = UpdateStatusState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
                     failure = "OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException",
                     currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -143,11 +147,11 @@ class OperatorHeaderViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.updateAllDatabase -> CleanColab -> java.lang.NullPointerException"
             )
         }
@@ -162,19 +166,19 @@ class OperatorHeaderViewModelTest {
                 )
             ).thenReturn(
                 flowOf(
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(1f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
                         tableUpdate = "tb_colab",
                         currentProgress = percentage(2f, 4f)
                     ),
-                    ResultUpdateModel(
+                    UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
                         tableUpdate = "tb_colab",
@@ -187,38 +191,46 @@ class OperatorHeaderViewModelTest {
             assertEquals(
                 result[0],
                 OperatorHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 OperatorHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(2f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(2f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 OperatorHeaderState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_colab",
-                    currentProgress = percentage(3f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_colab",
+                        currentProgress = percentage(3f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 OperatorHeaderState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -226,7 +238,7 @@ class OperatorHeaderViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
         }
@@ -239,23 +251,23 @@ class OperatorHeaderViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.FIELD_EMPTY
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> Field Empty!"
+                viewModel.uiState.value.status.failure,
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.validateAndSetOperator -> OperatorHeaderViewModel.updateUi -> Field Empty!"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -285,23 +297,23 @@ class OperatorHeaderViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
+                viewModel.uiState.value.status.failure,
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.validateAndSetOperator -> OperatorHeaderViewModel.setRegOperatorHeader -> ICheckRegOperator -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -327,15 +339,15 @@ class OperatorHeaderViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
                 )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.INVALID
             )
             assertEquals(
@@ -370,23 +382,23 @@ class OperatorHeaderViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
+                viewModel.uiState.value.status.failure,
+                "OperatorHeaderViewModel.setTextField -> OperatorHeaderViewModel.validateAndSetOperator -> OperatorHeaderViewModel.setRegOperatorHeader -> ISetRegOperator -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -417,7 +429,7 @@ class OperatorHeaderViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 false
             )
             assertEquals(

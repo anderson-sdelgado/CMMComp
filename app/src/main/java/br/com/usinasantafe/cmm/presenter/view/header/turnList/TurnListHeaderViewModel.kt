@@ -2,13 +2,15 @@ package br.com.usinasantafe.cmm.presenter.view.header.turnList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
-import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.collectUpdateStep
+import br.com.usinasantafe.cmm.utils.withFailure
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -17,43 +19,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class TurnListHeaderState(
     val turnList: List<Turn> = emptyList(),
-    val flagDialog: Boolean = false,
-    val failure: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<TurnListHeaderState> {
 
-fun ResultUpdateModel.toTurn(
-    classAndMethod: String,
-    current: TurnListHeaderState
-): TurnListHeaderState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): TurnListHeaderState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -68,14 +43,25 @@ class TurnListHeaderViewModel @Inject constructor(
 
     fun setCloseDialog() {
         _uiState.update {
-            it.copy(flagDialog = false)
+            it.copy(
+                status = it.status.copy(
+                    flagDialog = false
+                ),
+            )
         }
     }
 
     fun turnList() = viewModelScope.launch {
         val result = listTurn()
-        result.onFailure {
-            handleFailure(it)
+        result.onFailure { itThrowable ->
+            _uiState.update {
+                it.copy(
+                    status = it.status.withFailure(
+                        getClassAndMethod(),
+                        itThrowable
+                    )
+                )
+            }
             return@launch
         }
         val list = result.getOrNull()!!
@@ -88,8 +74,15 @@ class TurnListHeaderViewModel @Inject constructor(
 
     fun setIdTurnHeader(id: Int) = viewModelScope.launch {
         val result = setIdTurn(id)
-        result.onFailure {
-            handleFailure(it)
+        result.onFailure { itThrowable ->
+            _uiState.update {
+                it.copy(
+                    status = it.status.withFailure(
+                        getClassAndMethod(),
+                        itThrowable
+                    )
+                )
+            }
             return@launch
         }
         _uiState.update {
@@ -107,22 +100,6 @@ class TurnListHeaderViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<ResultUpdateModel>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (TurnListHeaderState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toTurn(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
     fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
         val size = 4f
 
@@ -131,52 +108,31 @@ class TurnListHeaderViewModel @Inject constructor(
         )
 
         for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
+            val ok = step.collectUpdateStep(
+                classAndMethod = getClassAndMethod(),
+                currentStatus = _uiState.value.status
+
+            ) {
+                emit(
+                    _uiState.value.copy(
+                        status = it
+                    )
+                )
+            }
             if (!ok) return@flow
         }
 
         emit(
             _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
+                status = _uiState.value.status.copy(
+                    flagDialog = true,
+                    flagProgress = false,
+                    flagFailure = false,
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                    currentProgress = 1f,
+                )
             )
         )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): TurnListHeaderState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): TurnListHeaderState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
     }
 
 }

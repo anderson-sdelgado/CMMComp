@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.presenter.model.ResultUpdateModel
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Stop
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.StopRepository
@@ -48,7 +48,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -57,7 +57,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -95,7 +95,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -104,7 +104,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 list[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -156,7 +156,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -165,7 +165,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_stop",
@@ -174,7 +174,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
@@ -231,7 +231,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[0],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_stop",
@@ -240,7 +240,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[1],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CLEAN,
                     tableUpdate = "tb_stop",
@@ -249,7 +249,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[2],
-                ResultUpdateModel(
+                UpdateStatusState(
                     flagProgress = true,
                     levelUpdate = LevelUpdate.SAVE,
                     tableUpdate = "tb_stop",
@@ -258,7 +258,7 @@ class IUpdateTableStopTest {
             )
             assertEquals(
                 resultList[3],
-                ResultUpdateModel(
+                UpdateStatusState(
                     errors = Errors.UPDATE,
                     flagDialog = true,
                     flagFailure = true,
