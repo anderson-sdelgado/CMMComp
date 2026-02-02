@@ -48,13 +48,15 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.lib.typeListECM
 import br.com.usinasantafe.cmm.lib.typeListPCOMPCompound
 import br.com.usinasantafe.cmm.lib.typeListPCOMPInput
+import br.com.usinasantafe.cmm.utils.handleFailure
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
+import kotlin.onSuccess
 
 data class MenuNoteState(
     val descrEquip: String = "",
@@ -93,43 +95,55 @@ class MenuNoteViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MenuNoteState())
     val uiState = _uiState.asStateFlow()
 
-    fun onCloseDialog() = _uiState.update { it.copy(flagDialog = false) }
+    private val state get() = uiState.value
 
-    fun onCloseDialogCheck() = _uiState.update { it.copy(flagDialogCheck = false) }
+    private fun updateState(block: MenuNoteState.() -> MenuNoteState) {
+        _uiState.update(block)
+    }
+
+    fun onCloseDialog() = updateState { copy(flagDialog = false) }
+
+    fun onCloseDialogCheck() = updateState { copy(flagDialogCheck = false) }
 
     fun menuList(flavor: String) = viewModelScope.launch {
-        _uiState.update { it.copy(flavorApp = flavor.uppercase()) }
-        val result = listItemMenu(flavor.uppercase())
-        result.onSuccess { menuList ->
-            if (menuList.isEmpty()) {
-                handleFailure("listItemMenu -> EmptyList!")
-            } else {
-                _uiState.update { it.copy(menuList = menuList) }
+        runCatching {
+            updateState { copy(flavorApp = flavor.uppercase()) }
+            val list = listItemMenu(flavor.uppercase()).getOrThrow()
+            if (list.isEmpty()) {
+                handleFailure(Errors.EXCEPTION, getClassAndMethod(), ::onError, "listItemMenu -> EmptyList!")
             }
-        }.onFailure(::handleFailure)
+            list
+        }
+            .onSuccess { updateState { copy(menuList = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     fun descrEquip() = viewModelScope.launch {
-        getDescrEquip().onSuccess { descr ->
-            _uiState.update { it.copy(descrEquip = descr) }
-        }.onFailure(::handleFailure)
+        runCatching {
+            getDescrEquip().getOrThrow()
+        }
+            .onSuccess { updateState { copy(descrEquip = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     fun flowEquipNote() = viewModelScope.launch {
-        getFlowEquip().onSuccess { flow ->
-            _uiState.update { it.copy(flowEquipNote = flow) }
-        }.onFailure(::handleFailure)
+        runCatching {
+            getFlowEquip().getOrThrow()
+        }
+            .onSuccess { updateState { copy(flowEquipNote = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     fun onButtonReturn() = viewModelScope.launch {
-        if (checkHasNote() == false) {
-            handleFailure(
-                failure = "checkHasNote -> Header without note!",
-                errors = Errors.HEADER_EMPTY
-            )
-            return@launch
+        runCatching {
+            val check = hasNoteMotoMec().getOrThrow()
+            if (!check) {
+                handleFailure(Errors.HEADER_EMPTY, getClassAndMethod(), ::onError)
+                return@launch
+            }
         }
-        _uiState.update { it.copy(flagAccess = true, idSelection = null) }
+            .onSuccess { updateState { copy(flagAccess = true, idSelection = null) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     fun onDialogCheck(pair: Pair<Int, String>) = viewModelScope.launch {
@@ -143,10 +157,10 @@ class MenuNoteViewModel @Inject constructor(
         }
     }
 
-    fun setSelection(id: Int)  = viewModelScope.launch {
+    fun setSelection(id: Int) = viewModelScope.launch {
         val item = _uiState.value.menuList.find { it.id == id }
         if (item == null) {
-            handleFailure("Item with id = $id not found in menuList", Errors.INVALID)
+            handleFailure("Item with id = $id not found in menuList", getClassAndMethod(), ::onError)
             return@launch
         }
         _uiState.update { it.copy(idSelection = item.id) }
@@ -158,319 +172,302 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleSelectionPMM(item: ItemMenuModel) {
-        val function = functionListPMM.find { it.first == item.function.first }
-        if (function == null) {
-            handleFailure("idFunction = ${item.function.first} not found in functionListPMM", Errors.INVALID)
-            return
-        }
-
-        if (function.second != FINISH_MECHANICAL) {
-            val check = checkHasOpenMechanic() ?: return
-            if (check) {
-                handleFailure("Note mechanic open!", Errors.NOTE_MECHANICAL_OPEN)
-                return
+        runCatching {
+            val function = functionListPMM.find { it.first == item.function.first }
+            if (function == null) {
+                handleFailure("idFunction = ${item.function.first} not found in functionListPMM", getClassAndMethod(), ::onError)
+                return@runCatching false
             }
-        }
-
-        val allChecksPassed = when (function.second) {
-            FINISH_MECHANICAL -> {
-                handleFinishMechanical()
-                false
+            if (function.second != FINISH_MECHANICAL) {
+                val check = hasNoteOpenMechanic().getOrThrow()
+                if (check) {
+                    handleFailure(Errors.NOTE_MECHANICAL_OPEN, getClassAndMethod(), ::onError)
+                    return@runCatching false
+                }
             }
-            TRANSHIPMENT -> handleTranshipment()
-            IMPLEMENT -> handleImplement()
-            NOTE_MECHANICAL -> handleNoteMechanical()
-            else -> true
-        }
+            when (function.second) {
+                FINISH_MECHANICAL -> {
+                    handleFinishMechanical()
+                    false
+                }
+                TRANSHIPMENT -> handleTranshipment()
+                IMPLEMENT -> handleImplement()
+                NOTE_MECHANICAL -> handleNoteMechanical()
+                else -> true
+            }
 
-        if (allChecksPassed) {
-            _uiState.update { it.copy(flagAccess = true) }
         }
+            .onSuccess { updateState { copy(flagAccess = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
+
     }
 
     private suspend fun handleSelectionECM(item: ItemMenuModel) {
-        val type = typeListECM.find { it.first == item.type.first }
-        if (type == null) {
-            handleFailure("idType = ${item.type.first} not found in typeListECM", Errors.INVALID)
-            return
-        }
-        val allChecksPassed = when (type.second) {
-            ITEM_NORMAL,
-            WEIGHING -> {
-                handleSetNote(item)
-                false
+        runCatching {
+            val type = typeListECM.find { it.first == item.type.first }
+            if (type == null) {
+                handleFailure("idType = ${item.type.first} not found in typeListECM", getClassAndMethod(), ::onError)
+                return
             }
-            EXIT_MILL -> {
-                handleExitWill(item)
-            }
-            FIELD_ARRIVAL -> {
-                handleFieldArrival(item)
-                false
-            }
-            RETURN_MILL -> {
-                handleReturnMill()
-                false
-            }
-            UNCOUPLING_TRAILER -> checkTrailer(FlowTrailer.UNCOUPLING)
-            COUPLING_TRAILER -> checkTrailer(FlowTrailer.COUPLING)
-            else -> true
-        }
+            when (type.second) {
+                ITEM_NORMAL,
+                WEIGHING -> {
+                    handleSetNote(item)
+                    false
+                }
 
-        if (allChecksPassed) {
-            _uiState.update { it.copy(flagAccess = true) }
+                EXIT_MILL -> {
+                    handleExitWill(item)
+                }
+
+                FIELD_ARRIVAL -> {
+                    handleFieldArrival(item)
+                    false
+                }
+
+                RETURN_MILL -> {
+                    handleReturnMill()
+                    false
+                }
+
+                UNCOUPLING_TRAILER -> checkTrailer(FlowTrailer.UNCOUPLING)
+                COUPLING_TRAILER -> checkTrailer(FlowTrailer.COUPLING)
+                else -> true
+            }
+
         }
+            .onSuccess { updateState { copy(flagAccess = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private suspend fun handleSelectionPCOMP(item: ItemMenuModel) {
-        val flow = getFlowComposting().getOrElse {
-            handleFailure(it)
-            return
-        }
-        val type = when(flow){
-            FlowComposting.INPUT -> typeListPCOMPInput.find { it.first == item.type.first }
-            FlowComposting.COMPOUND -> typeListPCOMPCompound.find { it.first == item.type.first }
-        }
-        if (type == null) {
-            when(flow){
-                FlowComposting.INPUT -> handleFailure("idType = ${item.type.first} not found in typeListPCOMPInput", Errors.INVALID)
-                FlowComposting.COMPOUND -> handleFailure("idType = ${item.type.first} not found in typeListPCOMPCompound", Errors.INVALID)
+        runCatching {
+            val flow = getFlowComposting().getOrThrow()
+            val type = when (flow) {
+                FlowComposting.INPUT -> typeListPCOMPInput.find { it.first == item.type.first }
+                FlowComposting.COMPOUND -> typeListPCOMPCompound.find { it.first == item.type.first }
             }
-            return
-        }
-        val allChecksPassed = when (type.second) {
-            ITEM_NORMAL,
-            WEIGHING_TARE -> {
-                handleSetNote(item)
-                false
+            if (type == null) {
+                when (flow) {
+                    FlowComposting.INPUT -> handleFailure( "idType = ${item.type.first} not found in typeListPCOMPInput", getClassAndMethod(), ::onError)
+                    FlowComposting.COMPOUND -> handleFailure( "idType = ${item.type.first} not found in typeListPCOMPCompound", getClassAndMethod(), ::onError)
+                }
+                return
+            }
+            when (type.second) {
+                ITEM_NORMAL,
+                WEIGHING_TARE -> {
+                    handleSetNote(item)
+                    false
+                }
+
+                UNLOADING_INPUT -> handleLoadingInput()
+                CHECK_WILL -> handleShowInfoWill()
+                else -> true
             }
 
-            UNLOADING_INPUT -> handleLoadingInput()
-            CHECK_WILL -> handleShowInfoWill()
-            else -> true
         }
-
-        if (allChecksPassed) {
-            _uiState.update { it.copy(flagAccess = true) }
-        }
+            .onSuccess { updateState { copy(flagAccess = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private suspend fun handleShowInfoWill(): Boolean {
-        val check = hasWill().getOrElse {
-            handleFailure(it)
-            return false
+        return runCatching {
+            val check = hasWill().getOrThrow()
+            if (!check) {
+                handleFailure(Errors.WITHOUT_LOADING_COMPOSTING, getClassAndMethod(), ::onError)
+                return false
+            }
+            return true
         }
-        if (!check) {
-            handleFailure("Without will!", Errors.WITHOUT_LOADING_COMPOSTING)
-            return false
-        }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
     }
 
     private suspend fun handleLoadingInput(): Boolean {
-        val check = hasCompostingInputLoadSentOpen().getOrElse {
-            handleFailure(it)
-            return false
+        return runCatching {
+            val check = hasCompostingInputLoadSentOpen().getOrThrow()
+            if (!check) {
+                handleFailure(Errors.WITHOUT_LOADING_INPUT, getClassAndMethod(), ::onError)
+                return false
+            }
+            return true
         }
-        if (!check) {
-            handleFailure("Without loading input!", Errors.WITHOUT_LOADING_INPUT)
-            return false
-        }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
     }
 
     private suspend fun checkTrailer(flowTrailer: FlowTrailer): Boolean {
-        val result = hasCouplingTrailer()
-        result.onFailure {
-            handleFailure(it)
-            return false
-        }
-        val check = result.getOrNull()!!
-        when (flowTrailer) {
-            FlowTrailer.UNCOUPLING -> {
-                if(!check) {
-                    handleFailure("Need coupling trailer!", Errors.NEED_COUPLING_TRAILER)
-                    return false
-                } else {
-                    _uiState.update {
-                        it.copy(flagDialogCheck = true, typeMsg = TypeMsg.UNCOUPLING_TRAILER)
+        return runCatching {
+            val check = hasCouplingTrailer().getOrThrow()
+            when (flowTrailer) {
+                FlowTrailer.UNCOUPLING -> {
+                    if (!check) {
+                        handleFailure(Errors.NEED_COUPLING_TRAILER, getClassAndMethod(), ::onError)
+                        return false
+                    } else {
+                        updateState { copy(flagDialogCheck = true, typeMsg = TypeMsg.UNCOUPLING_TRAILER) }
+                        return false
                     }
-                    return false
+                }
+
+                FlowTrailer.COUPLING -> {
+                    if (check) {
+                        handleFailure(Errors.NEED_UNCOUPLING_TRAILER, getClassAndMethod(), ::onError)
+                        return false
+                    }
                 }
             }
-            FlowTrailer.COUPLING -> {
-                if(check) {
-                    handleFailure("Need uncoupling trailer!", Errors.NEED_UNCOUPLING_TRAILER)
-                    return false
-                }
-            }
+            return true
         }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
     }
 
-    private fun handleReturnMill(){
+    private fun handleReturnMill() {
         _uiState.update {
             it.copy(flagDialogCheck = true, typeMsg = TypeMsg.RETURN_MILL)
         }
     }
 
     private suspend fun handleSetNote(item: ItemMenuModel) {
-        setNote(item).onFailure {
-            handleFailure(it)
-            return
+        runCatching {
+            setNote(item).getOrThrow()
         }
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                flagFailure = false,
-                typeMsg = TypeMsg.ITEM_NORMAL
-            )
-        }
+            .onSuccess { onSuccess(TypeMsg.ITEM_NORMAL) }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private suspend fun handleFieldArrival(item: ItemMenuModel) {
-        val status = setDatePreCEC(item).getOrElse {
-            handleFailure(it)
-            return
-        }
-        when (status) {
-            StatusPreCEC.EXIT_MILL -> {
-                handleFailure("PRE CEC without exit mill!", Errors.WITHOUT_EXIT_MILL_PRE_CEC)
+        runCatching {
+            val status = setDatePreCEC(item).getOrThrow()
+            when (status) {
+                StatusPreCEC.EXIT_MILL -> handleFailure(Errors.WITHOUT_EXIT_MILL_PRE_CEC, getClassAndMethod(), ::onError)
+                StatusPreCEC.EXIT_FIELD -> handleFailure(Errors.WITH_FIELD_ARRIVAL_PRE_CEC, getClassAndMethod(), ::onError)
+                StatusPreCEC.FIELD_ARRIVAL -> handleSetNote(item)
             }
-            StatusPreCEC.EXIT_FIELD -> {
-                handleFailure("PRE CEC with arrival field!", Errors.WITH_FIELD_ARRIVAL_PRE_CEC)
-            }
-            StatusPreCEC.FIELD_ARRIVAL -> handleSetNote(item)
         }
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(true)
     }
 
     private suspend fun handleExitWill(item: ItemMenuModel): Boolean {
-        val status = setDatePreCEC(item).getOrElse {
-            handleFailure(it)
-            return false
+        return runCatching {
+            val status = setDatePreCEC(item).getOrThrow()
+            if (status != StatusPreCEC.EXIT_MILL) {
+                handleFailure(Errors.PRE_CEC_STARTED, getClassAndMethod(), ::onError)
+                return false
+            }
+            return true
         }
-        if (status != StatusPreCEC.EXIT_MILL) {
-            handleFailure("PRE CEC already started!", Errors.PRE_CEC_STARTED)
-            return false
-        }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
     }
 
     private suspend fun handleNoteMechanical(): Boolean {
-        val typeNote = getTypeLastNote().getOrElse {
-            handleFailure(it)
-            return false
+        return runCatching {
+            val typeNote = getTypeLastNote().getOrThrow()
+            if (typeNote == null) {
+                handleFailure(Errors.WITHOUT_NOTE, getClassAndMethod(), ::onError)
+                return false
+            }
+            if (typeNote == TypeNote.WORK) {
+                handleFailure(Errors.LAST_NOTE_WORK, getClassAndMethod(), ::onError)
+                return false
+            }
+            return true
         }
-        if(typeNote == null) {
-            handleFailure("Without Note!", Errors.WITHOUT_NOTE)
-            return false
-        }
-        if (typeNote == TypeNote.WORK) {
-            handleFailure("Type Last Note is WORK!", Errors.LAST_NOTE_WORK)
-            return false
-        }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
     }
 
     private suspend fun handleFinishMechanical() {
-        if (checkHasOpenMechanic() == false) {
-            handleFailure("Note mechanic NOT open!", Errors.NOTE_MECHANICAL_OPEN)
-            return
+        runCatching {
+            val check = hasNoteOpenMechanic().getOrThrow()
+            if (!check) {
+                handleFailure(Errors.NOTE_MECHANICAL_OPEN, getClassAndMethod(), ::onError)
+                return@runCatching
+            }
         }
-        _uiState.update {
-            it.copy(flagDialogCheck = true, typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL)
-        }
+            .onSuccess { updateState { copy(flagDialogCheck = true, typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private suspend fun handleTranshipment(): Boolean {
-        val status = getStatusTranshipment().getOrElse {
-            handleFailure(it)
-            return false
-        }
-        return when (status) {
-            StatusTranshipment.OK -> true
-            StatusTranshipment.WITHOUT_NOTE -> {
-                handleFailure("Without note or last is not type work!", Errors.WITHOUT_NOTE_TRANSHIPMENT)
-                false
+        return runCatching {
+            val status = getStatusTranshipment().getOrThrow()
+            return when (status) {
+                StatusTranshipment.OK -> true
+                StatusTranshipment.WITHOUT_NOTE -> {
+                    handleFailure(Errors.WITHOUT_NOTE_TRANSHIPMENT, getClassAndMethod(),  ::onError)
+                    return false
+                }
+
+                StatusTranshipment.TIME_INVALID -> {
+                    handleFailure(Errors.TIME_INVALID_TRANSHIPMENT, getClassAndMethod(),  ::onError)
+                    return false
+                }
             }
-            StatusTranshipment.TIME_INVALID -> {
-                handleFailure("Time invalid!", Errors.TIME_INVALID_TRANSHIPMENT)
-                false
-            }
         }
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
+
     }
 
     private suspend fun handleImplement(): Boolean {
-        val check = checkHasNote() ?: return false
-        if (!check) {
-            handleFailure("Header without note!", Errors.HEADER_EMPTY)
-            return false
+        return runCatching {
+            val check = hasNoteMotoMec().getOrThrow()
+            if (!check) {
+                handleFailure(Errors.HEADER_EMPTY, getClassAndMethod(),  ::onError)
+                false
+            } else {
+                true
+            }
         }
-        return true
+            .onFailure { throwable ->
+                handleFailure(throwable, getClassAndMethod(), ::onError)
+            }
+            .getOrDefault(false)
+
     }
 
     private suspend fun handleFinishMechanicalDialog() {
         finishNoteMechanic()
-            .onSuccess {
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagFailure = false,
-                        typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
-                    )
-                }
-            }
-            .onFailure(::handleFailure)
+            .onSuccess { onSuccess(TypeMsg.NOTE_FINISH_MECHANICAL) }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private suspend fun handleUncouplingTrailer() {
         uncouplingTrailer()
-            .onSuccess {
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagFailure = false,
-                        typeMsg = TypeMsg.UNCOUPLING_TRAILER,
-                    )
-                }
-            }
-            .onFailure(::handleFailure)
+            .onSuccess { onSuccess(TypeMsg.UNCOUPLING_TRAILER) }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
-    private suspend fun checkHasNote(): Boolean? {
-        val result = hasNoteMotoMec()
-        result.onFailure {
-            handleFailure(it)
-            return null
-        }
-        return result.getOrNull()!!
-    }
+    private fun onSuccess(typeMsg: TypeMsg) =
+        updateState { copy(flagDialog = true, flagFailure = false, typeMsg = typeMsg) }
 
-    private suspend fun checkHasOpenMechanic(): Boolean? {
-        val result = hasNoteOpenMechanic()
-        result.onFailure {
-            handleFailure(it)
-            return null
-        }
-        return result.getOrNull()!!
-    }
-
-    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                errors = errors,
-                flagAccess = false,
-                flagFailure = true
-            )
-        }
-    }
-
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
+    private fun onError(failure: String, errors: Errors = Errors.EXCEPTION) = updateState {
+        copy(
+            flagDialog = true,
+            failure = failure,
+            errors = errors,
+            flagAccess = false,
+            flagFailure = true
+        )
     }
 
 }

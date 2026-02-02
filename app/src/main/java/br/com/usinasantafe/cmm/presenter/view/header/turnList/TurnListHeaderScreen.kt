@@ -29,7 +29,11 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.errors
 import br.com.usinasantafe.cmm.lib.msg
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun TurnListHeaderScreen(
@@ -49,15 +53,8 @@ fun TurnListHeaderScreen(
                 turnList = uiState.turnList,
                 setIdTurn = viewModel::setIdTurnHeader,
                 updateDatabase = viewModel::updateDatabase,
-                flagFailure = uiState.status.flagFailure,
-                errors = uiState.status.errors,
-                failure = uiState.status.failure,
-                flagProgress = uiState.status.flagProgress,
-                currentProgress = uiState.status.currentProgress,
-                levelUpdate = uiState.status.levelUpdate,
-                tableUpdate = uiState.status.tableUpdate,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.status.flagDialog,
+                status = uiState.status,
                 setCloseDialog = viewModel::setCloseDialog,
                 onNavEquip = onNavEquip,
                 onNavOS = onNavOS,
@@ -72,15 +69,8 @@ fun TurnListHeaderContent(
     turnList: List<Turn>,
     setIdTurn: (Int) -> Unit,
     updateDatabase: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    currentProgress: Float,
     flagAccess: Boolean,
-    flagDialog: Boolean,
+    status: UpdateStatusState,
     setCloseDialog: () -> Unit,
     onNavEquip: () -> Unit,
     onNavOS: () -> Unit,
@@ -132,33 +122,12 @@ fun TurnListHeaderContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text = if (flagFailure) {
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            } else {
-                msg(levelUpdate, failure, tableUpdate)
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog)
         }
 
-        if (flagProgress) {
-            val msgProgress = msg(levelUpdate, failure, tableUpdate)
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
-            )
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
 
     }
@@ -187,16 +156,18 @@ fun TurnListHeaderPagePreviewWithData() {
                 ),
                 setIdTurn = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
-                flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
                 onNavEquip = {},
                 onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
@@ -214,16 +185,18 @@ fun TurnListHeaderPagePreviewWithFailureUpdate() {
                 turnList = emptyList(),
                 setIdTurn = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
-                flagAccess = false,
-                flagDialog = true,
                 setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true,
+                ),
                 onNavEquip = {},
                 onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
@@ -241,16 +214,18 @@ fun TurnListHeaderPagePreviewProgressUpdate() {
                 turnList = emptyList(),
                 setIdTurn = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = true,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "tb_turn",
-                currentProgress = 0.3333f,
-                flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_turn",
+                    currentProgress = 0.3333f,
+                    flagDialog = false,
+                ),
                 onNavEquip = {},
                 onNavOS = {},
                 modifier = Modifier.padding(innerPadding)
@@ -268,16 +243,18 @@ fun TurnListHeaderPagePreviewWithFailureError() {
                 turnList = emptyList(),
                 setIdTurn = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.EXCEPTION,
-                failure = "Failure",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
-                flagAccess = false,
-                flagDialog = true,
                 setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true
+                ),
                 onNavEquip = {},
                 onNavOS = {},
                 modifier = Modifier.padding(innerPadding)

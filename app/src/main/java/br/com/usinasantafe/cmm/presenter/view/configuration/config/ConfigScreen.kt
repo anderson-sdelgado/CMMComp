@@ -47,6 +47,7 @@ import br.com.usinasantafe.cmm.lib.msg
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldConfigDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldPasswordDesign
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import org.w3c.dom.Text
 import kotlin.String
 
@@ -83,15 +84,8 @@ fun ConfigScreen(
                 checkMotoMec = uiState.checkMotoMec,
                 onCheckMotoMecChanged = viewModel::onCheckMotoMecChanged,
                 onSaveAndUpdate = viewModel::onSaveAndUpdate,
-                flagProgress = uiState.status.flagProgress,
-                currentProgress = uiState.status.currentProgress,
-                levelUpdate = uiState.status.levelUpdate,
-                tableUpdate = uiState.status.tableUpdate,
-                flagDialog = uiState.status.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagFailure = uiState.status.flagFailure,
-                errors = uiState.status.errors,
-                failure = uiState.status.failure,
+                status = uiState.status,
                 onNavInitialMenu = onNavInitialMenu,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -111,15 +105,8 @@ fun ConfigContent(
     checkMotoMec: Boolean,
     onCheckMotoMecChanged: (Boolean) -> Unit,
     onSaveAndUpdate: () -> Unit,
-    currentProgress: Float,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    flagDialog: Boolean,
     setCloseDialog: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
+    status: UpdateStatusState,
     onNavInitialMenu: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -195,16 +182,16 @@ fun ConfigContent(
                 )
             }
         }
-        if (flagProgress) {
+        if (status.flagProgress) {
             Spacer(modifier = Modifier.padding(vertical = 16.dp))
             LinearProgressIndicator(
-                progress = { currentProgress },
+                progress = { status.currentProgress },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(30.dp),
             )
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
-            val msgProgress = msg(levelUpdate, failure, tableUpdate)
+            val msgProgress = msg(status.levelUpdate, status.failure, status.tableUpdate)
             Text(
                 text = msgProgress,
                 textAlign = TextAlign.Center,
@@ -214,12 +201,12 @@ fun ConfigContent(
         }
         BackHandler {}
     }
-    if (flagDialog) {
+    if (status.flagDialog) {
         val text =
-            if (flagFailure) {
-                errors(errors, failure)
+            if (status.flagFailure) {
+                errors(status.errors, status.failure)
             } else {
-                msg(levelUpdate, failure, tableUpdate)
+                msg(status.levelUpdate, status.failure, status.tableUpdate)
             }
 
         AlertDialogSimpleDesign(
@@ -245,15 +232,17 @@ fun ConfigPagePreview() {
                 checkMotoMec = true,
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
-                flagProgress = false,
-                currentProgress = 0.0f,
-                levelUpdate = null,
-                tableUpdate = "",
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
+                status = UpdateStatusState(
+                    flagProgress = false,
+                    currentProgress = 0.0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                ),
                 onNavInitialMenu = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -277,15 +266,17 @@ fun ConfigPagePreviewWithData() {
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
-                flagProgress = false,
-                currentProgress = 0.0f,
-                levelUpdate = null,
-                tableUpdate = "",
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
+                status = UpdateStatusState(
+                    flagProgress = false,
+                    currentProgress = 0.0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                ),
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -308,15 +299,17 @@ fun ConfigPagePreviewShowProgress() {
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
-                flagProgress = true,
-                currentProgress = 0.2f,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "Colab",
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
+                status = UpdateStatusState(
+                    flagProgress = true,
+                    currentProgress = 0.2f,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "Colab",
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                ),
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -339,15 +332,17 @@ fun ConfigPagePreviewShowMsgFieldEmpty() {
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
-                flagProgress = false,
-                currentProgress = 0.0f,
-                levelUpdate = null,
-                tableUpdate = "",
-                flagDialog = true,
                 setCloseDialog = {},
-                flagFailure = true,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
+                status = UpdateStatusState(
+                    flagProgress = false,
+                    currentProgress = 0.0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = true,
+                    flagFailure = true,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                ),
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -370,15 +365,17 @@ fun ConfigPagePreviewShowMsgSuccess() {
                 onCheckMotoMecChanged = {},
                 onSaveAndUpdate = {},
                 onNavInitialMenu = {},
-                flagProgress = false,
-                currentProgress = 0.0f,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                tableUpdate = "",
-                flagDialog = true,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
+                status = UpdateStatusState(
+                    flagProgress = false,
+                    currentProgress = 0.0f,
+                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                    tableUpdate = "",
+                    flagDialog = true,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                ),
                 modifier = Modifier.padding(innerPadding)
             )
         }

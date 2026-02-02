@@ -55,7 +55,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TurnListHeaderViewModel.turnList -> GetTurnList -> java.lang.Exception"
+                "TurnListHeaderViewModel.updateState -> TurnListHeaderViewModel.turnList -> GetTurnList -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagFailure,
@@ -294,7 +294,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TurnListHeaderViewModel.setIdTurnHeader -> SetIdTurn -> java.lang.Exception"
+                "TurnListHeaderViewModel.updateState -> TurnListHeaderViewModel.setIdTurnHeader -> SetIdTurn -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagFailure,

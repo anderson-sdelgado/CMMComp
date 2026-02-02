@@ -4,9 +4,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.update
 import timber.log.Timber
 
 data class UpdateStatusState(
@@ -67,7 +65,8 @@ fun UpdateStatusState.toUiStatus(
 fun UpdateStatusState.withFailure(
     classAndMethod: String,
     message: String,
-    errors: Errors = Errors.EXCEPTION
+    errors: Errors = Errors.EXCEPTION,
+    flagProgress: Boolean = false
 ): UpdateStatusState {
 
     val failMsg = "$classAndMethod -> $message"
@@ -78,7 +77,7 @@ fun UpdateStatusState.withFailure(
         flagFailure = true,
         failure = failMsg,
         errors = errors,
-        flagProgress = false,
+        flagProgress = flagProgress,
         currentProgress = 1f
     )
 }
@@ -86,10 +85,11 @@ fun UpdateStatusState.withFailure(
 fun UpdateStatusState.withFailure(
     classAndMethod: String,
     throwable: Throwable,
-    errors: Errors = Errors.EXCEPTION
+    errors: Errors = Errors.EXCEPTION,
+    flagProgress: Boolean = false
 ): UpdateStatusState {
     val msg = "${throwable.message} -> ${throwable.cause}"
-    return withFailure(classAndMethod, msg, errors)
+    return withFailure(classAndMethod, msg, errors, flagProgress)
 }
 
 suspend fun FlowCollector<UpdateStatusState>.emitProgress(
@@ -137,6 +137,7 @@ fun <STATE> executeUpdateSteps(
     getStatus: (STATE) -> UpdateStatusState,
     copyStateWithStatus: (STATE, UpdateStatusState) -> STATE,
     classAndMethod: String,
+    flagUpdateConfig: Boolean = false
 ): Flow<STATE> = flow {
 
     for (step in steps) {
@@ -150,16 +151,18 @@ fun <STATE> executeUpdateSteps(
         if (!ok) return@flow
     }
 
-    val finalStatus = getStatus(getState()).copy(
-        flagDialog = true,
-        flagProgress = false,
-        flagFailure = false,
-        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-        currentProgress = 1f,
-    )
+    if (!flagUpdateConfig) {
+        val finalStatus = getStatus(getState()).copy(
+            flagDialog = true,
+            flagProgress = false,
+            flagFailure = false,
+            levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+            currentProgress = 1f,
+        )
+        val finalState = copyStateWithStatus(getState(), finalStatus)
+        emit(finalState)
+    }
 
-    val finalState = copyStateWithStatus(getState(), finalStatus)
-    emit(finalState)
 }
 
 interface UiStateWithStatus<T> {
@@ -170,26 +173,30 @@ interface UiStateWithStatus<T> {
     fun withFailure(
         classAndMethod: String,
         throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION
+        errors: Errors = Errors.EXCEPTION,
+        flagProgress: Boolean = false
     ): T =
         copyWithStatus(
             status.withFailure(
                 classAndMethod,
                 throwable,
-                errors
+                errors,
+                flagProgress
             )
         )
 
     fun withFailure(
         classAndMethod: String,
         message: String,
-        errors: Errors = Errors.EXCEPTION
+        errors: Errors = Errors.EXCEPTION,
+        flagProgress: Boolean = false
     ): T =
         copyWithStatus(
             status.withFailure(
                 classAndMethod,
                 message,
-                errors
+                errors,
+                flagProgress
             )
         )
 }

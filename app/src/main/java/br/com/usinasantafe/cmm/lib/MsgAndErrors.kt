@@ -19,7 +19,7 @@ fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String
 }
 
 @Composable
-fun errors(errors: Errors, failure: String, value: String = ""): String {
+fun errors(errors: Errors, failure: String, value: String = "", hourMeter: String = "", hourMeterOld: String = ""): String {
     return when (errors) {
         Errors.FIELD_EMPTY -> {
             if(value.isEmpty()) return stringResource(
@@ -32,12 +32,18 @@ fun errors(errors: Errors, failure: String, value: String = ""): String {
             id = R.string.text_update_failure,
             failure
         )
-        Errors.INVALID -> stringResource(
-            id = R.string.text_input_data_invalid,
+        Errors.INVALID -> if(hourMeter.isEmpty()) {
             stringResource(
-                id = R.string.text_title_operator
+                id = R.string.text_input_data_invalid,
+                value
             )
-        )
+        } else {
+            stringResource(
+                id = R.string.text_input_hour_meter_invalid,
+                hourMeter,
+                hourMeterOld
+            )
+        }
         else -> stringResource(
             id = R.string.text_failure,
             failure

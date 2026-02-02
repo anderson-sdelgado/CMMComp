@@ -21,8 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressDesign
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
@@ -30,13 +28,15 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.msg
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun ActivityListCommonScreen(
     viewModel: ActivityListCommonViewModel = hiltViewModel(),
     onNavOS: () -> Unit,
-    onNavMeasure: () -> Unit,
+    onNavHourMeter: () -> Unit,
     onNavStopList: () -> Unit,
     onNavMenuNote: () -> Unit,
     onNavTranshipment: () -> Unit,
@@ -55,18 +55,11 @@ fun ActivityListCommonScreen(
                 activityList = uiState.activityList,
                 setIdActivity = viewModel::setIdActivity,
                 updateDatabase = viewModel::updateDatabase,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
-                failure = uiState.failure,
-                flagProgress = uiState.flagProgress,
-                currentProgress = uiState.currentProgress,
-                levelUpdate = uiState.levelUpdate,
-                tableUpdate = uiState.tableUpdate,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
+                status = uiState.status,
                 onNavOS = onNavOS,
-                onNavMeasure = onNavMeasure,
+                onNavHourMeter = onNavHourMeter,
                 onNavStopList = onNavStopList,
                 onNavMenuNote = onNavMenuNote,
                 onNavTranshipment = onNavTranshipment,
@@ -83,18 +76,11 @@ fun ActivityListCommonScreenContent(
     activityList: List<Activity>,
     setIdActivity: (Int) -> Unit,
     updateDatabase: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    currentProgress: Float,
     flagAccess: Boolean,
-    flagDialog: Boolean,
     setCloseDialog: () -> Unit,
+    status: UpdateStatusState,
     onNavOS: () -> Unit,
-    onNavMeasure: () -> Unit,
+    onNavHourMeter: () -> Unit,
     onNavStopList: () -> Unit,
     onNavMenuNote: () -> Unit,
     onNavTranshipment: () -> Unit,
@@ -156,33 +142,12 @@ fun ActivityListCommonScreenContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text = if (flagFailure) {
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            } else {
-                msg(levelUpdate, failure, tableUpdate)
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog)
         }
 
-        if (flagProgress) {
-            val msgProgress = msg(levelUpdate, failure, tableUpdate)
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
-            )
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
 
     }
@@ -190,7 +155,7 @@ fun ActivityListCommonScreenContent(
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
             when(flowApp){
-                FlowApp.HEADER_INITIAL -> onNavMeasure()
+                FlowApp.HEADER_INITIAL -> onNavHourMeter()
                 FlowApp.NOTE_WORK -> onNavMenuNote()
                 FlowApp.NOTE_STOP -> onNavStopList()
                 else -> {}
@@ -218,18 +183,20 @@ fun ActivityListCommonPagePreviewWithData() {
                 ),
                 setIdActivity = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                currentProgress = 0f,
-                levelUpdate = null,
-                tableUpdate = "",
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
+                    status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    currentProgress = 0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = false,
+                ),
                 onNavOS = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavStopList = {},
                 onNavMenuNote = {},
                 onNavTranshipment = {},
@@ -256,21 +223,22 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                         descrActivity = "ATIVIDADE 1"
                     )
                 ),
-
                 setIdActivity = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = false,
-                currentProgress = 0f,
-                levelUpdate = null,
-                tableUpdate = "",
                 flagAccess = false,
-                flagDialog = true,
                 setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    currentProgress = 0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = true,
+                ),
                 onNavOS = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavStopList = {},
                 onNavMenuNote = {},
                 onNavTranshipment = {},
@@ -300,18 +268,20 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
 
                 setIdActivity = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = true,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "tb_activity",
-                currentProgress = 0.3333f,
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_activity",
+                    currentProgress = 0.3333f,
+                    flagDialog = false,
+                ),
                 onNavOS = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavStopList = {},
                 onNavMenuNote = {},
                 onNavTranshipment = {},
@@ -341,18 +311,20 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
 
                 setIdActivity = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.EXCEPTION,
-                failure = "Failure",
-                flagProgress = false,
-                currentProgress = 0f,
-                levelUpdate = null,
-                tableUpdate = "",
                 flagAccess = false,
-                flagDialog = true,
                 setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    failure = "Failure",
+                    flagProgress = false,
+                    currentProgress = 0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = true,
+                ),
                 onNavOS = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavStopList = {},
                 onNavMenuNote = {},
                 onNavTranshipment = {},

@@ -240,7 +240,7 @@ class ActivityListCommonScreenTest {
         composeTestRule.setContent {
             ActivityListCommonScreen(
                 onNavOS = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavStopList = {},
                 onNavMenuNote = {},
                 onNavTranshipment = {},

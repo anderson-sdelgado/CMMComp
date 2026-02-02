@@ -176,7 +176,7 @@ fun NavigationGraph(
                         flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
                     )
                 },
-                onNavMeasure = {
+                onNavHourMeter = {
                     navActions.navigateToHourMeterHeader()
                 },
                 onNavStopList = {

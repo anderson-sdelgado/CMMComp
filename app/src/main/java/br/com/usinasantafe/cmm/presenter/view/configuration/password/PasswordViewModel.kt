@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.config.CheckPassword
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,51 +29,24 @@ class PasswordViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(PasswordState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private inline fun updateState(block: PasswordState.() -> PasswordState) {
+        _uiState.update(block)
     }
 
-    fun updatePassword(password: String) {
-        _uiState.update {
-            it.copy(password = password)
-        }
-    }
+    fun setCloseDialog() = updateState { copy(flagDialog = false) }
+
+    fun updatePassword(password: String) = updateState { copy(password = password) }
 
     fun checkAccess() =
         viewModelScope.launch {
             runCatching {
                 checkPassword(_uiState.value.password).getOrThrow()
-            }.onSuccess { check ->
-                _uiState.update {
-                    it.copy(
-                        flagDialog = !check,
-                        flagAccess = check,
-                        flagFailure = false,
-                    )
-                }
-            }.onFailure {
-                handleFailure(it)
             }
+                .onSuccess (::onSuccess)
+                .onFailureHandled(getClassAndMethod(), ::onError)
         }
 
-    private fun handleFailure(failure: String) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                flagAccess = false,
-                flagFailure = true
-            )
-        }
-    }
-
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
-    }
+    private fun onSuccess(check: Boolean) = updateState { copy(flagDialog = !check, flagAccess = check) }
+    private fun onError(error: String) = updateState { copy(flagDialog = true, failure = error, flagFailure = true ) }
 
 }

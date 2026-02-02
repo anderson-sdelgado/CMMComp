@@ -33,6 +33,8 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.lib.errors
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 
 @Composable
 fun OSCommonScreen(
@@ -96,22 +98,8 @@ fun OSCommonContent(
                 id = R.string.text_title_os
             )
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Previous
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 28.sp,
-            ),
-            readOnly = true,
-            value = nroOS,
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
+        TextFieldDesign(
+            value = nroOS
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ButtonsGenericNumeric(
@@ -127,34 +115,15 @@ fun OSCommonContent(
         }
 
         if(flagDialog) {
-            val text = when (errors) {
-                Errors.FIELD_EMPTY -> stringResource(
-                    id = R.string.text_field_empty,
-                    stringResource(id = R.string.text_title_os)
-                )
-                Errors.UPDATE,
-                Errors.TOKEN,
-                Errors.EXCEPTION -> stringResource(
-                    id = R.string.text_failure,
-                    failure
-                )
-                Errors.INVALID -> stringResource(
-                    id = R.string.text_input_data_non_existent,
-                    stringResource(id = R.string.text_title_os)
-                )
-                else -> ""
-            }
+            val value = stringResource(id = R.string.text_title_os)
+            val text = errors(errors, failure, value)
             AlertDialogSimpleDesign(
                 text = text,
                 setCloseDialog = setCloseDialog,
             )
         }
 
-        if (flagProgress) {
-            AlertDialogProgressIndeterminateDesign(
-                msgProgress = msgProgress
-            )
-        }
+        if (flagProgress) AlertDialogProgressIndeterminateDesign(msgProgress)
 
     }
 

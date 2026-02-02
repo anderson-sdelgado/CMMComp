@@ -28,6 +28,7 @@ import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -61,9 +62,13 @@ class ConfigViewModelTest {
     private val updateTableRItemMenuStop = mock<UpdateTableRItemMenuStop>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
     private val sizeAll = (QTD_TABLE * 3) + 1f
-    private var contWhenever = 0f
-    private var contResult = 0f
-    private var contUpdate = 0f
+    val tableList = listOf(
+        "tb_activity", "tb_colab", "tb_equip", "tb_function_activity",
+        "tb_function_stop", "tb_item_check_list", "tb_item_menu",
+        "tb_r_activity_stop", "tb_r_equip_activity", "tb_r_item_menu_stop"
+        ,"tb_stop", "tb_turn"
+    )
+
 
     private val viewModel = ConfigViewModel(
         getConfigInternal = getConfigInternal,
@@ -80,7 +85,8 @@ class ConfigViewModelTest {
         updateTableTurn = updateTableTurn,
         updateTableFunctionActivity = updateTableFunctionActivity,
         updateTableFunctionStop = updateTableFunctionStop,
-        updateTableItemMenu = updateTableItemMenu
+        updateTableItemMenu = updateTableItemMenu,
+        setFinishUpdateAllTable = setFinishUpdateAllTable
     )
 
     @Test
@@ -210,7 +216,7 @@ class ConfigViewModelTest {
                 Errors.FIELD_EMPTY
             )
         }
-
+/////
     @Test
     fun `saveTokenAndUpdate - Check return failure if have error in SendDataConfig`() =
         runTest {
@@ -557,6 +563,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -570,7 +577,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableColab`() =
         runTest {
             val qtdBefore = 1f
-            wheneverSuccess("tb_activity")
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableColab(
                     sizeAll = sizeAll,
@@ -597,7 +604,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdate("tb_activity", result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -613,6 +620,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -626,8 +634,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableEquip`() =
         runTest {
             val qtdBefore = 2f
-            wheneverSuccess("tb_activity")
-            wheneverSuccess("tb_colab")
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableEquip(
                     sizeAll = sizeAll,
@@ -654,8 +661,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdate("tb_activity", result)
-            checkResultUpdate("tb_colab", result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -671,6 +677,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -684,9 +691,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableFunctionActivity`() =
         runTest {
             val qtdBefore = 3f
-            wheneverSuccess("tb_activity")
-            wheneverSuccess("tb_colab")
-            wheneverSuccess("tb_equip")
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableFunctionActivity(
                     sizeAll = sizeAll,
@@ -701,6 +706,7 @@ class ConfigViewModelTest {
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
                     UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -713,9 +719,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdate("tb_activity", result)
-            checkResultUpdate("tb_colab", result)
-            checkResultUpdate("tb_equip", result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -731,6 +735,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -744,10 +749,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableFunctionStop`() =
         runTest {
             val qtdBefore = 4f
-            wheneverSuccess("tb_activity")
-            wheneverSuccess("tb_colab")
-            wheneverSuccess("tb_equip")
-            wheneverSuccess("tb_function_activity")
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableFunctionStop(
                     sizeAll = sizeAll,
@@ -774,10 +776,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdate("tb_activity", result)
-            checkResultUpdate("tb_colab", result)
-            checkResultUpdate("tb_equip", result)
-            checkResultUpdate("tb_function_activity", result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -793,6 +792,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -806,11 +806,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableItemCheckListByNroEquip`() =
         runTest {
             val qtdBefore = 5f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableItemCheckListByNroEquip(
                     sizeAll = sizeAll,
@@ -825,6 +821,7 @@ class ConfigViewModelTest {
                         currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
                     ),
                     UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -837,11 +834,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -857,6 +850,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -870,12 +864,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableItemMenuPMM`() =
         runTest {
             val qtdBefore = 6f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableItemMenu(
                     sizeAll = sizeAll,
@@ -902,12 +891,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -923,6 +907,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -936,13 +921,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
         runTest {
             val qtdBefore = 7f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRActivityStop(
                     sizeAll = sizeAll,
@@ -969,13 +948,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateItemMenuPMM(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -991,6 +964,7 @@ class ConfigViewModelTest {
                 result[((qtdBefore * 3) + 1).toInt()],
                 ConfigState(
                     status = UpdateStatusState(
+                        flagProgress = true,
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
@@ -1004,14 +978,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
         runTest {
             val qtdBefore = 8f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableREquipActivityByIdEquip(
                     sizeAll = sizeAll,
@@ -1038,14 +1005,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateItemMenuPMM(result)
-            checkResultUpdateRActivityStop(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -1074,15 +1034,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableRItemMenuStop`() =
         runTest {
             val qtdBefore = 9f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
-            wheneverSuccessREquipActivity()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRItemMenuStop(
                     sizeAll = sizeAll,
@@ -1109,15 +1061,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateItemMenuPMM(result)
-            checkResultUpdateRActivityStop(result)
-            checkResultUpdateREquipActivity(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -1146,16 +1090,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableStop`() =
         runTest {
             val qtdBefore = 10f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
-            wheneverSuccessREquipActivity()
-            wheneverSuccessRItemMenuStop()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableStop(
                     sizeAll = sizeAll,
@@ -1182,16 +1117,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateItemMenuPMM(result)
-            checkResultUpdateRActivityStop(result)
-            checkResultUpdateREquipActivity(result)
-            checkResultUpdateRItemMenuStop(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -1220,17 +1146,7 @@ class ConfigViewModelTest {
     fun `update - Check return failure if have error in UpdateTableTurn`() =
         runTest {
             val qtdBefore = 11f
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
-            wheneverSuccessREquipActivity()
-            wheneverSuccessRItemMenuStop()
-            wheneverSuccessStop()
+            wheneverSuccess(qtdBefore)
             whenever(
                 updateTableTurn(
                     sizeAll = sizeAll,
@@ -1257,17 +1173,7 @@ class ConfigViewModelTest {
                 result.count(),
                 ((qtdBefore * 3) + 2).toInt()
             )
-            checkResultUpdateActivity(result)
-            checkResultUpdateColab(result)
-            checkResultUpdateEquip(result)
-            checkResultUpdateFunctionActivity(result)
-            checkResultUpdateFunctionStop(result)
-            checkResultUpdateItemCheckList(result)
-            checkResultUpdateItemMenuPMM(result)
-            checkResultUpdateRActivityStop(result)
-            checkResultUpdateREquipActivity(result)
-            checkResultUpdateRItemMenuStop(result)
-            checkResultUpdateStop(result)
+            checkResultUpdate(qtdBefore, result)
             assertEquals(
                 result[(qtdBefore * 3).toInt()],
                 ConfigState(
@@ -1348,18 +1254,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
-            wheneverSuccessREquipActivity()
-            wheneverSuccessRItemMenuStop()
-            wheneverSuccessStop()
-            wheneverSuccessTurn()
+            wheneverSuccess(99f)
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -1379,38 +1274,9 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3) + 1).toInt()
+                ((QTD_TABLE * 3)).toInt()
             )
-            checkResultUpdateActivityFull(result)
-            checkResultUpdateColabFull(result)
-            checkResultUpdateEquipFull(result)
-            checkResultUpdateFunctionActivityFull(result)
-            checkResultUpdateFunctionStopFull(result)
-            checkResultUpdateItemCheckListFull(result)
-            checkResultUpdateItemMenuPMMFull(result)
-            checkResultUpdateRActivityStopFull(result)
-            checkResultUpdateREquipActivityFull(result)
-            checkResultUpdateRItemMenuStopFull(result)
-            checkResultUpdateStopFull(result)
-            checkResultUpdateTurnFull(result)
-            assertEquals(
-                result[(QTD_TABLE * 3).toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        errors = Errors.EXCEPTION,
-                        flagFailure = true,
-                        flagDialog = true,
-                        flagProgress = false,
-                        currentProgress = 1f,
-                        failure = "ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
-                    )
-                )
-            )
+            checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
@@ -1425,11 +1291,11 @@ class ConfigViewModelTest {
                         errors = Errors.EXCEPTION,
                         flagFailure = true,
                         flagDialog = true,
-                        flagProgress = false,
+                        flagProgress = true,
                         currentProgress = 1f,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
-                        failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ConfigViewModel.updateAllDatabase -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
+                        tableUpdate = "",
+                        failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ISetFinishUpdateAllTable -> java.lang.Exception",
                     )
                 )
             )
@@ -1491,18 +1357,7 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            wheneverSuccessActivity()
-            wheneverSuccessColab()
-            wheneverSuccessEquip()
-            wheneverSuccessFunctionActivity()
-            wheneverSuccessFunctionStop()
-            wheneverSuccessItemCheckList()
-            wheneverSuccessItemMenuPMM()
-            wheneverSuccessRActivityStop()
-            wheneverSuccessREquipActivity()
-            wheneverSuccessRItemMenuStop()
-            wheneverSuccessStop()
-            wheneverSuccessTurn()
+            wheneverSuccess(99f)
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -1518,37 +1373,9 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3) + 1).toInt()
+                ((QTD_TABLE * 3)).toInt()
             )
-            checkResultUpdateActivityFull(result)
-            checkResultUpdateColabFull(result)
-            checkResultUpdateEquipFull(result)
-            checkResultUpdateFunctionActivityFull(result)
-            checkResultUpdateFunctionStopFull(result)
-            checkResultUpdateItemCheckListFull(result)
-            checkResultUpdateItemMenuPMMFull(result)
-            checkResultUpdateRActivityStopFull(result)
-            checkResultUpdateREquipActivityFull(result)
-            checkResultUpdateRItemMenuStopFull(result)
-            checkResultUpdateStopFull(result)
-            checkResultUpdateTurnFull(result)
-            assertEquals(
-                result[(QTD_TABLE * 3).toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagDialog = true,
-                        flagProgress = true,
-                        flagFailure = false,
-                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                        currentProgress = 1f,
-                    )
-                )
-            )
+            checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
             val configState = viewModel.uiState.value
             assertEquals(
@@ -1570,1513 +1397,159 @@ class ConfigViewModelTest {
             )
         }
 
-    private fun wheneverSuccess(table: String) =
+    private fun wheneverSuccess(posTable: Float) =
         runTest {
-            whenever(
-                updateTableActivity(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
+            var contUpdate = 0f
+            var contWhenever = 0f
+
+            val updateFunctions = listOf<
+                    suspend (Float, Float) -> Flow<UpdateStatusState>
+                    >(
+                { sizeAll, count -> updateTableActivity(sizeAll, count) },
+                { sizeAll, count -> updateTableColab(sizeAll, count) },
+                { sizeAll, count -> updateTableEquip(sizeAll, count) },
+                { sizeAll, count -> updateTableFunctionActivity(sizeAll, count) },
+                { sizeAll, count -> updateTableFunctionStop(sizeAll, count) },
+                { sizeAll, count -> updateTableItemCheckListByNroEquip(sizeAll, count) },
+                { sizeAll, count -> updateTableItemMenu(sizeAll, count) },
+                { sizeAll, count -> updateTableRActivityStop(sizeAll, count) },
+                { sizeAll, count -> updateTableREquipActivityByIdEquip(sizeAll, count) },
+                { sizeAll, count -> updateTableRItemMenuStop(sizeAll, count) },
+                { sizeAll, count -> updateTableStop(sizeAll, count) },
+                { sizeAll, count -> updateTableTurn(sizeAll, count) }
             )
+
+            for(func in updateFunctions) {
+                whenever(
+                    func(
+                        sizeAll,
+                        ++contUpdate
+                    )
+                ).thenReturn(
+                    flowOf(
+                        UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.RECOVERY,
+                            tableUpdate = tableList[contUpdate.toInt() - 1],
+                            currentProgress = percentage(++contWhenever, sizeAll)
+                        ),
+                        UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.CLEAN,
+                            tableUpdate = tableList[contUpdate.toInt() - 1],
+                            currentProgress = percentage(++contWhenever, sizeAll)
+                        ),
+                        UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.SAVE,
+                            tableUpdate = tableList[contUpdate.toInt() - 1],
+                            currentProgress = percentage(++contWhenever, sizeAll)
+                        ),
+                    )
+                )
+                if(posTable == contUpdate) break
+            }
+        }
+
+    private fun checkResultUpdate(posTable: Float, result: List<ConfigState>) =
+        runTest {
+            var contUpdate = 0f
+            var cont = 0
+            for(table in tableList) {
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.RECOVERY,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.CLEAN,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.SAVE,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                ++contUpdate
+                if(posTable == contUpdate) break
+            }
         }
 
 
-    private fun checkResultUpdate(table: String, result: List<ConfigState>) =
+    private fun checkResultUpdateAll(result: List<ConfigState>) =
         runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contResult, sizeAll)
+            var contUpdate = 0f
+            var cont = 0
+            for(table in tableList) {
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        number = "16997417840",
+                        password = "12345",
+                        nroEquip = "310",
+                        app = "pmm",
+                        version = "1.00",
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.RECOVERY,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
                     )
                 )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contResult, sizeAll)
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        number = "16997417840",
+                        password = "12345",
+                        nroEquip = "310",
+                        app = "pmm",
+                        version = "1.00",
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.CLEAN,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
                     )
                 )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = table,
-                        currentProgress = percentage(++contResult, sizeAll)
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        number = "16997417840",
+                        password = "12345",
+                        nroEquip = "310",
+                        app = "pmm",
+                        version = "1.00",
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.SAVE,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
                     )
                 )
-            )
+                ++contUpdate
+            }
         }
 
-
-    private fun wheneverSuccessActivity() =
-        runTest {
-            whenever(
-                updateTableActivity(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateActivity(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateActivityFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessColab() =
-        runTest {
-            whenever(
-                updateTableColab(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateColab(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateColabFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_colab",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessEquip() =
-        runTest {
-            whenever(
-                updateTableEquip(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateEquip(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateEquipFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_equip",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessFunctionActivity() =
-        runTest {
-            whenever(
-                updateTableFunctionActivity(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateFunctionActivity(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateFunctionActivityFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessFunctionStop() =
-        runTest {
-            whenever(
-                updateTableFunctionStop(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateFunctionStop(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateFunctionStopFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessItemCheckList() =
-        runTest {
-            whenever(
-                updateTableItemCheckListByNroEquip(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateItemCheckList(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateItemCheckListFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessItemMenuPMM() =
-        runTest {
-            whenever(
-                updateTableItemMenu(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateItemMenuPMM(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateItemMenuPMMFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessStop() =
-        runTest {
-            whenever(
-                updateTableStop(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateStop(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateStopFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessRActivityStop() =
-        runTest {
-            whenever(
-                updateTableRActivityStop(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateRActivityStop(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateRActivityStopFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessREquipActivity() =
-        runTest {
-            whenever(
-                updateTableREquipActivityByIdEquip(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateREquipActivity(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateREquipActivityFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessRItemMenuStop() =
-        runTest {
-            whenever(
-                updateTableRItemMenuStop(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateRItemMenuStop(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateRItemMenuStopFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun wheneverSuccessTurn() =
-        runTest {
-            whenever(
-                updateTableTurn(
-                    sizeAll = sizeAll,
-                    count = ++contUpdate
-                )
-            ).thenReturn(
-                flowOf(
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                    UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contWhenever, sizeAll)
-                    ),
-                )
-            )
-        }
-
-    private fun checkResultUpdateTurn(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
-
-    private fun checkResultUpdateTurnFull(result: List<ConfigState>) =
-        runTest {
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-            assertEquals(
-                result[contResult.toInt()],
-                ConfigState(
-                    number = "16997417840",
-                    password = "12345",
-                    nroEquip = "310",
-                    app = "pmm",
-                    version = "1.00",
-                    status = UpdateStatusState(
-                        flagProgress = true,
-                        levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
-                        currentProgress = percentage(++contResult, sizeAll)
-                    )
-                )
-            )
-        }
 }

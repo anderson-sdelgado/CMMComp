@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Rule
@@ -51,7 +52,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setTextField -> Field Empty!"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.validateAndSet -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -89,7 +90,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> ICheckHourMeter -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.validateAndSet -> HourMeterHeaderViewModel.setHourMeterHeader -> ICheckHourMeter -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -152,7 +153,7 @@ class HourMeterHeaderViewModelTest {
             whenever(
                 setHourMeter(
                     hourMeter = "10.000,0",
-                    flowApp = FlowApp.REEL_FERT
+                    flowApp = FlowApp.HEADER_INITIAL
                 )
             ).thenReturn(
                 resultFailure(
@@ -169,13 +170,14 @@ class HourMeterHeaderViewModelTest {
             viewModel.setTextField("0", TypeButton.NUMERIC)
             viewModel.setTextField("0", TypeButton.NUMERIC)
             viewModel.setTextField("OK", TypeButton.OK)
+
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.checkHourMeterHeader -> HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
+                "HourMeterHeaderViewModel.setTextField -> HourMeterHeaderViewModel.validateAndSet -> HourMeterHeaderViewModel.setHourMeterHeader -> ISetHourMeter -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -187,7 +189,7 @@ class HourMeterHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.flowApp,
-                FlowApp.REEL_FERT
+                FlowApp.HEADER_INITIAL
             )
         }
 
@@ -207,7 +209,7 @@ class HourMeterHeaderViewModelTest {
             whenever(
                 setHourMeter(
                     hourMeter = "10.000,0",
-                    flowApp = FlowApp.REEL_FERT
+                    flowApp = FlowApp.HEADER_INITIAL
                 )
             ).thenReturn(
                 Result.success(FlowApp.HEADER_INITIAL)

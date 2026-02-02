@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 interface CheckHourMeter {
     suspend operator fun invoke(
-        measure: String,
+        hourMeter: String,
     ): Result<CheckMeasureModel>
 }
 
@@ -21,7 +21,7 @@ class ICheckHourMeter @Inject constructor(
 ): CheckHourMeter {
 
     override suspend fun invoke(
-        measure: String,
+        hourMeter: String,
     ): Result<CheckMeasureModel> =
         call(getClassAndMethod()) {
             val measureBD: String
@@ -30,11 +30,11 @@ class ICheckHourMeter @Inject constructor(
             val formatNumber = NumberFormat.getInstance(locale)
             val formatDecimal = DecimalFormat("#,##0.0")
             formatDecimal.decimalFormatSymbols = DecimalFormatSymbols(locale)
-            val measureInput = formatNumber.parse(measure)!!
-            val measureInputDouble = measureInput.toDouble()
-            val measureBDDouble = equipRepository.getHourMeter().getOrThrow()
-            measureBD = formatDecimal.format(measureBDDouble)
-            if(measureInputDouble < measureBDDouble) check = false
+            val hourMeterInput = formatNumber.parse(hourMeter)!!
+            val hourMeterInputDouble = hourMeterInput.toDouble()
+            val hourMeterBDDouble = equipRepository.getHourMeter().getOrThrow()
+            measureBD = formatDecimal.format(hourMeterBDDouble)
+            if(hourMeterInputDouble < hourMeterBDDouble) check = false
             CheckMeasureModel(measureBD = measureBD, check = check)
         }
 

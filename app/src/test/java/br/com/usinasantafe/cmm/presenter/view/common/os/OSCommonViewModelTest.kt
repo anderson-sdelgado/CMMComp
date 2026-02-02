@@ -126,11 +126,11 @@ class OSCommonViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OSCommonViewModel.setTextField -> OSCommonViewModel.setNroOS -> ICheckNroOS -> java.lang.Exception"
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.validateAndSet -> OSCommonViewModel.setNroOS -> ICheckNroOS -> java.lang.Exception"
                 )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
-                true
+                false
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,
@@ -213,11 +213,11 @@ class OSCommonViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "OSCommonViewModel.setTextField -> OSCommonViewModel.setNroOS -> ISetNroOS -> java.lang.Exception"
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.validateAndSet -> OSCommonViewModel.setNroOS -> ISetNroOS -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagProgress,
-                true
+                false
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,

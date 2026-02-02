@@ -34,7 +34,10 @@ import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.STOP
 import br.com.usinasantafe.cmm.lib.WORK
+import br.com.usinasantafe.cmm.lib.errors
+import br.com.usinasantafe.cmm.lib.msg
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun ItemListDesign(
@@ -508,5 +511,29 @@ fun TextButtonCleanDesign(
         fontSize = 17.sp,
         modifier = Modifier
             .fillMaxWidth()
+    )
+}
+
+@Composable
+fun MsgUpdate(status : UpdateStatusState, setCloseDialog: () -> Unit, value: String = ""){
+    val text =
+        if (status.flagFailure) {
+            errors(status.errors, status.failure, value)
+        } else {
+            msg(status.levelUpdate, status.failure, status.tableUpdate)
+        }
+
+    AlertDialogSimpleDesign(
+        text = text,
+        setCloseDialog = setCloseDialog,
+    )
+}
+
+@Composable
+fun ProgressUpdate(status : UpdateStatusState){
+    val msgProgress = msg(status.levelUpdate, status.failure, status.tableUpdate)
+    AlertDialogProgressDesign(
+        currentProgress = status.currentProgress,
+        msgProgress = msgProgress
     )
 }

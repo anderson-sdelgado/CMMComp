@@ -11,14 +11,16 @@ import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.MSG_CHECK_OS
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.handleFailure
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class OSCommonState(
@@ -45,124 +47,64 @@ class OSCommonViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OSCommonState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        _uiState.update {
-            it.copy(
-                flowApp = FlowApp.entries[flowApp]
-            )
-        }
+    private val state get() = uiState.value
+
+    private fun updateState(block: OSCommonState.() -> OSCommonState) {
+        _uiState.update(block)
     }
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
-    }
+    init { updateState { copy(flowApp = FlowApp.entries[this@OSCommonViewModel.flowApp]) } }
+
+    fun setCloseDialog() = updateState { copy(flagDialog = false) }
+
 
     fun setTextField(
         text: String,
         typeButton: TypeButton
     ) {
         when (typeButton) {
-            TypeButton.NUMERIC -> {
-                val nroOS = addTextField(uiState.value.nroOS, text)
-                _uiState.update {
-                    it.copy(nroOS = nroOS)
-                }
-            }
-            TypeButton.CLEAN -> {
-                val nroOS = clearTextField(uiState.value.nroOS)
-                _uiState.update {
-                    it.copy(nroOS = nroOS)
-                }
-            }
-            TypeButton.OK -> {
-                if (uiState.value.nroOS.isEmpty()) {
-                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
-                    return
-                }
-                setNroOS()
-            }
+            TypeButton.NUMERIC -> updateState { copy(nroOS = addTextField(nroOS, text)) }
+            TypeButton.CLEAN -> updateState { copy(nroOS = clearTextField(nroOS)) }
+            TypeButton.OK -> validateAndSet()
             TypeButton.UPDATE -> {}
         }
     }
 
+
+    private fun validateAndSet() {
+        if (state.nroOS.isBlank()) {
+            handleFailure("Field Empty!", getClassAndMethod()) { onError(it, Errors.FIELD_EMPTY) }
+            return
+        }
+        setNroOS()
+    }
+
     fun getNroOS() = viewModelScope.launch {
         if(uiState.value.flowApp != FlowApp.HEADER_INITIAL) {
-            val result = getNroOSHeader()
-            result.onFailure {
-                handleFailure(it)
-                return@launch
+            runCatching {
+                getNroOSHeader().getOrThrow()
             }
-            val nroOS = result.getOrNull()!!
-            _uiState.update {
-                it.copy(
-                    nroOS = nroOS
-                )
-            }
+                .onSuccess{ updateState { copy(nroOS = it) } }
+                .onFailureHandled(getClassAndMethod(), ::onError)
         }
     }
 
     private fun setNroOS() = viewModelScope.launch {
-        _uiState.update {
-            it.copy(
-                flagProgress = true,
-                msgProgress = "Verificando OS no Web Service",
-            )
-        }
-        val resultCheck = hasNroOS(
-            nroOS = uiState.value.nroOS,
-            flowApp = uiState.value.flowApp
-        )
-        resultCheck.onFailure {
-            handleFailure(it)
-            return@launch
-        }
-        val check = resultCheck.getOrNull()!!
-        if(!check){
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    errors = Errors.INVALID,
-                    flagProgress = false,
-                    flagAccess = false
-                )
+        runCatching {
+            updateState { copy(flagProgress = true, msgProgress = MSG_CHECK_OS) }
+            val check = hasNroOS(nroOS = uiState.value.nroOS, flowApp = uiState.value.flowApp).getOrThrow()
+            if(!check){
+                onError("", Errors.INVALID)
+                return@launch
             }
-            return@launch
-        }
-        val resultSet = setNroOS(
-            nroOS = uiState.value.nroOS,
-            flowApp = uiState.value.flowApp
-        )
-        resultSet.onFailure {
-            handleFailure(it)
-            return@launch
-        }
-        _uiState.update {
-            it.copy(
-                flagAccess = true,
-                flagDialog = false,
-                flagProgress = false,
-            )
-        }
+            setNroOS(nroOS = uiState.value.nroOS, flowApp = uiState.value.flowApp).getOrThrow()
+        }.onSuccess {
+            updateState { copy(flagAccess = true, flagDialog = false, flagProgress = false) }
+        }.onFailureHandled(getClassAndMethod(), ::onError)
     }
 
-    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                errors = errors,
-                flagAccess = false
-            )
-        }
-    }
-
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
+    private fun onError(failure: String, error: Errors = Errors.EXCEPTION) = updateState {
+        copy(flagDialog = true, failure = failure, errors = error, flagAccess = false, flagProgress = false)
     }
 
 }

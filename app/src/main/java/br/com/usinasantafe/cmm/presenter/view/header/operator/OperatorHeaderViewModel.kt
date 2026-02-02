@@ -29,7 +29,7 @@ data class OperatorHeaderState(
 
     override fun copyWithStatus(status: UpdateStatusState): OperatorHeaderState =
         copy(status = status)
-}
+    }
 
 @HiltViewModel
 class OperatorHeaderViewModel @Inject constructor(
@@ -41,43 +41,28 @@ class OperatorHeaderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OperatorHeaderState())
     val uiState = _uiState.asStateFlow()
 
-    private val state get() = _uiState.value
+    private val state get() = uiState.value
 
-    private fun updateUi(block: OperatorHeaderState.() -> OperatorHeaderState) {
+    private fun updateState(block: OperatorHeaderState.() -> OperatorHeaderState) {
         _uiState.update(block)
     }
 
-    fun setCloseDialog() = updateUi {
-        copy(status = status.copy(flagDialog = false, flagFailure = false))
-    }
+    fun setCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun setTextField(
-        text: String,
-        typeButton: TypeButton
-    ) {
+    fun setTextField(text: String, typeButton: TypeButton) {
         when (typeButton) {
-            TypeButton.NUMERIC -> updateUi { copy(regColab = addTextField(regColab, text)) }
-            TypeButton.CLEAN -> updateUi { copy(regColab = clearTextField(regColab)) }
-            TypeButton.OK -> validateAndSetOperator()
+            TypeButton.NUMERIC -> updateState { copy(regColab = addTextField(regColab, text)) }
+            TypeButton.CLEAN -> updateState { copy(regColab = clearTextField(regColab)) }
+            TypeButton.OK -> validateAndSet()
             TypeButton.UPDATE -> {
-                viewModelScope.launch {
-                    updateAllDatabase().collect { stateUpdate ->
-                        _uiState.value = stateUpdate
-                    }
-                }
+                viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
             }
         }
     }
 
-    private fun validateAndSetOperator() {
+    private fun validateAndSet() {
         if (state.regColab.isBlank()) {
-            updateUi {
-                withFailure(
-                    getClassAndMethod(),
-                    "Field Empty!",
-                    Errors.FIELD_EMPTY
-                )
-            }
+            updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
             return
         }
         setRegOperatorHeader()
@@ -89,7 +74,7 @@ class OperatorHeaderViewModel @Inject constructor(
             if (check) setRegOperator(uiState.value.regColab).getOrThrow()
             check
         }.onSuccess { check ->
-            updateUi {
+            updateState {
                 copy(
                     flagAccess = check,
                     status = status.copy(
@@ -100,9 +85,7 @@ class OperatorHeaderViewModel @Inject constructor(
                 )
             }
         }.onFailure { throwable ->
-            _uiState.update {
-                it.withFailure(getClassAndMethod(), throwable)
-            }
+            updateState { withFailure(getClassAndMethod(), throwable) }
         }
     }
 
@@ -114,7 +97,5 @@ class OperatorHeaderViewModel @Inject constructor(
             copyStateWithStatus = { state, status -> state.copy(status = status) },
             classAndMethod = getClassAndMethod(),
         )
-
-
 
 }

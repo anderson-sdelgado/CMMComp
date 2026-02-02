@@ -8,8 +8,10 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.collectUpdateStep
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.withFailure
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,98 +43,43 @@ class TurnListHeaderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TurnListHeaderState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(
-                status = it.status.copy(
-                    flagDialog = false
-                ),
-            )
-        }
+    private fun updateState(block: TurnListHeaderState.() -> TurnListHeaderState) {
+        _uiState.update(block)
     }
 
+    fun setCloseDialog()  = updateState { copy(status = status.copy(flagDialog = false)) }
+
     fun turnList() = viewModelScope.launch {
-        val result = listTurn()
-        result.onFailure { itThrowable ->
-            _uiState.update {
-                it.copy(
-                    status = it.status.withFailure(
-                        getClassAndMethod(),
-                        itThrowable
-                    )
-                )
-            }
-            return@launch
-        }
-        val list = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                turnList = list
-            )
+        runCatching {
+            listTurn().getOrThrow()
+        }.onSuccess {
+            updateState { copy(turnList = it) }
+        }.onFailure { throwable ->
+            updateState { withFailure(getClassAndMethod(), throwable) }
         }
     }
 
     fun setIdTurnHeader(id: Int) = viewModelScope.launch {
-        val result = setIdTurn(id)
-        result.onFailure { itThrowable ->
-            _uiState.update {
-                it.copy(
-                    status = it.status.withFailure(
-                        getClassAndMethod(),
-                        itThrowable
-                    )
-                )
-            }
-            return@launch
-        }
-        _uiState.update {
-            it.copy(
-                flagAccess = true
-            )
+        runCatching {
+            setIdTurn(id).getOrThrow()
+        }.onSuccess {
+            updateState { copy(flagAccess = true) }
+        }.onFailure { throwable ->
+            updateState { withFailure(getClassAndMethod(), throwable) }
         }
     }
 
     fun updateDatabase() = viewModelScope.launch {
-        viewModelScope.launch {
-            updateAllDatabase().collect { stateUpdate ->
-                _uiState.value = stateUpdate
-            }
-        }
+        viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
     }
 
-    fun updateAllDatabase(): Flow<TurnListHeaderState> = flow {
-        val size = 4f
-
-        val steps = listOf(
-            updateTableTurn(size, 1f),
+    suspend fun updateAllDatabase(): Flow<TurnListHeaderState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableTurn(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(
-                classAndMethod = getClassAndMethod(),
-                currentStatus = _uiState.value.status
-
-            ) {
-                emit(
-                    _uiState.value.copy(
-                        status = it
-                    )
-                )
-            }
-            if (!ok) return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                status = _uiState.value.status.copy(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
-                )
-            )
-        )
-    }
 
 }

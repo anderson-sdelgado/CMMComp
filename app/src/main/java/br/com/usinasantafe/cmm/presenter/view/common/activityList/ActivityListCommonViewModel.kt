@@ -12,6 +12,9 @@ import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,38 +29,12 @@ import javax.inject.Inject
 data class ActivityListCommonState(
     val flowApp: FlowApp = FlowApp.HEADER_INITIAL,
     val activityList: List<Activity> = emptyList(),
-    val flagDialog: Boolean = false,
-    val failure: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<ActivityListCommonState> {
 
-fun UpdateStatusState.toActivity(
-    classAndMethod: String,
-    current: ActivityListCommonState
-): ActivityListCommonState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): ActivityListCommonState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -73,50 +50,37 @@ class ActivityListCommonViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ActivityListCommonState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private val state get() = uiState.value
+
+    private fun updateState(block: ActivityListCommonState.() -> ActivityListCommonState) {
+        _uiState.update(block)
     }
 
-    init {
-        _uiState.update {
-            it.copy(
-                flowApp = FlowApp.entries[flowApp]
-            )
-        }
-    }
+    fun setCloseDialog() = updateState { copy(status = status.copy(flagDialog = false)) }
+
+    init { updateState { copy(flowApp = FlowApp.entries[this@ActivityListCommonViewModel.flowApp]) } }
 
     fun activityList() = viewModelScope.launch {
-        val result = listActivity()
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+        runCatching {
+            listActivity().getOrThrow()
         }
-        val list = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                activityList = list
-            )
-        }
+            .onSuccess { updateState { copy(activityList = it) } }
+            .onFailure {  throwable ->
+                updateState { withFailure(getClassAndMethod(), throwable) }
+            }
     }
 
     fun setIdActivity(id: Int) = viewModelScope.launch {
-        val result = setIdActivityCommon(
-            id = id,
-            flowApp = uiState.value.flowApp
-        )
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+        runCatching {
+            setIdActivityCommon(
+                id = id,
+                flowApp = uiState.value.flowApp
+            ).getOrThrow()
         }
-        val flowApp = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                flowApp = flowApp,
-                flagAccess = true
-            )
-        }
+            .onSuccess { updateState { copy(flowApp = it, flagAccess = true) } }
+            .onFailure {  throwable ->
+                updateState { withFailure(getClassAndMethod(), throwable) }
+            }
     }
 
     fun updateDatabase() = viewModelScope.launch {
@@ -127,76 +91,13 @@ class ActivityListCommonViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (ActivityListCommonState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toActivity(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
-    fun updateAllDatabase(): Flow<ActivityListCommonState> = flow {
-        val size = 4f
-
-        val steps = listOf(
-            updateTableActivity(size, 1f),
+    suspend fun updateAllDatabase(): Flow<ActivityListCommonState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableActivity(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): ActivityListCommonState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): ActivityListCommonState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
-    }
 
 }

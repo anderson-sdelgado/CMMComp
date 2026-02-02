@@ -11,7 +11,10 @@ import br.com.usinasantafe.cmm.presenter.theme.clearTextFieldComma
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.handleFailure
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,109 +45,52 @@ class HourMeterHeaderViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HourMeterHeaderState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private val state get() = uiState.value
+
+    private fun updateState(block: HourMeterHeaderState.() -> HourMeterHeaderState) {
+        _uiState.update(block)
     }
 
-    init {
-        _uiState.update {
-            it.copy(
-                flowApp = FlowApp.entries[flowApp]
-            )
-        }
-    }
+    fun setCloseDialog() = updateState { copy(flagDialog = false) }
 
-    fun setTextField(
-        text: String,
-        typeButton: TypeButton
-    ) {
+    init { updateState { copy(flowApp = FlowApp.entries[this@HourMeterHeaderViewModel.flowApp]) }}
+
+    fun setTextField(text: String, typeButton: TypeButton) {
         when (typeButton) {
-            TypeButton.NUMERIC -> {
-                val measure = addTextFieldComma(uiState.value.hourMeter, text)
-                _uiState.update {
-                    it.copy(hourMeter = measure)
-                }
-            }
-
-            TypeButton.CLEAN -> {
-                val measure = clearTextFieldComma(uiState.value.hourMeter)
-                _uiState.update {
-                    it.copy(hourMeter = measure)
-                }
-            }
-
-            TypeButton.OK -> {
-                if (uiState.value.hourMeter == "0,0") {
-                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
-                    return
-                }
-                checkHourMeterHeader()
-            }
-
+            TypeButton.NUMERIC -> updateState { copy(hourMeter = addTextFieldComma(hourMeter, text)) }
+            TypeButton.CLEAN -> updateState { copy(hourMeter = clearTextFieldComma(hourMeter)) }
+            TypeButton.OK -> validateAndSet()
             TypeButton.UPDATE -> {}
         }
     }
 
-    private fun checkHourMeterHeader() =
-        viewModelScope.launch {
-            val result = checkHourMeter(uiState.value.hourMeter)
-            result.onFailure {
-                handleFailure(it)
-                return@launch
-            }
-            val model = result.getOrNull()!!
-            if(!model.check){
-                _uiState.update {
-                    it.copy(
-                        flagDialog = true,
-                        flagAccess = false,
-                        errors = Errors.INVALID,
-                        hourMeterOld = model.measureBD
-                    )
-                }
-                return@launch
-            }
-            setHourMeterHeader()
-        }
 
+    private fun validateAndSet() {
+        if (uiState.value.hourMeter == "0,0") {
+            handleFailure("Field Empty!", getClassAndMethod()) { onError(it, Errors.FIELD_EMPTY) }
+            return
+        }
+        setHourMeterHeader()
+    }
     fun setHourMeterHeader() =
         viewModelScope.launch {
-            val resultSet = setHourMeter(
-                hourMeter = uiState.value.hourMeter,
-                flowApp = uiState.value.flowApp
-            )
-            resultSet.onFailure {
-                handleFailure(it)
-                return@launch
-            }
-            val flowApp = resultSet.getOrNull()!!
-            _uiState.update {
-                it.copy(
-                    flagDialog = false,
-                    flagAccess = true,
-                    flowApp = flowApp
-                )
-            }
+            runCatching {
+                val model = checkHourMeter(state.hourMeter).getOrThrow()
+                if(!model.check){
+                    updateState {
+                        copy(flagDialog = true, flagAccess = false, errors = Errors.INVALID, hourMeterOld = model.measureBD)
+                    }
+                    return@launch
+                }
+                setHourMeter(
+                    hourMeter = uiState.value.hourMeter,
+                    flowApp = uiState.value.flowApp
+                ).getOrThrow()
+            }.onSuccess {
+                updateState { copy(flagAccess = true, flagDialog = false, flowApp = it) }
+            }.onFailureHandled(getClassAndMethod(), ::onError)
         }
 
-    private fun handleFailure(failure: String, errors: Errors = Errors.EXCEPTION) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                errors = errors,
-                flagAccess = false,
-            )
-        }
-    }
-
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
-    }
+    private fun onError(failure: String, errors: Errors = Errors.EXCEPTION) = updateState { copy(flagDialog = true, failure = failure, errors = errors) }
 
 }

@@ -310,7 +310,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.onButtonReturn -> MenuNoteViewModel.checkHasNote -> CheckHasNote -> java.lang.Exception"
+                "MenuNoteViewModel.onButtonReturn -> CheckHasNote -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -333,7 +333,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.onButtonReturn -> checkHasNote -> Header without note!"
+                "MenuNoteViewModel.onButtonReturn -> Header without note!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -577,7 +577,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.checkHasOpenMechanic -> CheckHasNoteOpenMechanic -> java.lang.Exception"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> CheckHasNoteOpenMechanic -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -636,7 +636,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> Note mechanic open!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> Note mechanic NOT open!"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -690,7 +690,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleFinishMechanical -> MenuNoteViewModel.checkHasOpenMechanic -> CheckHasNoteOpenMechanic -> java.lang.Exception"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleFinishMechanical -> CheckHasNoteOpenMechanic -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
@@ -933,7 +933,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleImplement -> MenuNoteViewModel.checkHasNote -> CheckHasNoteMotoMec -> java.lang.Exception"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleImplement -> CheckHasNoteMotoMec -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,
@@ -1080,7 +1080,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleNoteMechanical -> Type Last Note is WORK!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleNoteMechanical -> Without Note!"
             )
             assertEquals(
                 viewModel.uiState.value.flagDialog,
@@ -1515,7 +1515,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> PRE CEC without exit mill!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> Without exit mill in PRE CEC!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -1552,7 +1552,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> PRE CEC with arrival field!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionECM -> MenuNoteViewModel.handleFieldArrival -> With arrival field in PRE CEC!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -2185,7 +2185,7 @@ class MenuNoteViewModelTest {
             viewModel.setSelection(1)
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPCOMP -> MenuNoteViewModel.handleShowInfoWill -> Without will!"
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPCOMP -> MenuNoteViewModel.handleShowInfoWill -> Without loading composting!"
             )
             assertEquals(
                 viewModel.uiState.value.errors,

@@ -16,17 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.lib.errors
-import br.com.usinasantafe.cmm.lib.msg
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressDesign
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun OperatorHeaderScreen(
@@ -41,15 +40,8 @@ fun OperatorHeaderScreen(
                 regColab = uiState.regColab,
                 setTextField = viewModel::setTextField,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.status.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagFailure = uiState.status.flagFailure,
-                errors = uiState.status.errors,
-                failure = uiState.status.failure,
-                flagProgress = uiState.status.flagProgress,
-                levelUpdate = uiState.status.levelUpdate,
-                tableUpdate = uiState.status.tableUpdate,
-                currentProgress = uiState.status.currentProgress,
+                status = uiState.status,
                 onNavInitialMenu = onNavInitialMenu,
                 onNavEquip = onNavEquip,
                 modifier = Modifier.padding(innerPadding)
@@ -63,15 +55,8 @@ fun OperatorHeaderContent(
     regColab: String,
     setTextField: (String, TypeButton) -> Unit,
     flagAccess: Boolean,
-    flagDialog: Boolean,
     setCloseDialog: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    currentProgress: Float,
+    status: UpdateStatusState,
     onNavInitialMenu: () -> Unit,
     onNavEquip: () -> Unit,
     modifier: Modifier = Modifier
@@ -96,28 +81,14 @@ fun OperatorHeaderContent(
             onNavInitialMenu()
         }
 
-        if (flagDialog) {
-            val value = stringResource(id = R.string.text_title_operator)
 
-            val text =
-                if (flagFailure) {
-                    errors(errors, failure, value)
-                } else {
-                    msg(levelUpdate, failure, tableUpdate)
-                }
-
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_operator))
         }
 
-        if (flagProgress) {
-            val msgProgress = msg(levelUpdate, failure, tableUpdate)
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
-            )
+
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
     }
 
@@ -137,15 +108,17 @@ fun OperatorHeaderPagePreview() {
                 regColab = "",
                 setTextField = { _, _ -> },
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavInitialMenu = {},
                 onNavEquip = {},
                 modifier = Modifier.padding(innerPadding)
@@ -163,15 +136,17 @@ fun OperatorHeaderPagePreviewWithData() {
                 regColab = "19759",
                 setTextField = { _, _ -> },
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavInitialMenu = {},
                 onNavEquip = {},
                 modifier = Modifier.padding(innerPadding)
@@ -190,14 +165,16 @@ fun OperatorHeaderPagePreviewWithMsgEmpty() {
                 setTextField = { _, _ -> },
                 flagAccess = false,
                 setCloseDialog = {},
-                flagDialog = true,
-                flagFailure = true,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagDialog = true,
+                    flagFailure = true,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavInitialMenu = {},
                 onNavEquip = {},
                 modifier = Modifier.padding(innerPadding)
@@ -216,14 +193,16 @@ fun OperatorHeaderPagePreviewUpdate() {
                 setTextField = { _, _ -> },
                 flagAccess = false,
                 setCloseDialog = {},
-                flagDialog = false,
-                failure = "",
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "colab",
-                flagProgress = true,
-                currentProgress = 0.3333334f,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    failure = "",
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "colab",
+                    flagProgress = true,
+                    currentProgress = 0.3333334f,
+                ),
                 onNavInitialMenu = {},
                 onNavEquip = {},
                 modifier = Modifier.padding(innerPadding)

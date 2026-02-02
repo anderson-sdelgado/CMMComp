@@ -24,7 +24,6 @@ import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.sizeUpdate
@@ -33,9 +32,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class ConfigState(
@@ -69,6 +68,7 @@ class ConfigViewModel @Inject constructor(
     private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
+    private val setFinishUpdateAllTable: SetFinishUpdateAllTable
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ConfigState())
@@ -76,20 +76,20 @@ class ConfigViewModel @Inject constructor(
 
     private val state get() = _uiState.value
 
-    private fun updateUi(block: ConfigState.() -> ConfigState) {
+    private fun updateState(block: ConfigState.() -> ConfigState) {
         _uiState.update(block)
     }
 
-    fun setCloseDialog() = updateUi {
+    fun setCloseDialog() = updateState {
         copy(status = status.copy(flagDialog = false, flagFailure = false))
     }
 
-    fun onNumberChanged(v: String) = updateUi { copy(number = v) }
-    fun onPasswordChanged(v: String) = updateUi { copy(password = v) }
-    fun onNroEquipChanged(v: String) = updateUi { copy(nroEquip = v) }
-    fun onCheckMotoMecChanged(v: Boolean) = updateUi { copy(checkMotoMec = v) }
+    fun onNumberChanged(v: String) = updateState { copy(number = v) }
+    fun onPasswordChanged(v: String) = updateState { copy(password = v) }
+    fun onNroEquipChanged(v: String) = updateState { copy(nroEquip = v) }
+    fun onCheckMotoMecChanged(v: Boolean) = updateState { copy(checkMotoMec = v) }
 
-    fun setConfigMain(version: String, app: String) = updateUi {
+    fun setConfigMain(version: String, app: String) = updateState {
         copy(version = version, app = app)
     }
 
@@ -97,7 +97,7 @@ class ConfigViewModel @Inject constructor(
         getConfigInternal().fold(
             onSuccess = { config ->
                 config?.let {
-                    updateUi {
+                    updateState {
                         copy(
                             number = it.number,
                             password = it.password,
@@ -120,7 +120,7 @@ class ConfigViewModel @Inject constructor(
 
     fun onSaveAndUpdate() {
         if (!uiState.value.isValid()) {
-            updateUi {
+            updateState {
                 copy(
                     status = status.copy(
                         flagDialog = true,
@@ -135,67 +135,95 @@ class ConfigViewModel @Inject constructor(
         viewModelScope.launch {
             token().collect { state ->
                 if (!state.status.flagFailure && state.status.currentProgress == 1f) {
-                    updateAllDatabase().collect { _uiState.value = it }
+                    updateAllDatabase().onCompletion {
+                        if(!state.status.flagFailure){
+                            setFinishUpdateAllTable().fold(
+                                onSuccess = {
+                                    emit(
+                                        state.copy(
+                                            status = state.status.copy(
+                                                tableUpdate = "",
+                                                flagDialog = true,
+                                                flagProgress = true,
+                                                flagFailure = false,
+                                                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                                                currentProgress = 1f
+                                            )
+                                        )
+                                    )
+                                },
+                                onFailure = {
+                                    val newState = state.withFailure(getClassAndMethod(), it, flagProgress = true)
+                                    emit(newState)
+                                    _uiState.value = newState
+                                }
+                            )
+                        }
+                    }.collect { _uiState.value = it }
                 }
             }
         }
     }
 
     fun token(): Flow<ConfigState> = flow {
+        with(state) {
+            runCatching {
+                val sizeToken = 3f
 
-        runCatching {
-        val sizeToken = 3f
-
-        emit(
-            state.copy(
-                status = state.status.copy(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.GET_TOKEN,
-                    currentProgress = percentage(1f, sizeToken)
+                emit(
+                    copy(
+                        status = status.copy(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.GET_TOKEN,
+                            currentProgress = percentage(1f, sizeToken)
+                        )
+                    )
                 )
-            )
-        )
 
-        val config = sendDataConfig(
-            number = state.number,
-            password = state.password,
-            nroEquip = state.nroEquip,
-            app = state.app,
-            version = state.version
-        ).getOrThrow()
+                val config =
+                    sendDataConfig(
+                        number = number,
+                        password = password,
+                        nroEquip = nroEquip,
+                        app = app,
+                        version = version
+                    ).getOrThrow()
 
-        emit(
-            state.copy(
-                status = state.status.copy(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE_TOKEN,
-                    currentProgress = percentage(2f, sizeToken)
-                )
-            )
-        )
-
-        saveDataConfig(
-            number = state.number,
-            password = state.password,
-            version = state.version,
-            app = state.app,
-            checkMotoMec = state.checkMotoMec,
-            idServ = config.idServ ?: 0,
-            equip = config.equip!!
-        ).getOrThrow()
-
-        }.onSuccess {
             emit(
-                state.copy(
-                    status = state.status.copy(
+                copy(
+                    status = status.copy(
                         flagProgress = true,
-                        currentProgress = 1f,
-                        levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL
+                        levelUpdate = LevelUpdate.SAVE_TOKEN,
+                        currentProgress = percentage(2f, sizeToken)
                     )
                 )
             )
-        }.onFailure {
-            emit(state.withFailure(getClassAndMethod(), it, Errors.TOKEN))
+
+            saveDataConfig(
+                number = number,
+                password = password,
+                version = version,
+                app = app,
+                checkMotoMec = checkMotoMec,
+                idServ = config.idServ ?: 0,
+                equip = config.equip!!
+            ).getOrThrow()
+
+            }.onSuccess {
+                emit(
+                    copy(
+                        status = status.copy(
+                            flagProgress = true,
+                            currentProgress = 1f,
+                            levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL
+                        )
+                    )
+                )
+            }.onFailure {
+                val newState = withFailure(getClassAndMethod(), it, Errors.TOKEN, flagProgress = true)
+                emit(newState)
+                _uiState.value = newState
+            }
         }
     }
 
@@ -206,6 +234,7 @@ class ConfigViewModel @Inject constructor(
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
             classAndMethod = getClassAndMethod(),
+            flagUpdateConfig = true
         )
 
     private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {

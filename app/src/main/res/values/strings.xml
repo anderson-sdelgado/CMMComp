@@ -42,7 +42,7 @@
     <string name="text_title_os">ORDEM DE SERVIÇO</string>
     <string name="text_title_activity">ATIVIDADE</string>
     <string name="text_title_measure">HORÍMETRO</string>
-    <string name="text_input_measure_invalid">O HODÔMETRO REGISTRADO %1$s É MENOR QUE O ANTERIOR DE %2$s. DESEJA MANTÊ-LO?</string>
+    <string name="text_input_hour_meter_invalid">O HODÔMETRO REGISTRADO %1$s É MENOR QUE O ANTERIOR DE %2$s. DESEJA MANTÊ-LO?</string>
     <string name="text_title_menu">MENU</string>
     <string name="text_title_descr_equip">%1$s</string>
     <string name="text_pattern_finish_header">FINALIZAR BOLETIM</string>

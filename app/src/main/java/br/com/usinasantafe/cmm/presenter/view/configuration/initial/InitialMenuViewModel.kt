@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.domain.usecases.common.CheckAccessInitial
 import br.com.usinasantafe.cmm.domain.usecases.config.GetStatusSend
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,59 +32,28 @@ class InitialMenuViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(InitialMenuState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private inline fun updateState(block: InitialMenuState.() -> InitialMenuState) {
+        _uiState.update(block)
     }
+
+    fun setCloseDialog() = updateState { copy(flagDialog = false) }
 
     fun recoverStatusSend() = viewModelScope.launch {
             runCatching {
                 getStatusSend().getOrThrow()
-            }.onSuccess { statusSend ->
-                _uiState.update {
-                    it.copy(
-                        statusSend = statusSend
-                    )
-                }
-            }.onFailure {
-                handleFailure(it)
-            }
+            }.onSuccess { updateState { copy(statusSend = it) }
+            }.onFailureHandled(getClassAndMethod(), ::onError)
         }
 
 
     fun checkAccess() = viewModelScope.launch {
         runCatching {
             checkAccessInitial().getOrThrow()
-        }.onSuccess { check ->
-            _uiState.update {
-                it.copy(
-                    flagDialog = !check,
-                    flagAccess = check,
-                    flagFailure = false,
-                )
-            }
-        }.onFailure {
-            handleFailure(it)
-        }
+        }.onSuccess { updateState { copy(flagDialog = !it, flagAccess = it) }
+        }.onFailureHandled(getClassAndMethod(), ::onError)
     }
 
-    private fun handleFailure(failure: String) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                flagAccess = false,
-                flagFailure = true
-            )
-        }
-    }
+    private fun onError(failure: String) = updateState { copy(flagDialog = true, failure = failure, flagFailure = true) }
 
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
-    }
 
 }
