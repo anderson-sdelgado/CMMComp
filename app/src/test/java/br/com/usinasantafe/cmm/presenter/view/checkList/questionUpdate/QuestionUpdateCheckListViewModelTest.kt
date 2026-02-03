@@ -46,15 +46,15 @@ class QuestionUpdateCheckListViewModelTest {
             )
             viewModel.checkUpdate()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "QuestionUpdateCheckListViewModel.checkUpdate -> CheckUpdateCheckList -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
         }
@@ -111,29 +111,33 @@ class QuestionUpdateCheckListViewModelTest {
             assertEquals(
                 result[0],
                 QuestionUpdateCheckListState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 QuestionUpdateCheckListState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "QuestionUpdateCheckListViewModel.updateAllDatabase -> UpdateTableItemCheckListByNroEquip -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "QuestionUpdateCheckListViewModel.updateAllDatabase -> UpdateTableItemCheckListByNroEquip -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "QuestionUpdateCheckListViewModel.updateAllDatabase -> UpdateTableItemCheckListByNroEquip -> java.lang.NullPointerException"
             )
         }
@@ -176,43 +180,51 @@ class QuestionUpdateCheckListViewModelTest {
             assertEquals(
                 result[0],
                 QuestionUpdateCheckListState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 QuestionUpdateCheckListState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(2f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(2f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 QuestionUpdateCheckListState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_item_check_list",
-                    currentProgress = percentage(3f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_item_check_list",
+                        currentProgress = percentage(3f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 QuestionUpdateCheckListState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
         }

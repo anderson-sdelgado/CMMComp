@@ -6,7 +6,9 @@ import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckLis
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
+import br.com.usinasantafe.cmm.presenter.view.header.equip.EquipHeaderState
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,79 +36,47 @@ class ItemCheckListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ItemCheckListState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private fun updateState(block: ItemCheckListState.() -> ItemCheckListState) {
+        _uiState.update(block)
     }
 
-    fun get(
-        pos: Int = 1
-    ) = viewModelScope.launch {
-        val result = getItemCheckList(pos)
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+    fun setCloseDialog()  = updateState { copy(flagDialog = false) }
+
+    fun get(pos: Int = 1) =
+        viewModelScope.launch {
+            runCatching {
+                getItemCheckList(pos).getOrThrow()
+            }
+                .onSuccess { model -> updateState { copy(pos = pos, id = model.id, descr = model.descr) } }
+                .onFailureHandled(getClassAndMethod(), ::onError)
         }
-        val model = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                pos = pos,
-                id = model.id,
-                descr = model.descr,
-            )
-        }
-    }
 
     fun ret() = viewModelScope.launch {
-        if(uiState.value.pos == 1) return@launch
-        val result = delLastRespItemCheckList()
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+        runCatching {
+            if(uiState.value.pos == 1) return@launch
+            delLastRespItemCheckList().getOrThrow()
         }
-        get(pos = uiState.value.pos - 1)
+            .onSuccess { get(pos = uiState.value.pos - 1) }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
-    fun set(
-        option: OptionRespCheckList
-    ) = viewModelScope.launch {
-        val result = setRespItemCheckList(
-            pos = uiState.value.pos,
-            id = uiState.value.id,
-            option = option
-        )
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+    fun set(option: OptionRespCheckList) =
+        viewModelScope.launch {
+            runCatching {
+                val check = setRespItemCheckList(
+                    pos = uiState.value.pos,
+                    id = uiState.value.id,
+                    option = option
+                ).getOrThrow()
+                if (check) {
+                    get(pos = uiState.value.pos + 1)
+                    return@launch
+                }
+            }
+                .onSuccess { updateState { copy(flagAccess = true) } }
+                .onFailureHandled(getClassAndMethod(), ::onError)
         }
-        val check = result.getOrNull()!!
-        if (check) {
-            get(pos = uiState.value.pos + 1)
-            return@launch
-        }
-        _uiState.update {
-            it.copy(
-                flagAccess = true,
-            )
-        }
-    }
 
-    private fun handleFailure(failure: String) {
-        val fail = "${getClassAndMethod()} -> $failure"
-        Timber.e(fail)
-        _uiState.update {
-            it.copy(
-                flagDialog = true,
-                failure = fail,
-                flagAccess = false
-            )
-        }
-    }
-
-    private fun handleFailure(error: Throwable) {
-        val failure = "${error.message} -> ${error.cause.toString()}"
-        handleFailure(failure)
-    }
+    private fun onError(failure: String) = updateState { copy(flagDialog = true, failure = failure) }
 
 }

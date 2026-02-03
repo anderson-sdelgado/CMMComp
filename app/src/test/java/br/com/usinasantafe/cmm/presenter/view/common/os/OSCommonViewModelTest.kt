@@ -335,7 +335,7 @@ class OSCommonViewModelTest {
                     )
                 )
             )
-            viewModel.getNroOS()
+            viewModel.get()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -365,7 +365,7 @@ class OSCommonViewModelTest {
                     )
                 )
             )
-            viewModel.getNroOS()
+            viewModel.get()
             assertEquals(
                 viewModel.uiState.value.nroOS,
                 "10000"

@@ -35,7 +35,7 @@ class EquipHeaderViewModel @Inject constructor(
 
     fun setCloseDialog()  = updateState { copy(flagDialog = false) }
 
-    fun getDescr() = viewModelScope.launch {
+    fun get() = viewModelScope.launch {
         runCatching {
             getDescrEquip().getOrThrow()
         }
@@ -43,7 +43,7 @@ class EquipHeaderViewModel @Inject constructor(
             .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
-    fun setIdEquipHeader() = viewModelScope.launch {
+    fun set() = viewModelScope.launch {
         runCatching {
             setIdEquip().getOrThrow()
         }

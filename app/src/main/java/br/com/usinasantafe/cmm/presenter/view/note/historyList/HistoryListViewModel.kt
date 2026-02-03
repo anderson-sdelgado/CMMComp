@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListHistory
 import br.com.usinasantafe.cmm.presenter.model.ItemHistoryScreenModel
+import br.com.usinasantafe.cmm.presenter.view.header.equip.EquipHeaderState
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,34 +29,21 @@ class HistoryListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HistoryListState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private fun updateState(block: HistoryListState.() -> HistoryListState) {
+        _uiState.update(block)
     }
 
+    fun setCloseDialog()  = updateState { copy(flagDialog = false) }
+
     fun recoverList() = viewModelScope.launch {
-        val result = listHistory()
-        if(result.isFailure) {
-            val error = result.exceptionOrNull()!!
-            val failure =
-                "${getClassAndMethod()} -> ${error.message} -> ${error.cause.toString()}"
-            Timber.e(failure)
-            _uiState.update {
-                it.copy(
-                    flagDialog = true,
-                    failure = failure
-                )
-            }
-            return@launch
+        runCatching {
+            listHistory().getOrThrow()
         }
-        val historyList = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                historyList = historyList
-            )
-        }
+            .onSuccess { updateState { copy(historyList = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
+
+    private fun onError(failure: String) = updateState { copy(flagDialog = true, failure = failure) }
 
 
 }

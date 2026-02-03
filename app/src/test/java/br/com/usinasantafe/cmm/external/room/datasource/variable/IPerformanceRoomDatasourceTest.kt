@@ -118,6 +118,7 @@ class IPerformanceRoomDatasourceTest {
                 null
             )
         }
+
     @Test
     fun `insert - Check insert data if data is different`() =
         runTest {
@@ -173,4 +174,81 @@ class IPerformanceRoomDatasourceTest {
                 null
             )
         }
+
+    @Test
+    fun `listByIdHeader - Check return empty list if table is empty`() =
+        runTest {
+            val result = datasource.listByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return empty list if table not have data fielded`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.listByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return list if table have data fielded`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123456,
+                    value = 10.0
+                )
+            )
+            val result = datasource.listByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val list = result.getOrNull()!!
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.idHeader,
+                2
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.value,
+                10.0
+            )
+        }
+
+
 }

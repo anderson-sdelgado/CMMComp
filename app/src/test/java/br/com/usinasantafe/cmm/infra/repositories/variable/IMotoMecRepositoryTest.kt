@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
@@ -2004,7 +2005,7 @@ class IMotoMecRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.noteListByIdHeader(1)
+            val result = repository.listNoteByIdHeader(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -2048,7 +2049,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(modelList)
             )
-            val result = repository.noteListByIdHeader(1)
+            val result = repository.listNoteByIdHeader(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -2605,6 +2606,69 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 model.nroOS,
                 123456
+            )
+        }
+
+    @Test
+    fun `listPerformanceByIdHeader - Check return failure if have error in PerformanceRoomDatasource listByIdHeader`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPerformanceRoomDatasource.listByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listPerformanceByIdHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.listPerformanceByIdHeader -> IPerformanceRoomDatasource.listByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listPerformanceByIdHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        PerformanceRoomModel(
+                            idHeader = 1,
+                            nroOS = 1,
+                            value = 10.0,
+                            dateHour = Date(1750422691)
+                        )
+                    )
+                )
+            )
+            val result = repository.listPerformanceByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Performance(
+                        id = 1,
+                        idHeader = 1,
+                        nroOS = 1,
+                        value = 10.0,
+                        dateHour = Date(1750422691)
+                    )
+                )
             )
         }
 

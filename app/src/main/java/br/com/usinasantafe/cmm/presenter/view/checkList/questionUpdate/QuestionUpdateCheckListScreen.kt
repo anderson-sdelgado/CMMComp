@@ -35,6 +35,9 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun QuestionUpdateCheckListScreen(
@@ -54,14 +57,7 @@ fun QuestionUpdateCheckListScreen(
                 updateDatabase = viewModel::updateDatabase,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.flagDialog,
-                failure = uiState.failure,
-                flagProgress = uiState.flagProgress,
-                currentProgress = uiState.currentProgress,
-                levelUpdate = uiState.levelUpdate,
-                tableUpdate = uiState.tableUpdate,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
+                status = uiState.status,
                 onNavItemCheckList = onNavItemCheckList,
                 modifier = Modifier.padding(innerPadding)
             )
@@ -75,14 +71,7 @@ fun QuestionUpdateCheckListContent(
     updateDatabase: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
-    flagDialog: Boolean,
-    failure: String,
-    flagProgress: Boolean,
-    currentProgress: Float,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    flagFailure: Boolean,
-    errors: Errors,
+    status: UpdateStatusState,
     onNavItemCheckList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -194,52 +183,13 @@ fun QuestionUpdateCheckListContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text = if (flagFailure) {
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            } else {
-                when(levelUpdate){
-                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                    null -> failure
-                }
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-                setActionButtonOK = onNavItemCheckList
-            )
+
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_operator))
         }
 
-        if (flagProgress) {
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress,
-            )
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
     }
 
@@ -261,14 +211,16 @@ fun QuestionUpdateCheckListPagePreviewCheckUpdate() {
                 updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = false,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0.0f,
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0.0f,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                ),
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -286,14 +238,16 @@ fun QuestionUpdateCheckListPagePreviewMsgUpdate() {
                 updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = false,
-                failure = "",
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0.0f,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    failure = "",
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0.0f,
+                ),
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -311,14 +265,16 @@ fun QuestionUpdateCheckListPagePreviewMsgFailure() {
                 updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = true,
-                failure = "Failure",
-                flagFailure = true,
-                errors = Errors.EXCEPTION,
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0.0f,
+                status = UpdateStatusState(
+                    flagDialog = true,
+                    failure = "Failure",
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0.0f,
+                ),
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -336,14 +292,16 @@ fun QuestionUpdateCheckListPagePreviewMsgFailureUpdate() {
                 updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = true,
-                failure = "Failure",
-                flagFailure = true,
-                errors = Errors.UPDATE,
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0.0f,
+                status = UpdateStatusState(
+                    flagDialog = true,
+                    failure = "Failure",
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0.0f,
+                ),
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )
@@ -362,14 +320,16 @@ fun QuestionUpdateCheckListPagePreviewUpdate() {
                 updateDatabase = {},
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = false,
-                failure = "",
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                flagProgress = true,
-                levelUpdate = LevelUpdate.SAVE,
-                tableUpdate = "tb_item_check_list",
-                currentProgress = 0.333f,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    failure = "",
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_check_list",
+                    currentProgress = 0.333f,
+                ),
                 onNavItemCheckList = {},
                 modifier = Modifier.padding(innerPadding)
             )

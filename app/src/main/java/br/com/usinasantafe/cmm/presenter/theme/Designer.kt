@@ -36,7 +36,6 @@ import br.com.usinasantafe.cmm.lib.STOP
 import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.errors
 import br.com.usinasantafe.cmm.lib.msg
-import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
@@ -262,22 +261,6 @@ fun TextFieldConfigDesign(
 }
 
 @Composable
-fun TextFieldPasswordConfigDesign(
-    value: String,
-    onValueChange: (String) -> Unit,
-    tag: String = ""
-) {
-    return OutlinedTextField(
-        textStyle = TextStyle(
-            fontSize = 24.sp
-        ),
-        value = value,
-        onValueChange = onValueChange,
-        modifier = Modifier.fillMaxWidth().testTag(tag)
-    )
-}
-
-@Composable
 fun TextButtonDesign(text: String) {
     return Text(
         textAlign = TextAlign.Center,
@@ -483,6 +466,21 @@ fun ButtonNumericDesign(
         shape = RoundedCornerShape(10.dp)
     ) {
         text()
+    }
+}
+
+@Composable
+fun ButtonMaxWidth(
+    id: Int,
+    set: () -> Unit
+) {
+    return Button(
+        onClick = { set() },
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        TextButtonDesign(
+            text = stringResource(id = id)
+        )
     }
 }
 

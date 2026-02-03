@@ -26,6 +26,7 @@ import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -94,8 +95,10 @@ class ConfigViewModel @Inject constructor(
     }
 
     fun returnDataConfig() = viewModelScope.launch {
-        getConfigInternal().fold(
-            onSuccess = { config ->
+        runCatching {
+            getConfigInternal().getOrThrow()
+        }
+            .onSuccess { config ->
                 config?.let {
                     updateState {
                         copy(
@@ -106,13 +109,8 @@ class ConfigViewModel @Inject constructor(
                         )
                     }
                 }
-            },
-            onFailure = { throwable ->
-                _uiState.update {
-                    it.withFailure(getClassAndMethod(), throwable)
-                }
             }
-        )
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     private fun ConfigState.isValid() =

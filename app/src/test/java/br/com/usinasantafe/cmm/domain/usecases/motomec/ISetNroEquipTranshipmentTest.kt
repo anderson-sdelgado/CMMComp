@@ -33,7 +33,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -68,7 +68,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -108,7 +108,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -153,7 +153,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -194,7 +194,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(Unit)
             )
             val result = usecase(
-                nroEquipTranshipment = "20df0",
+                nroEquip = "20df0",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -245,7 +245,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -300,7 +300,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -360,7 +360,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -428,7 +428,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -501,7 +501,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -570,7 +570,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(Unit)
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(

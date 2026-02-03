@@ -16,9 +16,10 @@ data class PerformanceRoomModel(
     val dateHour: Date = Date()
 )
 
-fun Performance.entityToRoomModel(): PerformanceRoomModel {
+fun PerformanceRoomModel.roomModelToEntity(): Performance {
     return with(this) {
-        PerformanceRoomModel(
+        Performance(
+            id = this.id!!,
             idHeader = this.idHeader,
             nroOS = this.nroOS,
             value = this.value,

@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 interface SetNroEquipTranshipment {
     suspend operator fun invoke(
-        nroEquipTranshipment: String,
+        nroEquip: String,
         flowApp: FlowApp
     ): EmptyResult
 }
@@ -22,7 +22,7 @@ class ISetNroEquipTranshipment @Inject constructor(
     private val functionActivityRepository: FunctionActivityRepository
 ): SetNroEquipTranshipment {
     override suspend fun invoke(
-        nroEquipTranshipment: String,
+        nroEquip: String,
         flowApp: FlowApp
     ): EmptyResult =
         call(getClassAndMethod()) {
@@ -35,7 +35,7 @@ class ISetNroEquipTranshipment @Inject constructor(
             }
 
             val nroEquipTranshipmentLong = runCatching {
-                nroEquipTranshipment.toLong()
+                nroEquip.toLong()
             }.getOrElse { e ->
                 throw Exception(::toLong.name, e)
             }

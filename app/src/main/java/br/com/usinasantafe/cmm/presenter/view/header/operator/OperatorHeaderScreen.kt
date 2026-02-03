@@ -81,11 +81,9 @@ fun OperatorHeaderContent(
             onNavInitialMenu()
         }
 
-
         if (status.flagDialog) {
             MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_operator))
         }
-
 
         if (status.flagProgress) {
             ProgressUpdate(status)

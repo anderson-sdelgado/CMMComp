@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.utils
 
+import br.com.usinasantafe.cmm.lib.ERROR_FIELD_EMPTY
 import br.com.usinasantafe.cmm.lib.ERROR_HEADER_WITHOUT_NOTE
 import br.com.usinasantafe.cmm.lib.ERROR_NEED_COUPLING_TRAILER
 import br.com.usinasantafe.cmm.lib.ERROR_NEED_UNCOUPLING_TRAILER
@@ -124,6 +125,7 @@ inline fun handleFailure(
 
 fun failure(error: Errors): String {
     return when(error){
+        Errors.FIELD_EMPTY -> ERROR_FIELD_EMPTY
         Errors.HEADER_EMPTY -> ERROR_HEADER_WITHOUT_NOTE
         Errors.NOTE_MECHANICAL_OPEN -> ERROR_NOTE_MECHANIC
         Errors.WITHOUT_NOTE_TRANSHIPMENT -> ERROR_WITHOUT_NOTE_OR_LAST

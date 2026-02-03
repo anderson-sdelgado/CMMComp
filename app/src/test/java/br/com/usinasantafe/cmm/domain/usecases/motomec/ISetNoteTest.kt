@@ -10,6 +10,8 @@ import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -293,11 +295,6 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.setNroOSNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
                 resultFailure(
@@ -315,6 +312,7 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
+            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -356,16 +354,6 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.setNroOSNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.setIdStop(1)
             ).thenReturn(
                 resultFailure(
@@ -383,6 +371,8 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
+            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -424,21 +414,6 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.setNroOSNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdStop(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.saveNote(1)
             ).thenReturn(
                 resultFailure(
@@ -456,6 +431,9 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
+            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
+            verify(motoMecRepository, atLeastOnce()).setIdStop(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -498,21 +476,6 @@ class ISetNoteTest {
             )
             whenever(
                 motoMecRepository.setNroOSNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdStop(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.saveNote(1)
             ).thenReturn(
                 Result.success(Unit)
             )

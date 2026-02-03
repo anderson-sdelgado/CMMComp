@@ -21,4 +21,9 @@ class IPerformanceRoomDatasource @Inject constructor(
             if (!resultHas) performanceDao.insert(model)
         }
 
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<PerformanceRoomModel>> =
+        result(getClassAndMethod()) {
+            performanceDao.listByIdHeader(idHeader)
+        }
+
 }

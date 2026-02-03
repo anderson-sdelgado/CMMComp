@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,20 +27,20 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemPerformanceListDesign
-import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 
 @Composable
 fun PerformanceListScreen(
     viewModel: PerformanceListViewModel = hiltViewModel(),
     onNavMenuNote: () -> Unit,
+    onNavPerformance: (id: Int) -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
 
             LaunchedEffect(Unit) {
                 viewModel.performanceList()
@@ -52,6 +51,8 @@ fun PerformanceListScreen(
                 setCloseDialog = viewModel::setCloseDialog,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
+                onNavMenuNote = onNavMenuNote,
+                onNavPerformance = onNavPerformance,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -64,6 +65,8 @@ fun PerformanceListContent(
     setCloseDialog: () -> Unit,
     flagDialog: Boolean,
     failure: String,
+    onNavMenuNote: () -> Unit,
+    onNavPerformance: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -72,7 +75,7 @@ fun PerformanceListContent(
     ) {
         TitleDesign(
             text = stringResource(
-                id = R.string.text_title_performance
+                id = R.string.text_title_performance_list
             )
         )
         if (performanceList.isEmpty()) {
@@ -105,22 +108,13 @@ fun PerformanceListContent(
                     ItemPerformanceListDesign(
                         nroOS = item.nroOS,
                         value = item.value,
-                        setActionItem = {},
+                        setActionItem = { onNavPerformance(item.id) },
                         font = 26
                     )
                 }
             }
         }
-        Button(
-            onClick = {},
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_pattern_return
-                )
-            )
-        }
+        ButtonMaxWidth(R.string.text_pattern_return) { onNavMenuNote() }
         BackHandler {}
 
         if (flagDialog) {
@@ -146,6 +140,8 @@ fun PerformanceListPagePreview() {
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
+                onNavMenuNote = {},
+                onNavPerformance = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -173,6 +169,8 @@ fun PerformanceListPagePreviewWithData() {
                 setCloseDialog = {},
                 flagDialog = false,
                 failure = "",
+                onNavMenuNote = {},
+                onNavPerformance = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -200,6 +198,8 @@ fun PerformanceListPagePreviewFailure() {
                 setCloseDialog = {},
                 flagDialog = true,
                 failure = "Failure",
+                onNavMenuNote = {},
+                onNavPerformance = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

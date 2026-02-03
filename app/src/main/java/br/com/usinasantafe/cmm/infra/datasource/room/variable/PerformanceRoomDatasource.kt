@@ -5,4 +5,5 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface PerformanceRoomDatasource {
     suspend fun insert(model: PerformanceRoomModel): EmptyResult
+    suspend fun listByIdHeader(idHeader: Int): Result<List<PerformanceRoomModel>>
 }

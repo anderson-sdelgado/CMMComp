@@ -200,3 +200,14 @@ interface UiStateWithStatus<T> {
             )
         )
 }
+
+fun <T : UiStateWithStatus<T>> Result<*>.onFailureUpdate(
+    classAndMethod: String,
+    updateState: ((T.() -> T)) -> Unit
+) {
+    onFailure { failure ->
+        updateState {
+            withFailure(classAndMethod, failure)
+        }
+    }
+}

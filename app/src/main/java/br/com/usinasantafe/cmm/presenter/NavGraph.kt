@@ -38,7 +38,9 @@ import br.com.usinasantafe.cmm.presenter.view.note.menu.MenuNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.note.stopList.StopListNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Routes.MOTOR_PUMP_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.view.header.motorPump.MotorPumpScreen
 import br.com.usinasantafe.cmm.presenter.view.note.transhipment.TranshipmentScreen
 
 @Composable
@@ -219,6 +221,17 @@ fun NavigationGraph(
             )
         }
 
+        composable(MOTOR_PUMP_ROUTE) {
+            MotorPumpScreen(
+                onNavHourMeter = {
+                    navActions.navigateToHourMeterHeader()
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+            )
+        }
+
         ////////////////////////////////////////////////////////////////////
 
         /////////////////////////// Note ///////////////////////////////////
@@ -245,6 +258,9 @@ fun NavigationGraph(
                         flowApp = FlowApp.TRANSHIPMENT.ordinal
                     )
                 },
+                onNavPerformanceList = {
+                    navActions.navigatePerformanceList()
+                },
                 onNavListReel = {},
                 onNavTrailer = {},
                 onNavOSListFertigation = {},
@@ -254,7 +270,6 @@ fun NavigationGraph(
                 onNavEquipTire = {},
                 onNavInfoLocalSugarcaneLoading = {},
                 onNavUncouplingTrailer = {},
-                onNavPerformanceList = {},
                 onNavHistory = {},
                 onNavProduct = {},
                 onNavWill = {},

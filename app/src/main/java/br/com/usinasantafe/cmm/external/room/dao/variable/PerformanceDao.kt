@@ -18,4 +18,7 @@ interface PerformanceDao {
     @Query("SELECT EXISTS(SELECT 1 FROM $TB_PERFORMANCE WHERE idHeader = :idHeader AND nroOS = :nroOS)")
     suspend fun hasByIdHeaderAndNroOS(idHeader: Int, nroOS: Int): Boolean
 
+    @Query("SELECT * FROM $TB_PERFORMANCE WHERE idHeader = :idHeader")
+    suspend fun listByIdHeader(idHeader: Int): List<PerformanceRoomModel>
+
 }

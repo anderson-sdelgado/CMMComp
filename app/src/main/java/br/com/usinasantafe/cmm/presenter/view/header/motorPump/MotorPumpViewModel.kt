@@ -12,7 +12,11 @@ import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,37 +30,11 @@ import javax.inject.Inject
 data class MotorPumpState(
     val nroEquip: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val flagDialog: Boolean = false,
-    val failure: String = "",
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<MotorPumpState> {
 
-fun UpdateStatusState.toMotorPump(
-    classAndMethod: String,
-    current: MotorPumpState
-): MotorPumpState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): MotorPumpState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -69,151 +47,63 @@ class MotorPumpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(MotorPumpState())
     val uiState = _uiState.asStateFlow()
 
-    private fun updateUi(block: MotorPumpState.() -> MotorPumpState) {
+    private val state get() = uiState.value
+
+    private fun updateState(block: MotorPumpState.() -> MotorPumpState) {
         _uiState.update { it.block() }
     }
 
-    fun setCloseDialog() = updateUi {
-        copy(flagDialog = false, flagFailure = false)
-    }
+    fun setCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun setTextField(
-        text: String,
-        typeButton: TypeButton
-    ) {
+    fun setTextField(text: String, typeButton: TypeButton) {
         when (typeButton) {
-            TypeButton.NUMERIC -> {
-                val value = addTextField(uiState.value.nroEquip, text)
-                _uiState.update {
-                    it.copy(nroEquip = value)
-                }
-            }
-
-            TypeButton.CLEAN -> {
-                val value = clearTextField(uiState.value.nroEquip)
-                _uiState.update {
-                    it.copy(nroEquip = value)
-                }
-            }
-
-            TypeButton.OK -> {
-                if (uiState.value.nroEquip.isEmpty()) {
-                    handleFailure("Field Empty!", Errors.FIELD_EMPTY)
-                    return
-                }
-                setNroEquip()
-            }
-
+            TypeButton.NUMERIC -> updateState { copy(nroEquip = addTextField(nroEquip, text)) }
+            TypeButton.CLEAN -> updateState { copy(nroEquip = clearTextField(nroEquip)) }
+            TypeButton.OK -> validateAndSet()
             TypeButton.UPDATE -> {
-                viewModelScope.launch {
-                    updateAllDatabase().collect { stateUpdate ->
-                        _uiState.value = stateUpdate
-                    }
+                viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
+            }
+        }
+    }
+
+    private fun validateAndSet() {
+        if (state.nroEquip.isBlank()) {
+            updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
+            return
+        }
+        set()
+    }
+
+    private fun set() = viewModelScope.launch {
+        runCatching {
+            val check = hasEquipSecondary(uiState.value.nroEquip, TypeEquip.MOTOR_PUMP).getOrThrow()
+            if (check) {
+                setIdEquipMotorPump(uiState.value.nroEquip).getOrThrow()
+            }
+            check
+        }
+            .onSuccess { check ->
+                updateState {
+                    copy(
+                        flagAccess = check,
+                        status = status.copy(
+                            flagDialog = !check,
+                            flagFailure = !check,
+                            errors = Errors.INVALID
+                        )
+                    )
                 }
             }
-        }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    private fun setNroEquip() = viewModelScope.launch {
-        val resultHas = hasEquipSecondary(
-            nroEquip =  uiState.value.nroEquip,
-            typeEquip = TypeEquip.MOTOR_PUMP
+    suspend fun updateAllDatabase(): Flow<MotorPumpState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableEquip(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-        resultHas.onFailure {
-            handleFailure(it)
-            return@launch
-        }
-        val check = resultHas.getOrNull()!!
-        if (check) {
-            val resultSet = setIdEquipMotorPump(
-                nroEquip = uiState.value.nroEquip,
-            )
-            resultSet.onFailure {
-                handleFailure(it)
-                return@launch
-            }
-        }
-        _uiState.update {
-            it.copy(
-                flagAccess = check,
-                flagDialog = !check,
-                flagFailure = !check,
-                errors = Errors.INVALID
-            )
-        }
-    }
-
-    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (MotorPumpState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toMotorPump(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
-    fun updateAllDatabase(): Flow<MotorPumpState> = flow {
-
-        val size = 4f
-
-        val steps = listOf(
-            updateTableEquip(size, 1f),
-        )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): MotorPumpState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): MotorPumpState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
-    }
 
 }

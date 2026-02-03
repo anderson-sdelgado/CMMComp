@@ -38,7 +38,7 @@ class ISetNroTranshipmentTest {
     fun check_return_failure_if_not_have_data_nro_os_in_header_shared_preferences() =
         runTest {
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -64,7 +64,7 @@ class ISetNroTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -91,7 +91,7 @@ class ISetNroTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "20fdasfd0",
+                nroEquip = "20fdasfd0",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -108,31 +108,4 @@ class ISetNroTranshipmentTest {
             )
         }
 
-
-//    @Test
-//    fun check_return_failure_if_not_have_data_in_header_moto_mec_room() =
-//        runTest {
-//            headerMotoMecSharedPreferencesDatasource.save(
-//                HeaderMotoMecSharedPreferencesModel(
-//                    nroOS = 123456,
-//                    idActivity = 1
-//                )
-//            )
-//            val result = usecase(
-//                nroTranshipment = "200",
-//                flowApp = FlowApp.TRANSHIPMENT
-//            )
-//            assertEquals(
-//                result.isFailure,
-//                true
-//            )
-//            assertEquals(
-//                result.exceptionOrNull()!!.message,
-//                "ISetNroTranshipment -> IMotoMecRepository.getIdActivityHeader -> IHeaderMotoMecSharedPreferencesDatasource.getIdActivity"
-//            )
-//            assertEquals(
-//                result.exceptionOrNull()!!.cause.toString(),
-//                "java.lang.NullPointerException"
-//            )
-//        }
 }

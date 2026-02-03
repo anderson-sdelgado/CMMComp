@@ -73,13 +73,13 @@ class OSCommonViewModel @Inject constructor(
 
     private fun validateAndSet() {
         if (state.nroOS.isBlank()) {
-            handleFailure("Field Empty!", getClassAndMethod()) { onError(it, Errors.FIELD_EMPTY) }
+            handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
             return
         }
-        setNroOS()
+        set()
     }
 
-    fun getNroOS() = viewModelScope.launch {
+    fun get() = viewModelScope.launch {
         if(uiState.value.flowApp != FlowApp.HEADER_INITIAL) {
             runCatching {
                 getNroOSHeader().getOrThrow()
@@ -89,7 +89,7 @@ class OSCommonViewModel @Inject constructor(
         }
     }
 
-    private fun setNroOS() = viewModelScope.launch {
+    private fun set() = viewModelScope.launch {
         runCatching {
             updateState { copy(flagProgress = true, msgProgress = MSG_CHECK_OS) }
             val check = hasNroOS(nroOS = uiState.value.nroOS, flowApp = uiState.value.flowApp).getOrThrow()

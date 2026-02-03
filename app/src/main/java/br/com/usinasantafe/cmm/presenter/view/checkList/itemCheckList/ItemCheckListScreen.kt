@@ -28,6 +28,7 @@ import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
+import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 
 @Composable
 fun ItemCheckListScreen(
@@ -80,6 +81,7 @@ fun ItemCheckListContent(
                 id = R.string.text_title_check_list
             )
         )
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -93,51 +95,29 @@ fun ItemCheckListContent(
                 fontSize = 28.sp,
             )
         }
+
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Button(
-            onClick = { set(OptionRespCheckList.ACCORDING) },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_button_according
-                )
-            )
+
+        ButtonMaxWidth(R.string.text_button_according) {
+            set(OptionRespCheckList.ACCORDING)
         }
+
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Button(
-            onClick = { set(OptionRespCheckList.ANALYZE) },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_button_analyze
-                )
-            )
+
+        ButtonMaxWidth(R.string.text_button_analyze) {
+            set(OptionRespCheckList.ACCORDING)
         }
+
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Button(
-            onClick = { set(OptionRespCheckList.REPAIR) },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_button_repair
-                )
-            )
+
+        ButtonMaxWidth(R.string.text_button_repair) {
+            set(OptionRespCheckList.REPAIR)
         }
+
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Button(
-            onClick = ret,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_pattern_return
-                )
-            )
-        }
-        BackHandler {
+
+        ButtonMaxWidth(R.string.text_pattern_return) {
+            ret()
         }
 
         if(flagDialog) {

@@ -39,12 +39,12 @@ fun EquipHeaderScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.getDescr()
+                viewModel.get()
             }
 
             EquipHeaderContent(
                 description = uiState.description,
-                setEquip = viewModel::setIdEquipHeader,
+                set = viewModel::set,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
@@ -60,7 +60,7 @@ fun EquipHeaderScreen(
 @Composable
 fun EquipHeaderContent(
     description: String,
-    setEquip: () -> Unit,
+    set: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
@@ -108,7 +108,7 @@ fun EquipHeaderContent(
                 )
             }
             Button(
-                onClick = setEquip,
+                onClick = set,
                 modifier = Modifier.weight(1f),
             ) {
                 TextButtonDesign(
@@ -146,7 +146,7 @@ fun EquipHeaderPagePreview() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             EquipHeaderContent(
                 description = "200 - TRATOR",
-                setEquip = {},
+                set = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
@@ -167,7 +167,7 @@ fun EquipHeaderPagePreviewMsgFailure() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             EquipHeaderContent(
                 description = "200 - TRATOR",
-                setEquip = {},
+                set = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = true,

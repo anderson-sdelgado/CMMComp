@@ -62,7 +62,7 @@ class IListHistoryTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.noteListByIdHeader(1)
+                motoMecRepository.listNoteByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.noteList",
@@ -107,7 +107,7 @@ class IListHistoryTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.noteListByIdHeader(1)
+                motoMecRepository.listNoteByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )
@@ -157,7 +157,7 @@ class IListHistoryTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.noteListByIdHeader(1)
+                motoMecRepository.listNoteByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )
@@ -220,7 +220,7 @@ class IListHistoryTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.noteListByIdHeader(1)
+                motoMecRepository.listNoteByIdHeader(1)
             ).thenReturn(
                 Result.success(list)
             )

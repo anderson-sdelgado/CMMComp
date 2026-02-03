@@ -49,7 +49,7 @@ class ISetNroEquipTranshipmentTest {
     fun check_return_failure_if_not_have_data_nro_os_in_header_shared_preferences() =
         runTest {
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -75,7 +75,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -102,7 +102,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "20fdasfd0",
+                nroEquip = "20fdasfd0",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -130,7 +130,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "20fdasfd0",
+                nroEquip = "20fdasfd0",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -158,7 +158,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -187,7 +187,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(
@@ -230,7 +230,7 @@ class ISetNroEquipTranshipmentTest {
                 )
             )
             val result = usecase(
-                nroEquipTranshipment = "200",
+                nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
             assertEquals(

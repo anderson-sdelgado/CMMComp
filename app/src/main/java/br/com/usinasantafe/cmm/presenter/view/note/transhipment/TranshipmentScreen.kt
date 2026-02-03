@@ -35,6 +35,10 @@ import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun TranshipmentScreen(
@@ -50,15 +54,8 @@ fun TranshipmentScreen(
                 nroEquip = uiState.nroEquip,
                 setTextField = viewModel::setTextField,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.status.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagFailure = uiState.status.flagFailure,
-                errors = uiState.status.errors,
-                failure = uiState.status.failure,
-                flagProgress = uiState.status.flagProgress,
-                levelUpdate = uiState.status.levelUpdate,
-                tableUpdate = uiState.status.tableUpdate,
-                currentProgress = uiState.status.currentProgress,
+                status = uiState.status,
                 onNavMenuNote = onNavMenuNote,
                 onNavActivityList = onNavActivityList,
                 modifier = Modifier.padding(innerPadding)
@@ -73,15 +70,8 @@ fun TranshipmentContent(
     nroEquip: String,
     setTextField: (String, TypeButton) -> Unit,
     flagAccess: Boolean,
-    flagDialog: Boolean,
     setCloseDialog: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    currentProgress: Float,
+    status: UpdateStatusState,
     onNavMenuNote: () -> Unit,
     onNavActivityList: () -> Unit,
     modifier: Modifier = Modifier
@@ -95,22 +85,8 @@ fun TranshipmentContent(
                 id = R.string.text_title_transhipment
             )
         )
-        OutlinedTextField(
-            keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.None,
-                autoCorrectEnabled = true,
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Previous
-            ),
-            textStyle = TextStyle(
-                textAlign = TextAlign.Right,
-                fontSize = 28.sp,
-            ),
-            readOnly = true,
-            value = nroEquip,
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
+        TextFieldDesign(
+            value = nroEquip
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ButtonsGenericNumeric(
@@ -120,44 +96,12 @@ fun TranshipmentContent(
             if(flowApp == FlowApp.NOTE_WORK) onNavActivityList() else onNavMenuNote()
         }
 
-        if (flagDialog) {
-            val text = if (flagFailure) {
-                when (errors) {
-                    Errors.FIELD_EMPTY -> stringResource(
-                        id = R.string.text_field_empty,
-                        stringResource(id = R.string.text_title_transhipment)
-                    )
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    Errors.INVALID -> stringResource(
-                        id = R.string.text_input_data_invalid,
-                        stringResource(
-                            id = R.string.text_title_transhipment
-                        )
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            } else {
-                msg(levelUpdate, failure, tableUpdate)
-            }
-
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_operator))
         }
 
-        if (flagProgress) {
-            val msgProgress = msg(levelUpdate, failure, tableUpdate)
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
-            )
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
     }
 
@@ -178,15 +122,17 @@ fun TranshipmentPagePreview() {
                 nroEquip = "",
                 setTextField = { _, _ -> },
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
                 onNavMenuNote = {},
                 onNavActivityList = {},
                 modifier = Modifier.padding(innerPadding)
@@ -205,15 +151,17 @@ fun TranshipmentPagePreviewWithData() {
                 nroEquip = "2200",
                 setTextField = { _, _ -> },
                 flagAccess = false,
-                flagDialog = false,
                 setCloseDialog = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
                 onNavMenuNote = {},
                 onNavActivityList = {},
                 modifier = Modifier.padding(innerPadding)
@@ -233,14 +181,16 @@ fun TranshipmentPagePreviewMsgEmpty() {
                 setTextField = { _, _ -> },
                 flagAccess = false,
                 setCloseDialog = {},
-                flagDialog = true,
-                flagFailure = true,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true,
+                ),
                 onNavMenuNote = {},
                 onNavActivityList = {},
                 modifier = Modifier.padding(innerPadding)
@@ -260,14 +210,16 @@ fun TranshipmentPagePreviewUpdate() {
                 setTextField = { _, _ -> },
                 flagAccess = false,
                 setCloseDialog = {},
-                flagDialog = false,
-                failure = "",
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "equip",
-                flagProgress = true,
-                currentProgress = 0.3333334f,
+                status = UpdateStatusState(
+                    failure = "",
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "equip",
+                    flagProgress = true,
+                    currentProgress = 0.3333334f,
+                    flagDialog = false,
+                ),
                 onNavMenuNote = {},
                 onNavActivityList = {},
                 modifier = Modifier.padding(innerPadding)

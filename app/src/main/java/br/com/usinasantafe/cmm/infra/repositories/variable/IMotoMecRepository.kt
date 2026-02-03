@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
+import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
@@ -234,7 +235,7 @@ class IMotoMecRepository @Inject constructor(
             }
         }
 
-    override suspend fun noteListByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> =
+    override suspend fun listNoteByIdHeader(idHeader: Int): Result<List<ItemMotoMec>> =
         call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.listByIdHeader(idHeader).getOrThrow().map{ it.roomModelToEntity() }
         }
@@ -271,6 +272,11 @@ class IMotoMecRepository @Inject constructor(
                     idHeader = headerModel.id!!,
                 )
             ).getOrThrow()
+        }
+
+    override suspend fun listPerformanceByIdHeader(idHeader: Int): Result<List<Performance>> =
+        call(getClassAndMethod()) {
+            performanceRoomDatasource.listByIdHeader(idHeader).getOrThrow().map { it.roomModelToEntity() }
         }
 
 }

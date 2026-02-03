@@ -67,7 +67,7 @@ class HourMeterHeaderViewModel @Inject constructor(
 
     private fun validateAndSet() {
         if (uiState.value.hourMeter == "0,0") {
-            handleFailure("Field Empty!", getClassAndMethod()) { onError(it, Errors.FIELD_EMPTY) }
+            handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
             return
         }
         setHourMeterHeader()

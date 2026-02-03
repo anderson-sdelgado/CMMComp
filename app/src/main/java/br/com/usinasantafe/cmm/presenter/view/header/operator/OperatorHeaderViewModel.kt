@@ -13,6 +13,7 @@ import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,10 +66,10 @@ class OperatorHeaderViewModel @Inject constructor(
             updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
             return
         }
-        setRegOperatorHeader()
+        set()
     }
 
-    private fun setRegOperatorHeader() = viewModelScope.launch {
+    private fun set() = viewModelScope.launch {
         runCatching {
             val check = hasRegColab(uiState.value.regColab).getOrThrow()
             if (check) setRegOperator(uiState.value.regColab).getOrThrow()
@@ -84,9 +85,7 @@ class OperatorHeaderViewModel @Inject constructor(
                     )
                 )
             }
-        }.onFailure { throwable ->
-            updateState { withFailure(getClassAndMethod(), throwable) }
-        }
+        }.onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     suspend fun updateAllDatabase(): Flow<OperatorHeaderState> =

@@ -7,7 +7,11 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListBy
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,37 +26,11 @@ import javax.inject.Inject
 data class QuestionUpdateCheckListState(
     val flagCheckUpdate: Boolean = true,
     val flagAccess: Boolean = false,
-    val flagDialog: Boolean = false,
-    val failure: String = "",
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagFailure: Boolean = false,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<QuestionUpdateCheckListState> {
 
-fun UpdateStatusState.toQuestion(
-    classAndMethod: String,
-    currentState: QuestionUpdateCheckListState
-): QuestionUpdateCheckListState {
-    val fail = if(failure.isNotEmpty()){
-        val ret = "$classAndMethod -> ${this.failure}"
-        Timber.e(ret)
-        ret
-    } else {
-        this.failure
-    }
-    return currentState.copy(
-        flagDialog = this.flagDialog,
-        flagFailure = this.flagFailure,
-        errors = this.errors,
-        failure = fail,
-        flagProgress = this.flagProgress,
-        currentProgress = this.currentProgress,
-        levelUpdate = this.levelUpdate,
-        tableUpdate = this.tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): QuestionUpdateCheckListState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -64,105 +42,29 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(QuestionUpdateCheckListState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private fun updateState(block: QuestionUpdateCheckListState.() -> QuestionUpdateCheckListState) {
+        _uiState.update(block)
     }
+
+    fun setCloseDialog()  = updateState { copy(status = status.copy(flagDialog = false)) }
 
     fun checkUpdate() = viewModelScope.launch {
-        val result = checkUpdateCheckList()
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+        runCatching {
+            checkUpdateCheckList().getOrThrow()
         }
-        val check = result.getOrNull()!!
-        _uiState.update {
-            it.copy(
-                flagCheckUpdate = !check,
-                flagAccess = !check
-            )
-        }
+            .onSuccess { check -> updateState { copy(flagCheckUpdate = !check, flagAccess = !check) } }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun updateDatabase() = viewModelScope.launch {
-        viewModelScope.launch {
-            updateAllDatabase().collect { stateUpdate ->
-                _uiState.value = stateUpdate
-            }
-        }
-    }
+    fun updateDatabase() = viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
 
-    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (QuestionUpdateCheckListState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toQuestion(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
-    fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> = flow {
-        val size = sizeUpdate(1f)
-
-        val steps = listOf(
-            updateTableItemCheckListByNroEquip(size, 1f),
+    suspend fun updateAllDatabase(): Flow<QuestionUpdateCheckListState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableItemCheckListByNroEquip(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): QuestionUpdateCheckListState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): QuestionUpdateCheckListState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
-    }
 
 }

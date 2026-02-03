@@ -38,7 +38,7 @@ class EquipHeaderViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.getDescr()
+            viewModel.get()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -57,7 +57,7 @@ class EquipHeaderViewModelTest {
             ).thenReturn(
                 Result.success("teste")
             )
-            viewModel.getDescr()
+            viewModel.get()
             assertEquals(
                 viewModel.uiState.value.description,
                 "teste"
@@ -76,7 +76,7 @@ class EquipHeaderViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.setIdEquipHeader()
+            viewModel.set()
             assertEquals(
                 viewModel.uiState.value.flagDialog,
                 true
@@ -95,7 +95,7 @@ class EquipHeaderViewModelTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            viewModel.setIdEquipHeader()
+            viewModel.set()
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true

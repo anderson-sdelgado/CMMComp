@@ -41,7 +41,7 @@
     <string name="text_pattern_return">RETORNAR</string>
     <string name="text_title_os">ORDEM DE SERVIÇO</string>
     <string name="text_title_activity">ATIVIDADE</string>
-    <string name="text_title_measure">HORÍMETRO</string>
+    <string name="text_title_hour_meter">HORÍMETRO</string>
     <string name="text_input_hour_meter_invalid">O HODÔMETRO REGISTRADO %1$s É MENOR QUE O ANTERIOR DE %2$s. DESEJA MANTÊ-LO?</string>
     <string name="text_title_menu">MENU</string>
     <string name="text_title_descr_equip">%1$s</string>
@@ -91,6 +91,8 @@
     <string name="text_title_motor_pump">MOTOBOMBA</string>
     <string name="text_item_nro_os">NRO OS: %1$s</string>
     <string name="text_item_value_performance">REND.: %1$s</string>
-    <string name="text_title_performance">RENDIMENTO(S)</string>
+    <string name="text_title_performance_list">RENDIMENTO(S)</string>
     <string name="text_msg_no_data_performance">NÃO CONTÉM RENDIMENTO ADICIONADO.</string>">
+    <string name="text_title_performance">RENDIMENTO</string>
+    <string name="text_title_os_performance">OS: %1$s</string>
 </resources>

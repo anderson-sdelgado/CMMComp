@@ -8,21 +8,20 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroEquipTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
-import br.com.usinasantafe.cmm.utils.collectUpdateStep
-import br.com.usinasantafe.cmm.utils.withFailure
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,8 +30,12 @@ data class TranshipmentState(
     val flowApp: FlowApp = FlowApp.NOTE_WORK,
     val nroEquip: String = "",
     val flagAccess: Boolean = false,
-    val status: UpdateStatusState = UpdateStatusState()
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<TranshipmentState> {
+
+    override fun copyWithStatus(status: UpdateStatusState): TranshipmentState =
+        copy(status = status)
+}
 
 @HiltViewModel
 class TranshipmentViewModel @Inject constructor(
@@ -47,152 +50,65 @@ class TranshipmentViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(TranshipmentState())
     val uiState = _uiState.asStateFlow()
 
-    init {
-        _uiState.update {
-            it.copy(
-                flowApp = FlowApp.entries[flowApp]
-            )
-        }
+    private val state get() = uiState.value
+
+    private fun updateState(block: TranshipmentState.() -> TranshipmentState) {
+        _uiState.update(block)
     }
 
-    private fun updateUi(block: TranshipmentState.() -> TranshipmentState) {
-        _uiState.update { it.block() }
-    }
+    init { updateState { copy(flowApp = FlowApp.entries[this@TranshipmentViewModel.flowApp]) } }
 
-    fun setCloseDialog() = updateUi {
-        copy(
-            status = status.copy(
-                flagDialog = false,
-                flagFailure = false
-            )
-        )
-    }
+    fun setCloseDialog() = updateState { copy(status = status.copy(flagDialog = false, flagFailure = false)) }
 
-    fun setTextField(
-        text: String,
-        typeButton: TypeButton
-    ) {
+    fun setTextField(text: String, typeButton: TypeButton) {
         when (typeButton) {
-            TypeButton.NUMERIC -> {
-                val value = addTextField(uiState.value.nroEquip, text)
-                _uiState.update {
-                    it.copy(nroEquip = value)
-                }
-            }
-
-            TypeButton.CLEAN -> {
-                val value = clearTextField(uiState.value.nroEquip)
-                _uiState.update {
-                    it.copy(nroEquip = value)
-                }
-            }
-
-            TypeButton.OK -> {
-                if (uiState.value.nroEquip.isEmpty()) {
-                    _uiState.update {
-                        it.copy(
-                            status = it.status.withFailure(
-                                getClassAndMethod(),
-                                "Field Empty!",
-                                Errors.FIELD_EMPTY
-                            )
-                        )
-                    }
-                    return
-                }
-                setNroEquip()
-            }
-
+            TypeButton.NUMERIC -> updateState { copy(nroEquip = addTextField(nroEquip, text)) }
+            TypeButton.CLEAN -> updateState { copy(nroEquip = clearTextField(nroEquip)) }
+            TypeButton.OK -> validateAndSet()
             TypeButton.UPDATE -> {
-                viewModelScope.launch {
-                    updateAllDatabase().collect { stateUpdate ->
-                        _uiState.value = stateUpdate
-                    }
-                }
+                viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
             }
         }
     }
 
-    private fun setNroEquip() = viewModelScope.launch {
-        val resultHas = hasEquipSecondary(
-            nroEquip =  uiState.value.nroEquip,
-            typeEquip = TypeEquip.TRANSHIPMENT
-        )
-        resultHas.onFailure { itThrowable ->
-            _uiState.update {
-                it.copy(
-                    status = it.status.withFailure(
-                        getClassAndMethod(),
-                        itThrowable
-                    )
-                )
-            }
-            return@launch
+    private fun validateAndSet() {
+        if (state.nroEquip.isBlank()) {
+            updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
+            return
         }
-        val check = resultHas.getOrNull()!!
-        if (check) {
-            val resultSet = setNroEquipTranshipment(
-                nroEquipTranshipment = uiState.value.nroEquip,
-                flowApp = uiState.value.flowApp
-            )
-            resultSet.onFailure { itThrowable ->
-                _uiState.update {
-                    it.copy(
-                        status = it.status.withFailure(
-                            getClassAndMethod(),
-                            itThrowable
+        set()
+    }
+
+    private fun set() = viewModelScope.launch {
+        runCatching {
+            val check = hasEquipSecondary(uiState.value.nroEquip, TypeEquip.TRANSHIPMENT).getOrThrow()
+            if (check) {
+                setNroEquipTranshipment(uiState.value.nroEquip, uiState.value.flowApp).getOrThrow()
+            }
+            check
+        }
+            .onSuccess { check ->
+                updateState {
+                    copy(
+                        flagAccess = check,
+                        status = status.copy(
+                            flagDialog = !check,
+                            flagFailure = !check,
+                            errors = Errors.INVALID
                         )
                     )
                 }
-                return@launch
             }
-        }
-        _uiState.update {
-            it.copy(
-                flagAccess = check,
-                status = it.status.copy(
-                    flagDialog = !check,
-                    flagFailure = !check,
-                    errors = Errors.INVALID
-                )
-            )
-        }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun updateAllDatabase(): Flow<TranshipmentState> = flow {
-
-        val size = 4f
-
-        val steps = listOf(
-            updateTableEquip(size, 1f),
+    suspend fun updateAllDatabase(): Flow<TranshipmentState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableEquip(4f, 1f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(
-                classAndMethod = getClassAndMethod(),
-                currentStatus = _uiState.value.status
-
-            ) {
-                emit(
-                    _uiState.value.copy(
-                        status = it
-                    )
-                )
-            }
-            if (!ok) return@flow
-        }
-
-        emit(
-            _uiState.value.copy(
-                status = _uiState.value.status.copy(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
-                )
-            )
-        )
-    }
 
 }

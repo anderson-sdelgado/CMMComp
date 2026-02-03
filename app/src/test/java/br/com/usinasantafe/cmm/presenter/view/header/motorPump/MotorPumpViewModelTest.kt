@@ -84,11 +84,11 @@ class MotorPumpViewModelTest {
             TypeButton.OK
         )
         assertEquals(
-            viewModel.uiState.value.flagDialog,
+            viewModel.uiState.value.status.flagDialog,
             true
         )
         assertEquals(
-            viewModel.uiState.value.errors,
+            viewModel.uiState.value.status.errors,
             Errors.FIELD_EMPTY
         )
     }
@@ -123,20 +123,24 @@ class MotorPumpViewModelTest {
             assertEquals(
                 result[0],
                 MotorPumpState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 MotorPumpState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "MotorPumpViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "MotorPumpViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -144,11 +148,11 @@ class MotorPumpViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "MotorPumpViewModel.setTextField -> MotorPumpViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException"
             )
         }
@@ -188,38 +192,46 @@ class MotorPumpViewModelTest {
             assertEquals(
                 result[0],
                 MotorPumpState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(1f, 4f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(1f, 4f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 MotorPumpState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(2f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(2f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 MotorPumpState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_equip",
-                    currentProgress = percentage(3f, 4f),
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_equip",
+                        currentProgress = percentage(3f, 4f),
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 MotorPumpState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.setTextField(
@@ -227,7 +239,7 @@ class MotorPumpViewModelTest {
                 TypeButton.UPDATE
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
         }
@@ -240,23 +252,23 @@ class MotorPumpViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.FIELD_EMPTY
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "MotorPumpViewModel.setTextField -> Field Empty!"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -289,23 +301,23 @@ class MotorPumpViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "MotorPumpViewModel.setTextField -> MotorPumpViewModel.setNroEquip -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -334,15 +346,15 @@ class MotorPumpViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.INVALID
             )
             assertEquals(
@@ -382,23 +394,23 @@ class MotorPumpViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "MotorPumpViewModel.setTextField -> MotorPumpViewModel.setNroEquip -> ISetIdEquipMotorPump -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -434,7 +446,7 @@ class MotorPumpViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 false
             )
             assertEquals(

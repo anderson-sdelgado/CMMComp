@@ -126,4 +126,9 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindGetTypeEquip(usecase: IGetTypeEquip): GetTypeEquip
+
+    @Binds
+    @Singleton
+    fun bindListPerformance(usecase: IListPerformance): ListPerformance
+
 }

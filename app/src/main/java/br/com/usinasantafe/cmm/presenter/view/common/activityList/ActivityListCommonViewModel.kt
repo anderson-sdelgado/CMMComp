@@ -16,6 +16,7 @@ import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderStat
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,8 +51,6 @@ class ActivityListCommonViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ActivityListCommonState())
     val uiState = _uiState.asStateFlow()
 
-    private val state get() = uiState.value
-
     private fun updateState(block: ActivityListCommonState.() -> ActivityListCommonState) {
         _uiState.update(block)
     }
@@ -65,9 +64,7 @@ class ActivityListCommonViewModel @Inject constructor(
             listActivity().getOrThrow()
         }
             .onSuccess { updateState { copy(activityList = it) } }
-            .onFailure {  throwable ->
-                updateState { withFailure(getClassAndMethod(), throwable) }
-            }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     fun setIdActivity(id: Int) = viewModelScope.launch {
@@ -78,9 +75,7 @@ class ActivityListCommonViewModel @Inject constructor(
             ).getOrThrow()
         }
             .onSuccess { updateState { copy(flowApp = it, flagAccess = true) } }
-            .onFailure {  throwable ->
-                updateState { withFailure(getClassAndMethod(), throwable) }
-            }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     fun updateDatabase() = viewModelScope.launch {

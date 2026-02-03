@@ -394,7 +394,7 @@ class TranshipmentViewModelTest {
             )
             whenever(
                 setNroEquipTranshipment(
-                    nroEquipTranshipment = "2200",
+                    nroEquip = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(
@@ -452,7 +452,7 @@ class TranshipmentViewModelTest {
             )
             whenever(
                 setNroEquipTranshipment(
-                    nroEquipTranshipment = "2200",
+                    nroEquip = "2200",
                     flowApp = FlowApp.NOTE_WORK
                 )
             ).thenReturn(
