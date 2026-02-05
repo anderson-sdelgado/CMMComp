@@ -279,4 +279,22 @@ class IMotoMecRepository @Inject constructor(
             performanceRoomDatasource.listByIdHeader(idHeader).getOrThrow().map { it.roomModelToEntity() }
         }
 
+    override suspend fun updatePerformance(
+        id: Int,
+        value: Double
+    ): EmptyResult =
+        call(getClassAndMethod()) {
+            performanceRoomDatasource.update(id, value).getOrThrow()
+        }
+
+    override suspend fun getNroOSPerformanceById(id: Int): Result<Int> =
+        call(getClassAndMethod()) {
+            performanceRoomDatasource.getNroOSById(id).getOrThrow()
+        }
+
+    override suspend fun hasPerformanceByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+        call(getClassAndMethod()) {
+            performanceRoomDatasource.hasByIdHeaderAndValueNull(idHeader).getOrThrow()
+        }
+
 }

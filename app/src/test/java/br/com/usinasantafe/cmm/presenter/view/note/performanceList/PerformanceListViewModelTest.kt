@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cmm.presenter.view.note.performanceList
 
+import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListPerformance
+import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -21,6 +24,11 @@ class PerformanceListViewModelTest {
     private val listPerformance = mock<ListPerformance>()
 
     private val viewModel = PerformanceListViewModel(
+        savedStateHandle = SavedStateHandle(
+                mapOf(
+                    Args.FLOW_APP_ARG to FlowApp.HEADER_INITIAL.ordinal,
+                )
+        ),
         listPerformance = listPerformance
     )
 

@@ -30,12 +30,10 @@ class IListActivity @Inject constructor(
             val rEquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip).getOrThrow()
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
             val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
-            val list = osRepository.listByNroOS(nroOS).getOrThrow()
-            if (list.isNotEmpty()) {
-                val os = list.first()
-                val rOSActivityList = rOSActivityRepository.listByIdOS(
-                    idOS = os.idOS
-                ).getOrThrow()
+            val check = osRepository.hasByNroOS(nroOS).getOrThrow()
+            if (!check) {
+                val idOS = osRepository.getByNroOS(nroOS).getOrThrow().idOS
+                val rOSActivityList = rOSActivityRepository.listByIdOS(idOS).getOrThrow()
                 val idActivityOSList = rOSActivityList.map { it.idActivity }
                 idActivityEquipList = idActivityEquipList.intersect(idActivityOSList.toSet()).toList()
             }

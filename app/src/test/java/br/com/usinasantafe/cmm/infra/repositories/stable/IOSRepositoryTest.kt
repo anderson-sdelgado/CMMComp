@@ -238,25 +238,25 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `checkNroOS - Check return failure if have error in OSRoomDatasource checkNroOS`() =
+    fun `hasByNroOS - Check return failure if have error in OSRoomDatasource checkNroOS`() =
         runTest {
             whenever(
-                osRoomDatasource.checkNroOS(123456)
+                osRoomDatasource.hasByNroOS(123456)
             ).thenReturn(
                 resultFailure(
-                    "IOSRoomDatasource.checkNroOS",
+                    "IOSRoomDatasource.hasByNroOS",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.checkNroOS(123456)
+            val result = repository.hasByNroOS(123456)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.checkNroOS -> IOSRoomDatasource.checkNroOS"
+                "IOSRepository.hasByNroOS -> IOSRoomDatasource.hasByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -265,14 +265,14 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `checkNroOS - Check return correct if function execute successfully`() =
+    fun `hasByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                osRoomDatasource.checkNroOS(123456)
+                osRoomDatasource.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.checkNroOS(123456)
+            val result = repository.hasByNroOS(123456)
             assertEquals(
                 result.isSuccess,
                 true
@@ -298,7 +298,7 @@ class IOSRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -327,7 +327,7 @@ class IOSRepositoryTest {
             ).thenReturn(
                 Result.success(emptyList())
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -371,7 +371,7 @@ class IOSRepositoryTest {
                     )
                 )
             )
-            val result = repository.getListByNroOS(
+            val result = repository.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -517,25 +517,25 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if have error in OSRoomDatasource getListByNroOS`() =
+    fun `getByNroOS - Check return failure if have error in OSRoomDatasource getByNroOS`() =
         runTest {
             whenever(
-                osRoomDatasource.listByNroOS(123456)
+                osRoomDatasource.getByNroOS(123456)
             ).thenReturn(
                 resultFailure(
-                    "IOSRoomDatasource.getListByNroOS",
+                    "IOSRoomDatasource.getByNroOS",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.listByNroOS(123456)
+            val result = repository.getByNroOS(123456)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.listByNroOS -> IOSRoomDatasource.getListByNroOS"
+                "IOSRepository.getByNroOS -> IOSRoomDatasource.getByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -544,35 +544,28 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return correct if function execute successfully`() =
+    fun `getByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                osRoomDatasource.listByNroOS(123456)
+                osRoomDatasource.getByNroOS(123456)
             ).thenReturn(
                 Result.success(
-                    listOf(
-                        OSRoomModel(
-                            idOS = 1,
-                            nroOS = 123456,
-                            idLibOS = 10,
-                            idPropAgr = 20,
-                            areaOS = 50.5,
-                            idEquip = 3
-                        )
+                    OSRoomModel(
+                        idOS = 1,
+                        nroOS = 123456,
+                        idLibOS = 10,
+                        idPropAgr = 20,
+                        areaOS = 50.5,
+                        idEquip = 3
                     )
                 )
             )
-            val result = repository.listByNroOS(123456)
+            val result = repository.getByNroOS(123456)
             assertEquals(
                 result.isSuccess,
                 true
             )
-            val list = result.getOrNull()!!
-            assertEquals(
-                list.size,
-                1
-            )
-            val entity = list[0]
+            val entity = result.getOrNull()!!
             assertEquals(
                 entity.idOS,
                 1

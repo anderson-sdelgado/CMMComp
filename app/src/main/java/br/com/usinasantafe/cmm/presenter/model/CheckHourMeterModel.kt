@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.presenter.model
 
-data class CheckMeasureModel(
-    val measureBD: String,
+data class CheckHourMeterModel(
+    val hourMeterBD: String,
     val check: Boolean,
 )

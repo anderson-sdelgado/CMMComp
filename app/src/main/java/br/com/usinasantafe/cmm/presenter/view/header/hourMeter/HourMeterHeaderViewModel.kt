@@ -11,7 +11,6 @@ import br.com.usinasantafe.cmm.presenter.theme.clearTextFieldComma
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.handleFailure
 import br.com.usinasantafe.cmm.utils.onFailureHandled
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class HourMeterHeaderState(
@@ -60,25 +58,25 @@ class HourMeterHeaderViewModel @Inject constructor(
             TypeButton.NUMERIC -> updateState { copy(hourMeter = addTextFieldComma(hourMeter, text)) }
             TypeButton.CLEAN -> updateState { copy(hourMeter = clearTextFieldComma(hourMeter)) }
             TypeButton.OK -> validateAndSet()
-            TypeButton.UPDATE -> {}
+            TypeButton.UPDATE -> Unit
         }
     }
-
 
     private fun validateAndSet() {
         if (uiState.value.hourMeter == "0,0") {
             handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
             return
         }
-        setHourMeterHeader()
+        set()
     }
-    fun setHourMeterHeader() =
+
+    fun set() =
         viewModelScope.launch {
             runCatching {
                 val model = checkHourMeter(state.hourMeter).getOrThrow()
                 if(!model.check){
                     updateState {
-                        copy(flagDialog = true, flagAccess = false, errors = Errors.INVALID, hourMeterOld = model.measureBD)
+                        copy(flagDialog = true, flagAccess = false, errors = Errors.INVALID, hourMeterOld = model.hourMeterBD)
                     }
                     return@launch
                 }

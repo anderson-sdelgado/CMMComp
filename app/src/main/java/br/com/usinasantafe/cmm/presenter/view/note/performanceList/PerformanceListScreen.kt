@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.note.performanceList
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
@@ -47,8 +49,10 @@ fun PerformanceListScreen(
             }
 
             PerformanceListContent(
+                flowApp = uiState.flowApp,
                 performanceList = uiState.performanceList,
                 setCloseDialog = viewModel::setCloseDialog,
+                flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
                 onNavMenuNote = onNavMenuNote,
@@ -61,8 +65,10 @@ fun PerformanceListScreen(
 
 @Composable
 fun PerformanceListContent(
+    flowApp: FlowApp,
     performanceList: List<ItemPerformanceScreenModel>,
     setCloseDialog: () -> Unit,
+    flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
     onNavMenuNote: () -> Unit,
@@ -114,6 +120,10 @@ fun PerformanceListContent(
                 }
             }
         }
+        if (flowApp == FlowApp.HEADER_FINISH) {
+            ButtonMaxWidth(R.string.text_button_finish_header) { }
+            Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        }
         ButtonMaxWidth(R.string.text_pattern_return) { onNavMenuNote() }
         BackHandler {}
 
@@ -136,8 +146,10 @@ fun PerformanceListPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             PerformanceListContent(
+                flowApp = FlowApp.PERFORMANCE,
                 performanceList = emptyList(),
                 setCloseDialog = {},
+                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 onNavMenuNote = {},
@@ -154,6 +166,7 @@ fun PerformanceListPagePreviewWithData() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             PerformanceListContent(
+                flowApp = FlowApp.PERFORMANCE,
                 performanceList = listOf(
                     ItemPerformanceScreenModel(
                         id = 1,
@@ -167,6 +180,38 @@ fun PerformanceListPagePreviewWithData() {
                     )
                 ),
                 setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = false,
+                failure = "",
+                onNavMenuNote = {},
+                onNavPerformance = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PerformanceListPagePreviewWithDataAndButtonFinish() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            PerformanceListContent(
+                flowApp = FlowApp.HEADER_FINISH,
+                performanceList = listOf(
+                    ItemPerformanceScreenModel(
+                        id = 1,
+                        nroOS = 123456,
+                        value = null
+                    ),
+                    ItemPerformanceScreenModel(
+                        id = 2,
+                        nroOS = 456123,
+                        value = 10.0
+                    )
+                ),
+                setCloseDialog = {},
+                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 onNavMenuNote = {},
@@ -183,6 +228,7 @@ fun PerformanceListPagePreviewFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             PerformanceListContent(
+                flowApp = FlowApp.PERFORMANCE,
                 performanceList = listOf(
                     ItemPerformanceScreenModel(
                         id = 1,
@@ -196,6 +242,7 @@ fun PerformanceListPagePreviewFailure() {
                     )
                 ),
                 setCloseDialog = {},
+                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
                 onNavMenuNote = {},

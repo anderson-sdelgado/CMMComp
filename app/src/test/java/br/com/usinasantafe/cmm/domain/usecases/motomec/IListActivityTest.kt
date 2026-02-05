@@ -191,12 +191,12 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.hasByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "OSRepository.getListByNroOS",
+                    context = "OSRepository.hasByNroOS",
                     message = "-",
                     cause = Exception()
                 )
@@ -208,7 +208,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> OSRepository.getListByNroOS"
+                "IListActivity -> OSRepository.hasByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -235,11 +235,11 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.hasByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
-                Result.success(emptyList())
+                Result.success(false)
             )
             val idList = rEquipActivityList.map { it.idActivity }
             whenever(
@@ -287,11 +287,11 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.hasByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
-                Result.success(emptyList())
+                Result.success(false)
             )
             val idList = rEquipActivityList.map { it.idActivity }
             whenever(
@@ -357,6 +357,57 @@ class IListActivityTest {
         }
 
     @Test
+    fun `Check return failure if have error in OSRepository getByNroOS`() =
+        runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                rEquipActivityRepository.listByIdEquip(1)
+            ).thenReturn(
+                Result.success(rEquipActivityList)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(123456)
+            )
+            whenever(
+                osRepository.hasByNroOS(
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                osRepository.getByNroOS(
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                resultFailure(
+                    context = "OSRepository.getByNroOS",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IListActivity -> getByNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
     fun `Check return failure if have error in ROSActivityRepository getListByIdOS with OS`() =
         runTest {
             whenever(
@@ -375,12 +426,18 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.hasByNroOS(
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                osRepository.getByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
                 Result.success(
-                    listOf(
                         OS(
                             idOS = 1,
                             nroOS = 123456,
@@ -389,7 +446,6 @@ class IListActivityTest {
                             idPropAgr = 1,
                             areaOS = 0.0
                         )
-                    )
                 )
             )
             whenever(
@@ -437,20 +493,18 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.getByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
                 Result.success(
-                    listOf(
-                        OS(
-                            idOS = 1,
-                            nroOS = 123456,
-                            idEquip = 1,
-                            idLibOS = 1,
-                            idPropAgr = 1,
-                            areaOS = 0.0
-                        )
+                    OS(
+                        idOS = 1,
+                        nroOS = 123456,
+                        idEquip = 1,
+                        idLibOS = 1,
+                        idPropAgr = 1,
+                        areaOS = 0.0
                     )
                 )
             )
@@ -521,20 +575,18 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.getByNroOS(
                     nroOS = 123456
                 )
             ).thenReturn(
                 Result.success(
-                    listOf(
-                        OS(
-                            idOS = 1,
-                            nroOS = 123456,
-                            idEquip = 1,
-                            idLibOS = 1,
-                            idPropAgr = 1,
-                            areaOS = 0.0
-                        )
+                    OS(
+                        idOS = 1,
+                        nroOS = 123456,
+                        idEquip = 1,
+                        idLibOS = 1,
+                        idPropAgr = 1,
+                        areaOS = 0.0
                     )
                 )
             )

@@ -45,7 +45,7 @@ fun HourMeterHeaderScreen(
                 hourMeterOld = uiState.hourMeterOld,
                 setTextField = viewModel::setTextField,
                 setCloseDialog = viewModel::setCloseDialog,
-                setMeasure = viewModel::setHourMeterHeader,
+                set = viewModel::set,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
@@ -68,7 +68,7 @@ fun HourMeterHeaderContent(
     hourMeterOld: String,
     setTextField: (String, TypeButton) -> Unit,
     setCloseDialog: () -> Unit,
-    setMeasure: () -> Unit,
+    set: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
@@ -112,7 +112,7 @@ fun HourMeterHeaderContent(
             if(errors != Errors.INVALID) {
                 AlertDialogSimpleDesign(text = text, setCloseDialog = setCloseDialog,)
             } else {
-                AlertDialogCheckDesign(text = text, setCloseDialog = setCloseDialog, setActionButtonYes = setMeasure)
+                AlertDialogCheckDesign(text = text, setCloseDialog = setCloseDialog, setActionButtonYes = set)
             }
         }
 
@@ -140,7 +140,7 @@ fun HourMeterHeaderPagePreview() {
                 hourMeterOld = "0,0",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
-                setMeasure = {},
+                set = {},
                 flagAccess = false,
                 flagDialog = false,
                 failure = "",
@@ -167,7 +167,7 @@ fun HourMeterHeaderPagePreviewEmpty() {
                 hourMeterOld = "0,0",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
-                setMeasure = {},
+                set = {},
                 flagAccess = false,
                 flagDialog = true,
                 failure = "",
@@ -194,7 +194,7 @@ fun HourMeterHeaderPagePreviewInvalid() {
                 hourMeterOld = "20000,0",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
-                setMeasure = {},
+                set = {},
                 flagAccess = false,
                 flagDialog = true,
                 failure = "",
@@ -221,7 +221,7 @@ fun HourMeterHeaderPagePreviewFailure() {
                 hourMeterOld = "20000,0",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
-                setMeasure = {},
+                set = {},
                 flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",

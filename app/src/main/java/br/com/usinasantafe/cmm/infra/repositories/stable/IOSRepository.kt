@@ -36,12 +36,12 @@ class IOSRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun checkNroOS(nroOS: Int): Result<Boolean> =
+    override suspend fun hasByNroOS(nroOS: Int): Result<Boolean> =
         call(getClassAndMethod()) {
-            osRoomDatasource.checkNroOS(nroOS).getOrThrow()
+            osRoomDatasource.hasByNroOS(nroOS).getOrThrow()
         }
 
-    override suspend fun getListByNroOS(
+    override suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<OS>> =
@@ -55,10 +55,9 @@ class IOSRepository @Inject constructor(
             osRoomDatasource.add(os.entityOSToRoomModel()).getOrThrow()
         }
 
-    override suspend fun listByNroOS(nroOS: Int): Result<List<OS>> =
+    override suspend fun getByNroOS(nroOS: Int): Result<OS> =
         call(getClassAndMethod()) {
-            val modelList = osRoomDatasource.listByNroOS(nroOS).getOrThrow()
-            modelList.map { it.roomModelToEntity() }
+            osRoomDatasource.getByNroOS(nroOS).getOrThrow().roomModelToEntity()
         }
 
 }

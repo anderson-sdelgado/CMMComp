@@ -128,7 +128,7 @@ class IListPerformanceTest {
             )
             val model = list[0]
             assertEquals(
-                model.idHeader,
+                model.id,
                 1
             )
             assertEquals(

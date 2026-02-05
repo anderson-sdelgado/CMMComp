@@ -36,14 +36,14 @@ class IHasNroOS @Inject constructor(
                 rOSActivityRepository.deleteAll().getOrThrow()
                 osRepository.deleteAll().getOrThrow()
             }
-            val checkNroOS = osRepository.checkNroOS(nroOS = nroOS.toInt()).getOrThrow()
+            val checkNroOS = osRepository.hasByNroOS(nroOS = nroOS.toInt()).getOrThrow()
             if(checkNroOS) return@call true
             if(!checkNetwork.isConnected()) {
                 motoMecRepository.setStatusConHeader(false).getOrThrow()
                 return@call true
             }
             val token = getToken().getOrThrow()
-            val resultGetListOSWeb = osRepository.getListByNroOS(token, nroOS.toInt())
+            val resultGetListOSWeb = osRepository.listByNroOS(token, nroOS.toInt())
             resultGetListOSWeb.onFailure {
                 if (it.cause is SocketTimeoutException) {
                     motoMecRepository.setStatusConHeader(false).getOrThrow()

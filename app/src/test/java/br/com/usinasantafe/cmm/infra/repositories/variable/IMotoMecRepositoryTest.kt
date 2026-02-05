@@ -2672,4 +2672,142 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `updatePerformance - Check return failure if have error in PerformanceRoomDatasource update`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.update(1, 50.0)
+            ).thenReturn(
+                resultFailure(
+                    "IPerformanceRoomDatasource.update",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.updatePerformance(1, 50.0)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.updatePerformance -> IPerformanceRoomDatasource.update"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `updatePerformance - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.update(1, 50.0)
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            val result = repository.updatePerformance(1, 50.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+        }
+
+    @Test
+    fun `getNroOSPerformanceById - Check return failure if have error in PerformanceRoomDatasource getNroOSPerformanceById`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.getNroOSById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPerformanceRoomDatasource.getNroOSPerformanceById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNroOSPerformanceById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getNroOSPerformanceById -> IPerformanceRoomDatasource.getNroOSPerformanceById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroOSPerformanceById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.getNroOSById(1)
+            ).thenReturn(
+                Result.success(100)
+            )
+            val result = repository.getNroOSPerformanceById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                100
+            )
+        }
+
+    @Test
+    fun `hasPerformanceByIdHeaderAndValueNull - Check return failure if have error in PerformanceDatasource hasByIdHeaderAndValueNull`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.hasByIdHeaderAndValueNull(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPerformanceDatasource.hasByIdHeaderAndValueNull",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasPerformanceByIdHeaderAndValueNull(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.hasPerformanceByIdHeaderAndValueNull -> IPerformanceDatasource.hasByIdHeaderAndValueNull"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasPerformanceByIdHeaderAndValueNull - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                performanceRoomDatasource.hasByIdHeaderAndValueNull(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasPerformanceByIdHeaderAndValueNull(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

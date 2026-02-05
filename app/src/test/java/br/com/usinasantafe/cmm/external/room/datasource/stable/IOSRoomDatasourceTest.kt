@@ -13,6 +13,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import kotlin.Int
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
@@ -236,7 +237,7 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.checkNroOS(234567)
+            val result = datasource.hasByNroOS(234567)
             assertEquals(
                 result.isSuccess,
                 true
@@ -267,7 +268,7 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.checkNroOS(123456)
+            val result = datasource.hasByNroOS(123456)
             assertEquals(
                 result.isSuccess,
                 true
@@ -376,21 +377,21 @@ class IOSRoomDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return list empty if not have data research`() =
+    fun `getByNroOS - Check return list empty if not have data research`() =
         runTest {
-            val result = datasource.listByNroOS(12345)
+            val result = datasource.getByNroOS(12345)
             assertEquals(
                 result.isSuccess,
                 true
             )
             assertEquals(
-                result.getOrNull()!!.size,
-                0
+                result.getOrNull(),
+                null
             )
         }
 
     @Test
-    fun `getListByNroOS - Check return list if have data research`() =
+    fun `getByNroOS - Check return list if have data research`() =
         runTest {
             osDao.insertAll(
                 listOf(
@@ -412,17 +413,12 @@ class IOSRoomDatasourceTest {
                     )
                 )
             )
-            val result = datasource.listByNroOS(123456)
+            val result = datasource.getByNroOS(123456)
             assertEquals(
                 result.isSuccess,
                 true
             )
-            val list = result.getOrNull()!!
-            assertEquals(
-                list.size,
-                1
-            )
-            val model = list[0]
+            val model = result.getOrNull()!!
             assertEquals(
                 model.idOS,
                 1

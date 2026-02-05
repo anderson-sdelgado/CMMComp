@@ -19,7 +19,7 @@ fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String
 }
 
 @Composable
-fun errors(errors: Errors, failure: String, value: String = "", hourMeter: String = "", hourMeterOld: String = ""): String {
+fun errors(errors: Errors, failure: String, value: String = "", hourMeter: String = "", hourMeterOld: String = "", typePerformance: Boolean = false): String {
     return when (errors) {
         Errors.FIELD_EMPTY -> {
             if(value.isEmpty()) return stringResource(
@@ -32,16 +32,23 @@ fun errors(errors: Errors, failure: String, value: String = "", hourMeter: Strin
             id = R.string.text_update_failure,
             failure
         )
-        Errors.INVALID -> if(hourMeter.isEmpty()) {
-            stringResource(
+        Errors.INVALID -> {
+
+            if (!hourMeter.isEmpty()) {
+                return stringResource(
+                    id = R.string.text_input_hour_meter_invalid,
+                    hourMeter,
+                    hourMeterOld
+                )
+            }
+
+            if(typePerformance) {
+                return stringResource(id = R.string.text_msg_performance_invalid)
+            }
+
+            return stringResource(
                 id = R.string.text_input_data_invalid,
                 value
-            )
-        } else {
-            stringResource(
-                id = R.string.text_input_hour_meter_invalid,
-                hourMeter,
-                hourMeterOld
             )
         }
         else -> stringResource(

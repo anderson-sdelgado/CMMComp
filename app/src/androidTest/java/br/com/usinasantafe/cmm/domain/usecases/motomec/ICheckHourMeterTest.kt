@@ -98,7 +98,7 @@ class ICheckHourMeterTest {
             )
             val entity = result.getOrNull()!!
             assertEquals(
-                entity.measureBD,
+                entity.hourMeterBD,
                 "20.000,0",
             )
             assertEquals(
@@ -134,7 +134,7 @@ class ICheckHourMeterTest {
             )
             val entity = result.getOrNull()!!
             assertEquals(
-                entity.measureBD,
+                entity.hourMeterBD,
                 "5.000,0",
             )
             assertEquals(

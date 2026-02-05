@@ -25,5 +25,5 @@ interface OSDao {
     suspend fun checkNroOS(nroOS: Int): Int
 
     @Query("SELECT * FROM $TB_OS WHERE nroOS = :nroOS")
-    suspend fun listByNroOS(nroOS: Int): List<OSRoomModel>
+    suspend fun getByNroOS(nroOS: Int): OSRoomModel
 }

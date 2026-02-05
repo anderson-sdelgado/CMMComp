@@ -22,7 +22,7 @@ class IOSRoomDatasource @Inject constructor(
             osDao.deleteAll()
         }
 
-    override suspend fun checkNroOS(nroOS: Int): Result<Boolean> =
+    override suspend fun hasByNroOS(nroOS: Int): Result<Boolean> =
         result(getClassAndMethod()) {
             osDao.checkNroOS(nroOS) > 0
         }
@@ -32,9 +32,9 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insert(model)
         }
 
-    override suspend fun listByNroOS(nroOS: Int): Result<List<OSRoomModel>> =
+    override suspend fun getByNroOS(nroOS: Int): Result<OSRoomModel> =
         result(getClassAndMethod()) {
-            osDao.listByNroOS(nroOS)
+            osDao.getByNroOS(nroOS)
         }
 
 }

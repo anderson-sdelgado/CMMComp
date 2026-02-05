@@ -16,13 +16,13 @@ class ICheckHourMeterTest {
     )
 
     @Test
-    fun `Check return failure if have error in EquipRepository getMeasureByIdEquip`() =
+    fun `Check return failure if have error in EquipRepository getHourMeter`() =
         runTest {
             whenever(
                 equipRepository.getHourMeter()
             ).thenReturn(
                 resultFailure(
-                    context = "EquipRepository.getMeasureByIdEquip",
+                    context = "EquipRepository.getHourMeter",
                     message = "-",
                     cause = Exception()
                 )
@@ -34,7 +34,7 @@ class ICheckHourMeterTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckHourMeter -> EquipRepository.getMeasureByIdEquip"
+                "ICheckHourMeter -> EquipRepository.getHourMeter"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -43,7 +43,7 @@ class ICheckHourMeterTest {
         }
 
     @Test
-    fun `Check return false if measure database is bigger than measure input`() =
+    fun `Check return false if hourMeter database is bigger than hourMeter input`() =
         runTest {
             whenever(
                 equipRepository.getHourMeter()
@@ -57,7 +57,7 @@ class ICheckHourMeterTest {
             )
             val entity = result.getOrNull()!!
             assertEquals(
-                entity.measureBD,
+                entity.hourMeterBD,
                 "20.000,0"
             )
             assertEquals(
@@ -67,7 +67,7 @@ class ICheckHourMeterTest {
         }
 
     @Test
-    fun `Check return true if measure database is less than measure input`() =
+    fun `Check return true if hourMeter database is less than hourMeter input`() =
         runTest {
             whenever(
                 equipRepository.getHourMeter()
@@ -81,7 +81,7 @@ class ICheckHourMeterTest {
             )
             val entity = result.getOrNull()!!
             assertEquals(
-                entity.measureBD,
+                entity.hourMeterBD,
                 "5.000,0"
             )
             assertEquals(

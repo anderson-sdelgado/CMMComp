@@ -8,6 +8,8 @@ import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.stringToDouble
+import br.com.usinasantafe.cmm.utils.tryCatch
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -34,14 +36,11 @@ class ISetHourMeter @Inject constructor(
     ): Result<FlowApp> =
         call(getClassAndMethod()) {
 
-            val locale = Locale.Builder().setLanguage("pt").setRegion("BR").build()
-            val formatNumber = NumberFormat.getInstance(locale)
-            val hourMeterInput = formatNumber.parse(hourMeter)!!
-            val hourMeterInputDouble = hourMeterInput.toDouble()
-            equipRepository.updateHourMeter(hourMeterInputDouble).getOrThrow()
+            val value = tryCatch(::stringToDouble.name) { stringToDouble(hourMeter) }
+            equipRepository.updateHourMeter(value).getOrThrow()
 
             if(flowApp == FlowApp.HEADER_INITIAL) {
-                motoMecRepository.setHourMeterInitialHeader(hourMeterInputDouble).getOrThrow()
+                motoMecRepository.setHourMeterInitialHeader(value).getOrThrow()
                 val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()
                 if(typeEquip == TypeEquip.REEL_FERT) return@call FlowApp.REEL_FERT
                 motoMecRepository.saveHeader().getOrThrow()
@@ -51,7 +50,7 @@ class ISetHourMeter @Inject constructor(
                 return@call flowApp
             }
 
-            motoMecRepository.setHourMeterFinishHeader(hourMeterInputDouble).getOrThrow()
+            motoMecRepository.setHourMeterFinishHeader(value).getOrThrow()
             motoMecRepository.finishHeader().getOrThrow()
             startWorkManager()
             return@call flowApp

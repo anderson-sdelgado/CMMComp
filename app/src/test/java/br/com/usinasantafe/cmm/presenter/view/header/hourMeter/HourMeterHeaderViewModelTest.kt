@@ -6,18 +6,17 @@ import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckHourMeter
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetHourMeter
 import br.com.usinasantafe.cmm.presenter.Args
-import br.com.usinasantafe.cmm.presenter.model.CheckMeasureModel
+import br.com.usinasantafe.cmm.presenter.model.CheckHourMeterModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class HourMeterHeaderViewModelTest {
@@ -42,7 +41,7 @@ class HourMeterHeaderViewModelTest {
     )
     
     @Test
-    fun `setTextField - Check return failure if value measure is 0`() =
+    fun `setTextField - Check return failure if value hour meter is 0`() =
         runTest {
             val viewModel = createViewModel()
             viewModel.setTextField("OK", TypeButton.OK)
@@ -109,8 +108,8 @@ class HourMeterHeaderViewModelTest {
                 checkHourMeter("10.000,0")
             ).thenReturn(
                 Result.success(
-                    CheckMeasureModel(
-                        measureBD = "20.0000,0",
+                    CheckHourMeterModel(
+                        hourMeterBD = "20.0000,0",
                         check = false
                     )
                 )
@@ -144,8 +143,8 @@ class HourMeterHeaderViewModelTest {
                 checkHourMeter("10.000,0")
             ).thenReturn(
                 Result.success(
-                    CheckMeasureModel(
-                        measureBD = "5.0000,0",
+                    CheckHourMeterModel(
+                        hourMeterBD = "5.0000,0",
                         check = true
                     )
                 )
@@ -200,8 +199,8 @@ class HourMeterHeaderViewModelTest {
                 checkHourMeter("10.000,0")
             ).thenReturn(
                 Result.success(
-                    CheckMeasureModel(
-                        measureBD = "5.0000,0",
+                    CheckHourMeterModel(
+                        hourMeterBD = "5.0000,0",
                         check = true
                     )
                 )

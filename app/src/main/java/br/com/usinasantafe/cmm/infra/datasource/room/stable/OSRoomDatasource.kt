@@ -6,7 +6,7 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 interface OSRoomDatasource {
     suspend fun addAll(list: List<OSRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
-    suspend fun checkNroOS(nroOS: Int): Result<Boolean>
+    suspend fun hasByNroOS(nroOS: Int): Result<Boolean>
     suspend fun add(model: OSRoomModel): EmptyResult
-    suspend fun listByNroOS(nroOS: Int): Result<List<OSRoomModel>>
+    suspend fun getByNroOS(nroOS: Int): Result<OSRoomModel>
 }

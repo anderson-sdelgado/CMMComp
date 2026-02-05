@@ -7,11 +7,11 @@ interface OSRepository {
     suspend fun addAll(list: List<OS>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<OS>>
-    suspend fun checkNroOS(nroOS: Int): Result<Boolean>
-    suspend fun getListByNroOS(
+    suspend fun hasByNroOS(nroOS: Int): Result<Boolean>
+    suspend fun listByNroOS(
         token: String,
         nroOS: Int
     ): Result<List<OS>>
     suspend fun add(os: OS): EmptyResult
-    suspend fun listByNroOS(nroOS: Int): Result<List<OS>>
+    suspend fun getByNroOS(nroOS: Int): Result<OS>
 }

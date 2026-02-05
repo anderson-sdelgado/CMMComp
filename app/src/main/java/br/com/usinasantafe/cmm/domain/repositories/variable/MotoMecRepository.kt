@@ -55,4 +55,7 @@ interface MotoMecRepository {
     suspend fun uncouplingTrailerImplement(): EmptyResult
     suspend fun insertInitialPerformance(): Result<Unit>
     suspend fun listPerformanceByIdHeader(idHeader: Int): Result<List<Performance>>
+    suspend fun updatePerformance(id: Int, value: Double): EmptyResult
+    suspend fun getNroOSPerformanceById(id: Int): Result<Int>
+    suspend fun hasPerformanceByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
 }

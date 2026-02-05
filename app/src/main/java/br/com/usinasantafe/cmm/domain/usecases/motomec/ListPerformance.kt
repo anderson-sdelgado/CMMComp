@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemPerformanceScreenModel
 import br.com.usinasantafe.cmm.utils.call

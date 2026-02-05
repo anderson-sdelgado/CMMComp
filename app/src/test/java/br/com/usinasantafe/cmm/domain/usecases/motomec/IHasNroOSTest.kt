@@ -100,7 +100,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in OSRepository checkNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 resultFailure(
                     context = "IOSRepository.checkNroOS",
@@ -130,7 +130,7 @@ class IHasNroOSTest {
     fun `Check return true if OSRepository checkNroOS is true - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(true)
             )
@@ -152,7 +152,7 @@ class IHasNroOSTest {
     fun `Check return failure if not have connection in network and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -192,7 +192,7 @@ class IHasNroOSTest {
     fun `Check return true if not have connection in network`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -224,7 +224,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in GetToken - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -264,7 +264,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in OSRepository getListByNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -279,7 +279,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -312,7 +312,7 @@ class IHasNroOSTest {
     fun `Check return failure if OSRepository getListByNroOS return SocketTimeoutException and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -327,7 +327,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -369,7 +369,7 @@ class IHasNroOSTest {
     fun `Check return true if OSRepository getListByNroOS return SocketTimeoutException - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -384,7 +384,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -418,7 +418,7 @@ class IHasNroOSTest {
     fun `Check return false if return empty list in OSRepository getListByNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -433,7 +433,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -460,7 +460,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in ROSActivityRepository getListByNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -475,7 +475,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -527,7 +527,7 @@ class IHasNroOSTest {
     fun `Check return false if return empty list in ROSActivityRepository getListByNroOS - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -542,7 +542,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -588,7 +588,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in OSRepository add - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -603,7 +603,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -682,7 +682,7 @@ class IHasNroOSTest {
     fun `Check return failure if have error in ROSActivityRepository addAll - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -697,7 +697,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -794,7 +794,7 @@ class IHasNroOSTest {
     fun `Check return correct if function execute successfully - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                osRepository.checkNroOS(123456)
+                osRepository.hasByNroOS(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -809,7 +809,7 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.getListByNroOS(
+                osRepository.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )

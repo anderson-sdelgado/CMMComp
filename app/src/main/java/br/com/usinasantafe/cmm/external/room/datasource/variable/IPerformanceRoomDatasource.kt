@@ -26,4 +26,24 @@ class IPerformanceRoomDatasource @Inject constructor(
             performanceDao.listByIdHeader(idHeader)
         }
 
+    override suspend fun update(
+        id: Int,
+        value: Double
+    ): EmptyResult =
+        result(getClassAndMethod()){
+            val model = performanceDao.getById(id)
+            model.value = value
+            performanceDao.update(model)
+        }
+
+    override suspend fun getNroOSById(id: Int): Result<Int> =
+        result(getClassAndMethod()){
+            performanceDao.getById(id).nroOS
+        }
+
+    override suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+        result(getClassAndMethod()){
+            performanceDao.hasByIdHeaderAndValueNull(idHeader)
+        }
+
 }

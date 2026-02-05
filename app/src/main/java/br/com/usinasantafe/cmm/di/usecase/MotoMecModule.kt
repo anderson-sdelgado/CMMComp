@@ -131,4 +131,16 @@ interface MotoMecModule {
     @Singleton
     fun bindListPerformance(usecase: IListPerformance): ListPerformance
 
+    @Binds
+    @Singleton
+    fun bindSetPerformance(usecase: ISetPerformance): SetPerformance
+
+    @Binds
+    @Singleton
+    fun bindCheckPerformance(usecase: ICheckPerformance): CheckPerformance
+
+    @Binds
+    @Singleton
+    fun bindCheckClosePerformance(usecase: ICheckClosePerformance): CheckClosePerformance
+
 }

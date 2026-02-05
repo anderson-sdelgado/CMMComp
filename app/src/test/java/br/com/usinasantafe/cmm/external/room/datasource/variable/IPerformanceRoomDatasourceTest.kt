@@ -36,6 +36,7 @@ class IPerformanceRoomDatasourceTest {
 
     @After
     fun tearDown() {
+        db.clearAllTables()
         db.close()
     }
 
@@ -250,5 +251,192 @@ class IPerformanceRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `update - Check return failure if not have data fielded`() =
+        runTest {
+            val result = datasource.update(1, 50.0)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPerformanceRoomDatasource.update"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel.setValue(java.lang.Double)\" because \"model\" is null"
+            )
+        }
+
+    @Test
+    fun `update - Check value altered if have data fielded`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.update(1, 50.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+            val list = performanceDao.all()
+            assertEquals(
+                list.size,
+                1
+            )
+            val model = list[0]
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.value,
+                50.0
+            )
+        }
+
+    @Test
+    fun `getNroOSById - Check return failure if not have data fielded`() =
+        runTest {
+            val result = datasource.getNroOSById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPerformanceRoomDatasource.getNroOSById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel.getNroOS()\""
+            )
+        }
+
+    @Test
+    fun `getNroOSById - Check return correct if have data fielded`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.getNroOSById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                123456
+            )
+        }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return false if not have data in table`() =
+        runTest {
+            val result = datasource.hasByIdHeaderAndValueNull(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return false if not have idHeader fielded in table`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.hasByIdHeaderAndValueNull(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return false if not have idHeader and value fielded in table`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123789,
+                    value = 10.0
+                )
+            )
+            val result = datasource.hasByIdHeaderAndValueNull(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return true if have idHeader and value fielded in table`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123789,
+                    value = 10.0
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 456789,
+                )
+            )
+            val result = datasource.hasByIdHeaderAndValueNull(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
 
 }
