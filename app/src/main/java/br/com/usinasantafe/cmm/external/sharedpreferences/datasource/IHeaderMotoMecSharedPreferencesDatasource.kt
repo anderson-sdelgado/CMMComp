@@ -18,22 +18,15 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel> =
         result(getClassAndMethod()) {
-            val model = sharedPreferences.getString(
+            val json = sharedPreferences.getString(
                 BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                 null
             )
-            if(model.isNullOrEmpty()) HeaderMotoMecSharedPreferencesModel()
+            if(json.isNullOrEmpty()) HeaderMotoMecSharedPreferencesModel()
             Gson().fromJson(
-                model,
+                json,
                 HeaderMotoMecSharedPreferencesModel::class.java
             )
-        }
-
-    override suspend fun setRegOperator(regOperator: Int): EmptyResult =
-        result(getClassAndMethod()) {
-            val model = get().getOrThrow()
-            model.regOperator = regOperator
-            save(model).getOrThrow()
         }
 
     override suspend fun save(model: HeaderMotoMecSharedPreferencesModel): EmptyResult =
@@ -44,6 +37,13 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                     Gson().toJson(model)
                 )
             }
+        }
+
+    override suspend fun setRegOperator(regOperator: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.regOperator = regOperator
+            save(model).getOrThrow()
         }
 
     override suspend fun setDataEquip(

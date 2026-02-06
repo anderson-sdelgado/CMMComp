@@ -1,0 +1,515 @@
+package br.com.usinasantafe.cmm.presenter.view.motomec.note.menu
+
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.usinasantafe.cmm.BuildConfig
+import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.utils.removeRepeatedCalls
+import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogCheckDesign
+import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
+import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
+import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
+import br.com.usinasantafe.cmm.lib.CERTIFICATE
+import br.com.usinasantafe.cmm.lib.CHECK_WILL
+import br.com.usinasantafe.cmm.lib.COUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.ECM
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FlowTire
+import br.com.usinasantafe.cmm.lib.HOSE_COLLECTION
+import br.com.usinasantafe.cmm.lib.IMPLEMENT
+import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
+import br.com.usinasantafe.cmm.lib.EXIT_MILL
+import br.com.usinasantafe.cmm.lib.EXIT_SCALE
+import br.com.usinasantafe.cmm.lib.EXIT_TO_DEPOSIT
+import br.com.usinasantafe.cmm.lib.EXIT_TO_FIELD
+import br.com.usinasantafe.cmm.lib.FINISH_MECHANICAL
+import br.com.usinasantafe.cmm.lib.FlowEquipNote
+import br.com.usinasantafe.cmm.lib.HISTORY
+import br.com.usinasantafe.cmm.lib.LOADING_COMPOUND
+import br.com.usinasantafe.cmm.lib.LOADING_INPUT
+import br.com.usinasantafe.cmm.lib.NOTE_MECHANICAL
+import br.com.usinasantafe.cmm.lib.PCOMP_COMPOUND
+import br.com.usinasantafe.cmm.lib.PCOMP_INPUT
+import br.com.usinasantafe.cmm.lib.PERFORMANCE
+import br.com.usinasantafe.cmm.lib.PMM
+import br.com.usinasantafe.cmm.lib.REEL
+import br.com.usinasantafe.cmm.lib.RETURN_MILL
+import br.com.usinasantafe.cmm.lib.STOP
+import br.com.usinasantafe.cmm.lib.TIRE_CHANGE
+import br.com.usinasantafe.cmm.lib.TIRE_INFLATION
+import br.com.usinasantafe.cmm.lib.TRANSHIPMENT
+import br.com.usinasantafe.cmm.lib.TypeMsg
+import br.com.usinasantafe.cmm.lib.UNCOUPLING_TRAILER
+import br.com.usinasantafe.cmm.lib.WAITING_UNLOADING
+import br.com.usinasantafe.cmm.lib.WEIGHING_LOADED
+import br.com.usinasantafe.cmm.lib.WORK
+
+@Composable
+fun MenuNoteScreen(
+    viewModel: MenuNoteViewModel = hiltViewModel(),
+    onNavOS: () -> Unit,
+    onNavActivityList: () -> Unit,
+    onNavMeasure: () -> Unit,
+    onNavListReel: () -> Unit,
+    onNavPerformanceList: () -> Unit,
+    onNavTranshipment: () -> Unit,
+    onNavImplement: () -> Unit,
+    onNavFertigationList: () -> Unit,
+    onNavOSMechanical: () -> Unit,
+    onNavEquipTire: (flowTire: FlowTire) -> Unit,
+    onNavMenuCertificate: () -> Unit,
+    onNavInfoLocalSugarcaneLoading: () -> Unit,
+    onNavUncouplingTrailer: () -> Unit,
+    onNavTrailer: () -> Unit,
+    onNavProduct: () -> Unit,
+    onNavWill: () -> Unit,
+    onNavInfoLoadingCompound: () -> Unit,
+    onNavHistory: () -> Unit,
+) {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.descrEquip()
+                viewModel.flowEquipNote()
+                viewModel.menuList(BuildConfig.FLAVOR_app)
+            }
+
+            MenuNoteContent(
+                descrEquip = uiState.descrEquip,
+                itemList = uiState.menuList,
+                setSelection = viewModel::setSelection,
+                flowEquipNote = uiState.flowEquipNote,
+                onButtonReturn = viewModel::onButtonReturn,
+                idSelection = uiState.idSelection,
+                flagFailure = uiState.flagFailure,
+                flagDialog = uiState.flagDialog,
+                failure = uiState.failure,
+                errors = uiState.errors,
+                flagDialogCheck = uiState.flagDialogCheck,
+                onCloseDialog = viewModel::onCloseDialog,
+                onDialogCheck = viewModel::onDialogCheck,
+                typeMsg = uiState.typeMsg,
+                onCloseDialogCheck = viewModel::onCloseDialogCheck,
+                modifier = Modifier.padding(innerPadding)
+            )
+
+            LaunchedEffect(uiState.flagAccess) {
+                if(uiState.flagAccess) {
+                    if(uiState.idSelection != null) {
+                        val item = uiState.menuList.find { it.id == uiState.idSelection }!!
+                        when(item.app.second){
+                            PMM -> {
+                                when(item.function.second){
+                                    WORK -> {
+                                        when(uiState.flowEquipNote){
+                                            FlowEquipNote.MAIN -> onNavMeasure()
+                                            FlowEquipNote.SECONDARY -> onNavListReel()
+                                        }
+                                    }
+                                    STOP -> onNavActivityList()
+                                    PERFORMANCE -> onNavPerformanceList()
+                                    TRANSHIPMENT -> onNavTranshipment()
+                                    HOSE_COLLECTION -> onNavFertigationList()
+                                    IMPLEMENT -> onNavImplement()
+                                    NOTE_MECHANICAL -> onNavOSMechanical()
+                                    TIRE_INFLATION -> onNavEquipTire(FlowTire.INFLATION)
+                                    TIRE_CHANGE -> onNavEquipTire(FlowTire.CHANGE)
+                                    REEL -> onNavListReel()
+                                    HISTORY -> onNavHistory()
+                                }
+                            }
+                            ECM -> {
+                                when(item.type.second) {
+                                    CERTIFICATE -> onNavMenuCertificate()
+                                    EXIT_MILL -> onNavInfoLocalSugarcaneLoading()
+                                    RETURN_MILL -> onNavOS()
+                                    UNCOUPLING_TRAILER -> onNavUncouplingTrailer()
+                                    COUPLING_TRAILER -> onNavTrailer()
+                                }
+                            }
+                            PCOMP_INPUT -> {
+                                when(item.type.second) {
+                                    EXIT_SCALE,
+                                    EXIT_TO_DEPOSIT -> onNavOS()
+                                    LOADING_INPUT -> onNavProduct()
+                                    CHECK_WILL,
+                                    WEIGHING_LOADED -> onNavInfoLoadingCompound()
+                                    WAITING_UNLOADING -> onNavWill()
+                                }
+                            }
+                            PCOMP_COMPOUND -> {
+                                when(item.type.second) {
+                                    EXIT_SCALE,
+                                    EXIT_TO_FIELD -> onNavOS()
+                                    LOADING_COMPOUND -> onNavWill()
+                                    CHECK_WILL,
+                                    WEIGHING_LOADED -> onNavInfoLoadingCompound()
+                                }
+                            }
+                        }
+                    } else {
+                        when(uiState.flowEquipNote){
+                            FlowEquipNote.MAIN -> onNavMeasure()
+                            FlowEquipNote.SECONDARY -> onNavListReel()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MenuNoteContent(
+    descrEquip: String,
+    itemList: List<ItemMenuModel>,
+    setSelection: (Int) -> Unit,
+    flowEquipNote: FlowEquipNote,
+    onButtonReturn: () -> Unit,
+    idSelection: Int?,
+    flagFailure: Boolean,
+    flagDialog: Boolean,
+    failure: String,
+    errors: Errors,
+    onCloseDialog: () -> Unit,
+    flagDialogCheck: Boolean,
+    onDialogCheck: (Pair<Int, String>) -> Unit,
+    typeMsg: TypeMsg,
+    onCloseDialogCheck: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+    ) {
+        TitleDesign(
+            text = stringResource(
+                id = R.string.text_title_descr_equip,
+                descrEquip
+            ),
+            font = 26,
+            padding = 6
+        )
+        TitleDesign(
+            text = stringResource(
+                id = R.string.text_title_menu
+            )
+        )
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f),
+        ) {
+            items(itemList) { item ->
+                ItemListDesign(
+                    text = item.descr,
+                    setActionItem = {
+                        setSelection(item.id)
+                    },
+                    font = 26
+                )
+            }
+        }
+        Button(
+            onClick = onButtonReturn,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            TextButtonDesign(
+                text = when(flowEquipNote){
+                    FlowEquipNote.MAIN -> stringResource(id = R.string.text_button_finish_header)
+                    FlowEquipNote.SECONDARY -> stringResource(id = R.string.text_button_return_list)
+                },
+            )
+        }
+        BackHandler {}
+
+        if(flagDialogCheck){
+            var selection: Pair<Int, String>? = null
+            if(idSelection != null) {
+                val item = itemList.find { it.id == idSelection }!!
+                selection = when(item.app.second) {
+                    PMM -> item.function
+                    else -> 0 to "FAILURE"
+                }
+            }
+            AlertDialogCheckDesign(
+                text = when(selection!!.second){
+                    FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_question_finish_mechanic)
+                    RETURN_MILL -> stringResource(id = R.string.text_msg_question_return_mill)
+                    else -> ""
+                },
+                setCloseDialog = onCloseDialogCheck,
+                setActionButtonYes = { onDialogCheck(selection) },
+            )
+        }
+
+        if(flagDialog) {
+            var text = ""
+            if(flagFailure){
+                text = when(errors) {
+                    Errors.INVALID -> stringResource(
+                        id = R.string.text_selection_option_invalid,
+                        removeRepeatedCalls(failure)
+                    )
+                    Errors.HEADER_EMPTY -> stringResource(id = R.string.text_header_empty)
+                    Errors.NOTE_MECHANICAL_OPEN -> stringResource(id = R.string.text_msg_note_mechanic_open)
+                    Errors.PRE_CEC_STARTED -> stringResource(id = R.string.text_msg_pre_cec_started)
+                    Errors.WITHOUT_LOADING_INPUT -> stringResource(id = R.string.text_msg_without_loading_input)
+                    Errors.WITHOUT_LOADING_COMPOSTING -> stringResource(id = R.string.text_msg_without_loading_composing)
+                    Errors.NEED_UNCOUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_uncoupling_trailer)
+                    Errors.NEED_COUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_coupling_trailer)
+                    Errors.WITHOUT_NOTE,
+                    Errors.LAST_NOTE_WORK -> stringResource(id = R.string.text_msg_without_note_stop)
+                    else -> stringResource(
+                        id = R.string.text_failure,
+                        removeRepeatedCalls(failure)
+                    )
+                }
+            } else {
+                text = when(typeMsg){
+                    TypeMsg.NOTE_FINISH_MECHANICAL -> stringResource(id = R.string.text_msg_finish_mechanic)
+                    TypeMsg.UNCOUPLING_TRAILER -> stringResource(id = R.string.text_msg_uncoupling_trailer)
+                    else -> {
+                        val model = itemList.find { it.id == idSelection }!!
+                        stringResource(id = R.string.text_msg_initial_activity, model.descr )
+                    }
+                }
+            }
+            AlertDialogSimpleDesign(
+                text = text,
+                setCloseDialog = onCloseDialog,
+            )
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreview() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        function = 1 to WORK,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        descr = "PARADO",
+                        function = 1 to STOP,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                ),
+                setSelection = {},
+                flowEquipNote = FlowEquipNote.MAIN,
+                onButtonReturn = {},
+                idSelection = null,
+                flagDialog = false,
+                failure = "",
+                errors = Errors.INVALID,
+                onCloseDialog = {},
+                flagDialogCheck = false,
+                onDialogCheck = {},
+                typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                flagFailure = false,
+                onCloseDialogCheck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreviewFailure() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        function = 1 to WORK,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        descr = "PARADO",
+                        function = 1 to STOP,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                ),
+                setSelection = {},
+                flowEquipNote = FlowEquipNote.MAIN,
+                onButtonReturn = {},
+                idSelection = null,
+                flagDialog = true,
+                failure = "Failure",
+                onCloseDialog = {},
+                flagDialogCheck = false,
+                errors = Errors.EXCEPTION,
+                onDialogCheck = {},
+                typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                flagFailure = false,
+                onCloseDialogCheck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreviewSelectionInvalid() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        function = 1 to WORK,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        descr = "PARADO",
+                        function = 1 to STOP,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                ),
+                setSelection = {},
+                flowEquipNote = FlowEquipNote.SECONDARY,
+                onButtonReturn = {},
+                idSelection = null,
+                flagDialog = true,
+                failure = "Failure",
+                onCloseDialog = {},
+                flagDialogCheck = false,
+                errors = Errors.INVALID,
+                onDialogCheck = {},
+                typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                flagFailure = false,
+                onCloseDialogCheck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreviewHeaderEmpty() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        function = 1 to WORK,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        descr = "PARADO",
+                        function = 1 to STOP,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                ),
+                setSelection = {},
+                flowEquipNote = FlowEquipNote.MAIN,
+                onButtonReturn = {},
+                idSelection = null,
+                flagDialog = true,
+                failure = "Failure",
+                onCloseDialog = {},
+                flagDialogCheck = false,
+                errors = Errors.HEADER_EMPTY,
+                onDialogCheck = {},
+                typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                flagFailure = false,
+                onCloseDialogCheck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MenuHeaderPagePreviewNoteMechanicOpen() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            MenuNoteContent(
+                descrEquip = "2200 - TRATOR",
+                itemList = listOf(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        function = 1 to WORK,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                    ItemMenuModel(
+                        id = 2,
+                        descr = "PARADO",
+                        function = 1 to STOP,
+                        type = 1 to ITEM_NORMAL,
+                        app =  1 to PMM
+                    ),
+                ),
+                setSelection = {},
+                flowEquipNote = FlowEquipNote.SECONDARY,
+                onButtonReturn = {},
+                idSelection = null,
+                flagDialog = true,
+                failure = "Failure",
+                onCloseDialog = {},
+                flagDialogCheck = false,
+                errors = Errors.NOTE_MECHANICAL_OPEN,
+                onDialogCheck = {},
+                typeMsg = TypeMsg.NOTE_FINISH_MECHANICAL,
+                flagFailure = false,
+                onCloseDialogCheck = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}

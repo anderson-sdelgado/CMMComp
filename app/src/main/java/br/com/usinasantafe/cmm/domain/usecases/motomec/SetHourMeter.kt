@@ -27,7 +27,7 @@ class ISetHourMeter @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
     private val equipRepository: EquipRepository,
     private val startWorkManager: StartWorkManager,
-    private val configRepository: ConfigRepository
+    private val configRepository: ConfigRepository,
 ): SetHourMeter {
 
     override suspend fun invoke(
@@ -51,7 +51,12 @@ class ISetHourMeter @Inject constructor(
             }
 
             motoMecRepository.setHourMeterFinishHeader(value).getOrThrow()
+
+            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val check = motoMecRepository.hasPerformanceByIdHeader(id).getOrThrow()
+
             motoMecRepository.finishHeader().getOrThrow()
+
             startWorkManager()
             return@call flowApp
         }

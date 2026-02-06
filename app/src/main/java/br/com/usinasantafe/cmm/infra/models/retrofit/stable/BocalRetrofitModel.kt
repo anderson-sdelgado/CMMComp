@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.stable
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Bocal
+import br.com.usinasantafe.cmm.domain.entities.stable.Nozzle
 
 data class BocalRetrofitModel(
     val idBocal: Int,
@@ -8,8 +8,8 @@ data class BocalRetrofitModel(
     val descrBocal: String
 )
 
-fun BocalRetrofitModel.retrofitModelToEntity(): Bocal {
-    return Bocal(
+fun BocalRetrofitModel.retrofitModelToEntity(): Nozzle {
+    return Nozzle(
         idBocal = this.idBocal,
         codBocal = this.codBocal,
         descrBocal = this.descrBocal

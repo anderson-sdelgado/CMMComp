@@ -1,7 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
+import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -21,7 +24,10 @@ class ICheckClosePerformanceTest {
     lateinit var usecase: CheckClosePerformance
 
     @Inject
-    lateinit var headerSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
+    lateinit var headerMotoMecSharedPreferencesDatasource: IHeaderMotoMecSharedPreferencesDatasource
+
+    @Inject
+    lateinit var performanceDao: PerformanceDao
 
     @Before
     fun init() {
@@ -47,21 +53,116 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun check_return_failure_if_not_have_data() =
+    fun check_return_true_if_not_have_data_in_table_performance() =
         runTest {
-            headerSharedPreferencesDatasource.setId(1)
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    id = 2
+                )
+            )
             val result = usecase()
             assertEquals(
-                result.isFailure,
+                result.isSuccess,
                 true
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ICheckClosePerformance -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun check_return_true_if_not_have_idHeader_fielded_in_table_performance() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    id = 2
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
             )
             assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException"
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun check_return_true_if_not_have_idHeader_and_value_fielded_in_table_performance() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    id = 2
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123789,
+                    value = 10.0
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun check_return_false_if_have_idHeader_and_value_fielded_in_table_performance() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    id = 2
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123789,
+                    value = 10.0
+                )
+            )
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 456789,
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
             )
         }
 

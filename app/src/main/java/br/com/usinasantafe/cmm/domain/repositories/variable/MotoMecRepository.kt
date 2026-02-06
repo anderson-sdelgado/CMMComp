@@ -58,4 +58,5 @@ interface MotoMecRepository {
     suspend fun updatePerformance(id: Int, value: Double): EmptyResult
     suspend fun getNroOSPerformanceById(id: Int): Result<Int>
     suspend fun hasPerformanceByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
+    suspend fun hasPerformanceByIdHeader(idHeader: Int): Result<Boolean>
 }

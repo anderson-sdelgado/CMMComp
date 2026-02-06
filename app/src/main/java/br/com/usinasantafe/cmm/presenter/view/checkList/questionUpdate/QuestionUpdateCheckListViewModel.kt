@@ -5,22 +5,16 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
-import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
-import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class QuestionUpdateCheckListState(

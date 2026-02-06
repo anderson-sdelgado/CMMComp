@@ -65,8 +65,8 @@ object Routes {
     const val QUESTION_UPDATE_CHECK_LIST_ROUTE = QUESTION_UPDATE_CHECK_LIST_SCREEN
     const val ITEM_CHECK_LIST_ROUTE = ITEM_CHECK_LIST_SCREEN
     const val TRANSHIPMENT_NOTE_ROUTE = "$TRANSHIPMENT_NOTE_SCREEN/{$FLOW_APP_ARG}"
-    const val PERFORMANCE_LIST_ROUTE = PERFORMANCE_LIST_SCREEN
-    const val PERFORMANCE_ROUTE = "$PERFORMANCE_SCREEN/{$ID_ARG}"
+    const val PERFORMANCE_LIST_ROUTE = "$PERFORMANCE_LIST_SCREEN/{$FLOW_APP_ARG}"
+    const val PERFORMANCE_ROUTE = "$PERFORMANCE_SCREEN/{$FLOW_APP_ARG}/{$ID_ARG}"
     const val MOTOR_PUMP_ROUTE = MOTOR_PUMP_SCREEN
 }
 
@@ -155,14 +155,17 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("$TRANSHIPMENT_NOTE_SCREEN/${flowApp}")
     }
 
-    fun navigatePerformanceList() {
-        navController.navigate(PERFORMANCE_LIST_SCREEN)
+    fun navigatePerformanceList(
+        flowApp: Int
+    ) {
+        navController.navigate("$PERFORMANCE_LIST_SCREEN/${flowApp}")
     }
 
     fun navigatePerformance(
+        flowApp: Int,
         id: Int
     ) {
-        navController.navigate("$PERFORMANCE_SCREEN/{$id}")
+        navController.navigate("$PERFORMANCE_SCREEN/${flowApp}/{$id}")
     }
 
     ////////////////////////////////////////////////////////////////////

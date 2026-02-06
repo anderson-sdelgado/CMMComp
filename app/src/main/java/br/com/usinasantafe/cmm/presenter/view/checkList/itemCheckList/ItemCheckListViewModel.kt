@@ -6,7 +6,6 @@ import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckLis
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
-import br.com.usinasantafe.cmm.presenter.view.header.equip.EquipHeaderState
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureHandled
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class ItemCheckListState(

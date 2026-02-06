@@ -297,4 +297,8 @@ class IMotoMecRepository @Inject constructor(
             performanceRoomDatasource.hasByIdHeaderAndValueNull(idHeader).getOrThrow()
         }
 
+    override suspend fun hasPerformanceByIdHeader(idHeader: Int): Result<Boolean> {
+        TODO("Not yet implemented")
+    }
+
 }

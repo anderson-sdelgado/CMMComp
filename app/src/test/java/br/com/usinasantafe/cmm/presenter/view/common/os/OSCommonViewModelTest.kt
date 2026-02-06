@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.os.OSCommonViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

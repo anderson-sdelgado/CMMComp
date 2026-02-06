@@ -18,6 +18,8 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecShare
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.os.OSCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.os.OSCommonViewModel
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -28,20 +28,25 @@ import br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList.ItemCheckL
 import br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate.QuestionUpdateCheckListScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.password.PasswordScreen
-import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonScreen
-import br.com.usinasantafe.cmm.presenter.view.header.equip.EquipHeaderScreen
-import br.com.usinasantafe.cmm.presenter.view.header.hourMeter.HourMeterHeaderScreen
-import br.com.usinasantafe.cmm.presenter.view.header.operator.OperatorHeaderScreen
-import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonScreen
-import br.com.usinasantafe.cmm.presenter.view.header.turnList.TurnListHeaderScreen
-import br.com.usinasantafe.cmm.presenter.view.note.menu.MenuNoteScreen
-import br.com.usinasantafe.cmm.presenter.view.note.stopList.StopListNoteScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.hourMeter.HourMeterHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.os.OSCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.turnList.TurnListHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.note.menu.MenuNoteScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.note.stopList.StopListNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
 import br.com.usinasantafe.cmm.presenter.Routes.MOTOR_PUMP_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
-import br.com.usinasantafe.cmm.presenter.view.header.motorPump.MotorPumpScreen
-import br.com.usinasantafe.cmm.presenter.view.note.transhipment.TranshipmentScreen
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.motorPump.MotorPumpScreen
+import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentScreen
+import br.com.usinasantafe.cmm.presenter.view.performance.performance.PerformanceScreen
+import br.com.usinasantafe.cmm.presenter.view.performance.performancelist.PerformanceListScreen
 
 @Composable
 fun NavigationGraph(
@@ -56,7 +61,6 @@ fun NavigationGraph(
         navController = navHostController,
         startDestination = startDestination
     ) {
-
 
         ///////////////////////// Splash //////////////////////////////////
 
@@ -108,7 +112,9 @@ fun NavigationGraph(
             )
         }
 
-        ////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////
+
+        ////////////////////////// MotoMec //////////////////////////////////
 
         ////////////////////////// Header //////////////////////////////////
 
@@ -217,6 +223,11 @@ fun NavigationGraph(
                 },
                 onNavMotorPump = {
                     navActions.navigateToMotorPump()
+                },
+                onNavListPerformance = {
+                    navActions.navigatePerformanceList(
+                        flowApp = FlowApp.HEADER_FINISH.ordinal
+                    )
                 }
             )
         }
@@ -259,11 +270,13 @@ fun NavigationGraph(
                     )
                 },
                 onNavPerformanceList = {
-                    navActions.navigatePerformanceList()
+                    navActions.navigatePerformanceList(
+                        flowApp = FlowApp.PERFORMANCE.ordinal
+                    )
                 },
                 onNavListReel = {},
                 onNavTrailer = {},
-                onNavOSListFertigation = {},
+                onNavFertigationList = {},
                 onNavMenuCertificate = {},
                 onNavImplement = {},
                 onNavOSMechanical = {},
@@ -307,6 +320,50 @@ fun NavigationGraph(
                 }
             )
         }
+
+        ////////////////////////////////////////////////////////////////////
+
+        //////////////////////// Performance ///////////////////////////////
+
+        composable(
+            PERFORMANCE_LIST_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
+            )
+        ){ entry ->
+            PerformanceListScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavPerformance = {
+                    navActions.navigatePerformance(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
+                        id = it
+                    )
+                },
+                onNavSplash = {
+                    navActions.navigateToSplash()
+                }
+            )
+        }
+
+        composable(
+            PERFORMANCE_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType },
+                navArgument(ID_ARG) { type = NavType.IntType }
+            )
+        ){ entry ->
+            PerformanceScreen(
+                onNavPerformanceList = {
+                    navActions.navigatePerformanceList(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
+                    )
+                }
+            )
+        }
+
+        ////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////
 

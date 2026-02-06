@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
+import br.com.usinasantafe.cmm.utils.BaseUpdateTable
 import br.com.usinasantafe.cmm.utils.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.flowCall
@@ -20,27 +22,10 @@ interface UpdateTableActivity {
 }
 
 class IUpdateTableActivity @Inject constructor(
-    private val getToken: GetToken,
-    private val activityRepository: ActivityRepository
-): UpdateTableActivity {
-
-    override suspend fun invoke(
-        sizeAll: Float,
-        count: Float
-    ): Flow<UpdateStatusState> = flow {
-        flowCall(getClassAndMethod()) {
-
-            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_ACTIVITY)
-            val token = getToken().getOrThrow()
-            val entityList = activityRepository.listAll(token).getOrThrow()
-
-            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_ACTIVITY)
-            activityRepository.deleteAll().getOrThrow()
-
-            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_ACTIVITY)
-            activityRepository.addAll(entityList).getOrThrow()
-
-        }
-    }
-
-}
+    getToken: GetToken,
+    activityRepository: ActivityRepository
+) : BaseUpdateTable<Activity>(
+    getToken,
+    activityRepository,
+    TB_ACTIVITY
+), UpdateTableActivity

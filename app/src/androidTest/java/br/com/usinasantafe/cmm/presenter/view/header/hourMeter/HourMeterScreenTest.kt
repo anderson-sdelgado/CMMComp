@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.hourMeter.HourMeterHeaderScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

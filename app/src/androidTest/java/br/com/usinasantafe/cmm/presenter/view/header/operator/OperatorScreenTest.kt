@@ -13,6 +13,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

@@ -21,6 +21,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
