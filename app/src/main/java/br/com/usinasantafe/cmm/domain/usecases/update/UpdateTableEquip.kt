@@ -29,5 +29,6 @@ class IUpdateTableEquip @Inject constructor(
 ) : BaseUpdateTable<Equip>(
     getToken,
     equipRepository,
-    TB_EQUIP
-), UpdateTableActivity
+    TB_EQUIP,
+    getClassAndMethod()
+), UpdateTableEquip

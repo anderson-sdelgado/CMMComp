@@ -23,7 +23,7 @@ fun ActivityRoomModel.roomModelToEntity(): Activity {
     }
 }
 
-fun Activity.entityActivityToRoomModel(): ActivityRoomModel {
+fun Activity.entityToRoomModel(): ActivityRoomModel {
     return with(this){
         ActivityRoomModel(
             idActivity = this.idActivity,

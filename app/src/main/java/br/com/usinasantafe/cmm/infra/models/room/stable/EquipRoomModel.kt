@@ -28,7 +28,7 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
     }
 }
 
-fun Equip.entityEquipToRoomModel(): EquipRoomModel {
+fun Equip.entityToRoomModel(): EquipRoomModel {
     return with(this){
         EquipRoomModel(
             id = this.id,

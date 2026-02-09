@@ -21,7 +21,7 @@ fun ColabRoomModel.roomModelToEntity(): Colab {
     }
 }
 
-fun Colab.entityColabToRoomModel(): ColabRoomModel {
+fun Colab.entityToRoomModel(): ColabRoomModel {
     return with(this){
         ColabRoomModel(
             regColab = this.regColab,

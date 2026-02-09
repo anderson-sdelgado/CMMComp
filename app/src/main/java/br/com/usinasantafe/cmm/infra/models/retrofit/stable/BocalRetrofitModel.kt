@@ -8,10 +8,3 @@ data class BocalRetrofitModel(
     val descrBocal: String
 )
 
-fun BocalRetrofitModel.retrofitModelToEntity(): Nozzle {
-    return Nozzle(
-        idBocal = this.idBocal,
-        codBocal = this.codBocal,
-        descrBocal = this.descrBocal
-    )
-}

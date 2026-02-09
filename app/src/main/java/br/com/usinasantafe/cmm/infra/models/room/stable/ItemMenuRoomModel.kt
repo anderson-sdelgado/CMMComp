@@ -67,7 +67,7 @@ fun ItemMenuRoomModel.roomModelToEntity(): ItemMenu {
     }
 }
 
-fun ItemMenu.entityItemMenuToRoomModel(): ItemMenuRoomModel {
+fun ItemMenu.entityToRoomModel(): ItemMenuRoomModel {
     return with(this){
         ItemMenuRoomModel(
             id = this.id,

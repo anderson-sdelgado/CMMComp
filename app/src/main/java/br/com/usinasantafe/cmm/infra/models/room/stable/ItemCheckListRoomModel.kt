@@ -23,7 +23,7 @@ fun ItemCheckListRoomModel.roomModelToEntity(): ItemCheckList {
     }
 }
 
-fun ItemCheckList.entityItemCheckListToRoomModel(): ItemCheckListRoomModel {
+fun ItemCheckList.entityToRoomModel(): ItemCheckListRoomModel {
     return with(this){
         ItemCheckListRoomModel(
             idItemCheckList = this.idItemCheckList,

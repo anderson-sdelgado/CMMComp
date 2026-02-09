@@ -25,7 +25,7 @@ fun TurnRoomModel.roomModelToEntity(): Turn {
     }
 }
 
-fun Turn.entityTurnToRoomModel(): TurnRoomModel {
+fun Turn.entityToRoomModel(): TurnRoomModel {
     return with(this){
         TurnRoomModel(
             idTurn = this.idTurn,

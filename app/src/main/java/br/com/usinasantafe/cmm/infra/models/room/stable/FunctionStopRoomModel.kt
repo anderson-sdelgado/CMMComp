@@ -24,7 +24,7 @@ fun FunctionStopRoomModel.roomModelToEntity(): FunctionStop {
     }
 }
 
-fun FunctionStop.entityFunctionStopToRoomModel(): FunctionStopRoomModel {
+fun FunctionStop.entityToRoomModel(): FunctionStopRoomModel {
     return with(this){
         FunctionStopRoomModel(
             idFunctionStop = this.idFunctionStop,

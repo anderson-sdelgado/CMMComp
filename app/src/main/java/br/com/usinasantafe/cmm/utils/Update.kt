@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.utils
 
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.infra.repositories.stable.IActivityRepository
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -8,14 +9,15 @@ import kotlinx.coroutines.flow.flow
 abstract class BaseUpdateTable<T>(
     private val getToken: GetToken,
     private val repository: UpdateRepository<T>,
-    private val tableName: String
+    private val tableName: String,
+    private val classAndMethod: String
 ) {
 
     suspend operator fun invoke(
         sizeAll: Float,
         count: Float
     ): Flow<UpdateStatusState> = flow {
-        flowCall(getClassAndMethod()) {
+        flowCall(classAndMethod) {
 
             emitProgress(count, sizeAll, LevelUpdate.RECOVERY, tableName)
             val token = getToken().getOrThrow()
@@ -39,27 +41,28 @@ interface UpdateRepository<T> {
 abstract class BaseStableRepository<
         Entity,
         RetrofitModel,
-        RoomModel
+        RoomModel,
         >(
     private val retrofitListAll: suspend (String) -> Result<List<RetrofitModel>>,
     private val roomAddAll: suspend (List<RoomModel>) -> Unit,
     private val roomDeleteAll: suspend () -> Unit,
     private val retrofitToEntity: (RetrofitModel) -> Entity,
-    private val entityToRoom: (Entity) -> RoomModel
+    private val entityToRoom: (Entity) -> RoomModel,
+    private val classAndMethod: String
 ) : UpdateRepository<Entity> {
 
     override suspend fun addAll(list: List<Entity>): EmptyResult =
-        call(getClassAndMethod()) {
+        call(classAndMethod) {
             roomAddAll(list.map(entityToRoom))
         }
 
     override suspend fun deleteAll(): EmptyResult =
-        call(getClassAndMethod()) {
+        call(classAndMethod) {
             roomDeleteAll()
         }
 
     override suspend fun listAll(token: String): Result<List<Entity>> =
-        call(getClassAndMethod()) {
+        call(classAndMethod) {
             retrofitListAll(token).getOrThrow()
                 .map(retrofitToEntity)
         }

@@ -4,14 +4,10 @@ import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
-import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 import br.com.usinasantafe.cmm.utils.BaseUpdateTable
-import br.com.usinasantafe.cmm.utils.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import br.com.usinasantafe.cmm.utils.flowCall
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 interface UpdateTableActivity {
@@ -27,5 +23,6 @@ class IUpdateTableActivity @Inject constructor(
 ) : BaseUpdateTable<Activity>(
     getToken,
     activityRepository,
-    TB_ACTIVITY
+    TB_ACTIVITY,
+    getClassAndMethod()
 ), UpdateTableActivity

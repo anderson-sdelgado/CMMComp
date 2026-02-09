@@ -25,7 +25,7 @@ fun RItemMenuStopRoomModel.roomModelToEntity(): RItemMenuStop {
     }
 }
 
-fun RItemMenuStop.entityRItemMenuStopToRoomModel(): RItemMenuStopRoomModel {
+fun RItemMenuStop.entityToRoomModel(): RItemMenuStopRoomModel {
     return with(this){
         RItemMenuStopRoomModel(
             id = this.id,

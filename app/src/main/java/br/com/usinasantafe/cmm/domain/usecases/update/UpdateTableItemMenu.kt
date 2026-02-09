@@ -1,10 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
+import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
+import br.com.usinasantafe.cmm.domain.entities.stable.ItemMenu
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemMenuRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.TB_FUNCTION_ACTIVITY
 import br.com.usinasantafe.cmm.lib.TB_ITEM_MENU
+import br.com.usinasantafe.cmm.utils.BaseUpdateTable
 import br.com.usinasantafe.cmm.utils.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.flowCall
@@ -20,27 +24,11 @@ interface UpdateTableItemMenu {
 }
 
 class IUpdateTableItemMenu @Inject constructor(
-    private val getToken: GetToken,
-    private val itemMenuRepository: ItemMenuRepository
-): UpdateTableItemMenu {
-
-    override suspend fun invoke(
-        sizeAll: Float,
-        count: Float
-    ): Flow<UpdateStatusState> = flow {
-        flowCall(getClassAndMethod()) {
-
-            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_ITEM_MENU)
-            val token = getToken().getOrThrow()
-            val entityList = itemMenuRepository.listAll(token).getOrThrow()
-
-            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_ITEM_MENU)
-            itemMenuRepository.deleteAll().getOrThrow()
-
-            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_ITEM_MENU)
-            itemMenuRepository.addAll(entityList).getOrThrow()
-
-        }
-    }
-
-}
+    getToken: GetToken,
+    itemMenuRepository: ItemMenuRepository
+) : BaseUpdateTable<ItemMenu>(
+    getToken,
+    itemMenuRepository,
+    TB_ITEM_MENU,
+    getClassAndMethod()
+), UpdateTableItemMenu

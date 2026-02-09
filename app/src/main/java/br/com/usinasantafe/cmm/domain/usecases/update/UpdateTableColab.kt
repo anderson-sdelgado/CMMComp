@@ -29,6 +29,6 @@ class IUpdateTableColab @Inject constructor(
 ) : BaseUpdateTable<Colab>(
     getToken,
     colabRepository,
-    TB_COLAB
-), UpdateTableActivity
-
+    TB_COLAB,
+    getClassAndMethod()
+), UpdateTableColab

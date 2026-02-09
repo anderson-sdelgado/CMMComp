@@ -24,7 +24,7 @@ fun FunctionActivityRoomModel.roomModelToEntity(): FunctionActivity {
     }
 }
 
-fun FunctionActivity.entityFunctionActivityToRoomModel(): FunctionActivityRoomModel {
+fun FunctionActivity.entityToRoomModel(): FunctionActivityRoomModel {
     return with(this){
         FunctionActivityRoomModel(
             idFunctionActivity = this.idFunctionActivity,

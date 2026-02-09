@@ -23,7 +23,7 @@ fun ROSActivityRoomModel.roomModelToEntity(): ROSActivity {
     }
 }
 
-fun ROSActivity.entityROSActivityToRoomModel(): ROSActivityRoomModel {
+fun ROSActivity.entityToRoomModel(): ROSActivityRoomModel {
     return with(this){
         ROSActivityRoomModel(
             idROSActivity = this.idROSActivity,
