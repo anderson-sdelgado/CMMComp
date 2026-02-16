@@ -78,10 +78,17 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
             }
         }
 
-    override suspend fun setNroEquipTranshipment(nroEquipTranshipment: Long): EmptyResult =
+    override suspend fun setNroEquipTranshipment(nroEquip: Long): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
-            model.nroEquipTranshipment = nroEquipTranshipment
+            model.nroEquipTranshipment = nroEquip
+            save(model).getOrThrow()
+        }
+
+    override suspend fun setIdNozzle(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.idNozzle = id
             save(model).getOrThrow()
         }
 }

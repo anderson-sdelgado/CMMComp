@@ -2,16 +2,19 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IEquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.Status
+import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -46,6 +49,9 @@ class ISetHourMeterTest {
 
     @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
+
+    @Inject
+    lateinit var performanceDao: PerformanceDao
 
     @Before
     fun setUp() {
@@ -338,7 +344,7 @@ class ISetHourMeterTest {
         }
 
     @Test
-    fun check_return_FlowApp_HEADER_INITIAL_if_not_have_performance_to_header_and_flow_header_finish() =
+    fun check_return_FlowApp_HEADER_FINISH_if_not_have_performance_to_header_and_flow_header_finish() =
         runTest {
             saveEquipSharedPreferences()
             saveHeaderMotoMecRoom()
@@ -353,7 +359,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                FlowApp.HEADER_INITIAL
+                FlowApp.HEADER_FINISH
             )
             val resultHeaderMotoMecRoom = headerMotoMecDao.all()
             assertEquals(
@@ -369,8 +375,67 @@ class ISetHourMeterTest {
                 headerMotoMecRoom.status,
                 Status.FINISH
             )
+            assertEquals(
+                headerMotoMecRoom.statusSend,
+                StatusSend.SEND
+            )
         }
 
+
+    @Test
+    fun check_return_FlowApp_PERFORMANCE_if_have_performance_to_header_and_flow_header_finish() =
+        runTest {
+            saveEquipSharedPreferences()
+            saveHeaderMotoMecRoom()
+            saveHeaderMotoMecSharedPreferences()
+            savePerformanceRoom()
+            val result = usecase(
+                hourMeter = "2.000,0",
+                flowApp = FlowApp.HEADER_FINISH
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowApp.PERFORMANCE
+            )
+            val resultHeaderMotoMecRoom = headerMotoMecDao.all()
+            assertEquals(
+                resultHeaderMotoMecRoom.size,
+                1
+            )
+            val headerMotoMecRoom = resultHeaderMotoMecRoom.first()
+            assertEquals(
+                headerMotoMecRoom.hourMeterFinish,
+                2000.0
+            )
+            assertEquals(
+                headerMotoMecRoom.status,
+                Status.OPEN
+            )
+            assertEquals(
+                headerMotoMecRoom.statusSend,
+                StatusSend.SENT
+            )
+        }
+
+    private suspend fun savePerformanceRoom(){
+        performanceDao.insert(
+            PerformanceRoomModel(
+                idHeader = 1,
+                nroOS = 123456,
+                value = 2000.0
+            ),
+        )
+        performanceDao.insert(
+            PerformanceRoomModel(
+                idHeader = 1,
+                nroOS = 123456,
+            ),
+        )
+    }
 
     private suspend fun saveHeaderMotoMecRoom() {
         headerMotoMecDao.insert(
@@ -383,7 +448,8 @@ class ISetHourMeterTest {
                 idActivity = 1,
                 hourMeterInitial = 10000.0,
                 dateHourInitial = Date(1748359002),
-                statusCon = true
+                statusCon = true,
+                statusSend = StatusSend.SENT
             )
         )
     }

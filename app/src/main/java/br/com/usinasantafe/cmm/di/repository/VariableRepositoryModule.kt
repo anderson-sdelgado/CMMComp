@@ -40,4 +40,10 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindPerformanceRepository(repository: IPerformanceRepository): PerformanceRepository
 
+    @Binds
+    @Singleton
+    fun bindFertigationRepository(repository: IFertigationRepository): FertigationRepository
+
+
+
 }

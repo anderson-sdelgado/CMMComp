@@ -1,6 +1,6 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -11,12 +11,12 @@ interface UncouplingTrailer {
 }
 
 class IUncouplingTrailer @Inject constructor(
-    private val motoMecRepository: MotoMecRepository
+    private val cecRepository: CECRepository
 ): UncouplingTrailer {
 
     override suspend fun invoke(): EmptyResult =
         call(getClassAndMethod()) {
-            motoMecRepository.uncouplingTrailerImplement().getOrThrow()
+            cecRepository.uncouplingTrailer().getOrThrow()
         }
 
 }

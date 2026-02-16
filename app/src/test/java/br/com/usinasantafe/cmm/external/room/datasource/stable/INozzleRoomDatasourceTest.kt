@@ -146,4 +146,69 @@ class INozzleRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listAll - Check return empty list if table is empty`() =
+        runTest {
+            val result = datasource.listAll()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listAll - Check return list ordered if table have data`() =
+        runTest {
+            nozzleDao.insertAll(
+                listOf(
+                    NozzleRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                    NozzleRoomModel(
+                        id = 2,
+                        cod = 5,
+                        descr = "TESTE 2",
+                    ),
+                    NozzleRoomModel(
+                        id = 3,
+                        cod = 15,
+                        descr = "TESTE 3",
+                    ),
+                )
+            )
+            val result = datasource.listAll()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    NozzleRoomModel(
+                        id = 2,
+                        cod = 5,
+                        descr = "TESTE 2",
+                    ),
+                    NozzleRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                    NozzleRoomModel(
+                        id = 3,
+                        cod = 15,
+                        descr = "TESTE 3",
+                    ),
+                )
+            )
+        }
+
+
+
 }

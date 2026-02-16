@@ -1,15 +1,15 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.header.turnList
+package br.com.usinasantafe.cmm.presenter.view.fertigation.nozzlelist
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.utils.UpdateStatusState
-import br.com.usinasantafe.cmm.domain.entities.stable.Turn
-import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.motomec.ListTurn
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdTurn
-import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
+import br.com.usinasantafe.cmm.domain.entities.stable.Nozzle
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.ListNozzle
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.SetIdNozzle
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableNozzle
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.percentage
+import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -21,29 +21,29 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class TurnListHeaderViewModelTest {
+class NozzleListViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val listTurn = mock<ListTurn>()
-    private val setIdTurn = mock<SetIdTurn>()
-    private val updateTableTurn = mock<UpdateTableTurn>()
-    private val viewModel = TurnListHeaderViewModel(
-        listTurn = listTurn,
-        setIdTurn = setIdTurn,
-        updateTableTurn = updateTableTurn
+    private val listNozzle = mock<ListNozzle>()
+    private val setIdNozzle = mock<SetIdNozzle>()
+    private val updateTableNozzle = mock<UpdateTableNozzle>()
+    private val viewModel = NozzleListViewModel(
+        listNozzle = listNozzle,
+        setIdNozzle = setIdNozzle,
+        updateTableNozzle = updateTableNozzle
     )
 
     @Test
-    fun `list - Check return failure if have error in ListTurn`() =
+    fun `list - Check return failure if have error in ListNozzle`() =
         runTest {
             whenever(
-                listTurn()
+                listNozzle()
             ).thenReturn(
                 resultFailure(
-                    context = "ListTurn",
+                    context = "ListNozzle",
                     message = "-",
                     cause = Exception()
                 )
@@ -55,7 +55,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TurnListHeaderViewModel.list -> ListTurn -> java.lang.Exception"
+                "NozzleListViewModel.list -> ListNozzle -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagFailure,
@@ -64,75 +64,47 @@ class TurnListHeaderViewModelTest {
         }
 
     @Test
-    fun `list - Check return correct if function execute successfully`() =
+    fun `list - Check return true if ListNozzle execute successfully`() =
         runTest {
             whenever(
-                listTurn()
+                listNozzle()
             ).thenReturn(
                 Result.success(
                     listOf(
-                        Turn(
-                            idTurn = 1,
-                            codTurnEquip = 1,
-                            nroTurn = 1,
-                            descrTurn = "TURNO 1"
-                        ),
-                        Turn(
-                            idTurn = 2,
-                            codTurnEquip = 1,
-                            nroTurn = 2,
-                            descrTurn = "TURNO 2"
+                        Nozzle(
+                            id = 1,
+                            cod = 1,
+                            descr = "Item"
                         )
                     )
                 )
             )
             viewModel.list()
-            val list = viewModel.uiState.value.turnList
+            val list = viewModel.uiState.value.list
             assertEquals(
                 list.count(),
-                2
+                1
             )
-            val entity1 = list[0]
+            val entity = list[0]
             assertEquals(
-                entity1.idTurn,
+                entity.id,
                 1
             )
             assertEquals(
-                entity1.codTurnEquip,
+                entity.cod,
                 1
             )
             assertEquals(
-                entity1.nroTurn,
-                1
-            )
-            assertEquals(
-                entity1.descrTurn,
-                "TURNO 1"
-            )
-            val entity2 = list[1]
-            assertEquals(
-                entity2.idTurn,
-                2
-            )
-            assertEquals(
-                entity2.codTurnEquip,
-                1
-            )
-            assertEquals(
-                entity2.nroTurn,
-                2
-            )
-            assertEquals(
-                entity2.descrTurn,
-                "TURNO 2"
+                entity.descr,
+                "Item"
             )
         }
 
     @Test
-    fun `updateDatabase - Check return failure if have error in UpdateTableTurn`() =
+    fun `updateDatabase - Check return failure if have error in UpdateTableNozzle`() =
         runTest {
             whenever(
-                updateTableTurn(
+                updateTableNozzle(
                     count = 1f,
                     sizeAll = 4f
                 )
@@ -141,14 +113,14 @@ class TurnListHeaderViewModelTest {
                     UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(1f, 4f)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "UpdateTableTurn -> java.lang.NullPointerException",
+                        failure = "UpdateTableNozzle -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -157,23 +129,23 @@ class TurnListHeaderViewModelTest {
             assertEquals(result.count(), 2)
             assertEquals(
                 result[0],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(1f, 4f)
                     )
                 )
             )
             assertEquals(
                 result[1],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException",
+                        failure = "NozzleListViewModel.updateAllDatabase -> UpdateTableNozzle -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -185,7 +157,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TurnListHeaderViewModel.updateDatabase -> TurnListHeaderViewModel.updateAllDatabase -> UpdateTableTurn -> java.lang.NullPointerException"
+                "NozzleListViewModel.updateDatabase -> NozzleListViewModel.updateAllDatabase -> UpdateTableNozzle -> java.lang.NullPointerException"
             )
         }
 
@@ -193,7 +165,7 @@ class TurnListHeaderViewModelTest {
     fun `updateDatabase - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                updateTableTurn(
+                updateTableNozzle(
                     count = 1f,
                     sizeAll = 4f
                 )
@@ -202,19 +174,19 @@ class TurnListHeaderViewModelTest {
                     UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(1f, 4f)
                     ),
                     UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(2f, 4f)
                     ),
                     UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(3f, 4f)
                     ),
                 )
@@ -223,40 +195,40 @@ class TurnListHeaderViewModelTest {
             assertEquals(result.count(), 4)
             assertEquals(
                 result[0],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(1f, 4f)
                     )
                 )
             )
             assertEquals(
                 result[1],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(2f, 4f),
                     )
                 )
             )
             assertEquals(
                 result[2],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
-                        tableUpdate = "tb_turn",
+                        tableUpdate = "tb_nozzle",
                         currentProgress = percentage(3f, 4f),
                     )
                 )
             )
             assertEquals(
                 result[3],
-                TurnListHeaderState(
+                NozzleListState(
                     status = UpdateStatusState(
                         flagDialog = true,
                         flagProgress = false,
@@ -277,12 +249,12 @@ class TurnListHeaderViewModelTest {
     fun `set - Check return failure if have error in SetIdTurn`() =
         runTest {
             whenever(
-                setIdTurn(
+                setIdNozzle(
                     id = 1
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "SetIdTurn",
+                    context = "SetIdNozzle",
                     message = "-",
                     cause = Exception()
                 )
@@ -294,7 +266,7 @@ class TurnListHeaderViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TurnListHeaderViewModel.set -> SetIdTurn -> java.lang.Exception"
+                "NozzleListViewModel.set -> SetIdNozzle -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagFailure,
@@ -306,7 +278,7 @@ class TurnListHeaderViewModelTest {
     fun `set - Check access release if function execute successfully`() =
         runTest {
             whenever(
-                setIdTurn(
+                setIdNozzle(
                     id = 1
                 )
             ).thenReturn(

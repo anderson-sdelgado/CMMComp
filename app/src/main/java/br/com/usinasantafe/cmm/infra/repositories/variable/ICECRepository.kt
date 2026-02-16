@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -11,7 +12,8 @@ import java.util.Date
 import javax.inject.Inject
 
 class ICECRepository @Inject constructor(
-    private val preCECSharedPreferencesDatasource: PreCECSharedPreferencesDatasource
+    private val preCECSharedPreferencesDatasource: PreCECSharedPreferencesDatasource,
+    private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
 ): CECRepository {
     override suspend fun get(): Result<PreCEC> =
         call(getClassAndMethod()) {
@@ -34,4 +36,15 @@ class ICECRepository @Inject constructor(
         call(getClassAndMethod()) {
             preCECSharedPreferencesDatasource.setDateExitField(date).getOrThrow()
         }
+
+    override suspend fun hasCouplingTrailer(): Result<Boolean> =
+        call(getClassAndMethod()) {
+            trailerSharedPreferencesDatasource.has().getOrThrow()
+        }
+
+    override suspend fun uncouplingTrailer(): EmptyResult =
+        call(getClassAndMethod()) {
+            trailerSharedPreferencesDatasource.clean().getOrThrow()
+        }
+
 }

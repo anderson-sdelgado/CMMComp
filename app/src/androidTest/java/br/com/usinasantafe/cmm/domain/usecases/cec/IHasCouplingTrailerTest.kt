@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.cec
 
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.TrailerSharedPreferencesModel

@@ -203,4 +203,64 @@ class INozzleRepositoryTest {
             )
         }
 
+    @Test
+    fun `listAll - Check return failure if have error in NozzleRoomDatasource listAll`() =
+        runTest {
+            whenever(
+                nozzleRoomDatasource.listAll()
+            ).thenReturn(
+                resultFailure(
+                    "INozzleRoomDatasource.listAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "INozzleRepository.listAll -> INozzleRoomDatasource.listAll"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listAll - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                nozzleRoomDatasource.listAll()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        NozzleRoomModel(
+                            id = 1,
+                            cod = 10,
+                            descr = "TEST"
+                        )
+                    )
+                )
+            )
+            val result = repository.listAll()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Nozzle(
+                        id = 1,
+                        cod = 10,
+                        descr = "TEST"
+                    )
+                )
+            )
+        }
+
 }

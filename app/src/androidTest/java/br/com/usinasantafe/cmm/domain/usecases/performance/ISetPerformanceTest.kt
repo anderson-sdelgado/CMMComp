@@ -1,6 +1,5 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.performance
 
-import br.com.usinasantafe.cmm.domain.usecases.performance.SetPerformance
 import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -32,7 +31,7 @@ class ISetPerformanceTest {
     @Test
     fun check_return_failure_if_value_is_incorrect() =
         runTest {
-            val result = usecase(1,"as1dfs52fda,5")
+            val result = usecase(1, "as1dfs52fda,5")
             assertEquals(
                 result.isFailure,
                 true

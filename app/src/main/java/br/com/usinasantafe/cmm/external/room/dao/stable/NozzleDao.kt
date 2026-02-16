@@ -18,4 +18,7 @@ interface NozzleDao {
     @Query("SELECT * FROM $TB_NOZZLE")
     suspend fun all(): List<NozzleRoomModel>
 
+    @Query("SELECT * FROM $TB_NOZZLE ORDER BY cod ASC")
+    suspend fun allOrderByCod(): List<NozzleRoomModel>
+
 }

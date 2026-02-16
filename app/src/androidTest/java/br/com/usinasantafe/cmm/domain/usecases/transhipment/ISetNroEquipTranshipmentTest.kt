@@ -1,6 +1,5 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.transhipment
 
-import br.com.usinasantafe.cmm.domain.usecases.transhipment.ISetNroEquipTranshipment
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IItemMotoMecSharedPreferencesDatasource
@@ -242,12 +241,14 @@ class ISetNroEquipTranshipmentTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val resultItemMotoMecSharedPreferencesModel = itemMotoMecSharedPreferencesDatasource.get()
+            val resultItemMotoMecSharedPreferencesModel =
+                itemMotoMecSharedPreferencesDatasource.get()
             assertEquals(
                 resultItemMotoMecSharedPreferencesModel.isSuccess,
                 true
             )
-            val itemMotoMecSharedPreferencesModel = resultItemMotoMecSharedPreferencesModel.getOrNull()!!
+            val itemMotoMecSharedPreferencesModel =
+                resultItemMotoMecSharedPreferencesModel.getOrNull()!!
             assertEquals(
                 itemMotoMecSharedPreferencesModel.nroEquipTranshipment,
                 200L

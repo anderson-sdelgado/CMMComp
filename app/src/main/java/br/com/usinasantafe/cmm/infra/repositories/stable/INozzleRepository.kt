@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.NozzleRetrofitDa
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.NozzleRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -28,10 +29,15 @@ class INozzleRepository  @Inject constructor(
             nozzleRoomDatasource.deleteAll().getOrThrow()
         }
 
-    override suspend fun listAll(token: String): Result<List<Nozzle>>  =
+    override suspend fun listAll(token: String): Result<List<Nozzle>> =
         call(getClassAndMethod()) {
             val modelList = nozzleRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun listAll(): Result<List<Nozzle>> =
+        call(getClassAndMethod()) {
+            nozzleRoomDatasource.listAll().getOrThrow().map { it.roomModelToEntity() }
         }
 
 }

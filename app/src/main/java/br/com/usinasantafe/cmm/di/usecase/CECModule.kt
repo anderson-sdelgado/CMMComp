@@ -13,6 +13,14 @@ interface CECModule {
 
     @Binds
     @Singleton
+    fun bindCheckCouplingTrailer(usecase: IHasCouplingTrailer): HasCouplingTrailer
+
+    @Binds
+    @Singleton
     fun bindGetStatusPreCEC(usecase: ISetDatePreCEC): SetDatePreCEC
+
+    @Binds
+    @Singleton
+    fun bindUncouplingTrailer(usecase: IUncouplingTrailer): UncouplingTrailer
 
 }

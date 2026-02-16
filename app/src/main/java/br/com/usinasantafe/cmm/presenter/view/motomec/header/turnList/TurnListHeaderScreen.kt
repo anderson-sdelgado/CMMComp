@@ -42,12 +42,12 @@ fun TurnListHeaderScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.turnList()
+                viewModel.list()
             }
 
             TurnListHeaderContent(
                 turnList = uiState.turnList,
-                setIdTurn = viewModel::setIdTurnHeader,
+                setIdTurn = viewModel::set,
                 updateDatabase = viewModel::updateDatabase,
                 flagAccess = uiState.flagAccess,
                 status = uiState.status,

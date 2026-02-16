@@ -11,12 +11,12 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpenMechanic
 import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
-import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.cec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.transhipment.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
-import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.cec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
 import br.com.usinasantafe.cmm.lib.CHECK_WILL
@@ -412,12 +412,12 @@ class MenuNoteViewModel @Inject constructor(
                 StatusTranshipment.OK -> true
                 StatusTranshipment.WITHOUT_NOTE -> {
                     handleFailure(Errors.WITHOUT_NOTE_TRANSHIPMENT, getClassAndMethod(),  ::onError)
-                    return false
+                    false
                 }
 
                 StatusTranshipment.TIME_INVALID -> {
                     handleFailure(Errors.TIME_INVALID_TRANSHIPMENT, getClassAndMethod(),  ::onError)
-                    return false
+                    false
                 }
             }
         }

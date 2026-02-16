@@ -7,4 +7,5 @@ interface PressureRepository {
     suspend fun addAll(list: List<Pressure>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Pressure>>
+    suspend fun listByIdNozzle(id: Int): Result<List<Pressure>>
 }

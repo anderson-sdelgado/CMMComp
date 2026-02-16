@@ -13,10 +13,6 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindCheckCouplingTrailer(usecase: IHasCouplingTrailer): HasCouplingTrailer
-
-    @Binds
-    @Singleton
     fun bindCheckHasNoteMotoMec(usecase: IHasNoteMotoMec): HasNoteMotoMec
 
     @Binds
@@ -98,10 +94,6 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindSetRegOperator(usecase: ISetRegOperator): SetRegOperator
-
-    @Binds
-    @Singleton
-    fun bindUncouplingTrailer(usecase: IUncouplingTrailer): UncouplingTrailer
 
     @Binds
     @Singleton

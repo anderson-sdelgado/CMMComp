@@ -1,28 +1,29 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
+import br.com.usinasantafe.cmm.domain.entities.stable.Nozzle
+import br.com.usinasantafe.cmm.domain.repositories.stable.NozzleRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class IUncouplingTrailerTest {
+class IListNozzleTest {
 
-    private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = IUncouplingTrailer(
-        motoMecRepository = motoMecRepository
+    private val nozzleRepository = mock<NozzleRepository>()
+    private val usecase = IListNozzle(
+        nozzleRepository = nozzleRepository
     )
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository uncouplingTrailerImplement`() =
+    fun `Check return failure if have error in NozzleRepository listAll`() =
         runTest {
             whenever(
-                motoMecRepository.uncouplingTrailerImplement()
+                nozzleRepository.listAll()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.uncouplingTrailerImplement",
+                    "INozzleRepository.listAll",
                     "-",
                     Exception()
                 )
@@ -34,7 +35,7 @@ class IUncouplingTrailerTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IUncouplingTrailer -> IMotoMecRepository.uncouplingTrailerImplement"
+                "IListNozzle -> INozzleRepository.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -46,9 +47,17 @@ class IUncouplingTrailerTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.uncouplingTrailerImplement()
+                nozzleRepository.listAll()
             ).thenReturn(
-                Result.success(Unit)
+                Result.success(
+                    listOf(
+                        Nozzle(
+                            id = 1,
+                            cod = 1,
+                            descr = "Item"
+                        )
+                    )
+                )
             )
             val result = usecase()
             assertEquals(
@@ -57,7 +66,13 @@ class IUncouplingTrailerTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                Unit
+                listOf(
+                    Nozzle(
+                        id = 1,
+                        cod = 1,
+                        descr = "Item"
+                    )
+                )
             )
         }
 

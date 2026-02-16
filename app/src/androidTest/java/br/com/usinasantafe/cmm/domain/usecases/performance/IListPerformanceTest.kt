@@ -1,6 +1,5 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.performance
 
-import br.com.usinasantafe.cmm.domain.usecases.performance.ListPerformance
 import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
@@ -100,7 +99,7 @@ class IListPerformanceTest {
     fun check_return_list_if_have_data_fielded_in_table_performance_room() =
         runTest {
             performanceDao.insert(
-            PerformanceRoomModel(
+                PerformanceRoomModel(
                     idHeader = 1,
                     nroOS = 123456,
                     value = 10.0

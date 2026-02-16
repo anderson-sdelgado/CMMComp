@@ -5,6 +5,9 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepositor
 import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -78,7 +81,7 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully`() =
+    fun `Check return false and execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return true`() =
         runTest {
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -91,6 +94,7 @@ class ICheckClosePerformanceTest {
                 Result.success(true)
             )
             val result = usecase()
+            verify(motoMecRepository, never()).finishHeader()
             assertEquals(
                 result.isSuccess,
                 true
@@ -98,6 +102,31 @@ class ICheckClosePerformanceTest {
             assertEquals(
                 result.getOrNull()!!,
                 false
+            )
+        }
+
+    @Test
+    fun `Check return true and not execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return false`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                performanceRepository.hasByIdHeaderAndValueNull(1)
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).finishHeader()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

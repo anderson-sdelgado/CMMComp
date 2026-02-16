@@ -13,21 +13,6 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_HEADER_INITIAL_if_dateCheckListLast_is_equal_of_date_now_and_flow_header_initial()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_CHECK_LIST_if_dateCheckListLast_is_different_of_date_now_and_flow_header_initial()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_in_header_moto_mec_shared_preferences_and_flow_header_finish()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_failure_if_not_have_data_in_header_moto_mec_room_and_flow_header_finish()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="check_return_FlowApp_HEADER_INITIAL_if_not_have_performance_to_header_and_flow_header_finish()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
     </selectionStates>
   </component>
 </project>

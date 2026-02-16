@@ -8,6 +8,7 @@ data class ItemMotoMecSharedPreferencesModel(
     var idStop: Int? = null,
     var nroEquipTranshipment: Long? = null,
     var statusCon: Boolean? = true,
+    var idNozzle: Int? = null,
 )
 
 fun ItemMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): ItemMotoMec {
@@ -17,7 +18,8 @@ fun ItemMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): ItemMoto
             idActivity = idActivity,
             idStop = idStop,
             nroEquipTranshipment = nroEquipTranshipment,
-            statusCon = statusCon
+            statusCon = statusCon,
+            idNozzle = idNozzle
         )
     }
 }
@@ -29,7 +31,8 @@ fun ItemMotoMec.entityToSharedPreferencesModel(): ItemMotoMecSharedPreferencesMo
             idActivity = idActivity,
             idStop = idStop,
             nroEquipTranshipment = nroEquipTranshipment,
-            statusCon = statusCon!!
+            statusCon = statusCon!!,
+            idNozzle = idNozzle
         )
     }
 }

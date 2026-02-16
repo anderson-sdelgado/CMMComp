@@ -10,6 +10,7 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,24 +45,20 @@ class TurnListHeaderViewModel @Inject constructor(
 
     fun setCloseDialog()  = updateState { copy(status = status.copy(flagDialog = false)) }
 
-    fun turnList() = viewModelScope.launch {
+    fun list() = viewModelScope.launch {
         runCatching {
             listTurn().getOrThrow()
-        }.onSuccess {
-            updateState { copy(turnList = it) }
-        }.onFailure { throwable ->
-            updateState { withFailure(getClassAndMethod(), throwable) }
         }
+            .onSuccess { updateState { copy(turnList = it) } }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun setIdTurnHeader(id: Int) = viewModelScope.launch {
+    fun set(id: Int) = viewModelScope.launch {
         runCatching {
             setIdTurn(id).getOrThrow()
-        }.onSuccess {
-            updateState { copy(flagAccess = true) }
-        }.onFailure { throwable ->
-            updateState { withFailure(getClassAndMethod(), throwable) }
         }
+            .onSuccess { updateState { copy(flagAccess = true) } }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     fun updateDatabase() = viewModelScope.launch {

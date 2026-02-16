@@ -36,14 +36,12 @@ class IMotoMecRepositoryTest {
     private val headerMotoMecRoomDatasource = mock<HeaderMotoMecRoomDatasource>()
     private val itemMotoMecSharedPreferencesDatasource = mock<ItemMotoMecSharedPreferencesDatasource>()
     private val itemMotoMecRoomDatasource = mock<ItemMotoMecRoomDatasource>()
-    private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
     private val motoMecRetrofitDatasource = mock<MotoMecRetrofitDatasource>()
     private val repository = IMotoMecRepository(
         headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource,
         headerMotoMecRoomDatasource = headerMotoMecRoomDatasource,
         itemMotoMecSharedPreferencesDatasource = itemMotoMecSharedPreferencesDatasource,
         itemMotoMecRoomDatasource = itemMotoMecRoomDatasource,
-        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource,
         motoMecRetrofitDatasource = motoMecRetrofitDatasource
     )
 
@@ -400,52 +398,6 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `setHourMeterInitial - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource setHourMeterInitial`() =
-        runTest {
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.setHourMeter(1.0)
-            ).thenReturn(
-                resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.setHourMeterInitial",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.setHourMeterInitialHeader(1.0)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setHourMeterInitialHeader -> IHeaderMotoMecSharedPreferencesDatasource.setHourMeterInitial"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `setHourMeterInitial - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.setHourMeter(1.0)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            val result = repository.setHourMeterInitialHeader(1.0)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
-        }
-
-    @Test
     fun `saveHeader - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource get`() =
         runTest {
             whenever(
@@ -457,7 +409,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.saveHeader()
+            val result = repository.saveHeader(10.000)
             assertEquals(
                 result.isFailure,
                 true
@@ -482,7 +434,7 @@ class IMotoMecRepositoryTest {
                     HeaderMotoMecSharedPreferencesModel()
                 )
             )
-            val result = repository.saveHeader()
+            val result = repository.saveHeader(10.000)
             assertEquals(
                 result.isFailure,
                 true
@@ -507,7 +459,6 @@ class IMotoMecRepositoryTest {
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 1.0,
                 statusCon = true
             )
             whenever(
@@ -528,7 +479,7 @@ class IMotoMecRepositoryTest {
                     )
                 )
             }
-            val result = repository.saveHeader()
+            val result = repository.saveHeader(10.000)
             assertEquals(
                 result.isFailure,
                 true
@@ -579,7 +530,6 @@ class IMotoMecRepositoryTest {
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 1.0,
                 statusCon = true
             )
             whenever(
@@ -596,7 +546,7 @@ class IMotoMecRepositoryTest {
                     Result.success(1)
                 )
             }
-            val result = repository.saveHeader()
+            val result = repository.saveHeader(10.000)
             assertEquals(
                 result.isSuccess,
                 true
@@ -2259,98 +2209,6 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `hasCouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource has`() =
-        runTest {
-            whenever(
-                trailerSharedPreferencesDatasource.has()
-            ).thenReturn(
-                resultFailure(
-                    "ITrailerSharedPreferencesDatasource.has",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = repository.hasCouplingTrailerImplement()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.hasCouplingTrailerImplement -> ITrailerSharedPreferencesDatasource.has"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `hasCouplingTrailerImplement - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                trailerSharedPreferencesDatasource.has()
-            ).thenReturn(
-                Result.success(true)
-            )
-            val result = repository.hasCouplingTrailerImplement()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                true
-            )
-        }
-
-    @Test
-    fun `uncouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
-        runTest {
-            whenever(
-                trailerSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                resultFailure(
-                    "ITrailerSharedPreferencesDatasource.clean",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = repository.uncouplingTrailerImplement()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.uncouplingTrailerImplement -> ITrailerSharedPreferencesDatasource.clean"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `uncouplingTrailerImplement - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                trailerSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            val result = repository.uncouplingTrailerImplement()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
-        }
-
-    @Test
     fun `setNroEquipTranshipmentNote - Check return failure if have error in ItemMotoMecDatasource setNroEquipTranshipment`() =
         runTest {
             whenever(
@@ -2439,52 +2297,6 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 TypeEquip.NORMAL
-            )
-        }
-
-    @Test
-    fun `setIdEquipMotorPumpHeader - Check return failure if have error in HeaderMotoMecSharedPreferencesDatasource setIdEquipMotorPump`() =
-        runTest {
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(10)
-            ).thenReturn(
-                resultFailure(
-                    "IHeaderMotoMecSharedPreferencesDatasource.setIdEquipMotorPump",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = repository.setIdEquipMotorPumpHeader(10)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setIdEquipMotorPumpHeader -> IHeaderMotoMecSharedPreferencesDatasource.setIdEquipMotorPump"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `setIdEquipMotorPumpHeader - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(10)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            val result = repository.setIdEquipMotorPumpHeader(10)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
             )
         }
 

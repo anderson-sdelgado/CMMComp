@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
@@ -15,8 +16,10 @@ import kotlin.test.assertEquals
 class ICECRepositoryTest {
 
     private val preCECSharedPreferencesDatasource = mock<PreCECSharedPreferencesDatasource>()
+    private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
     private val repository = ICECRepository(
-        preCECSharedPreferencesDatasource = preCECSharedPreferencesDatasource
+        preCECSharedPreferencesDatasource = preCECSharedPreferencesDatasource,
+        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource
     )
 
     @Test
@@ -210,5 +213,98 @@ class ICECRepositoryTest {
                 Unit
             )
         }
+
+    @Test
+    fun `hasCouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource has`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.has()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerSharedPreferencesDatasource.has",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasCouplingTrailer()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.hasCouplingTrailer -> ITrailerSharedPreferencesDatasource.has"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasCouplingTrailerImplement - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.has()
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasCouplingTrailer()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `uncouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.uncouplingTrailer()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.uncouplingTrailer -> ITrailerSharedPreferencesDatasource.clean"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `uncouplingTrailerImplement - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                trailerSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            val result = repository.uncouplingTrailer()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+        }
+
 
 }

@@ -1,25 +1,29 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
-import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.usecases.fertigation.ISetIdEquipMotorPump
 import br.com.usinasantafe.cmm.lib.StartWorkManager
+import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.test.runTest
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ISetIdEquipMotorPumpTest {
 
-    private val equipRepository = mock<EquipRepository>()
-    private val motoMecRepository = mock<MotoMecRepository>()
-    private val startWorkManager = mock<StartWorkManager>()
+    private val equipRepository = Mockito.mock<EquipRepository>()
+    private val motoMecRepository = Mockito.mock<MotoMecRepository>()
+    private val startWorkManager = Mockito.mock<StartWorkManager>()
+    private val fertigationRepository = Mockito.mock<FertigationRepository>()
     private val usecase = ISetIdEquipMotorPump(
         equipRepository = equipRepository,
         motoMecRepository = motoMecRepository,
-        startWorkManager = startWorkManager
+        startWorkManager = startWorkManager,
+        fertigationRepository = fertigationRepository
     )
 
     @Test
@@ -68,7 +72,7 @@ class ISetIdEquipMotorPumpTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository setIdEquipMotorPumpHeader`() =
+    fun `Check return failure if have error in EquipRepository getHourMeter`() =
         runTest {
             whenever(
                 equipRepository.getIdByNro(2200)
@@ -76,10 +80,10 @@ class ISetIdEquipMotorPumpTest {
                 Result.success(20)
             )
             whenever(
-                motoMecRepository.setIdEquipMotorPumpHeader(20)
+                equipRepository.getHourMeter()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.setIdEquipMotorPumpHeader",
+                    "IEquipRepository.getHourMeter",
                     "-",
                     Exception()
                 )
@@ -91,7 +95,44 @@ class ISetIdEquipMotorPumpTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdEquipMotorPump -> IMotoMecRepository.setIdEquipMotorPumpHeader"
+                "ISetIdEquipMotorPump -> IEquipRepository.getHourMeter"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository setIdEquipMotorPumpHeader`() =
+        runTest {
+            whenever(
+                equipRepository.getIdByNro(2200)
+            ).thenReturn(
+                Result.success(20)
+            )
+            whenever(
+                equipRepository.getHourMeter()
+            ).thenReturn(
+                Result.success(10000.0)
+            )
+            whenever(
+                fertigationRepository.setIdEquipMotorPump(20)
+            ).thenReturn(
+                resultFailure(
+                    "IFertigationRepository.setIdEquipMotorPumpHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase("2200")
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdEquipMotorPump -> IFertigationRepository.setIdEquipMotorPumpHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -108,12 +149,12 @@ class ISetIdEquipMotorPumpTest {
                 Result.success(20)
             )
             whenever(
-                motoMecRepository.setIdEquipMotorPumpHeader(20)
+                equipRepository.getHourMeter()
             ).thenReturn(
-                Result.success(Unit)
+                Result.success(10000.0)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.saveHeader",
@@ -122,6 +163,7 @@ class ISetIdEquipMotorPumpTest {
                 )
             )
             val result = usecase("2200")
+            verify(fertigationRepository, atLeastOnce()).setIdEquipMotorPump(20)
             assertEquals(
                 result.isFailure,
                 true
@@ -145,16 +187,13 @@ class ISetIdEquipMotorPumpTest {
                 Result.success(20)
             )
             whenever(
-                motoMecRepository.setIdEquipMotorPumpHeader(20)
+                equipRepository.getHourMeter()
             ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.saveHeader()
-            ).thenReturn(
-                Result.success(Unit)
+                Result.success(10000.0)
             )
             val result = usecase("2200")
+            verify(fertigationRepository, atLeastOnce()).setIdEquipMotorPump(20)
+            verify(motoMecRepository, atLeastOnce()).saveHeader(10000.0)
             assertEquals(
                 result.isSuccess,
                 true

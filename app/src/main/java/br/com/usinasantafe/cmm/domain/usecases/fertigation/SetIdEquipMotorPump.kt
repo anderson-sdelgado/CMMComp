@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
@@ -17,6 +18,7 @@ interface SetIdEquipMotorPump {
 class ISetIdEquipMotorPump @Inject constructor(
     private val equipRepository: EquipRepository,
     private val motoMecRepository: MotoMecRepository,
+    private val fertigationRepository: FertigationRepository,
     private val startWorkManager: StartWorkManager
 ): SetIdEquipMotorPump {
 
@@ -27,7 +29,7 @@ class ISetIdEquipMotorPump @Inject constructor(
             }
             val idEquip = equipRepository.getIdByNro(nroEquipLong).getOrThrow()
             val hourMeter = equipRepository.getHourMeter().getOrThrow()
-            motoMecRepository.setIdEquipMotorPumpHeader(idEquip).getOrThrow()
+            fertigationRepository.setIdEquipMotorPump(idEquip).getOrThrow()
             motoMecRepository.saveHeader(hourMeter).getOrThrow()
             startWorkManager()
         }

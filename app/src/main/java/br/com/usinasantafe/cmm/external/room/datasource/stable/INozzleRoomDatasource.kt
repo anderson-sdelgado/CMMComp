@@ -22,4 +22,9 @@ class INozzleRoomDatasource @Inject constructor(
             nozzleDao.deleteAll()
         }
 
+    override suspend fun listAll(): Result<List<NozzleRoomModel>> =
+        result(getClassAndMethod()) {
+            nozzleDao.allOrderByCod()
+        }
+
 }

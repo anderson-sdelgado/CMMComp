@@ -6,4 +6,5 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 interface NozzleRoomDatasource {
     suspend fun addAll(list: List<NozzleRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun listAll(): Result<List<NozzleRoomModel>>
 }

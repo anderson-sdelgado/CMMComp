@@ -130,7 +130,7 @@ fun PerformanceListContent(
             }
         }
         if (flowApp == FlowApp.HEADER_FINISH) {
-            ButtonMaxWidth(R.string.text_button_finish_header) { }
+            ButtonMaxWidth(R.string.text_button_finish_header) { checkClose() }
             Spacer(modifier = Modifier.padding(vertical = 4.dp))
         }
         ButtonMaxWidth(R.string.text_pattern_return) { onNavMenuNote() }

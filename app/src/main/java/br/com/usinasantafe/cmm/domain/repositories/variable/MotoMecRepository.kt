@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -24,7 +23,6 @@ interface MotoMecRepository {
     suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
-    suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult
     suspend fun finishHeader(): EmptyResult
     suspend fun hasHeaderSend(): Result<Boolean>
     suspend fun setStatusConHeader(status: Boolean): EmptyResult
@@ -33,7 +31,7 @@ interface MotoMecRepository {
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
     suspend fun setNroOSNote(nroOS: Int): EmptyResult
     suspend fun setIdActivityNote(id: Int): EmptyResult
-    suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult
+    suspend fun setNroEquipTranshipmentNote(nroEquip: Long): EmptyResult
     suspend fun saveNote(
         idHeader: Int
     ): EmptyResult
@@ -50,6 +48,4 @@ interface MotoMecRepository {
         idStop: Int
     ): Result<Boolean>
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
-    suspend fun hasCouplingTrailerImplement(): Result<Boolean>
-    suspend fun uncouplingTrailerImplement(): EmptyResult
 }

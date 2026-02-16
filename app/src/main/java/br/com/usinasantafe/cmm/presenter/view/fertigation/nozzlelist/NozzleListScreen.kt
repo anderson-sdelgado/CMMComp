@@ -22,7 +22,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.domain.entities.stable.Nozzle
 import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
@@ -35,6 +34,9 @@ import br.com.usinasantafe.cmm.utils.UpdateStatusState
 @Composable
 fun NozzleListScreen(
     viewModel: NozzleListViewModel = hiltViewModel(),
+    onNavActivityList: () -> Unit,
+    onNavPressureList: () -> Unit
+
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -45,12 +47,14 @@ fun NozzleListScreen(
             }
 
             NozzleListContent(
-                list = emptyList(),
-                setId = viewModel::setId,
+                list = uiState.list,
+                set = viewModel::set,
                 updateDatabase = viewModel::updateDatabase,
                 flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 status = uiState.status,
+                onNavActivityList = onNavActivityList,
+                onNavPressureList = onNavPressureList,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -60,11 +64,13 @@ fun NozzleListScreen(
 @Composable
 fun NozzleListContent(
     list: List<Nozzle>,
-    setId: (Int) -> Unit,
+    set: (Int) -> Unit,
     updateDatabase: () -> Unit,
     flagAccess: Boolean,
     setCloseDialog: () -> Unit,
     status: UpdateStatusState,
+    onNavActivityList: () -> Unit,
+    onNavPressureList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -84,7 +90,7 @@ fun NozzleListContent(
                 ItemListDesign(
                     text = "${item.cod} - ${item.descr}",
                     setActionItem = {
-                        setId(item.id)
+                        set(item.id)
                     },
                     font = 26
                 )
@@ -102,7 +108,7 @@ fun NozzleListContent(
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         Button(
-            onClick = {},
+            onClick = onNavActivityList,
             modifier = Modifier.fillMaxWidth(),
         ) {
             TextButtonDesign(
@@ -125,7 +131,7 @@ fun NozzleListContent(
 
     LaunchedEffect(flagAccess) {
         if (flagAccess) {
-
+            onNavPressureList()
         }
     }
 }
@@ -137,7 +143,7 @@ fun NozzleListPagePreview() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             NozzleListContent(
                 list = emptyList(),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -151,6 +157,8 @@ fun NozzleListPagePreview() {
                     tableUpdate = "",
                     flagDialog = false,
                 ),
+                onNavActivityList = {},
+                onNavPressureList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -170,7 +178,7 @@ fun NozzleListPagePreviewWithData() {
                         descr = "Item"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -184,6 +192,8 @@ fun NozzleListPagePreviewWithData() {
                     tableUpdate = "",
                     flagDialog = false,
                 ),
+                onNavActivityList = {},
+                onNavPressureList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -203,7 +213,7 @@ fun NozzleListPagePreviewWithFailureUpdate() {
                         descr = "Item"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -217,6 +227,8 @@ fun NozzleListPagePreviewWithFailureUpdate() {
                     tableUpdate = "",
                     flagDialog = true,
                 ),
+                onNavActivityList = {},
+                onNavPressureList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -236,7 +248,7 @@ fun NozzleListPagePreviewWithProgressUpdate() {
                         descr = "Item"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -250,6 +262,8 @@ fun NozzleListPagePreviewWithProgressUpdate() {
                     currentProgress = 0.3333f,
                     flagDialog = false,
                 ),
+                onNavActivityList = {},
+                onNavPressureList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -269,7 +283,7 @@ fun NozzleListPagePreviewWithFailureError() {
                         descr = "Item"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -283,6 +297,8 @@ fun NozzleListPagePreviewWithFailureError() {
                     tableUpdate = "",
                     flagDialog = true,
                 ),
+                onNavActivityList = {},
+                onNavPressureList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

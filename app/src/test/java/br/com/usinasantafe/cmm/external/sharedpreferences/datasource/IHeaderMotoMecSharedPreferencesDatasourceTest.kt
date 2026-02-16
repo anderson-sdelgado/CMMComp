@@ -283,40 +283,6 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `setHourMeter - Check alter data correct`() =
-        runTest {
-            val data = HeaderMotoMecSharedPreferencesModel(
-                hourMeter = 1.0
-            )
-            datasource.save(data)
-            val resultGetBefore = datasource.get()
-            assertEquals(
-                resultGetBefore.isSuccess,
-                true
-            )
-            val modelBefore = resultGetBefore.getOrNull()!!
-            assertEquals(
-                modelBefore.hourMeter,
-                1.0
-            )
-            val result = datasource.setHourMeter(2.0)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            val resultGetAfter = datasource.get()
-            assertEquals(
-                resultGetAfter.isSuccess,
-                true
-            )
-            val modelAfter = resultGetAfter.getOrNull()!!
-            assertEquals(
-                modelAfter.hourMeter,
-                2.0
-            )
-        }
-
-    @Test
     fun `clean - Check clean table`() =
         runTest {
             val data = HeaderMotoMecSharedPreferencesModel(
@@ -325,7 +291,6 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 1.0
             )
             datasource.save(data)
             val resultGetBefore = datasource.get()
@@ -353,10 +318,6 @@ class IHeaderMotoMecSharedPreferencesDatasourceTest {
             assertEquals(
                 modelBefore.idActivity,
                 1
-            )
-            assertEquals(
-                modelBefore.hourMeter,
-                1.0
             )
             val result = datasource.clean()
             assertEquals(

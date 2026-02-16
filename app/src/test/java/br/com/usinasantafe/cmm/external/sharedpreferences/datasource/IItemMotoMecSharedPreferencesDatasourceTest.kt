@@ -256,4 +256,38 @@ class IItemMotoMecSharedPreferencesDatasourceTest {
             )
         }
 
+    @Test
+    fun `setIdNozzle - Check alter data correct`() =
+        runTest {
+            val data = ItemMotoMecSharedPreferencesModel(
+                idNozzle = 1
+            )
+            datasource.save(data)
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.idNozzle,
+                1
+            )
+            val result = datasource.setIdNozzle(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.idNozzle,
+                2
+            )
+        }
+
 }

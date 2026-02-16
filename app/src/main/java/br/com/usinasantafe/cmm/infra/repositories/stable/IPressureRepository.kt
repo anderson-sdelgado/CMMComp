@@ -34,4 +34,8 @@ class IPressureRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
+    override suspend fun listByIdNozzle(id: Int): Result<List<Pressure>> {
+        TODO("Not yet implemented")
+    }
+
 }

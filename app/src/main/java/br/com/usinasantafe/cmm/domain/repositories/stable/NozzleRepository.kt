@@ -7,4 +7,5 @@ interface NozzleRepository {
     suspend fun addAll(list: List<Nozzle>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Nozzle>>
+    suspend fun listAll(): Result<List<Nozzle>>
 }

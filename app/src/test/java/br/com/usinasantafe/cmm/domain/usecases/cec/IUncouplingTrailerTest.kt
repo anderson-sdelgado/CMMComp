@@ -1,28 +1,28 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.cec
 
+import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
-import org.mockito.Mockito.mock
+import org.mockito.Mockito
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class IHasCouplingTrailerTest {
+class IUncouplingTrailerTest {
 
-    private val motoMecRepository = mock<MotoMecRepository>()
-    private val usecase = IHasCouplingTrailer(
-        motoMecRepository = motoMecRepository
+    private val cecRepository = Mockito.mock<CECRepository>()
+    private val usecase = IUncouplingTrailer(
+        cecRepository = cecRepository
     )
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository hasCouplingTrailerImplement`() =
+    fun `Check return failure if have error in MotoMecRepository uncouplingTrailer`() =
         runTest {
             whenever(
-                motoMecRepository.hasCouplingTrailerImplement()
+                cecRepository.uncouplingTrailer()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.hasCouplingTrailerImplement",
+                    "ICECRepository.uncouplingTrailer",
                     "-",
                     Exception()
                 )
@@ -34,7 +34,7 @@ class IHasCouplingTrailerTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHasCouplingTrailer -> IMotoMecRepository.hasCouplingTrailerImplement"
+                "IUncouplingTrailer -> ICECRepository.uncouplingTrailer"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -46,9 +46,9 @@ class IHasCouplingTrailerTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.hasCouplingTrailerImplement()
+                cecRepository.uncouplingTrailer()
             ).thenReturn(
-                Result.success(true)
+                Result.success(Unit)
             )
             val result = usecase()
             assertEquals(
@@ -57,7 +57,7 @@ class IHasCouplingTrailerTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                true
+                Unit
             )
         }
 

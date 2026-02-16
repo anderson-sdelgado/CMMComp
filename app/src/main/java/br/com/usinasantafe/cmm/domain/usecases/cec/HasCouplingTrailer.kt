@@ -1,6 +1,6 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -10,12 +10,12 @@ interface HasCouplingTrailer {
 }
 
 class IHasCouplingTrailer @Inject constructor(
-    private val motoMecRepository: MotoMecRepository
+    private val cecRepository: CECRepository
 ): HasCouplingTrailer {
 
     override suspend fun invoke(): Result<Boolean> =
         call(getClassAndMethod()) {
-            motoMecRepository.hasCouplingTrailerImplement().getOrThrow()
+            cecRepository.hasCouplingTrailer().getOrThrow()
         }
 
 }

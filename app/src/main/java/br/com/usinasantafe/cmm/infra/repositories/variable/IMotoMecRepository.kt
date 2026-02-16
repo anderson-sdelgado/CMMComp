@@ -1,17 +1,13 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.PerformanceRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
@@ -29,7 +25,6 @@ class IMotoMecRepository @Inject constructor(
     private val headerMotoMecRoomDatasource: HeaderMotoMecRoomDatasource,
     private val itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource,
     private val itemMotoMecRoomDatasource: ItemMotoMecRoomDatasource,
-    private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
 
@@ -116,11 +111,6 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter).getOrThrow()
         }
 
-    override suspend fun setIdEquipMotorPumpHeader(idEquip: Int): EmptyResult =
-        call(getClassAndMethod()) {
-            headerMotoMecSharedPreferencesDatasource.setIdEquipMotorPump(idEquip).getOrThrow()
-        }
-
     override suspend fun finishHeader(): EmptyResult =
         call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.finish().getOrThrow()
@@ -163,9 +153,9 @@ class IMotoMecRepository @Inject constructor(
             itemMotoMecSharedPreferencesDatasource.setIdActivity(id).getOrThrow()
         }
 
-    override suspend fun setNroEquipTranshipmentNote(nroEquipTranshipment: Long): EmptyResult =
+    override suspend fun setNroEquipTranshipmentNote(nroEquip: Long): EmptyResult =
         call(getClassAndMethod()) {
-            itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquipTranshipment).getOrThrow()
+            itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquip).getOrThrow()
         }
 
     override suspend fun saveNote(idHeader: Int): EmptyResult =
@@ -245,16 +235,6 @@ class IMotoMecRepository @Inject constructor(
     override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> =
         call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.getLastByIdHeader(idHeader).getOrThrow().roomModelToEntity()
-        }
-
-    override suspend fun hasCouplingTrailerImplement(): Result<Boolean> =
-        call(getClassAndMethod()) {
-            trailerSharedPreferencesDatasource.has().getOrThrow()
-        }
-
-    override suspend fun uncouplingTrailerImplement(): EmptyResult =
-        call(getClassAndMethod()) {
-            trailerSharedPreferencesDatasource.clean().getOrThrow()
         }
 
 }

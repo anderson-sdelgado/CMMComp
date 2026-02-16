@@ -1,6 +1,5 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
-import br.com.usinasantafe.cmm.domain.usecases.fertigation.SetIdEquipMotorPump
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
