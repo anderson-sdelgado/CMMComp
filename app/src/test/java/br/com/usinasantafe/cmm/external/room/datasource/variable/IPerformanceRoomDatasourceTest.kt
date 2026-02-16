@@ -439,4 +439,58 @@ class IPerformanceRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `hasByIdHeader - Check return false if not have data in table`() =
+        runTest {
+            val result = datasource.hasByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdHeader - Check return false if not have idHeader fielded in table`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.hasByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `hasByIdHeader - Check return true if have idHeader in table`() =
+        runTest {
+            performanceDao.insert(
+                PerformanceRoomModel(
+                    idHeader = 2,
+                    nroOS = 123456,
+                )
+            )
+            val result = datasource.hasByIdHeader(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
 }

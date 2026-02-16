@@ -22,7 +22,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
                 BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                 null
             )
-            if(json.isNullOrEmpty()) HeaderMotoMecSharedPreferencesModel()
+            if(json.isNullOrEmpty()) return@result HeaderMotoMecSharedPreferencesModel()
             Gson().fromJson(
                 json,
                 HeaderMotoMecSharedPreferencesModel::class.java
@@ -91,13 +91,6 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun getIdEquip(): Result<Int> =
         result(getClassAndMethod()) {
             get().getOrThrow().idEquip!!
-        }
-
-    override suspend fun setHourMeter(hourMeter: Double): EmptyResult =
-        result(getClassAndMethod()) {
-            val model = get().getOrThrow()
-            model.hourMeter = hourMeter
-            save(model).getOrThrow()
         }
 
     override suspend fun clean(): EmptyResult =

@@ -12,16 +12,16 @@ import br.com.usinasantafe.cmm.utils.updatePercentage
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IUpdateTableFunctionStopTest {
 
     private val getToken = mock<GetToken>()
     private val functionStopRepository = mock<FunctionStopRepository>()
-    private val updateTableFunctionStop = IUpdateTableFunctionStop(
+    private val usecase = IUpdateTableFunctionStop(
         getToken = getToken,
         functionStopRepository = functionStopRepository
     )
@@ -38,7 +38,7 @@ class IUpdateTableFunctionStopTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -86,7 +86,7 @@ class IUpdateTableFunctionStopTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -148,7 +148,7 @@ class IUpdateTableFunctionStopTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -224,7 +224,7 @@ class IUpdateTableFunctionStopTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

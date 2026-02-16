@@ -11,7 +11,6 @@ data class HeaderMotoMecSharedPreferencesModel(
     var idTurn: Int? = null,
     var nroOS: Int? = null,
     var idActivity: Int? = null,
-    var hourMeter: Double? = null,
     var statusCon: Boolean? = true,
     var idEquipMotorPump: Int? = null
 )
@@ -26,7 +25,6 @@ fun HeaderMotoMecSharedPreferencesModel.sharedPreferencesModelToEntity(): Header
             idTurn = idTurn,
             nroOS = nroOS,
             idActivity = idActivity,
-            hourMeter = hourMeter,
             statusCon = statusCon,
             idEquipMotorPump = idEquipMotorPump
         )

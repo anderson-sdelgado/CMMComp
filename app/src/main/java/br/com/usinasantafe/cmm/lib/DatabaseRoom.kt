@@ -19,7 +19,9 @@ import java.util.Date
         FunctionStopRoomModel::class,
         ItemCheckListRoomModel::class,
         ItemMenuRoomModel::class,
+        NozzleRoomModel::class,
         OSRoomModel::class,
+        PressureRoomModel::class,
         StopRoomModel::class,
         RActivityStopRoomModel::class,
         REquipActivityRoomModel::class,
@@ -46,7 +48,9 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun functionStopDao(): FunctionStopDao
     abstract fun itemCheckListDao(): ItemCheckListDao
     abstract fun itemMenuDao(): ItemMenuDao
+    abstract fun nozzleDao(): NozzleDao
     abstract fun osDao(): OSDao
+    abstract fun pressureDao(): PressureDao
     abstract fun rActivityStopDao(): RActivityStopDao
     abstract fun rEquipActivityDao(): REquipActivityDao
     abstract fun rOSActivityDao(): ROSActivityDao

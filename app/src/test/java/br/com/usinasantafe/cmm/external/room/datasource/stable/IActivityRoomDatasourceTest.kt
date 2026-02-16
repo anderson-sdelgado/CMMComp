@@ -49,14 +49,14 @@ class IActivityRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "TEST",
+                        id = 1,
+                        cod = 10,
+                        descr = "TEST",
                     ),
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "TEST",
+                        id = 1,
+                        cod = 10,
+                        descr = "TEST",
                     ),
                 )
             )
@@ -90,14 +90,14 @@ class IActivityRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "TEST",
+                        id = 1,
+                        cod = 10,
+                        descr = "TEST",
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "TEST",
+                        id = 2,
+                        cod = 20,
+                        descr = "TEST",
                     ),
                 )
             )
@@ -122,9 +122,9 @@ class IActivityRoomDatasourceTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "TESTE",
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
                     ),
                 )
             )
@@ -168,24 +168,24 @@ class IActivityRoomDatasourceTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1",
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1",
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2",
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2",
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 3",
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 3",
                     ),
                     ActivityRoomModel(
-                        idActivity = 4,
-                        codActivity = 40,
-                        descrActivity = "ATIVIDADE 3",
+                        id = 4,
+                        cod = 40,
+                        descr = "ATIVIDADE 3",
                     ),
                 )
             )
@@ -208,41 +208,41 @@ class IActivityRoomDatasourceTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 10
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "ATIVIDADE 1"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 20
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "ATIVIDADE 2"
             )
             val entity3 = list[2]
             assertEquals(
-                entity3.idActivity,
+                entity3.id,
                 3
             )
             assertEquals(
-                entity3.codActivity,
+                entity3.cod,
                 30
             )
             assertEquals(
-                entity3.descrActivity,
+                entity3.descr,
                 "ATIVIDADE 3"
             )
         }
@@ -253,24 +253,24 @@ class IActivityRoomDatasourceTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1",
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1",
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2",
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2",
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 3",
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 3",
                     ),
                     ActivityRoomModel(
-                        idActivity = 4,
-                        codActivity = 40,
-                        descrActivity = "ATIVIDADE 3",
+                        id = 4,
+                        cod = 40,
+                        descr = "ATIVIDADE 3",
                     ),
                 )
             )
@@ -281,15 +281,15 @@ class IActivityRoomDatasourceTest {
             )
             val model = result.getOrNull()!!
             assertEquals(
-                model.idActivity,
+                model.id,
                 1
             )
             assertEquals(
-                model.codActivity,
+                model.cod,
                 10
             )
             assertEquals(
-                model.descrActivity,
+                model.descr,
                 "ATIVIDADE 1"
             )
         }

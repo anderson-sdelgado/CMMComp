@@ -36,7 +36,7 @@ class IListHistory @Inject constructor(
                 val descr = if(item.idStop != null) {
                     stopRepository.getById(item.idStop!!).getOrThrow().descrStop
                 } else {
-                    activityRepository.getById(item.idActivity!!).getOrThrow().descrActivity
+                    activityRepository.getById(item.idActivity!!).getOrThrow().descr
                 }
                 val dateHour = SimpleDateFormat(
                     "dd/MM/yyyy HH:mm",

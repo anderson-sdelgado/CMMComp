@@ -495,28 +495,28 @@ class ConfigFlowTest {
         )
         val activityRoomModel1 = activityRoomModelList[0]
         assertEquals(
-            activityRoomModel1.idActivity,
+            activityRoomModel1.id,
             1
         )
         assertEquals(
-            activityRoomModel1.codActivity,
+            activityRoomModel1.cod,
             10
         )
         assertEquals(
-            activityRoomModel1.descrActivity,
+            activityRoomModel1.descr,
             "Test"
         )
         val activityRoomModel2 = activityRoomModelList[1]
         assertEquals(
-            activityRoomModel2.idActivity,
+            activityRoomModel2.id,
             2
         )
         assertEquals(
-            activityRoomModel2.codActivity,
+            activityRoomModel2.cod,
             20
         )
         assertEquals(
-            activityRoomModel2.descrActivity,
+            activityRoomModel2.descr,
             "Test2"
         )
 

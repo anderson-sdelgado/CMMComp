@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.ISetIdEquipMotorPump
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock

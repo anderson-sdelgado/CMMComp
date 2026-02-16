@@ -21,7 +21,7 @@ class IUpdateTableFunctionActivityTest {
 
     private val getToken = mock<GetToken>()
     private val functionActivityRepository = mock<FunctionActivityRepository>()
-    private val updateTableFunctionActivity = IUpdateTableFunctionActivity(
+    private val usecase = IUpdateTableFunctionActivity(
         getToken = getToken,
         functionActivityRepository = functionActivityRepository
     )
@@ -38,7 +38,7 @@ class IUpdateTableFunctionActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -86,7 +86,7 @@ class IUpdateTableFunctionActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -148,7 +148,7 @@ class IUpdateTableFunctionActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -224,7 +224,7 @@ class IUpdateTableFunctionActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableFunctionActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.domain.usecases.performance.SetPerformance
 import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import dagger.hilt.android.testing.HiltAndroidRule

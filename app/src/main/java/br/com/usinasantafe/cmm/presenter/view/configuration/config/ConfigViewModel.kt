@@ -14,6 +14,8 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivit
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableNozzle
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTablePressure
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
@@ -23,7 +25,6 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
-import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
@@ -64,6 +65,8 @@ class ConfigViewModel @Inject constructor(
     private val updateTableFunctionStop: UpdateTableFunctionStop,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
     private val updateTableItemMenu: UpdateTableItemMenu,
+    private val updateTableNozzle: UpdateTableNozzle,
+    private val updateTablePressure: UpdateTablePressure,
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
     private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
@@ -236,7 +239,7 @@ class ConfigViewModel @Inject constructor(
         )
 
     private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
-        val size = sizeUpdate(QTD_TABLE)
+        val size = sizeUpdate(14f)
         return listOf(
             updateTableActivity(size, 1f),
             updateTableColab(size, 2f),
@@ -245,11 +248,13 @@ class ConfigViewModel @Inject constructor(
             updateTableFunctionStop(size, 5f),
             updateTableItemCheckListByNroEquip(size, 6f),
             updateTableItemMenu(size, 7f),
-            updateTableRActivityStop(size, 8f),
-            updateTableREquipActivityByIdEquip(size, 9f),
-            updateTableRItemMenuStop(size, 10f),
-            updateTableStop(size, 11f),
-            updateTableTurn(size, 12f)
+            updateTableNozzle(size, 8f),
+            updateTablePressure(size, 9f),
+            updateTableRActivityStop(size, 10f),
+            updateTableREquipActivityByIdEquip(size, 11f),
+            updateTableRItemMenuStop(size, 12f),
+            updateTableStop(size, 13f),
+            updateTableTurn(size, 14f)
         )
     }
 

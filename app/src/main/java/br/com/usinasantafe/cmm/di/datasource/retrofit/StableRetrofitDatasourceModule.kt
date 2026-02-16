@@ -68,4 +68,12 @@ interface StableRetrofitDatasourceModule {
     @Singleton
     fun bindTurnRetrofitDatasource(dataSource: ITurnRetrofitDatasource): TurnRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindNozzleRetrofitDatasource(dataSource: INozzleRetrofitDatasource): NozzleRetrofitDatasource
+
+    @Binds
+    @Singleton
+    fun bindPressureRetrofitDatasource(dataSource: IPressureRetrofitDatasource): PressureRetrofitDatasource
+
 }

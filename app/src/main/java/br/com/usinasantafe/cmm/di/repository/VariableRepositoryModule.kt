@@ -36,4 +36,8 @@ interface VariableRepositoryModule {
     @Singleton
     fun bindCompostingRepository(repository: ICompostingRepository): CompostingRepository
 
+    @Binds
+    @Singleton
+    fun bindPerformanceRepository(repository: IPerformanceRepository): PerformanceRepository
+
 }

@@ -26,16 +26,16 @@ class IActivityRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 ActivityRoomModel(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "TEST"
+                    id = 1,
+                    cod = 10,
+                    descr = "TEST"
                 )
             )
             val entityList = listOf(
                 Activity(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "TEST"
+                    id = 1,
+                    cod = 10,
+                    descr = "TEST"
                 )
             )
             whenever(
@@ -67,16 +67,16 @@ class IActivityRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 ActivityRoomModel(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "TEST"
+                    id = 1,
+                    cod = 10,
+                    descr = "TEST"
                 )
             )
             val entityList = listOf(
                 Activity(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "TEST"
+                    id = 1,
+                    cod = 10,
+                    descr = "TEST"
                 )
             )
             whenever(
@@ -142,7 +142,7 @@ class IActivityRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have error`() =
+    fun `listAll - Check return failure if have error`() =
         runTest {
             whenever(
                 activityRetrofitDatasource.listAll("token")
@@ -169,20 +169,20 @@ class IActivityRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return true if function execute successfully`() =
+    fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 ActivityRetrofitModel(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "ATIVIDADE"
+                    id = 1,
+                    cod = 10,
+                    descr = "ATIVIDADE"
                 )
             )
             val entityList = listOf(
                 Activity(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "ATIVIDADE"
+                    id = 1,
+                    cod = 10,
+                    descr = "ATIVIDADE"
                 )
             )
             whenever(
@@ -243,14 +243,14 @@ class IActivityRepositoryTest {
                 Result.success(
                     listOf(
                         ActivityRoomModel(
-                            idActivity = 1,
-                            codActivity = 10,
-                            descrActivity = "ATIVIDADE"
+                            id = 1,
+                            cod = 10,
+                            descr = "ATIVIDADE"
                         ),
                         ActivityRoomModel(
-                            idActivity = 2,
-                            codActivity = 20,
-                            descrActivity = "ATIVIDADE 2"
+                            id = 2,
+                            cod = 20,
+                            descr = "ATIVIDADE 2"
                         )
                     )
                 )
@@ -269,28 +269,28 @@ class IActivityRepositoryTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 10
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "ATIVIDADE"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 20
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "ATIVIDADE 2"
             )
         }
@@ -330,9 +330,9 @@ class IActivityRepositoryTest {
             ).thenReturn(
                 Result.success(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE"
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE"
                     )
                 )
             )
@@ -344,9 +344,9 @@ class IActivityRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 Activity(
-                    idActivity = 1,
-                    codActivity = 10,
-                    descrActivity = "ATIVIDADE"
+                    id = 1,
+                    cod = 10,
+                    descr = "ATIVIDADE"
                 )
             )
         }

@@ -1,12 +1,12 @@
 package br.com.usinasantafe.cmm.domain.entities.stable
 
 data class Activity(
-    val idActivity: Int,
-    val codActivity: Int,
-    val descrActivity: String
+    val id: Int,
+    val cod: Int,
+    val descr: String
 ) {
     init {
-        require(idActivity != 0) { "The field 'idActivity' cannot is null." }
-        require(codActivity != 0) { "The field 'codActivity' cannot is null." }
+        require(id != 0) { "The field 'idActivity' cannot is null." }
+        require(cod != 0) { "The field 'codActivity' cannot is null." }
     }
 }

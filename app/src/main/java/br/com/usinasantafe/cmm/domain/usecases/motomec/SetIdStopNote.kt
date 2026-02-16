@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -17,8 +18,8 @@ interface SetIdStopNote {
 
 class ISetIdStopNote @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
-    private val functionActivityRepository: FunctionActivityRepository,
-    private val startWorkManager: StartWorkManager
+    private val startWorkManager: StartWorkManager,
+    private val saveNote: SaveNote
 ): SetIdStopNote {
 
     override suspend fun invoke(
@@ -30,15 +31,11 @@ class ISetIdStopNote @Inject constructor(
             val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
 
             motoMecRepository.setIdStop(id).getOrThrow()
-            motoMecRepository.saveNote(idHeader).getOrThrow()
+            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
+            saveNote(idHeader, idActivity, nroOS).getOrThrow()
 
-            val checkPerformance = functionActivityRepository.hasByIdAndType(
-                idActivity = idActivity,
-                typeActivity = TypeActivity.PERFORMANCE
-            ).getOrThrow()
-
-            if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
             startWorkManager()
+
         }
 
 }

@@ -232,15 +232,15 @@ class IUpdateTableActivityTest {
             )
             val roomModel = roomModelList[0]
             assertEquals(
-                roomModel.idActivity,
+                roomModel.id,
                 1
             )
             assertEquals(
-                roomModel.codActivity,
+                roomModel.cod,
                 10
             )
             assertEquals(
-                roomModel.descrActivity,
+                roomModel.descr,
                 "MANUTENCAO PREVENTIVA"
             )
         }

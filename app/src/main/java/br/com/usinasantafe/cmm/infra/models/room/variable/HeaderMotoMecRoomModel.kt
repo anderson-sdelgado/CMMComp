@@ -35,7 +35,7 @@ data class HeaderMotoMecRoomModel(
     val idEquipMotorPump: Int? = null,
 )
 
-fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
+fun HeaderMotoMec.entityToRoomModel(hourMeterInitial: Double): HeaderMotoMecRoomModel {
     return HeaderMotoMecRoomModel(
         id = id,
         regOperator = regOperator.required("regOperator"),
@@ -44,7 +44,7 @@ fun HeaderMotoMec.entityToRoomModel(): HeaderMotoMecRoomModel {
         idTurn = idTurn.required("idTurn"),
         nroOS = nroOS.required("nroOS"),
         idActivity = idActivity.required("idActivity"),
-        hourMeterInitial = hourMeter.required("hourMeter"),
+        hourMeterInitial = hourMeterInitial,
         flowComposting = flowComposting,
         statusCon = statusCon.required("statusCon"),
         idEquipMotorPump = idEquipMotorPump

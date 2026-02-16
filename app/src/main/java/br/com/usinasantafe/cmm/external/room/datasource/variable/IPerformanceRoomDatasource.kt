@@ -46,4 +46,9 @@ class IPerformanceRoomDatasource @Inject constructor(
             performanceDao.hasByIdHeaderAndValueNull(idHeader)
         }
 
+    override suspend fun hasByIdHeader(idHeader: Int): Result<Boolean> =
+        result(getClassAndMethod()){
+            performanceDao.hasByIdHeader(idHeader)
+        }
+
 }

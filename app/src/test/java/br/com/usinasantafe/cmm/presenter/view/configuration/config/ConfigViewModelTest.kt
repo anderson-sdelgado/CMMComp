@@ -16,6 +16,8 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivit
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableNozzle
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTablePressure
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
@@ -25,7 +27,6 @@ import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.utils.percentage
-import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -60,11 +61,13 @@ class ConfigViewModelTest {
     private val updateTableFunctionStop = mock<UpdateTableFunctionStop>()
     private val updateTableItemMenu = mock<UpdateTableItemMenu>()
     private val updateTableRItemMenuStop = mock<UpdateTableRItemMenuStop>()
+    private val updateTableNozzle = mock<UpdateTableNozzle>()
+    private val updateTablePressure = mock<UpdateTablePressure>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
-    private val sizeAll = (QTD_TABLE * 3) + 1f
+    private val sizeAll = (14f * 3) + 1f
     val tableList = listOf(
         "tb_activity", "tb_colab", "tb_equip", "tb_function_activity",
-        "tb_function_stop", "tb_item_check_list", "tb_item_menu",
+        "tb_function_stop", "tb_item_check_list", "tb_item_menu", "tb_nozzle", "tb_pressure",
         "tb_r_activity_stop", "tb_r_equip_activity", "tb_r_item_menu_stop"
         ,"tb_stop", "tb_turn"
     )
@@ -86,6 +89,8 @@ class ConfigViewModelTest {
         updateTableFunctionActivity = updateTableFunctionActivity,
         updateTableFunctionStop = updateTableFunctionStop,
         updateTableItemMenu = updateTableItemMenu,
+        updateTableNozzle = updateTableNozzle,
+        updateTablePressure = updateTablePressure,
         setFinishUpdateAllTable = setFinishUpdateAllTable
     )
 
@@ -861,7 +866,7 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableItemMenuPMM`() =
+    fun `update - Check return failure if have error in UpdateTableItemMenu`() =
         runTest {
             val qtdBefore = 6f
             wheneverSuccess(qtdBefore)
@@ -918,9 +923,123 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+    fun `update - Check return failure if have error in UpdateTableNozzle`() =
         runTest {
             val qtdBefore = 7f
+            wheneverSuccess(qtdBefore)
+            whenever(
+                updateTableNozzle(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_nozzle",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanNozzle -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdate(qtdBefore, result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_nozzle",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanNozzle -> java.lang.NullPointerException",
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTablePressure`() =
+        runTest {
+            val qtdBefore = 8f
+            wheneverSuccess(qtdBefore)
+            whenever(
+                updateTablePressure(
+                    sizeAll = sizeAll,
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_pressure",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    ),
+                    UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanPressure -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdate(qtdBefore, result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_pressure",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                    )
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanPressure -> java.lang.NullPointerException",
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableRActivityStop`() =
+        runTest {
+            val qtdBefore = 9f
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRActivityStop(
@@ -977,7 +1096,7 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableREquipActivity`() =
         runTest {
-            val qtdBefore = 8f
+            val qtdBefore = 10f
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableREquipActivityByIdEquip(
@@ -1033,7 +1152,7 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableRItemMenuStop`() =
         runTest {
-            val qtdBefore = 9f
+            val qtdBefore = 11f
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRItemMenuStop(
@@ -1089,7 +1208,7 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableStop`() =
         runTest {
-            val qtdBefore = 10f
+            val qtdBefore = 12f
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableStop(
@@ -1145,7 +1264,7 @@ class ConfigViewModelTest {
     @Test
     fun `update - Check return failure if have error in UpdateTableTurn`() =
         runTest {
-            val qtdBefore = 11f
+            val qtdBefore = 13f
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableTurn(
@@ -1274,7 +1393,7 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3)).toInt()
+                ((14f * 3)).toInt()
             )
             checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
@@ -1373,7 +1492,7 @@ class ConfigViewModelTest {
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3)).toInt()
+                ((14f * 3)).toInt()
             )
             checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
@@ -1412,6 +1531,8 @@ class ConfigViewModelTest {
                 { sizeAll, count -> updateTableFunctionStop(sizeAll, count) },
                 { sizeAll, count -> updateTableItemCheckListByNroEquip(sizeAll, count) },
                 { sizeAll, count -> updateTableItemMenu(sizeAll, count) },
+                { sizeAll, count -> updateTableNozzle(sizeAll, count) },
+                { sizeAll, count -> updateTablePressure(sizeAll, count) },
                 { sizeAll, count -> updateTableRActivityStop(sizeAll, count) },
                 { sizeAll, count -> updateTableREquipActivityByIdEquip(sizeAll, count) },
                 { sizeAll, count -> updateTableRItemMenuStop(sizeAll, count) },

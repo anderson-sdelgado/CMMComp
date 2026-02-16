@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -10,7 +11,6 @@ import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.stringToDouble
 import br.com.usinasantafe.cmm.utils.tryCatch
-import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -28,6 +28,7 @@ class ISetHourMeter @Inject constructor(
     private val equipRepository: EquipRepository,
     private val startWorkManager: StartWorkManager,
     private val configRepository: ConfigRepository,
+    private val performanceRepository: PerformanceRepository
 ): SetHourMeter {
 
     override suspend fun invoke(
@@ -40,10 +41,9 @@ class ISetHourMeter @Inject constructor(
             equipRepository.updateHourMeter(value).getOrThrow()
 
             if(flowApp == FlowApp.HEADER_INITIAL) {
-                motoMecRepository.setHourMeterInitialHeader(value).getOrThrow()
                 val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()
                 if(typeEquip == TypeEquip.REEL_FERT) return@call FlowApp.REEL_FERT
-                motoMecRepository.saveHeader().getOrThrow()
+                motoMecRepository.saveHeader(value).getOrThrow()
                 startWorkManager()
                 val check = checkOpenCheckList().getOrThrow()
                 if(check) return@call FlowApp.CHECK_LIST
@@ -53,7 +53,8 @@ class ISetHourMeter @Inject constructor(
             motoMecRepository.setHourMeterFinishHeader(value).getOrThrow()
 
             val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
-            val check = motoMecRepository.hasPerformanceByIdHeader(id).getOrThrow()
+            val check = performanceRepository.hasByIdHeader(id).getOrThrow()
+            if(check) return@call FlowApp.PERFORMANCE
 
             motoMecRepository.finishHeader().getOrThrow()
 

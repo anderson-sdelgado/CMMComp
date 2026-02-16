@@ -3,14 +3,14 @@ package br.com.usinasantafe.cmm.presenter.view.motomec.header.motorPump
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdEquipMotorPump
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.SetIdEquipMotorPump
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
-import br.com.usinasantafe.cmm.presenter.view.motomec.header.motorPump.MotorPumpState
-import br.com.usinasantafe.cmm.presenter.view.motomec.header.motorPump.MotorPumpViewModel
+import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpState
+import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpViewModel
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi

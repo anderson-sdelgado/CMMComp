@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.performance.performancelist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckClosePerformance
-import br.com.usinasantafe.cmm.domain.usecases.motomec.ListPerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.CheckClosePerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.ListPerformance
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG

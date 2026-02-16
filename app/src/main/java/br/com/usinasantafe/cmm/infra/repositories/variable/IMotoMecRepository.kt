@@ -30,7 +30,6 @@ class IMotoMecRepository @Inject constructor(
     private val itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource,
     private val itemMotoMecRoomDatasource: ItemMotoMecRoomDatasource,
     private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
-    private val performanceRoomDatasource: PerformanceRoomDatasource,
     private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
 ): MotoMecRepository {
 
@@ -89,17 +88,12 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecSharedPreferencesDatasource.getIdEquip().getOrThrow()
         }
 
-    override suspend fun setHourMeterInitialHeader(hourMeter: Double): Result<Unit> =
-        call(getClassAndMethod()) {
-            headerMotoMecSharedPreferencesDatasource.setHourMeter(hourMeter).getOrThrow()
-        }
-
-    override suspend fun saveHeader(): EmptyResult =
+    override suspend fun saveHeader(hourMeterInitial: Double): EmptyResult =
         call(getClassAndMethod()) {
             val modelSharedPreferences = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = runCatching {
-                entity.entityToRoomModel()
+                entity.entityToRoomModel(hourMeterInitial)
             }.getOrElse { e ->
                 throw Exception(entity::entityToRoomModel.name, e)
             }
@@ -262,43 +256,5 @@ class IMotoMecRepository @Inject constructor(
         call(getClassAndMethod()) {
             trailerSharedPreferencesDatasource.clean().getOrThrow()
         }
-
-    override suspend fun insertInitialPerformance(): EmptyResult =
-        call(getClassAndMethod()) {
-            val headerModel = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
-            performanceRoomDatasource.insert(
-                PerformanceRoomModel(
-                    nroOS = headerModel.nroOS!!,
-                    idHeader = headerModel.id!!,
-                )
-            ).getOrThrow()
-        }
-
-    override suspend fun listPerformanceByIdHeader(idHeader: Int): Result<List<Performance>> =
-        call(getClassAndMethod()) {
-            performanceRoomDatasource.listByIdHeader(idHeader).getOrThrow().map { it.roomModelToEntity() }
-        }
-
-    override suspend fun updatePerformance(
-        id: Int,
-        value: Double
-    ): EmptyResult =
-        call(getClassAndMethod()) {
-            performanceRoomDatasource.update(id, value).getOrThrow()
-        }
-
-    override suspend fun getNroOSPerformanceById(id: Int): Result<Int> =
-        call(getClassAndMethod()) {
-            performanceRoomDatasource.getNroOSById(id).getOrThrow()
-        }
-
-    override suspend fun hasPerformanceByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
-        call(getClassAndMethod()) {
-            performanceRoomDatasource.hasByIdHeaderAndValueNull(idHeader).getOrThrow()
-        }
-
-    override suspend fun hasPerformanceByIdHeader(idHeader: Int): Result<Boolean> {
-        TODO("Not yet implemented")
-    }
 
 }

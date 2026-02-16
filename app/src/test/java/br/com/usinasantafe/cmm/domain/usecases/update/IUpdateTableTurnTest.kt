@@ -20,7 +20,7 @@ class IUpdateTableTurnTest {
 
     private val getToken = mock<GetToken>()
     private val turnRepository = mock<TurnRepository>()
-    private val updateTableTurn = IUpdateTableTurn(
+    private val usecase = IUpdateTableTurn(
         getToken = getToken,
         turnRepository = turnRepository
     )
@@ -37,7 +37,7 @@ class IUpdateTableTurnTest {
                     Exception()
                 )
             )
-            val result = updateTableTurn(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -84,7 +84,7 @@ class IUpdateTableTurnTest {
                     Exception()
                 )
             )
-            val result = updateTableTurn(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -146,7 +146,7 @@ class IUpdateTableTurnTest {
                     Exception()
                 )
             )
-            val result = updateTableTurn(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -222,7 +222,7 @@ class IUpdateTableTurnTest {
                     Exception()
                 )
             )
-            val result = updateTableTurn(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

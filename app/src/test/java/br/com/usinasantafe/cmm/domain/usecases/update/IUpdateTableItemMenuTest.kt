@@ -23,7 +23,7 @@ class IUpdateTableItemMenuTest {
 
     private val getToken = mock<GetToken>()
     private val itemMenuRepository = mock<ItemMenuRepository>()
-    private val updateTableItemMenu = IUpdateTableItemMenu(
+    private val usecase = IUpdateTableItemMenu(
         getToken = getToken,
         itemMenuRepository = itemMenuRepository
     )
@@ -40,7 +40,7 @@ class IUpdateTableItemMenuTest {
                     Exception()
                 )
             )
-            val result = updateTableItemMenu(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -88,7 +88,7 @@ class IUpdateTableItemMenuTest {
                     Exception()
                 )
             )
-            val result = updateTableItemMenu(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -153,7 +153,7 @@ class IUpdateTableItemMenuTest {
                     Exception()
                 )
             )
-            val result = updateTableItemMenu(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -232,7 +232,7 @@ class IUpdateTableItemMenuTest {
                     Exception()
                 )
             )
-            val result = updateTableItemMenu(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

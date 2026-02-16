@@ -95,4 +95,16 @@ object StableRoomModule {
         return database.itemMenuDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideNozzleDao(database: DatabaseRoom): NozzleDao {
+        return database.nozzleDao()
+    }
+
+    @Provides
+    @Singleton
+    fun providePressureDao(database: DatabaseRoom): PressureDao {
+        return database.pressureDao()
+    }
+
 }

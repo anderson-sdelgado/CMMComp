@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -20,12 +21,35 @@ class ISetHourMeterTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
     private val startWorkManager = mock<StartWorkManager>()
+    private val performanceRepository = mock<PerformanceRepository>()
     private val usecase = ISetHourMeter(
         motoMecRepository = motoMecRepository,
         equipRepository = equipRepository,
         startWorkManager = startWorkManager,
-        configRepository = configRepository
+        configRepository = configRepository,
+        performanceRepository = performanceRepository
     )
+
+    @Test
+    fun `Check return failure if value input is incorrect`() =
+        runTest {
+            val result = usecase(
+                hourMeter = "fdasfdsafd",
+                flowApp = FlowApp.HEADER_INITIAL
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetHourMeter -> stringToDouble"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.text.ParseException: Unparseable number: \"fdasfdsafd\""
+            )
+        }
 
     @Test
     fun `Check return failure if have error in EquipRepository updateHourMeter`() =
@@ -60,56 +84,10 @@ class ISetHourMeterTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository setHourMeterInitialHeader - FlowApp HEADER_INITIAL`() =
-        runTest {
-            whenever(
-                equipRepository.updateHourMeter(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setHourMeterInitialHeader",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(
-                hourMeter = "10.000,0",
-                flowApp = FlowApp.HEADER_INITIAL
-            )
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetHourMeter -> IMotoMecRepository.setHourMeterInitialHeader"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in MotoMecRepository getTypeEquipHeader - FlowApp HEADER_INITIAL`() =
         runTest {
             whenever(
                 equipRepository.updateHourMeter(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setHourMeterInitialHeader(
                     hourMeter = 10000.0
                 )
             ).thenReturn(
@@ -153,13 +131,6 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.REEL_FERT)
@@ -189,19 +160,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecSaveHeaderRepository.saveHeader",
@@ -238,19 +202,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -292,19 +249,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -338,19 +288,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -397,19 +340,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -448,19 +384,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -512,19 +441,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -568,19 +490,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -637,19 +552,12 @@ class ISetHourMeterTest {
                 Result.success(Unit)
             )
             whenever(
-                motoMecRepository.setHourMeterInitialHeader(
-                    hourMeter = 10000.0
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 Result.success(TypeEquip.NORMAL)
             )
             whenever(
-                motoMecRepository.saveHeader()
+                motoMecRepository.saveHeader(10000.0)
             ).thenReturn(
                 Result.success(Unit)
             )

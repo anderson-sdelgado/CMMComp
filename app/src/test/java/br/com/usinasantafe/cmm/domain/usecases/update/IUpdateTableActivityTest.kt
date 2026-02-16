@@ -20,7 +20,7 @@ class IUpdateTableActivityTest {
 
     private val getToken = mock<GetToken>()
     private val activityRepository = mock<ActivityRepository>()
-    private val updateTableActivity = IUpdateTableActivity(
+    private val usecase = IUpdateTableActivity(
         getToken = getToken,
         activityRepository = activityRepository
     )
@@ -37,7 +37,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -84,7 +84,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -119,9 +119,9 @@ class IUpdateTableActivityTest {
         runTest {
             val list = listOf(
                 Activity(
-                    idActivity = 1,
-                    codActivity = 1,
-                    descrActivity = "descrAtiv"
+                    id = 1,
+                    cod = 1,
+                    descr = "descrAtiv"
                 )
             )
             whenever(
@@ -145,7 +145,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -189,9 +189,9 @@ class IUpdateTableActivityTest {
         runTest {
             val list = listOf(
                 Activity(
-                    idActivity = 1,
-                    codActivity = 1,
-                    descrActivity = "descrAtiv"
+                    id = 1,
+                    cod = 1,
+                    descr = "descrAtiv"
                 )
             )
             whenever(
@@ -220,7 +220,7 @@ class IUpdateTableActivityTest {
                     Exception()
                 )
             )
-            val result = updateTableActivity(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

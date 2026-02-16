@@ -9,4 +9,5 @@ interface PerformanceRoomDatasource {
     suspend fun update(id: Int, value: Double): EmptyResult
     suspend fun getNroOSById(id: Int): Result<Int>
     suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
+    suspend fun hasByIdHeader(idHeader: Int): Result<Boolean>
 }

@@ -302,14 +302,14 @@ class IListActivityTest {
                 Result.success(
                     listOf(
                         Activity(
-                            idActivity = 1,
-                            codActivity = 1,
-                            descrActivity = "Atividade 1"
+                            id = 1,
+                            cod = 1,
+                            descr = "Atividade 1"
                         ),
                         Activity(
-                            idActivity = 2,
-                            codActivity = 2,
-                            descrActivity = "Atividade 2"
+                            id = 2,
+                            cod = 2,
+                            descr = "Atividade 2"
                         ),
                     )
                 )
@@ -326,28 +326,28 @@ class IListActivityTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 1
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "Atividade 1"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 2
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "Atividade 2"
             )
             assertEquals(
@@ -608,14 +608,14 @@ class IListActivityTest {
                 Result.success(
                     listOf(
                         Activity(
-                            idActivity = 1,
-                            codActivity = 1,
-                            descrActivity = "Atividade 1"
+                            id = 1,
+                            cod = 1,
+                            descr = "Atividade 1"
                         ),
                         Activity(
-                            idActivity = 2,
-                            codActivity = 2,
-                            descrActivity = "Atividade 2"
+                            id = 2,
+                            cod = 2,
+                            descr = "Atividade 2"
                         ),
                     )
                 )
@@ -632,28 +632,28 @@ class IListActivityTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 1
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "Atividade 1"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 2
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "Atividade 2"
             )
             assertEquals(

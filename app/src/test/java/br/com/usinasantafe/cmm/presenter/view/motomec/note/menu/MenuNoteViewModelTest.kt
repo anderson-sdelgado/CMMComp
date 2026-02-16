@@ -14,7 +14,7 @@ import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
-import br.com.usinasantafe.cmm.domain.usecases.motomec.GetStatusTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.transhipment.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.UncouplingTrailer
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
@@ -51,7 +51,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-import kotlin.collections.get
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi

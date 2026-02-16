@@ -240,9 +240,9 @@ class IListHistoryTest {
             ).thenReturn(
                 Result.success(
                     Activity(
-                        idActivity = 1,
-                        codActivity = 1,
-                        descrActivity = "CARREGAMENTO DE CANA"
+                        id = 1,
+                        cod = 1,
+                        descr = "CARREGAMENTO DE CANA"
                     )
                 )
             )

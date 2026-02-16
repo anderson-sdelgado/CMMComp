@@ -8,17 +8,17 @@ import br.com.usinasantafe.cmm.lib.TB_ACTIVITY
 @Entity(tableName = TB_ACTIVITY)
 data class ActivityRoomModel (
     @PrimaryKey
-    val idActivity: Int,
-    val codActivity: Int,
-    val descrActivity: String
+    val id: Int,
+    val cod: Int,
+    val descr: String
 )
 
 fun ActivityRoomModel.roomModelToEntity(): Activity {
     return with(this){
         Activity(
-            idActivity = this.idActivity,
-            codActivity = this.codActivity,
-            descrActivity = this.descrActivity,
+            id = this.id,
+            cod = this.cod,
+            descr = this.descr,
         )
     }
 }
@@ -26,9 +26,9 @@ fun ActivityRoomModel.roomModelToEntity(): Activity {
 fun Activity.entityToRoomModel(): ActivityRoomModel {
     return with(this){
         ActivityRoomModel(
-            idActivity = this.idActivity,
-            codActivity = this.codActivity,
-            descrActivity = this.descrActivity,
+            id = this.id,
+            cod = this.cod,
+            descr = this.descr,
         )
     }
 }

@@ -31,4 +31,7 @@ interface PerformanceDao {
     @Query("SELECT EXISTS(SELECT 1 FROM $TB_PERFORMANCE WHERE idHeader = :idHeader AND value is null)")
     suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Boolean
 
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_PERFORMANCE WHERE idHeader = :idHeader)")
+    suspend fun hasByIdHeader(idHeader: Int): Boolean
+
 }

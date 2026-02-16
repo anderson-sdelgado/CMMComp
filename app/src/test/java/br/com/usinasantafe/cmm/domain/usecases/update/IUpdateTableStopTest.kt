@@ -20,7 +20,7 @@ class IUpdateTableStopTest {
 
     private val getToken = mock<GetToken>()
     private val stopRepository = mock<StopRepository>()
-    private val updateTableStop = IUpdateTableStop(
+    private val usecase = IUpdateTableStop(
         getToken = getToken,
         stopRepository = stopRepository
     )
@@ -37,7 +37,7 @@ class IUpdateTableStopTest {
                     Exception()
                 )
             )
-            val result = updateTableStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -84,7 +84,7 @@ class IUpdateTableStopTest {
                     Exception()
                 )
             )
-            val result = updateTableStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -145,7 +145,7 @@ class IUpdateTableStopTest {
                     Exception()
                 )
             )
-            val result = updateTableStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -220,7 +220,7 @@ class IUpdateTableStopTest {
                     Exception()
                 )
             )
-            val result = updateTableStop(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 data class ActivityListCommonState(
     val flowApp: FlowApp = FlowApp.HEADER_INITIAL,
-    val activityList: List<Activity> = emptyList(),
+    val list: List<Activity> = emptyList(),
     val flagAccess: Boolean = false,
     override val status: UpdateStatusState = UpdateStatusState()
 ) : UiStateWithStatus<ActivityListCommonState> {
@@ -54,15 +54,15 @@ class ActivityListCommonViewModel @Inject constructor(
 
     init { updateState { copy(flowApp = FlowApp.entries[this@ActivityListCommonViewModel.flowApp]) } }
 
-    fun activityList() = viewModelScope.launch {
+    fun list() = viewModelScope.launch {
         runCatching {
             listActivity().getOrThrow()
         }
-            .onSuccess { updateState { copy(activityList = it) } }
+            .onSuccess { updateState { copy(list = it) } }
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun setIdActivity(id: Int) = viewModelScope.launch {
+    fun setId(id: Int) = viewModelScope.launch {
         runCatching {
             setIdActivityCommon(
                 id = id,

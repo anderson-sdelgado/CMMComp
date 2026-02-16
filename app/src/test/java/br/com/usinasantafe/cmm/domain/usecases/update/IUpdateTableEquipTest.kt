@@ -22,7 +22,7 @@ class IUpdateTableEquipTest {
 
     private val getToken = mock<GetToken>()
     private val equipRepository = mock<EquipRepository>()
-    private val updateTableEquip = IUpdateTableEquip(
+    private val usecase = IUpdateTableEquip(
         getToken = getToken,
         equipRepository = equipRepository
     )
@@ -39,7 +39,7 @@ class IUpdateTableEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableEquip(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -89,7 +89,7 @@ class IUpdateTableEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableEquip(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -161,7 +161,7 @@ class IUpdateTableEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableEquip(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -263,7 +263,7 @@ class IUpdateTableEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableEquip(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

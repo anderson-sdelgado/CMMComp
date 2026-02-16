@@ -229,9 +229,9 @@ class IHistoryListTest {
         activityDao.insertAll(
             listOf(
                 ActivityRoomModel(
-                    idActivity = 1,
-                    codActivity = 20,
-                    descrActivity = "TRANSPORTE DE CANA"
+                    id = 1,
+                    cod = 20,
+                    descr = "TRANSPORTE DE CANA"
                 )
             )
         )

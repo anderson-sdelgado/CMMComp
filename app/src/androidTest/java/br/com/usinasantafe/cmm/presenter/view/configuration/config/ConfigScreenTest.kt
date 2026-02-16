@@ -108,22 +108,22 @@ class ConfigScreenTest {
 
     private val resultActivityFailure = """
         [
-            {"idActivity":1a,"codActivity":10,"descrActivity":"Test"},
-            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+            {"id":1a,"cod":10,"descr":"Test"},
+            {"id":2,"cod":20,"descr":"Test2"}
         ]
     """.trimIndent()
 
     private val resultActivityRepeated = """
         [
-            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
-            {"idActivity":1,"codActivity":10,"descrActivity":"Test"}
+            {"id":1,"cod":10,"descr":"Test"},
+            {"id":1,"cod":10,"descr":"Test"}
         ]
     """.trimIndent()
 
     private val resultActivity = """
         [
-            {"idActivity":1,"codActivity":10,"descrActivity":"Test"},
-            {"idActivity":2,"codActivity":20,"descrActivity":"Test2"}
+            {"id":1,"cod":10,"descr":"Test"},
+            {"id":2,"cod":20,"descr":"Test2"}
         ]
     """.trimIndent()
 
@@ -2443,28 +2443,28 @@ class ConfigScreenTest {
         )
         val activityRoomModel1 = activityRoomModelList[0]
         assertEquals(
-            activityRoomModel1.idActivity,
+            activityRoomModel1.id,
             1
         )
         assertEquals(
-            activityRoomModel1.codActivity,
+            activityRoomModel1.cod,
             10
         )
         assertEquals(
-            activityRoomModel1.descrActivity,
+            activityRoomModel1.descr,
             "Test"
         )
         val activityRoomModel2 = activityRoomModelList[1]
         assertEquals(
-            activityRoomModel2.idActivity,
+            activityRoomModel2.id,
             2
         )
         assertEquals(
-            activityRoomModel2.codActivity,
+            activityRoomModel2.cod,
             20
         )
         assertEquals(
-            activityRoomModel2.descrActivity,
+            activityRoomModel2.descr,
             "Test2"
         )
 

@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.presenter.view.performance.performance
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckPerformance
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetPerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.CheckPerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.SetPerformance
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.presenter.Args.ID_ARG

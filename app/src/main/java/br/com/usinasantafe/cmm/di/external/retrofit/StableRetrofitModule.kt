@@ -108,4 +108,16 @@ object StableRetrofitModule {
         @DefaultRetrofit retrofit: Retrofit
     ): TurnApi = retrofit.create(TurnApi::class.java)
 
+    @Provides
+    @Singleton
+    fun nozzleApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): NozzleApi = retrofit.create(NozzleApi::class.java)
+
+    @Provides
+    @Singleton
+    fun pressureApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): PressureApi = retrofit.create(PressureApi::class.java)
+
 }

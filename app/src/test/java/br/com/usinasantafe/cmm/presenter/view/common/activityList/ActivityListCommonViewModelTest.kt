@@ -214,7 +214,7 @@ class ActivityListCommonViewModelTest {
                 )
             )
             val viewModel = createViewModel()
-            viewModel.activityList()
+            viewModel.list()
             assertEquals(
                 viewModel.uiState.value.status.flagDialog,
                 true
@@ -238,31 +238,31 @@ class ActivityListCommonViewModelTest {
                 Result.success(
                     listOf(
                         Activity(
-                            idActivity = 1,
-                            codActivity = 1,
-                            descrActivity = "Test"
+                            id = 1,
+                            cod = 1,
+                            descr = "Test"
                         )
                     )
                 )
             )
             val viewModel = createViewModel()
-            viewModel.activityList()
-            val list = viewModel.uiState.value.activityList
+            viewModel.list()
+            val list = viewModel.uiState.value.list
             assertEquals(
                 list.size,
                 1
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 1
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "Test"
             )
         }
@@ -283,7 +283,7 @@ class ActivityListCommonViewModelTest {
                 )
             )
             val viewModel = createViewModel()
-            viewModel.setIdActivity(1)
+            viewModel.setId(1)
             assertEquals(
                 viewModel.uiState.value.status.flagDialog,
                 true
@@ -312,7 +312,7 @@ class ActivityListCommonViewModelTest {
                 )
             )
             val viewModel = createViewModel()
-            viewModel.setIdActivity(1)
+            viewModel.setId(1)
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true

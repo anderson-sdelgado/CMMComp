@@ -2,27 +2,27 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "ff501c281c3f75fe2f1ea3b0655380da",
+    "identityHash": "dfa860fa989df758f3e7f1d0fd22fea4",
     "entities": [
       {
         "tableName": "tb_activity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idActivity` INTEGER NOT NULL, `codActivity` INTEGER NOT NULL, `descrActivity` TEXT NOT NULL, PRIMARY KEY(`idActivity`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `cod` INTEGER NOT NULL, `descr` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "idActivity",
-            "columnName": "idActivity",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "codActivity",
-            "columnName": "codActivity",
+            "fieldPath": "cod",
+            "columnName": "cod",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "descrActivity",
-            "columnName": "descrActivity",
+            "fieldPath": "descr",
+            "columnName": "descr",
             "affinity": "TEXT",
             "notNull": true
           }
@@ -30,7 +30,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "idActivity"
+            "id"
           ]
         },
         "indices": [],
@@ -253,6 +253,38 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tb_nozzle",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `cod` INTEGER NOT NULL, `descr` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cod",
+            "columnName": "cod",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "descr",
+            "columnName": "descr",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "tb_os",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idPropAgr` INTEGER NOT NULL, `areaOS` REAL NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
         "fields": [
@@ -297,6 +329,44 @@
           "autoGenerate": false,
           "columnNames": [
             "idOS"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "tb_pressure",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `idNozzle` INTEGER NOT NULL, `value` REAL NOT NULL, `speed` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idNozzle",
+            "columnName": "idNozzle",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "speed",
+            "columnName": "speed",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
           ]
         },
         "indices": [],
@@ -1000,7 +1070,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ff501c281c3f75fe2f1ea3b0655380da')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dfa860fa989df758f3e7f1d0fd22fea4')"
     ]
   }
 }

@@ -220,7 +220,6 @@ class HeaderFinishFlowTest {
                 idTurn = 1,
                 nroOS = 123456,
                 idActivity = 1,
-                hourMeter = 200.0,
             )
         )
 

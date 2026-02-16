@@ -68,4 +68,12 @@ interface StableRepositoryModule {
     @Singleton
     fun bindTurnRepository(repository: ITurnRepository): TurnRepository
 
+    @Binds
+    @Singleton
+    fun bindNozzleRepository(repository: INozzleRepository): NozzleRepository
+
+    @Binds
+    @Singleton
+    fun bindPressureRepository(repository: IPressureRepository): PressureRepository
+
 }

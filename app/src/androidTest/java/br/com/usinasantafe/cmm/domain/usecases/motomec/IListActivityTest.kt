@@ -239,19 +239,19 @@ class IListActivityTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1"
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2"
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 2"
                     )
                 )
             )
@@ -267,28 +267,28 @@ class IListActivityTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 10
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "ATIVIDADE 1"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 20
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "ATIVIDADE 2"
             )
         }
@@ -341,19 +341,19 @@ class IListActivityTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1"
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2"
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 2"
                     )
                 )
             )
@@ -436,19 +436,19 @@ class IListActivityTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1"
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2"
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 2"
                     )
                 )
             )
@@ -555,19 +555,19 @@ class IListActivityTest {
             activityDao.insertAll(
                 listOf(
                     ActivityRoomModel(
-                        idActivity = 1,
-                        codActivity = 10,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 10,
+                        descr = "ATIVIDADE 1"
                     ),
                     ActivityRoomModel(
-                        idActivity = 2,
-                        codActivity = 20,
-                        descrActivity = "ATIVIDADE 2"
+                        id = 2,
+                        cod = 20,
+                        descr = "ATIVIDADE 2"
                     ),
                     ActivityRoomModel(
-                        idActivity = 3,
-                        codActivity = 30,
-                        descrActivity = "ATIVIDADE 3"
+                        id = 3,
+                        cod = 30,
+                        descr = "ATIVIDADE 3"
                     )
                 )
             )
@@ -632,28 +632,28 @@ class IListActivityTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idActivity,
+                entity1.id,
                 2
             )
             assertEquals(
-                entity1.codActivity,
+                entity1.cod,
                 20
             )
             assertEquals(
-                entity1.descrActivity,
+                entity1.descr,
                 "ATIVIDADE 2"
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idActivity,
+                entity2.id,
                 3
             )
             assertEquals(
-                entity2.codActivity,
+                entity2.cod,
                 30
             )
             assertEquals(
-                entity2.descrActivity,
+                entity2.descr,
                 "ATIVIDADE 3"
             )
         }

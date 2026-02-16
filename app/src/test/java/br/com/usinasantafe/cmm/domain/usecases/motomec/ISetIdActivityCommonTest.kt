@@ -10,6 +10,9 @@ import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -18,10 +21,12 @@ class ISetIdActivityCommonTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val startWorkManager = mock<StartWorkManager>()
     private val functionActivityRepository = mock<FunctionActivityRepository>()
+    private val saveNote = mock<SaveNote>()
     private val usecase = ISetIdActivityCommon(
         motoMecRepository = motoMecRepository,
         startWorkManager = startWorkManager,
-        functionActivityRepository = functionActivityRepository
+        functionActivityRepository = functionActivityRepository,
+        saveNote = saveNote
     )
 
     @Test
@@ -57,15 +62,11 @@ class ISetIdActivityCommonTest {
     @Test
     fun `Check return FlowApp HEADER_INITIAL if function execute successfully - FlowApp HEADER_INITIAL`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = usecase(
                 id = 1,
                 flowApp = FlowApp.HEADER_INITIAL
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -79,11 +80,6 @@ class ISetIdActivityCommonTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository setIdActivityNote - FlowApp NOTE_STOP`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
@@ -115,11 +111,6 @@ class ISetIdActivityCommonTest {
     fun `Check return FlowApp NOTE_STOP if function execute successfully - FlowApp NOTE_STOP`() =
         runTest {
             whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.setIdActivityNote(1)
             ).thenReturn(
                 Result.success(Unit)
@@ -128,6 +119,7 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_STOP
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -142,16 +134,6 @@ class ISetIdActivityCommonTest {
     fun `Check return failure if have error in FunctionActivityRepository listByIdActivity - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 functionActivityRepository.listById(1)
             ).thenReturn(
                 resultFailure(
@@ -164,6 +146,8 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -182,16 +166,6 @@ class ISetIdActivityCommonTest {
     fun `Check return FlowApp TRANSHIPMENT if function execute successfully and Function Activity list contains TRANSHIPMENT - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(
@@ -208,6 +182,9 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
+            verify(motoMecRepository, never()).getIdByHeaderOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -219,130 +196,9 @@ class ISetIdActivityCommonTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository insertInitialPerformance and Function Activity list contains PERFORMANCE  - FlowApp NOTE_WORK`() =
-        runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                functionActivityRepository.listById(1)
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        FunctionActivity(
-                            idFunctionActivity = 1,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.PERFORMANCE
-                        )
-                    )
-                )
-            )
-            whenever(
-                motoMecRepository.insertInitialPerformance()
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.insertInitialPerformance",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(
-                id = 1,
-                flowApp = FlowApp.NOTE_WORK
-            )
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.insertInitialPerformance"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen and Function Activity list contains PERFORMANCE  - FlowApp NOTE_WORK`() =
-        runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                functionActivityRepository.listById(1)
-            ).thenReturn(
-                Result.success(
-                    listOf(
-                        FunctionActivity(
-                            idFunctionActivity = 1,
-                            idActivity = 1,
-                            typeActivity = TypeActivity.PERFORMANCE
-                        )
-                    )
-                )
-            )
-            whenever(
-                motoMecRepository.insertInitialPerformance()
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.getIdByHeaderOpen()
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.getIdByHeaderOpen",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase(
-                id = 1,
-                flowApp = FlowApp.NOTE_WORK
-            )
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.getIdByHeaderOpen"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 functionActivityRepository.listById(1)
             ).thenReturn(
                 Result.success(emptyList())
@@ -360,6 +216,8 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -375,18 +233,8 @@ class ISetIdActivityCommonTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository saveNote - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in MotoMecRepository getNroOSHeader - FlowApp NOTE_WORK`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             whenever(
                 functionActivityRepository.listById(1)
             ).thenReturn(
@@ -398,10 +246,10 @@ class ISetIdActivityCommonTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.saveNote(1)
+                motoMecRepository.getNroOSHeader()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.saveNote",
+                    "IMotoMecRepository.getNroOSHeader",
                     "-",
                     Exception()
                 )
@@ -410,13 +258,15 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.saveNote"
+                "ISetIdActivityCommon -> IMotoMecRepository.getNroOSHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -425,18 +275,8 @@ class ISetIdActivityCommonTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getTypeEquipHeader - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in SaveNote - FlowApp NOTE_WORK`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityHeader(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             whenever(
                 functionActivityRepository.listById(1)
             ).thenReturn(
@@ -448,15 +288,15 @@ class ISetIdActivityCommonTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.saveNote(1)
+                motoMecRepository.getNroOSHeader()
             ).thenReturn(
-                Result.success(Unit)
+                Result.success(1)
             )
             whenever(
-                motoMecRepository.getTypeEquipHeader()
+                saveNote(1, 1, 1)
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.getTypeEquipHeader",
+                    "ISaveNote",
                     "-",
                     Exception()
                 )
@@ -465,13 +305,15 @@ class ISetIdActivityCommonTest {
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.getTypeEquipHeader"
+                "ISetIdActivityCommon -> ISaveNote"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -479,4 +321,30 @@ class ISetIdActivityCommonTest {
             )
         }
 
+    @Test
+    fun `Check call saveNote if process execute successfully - FlowApp NOTE_WORK`() =
+        runTest {
+            whenever(
+                functionActivityRepository.listById(1)
+            ).thenReturn(
+                Result.success(emptyList())
+            )
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            usecase(
+                id = 1,
+                flowApp = FlowApp.NOTE_WORK
+            )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
+            verify(saveNote, atLeastOnce()).invoke(1, 1, 1)
+        }
 }

@@ -91,9 +91,9 @@ class IActivityRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         ActivityRetrofitModel(
-                            idActivity = 1,
-                            codActivity = 10,
-                            descrActivity = "Test"
+                            id = 1,
+                            cod = 10,
+                            descr = "Test"
                         )
                     )
                 )
@@ -101,6 +101,6 @@ class IActivityRetrofitDatasourceTest {
         }
 
     private val resultActivityRetrofit = """
-        [{"idActivity":1,"codActivity":10,"descrActivity":"Test"}]
+        [{"id":1,"cod":10,"descr":"Test"}]
     """.trimIndent()
 }

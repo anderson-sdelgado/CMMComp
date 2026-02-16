@@ -5,14 +5,11 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.EquipRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.EquipRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipSecondaryRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
-import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
-import br.com.usinasantafe.cmm.utils.BaseStableRepository
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
@@ -21,19 +18,26 @@ class IEquipRepository @Inject constructor(
     private val equipRetrofitDatasource: EquipRetrofitDatasource,
     private val equipRoomDatasource: EquipRoomDatasource,
     private val equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
-) : BaseStableRepository<
-        Equip,
-        EquipSecondaryRetrofitModel,
-        EquipRoomModel
-        >(
-    retrofitListAll = equipRetrofitDatasource::listAll,
-    roomAddAll = equipRoomDatasource::addAll,
-    roomDeleteAll = equipRoomDatasource::deleteAll,
-    retrofitToEntity = EquipSecondaryRetrofitModel::retrofitModelToEntity,
-    entityToRoom = Equip::entityToRoomModel,
-    classAndMethod = getClassAndMethod()
-),
-    EquipRepository {
+) : EquipRepository {
+
+    override suspend fun addAll(list: List<Equip>): EmptyResult  =
+        call(getClassAndMethod()) {
+            val roomModelList = list.map { it.entityToRoomModel() }
+            equipRoomDatasource.addAll(roomModelList).getOrThrow()
+        }
+
+    override suspend fun deleteAll(): EmptyResult  =
+        call(getClassAndMethod()) {
+            equipRoomDatasource.deleteAll().getOrThrow()
+        }
+
+    override suspend fun listAll(
+        token: String
+    ): Result<List<Equip>>  =
+        call(getClassAndMethod()) {
+            val modelList = equipRetrofitDatasource.listAll(token).getOrThrow()
+            modelList.map { it.retrofitModelToEntity() }
+        }
 
     override suspend fun saveEquipMain(entity: Equip): EmptyResult =
         call(getClassAndMethod()) {

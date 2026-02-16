@@ -59,4 +59,11 @@ interface UpdateModule {
     @Singleton
     fun bindUpdateTableTurn(usecase: IUpdateTableTurn): UpdateTableTurn
 
+    @Binds
+    @Singleton
+    fun bindUpdateTableNozzle(usecase: IUpdateTableNozzle): UpdateTableNozzle
+
+    @Binds
+    @Singleton
+    fun bindUpdateTablePressure(usecase: IUpdateTablePressure): UpdateTablePressure
 }

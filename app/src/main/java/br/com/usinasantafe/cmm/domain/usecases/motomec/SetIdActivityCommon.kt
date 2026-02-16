@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -20,7 +21,8 @@ interface SetIdActivityCommon {
 class ISetIdActivityCommon @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
     private val functionActivityRepository: FunctionActivityRepository,
-    private val startWorkManager: StartWorkManager
+    private val startWorkManager: StartWorkManager,
+    private val saveNote: SaveNote
 ): SetIdActivityCommon {
 
     override suspend fun invoke(
@@ -39,11 +41,10 @@ class ISetIdActivityCommon @Inject constructor(
             val checkTranshipment = functionActivityList.any { it.typeActivity == TypeActivity.TRANSHIPMENT }
             if(checkTranshipment) return@call FlowApp.TRANSHIPMENT
 
-            val checkPerformance = functionActivityList.any { it.typeActivity == TypeActivity.PERFORMANCE }
-            if(checkPerformance) motoMecRepository.insertInitialPerformance().getOrThrow()
-
             val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
-            motoMecRepository.saveNote(idHeader).getOrThrow()
+            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
+            saveNote(idHeader, id, nroOS).getOrThrow()
+
             startWorkManager()
 
             val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()

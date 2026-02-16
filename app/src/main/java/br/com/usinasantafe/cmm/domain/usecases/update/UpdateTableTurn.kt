@@ -1,14 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.update
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Stop
-import br.com.usinasantafe.cmm.domain.entities.stable.Turn
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.TB_STOP
 import br.com.usinasantafe.cmm.lib.TB_TURN
-import br.com.usinasantafe.cmm.utils.BaseUpdateTable
 import br.com.usinasantafe.cmm.utils.emitProgress
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.flowCall
@@ -24,11 +20,27 @@ interface UpdateTableTurn {
 }
 
 class IUpdateTableTurn @Inject constructor(
-    getToken: GetToken,
-    turnRepository: TurnRepository
-) : BaseUpdateTable<Turn>(
-    getToken,
-    turnRepository,
-    TB_STOP,
-    getClassAndMethod()
-), UpdateTableTurn
+    private val getToken: GetToken,
+    private val turnRepository: TurnRepository
+): UpdateTableTurn {
+
+    override suspend fun invoke(
+        sizeAll: Float,
+        count: Float
+    ): Flow<UpdateStatusState> = flow {
+        flowCall(getClassAndMethod()) {
+
+            emitProgress(count, sizeAll, LevelUpdate.RECOVERY, TB_TURN)
+            val token = getToken().getOrThrow()
+            val entityList = turnRepository.listAll(token).getOrThrow()
+
+            emitProgress(count, sizeAll, LevelUpdate.CLEAN, TB_TURN)
+            turnRepository.deleteAll().getOrThrow()
+
+            emitProgress(count, sizeAll, LevelUpdate.SAVE, TB_TURN)
+            turnRepository.addAll(entityList).getOrThrow()
+
+        }
+    }
+
+}

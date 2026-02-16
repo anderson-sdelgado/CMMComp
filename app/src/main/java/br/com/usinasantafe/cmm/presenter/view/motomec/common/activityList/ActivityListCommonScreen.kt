@@ -47,13 +47,13 @@ fun ActivityListCommonScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.activityList()
+                viewModel.list()
             }
 
             ActivityListCommonScreenContent(
                 flowApp = uiState.flowApp,
-                activityList = uiState.activityList,
-                setIdActivity = viewModel::setIdActivity,
+                list = uiState.list,
+                setId = viewModel::setId,
                 updateDatabase = viewModel::updateDatabase,
                 flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -73,8 +73,8 @@ fun ActivityListCommonScreen(
 @Composable
 fun ActivityListCommonScreenContent(
     flowApp: FlowApp,
-    activityList: List<Activity>,
-    setIdActivity: (Int) -> Unit,
+    list: List<Activity>,
+    setId: (Int) -> Unit,
     updateDatabase: () -> Unit,
     flagAccess: Boolean,
     setCloseDialog: () -> Unit,
@@ -100,11 +100,11 @@ fun ActivityListCommonScreenContent(
             modifier = Modifier
                 .weight(1f),
         ) {
-            items(activityList) { activity ->
+            items(list) { activity ->
                 ItemListDesign(
-                    text = activity.descrActivity,
+                    text = activity.descr,
                     setActionItem = {
-                        setIdActivity(activity.idActivity)
+                        setId(activity.id)
                     },
                     font = 26
                 )
@@ -174,18 +174,18 @@ fun ActivityListCommonPagePreviewWithData() {
         ) { innerPadding ->
             ActivityListCommonScreenContent(
                 flowApp = FlowApp.HEADER_INITIAL,
-                activityList = listOf(
+                list = listOf(
                     Activity(
-                        idActivity = 1,
-                        codActivity = 1,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 1,
+                        descr = "ATIVIDADE 1"
                     )
                 ),
-                setIdActivity = {},
+                setId = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
-                    status = UpdateStatusState(
+                status = UpdateStatusState(
                     flagFailure = false,
                     errors = Errors.FIELD_EMPTY,
                     failure = "",
@@ -216,14 +216,14 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
         ) { innerPadding ->
             ActivityListCommonScreenContent(
                 flowApp = FlowApp.HEADER_INITIAL,
-                activityList = listOf(
+                list = listOf(
                     Activity(
-                        idActivity = 1,
-                        codActivity = 1,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 1,
+                        descr = "ATIVIDADE 1"
                     )
                 ),
-                setIdActivity = {},
+                setId = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -258,15 +258,15 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
         ) { innerPadding ->
             ActivityListCommonScreenContent(
                 flowApp = FlowApp.HEADER_INITIAL,
-                activityList = listOf(
+                list = listOf(
                     Activity(
-                        idActivity = 1,
-                        codActivity = 1,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 1,
+                        descr = "ATIVIDADE 1"
                     )
                 ),
 
-                setIdActivity = {},
+                setId = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -301,15 +301,15 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
         ) { innerPadding ->
             ActivityListCommonScreenContent(
                 flowApp = FlowApp.HEADER_INITIAL,
-                activityList = listOf(
+                list = listOf(
                     Activity(
-                        idActivity = 1,
-                        codActivity = 1,
-                        descrActivity = "ATIVIDADE 1"
+                        id = 1,
+                        cod = 1,
+                        descr = "ATIVIDADE 1"
                     )
                 ),
 
-                setIdActivity = {},
+                setId = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},

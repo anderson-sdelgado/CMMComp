@@ -2,8 +2,8 @@ package br.com.usinasantafe.cmm.presenter.view.motomec.performance.performance
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.usecases.motomec.CheckPerformance
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetPerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.CheckPerformance
+import br.com.usinasantafe.cmm.domain.usecases.performance.SetPerformance
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.presenter.Args

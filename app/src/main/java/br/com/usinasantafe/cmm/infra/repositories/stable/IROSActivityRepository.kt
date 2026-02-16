@@ -2,14 +2,11 @@ package br.com.usinasantafe.cmm.infra.repositories.stable
 
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
-import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource // Import da datasource Retrofit
-import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource // Import da datasource Room
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.ROSActivityRetrofitModel
-import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity // Import da função de mapeamento Retrofit -> Entidade
-import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
+import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ROSActivityRetrofitDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.stable.ROSActivityRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
-import br.com.usinasantafe.cmm.utils.BaseStableRepository
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.call
@@ -18,19 +15,7 @@ import javax.inject.Inject
 class IROSActivityRepository @Inject constructor(
     private val rOSActivityRetrofitDatasource: ROSActivityRetrofitDatasource,
     private val rOSActivityRoomDatasource: ROSActivityRoomDatasource
-): BaseStableRepository<
-        ROSActivity,
-        ROSActivityRetrofitModel,
-        ROSActivityRoomModel
-    >(
-        retrofitListAll = rOSActivityRetrofitDatasource::listAll,
-        roomAddAll = rOSActivityRoomDatasource::addAll,
-        roomDeleteAll = rOSActivityRoomDatasource::deleteAll,
-        retrofitToEntity = ROSActivityRetrofitModel::retrofitModelToEntity,
-        entityToRoom = ROSActivity::entityToRoomModel,
-        classAndMethod = getClassAndMethod()
-    ),
-    ROSActivityRepository {
+): ROSActivityRepository {
 
     override suspend fun addAll(list: List<ROSActivity>): EmptyResult =
         call(getClassAndMethod()) {

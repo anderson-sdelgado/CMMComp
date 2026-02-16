@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.SetIdEquipMotorPump
 import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
@@ -129,7 +130,6 @@ class ISetIdEquipMotorPumpTest {
                     idTurn = 1,
                     nroOS = 123456,
                     idActivity = 1,
-                    hourMeter = 1.0,
                     statusCon = true
                 )
             )
@@ -186,10 +186,6 @@ class ISetIdEquipMotorPumpTest {
             assertEquals(
                 headerSharedPreferencesModel.idActivity,
                 1
-            )
-            assertEquals(
-                headerSharedPreferencesModel.hourMeter,
-                1.0
             )
             assertEquals(
                 headerSharedPreferencesModel.statusCon,

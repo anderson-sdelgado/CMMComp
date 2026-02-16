@@ -548,11 +548,6 @@ class HeaderInitialFlowTest {
             resultEntityWithIdActivity.isSuccess,
             true
         )
-        val entityWithMeasure = resultEntityWithMeasure.getOrNull()!!
-        assertEquals(
-            entityWithMeasure.hourMeter,
-            10000.0
-        )
 
         val resultGetHourMeter = equipSharedPreferencesDatasource.getHourMeter()
         assertEquals(

@@ -409,14 +409,14 @@ class CheckListFlowTest {
         activityDao.insertAll(
             listOf(
                 ActivityRoomModel(
-                    idActivity = 10,
-                    codActivity = 20,
-                    descrActivity = "ATIVIDADE 1"
+                    id = 10,
+                    cod = 20,
+                    descr = "ATIVIDADE 1"
                 ),
                 ActivityRoomModel(
-                    idActivity = 20,
-                    codActivity = 30,
-                    descrActivity = "ATIVIDADE 2"
+                    id = 20,
+                    cod = 30,
+                    descr = "ATIVIDADE 2"
                 )
             )
         )

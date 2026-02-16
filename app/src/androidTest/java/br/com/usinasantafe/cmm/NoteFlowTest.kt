@@ -442,9 +442,9 @@ class NoteFlowTest {
         activityDao.insertAll(
             listOf(
                 ActivityRoomModel(
-                    idActivity = 10,
-                    codActivity = 20,
-                    descrActivity = "ATIVIDADE 1"
+                    id = 10,
+                    cod = 20,
+                    descr = "ATIVIDADE 1"
                 )
             )
         )

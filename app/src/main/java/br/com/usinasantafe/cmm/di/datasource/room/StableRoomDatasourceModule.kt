@@ -68,4 +68,12 @@ interface StableRoomDatasourceModule {
     @Singleton
     fun bindTurnRoomDatasource(dataSource: ITurnRoomDatasource): TurnRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindNozzleRoomDatasource(dataSource: INozzleRoomDatasource): NozzleRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindPressureRoomDatasource(dataSource: IPressureRoomDatasource): PressureRoomDatasource
+
 }

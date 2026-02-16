@@ -49,15 +49,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindGetStatusTranshipment(usecase: IGetStatusTranshipment): GetStatusTranshipment
-
-    @Binds
-    @Singleton
     fun bindListActivity(usecase: IListActivity): ListActivity
-
-    @Binds
-    @Singleton
-    fun bindListHistory(usecase: IListHistory): ListHistory
 
     @Binds
     @Singleton
@@ -113,15 +105,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindSetNroTranshipment(usecase: ISetNroEquipTranshipment): SetNroEquipTranshipment
-
-    @Binds
-    @Singleton
     fun bindGetDescrEquip(usecase: IGetDescrEquip): GetDescrEquip
-
-    @Binds
-    @Singleton
-    fun bindSetIdEquipMotorPump(usecase: ISetIdEquipMotorPump): SetIdEquipMotorPump
 
     @Binds
     @Singleton
@@ -129,18 +113,9 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindListPerformance(usecase: IListPerformance): ListPerformance
+    fun bindListHistory(usecase: IListHistory): ListHistory
 
     @Binds
     @Singleton
-    fun bindSetPerformance(usecase: ISetPerformance): SetPerformance
-
-    @Binds
-    @Singleton
-    fun bindCheckPerformance(usecase: ICheckPerformance): CheckPerformance
-
-    @Binds
-    @Singleton
-    fun bindCheckClosePerformance(usecase: ICheckClosePerformance): CheckClosePerformance
-
+    fun bindSaveNote(usecase: ISaveNote): SaveNote
 }

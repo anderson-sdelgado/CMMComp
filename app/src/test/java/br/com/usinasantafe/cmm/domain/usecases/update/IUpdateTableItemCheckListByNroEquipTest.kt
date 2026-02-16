@@ -22,7 +22,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
     private val getToken = mock<GetToken>()
     private val itemCheckListRepository = mock<ItemCheckListRepository>()
     private val equipRepository = mock<EquipRepository>()
-    private val updateTableItemCheckList = IUpdateTableItemCheckListByNroEquip(
+    private val usecase = IUpdateTableItemCheckListByNroEquip(
         getToken = getToken,
         itemCheckListRepository = itemCheckListRepository,
         equipRepository = equipRepository
@@ -40,7 +40,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableItemCheckList(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -87,7 +87,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableItemCheckList(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -142,7 +142,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableItemCheckList(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -211,7 +211,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableItemCheckList(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )
@@ -294,7 +294,7 @@ class IUpdateTableItemCheckListByNroEquipTest {
                     Exception()
                 )
             )
-            val result = updateTableItemCheckList(
+            val result = usecase(
                 sizeAll = 7f,
                 count = 1f
             )

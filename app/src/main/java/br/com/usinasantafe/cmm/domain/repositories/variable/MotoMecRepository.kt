@@ -20,8 +20,7 @@ interface MotoMecRepository {
     suspend fun setIdActivityHeader(idActivity: Int): EmptyResult
     suspend fun getIdActivityHeader(): Result<Int>
     suspend fun getIdEquipHeader(): Result<Int>
-    suspend fun setHourMeterInitialHeader(hourMeter: Double): EmptyResult
-    suspend fun saveHeader(): EmptyResult
+    suspend fun saveHeader(hourMeterInitial: Double): EmptyResult
     suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdByHeaderOpen(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
@@ -53,10 +52,4 @@ interface MotoMecRepository {
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun hasCouplingTrailerImplement(): Result<Boolean>
     suspend fun uncouplingTrailerImplement(): EmptyResult
-    suspend fun insertInitialPerformance(): Result<Unit>
-    suspend fun listPerformanceByIdHeader(idHeader: Int): Result<List<Performance>>
-    suspend fun updatePerformance(id: Int, value: Double): EmptyResult
-    suspend fun getNroOSPerformanceById(id: Int): Result<Int>
-    suspend fun hasPerformanceByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
-    suspend fun hasPerformanceByIdHeader(idHeader: Int): Result<Boolean>
 }
