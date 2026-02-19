@@ -134,39 +134,24 @@ class NoteFlowTest {
 
         composeTestRule.waitUntilTimeout(3_000)
 
-        val resultEntityWithNroOS = itemMotoMecSharedPreferencesDatasource.get()
-        assertEquals(
-            resultEntityWithNroOS.isSuccess,
-            true
-        )
-        val entityWithNroOS = resultEntityWithNroOS.getOrNull()!!
-        assertEquals(
-            entityWithNroOS.nroOS,
-            123456
-        )
-
-        Log.d("TestDebug", "Position 6")
-
-        composeTestRule.waitUntilTimeout(3_000)
-
         composeTestRule.onNodeWithText("RETORNAR")
             .performClick()
 
-        Log.d("TestDebug", "Position 7")
+        Log.d("TestDebug", "Position 6")
 
         composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithText("OK")
             .performClick()
 
-        Log.d("TestDebug", "Position 8")
+        Log.d("TestDebug", "Position 7")
 
         composeTestRule.waitUntilTimeout(3_000)
 
         composeTestRule.onNodeWithText("ATIVIDADE 1")
             .performClick()
 
-        Log.d("TestDebug", "Position 9")
+        Log.d("TestDebug", "Position 8")
 
         composeTestRule.waitUntilTimeout(3_000)
 
@@ -176,14 +161,6 @@ class NoteFlowTest {
             true
         )
         val entityWithIdActivity = resultEntityWithIdActivity.getOrNull()!!
-        assertEquals(
-            entityWithIdActivity.nroOS,
-            123456
-        )
-        assertEquals(
-            entityWithIdActivity.idActivity,
-            10
-        )
         assertEquals(
             entityWithIdActivity.idStop,
             null
@@ -250,15 +227,6 @@ class NoteFlowTest {
             resultEntityWithIdActivityStop.isSuccess,
             true
         )
-        val entityWithIdActivityStop = resultEntityWithIdActivityStop.getOrNull()!!
-        assertEquals(
-            entityWithIdActivityStop.nroOS,
-            123456
-        )
-        assertEquals(
-            entityWithIdActivityStop.idActivity,
-            10
-        )
 
         Log.d("TestDebug", "Position 15")
 
@@ -291,14 +259,6 @@ class NoteFlowTest {
             true
         )
         val entityWithIdStop = resultEntityWithIdStop.getOrNull()!!
-        assertEquals(
-            entityWithIdStop.nroOS,
-            123456
-        )
-        assertEquals(
-            entityWithIdStop.idActivity,
-            10
-        )
         assertEquals(
             entityWithIdStop.idStop,
             1

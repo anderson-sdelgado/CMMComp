@@ -96,6 +96,18 @@ class IListPressureTest {
                             idNozzle = 1,
                             value = 1.0,
                             speed = 1
+                        ),
+                        Pressure(
+                            id = 2,
+                            idNozzle = 1,
+                            value = 1.0,
+                            speed = 2
+                        ),
+                        Pressure(
+                            id = 3,
+                            idNozzle = 1,
+                            value = 2.0,
+                            speed = 10
                         )
                     )
                 )
@@ -107,14 +119,7 @@ class IListPressureTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                listOf(
-                    Pressure(
-                        id = 1,
-                        idNozzle = 1,
-                        value = 1.0,
-                        speed = 1
-                    )
-                )
+                listOf(1.0, 2.0)
             )
         }
 

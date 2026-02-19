@@ -24,21 +24,29 @@ data class ItemMotoMecRoomModel(
     val statusCon: Boolean = false,
     var idServ: Int? = null,
     val nroEquipTranshipment: Long? = null,
+    var idNozzle: Int? = null,
+    var valuePressure: Double? = null,
+    var speedPressure: Int? = null
 )
 
 fun ItemMotoMec.entityToRoomModel(
-    idHeader: Int
+    idHeader: Int,
+    nroOS: Int,
+    idActivity: Int,
 ): ItemMotoMecRoomModel{
     return with(this){
         ItemMotoMecRoomModel(
             id = this.id,
             idHeader = idHeader,
-            nroOS = this.nroOS.required("nroOS"),
-            idActivity = this.idActivity.required("idActivity"),
+            nroOS = nroOS,
+            idActivity = idActivity,
             idStop = this.idStop,
             statusCon = this.statusCon.required("statusCon"),
             dateHour = dateHour,
-            nroEquipTranshipment = this.nroEquipTranshipment
+            nroEquipTranshipment = this.nroEquipTranshipment,
+            idNozzle = this.idNozzle,
+            valuePressure = this.valuePressure,
+            speedPressure = this.speedPressure
         )
     }
 }
@@ -52,7 +60,10 @@ fun ItemMotoMecRoomModel.roomModelToEntity(): ItemMotoMec {
             idStop = this.idStop,
             statusCon = this.statusCon,
             dateHour = this.dateHour,
-            nroEquipTranshipment = this.nroEquipTranshipment
+            nroEquipTranshipment = this.nroEquipTranshipment,
+            idNozzle = this.idNozzle,
+            valuePressure = this.valuePressure,
+            speedPressure = this.speedPressure
         )
     }
 }

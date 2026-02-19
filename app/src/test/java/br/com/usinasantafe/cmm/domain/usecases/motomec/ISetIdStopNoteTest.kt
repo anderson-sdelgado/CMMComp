@@ -178,7 +178,7 @@ class ISetIdStopNoteTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 1)
+                saveNote()
             ).thenReturn(
                 resultFailure(
                     "SaveNote",
@@ -222,7 +222,7 @@ class ISetIdStopNoteTest {
             )
             usecase(1)
             verify(motoMecRepository, atLeastOnce()).setIdStop(1)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 1)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 
 }

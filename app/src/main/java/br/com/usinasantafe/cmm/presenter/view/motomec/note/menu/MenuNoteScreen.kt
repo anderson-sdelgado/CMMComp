@@ -180,6 +180,8 @@ fun MenuNoteScreen(
     }
 }
 
+
+
 @Composable
 fun MenuNoteContent(
     descrEquip: String,

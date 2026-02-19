@@ -14,6 +14,20 @@ suspend fun <T> call (
     )
 }
 
+suspend fun <T> result (
+    context: String,
+    block: suspend () -> T
+): Result<T> {
+    return try {
+        Result.success(block())
+    } catch (e: Exception) {
+        resultFailure(
+            context = context,
+            cause = e
+        )
+    }
+}
+
 suspend fun FlowCollector<UpdateStatusState>.flowCall(
     context: String,
     block: suspend () -> Unit
@@ -34,20 +48,5 @@ suspend fun <T> tryCatch (
         return block()
     } catch (e: Exception) {
         throw Exception(context, e)
-    }
-}
-
-
-suspend fun <T> result (
-    context: String,
-    block: suspend () -> T
-): Result<T> {
-    return try {
-        Result.success(block())
-    } catch (e: Exception) {
-        resultFailure(
-            context = context,
-            cause = e
-        )
     }
 }

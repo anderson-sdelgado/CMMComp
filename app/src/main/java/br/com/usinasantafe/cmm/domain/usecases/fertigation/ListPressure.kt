@@ -1,6 +1,5 @@
 package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
-import br.com.usinasantafe.cmm.domain.entities.stable.Pressure
 import br.com.usinasantafe.cmm.domain.repositories.stable.PressureRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.utils.call
@@ -8,7 +7,7 @@ import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
 interface ListPressure {
-    suspend operator fun invoke(): Result<List<Pressure>>
+    suspend operator fun invoke(): Result<List<Double>>
 }
 
 class IListPressure @Inject constructor(
@@ -16,10 +15,10 @@ class IListPressure @Inject constructor(
     private val pressureRepository: PressureRepository
 ): ListPressure {
 
-    override suspend fun invoke(): Result<List<Pressure>> =
+    override suspend fun invoke(): Result<List<Double>> =
         call(getClassAndMethod()) {
             val id = fertigationRepository.getIdNozzle().getOrThrow()
-            pressureRepository.listByIdNozzle(id).getOrThrow()
+            pressureRepository.listByIdNozzle(id).getOrThrow().map{ it.value }.distinct()
         }
 
 }

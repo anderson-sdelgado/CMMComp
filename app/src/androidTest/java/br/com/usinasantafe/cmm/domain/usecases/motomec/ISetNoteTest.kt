@@ -376,14 +376,6 @@ class ISetNoteTest {
         )
         val noteSharedPreferencesModel = resultNoteSharedPreferencesModel.getOrNull()!!
         assertEquals(
-            noteSharedPreferencesModel.nroOS,
-            123456
-        )
-        assertEquals(
-            noteSharedPreferencesModel.idActivity,
-            1
-        )
-        assertEquals(
             noteSharedPreferencesModel.idStop,
             idStop
         )

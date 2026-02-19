@@ -35,7 +35,8 @@ import java.util.Date
         MechanicRoomModel::class,
         InputCompostingRoomModel::class,
         CompoundCompostingRoomModel::class,
-        PerformanceRoomModel::class
+        PerformanceRoomModel::class,
+        CollectionRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -65,6 +66,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun inputCompostingDao(): InputCompostingDao
     abstract fun compoundCompostingDao(): CompoundCompostingDao
     abstract fun performanceDao(): PerformanceDao
+    abstract fun collectionDao(): CollectionDao
 }
 
 class Converters {

@@ -46,7 +46,7 @@ import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
 import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpScreen
 import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentScreen
 import br.com.usinasantafe.cmm.presenter.view.performance.performance.PerformanceScreen
-import br.com.usinasantafe.cmm.presenter.view.performance.performancelist.PerformanceListScreen
+import br.com.usinasantafe.cmm.presenter.view.performance.performanceList.PerformanceListScreen
 
 @Composable
 fun NavigationGraph(

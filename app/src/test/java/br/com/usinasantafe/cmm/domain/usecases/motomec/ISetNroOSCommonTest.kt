@@ -127,15 +127,6 @@ class ISetNroOSCommonTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            whenever(
-                motoMecRepository.setNroOSNote(123456)
-            ).thenReturn(
-                resultFailure(
-                    "NoteMotoMecRepository.setNroOS",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
@@ -159,11 +150,6 @@ class ISetNroOSCommonTest {
         runTest {
             whenever(
                 motoMecRepository.setNroOSHeader(123456)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setNroOSNote(123456)
             ).thenReturn(
                 Result.success(Unit)
             )

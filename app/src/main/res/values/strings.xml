@@ -94,10 +94,14 @@
     <string name="text_title_performance_list">RENDIMENTO(S)</string>
     <string name="text_msg_no_data_performance">NÃO CONTÉM RENDIMENTO ADICIONADO.</string>
     <string name="text_title_performance">RENDIMENTO</string>
-    <string name="text_title_os_performance">OS: %1$s</string>
-    <string name="text_msg_performance_invalid">VALOR INFORMADO MAIS ALTO DO QUE O PERMITIDO PRA OS. VALOR VERIFIQUE O VALOR DIGITADO.</string>
+    <string name="text_title_os_value">OS: %1$s</string>
+    <string name="text_msg_value_invalid">VALOR INFORMADO MAIS ALTO DO QUE O PERMITIDO PRA OS. VALOR VERIFIQUE O VALOR DIGITADO.</string>
     <string name="text_close_performance_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RENDIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
     <string name="text_title_nozzle">BOCAL</string>
     <string name="text_title_pressure">PRESSÃO</string>
     <string name="text_title_speed">VELOCIDADE</string>
+    <string name="text_title_collection_list">RECOLHIMENTO(S)</string>
+    <string name="text_msg_no_data_collection">NÃO CONTÉM RECOLHIMENTO ADICIONADO.</string>
+    <string name="text_close_collection_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RECOLHIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
+    <string name="text_title_collection">RECOLHIMENTO</string>
 </resources>

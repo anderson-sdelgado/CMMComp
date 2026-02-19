@@ -38,29 +38,6 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
             }
         }
 
-    override suspend fun setNroOSAndStatusCon(
-        nroOS: Int,
-        statusCon: Boolean
-    ): EmptyResult =
-        result(getClassAndMethod()) {
-            val model = get().getOrThrow()
-            model.nroOS = nroOS
-            model.statusCon = statusCon
-            save(model).getOrThrow()
-        }
-
-    override suspend fun setIdActivity(id: Int): EmptyResult =
-        result(getClassAndMethod()) {
-            val model = get().getOrThrow()
-            model.idActivity = id
-            save(model).getOrThrow()
-        }
-
-    override suspend fun getIdActivity(): Result<Int> =
-        result(getClassAndMethod()) {
-            get().getOrThrow().idActivity!!
-        }
-
     override suspend fun setIdStop(id: Int): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
@@ -91,4 +68,29 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
             model.idNozzle = id
             save(model).getOrThrow()
         }
+
+    override suspend fun getIdNozzle(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().idNozzle!!
+        }
+
+    override suspend fun setValuePressure(value: Double): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.valuePressure = value
+            save(model).getOrThrow()
+        }
+
+    override suspend fun getValuePressure(): Result<Double> =
+        result(getClassAndMethod()) {
+            get().getOrThrow().valuePressure!!
+        }
+
+    override suspend fun setSpeedPressure(speed: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.speedPressure = speed
+            save(model).getOrThrow()
+        }
+
 }

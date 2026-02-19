@@ -45,11 +45,14 @@ fun errors(errors: Errors, failure: String, value: String = "", hourMeter: Strin
                 hourMeterOld
             )
         }
-        Errors.INVALID_PERFORMANCE -> {
-            stringResource(id = R.string.text_msg_performance_invalid)
+        Errors.INVALID_VALUE -> {
+            stringResource(id = R.string.text_msg_value_invalid)
         }
         Errors.INVALID_CLOSE_PERFORMANCE -> {
             stringResource(id = R.string.text_close_performance_invalid)
+        }
+        Errors.INVALID_CLOSE_COLLECTION -> {
+            stringResource(id = R.string.text_close_collection_invalid)
         }
         else -> stringResource(
             id = R.string.text_failure,

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -19,17 +20,130 @@ class ISaveNoteTest {
     private val motoMecRepository = mock<MotoMecRepository>()
     private val functionActivityRepository = mock<FunctionActivityRepository>()
     private val performanceRepository = mock<PerformanceRepository>()
+    private val fertigationRepository = mock<FertigationRepository>()
     private val usecase = ISaveNote(
-        motoMecRepository,
-        functionActivityRepository,
-        performanceRepository
+        motoMecRepository = motoMecRepository,
+        functionActivityRepository = functionActivityRepository,
+        performanceRepository = performanceRepository,
+        fertigationRepository = fertigationRepository
     )
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IMotoMecRepository.getIdByHeaderOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getNroOSHeader`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getNroOSHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IMotoMecRepository.getNroOSHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getIdActivityHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IMotoMecRepository.getIdActivityHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
 
     @Test
     fun `Check return failure if have error in MotoMecRepository saveNote`() =
         runTest {
             whenever(
-                motoMecRepository.saveNote(1)
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1,1, 1)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.saveNote",
@@ -37,7 +151,7 @@ class ISaveNoteTest {
                     Exception()
                 )
             )
-            val result = usecase(1, 1, 1)
+            val result = usecase()
             assertEquals(
                 result.isFailure,
                 true
@@ -53,8 +167,23 @@ class ISaveNoteTest {
         }
 
     @Test
-    fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType`() =
+    fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType and TypeActivity PERFORMANCE`() =
         runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
@@ -66,8 +195,8 @@ class ISaveNoteTest {
                     Exception()
                 )
             )
-            val result = usecase(1, 1, 1)
-            verify(motoMecRepository, atLeastOnce()).saveNote(1)
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -86,6 +215,21 @@ class ISaveNoteTest {
     fun `Check return failure if have error in PerformanceRepository insertInitialPerformance`() =
         runTest {
             whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -101,8 +245,8 @@ class ISaveNoteTest {
                     Exception()
                 )
             )
-            val result = usecase(1, 1, 1)
-            verify(motoMecRepository, atLeastOnce()).saveNote(1)
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -118,8 +262,23 @@ class ISaveNoteTest {
         }
 
     @Test
-    fun `Check not call insertInitialPerformance if FunctionActivityRepository hasByIdAndType return false`() =
+    fun `Check not call PerformanceRepository initial if FunctionActivityRepository hasByIdAndType return false and TypeActivity PERFORMANCE`() =
         runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
@@ -127,14 +286,29 @@ class ISaveNoteTest {
             ).thenReturn(
                 Result.success(false)
             )
-            usecase(1, 1, 1)
-            verify(motoMecRepository, atLeastOnce()).saveNote(1)
+            usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, never()).initial(1, 1)
         }
 
     @Test
-    fun `Check call insertInitialPerformance if FunctionActivityRepository hasByIdAndType return true`() =
+    fun `Check call PerformanceRepository initial if FunctionActivityRepository hasByIdAndType return true and TypeActivity PERFORMANCE`() =
         runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
             whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
@@ -142,9 +316,204 @@ class ISaveNoteTest {
             ).thenReturn(
                 Result.success(true)
             )
-            usecase(1, 1, 1)
-            verify(motoMecRepository, atLeastOnce()).saveNote(1)
+            usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, atLeastOnce()).initial(1, 1)
         }
 
+    @Test
+    fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType and TypeActivity COLLECTION`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IFunctionActivityRepository.hasByIdAndType",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
+            verify(performanceRepository, never()).initial(1, 1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IFunctionActivityRepository.hasByIdAndType"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in FertigationRepository initialCollection`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                fertigationRepository.initialCollection(1, 1)
+            ).thenReturn(
+                resultFailure(
+                    "IFertigationRepository.initialCollection",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
+            verify(performanceRepository, never()).initial(1, 1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IFertigationRepository.initialCollection"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check not call FertigationRepository initialCollection if FunctionActivityRepository hasByIdAndType return false and TypeActivity COLLECTION`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
+            verify(performanceRepository, never()).initial(1, 1)
+            verify(fertigationRepository, atLeastOnce()).initialCollection(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
+
+
+    @Test
+    fun `Check call FertigationRepository initialCollection if FunctionActivityRepository hasByIdAndType return true and TypeActivity COLLECTION`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = usecase()
+            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
+            verify(performanceRepository, never()).initial(1, 1)
+            verify(fertigationRepository, never()).initialCollection(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
 }

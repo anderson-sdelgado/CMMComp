@@ -30,8 +30,6 @@ class ISetNroOS @Inject constructor(
                 throw Exception(::toInt.name, e)
             }
             motoMecRepository.setNroOSHeader(nroOSInt).getOrThrow()
-            if (flowApp == FlowApp.HEADER_INITIAL) return@call
-            motoMecRepository.setNroOSNote(nroOSInt).getOrThrow()
         }
 
 }

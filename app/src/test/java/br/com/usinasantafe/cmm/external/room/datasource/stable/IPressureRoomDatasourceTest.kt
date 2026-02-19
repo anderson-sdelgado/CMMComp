@@ -151,4 +151,214 @@ class IPressureRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `listByIdNozzle - Check return list empty if not have data in table`() =
+        runTest {
+            val result = datasource.listByIdNozzle(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdNozzle - Check return list empty if not have data fielded in table`() =
+        runTest {
+            pressureDao.insertAll(
+                listOf(
+                    PressureRoomModel(
+                        id = 1,
+                        idNozzle = 2,
+                        value = 10.0,
+                        speed = 1
+                    )
+                )
+            )
+            val result = datasource.listByIdNozzle(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdNozzle - Check return list if have data fielded in table`() =
+        runTest {
+            pressureDao.insertAll(
+                listOf(
+                    PressureRoomModel(
+                        id = 1,
+                        idNozzle = 2,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 2,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 3,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 15
+                    )
+                )
+            )
+            val result = datasource.listByIdNozzle(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PressureRoomModel(
+                        id = 2,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 3,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 15
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return list empty if not have data in table`() =
+        runTest {
+            val result = datasource.listByIdNozzleAndValuePressure(1, 10.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return list empty if have idNozzle fielded but not value in table`() =
+        runTest {
+            pressureDao.insertAll(
+                listOf(
+                    PressureRoomModel(
+                        id = 1,
+                        idNozzle = 2,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                )
+            )
+            val result = datasource.listByIdNozzleAndValuePressure(1, 20.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return list empty if have value fielded but not idNozzle in table`() =
+        runTest {
+            pressureDao.insertAll(
+                listOf(
+                    PressureRoomModel(
+                        id = 1,
+                        idNozzle = 2,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 2,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                )
+            )
+            val result = datasource.listByIdNozzleAndValuePressure(1, 20.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return list if have value fielded and idNozzle fielded in table`() =
+        runTest {
+            pressureDao.insertAll(
+                listOf(
+                    PressureRoomModel(
+                        id = 1,
+                        idNozzle = 2,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 2,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    ),
+                    PressureRoomModel(
+                        id = 3,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 15
+                    ),
+                    PressureRoomModel(
+                        id = 4,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 20
+                    )
+                )
+            )
+            val result = datasource.listByIdNozzleAndValuePressure(1, 20.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    PressureRoomModel(
+                        id = 3,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 15
+                    ),
+                    PressureRoomModel(
+                        id = 4,
+                        idNozzle = 1,
+                        value = 20.0,
+                        speed = 20
+                    )
+                )
+            )
+        }
+
 }

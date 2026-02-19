@@ -39,4 +39,17 @@ interface FertigationModule {
     @Singleton
     fun bindSetValuePressure(usecase: ISetValuePressure): SetValuePressure
 
+    @Binds
+    @Singleton
+    fun bindListCollection(usecase: IListCollection): ListCollection
+
+    @Binds
+    @Singleton
+    fun bindCheckCloseCollection(usecase: ICheckCloseCollection): CheckCloseCollection
+
+    @Binds
+    @Singleton
+    fun bindSetCollection(usecase: ISetCollection): SetCollection
+
+
 }

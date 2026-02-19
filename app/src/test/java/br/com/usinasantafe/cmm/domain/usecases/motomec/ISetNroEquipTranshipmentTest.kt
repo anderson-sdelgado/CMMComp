@@ -124,15 +124,6 @@ class ISetNroEquipTranshipmentTest {
             ).thenReturn(
                 Result.success(10_000)
             )
-            whenever(
-                motoMecRepository.setNroOSNote(10_000)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setNroOSNote",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
@@ -164,20 +155,10 @@ class ISetNroEquipTranshipmentTest {
             ).thenReturn(
                 Result.success(1)
             )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setIdActivityNote",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(10_000)
             assertEquals(
                 result.isFailure,
                 true
@@ -206,16 +187,6 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.setNroOSNote(10_000)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
                 motoMecRepository.setNroEquipTranshipmentNote(200)
             ).thenReturn(
                 resultFailure(
@@ -228,8 +199,6 @@ class ISetNroEquipTranshipmentTest {
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(10_000)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -270,8 +239,6 @@ class ISetNroEquipTranshipmentTest {
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(10_000)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setNroEquipTranshipmentNote(200)
             assertEquals(
                 result.isFailure,
@@ -306,7 +273,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 10_000)
+                saveNote()
             ).thenReturn(
                 resultFailure(
                     "SaveNote",
@@ -318,8 +285,6 @@ class ISetNroEquipTranshipmentTest {
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(10_000)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setNroEquipTranshipmentNote(200)
             assertEquals(
                 result.isFailure,
@@ -354,7 +319,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 10_000)
+                saveNote()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -362,10 +327,8 @@ class ISetNroEquipTranshipmentTest {
                 nroEquip = "200",
                 flowApp = FlowApp.TRANSHIPMENT
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(10_000)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setNroEquipTranshipmentNote(200)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 10_000)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 
     @Test
@@ -387,7 +350,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 10_000)
+                saveNote()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -395,10 +358,8 @@ class ISetNroEquipTranshipmentTest {
                 nroEquip = "200",
                 flowApp = FlowApp.NOTE_WORK
             )
-            verify(motoMecRepository, never()).setNroOSNote(10_000)
-            verify(motoMecRepository, never()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setNroEquipTranshipmentNote(200)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 10_000)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 
 }

@@ -78,10 +78,6 @@ class IPerformanceRepositoryTest {
                 result.isSuccess,
                 true
             )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
             val model = modelCaptor.firstValue
             assertEquals(
                 model.idHeader,

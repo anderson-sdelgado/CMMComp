@@ -213,20 +213,6 @@ class ISetNroOSCommonTest {
                 modelHeaderAfter.nroOS,
                 123456
             )
-            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
-            assertEquals(
-                resultNoteGetAfter.isSuccess,
-                true
-            )
-            val modelNoteAfter = resultNoteGetAfter.getOrNull()!!
-            assertEquals(
-                modelNoteAfter.nroOS,
-                123456
-            )
-            assertEquals(
-                modelNoteAfter.statusCon,
-                true
-            )
         }
 
     @Test
@@ -260,12 +246,6 @@ class ISetNroOSCommonTest {
             assertEquals(
                 modelHeaderBefore.nroOS,
                 123456
-            )
-            itemMotoMecSharedPreferencesDatasource.save(
-                ItemMotoMecSharedPreferencesModel(
-                    nroOS = 123456,
-                    statusCon = true
-                )
             )
             val resultNoteGetBefore = headerMotoMecSharedPreferencesDatasource.get()
             assertEquals(
@@ -307,15 +287,6 @@ class ISetNroOSCommonTest {
             assertEquals(
                 resultNoteGetAfter.isSuccess,
                 true
-            )
-            val modelNoteAfter = resultNoteGetAfter.getOrNull()!!
-            assertEquals(
-                modelNoteAfter.nroOS,
-                456789
-            )
-            assertEquals(
-                modelNoteAfter.statusCon,
-                false
             )
         }
 

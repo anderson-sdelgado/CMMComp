@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.PressureRetrofit
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.PressureRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -34,8 +35,19 @@ class IPressureRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun listByIdNozzle(id: Int): Result<List<Pressure>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun listByIdNozzle(idNozzle: Int): Result<List<Pressure>> =
+        call(getClassAndMethod()) {
+            val modelList = pressureRoomDatasource.listByIdNozzle(idNozzle).getOrThrow()
+            modelList.map { it.roomModelToEntity() }
+        }
+
+    override suspend fun listByIdNozzleAndValuePressure(
+        idNozzle: Int,
+        valuePressure: Double
+    ): Result<List<Pressure>> =
+        call(getClassAndMethod()) {
+            val modelList = pressureRoomDatasource.listByIdNozzleAndValuePressure(idNozzle, valuePressure).getOrThrow()
+            modelList.map { it.roomModelToEntity() }
+        }
 
 }

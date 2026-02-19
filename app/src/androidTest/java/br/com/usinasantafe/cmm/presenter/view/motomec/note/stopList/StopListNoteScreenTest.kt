@@ -410,12 +410,6 @@ class StopListNoteScreenTest {
 
     private suspend fun initialRegister(level: Int) {
 
-        itemMotoMecSharedPreferencesDatasource.save(
-            ItemMotoMecSharedPreferencesModel(
-                idActivity = 1,
-            )
-        )
-
         if (level == 1) return
 
         rActivityStopDao.insertAll(

@@ -44,4 +44,8 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindPerformanceRoomDatasource(dataSource: IPerformanceRoomDatasource): PerformanceRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindCollectionRoomDatasource(dataSource: ICollectionRoomDatasource): CollectionRoomDatasource
+
 }

@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
+import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
@@ -9,11 +10,12 @@ interface SetValuePressure {
 }
 
 class ISetValuePressure @Inject constructor(
+    private val fertigationRepository: FertigationRepository
 ): SetValuePressure {
 
     override suspend fun invoke(value: Double): Result<Unit> =
         call(getClassAndMethod()) {
-            TODO("Not yet implemented")
+            fertigationRepository.setValuePressure(value).getOrThrow()
         }
 
 }

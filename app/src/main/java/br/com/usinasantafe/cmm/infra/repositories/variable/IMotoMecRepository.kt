@@ -141,39 +141,26 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecRoomDatasource.getFlowComposting().getOrThrow()
         }
 
-    override suspend fun setNroOSNote(nroOS: Int): EmptyResult =
-        call(getClassAndMethod()) {
-            itemMotoMecSharedPreferencesDatasource.clean().getOrThrow()
-            val statusCon = headerMotoMecSharedPreferencesDatasource.getStatusCon().getOrThrow()
-            itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(nroOS, statusCon).getOrThrow()
-        }
-
-    override suspend fun setIdActivityNote(id: Int): EmptyResult =
-        call(getClassAndMethod()) {
-            itemMotoMecSharedPreferencesDatasource.setIdActivity(id).getOrThrow()
-        }
-
     override suspend fun setNroEquipTranshipmentNote(nroEquip: Long): EmptyResult =
         call(getClassAndMethod()) {
             itemMotoMecSharedPreferencesDatasource.setNroEquipTranshipment(nroEquip).getOrThrow()
         }
 
-    override suspend fun saveNote(idHeader: Int): EmptyResult =
+    override suspend fun saveNote(
+        idHeader: Int,
+        nroOS: Int,
+        idActivity: Int
+    ): EmptyResult =
         call(getClassAndMethod()) {
             val modelSharedPreferences = itemMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = runCatching {
-                entity.entityToRoomModel(idHeader = idHeader)
+                entity.entityToRoomModel(idHeader, nroOS, idActivity)
             }.getOrElse { e ->
                 throw Exception(entity::entityToRoomModel.name, e)
             }
             itemMotoMecRoomDatasource.save(modelRoom).getOrThrow()
             headerMotoMecRoomDatasource.setSend(idHeader).getOrThrow()
-        }
-
-    override suspend fun getIdActivityNote(): Result<Int> =
-        call(getClassAndMethod()) {
-            itemMotoMecSharedPreferencesDatasource.getIdActivity().getOrThrow()
         }
 
     override suspend fun setIdStop(id: Int): EmptyResult =

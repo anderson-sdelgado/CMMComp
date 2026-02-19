@@ -22,4 +22,17 @@ class IPressureRoomDatasource @Inject constructor(
             pressureDao.deleteAll()
         }
 
+    override suspend fun listByIdNozzle(idNozzle: Int): Result<List<PressureRoomModel>> =
+        result(getClassAndMethod()) {
+            pressureDao.listByIdNozzle(idNozzle)
+        }
+
+    override suspend fun listByIdNozzleAndValuePressure(
+        idNozzle: Int,
+        valuePressure: Double
+    ): Result<List<PressureRoomModel>> =
+        result(getClassAndMethod()) {
+            pressureDao.listByIdNozzleAndValuePressure(idNozzle, valuePressure)
+        }
+
 }

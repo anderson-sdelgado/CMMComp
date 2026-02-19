@@ -199,14 +199,6 @@ class ISetIdStopNoteTest {
         )
         val modelSharedPreferencesAfter = resultNoteGetAfter.getOrNull()!!
         assertEquals(
-            modelSharedPreferencesAfter.idActivity,
-            1
-        )
-        assertEquals(
-            modelSharedPreferencesAfter.nroOS,
-            123456
-        )
-        assertEquals(
             modelSharedPreferencesAfter.idStop,
             1
         )

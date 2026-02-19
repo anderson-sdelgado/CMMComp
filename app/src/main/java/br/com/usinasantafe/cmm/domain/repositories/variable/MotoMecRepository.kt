@@ -29,13 +29,12 @@ interface MotoMecRepository {
     suspend fun getIdTurnHeader(): Result<Int>
     suspend fun getRegOperatorHeader(): Result<Int>
     suspend fun getFlowCompostingHeader(): Result<FlowComposting>
-    suspend fun setNroOSNote(nroOS: Int): EmptyResult
-    suspend fun setIdActivityNote(id: Int): EmptyResult
     suspend fun setNroEquipTranshipmentNote(nroEquip: Long): EmptyResult
     suspend fun saveNote(
-        idHeader: Int
+        idHeader: Int,
+        nroOS: Int,
+        idActivity: Int,
     ): EmptyResult
-    suspend fun getIdActivityNote(): Result<Int>
     suspend fun setIdStop(id: Int): EmptyResult
     suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun send(

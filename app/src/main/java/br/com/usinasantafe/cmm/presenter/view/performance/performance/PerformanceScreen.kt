@@ -66,9 +66,10 @@ fun PerformanceContent(
         modifier = modifier
             .padding(16.dp)
     ) {
+
         TitleDesign(
             text = stringResource(
-                id = R.string.text_title_os_performance,
+                id = R.string.text_title_os_value,
                 nroOS
             )
         )
@@ -97,6 +98,7 @@ fun PerformanceContent(
                 onNavPerformanceList()
             }
         }
+
     }
 }
 

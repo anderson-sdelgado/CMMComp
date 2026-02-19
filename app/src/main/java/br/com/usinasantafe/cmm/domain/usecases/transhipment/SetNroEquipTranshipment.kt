@@ -31,18 +31,8 @@ class ISetNroEquipTranshipment @Inject constructor(
                 throw Exception(::toLong.name, e)
             }
 
-            val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
-            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
-
-            if (flowApp == FlowApp.TRANSHIPMENT) {
-                motoMecRepository.setNroOSNote(nroOS).getOrThrow()
-                motoMecRepository.setIdActivityNote(idActivity).getOrThrow()
-            }
-
             motoMecRepository.setNroEquipTranshipmentNote(nroEquipLong).getOrThrow()
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
-
-            saveNote(idHeader, idActivity, nroOS).getOrThrow()
+            saveNote().getOrThrow()
 
         }
 

@@ -814,183 +814,6 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `setNroOSNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource clean`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.clean",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.setNroOSNote(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setNroOSNote -> INoteMotoMecSharedPreferencesDatasource.clean"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `setNroOSNote - Check return failure if have error in HeaderMotoMecRoomDatasource getStatusConByHeaderOpen`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.getStatusCon()
-            ).thenReturn(
-                resultFailure(
-                    context = "IHeaderMotoMecSharedPreferencesDatasource.getStatusCon",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.setNroOSNote(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setNroOSNote -> IHeaderMotoMecSharedPreferencesDatasource.getStatusCon"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-    
-    @Test
-    fun `setNroOSNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource setNroOS`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.getStatusCon()
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
-                    nroOS = 1,
-                    statusCon = true
-                )
-            ).thenReturn(
-                resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setNroOS",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.setNroOSNote(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setNroOSNote -> INoteMotoMecSharedPreferencesDatasource.setNroOS"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `setNroOSNote - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.clean()
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            whenever(
-                headerMotoMecSharedPreferencesDatasource.getStatusCon()
-            ).thenReturn(
-                Result.success(true)
-            )
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.setNroOSAndStatusCon(
-                    nroOS = 1,
-                    statusCon = true
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            val result = repository.setNroOSNote(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
-        }
-
-    @Test
-    fun `setIdActivity- Check return failure if have error in NoteMotoMecSharedPreferencesDatasource setIdActivity`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.setIdActivity(1)
-            ).thenReturn(
-                resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.setIdActivity",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.setIdActivityNote(1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.setIdActivityNote -> INoteMotoMecSharedPreferencesDatasource.setIdActivity"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `setIdActivity - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.setIdActivity(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            val result = repository.setIdActivityNote(1)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
-        }
-
-    @Test
     fun `saveNote - Check return failure if have error in NoteMotoMecSharedPreferencesDatasource get`() =
         runTest {
             whenever(
@@ -1002,7 +825,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.saveNote(1)
+            val result = repository.saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -1027,7 +850,7 @@ class IMotoMecRepositoryTest {
                     ItemMotoMecSharedPreferencesModel()
                 )
             )
-            val result = repository.saveNote(1)
+            val result = repository.saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -1046,8 +869,6 @@ class IMotoMecRepositoryTest {
     fun `saveNote - Check return failure if have error in NoteMotoMecRoomDatasource save`() =
         runTest {
             val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
-                nroOS = 123456,
-                idActivity = 1,
                 statusCon = true
             )
             whenever(
@@ -1066,7 +887,7 @@ class IMotoMecRepositoryTest {
                     )
                 )
             }
-            val result = repository.saveNote(1)
+            val result = repository.saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -1098,8 +919,6 @@ class IMotoMecRepositoryTest {
     fun `saveNote - Check return failure if have error in HeaderMotoMecRoomDatasource setSendHeader`() =
         runTest {
             val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
-                nroOS = 123456,
-                idActivity = 1,
                 statusCon = true
             )
             whenever(
@@ -1123,7 +942,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.saveNote(1)
+            val result = repository.saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -1155,8 +974,6 @@ class IMotoMecRepositoryTest {
     fun `saveNote - Check return correct if function execute successfully`() =
         runTest {
             val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
-                nroOS = 123456,
-                idActivity = 1,
                 statusCon = true
             )
             whenever(
@@ -1176,7 +993,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            val result = repository.saveNote(1)
+            val result = repository.saveNote(1, 1, 1)
             assertEquals(
                 result.isSuccess,
                 true
@@ -1196,52 +1013,6 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 model.idHeader,
-                1
-            )
-        }
-
-    @Test
-    fun `getIdActivity - Check return failure if have error in INoteMotoMecSharedPreferencesDatasource getIdActivity`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.getIdActivity()
-            ).thenReturn(
-                resultFailure(
-                    context = "INoteMotoMecSharedPreferencesDatasource.getIdActivity",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            val result = repository.getIdActivityNote()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.getIdActivityNote -> INoteMotoMecSharedPreferencesDatasource.getIdActivity"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `getIdActivity - Check return correct if function execute successfully`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.getIdActivity()
-            ).thenReturn(
-                Result.success(1)
-            )
-            val result = repository.getIdActivityNote()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
                 1
             )
         }

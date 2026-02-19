@@ -11,6 +11,8 @@ data class ItemMotoMec(
     var idPressure: Int? = null,
     var idSpeed: Int? = null,
     var idNozzle: Int? = null,
+    var valuePressure: Double? = null,
+    var speedPressure: Int? = null,
     var statusCon: Boolean? = true,
     var dateHour: Date = Date()
 )

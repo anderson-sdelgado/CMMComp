@@ -74,7 +74,7 @@ class PerformanceViewModel @Inject constructor(
             runCatching {
                 val check = checkPerformance(id, state.performance).getOrThrow()
                 if(!check) {
-                    handleFailure(Errors.INVALID_PERFORMANCE, getClassAndMethod(), ::onError)
+                    handleFailure(Errors.INVALID_VALUE, getClassAndMethod(), ::onError)
                     return@launch
                 }
                 setPerformance(id, state.performance).getOrThrow()

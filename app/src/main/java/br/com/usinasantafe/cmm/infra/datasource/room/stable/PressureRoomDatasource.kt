@@ -6,4 +6,9 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 interface PressureRoomDatasource {
     suspend fun addAll(list: List<PressureRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun listByIdNozzle(idNozzle: Int): Result<List<PressureRoomModel>>
+    suspend fun listByIdNozzleAndValuePressure(
+        idNozzle: Int,
+        valuePressure: Double
+    ): Result<List<PressureRoomModel>>
 }

@@ -254,16 +254,8 @@ class ISetNroEquipTranshipmentTest {
                 200L
             )
             assertEquals(
-                itemMotoMecSharedPreferencesModel.idActivity,
-                1
-            )
-            assertEquals(
                 itemMotoMecSharedPreferencesModel.idStop,
                 null
-            )
-            assertEquals(
-                itemMotoMecSharedPreferencesModel.nroOS,
-                123456
             )
             assertEquals(
                 itemMotoMecSharedPreferencesModel.statusCon,

@@ -209,4 +209,128 @@ class IPressureRepositoryTest {
             )
         }
 
+    @Test
+    fun `listByIdNozzle - Check return failure if have error in PressureRoomDatasource listByIdNozzle`() =
+        runTest {
+            whenever(
+                pressureRoomDatasource.listByIdNozzle(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPressureRoomDatasource.listByIdNozzle",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdNozzle(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPressureRepository.listByIdNozzle -> IPressureRoomDatasource.listByIdNozzle"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdNozzle - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                pressureRoomDatasource.listByIdNozzle(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        PressureRoomModel(
+                            id = 1,
+                            idNozzle = 1,
+                            value = 10.0,
+                            speed = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdNozzle(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Pressure(
+                        id = 1,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return failure if have error in PressureRoomDatasource listByIdNozzleAndValuePressure`() =
+        runTest {
+            whenever(
+                pressureRoomDatasource.listByIdNozzleAndValuePressure(1, 10.0)
+            ).thenReturn(
+                resultFailure(
+                    "IPressureRoomDatasource.listByIdNozzleAndValuePressure",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdNozzleAndValuePressure(1, 10.0)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IPressureRepository.listByIdNozzleAndValuePressure -> IPressureRoomDatasource.listByIdNozzleAndValuePressure"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdNozzleAndValuePressure - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                pressureRoomDatasource.listByIdNozzleAndValuePressure(1, 10.0)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        PressureRoomModel(
+                            id = 1,
+                            idNozzle = 1,
+                            value = 10.0,
+                            speed = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdNozzleAndValuePressure(1, 10.0)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Pressure(
+                        id = 1,
+                        idNozzle = 1,
+                        value = 10.0,
+                        speed = 1
+                    )
+                )
+            )
+        }
+
 }

@@ -80,15 +80,6 @@ class ISetIdActivityCommonTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository setIdActivityNote - FlowApp NOTE_STOP`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setIdActivityNote",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 id = 1,
                 flowApp = FlowApp.NOTE_STOP
@@ -110,11 +101,6 @@ class ISetIdActivityCommonTest {
     @Test
     fun `Check return FlowApp NOTE_STOP if function execute successfully - FlowApp NOTE_STOP`() =
         runTest {
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = usecase(
                 id = 1,
                 flowApp = FlowApp.NOTE_STOP
@@ -147,7 +133,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -183,7 +168,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, never()).getIdByHeaderOpen()
             assertEquals(
                 result.isSuccess,
@@ -217,7 +201,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -259,7 +242,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -293,7 +275,7 @@ class ISetIdActivityCommonTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 1)
+                saveNote()
             ).thenReturn(
                 resultFailure(
                     "ISaveNote",
@@ -306,7 +288,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -344,7 +325,6 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 1)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 }

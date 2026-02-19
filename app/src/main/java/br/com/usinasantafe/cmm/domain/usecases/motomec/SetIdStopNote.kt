@@ -26,16 +26,9 @@ class ISetIdStopNote @Inject constructor(
         id: Int
     ): EmptyResult =
         call(getClassAndMethod()) {
-
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
-            val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
-
             motoMecRepository.setIdStop(id).getOrThrow()
-            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
-            saveNote(idHeader, idActivity, nroOS).getOrThrow()
-
+            saveNote().getOrThrow()
             startWorkManager()
-
         }
 
 }

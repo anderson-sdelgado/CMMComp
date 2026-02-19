@@ -28,17 +28,12 @@ class ISetNote @Inject constructor(
                 idApp = item.app.first
             ).getOrThrow()
 
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
-            val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
-            val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
-
-            motoMecRepository.setNroOSNote(nroOS).getOrThrow()
-            motoMecRepository.setIdActivityNote(idActivity).getOrThrow()
-
             if (idStop != null) {
                 motoMecRepository.setIdStop(idStop).getOrThrow()
             }
-            saveNote(idHeader, idActivity, nroOS).getOrThrow()
+
+            saveNote().getOrThrow()
+
         }
 
 }

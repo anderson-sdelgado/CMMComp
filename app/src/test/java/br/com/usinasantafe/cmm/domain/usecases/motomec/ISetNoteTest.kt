@@ -237,15 +237,6 @@ class ISetNoteTest {
             ).thenReturn(
                 Result.success(1)
             )
-            whenever(
-                motoMecRepository.setNroOSNote(1)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setNroOSNote",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 ItemMenuModel(
                     id = 1,
@@ -295,15 +286,6 @@ class ISetNoteTest {
             ).thenReturn(
                 Result.success(1)
             )
-            whenever(
-                motoMecRepository.setIdActivityNote(1)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.setIdActivityNote",
-                    "-",
-                    Exception()
-                )
-            )
             val result = usecase(
                 ItemMenuModel(
                     id = 1,
@@ -313,7 +295,6 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -372,8 +353,6 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -415,7 +394,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 1)
+                saveNote()
             ).thenReturn(
                 resultFailure(
                     "SaveNote",
@@ -432,8 +411,6 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setIdStop(1)
             assertEquals(
                 result.isFailure,
@@ -476,7 +453,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 1)
+                saveNote()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -489,10 +466,8 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, atLeastOnce()).setIdStop(1)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 1)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 
     @Test
@@ -522,7 +497,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                saveNote(1, 1, 1)
+                saveNote()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -535,10 +510,8 @@ class ISetNoteTest {
                     app = 2 to ECM
                 )
             )
-            verify(motoMecRepository, atLeastOnce()).setNroOSNote(1)
-            verify(motoMecRepository, atLeastOnce()).setIdActivityNote(1)
             verify(motoMecRepository, never()).setIdStop(1)
-            verify(saveNote, atLeastOnce()).invoke(1, 1, 1)
+            verify(saveNote, atLeastOnce()).invoke()
         }
 
 }

@@ -59,4 +59,10 @@ object VariableRoomModule {
     fun providePerformance(database: DatabaseRoom): PerformanceDao {
         return database.performanceDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideCollection(database: DatabaseRoom): CollectionDao {
+        return database.collectionDao()
+    }
 }

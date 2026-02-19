@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "dfa860fa989df758f3e7f1d0fd22fea4",
+    "identityHash": "76be72480985c128db3aad9fda3825da",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -694,7 +694,7 @@
       },
       {
         "tableName": "tb_item_moto_mec",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, `nroEquipTranshipment` INTEGER, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `idStop` INTEGER, `dateHour` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `statusCon` INTEGER NOT NULL, `idServ` INTEGER, `nroEquipTranshipment` INTEGER, `idNozzle` INTEGER, `valuePressure` REAL, `speedPressure` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -759,6 +759,24 @@
           {
             "fieldPath": "nroEquipTranshipment",
             "columnName": "nroEquipTranshipment",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idNozzle",
+            "columnName": "idNozzle",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "valuePressure",
+            "columnName": "valuePressure",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "speedPressure",
+            "columnName": "speedPressure",
             "affinity": "INTEGER",
             "notNull": false
           }
@@ -1065,12 +1083,56 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "tb_collection",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `value` REAL, `dateHour` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "idHeader",
+            "columnName": "idHeader",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "dateHour",
+            "columnName": "dateHour",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dfa860fa989df758f3e7f1d0fd22fea4')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '76be72480985c128db3aad9fda3825da')"
     ]
   }
 }

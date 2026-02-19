@@ -40,6 +40,8 @@ const val TB_MECHANIC = "tb_mechanic"
 const val TB_INPUT_COMPOSTING = "tb_input_composting"
 const val TB_COMPOUND_COMPOSTING = "tb_compound_composting"
 const val TB_PERFORMANCE = "tb_performance"
+const val TB_COLLECTION = "tb_collection"
+
 
 const val WEB_ALL_ACTIVITY = "activity.php"
 const val WEB_ALL_COLAB = "colab.php"

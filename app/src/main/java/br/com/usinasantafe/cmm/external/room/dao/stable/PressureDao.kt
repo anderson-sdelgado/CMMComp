@@ -18,4 +18,10 @@ interface PressureDao {
     @Query("SELECT * FROM $TB_PRESSURE")
     suspend fun all(): List<PressureRoomModel>
 
+    @Query("SELECT * FROM $TB_PRESSURE WHERE idNozzle = :idNozzle")
+    suspend fun listByIdNozzle(idNozzle: Int): List<PressureRoomModel>
+
+    @Query("SELECT * FROM $TB_PRESSURE WHERE idNozzle = :idNozzle AND value = :valuePressure")
+    suspend fun listByIdNozzleAndValuePressure(idNozzle: Int, valuePressure: Double): List<PressureRoomModel>
+
 }
