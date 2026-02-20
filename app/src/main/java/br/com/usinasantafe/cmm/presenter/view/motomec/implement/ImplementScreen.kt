@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump
+package br.com.usinasantafe.cmm.presenter.view.motomec.implement
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
@@ -36,16 +37,20 @@ import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
-fun MotorPumpScreen(
-    viewModel: MotorPumpViewModel = hiltViewModel(),
-    onNavHourMeter: () -> Unit,
+fun ImplementScreen(
+    viewModel: ImplementViewModel = hiltViewModel(),
     onNavMenuNote: () -> Unit,
+    onNavHourMeter: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-            MotorPumpContent(
+
+            ImplementContent(
+                flowApp = uiState.flowApp,
+                pos = uiState.pos,
                 nroEquip = uiState.nroEquip,
+                ret = viewModel::ret,
                 setTextField = viewModel::setTextField,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
@@ -59,8 +64,11 @@ fun MotorPumpScreen(
 }
 
 @Composable
-fun MotorPumpContent(
+fun ImplementContent(
+    flowApp: FlowApp,
+    pos: Int,
     nroEquip: String,
+    ret: () -> Unit,
     setTextField: (String, TypeButton) -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
@@ -75,7 +83,8 @@ fun MotorPumpContent(
     ) {
         TitleDesign(
             text = stringResource(
-                id = R.string.text_title_motor_pump
+                id = R.string.text_title_implement,
+                pos
             )
         )
         OutlinedTextField(
@@ -100,11 +109,26 @@ fun MotorPumpContent(
             setActionButton = setTextField
         )
         BackHandler {
-            onNavHourMeter()
+            if(pos == 1) {
+                if(flowApp == FlowApp.HEADER_INITIAL) {
+                    onNavHourMeter()
+                } else {
+                    onNavMenuNote()
+                }
+            } else {
+                ret()
+            }
         }
 
         if (status.flagDialog) {
-            MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_operator))
+            MsgUpdate(
+                status = status,
+                setCloseDialog = setCloseDialog,
+                value = stringResource(
+                    id = R.string.text_title_implement,
+                    pos
+                )
+            )
         }
 
         if (status.flagProgress) {
@@ -121,11 +145,14 @@ fun MotorPumpContent(
 
 @Preview(showBackground = true)
 @Composable
-fun MotorPumpPagePreview() {
+fun ImplementPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            MotorPumpContent(
+            ImplementContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                pos = 1,
                 nroEquip = "",
+                ret = {},
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
@@ -149,11 +176,14 @@ fun MotorPumpPagePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun MotorPumpPagePreviewWithData() {
+fun ImplementPagePreviewWithData() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            MotorPumpContent(
+            ImplementContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                pos = 1,
                 nroEquip = "2200",
+                ret = {},
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
@@ -177,14 +207,17 @@ fun MotorPumpPagePreviewWithData() {
 
 @Preview(showBackground = true)
 @Composable
-fun MotorPumpPagePreviewMsgEmpty() {
+fun ImplementPagePreviewMsgEmpty() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            MotorPumpContent(
-                nroEquip = "",
+            ImplementContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                pos = 1,
+                nroEquip = "2200",
+                ret = {},
                 setTextField = { _, _ -> },
-                flagAccess = false,
                 setCloseDialog = {},
+                flagAccess = false,
                 status = UpdateStatusState(
                     flagDialog = true,
                     flagFailure = true,
@@ -205,14 +238,17 @@ fun MotorPumpPagePreviewMsgEmpty() {
 
 @Preview(showBackground = true)
 @Composable
-fun MotorPumpPagePreviewUpdate() {
+fun ImplementPagePreviewUpdate() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            MotorPumpContent(
-                nroEquip = "",
+            ImplementContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                pos = 1,
+                nroEquip = "2200",
+                ret = {},
                 setTextField = { _, _ -> },
-                flagAccess = false,
                 setCloseDialog = {},
+                flagAccess = false,
                 status = UpdateStatusState(
                     flagDialog = false,
                     failure = "",
@@ -233,14 +269,17 @@ fun MotorPumpPagePreviewUpdate() {
 
 @Preview(showBackground = true)
 @Composable
-fun MotorPumpPagePreviewFailureUpdate() {
+fun ImplementPagePreviewFailureUpdate() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            MotorPumpContent(
-                nroEquip = "",
+            ImplementContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                pos = 1,
+                nroEquip = "2200",
+                ret = {},
                 setTextField = { _, _ -> },
-                flagAccess = false,
                 setCloseDialog = {},
+                flagAccess = false,
                 status = UpdateStatusState(
                     flagDialog = true,
                     failure = "Failure Update",

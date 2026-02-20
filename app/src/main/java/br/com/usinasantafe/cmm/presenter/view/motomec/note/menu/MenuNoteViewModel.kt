@@ -110,7 +110,7 @@ class MenuNoteViewModel @Inject constructor(
             updateState { copy(flavorApp = flavor.uppercase()) }
             val list = listItemMenu(flavor.uppercase()).getOrThrow()
             if (list.isEmpty()) {
-                handleFailure(Errors.EXCEPTION, getClassAndMethod(), ::onError, "listItemMenu -> EmptyList!")
+                handleFailure(getClassAndMethod(), Errors.EXCEPTION, ::onError, "listItemMenu -> EmptyList!")
             }
             list
         }
@@ -138,7 +138,7 @@ class MenuNoteViewModel @Inject constructor(
         runCatching {
             val check = hasNoteMotoMec().getOrThrow()
             if (!check) {
-                handleFailure(Errors.HEADER_EMPTY, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.HEADER_EMPTY, ::onError)
                 return@launch
             }
         }
@@ -181,7 +181,7 @@ class MenuNoteViewModel @Inject constructor(
             if (function.second != FINISH_MECHANICAL) {
                 val check = hasNoteOpenMechanic().getOrThrow()
                 if (check) {
-                    handleFailure(Errors.NOTE_MECHANICAL_OPEN, getClassAndMethod(), ::onError)
+                    handleFailure(getClassAndMethod(), Errors.NOTE_MECHANICAL_OPEN, ::onError)
                     return@runCatching false
                 }
             }
@@ -191,7 +191,7 @@ class MenuNoteViewModel @Inject constructor(
                     false
                 }
                 TRANSHIPMENT -> handleTranshipment()
-                IMPLEMENT -> handleImplement()
+                IMPLEMENT -> handleImplement(item)
                 NOTE_MECHANICAL -> handleNoteMechanical()
                 else -> true
             }
@@ -275,7 +275,7 @@ class MenuNoteViewModel @Inject constructor(
         return runCatching {
             val check = hasWill().getOrThrow()
             if (!check) {
-                handleFailure(Errors.WITHOUT_LOADING_COMPOSTING, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.WITHOUT_LOADING_COMPOSTING, ::onError)
                 return false
             }
             return true
@@ -290,7 +290,7 @@ class MenuNoteViewModel @Inject constructor(
         return runCatching {
             val check = hasCompostingInputLoadSentOpen().getOrThrow()
             if (!check) {
-                handleFailure(Errors.WITHOUT_LOADING_INPUT, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.WITHOUT_LOADING_INPUT, ::onError)
                 return false
             }
             return true
@@ -307,7 +307,7 @@ class MenuNoteViewModel @Inject constructor(
             when (flowTrailer) {
                 FlowTrailer.UNCOUPLING -> {
                     if (!check) {
-                        handleFailure(Errors.NEED_COUPLING_TRAILER, getClassAndMethod(), ::onError)
+                        handleFailure(getClassAndMethod(), Errors.NEED_COUPLING_TRAILER, ::onError)
                         return false
                     } else {
                         updateState { copy(flagDialogCheck = true, typeMsg = TypeMsg.UNCOUPLING_TRAILER) }
@@ -317,7 +317,7 @@ class MenuNoteViewModel @Inject constructor(
 
                 FlowTrailer.COUPLING -> {
                     if (check) {
-                        handleFailure(Errors.NEED_UNCOUPLING_TRAILER, getClassAndMethod(), ::onError)
+                        handleFailure(getClassAndMethod(), Errors.NEED_UNCOUPLING_TRAILER, ::onError)
                         return false
                     }
                 }
@@ -348,8 +348,8 @@ class MenuNoteViewModel @Inject constructor(
         runCatching {
             val status = setDatePreCEC(item).getOrThrow()
             when (status) {
-                StatusPreCEC.EXIT_MILL -> handleFailure(Errors.WITHOUT_EXIT_MILL_PRE_CEC, getClassAndMethod(), ::onError)
-                StatusPreCEC.EXIT_FIELD -> handleFailure(Errors.WITH_FIELD_ARRIVAL_PRE_CEC, getClassAndMethod(), ::onError)
+                StatusPreCEC.EXIT_MILL -> handleFailure(getClassAndMethod(), Errors.WITHOUT_EXIT_MILL_PRE_CEC, ::onError)
+                StatusPreCEC.EXIT_FIELD -> handleFailure(getClassAndMethod(), Errors.WITH_FIELD_ARRIVAL_PRE_CEC, ::onError)
                 StatusPreCEC.FIELD_ARRIVAL -> handleSetNote(item)
             }
         }
@@ -363,7 +363,7 @@ class MenuNoteViewModel @Inject constructor(
         return runCatching {
             val status = setDatePreCEC(item).getOrThrow()
             if (status != StatusPreCEC.EXIT_MILL) {
-                handleFailure(Errors.PRE_CEC_STARTED, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.PRE_CEC_STARTED, ::onError)
                 return false
             }
             return true
@@ -378,11 +378,11 @@ class MenuNoteViewModel @Inject constructor(
         return runCatching {
             val typeNote = getTypeLastNote().getOrThrow()
             if (typeNote == null) {
-                handleFailure(Errors.WITHOUT_NOTE, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.WITHOUT_NOTE, ::onError)
                 return false
             }
             if (typeNote == TypeNote.WORK) {
-                handleFailure(Errors.LAST_NOTE_WORK, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.LAST_NOTE_WORK, ::onError)
                 return false
             }
             return true
@@ -397,7 +397,7 @@ class MenuNoteViewModel @Inject constructor(
         runCatching {
             val check = hasNoteOpenMechanic().getOrThrow()
             if (!check) {
-                handleFailure(Errors.NOTE_MECHANICAL_OPEN, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.NOTE_MECHANICAL_OPEN, ::onError)
                 return@runCatching
             }
         }
@@ -411,12 +411,12 @@ class MenuNoteViewModel @Inject constructor(
             return when (status) {
                 StatusTranshipment.OK -> true
                 StatusTranshipment.WITHOUT_NOTE -> {
-                    handleFailure(Errors.WITHOUT_NOTE_TRANSHIPMENT, getClassAndMethod(),  ::onError)
+                    handleFailure(getClassAndMethod(), Errors.WITHOUT_NOTE_TRANSHIPMENT, ::onError)
                     false
                 }
 
                 StatusTranshipment.TIME_INVALID -> {
-                    handleFailure(Errors.TIME_INVALID_TRANSHIPMENT, getClassAndMethod(),  ::onError)
+                    handleFailure(getClassAndMethod(), Errors.TIME_INVALID_TRANSHIPMENT, ::onError)
                     false
                 }
             }
@@ -428,13 +428,14 @@ class MenuNoteViewModel @Inject constructor(
 
     }
 
-    private suspend fun handleImplement(): Boolean {
+    private suspend fun handleImplement(item: ItemMenuModel): Boolean {
         return runCatching {
             val check = hasNoteMotoMec().getOrThrow()
             if (!check) {
-                handleFailure(Errors.HEADER_EMPTY, getClassAndMethod(),  ::onError)
+                handleFailure(getClassAndMethod(), Errors.HEADER_EMPTY, ::onError)
                 false
             } else {
+                setNote(item).getOrThrow()
                 true
             }
         }

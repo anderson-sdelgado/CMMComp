@@ -73,7 +73,7 @@ class OSCommonViewModel @Inject constructor(
 
     private fun validateAndSet() {
         if (state.nroOS.isBlank()) {
-            handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
+            handleFailure(getClassAndMethod(), Errors.FIELD_EMPTY, ::onError)
             return
         }
         set()

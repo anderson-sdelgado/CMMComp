@@ -104,4 +104,5 @@
     <string name="text_msg_no_data_collection">NÃO CONTÉM RECOLHIMENTO ADICIONADO.</string>
     <string name="text_close_collection_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RECOLHIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
     <string name="text_title_collection">RECOLHIMENTO</string>
+    <string name="text_title_implement">IMPLEMENTO %1$s</string>
 </resources>

@@ -1,10 +1,12 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Collection
 import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.CollectionRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -59,8 +61,22 @@ class IFertigationRepository @Inject constructor(
             ).getOrThrow()
         }
 
-    override suspend fun hasCollectionByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun hasCollectionByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+        call(getClassAndMethod()) {
+            collectionRoomDatasource.hasByIdHeaderAndValueNull(idHeader).getOrThrow()
+        }
+
+    override suspend fun listCollectionByIdHeader(idHeader: Int): Result<List<Collection>> =
+        call(getClassAndMethod()) {
+            collectionRoomDatasource.listByIdHeader(idHeader).getOrThrow().map { it.roomModelToEntity() }
+        }
+
+    override suspend fun updateCollection(
+        id: Int,
+        value: Double
+    ): EmptyResult =
+        call(getClassAndMethod()) {
+            collectionRoomDatasource.update(id, value).getOrThrow()
+        }
 
 }

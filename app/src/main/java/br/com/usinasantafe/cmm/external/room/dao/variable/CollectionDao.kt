@@ -19,7 +19,16 @@ interface CollectionDao {
     @Query("SELECT * FROM $TB_COLLECTION")
     suspend fun all(): List<CollectionRoomModel>
 
+    @Query("SELECT * FROM $TB_COLLECTION WHERE idHeader = :idHeader")
+    suspend fun listByIdHeader(idHeader: Int): List<CollectionRoomModel>
+
     @Query("SELECT EXISTS(SELECT * FROM $TB_COLLECTION WHERE idHeader = :idHeader AND nroOS = :nroOS)")
     suspend fun hasByIdHeaderAndNroOS(idHeader: Int, nroOS: Int): Boolean
+
+    @Query("SELECT EXISTS(SELECT * FROM $TB_COLLECTION WHERE idHeader = :idHeader AND value is null)")
+    suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Boolean
+
+    @Query("SELECT * FROM $TB_COLLECTION WHERE id = :id")
+    suspend fun getById(id: Int): CollectionRoomModel
 
 }

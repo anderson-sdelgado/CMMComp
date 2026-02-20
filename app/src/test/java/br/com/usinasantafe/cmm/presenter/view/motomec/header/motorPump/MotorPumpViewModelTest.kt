@@ -267,7 +267,7 @@ class MotorPumpViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "MotorPumpViewModel.setTextField -> Field Empty!"
+                "MotorPumpViewModel.setTextField -> MotorPumpViewModel.updateState -> MotorPumpViewModel.set -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -316,7 +316,7 @@ class MotorPumpViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "MotorPumpViewModel.setTextField -> MotorPumpViewModel.setNroEquip -> IHasEquipSecondary -> java.lang.Exception"
+                "MotorPumpViewModel.setTextField -> MotorPumpViewModel.set -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -409,7 +409,7 @@ class MotorPumpViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "MotorPumpViewModel.setTextField -> MotorPumpViewModel.setNroEquip -> ISetIdEquipMotorPump -> java.lang.Exception"
+                "MotorPumpViewModel.setTextField -> MotorPumpViewModel.set -> ISetIdEquipMotorPump -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,

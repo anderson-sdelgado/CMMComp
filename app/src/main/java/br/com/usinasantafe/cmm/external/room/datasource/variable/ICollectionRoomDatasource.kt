@@ -21,4 +21,24 @@ class ICollectionRoomDatasource @Inject constructor(
             if (!resultHas) collectionDao.insert(model)
         }
 
+    override suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+        result(getClassAndMethod()){
+            collectionDao.hasByIdHeaderAndValueNull(idHeader)
+        }
+
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<CollectionRoomModel>> =
+        result(getClassAndMethod()) {
+            collectionDao.listByIdHeader(idHeader)
+        }
+
+    override suspend fun update(
+        id: Int,
+        value: Double
+    ): EmptyResult =
+        result(getClassAndMethod()){
+            val model = collectionDao.getById(id)
+            model.value = value
+            collectionDao.update(model)
+        }
+
 }

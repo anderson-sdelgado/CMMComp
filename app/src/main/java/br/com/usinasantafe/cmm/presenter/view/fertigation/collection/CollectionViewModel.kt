@@ -52,22 +52,19 @@ class CollectionViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(collection = addTextFieldComma(collection, text)) }
             TypeButton.CLEAN -> updateState { copy(collection = clearTextFieldComma(collection)) }
-            TypeButton.OK -> validateAndSet()
+            TypeButton.OK -> set()
             TypeButton.UPDATE -> Unit
         }
     }
 
-    private fun validateAndSet() {
-        if (uiState.value.collection == "0,0") {
-            handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
-            return
-        }
-        set()
-    }
 
     fun set() =
         viewModelScope.launch {
             runCatching {
+                if (uiState.value.collection == "0,0") {
+                    handleFailure(getClassAndMethod(), Errors.FIELD_EMPTY, ::onError)
+                    return@launch
+                }
                 setCollection(id, state.collection).getOrThrow()
             }
                 .onSuccess {

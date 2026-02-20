@@ -5,4 +5,7 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface CollectionRoomDatasource {
     suspend fun insert(model: CollectionRoomModel): EmptyResult
+    suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
+    suspend fun listByIdHeader(idHeader: Int): Result<List<CollectionRoomModel>>
+    suspend fun update(id: Int, value: Double): EmptyResult
 }

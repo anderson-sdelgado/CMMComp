@@ -27,7 +27,6 @@ class IListPerformance @Inject constructor(
                     value = it.value
                 )
             }
-
         }
 
 }

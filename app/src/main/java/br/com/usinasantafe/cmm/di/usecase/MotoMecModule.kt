@@ -110,4 +110,8 @@ interface MotoMecModule {
     @Binds
     @Singleton
     fun bindSaveNote(usecase: ISaveNote): SaveNote
+
+    @Binds
+    @Singleton
+    fun bindSetNroEquipImplement(usecase: ISetNroEquipImplement): SetNroEquipImplement
 }

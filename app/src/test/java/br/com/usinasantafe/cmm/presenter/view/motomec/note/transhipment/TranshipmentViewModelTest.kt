@@ -283,7 +283,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> Field Empty!"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.updateState -> TranshipmentViewModel.set -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -333,7 +333,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> IHasEquipSecondary -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.set -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -429,7 +429,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.setNroEquip -> ISetNroTranshipment -> java.lang.Exception"
+                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.set -> ISetNroTranshipment -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,

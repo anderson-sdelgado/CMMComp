@@ -1,8 +1,8 @@
-package br.com.usinasantafe.cmm.domain.usecases.performance
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
-import br.com.usinasantafe.cmm.domain.entities.variable.Performance
+import br.com.usinasantafe.cmm.domain.entities.variable.Collection
+import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.PerformanceRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
@@ -11,13 +11,13 @@ import java.util.Date
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class IListPerformanceTest {
+class IListCollectionTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
-    private val performanceRepository = mock<PerformanceRepository>()
-    private val usecase = IListPerformance(
+    private val fertigationRepository = mock<FertigationRepository>()
+    private val usecase = IListCollection(
         motoMecRepository = motoMecRepository,
-        performanceRepository = performanceRepository
+        fertigationRepository = fertigationRepository
     )
 
     @Test
@@ -39,7 +39,7 @@ class IListPerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListPerformance -> IMotoMecRepository.getIdByHeaderOpen"
+                "IListCollection -> IMotoMecRepository.getIdByHeaderOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -48,7 +48,7 @@ class IListPerformanceTest {
         }
 
     @Test
-    fun `Check return failure if have error in PerformanceRepository listByIdHeader`() =
+    fun `Check return failure if have error in FertigationRepository listCollectionByIdHeader`() =
         runTest {
             whenever(
                 motoMecRepository.getIdByHeaderOpen()
@@ -56,10 +56,10 @@ class IListPerformanceTest {
                 Result.success(1)
             )
             whenever(
-                performanceRepository.listByIdHeader(1)
+                fertigationRepository.listCollectionByIdHeader(1)
             ).thenReturn(
                 resultFailure(
-                    "IPerformanceRepository.listByIdHeader",
+                    "IFertigationRepository.listCollectionByIdHeader",
                     "-",
                     Exception()
                 )
@@ -71,7 +71,7 @@ class IListPerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListPerformance -> IPerformanceRepository.listByIdHeader"
+                "IListCollection -> IFertigationRepository.listCollectionByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -88,11 +88,11 @@ class IListPerformanceTest {
                 Result.success(1)
             )
             whenever(
-                performanceRepository.listByIdHeader(1)
+                fertigationRepository.listCollectionByIdHeader(1)
             ).thenReturn(
                 Result.success(
                     listOf(
-                        Performance(
+                        Collection(
                             id = 1,
                             idHeader = 1,
                             nroOS = 123456,

@@ -101,8 +101,8 @@ fun Result<*>.onFailureHandled(
 }
 
 inline fun handleFailure(
-    error: Errors = Errors.INVALID,
     classAndMethod: String,
+    error: Errors = Errors.INVALID,
     crossinline onError: (String, Errors) -> Unit,
     failure: String = ""
 ) {
@@ -113,8 +113,8 @@ inline fun handleFailure(
 }
 
 inline fun handleFailure(
-    failure: String,
     classAndMethod: String,
+    failure: String,
     crossinline onError: (String, Errors) -> Unit,
 ) {
     handleFailure(failure, classAndMethod) {

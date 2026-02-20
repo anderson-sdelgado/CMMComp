@@ -63,7 +63,7 @@ class PerformanceViewModel @Inject constructor(
 
     private fun validateAndSet() {
         if (uiState.value.performance == "0,0") {
-            handleFailure(Errors.FIELD_EMPTY, getClassAndMethod(), ::onError)
+            handleFailure(getClassAndMethod(), Errors.FIELD_EMPTY, ::onError)
             return
         }
         set()
@@ -74,7 +74,7 @@ class PerformanceViewModel @Inject constructor(
             runCatching {
                 val check = checkPerformance(id, state.performance).getOrThrow()
                 if(!check) {
-                    handleFailure(Errors.INVALID_VALUE, getClassAndMethod(), ::onError)
+                    handleFailure(getClassAndMethod(), Errors.INVALID_VALUE, ::onError)
                     return@launch
                 }
                 setPerformance(id, state.performance).getOrThrow()

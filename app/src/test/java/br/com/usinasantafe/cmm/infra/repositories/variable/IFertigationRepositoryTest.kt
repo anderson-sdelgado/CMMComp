@@ -1,18 +1,19 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Collection
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.CollectionRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel
 import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.Date
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class IFertigationRepositoryTest {
@@ -273,20 +274,19 @@ class IFertigationRepositoryTest {
     @Test
     fun `initialCollection - Check return failure if have error in CollectionRoomDatasource insert`() =
         runTest {
-            whenever(
-                collectionRoomDatasource.insert(
-                    CollectionRoomModel(
-                        nroOS = 1,
-                        idHeader = 1
+            val modelCaptor = argumentCaptor<CollectionRoomModel>().apply {
+                whenever(
+                    collectionRoomDatasource.insert(
+                        capture()
+                    )
+                ).thenReturn(
+                    resultFailure(
+                        "ICollectionRoomDatasource.insert",
+                        "-",
+                        Exception()
                     )
                 )
-            ).thenReturn(
-                resultFailure(
-                    "ICollectionRoomDatasource.insert",
-                    "-",
-                    Exception()
-                )
-            )
+            }
             val result = repository.initialCollection(1, 1)
             assertEquals(
                 result.isFailure,
@@ -299,6 +299,15 @@ class IFertigationRepositoryTest {
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                1
             )
         }
 
@@ -329,4 +338,149 @@ class IFertigationRepositoryTest {
                 1
             )
         }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return failure if have error in CollectionRoomDatasource hasByIdHeaderAndValueNull`() =
+        runTest {
+            whenever(
+                collectionRoomDatasource.hasByIdHeaderAndValueNull(1)
+            ).thenReturn(
+                resultFailure(
+                    "ICollectionRoomDatasource.hasByIdHeaderAndValueNull",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasCollectionByIdHeaderAndValueNull(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFertigationRepository.hasCollectionByIdHeaderAndValueNull -> ICollectionRoomDatasource.hasByIdHeaderAndValueNull"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasByIdHeaderAndValueNull - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                collectionRoomDatasource.hasByIdHeaderAndValueNull(1)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasCollectionByIdHeaderAndValueNull(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `listCollectionByIdHeader - Check return failure if have error in PerformanceRoomDatasource listByIdHeader`() =
+        runTest {
+            whenever(
+                collectionRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IPerformanceRoomDatasource.listByIdHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listCollectionByIdHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFertigationRepository.listCollectionByIdHeader -> IPerformanceRoomDatasource.listByIdHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                collectionRoomDatasource.listByIdHeader(1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        CollectionRoomModel(
+                            id = 1,
+                            idHeader = 1,
+                            nroOS = 1,
+                            value = 10.0,
+                            dateHour = Date(1750422691)
+                        )
+                    )
+                )
+            )
+            val result = repository.listCollectionByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    Collection(
+                        id = 1,
+                        idHeader = 1,
+                        nroOS = 1,
+                        value = 10.0,
+                        dateHour = Date(1750422691)
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in CollectionRoomDatasource update`() =
+        runTest {
+            whenever(
+                collectionRoomDatasource.update(1, 50.0)
+            ).thenReturn(
+                resultFailure(
+                    "ICollectionRoomDatasource.update",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.updateCollection(1, 50.0)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IFertigationRepository.updateCollection -> ICollectionRoomDatasource.update"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `update - Check return correct if function execute successfully`() =
+        runTest {
+            repository.updateCollection(1, 50.0)
+            verify(collectionRoomDatasource, atLeastOnce()).update(1, 50.0)
+        }
+
 }

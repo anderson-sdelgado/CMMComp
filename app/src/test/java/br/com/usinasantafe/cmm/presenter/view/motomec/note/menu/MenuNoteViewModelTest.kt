@@ -49,7 +49,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
@@ -981,6 +983,54 @@ class MenuNoteViewModelTest {
         }
 
     @Test
+    fun `setSelection - PMM - Check return failure if have error in SetNote and function is IMPLEMENT`() =
+        runTest {
+            wheneverBasicPMM(
+                5 to IMPLEMENT
+            )
+            whenever(
+                hasNoteMotoMec()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNote(
+                    ItemMenuModel(
+                        id = 1,
+                        descr = "TRABALHANDO",
+                        type = 1 to ITEM_NORMAL,
+                        function = 5 to IMPLEMENT,
+                        app = 1 to PMM
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    context = "SetNoteMotoMec",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.menuList("pmm")
+            viewModel.setSelection(1)
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.setSelection -> MenuNoteViewModel.handleSelectionPMM -> MenuNoteViewModel.handleImplement -> SetNoteMotoMec -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
+            )
+        }
+
+    @Test
     fun `setSelection - PMM - Check return access if CheckHasNoteMotoMec return true and function is IMPLEMENT`() =
         runTest {
             wheneverBasicPMM(
@@ -993,6 +1043,15 @@ class MenuNoteViewModelTest {
             )
             viewModel.menuList("pmm")
             viewModel.setSelection(1)
+            verify(setNote, atLeastOnce()).invoke(
+                ItemMenuModel(
+                    id = 1,
+                    descr = "TRABALHANDO",
+                    type = 1 to ITEM_NORMAL,
+                    function = 5 to IMPLEMENT,
+                    app = 1 to PMM
+                )
+            )
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true

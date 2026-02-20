@@ -60,7 +60,7 @@ class CollectionListViewModel @Inject constructor(
         runCatching {
             val check = checkCloseCollection().getOrThrow()
             if(!check) {
-                handleFailure(Errors.INVALID_CLOSE_COLLECTION, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.INVALID_CLOSE_COLLECTION, ::onError)
                 return@launch
             }
         }

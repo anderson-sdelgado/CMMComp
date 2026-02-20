@@ -1,8 +1,9 @@
-package br.com.usinasantafe.cmm.domain.usecases.performance
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
+import br.com.usinasantafe.cmm.external.room.dao.variable.CollectionDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
-import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
@@ -20,22 +21,22 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ICheckClosePerformanceTest {
+class ICheckCloseCollectionTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckClosePerformance
+    lateinit var usecase: CheckCloseCollection
 
     @Inject
     lateinit var headerMotoMecSharedPreferencesDatasource: IHeaderMotoMecSharedPreferencesDatasource
 
     @Inject
-    lateinit var performanceDao: PerformanceDao
+    lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
-    lateinit var headerMotoMecDao: HeaderMotoMecDao
+    lateinit var collectionDao: CollectionDao
 
     @Before
     fun init() {
@@ -52,7 +53,7 @@ class ICheckClosePerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckClosePerformance -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
+                "ICheckCloseCollection -> IMotoMecRepository.getIdByHeaderOpen -> IHeaderMotoMecSharedPreferencesDatasource.getId"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -75,7 +76,7 @@ class ICheckClosePerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckClosePerformance -> IMotoMecRepository.finishHeader -> IHeaderMotoMecRoomDatasource.finish"
+                "ICheckCloseCollection -> IMotoMecRepository.finishHeader -> IHeaderMotoMecRoomDatasource.finish"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -84,7 +85,7 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun check_return_true_if_not_have_data_in_table_performance() =
+    fun check_return_true_if_not_have_data_in_table_collection() =
         runTest {
             saveHeaderMotoMecRoom()
             headerMotoMecSharedPreferencesDatasource.save(
@@ -118,7 +119,7 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun check_return_true_if_not_have_idHeader_fielded_in_table_performance() =
+    fun check_return_true_if_not_have_idHeader_fielded_in_table_collection() =
         runTest {
             saveHeaderMotoMecRoom()
             headerMotoMecSharedPreferencesDatasource.save(
@@ -126,8 +127,8 @@ class ICheckClosePerformanceTest {
                     id = 1
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 2,
                     nroOS = 123456,
                 )
@@ -158,7 +159,7 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun check_return_true_if_not_have_idHeader_and_value_fielded_in_table_performance() =
+    fun check_return_true_if_not_have_idHeader_and_value_fielded_in_table_collection() =
         runTest {
             saveHeaderMotoMecRoom()
             headerMotoMecSharedPreferencesDatasource.save(
@@ -166,14 +167,14 @@ class ICheckClosePerformanceTest {
                     id = 1
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 2,
                     nroOS = 123456,
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 1,
                     nroOS = 123789,
                     value = 10.0
@@ -205,7 +206,7 @@ class ICheckClosePerformanceTest {
         }
 
     @Test
-    fun check_return_false_if_have_idHeader_and_value_fielded_in_table_performance() =
+    fun check_return_false_if_have_idHeader_and_value_fielded_in_table_collection() =
         runTest {
             saveHeaderMotoMecRoom()
             headerMotoMecSharedPreferencesDatasource.save(
@@ -213,21 +214,21 @@ class ICheckClosePerformanceTest {
                     id = 1
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 2,
                     nroOS = 123456,
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 1,
                     nroOS = 123789,
                     value = 10.0
                 )
             )
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
                     idHeader = 1,
                     nroOS = 456789,
                 )
@@ -256,7 +257,6 @@ class ICheckClosePerformanceTest {
                 StatusSend.SENT
             )
         }
-
 
     private suspend fun saveHeaderMotoMecRoom() {
         headerMotoMecDao.insert(

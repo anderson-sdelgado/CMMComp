@@ -1,7 +1,7 @@
-package br.com.usinasantafe.cmm.domain.usecases.performance
+package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
-import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
-import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
+import br.com.usinasantafe.cmm.external.room.dao.variable.CollectionDao
+import br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -12,16 +12,16 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ISetPerformanceTest {
+class ISetCollectionTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SetPerformance
+    lateinit var usecase: SetCollection
 
     @Inject
-    lateinit var performanceDao: PerformanceDao
+    lateinit var collectionDao: CollectionDao
 
     @Before
     fun setUp() {
@@ -38,7 +38,7 @@ class ISetPerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetPerformance -> stringToDouble"
+                "ISetCollection -> stringToDouble"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -56,19 +56,20 @@ class ISetPerformanceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetPerformance -> IPerformanceRepository.update -> IPerformanceRoomDatasource.update"
+                "ISetCollection -> IFertigationRepository.updateCollection -> ICollectionRoomDatasource.update"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Attempt to invoke virtual method 'void br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel.setValue(java.lang.Double)' on a null object reference"
+                "java.lang.NullPointerException: Attempt to invoke virtual method 'void br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel.setValue(java.lang.Double)' on a null object reference"
             )
         }
 
     @Test
     fun check_value_altered_if_have_data_fielded() =
         runTest {
-            performanceDao.insert(
-                PerformanceRoomModel(
+            collectionDao.insert(
+                CollectionRoomModel(
+                    id = 1,
                     idHeader = 1,
                     nroOS = 123456,
                 )
@@ -82,7 +83,7 @@ class ISetPerformanceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val list = performanceDao.all()
+            val list = collectionDao.all()
             assertEquals(
                 list.size,
                 1
@@ -101,4 +102,5 @@ class ISetPerformanceTest {
                 50.0
             )
         }
+
 }

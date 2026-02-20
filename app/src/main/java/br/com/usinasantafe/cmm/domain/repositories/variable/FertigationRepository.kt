@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Collection
 import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface FertigationRepository {
@@ -11,4 +12,6 @@ interface FertigationRepository {
     suspend fun setSpeedPressure(speed: Int): EmptyResult
     suspend fun initialCollection(nroOS: Int, idHeader: Int): Result<Unit>
     suspend fun hasCollectionByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
+    suspend fun listCollectionByIdHeader(idHeader: Int): Result<List<Collection>>
+    suspend fun updateCollection(id: Int, value: Double): EmptyResult
 }

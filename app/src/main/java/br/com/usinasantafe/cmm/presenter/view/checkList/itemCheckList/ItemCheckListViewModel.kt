@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
+import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureHandled
@@ -34,9 +35,12 @@ class ItemCheckListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ItemCheckListState())
     val uiState = _uiState.asStateFlow()
 
+    private val state get() = uiState.value
+
     private fun updateState(block: ItemCheckListState.() -> ItemCheckListState) {
         _uiState.update(block)
     }
+
 
     fun setCloseDialog()  = updateState { copy(flagDialog = false) }
 
@@ -51,10 +55,10 @@ class ItemCheckListViewModel @Inject constructor(
 
     fun ret() = viewModelScope.launch {
         runCatching {
-            if(uiState.value.pos == 1) return@launch
+            if(state.pos == 1) return@launch
             delLastRespItemCheckList().getOrThrow()
         }
-            .onSuccess { get(pos = uiState.value.pos - 1) }
+            .onSuccess { get(pos = state.pos - 1) }
             .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
@@ -62,12 +66,12 @@ class ItemCheckListViewModel @Inject constructor(
         viewModelScope.launch {
             runCatching {
                 val check = setRespItemCheckList(
-                    pos = uiState.value.pos,
-                    id = uiState.value.id,
+                    pos = state.pos,
+                    id = state.id,
                     option = option
                 ).getOrThrow()
                 if (check) {
-                    get(pos = uiState.value.pos + 1)
+                    get(pos = state.pos + 1)
                     return@launch
                 }
             }

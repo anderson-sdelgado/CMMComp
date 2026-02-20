@@ -18,6 +18,7 @@ import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,27 +65,21 @@ class TranshipmentViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(nroEquip = addTextField(nroEquip, text)) }
             TypeButton.CLEAN -> updateState { copy(nroEquip = clearTextField(nroEquip)) }
-            TypeButton.OK -> validateAndSet()
+            TypeButton.OK -> set()
             TypeButton.UPDATE -> {
                 viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
             }
         }
     }
 
-    private fun validateAndSet() {
-        if (state.nroEquip.isBlank()) {
-            updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
-            return
-        }
-        set()
-    }
-
     private fun set() = viewModelScope.launch {
         runCatching {
-            val check = hasEquipSecondary(uiState.value.nroEquip, TypeEquip.TRANSHIPMENT).getOrThrow()
-            if (check) {
-                setNroEquipTranshipment(uiState.value.nroEquip, uiState.value.flowApp).getOrThrow()
+            if (state.nroEquip.isBlank()) {
+                updateState { withFailure(getClassAndMethod(), Errors.FIELD_EMPTY) }
+                return@launch
             }
+            val check = hasEquipSecondary(uiState.value.nroEquip, TypeEquip.TRANSHIPMENT).getOrThrow()
+            if (check) setNroEquipTranshipment(uiState.value.nroEquip, uiState.value.flowApp).getOrThrow()
             check
         }
             .onSuccess { check ->

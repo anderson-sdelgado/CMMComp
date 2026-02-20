@@ -199,7 +199,24 @@ interface UiStateWithStatus<T> {
                 flagProgress
             )
         )
+
 }
+
+fun <T> UiStateWithStatus<T>.withFailure(
+    classAndMethod: String,
+    error: Errors = Errors.INVALID,
+    flagProgress: Boolean = false,
+    failure: String = ""
+): T =
+    copyWithStatus(
+        status.withFailure(
+            classAndMethod = classAndMethod,
+            message = failure.ifEmpty { failure(error) },
+            errors = error,
+            flagProgress = flagProgress
+        )
+    )
+
 
 fun <T : UiStateWithStatus<T>> Result<*>.onFailureUpdate(
     classAndMethod: String,

@@ -60,7 +60,7 @@ class PerformanceListViewModel @Inject constructor(
         runCatching {
             val check = checkClosePerformance().getOrThrow()
             if(!check) {
-                handleFailure(Errors.INVALID_CLOSE_PERFORMANCE, getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.INVALID_CLOSE_PERFORMANCE,  ::onError)
                 return@launch
             }
         }
