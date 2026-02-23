@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_PRE_CEC
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_PRE_CEC
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.result
@@ -19,7 +19,7 @@ class IPreCECSharedPreferencesDatasource @Inject constructor(
     override suspend fun get(): Result<PreCECSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val string = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_PRE_CEC,
+                BASE_SHARED_PREFERENCES_TABLE_PRE_CEC,
                 null
             )
             if(string.isNullOrEmpty()) return@result PreCECSharedPreferencesModel()
@@ -54,7 +54,7 @@ class IPreCECSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_PRE_CEC,
+                    BASE_SHARED_PREFERENCES_TABLE_PRE_CEC,
                     Gson().toJson(model)
                 )
             }

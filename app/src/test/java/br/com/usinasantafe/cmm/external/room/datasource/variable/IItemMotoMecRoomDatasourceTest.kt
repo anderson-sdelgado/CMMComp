@@ -64,7 +64,7 @@ class IItemMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                Unit
+                1
             )
             val listAfter = itemMotoMecDao.all()
             assertEquals(

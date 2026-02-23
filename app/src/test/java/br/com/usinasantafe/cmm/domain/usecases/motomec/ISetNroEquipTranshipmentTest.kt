@@ -45,7 +45,6 @@ class ISetNroEquipTranshipmentTest {
             )
         }
 
-
     @Test
     fun `Check return failure if have error in MotoMecRepository getIdActivityHeader - FlowApp TRANSHIPMENT`() =
         runTest {

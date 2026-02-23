@@ -1,10 +1,9 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.note.transhipment
+package br.com.usinasantafe.cmm.presenter.view.motomec.implement
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.transhipment.SetNroEquipTranshipment
+import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquipImplement
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -12,10 +11,11 @@ import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args
-import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentState
-import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentViewModel
+import br.com.usinasantafe.cmm.presenter.view.implement.ImplementState
+import br.com.usinasantafe.cmm.presenter.view.implement.ImplementViewModel
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.percentage
+import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
@@ -27,7 +27,7 @@ import org.mockito.kotlin.whenever
 import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
-class TranshipmentViewModelTest {
+class ImplementViewModelTest {
 
     @ExperimentalCoroutinesApi
     @get:Rule
@@ -35,18 +35,19 @@ class TranshipmentViewModelTest {
 
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val hasEquipSecondary = mock<HasEquipSecondary>()
-    private val setNroEquipTranshipment = mock<SetNroEquipTranshipment>()
+    private val setNroEquipImplement = mock<SetNroEquipImplement>()
+
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_APP_ARG to FlowApp.NOTE_WORK.ordinal,
+                Args.FLOW_APP_ARG to FlowApp.HEADER_INITIAL.ordinal,
             )
         )
-    ) = TranshipmentViewModel(
-        savedStateHandle,
+    ) = ImplementViewModel(
+        savedStateHandle = savedStateHandle,
         updateTableEquip = updateTableEquip,
         hasEquipSecondary = hasEquipSecondary,
-        setNroEquipTranshipment = setNroEquipTranshipment
+        setNroEquipImplement = setNroEquipImplement
     )
 
     @Test
@@ -79,7 +80,7 @@ class TranshipmentViewModelTest {
             assertEquals(result.count(), 2)
             assertEquals(
                 result[0],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
@@ -90,12 +91,12 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 result[1],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         errors = Errors.UPDATE,
                         flagDialog = true,
                         flagFailure = true,
-                        failure = "TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
+                        failure = "ImplementViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException",
                         currentProgress = 1f,
                     )
                 )
@@ -110,7 +111,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException"
+                "ImplementViewModel.setTextField -> ImplementViewModel.updateAllDatabase -> CleanEquip -> java.lang.NullPointerException"
             )
         }
 
@@ -149,7 +150,7 @@ class TranshipmentViewModelTest {
             assertEquals(result.count(), 4)
             assertEquals(
                 result[0],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
@@ -160,7 +161,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 result[1],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.CLEAN,
@@ -171,7 +172,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 result[2],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE,
@@ -182,7 +183,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 result[3],
-                TranshipmentState(
+                ImplementState(
                     status = UpdateStatusState(
                         flagDialog = true,
                         flagProgress = false,
@@ -266,7 +267,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.updateState -> TranshipmentViewModel.set -> Field Empty!"
+                "ImplementViewModel.setTextField -> ImplementViewModel.updateState -> ImplementViewModel.set -> Field Empty!"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -284,7 +285,7 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquip.TRANSHIPMENT
+                    TypeEquip.IMPLEMENT
                 )
             ).thenReturn(
                 resultFailure(
@@ -316,7 +317,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.set -> IHasEquipSecondary -> java.lang.Exception"
+                "ImplementViewModel.setTextField -> ImplementViewModel.set -> IHasEquipSecondary -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -334,7 +335,7 @@ class TranshipmentViewModelTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquip.TRANSHIPMENT
+                    TypeEquip.IMPLEMENT
                 )
             ).thenReturn(
                 Result.success(false)
@@ -367,24 +368,24 @@ class TranshipmentViewModelTest {
         }
 
     @Test
-    fun `setTextField - Check return failure if have error in usecase SetNroTranshipment`() =
+    fun `setTextField - Check return failure if have error in usecase SetNroEquipImplement`() =
         runTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquip.TRANSHIPMENT
+                    TypeEquip.IMPLEMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                setNroEquipTranshipment(
+                setNroEquipImplement(
                     nroEquip = "2200",
-                    flowApp = FlowApp.NOTE_WORK
+                    pos = 1
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "ISetNroTranshipment",
+                    context = "ISetNroEquipImplement",
                     message = "-",
                     cause = Exception()
                 )
@@ -412,7 +413,7 @@ class TranshipmentViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.status.failure,
-                "TranshipmentViewModel.setTextField -> TranshipmentViewModel.set -> ISetNroTranshipment -> java.lang.Exception"
+                "ImplementViewModel.setTextField -> ImplementViewModel.set -> ISetNroEquipImplement -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.status.flagProgress,
@@ -425,20 +426,20 @@ class TranshipmentViewModelTest {
         }
 
     @Test
-    fun `setTextField - Check access release if executed successfully`() =
+    fun `setTextField - Check add implement 1 if executed successfully`() =
         runTest {
             whenever(
                 hasEquipSecondary(
                     "2200",
-                    TypeEquip.TRANSHIPMENT
+                    TypeEquip.IMPLEMENT
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                setNroEquipTranshipment(
+                setNroEquipImplement(
                     nroEquip = "2200",
-                    flowApp = FlowApp.NOTE_WORK
+                    pos = 1
                 )
             ).thenReturn(
                 Result.success(Unit)
@@ -457,9 +458,392 @@ class TranshipmentViewModelTest {
                 false
             )
             assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.pos,
+                2
+            )
+            assertEquals(
+                viewModel.uiState.value.nroEquip,
+                ""
+            )
+        }
+
+    @Test
+    fun `setTextField - Check return if the screen is in implement 2`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "500",
+                TypeButton.NUMERIC
+            )
+            viewModel.ret()
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.pos,
+                1
+            )
+            assertEquals(
+                viewModel.uiState.value.nroEquip,
+                ""
+            )
+        }
+
+    @Test
+    fun `setTextField - Check return access if implement 2 is null`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                false
+            )
+            assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
             )
         }
+
+
+    @Test
+    fun `setTextField - Check return failure if have error in usecase HasEquipSecondary and implement 2`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                hasEquipSecondary(
+                    "700",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+            resultFailure(
+                    context = "IHasEquipSecondary",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "700",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.errors,
+                Errors.EXCEPTION
+            )
+            assertEquals(
+                viewModel.uiState.value.status.failure,
+                "ImplementViewModel.setTextField -> ImplementViewModel.set -> IHasEquipSecondary -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagProgress,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+        }
+
+    @Test
+    fun `setTextField - Check return false if not have reg in table and implement 2`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                hasEquipSecondary(
+                    "700",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "700",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.errors,
+                Errors.INVALID
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+        }
+
+    @Test
+    fun `setTextField - Check return failure if have error in usecase SetNroEquipImplement and implement 2`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                hasEquipSecondary(
+                    "700",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "700",
+                    pos = 2
+                )
+            ).thenReturn(
+                resultFailure(
+                    context = "ISetNroEquipImplement",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "700",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagFailure,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.status.errors,
+                Errors.EXCEPTION
+            )
+            assertEquals(
+                viewModel.uiState.value.status.failure,
+                "ImplementViewModel.setTextField -> ImplementViewModel.set -> ISetNroEquipImplement -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagProgress,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                false
+            )
+        }
+
+    @Test
+    fun `setTextField - Check access if add implement 2 is executed successfully`() =
+        runTest {
+            whenever(
+                hasEquipSecondary(
+                    "2200",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "2200",
+                    pos = 1
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                hasEquipSecondary(
+                    "700",
+                    TypeEquip.IMPLEMENT
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                setNroEquipImplement(
+                    nroEquip = "700",
+                    pos = 2
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            val viewModel = createViewModel()
+            viewModel.setTextField(
+                "2200",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            viewModel.setTextField(
+                "700",
+                TypeButton.NUMERIC
+            )
+            viewModel.setTextField(
+                "OK",
+                TypeButton.OK
+            )
+            assertEquals(
+                viewModel.uiState.value.status.flagDialog,
+                false
+            )
+            assertEquals(
+                viewModel.uiState.value.flagAccess,
+                true
+            )
+        }
+
 
 }

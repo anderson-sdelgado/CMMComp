@@ -27,7 +27,7 @@ class ISaveNote @Inject constructor(
             val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
             val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
 
-            motoMecRepository.saveNote(idHeader, nroOS, idActivity).getOrThrow()
+            val id = motoMecRepository.saveNote(idHeader, nroOS, idActivity).getOrThrow()
 
             val checkPerformance = functionActivityRepository.hasByIdAndType(
                 idActivity = idActivity,
@@ -42,6 +42,8 @@ class ISaveNote @Inject constructor(
             ).getOrThrow()
 
             if(checkCollection) fertigationRepository.initialCollection(nroOS, idHeader).getOrThrow()
+
+            motoMecRepository.saveImplement(id).getOrThrow()
 
         }
 

@@ -44,4 +44,8 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindEquipSharedPreferencesDatasource(dataSource: IEquipSharedPreferencesDatasource): EquipSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindImplementSharedPreferencesDatasource(dataSource: IImplementSharedPreferencesDatasource): ImplementSharedPreferencesDatasource
+
 }

@@ -15,17 +15,17 @@ import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
-class ITrailerSharedPreferencesDatasourceTest {
+class IImplementSharedPreferencesDatasourceTest {
 
     private lateinit var context: Context
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var datasource: ITrailerSharedPreferencesDatasource
+    private lateinit var datasource: IImplementSharedPreferencesDatasource
 
     @Before
     fun setup() {
         context = ApplicationProvider.getApplicationContext()
         sharedPreferences = context.getSharedPreferences("test", Context.MODE_PRIVATE)
-        datasource = ITrailerSharedPreferencesDatasource(sharedPreferences)
+        datasource = IImplementSharedPreferencesDatasource(sharedPreferences)
     }
 
     @Test

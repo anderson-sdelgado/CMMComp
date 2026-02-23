@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.TrailerSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ImplementSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -46,8 +46,8 @@ class IHasCouplingTrailerTest {
     fun check_return_true_if_have_data() =
         runTest {
             trailerSharedPreferencesDatasource.add(
-                TrailerSharedPreferencesModel(
-                    idEquip = 1,
+                ImplementSharedPreferencesModel(
+                    nroEquip = 1,
                     pos = 1
                 )
             )

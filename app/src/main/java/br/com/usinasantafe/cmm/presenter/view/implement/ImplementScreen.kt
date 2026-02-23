@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.implement
+package br.com.usinasantafe.cmm.presenter.view.implement
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column

@@ -7,7 +7,7 @@ import androidx.work.WorkManager
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import br.com.usinasantafe.cmm.lib.BASE_DB
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -95,7 +95,7 @@ object PersistenceModule {
     @Singleton
     @Provides
     fun provideSharedPreferences(@ApplicationContext appContext: Context): SharedPreferences {
-        return appContext.getSharedPreferences(BASE_SHARE_PREFERENCES, Context.MODE_PRIVATE)
+        return appContext.getSharedPreferences(BASE_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     }
 
     @Provides

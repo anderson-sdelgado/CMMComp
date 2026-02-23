@@ -1,17 +1,18 @@
 package br.com.usinasantafe.cmm.lib
 
-const val BASE_SHARE_PREFERENCES = "cmm"
+const val BASE_SHARED_PREFERENCES = "cmm"
 const val BASE_DB = "cmm.db"
 const val VERSION_DB = 999
 
-const val BASE_SHARE_PREFERENCES_TABLE_CONFIG = "config"
-const val BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
-const val BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC = "note_moto_mec"
-const val BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST = "header_check_list"
-const val BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST = "resp_item_check_list_list"
-const val BASE_SHARE_PREFERENCES_TABLE_PRE_CEC = "pre_cec"
-const val BASE_SHARE_PREFERENCES_TABLE_TRAILER_LIST = "trailer_list"
-const val BASE_SHARE_PREFERENCES_TABLE_EQUIP = "equip"
+const val BASE_SHARED_PREFERENCES_TABLE_CONFIG = "config"
+const val BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
+const val BASE_SHARED_PREFERENCES_TABLE_NOTE_MOTO_MEC = "note_moto_mec"
+const val BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST = "header_check_list"
+const val BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST = "resp_item_check_list_list"
+const val BASE_SHARED_PREFERENCES_TABLE_PRE_CEC = "pre_cec"
+const val BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST = "trailer_list"
+const val BASE_SHARED_PREFERENCES_TABLE_EQUIP = "equip"
+const val BASE_SHARED_PREFERENCES_TABLE_IMPLEMENT_LIST = "implement_list"
 
 
 
@@ -41,6 +42,7 @@ const val TB_INPUT_COMPOSTING = "tb_input_composting"
 const val TB_COMPOUND_COMPOSTING = "tb_compound_composting"
 const val TB_PERFORMANCE = "tb_performance"
 const val TB_COLLECTION = "tb_collection"
+const val TB_IMPLEMENT = "tb_implement"
 
 
 const val WEB_ALL_ACTIVITY = "activity.php"

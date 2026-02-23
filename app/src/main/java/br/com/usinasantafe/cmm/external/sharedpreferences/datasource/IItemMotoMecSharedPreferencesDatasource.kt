@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_NOTE_MOTO_MEC
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun get(): Result<ItemMotoMecSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val noteMotoMec = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                BASE_SHARED_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                 null
             )
             if(noteMotoMec.isNullOrEmpty()) return@result ItemMotoMecSharedPreferencesModel()
@@ -32,7 +32,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                    BASE_SHARED_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                     Gson().toJson(model)
                 )
             }
@@ -49,7 +49,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_NOTE_MOTO_MEC,
+                    BASE_SHARED_PREFERENCES_TABLE_NOTE_MOTO_MEC,
                     null
                 )
             }

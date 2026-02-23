@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import com.google.gson.Gson
@@ -19,7 +19,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
     override suspend fun get(): Result<HeaderMotoMecSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val json = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                 null
             )
             if(json.isNullOrEmpty()) return@result HeaderMotoMecSharedPreferencesModel()
@@ -33,7 +33,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                    BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                     Gson().toJson(model)
                 )
             }
@@ -97,7 +97,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_HEADER_MOTO_MEC,
+                    BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC,
                     null
                 )
             }

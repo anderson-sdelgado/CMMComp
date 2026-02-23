@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
@@ -34,7 +35,7 @@ interface MotoMecRepository {
         idHeader: Int,
         nroOS: Int,
         idActivity: Int,
-    ): EmptyResult
+    ): Result<Int>
     suspend fun setIdStop(id: Int): EmptyResult
     suspend fun hasNoteByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun send(
@@ -47,4 +48,6 @@ interface MotoMecRepository {
         idStop: Int
     ): Result<Boolean>
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
+    suspend fun setNroEquipImplement(entity: Implement): EmptyResult
+    suspend fun saveImplement(idItem: Int): EmptyResult
 }

@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 import android.content.SharedPreferences
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_CONFIG
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_CONFIG
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -21,7 +21,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun get(): Result<ConfigSharedPreferencesModel?> =
         result(getClassAndMethod()) {
             val config = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_CONFIG,
+                BASE_SHARED_PREFERENCES_TABLE_CONFIG,
                 null
             )
             if(config.isNullOrEmpty()) return@result null
@@ -34,7 +34,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun has(): Result<Boolean> =
         result(getClassAndMethod()) {
             val result = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_CONFIG,
+                BASE_SHARED_PREFERENCES_TABLE_CONFIG,
                 null
             )
             result != null
@@ -44,7 +44,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_CONFIG,
+                    BASE_SHARED_PREFERENCES_TABLE_CONFIG,
                     Gson().toJson(model)
                 )
             }

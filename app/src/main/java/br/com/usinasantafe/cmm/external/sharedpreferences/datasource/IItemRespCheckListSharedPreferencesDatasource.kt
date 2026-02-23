@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemRespCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.RespItemCheckListSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.result
@@ -26,7 +26,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
             mutableList.add(model)
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                     Gson().toJson(mutableList, typeToken)
                 )
             }
@@ -37,7 +37,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                     null
                 )
             }
@@ -46,7 +46,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
     override suspend fun list(): Result<List<RespItemCheckListSharedPreferencesModel>> =
         result(getClassAndMethod()) {
             val result = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
+                BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                 null
             )
             if(result.isNullOrEmpty()) return@result emptyList()
@@ -62,7 +62,7 @@ class IItemRespCheckListSharedPreferencesDatasource @Inject constructor(
             mutableList.removeAt(count - 1)
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_RESP_ITEM_CHECK_LIST_LIST,
                     Gson().toJson(mutableList, typeToken)
                 )
             }

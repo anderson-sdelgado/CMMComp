@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderCheckListSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderCheckListSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.result
@@ -18,7 +18,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
     override suspend fun get(): Result<HeaderCheckListSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val model = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,
+                BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST,
                 null
             )
             if(model.isNullOrEmpty()) return@result HeaderCheckListSharedPreferencesModel()
@@ -32,7 +32,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST,
                     Gson().toJson(model)
                 )
             }
@@ -42,7 +42,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,
+                    BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST,
                     null
                 )
             }
@@ -51,7 +51,7 @@ class IHeaderCheckListSharedPreferencesDatasource @Inject constructor(
     override suspend fun hasOpen(): Result<Boolean> =
         result(getClassAndMethod()) {
             val model = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_HEADER_CHECK_LIST,
+                BASE_SHARED_PREFERENCES_TABLE_HEADER_CHECK_LIST,
                 null
             )
             !model.isNullOrEmpty()

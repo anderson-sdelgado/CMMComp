@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.utils.EmptyResult
 
 interface ItemMotoMecRoomDatasource {
-    suspend fun save(itemMotoMecRoomModel: ItemMotoMecRoomModel): EmptyResult
+    suspend fun save(itemMotoMecRoomModel: ItemMotoMecRoomModel): Result<Long>
     suspend fun hasByIdHeader(idHeader: Int): Result<Boolean>
     suspend fun listByIdHeaderAndSend(idHeader: Int): Result<List<ItemMotoMecRoomModel>>
     suspend fun setSentNote(

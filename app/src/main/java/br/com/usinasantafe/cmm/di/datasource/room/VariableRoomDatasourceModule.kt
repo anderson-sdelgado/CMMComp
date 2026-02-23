@@ -48,4 +48,8 @@ interface VariableRoomDatasourceModule {
     @Singleton
     fun bindCollectionRoomDatasource(dataSource: ICollectionRoomDatasource): CollectionRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindImplementRoomDatasource(dataSource: IImplementRoomDatasource): ImplementRoomDatasource
+
 }

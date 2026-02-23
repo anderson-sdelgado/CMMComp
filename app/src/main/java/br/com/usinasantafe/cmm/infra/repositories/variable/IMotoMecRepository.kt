@@ -1,16 +1,20 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.ImplementRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ImplementSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.entityToRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.variable.roomModelToSharedPreferences
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowComposting
@@ -25,7 +29,9 @@ class IMotoMecRepository @Inject constructor(
     private val headerMotoMecRoomDatasource: HeaderMotoMecRoomDatasource,
     private val itemMotoMecSharedPreferencesDatasource: ItemMotoMecSharedPreferencesDatasource,
     private val itemMotoMecRoomDatasource: ItemMotoMecRoomDatasource,
-    private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource
+    private val motoMecRetrofitDatasource: MotoMecRetrofitDatasource,
+    private val implementSharedPreferencesDatasource: ImplementSharedPreferencesDatasource,
+    private val implementRoomDatasource: ImplementRoomDatasource
 ): MotoMecRepository {
 
     override suspend fun refreshHeaderOpen(): EmptyResult =
@@ -150,7 +156,7 @@ class IMotoMecRepository @Inject constructor(
         idHeader: Int,
         nroOS: Int,
         idActivity: Int
-    ): EmptyResult =
+    ): Result<Int> =
         call(getClassAndMethod()) {
             val modelSharedPreferences = itemMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
@@ -159,8 +165,9 @@ class IMotoMecRepository @Inject constructor(
             }.getOrElse { e ->
                 throw Exception(entity::entityToRoomModel.name, e)
             }
-            itemMotoMecRoomDatasource.save(modelRoom).getOrThrow()
+            val id = itemMotoMecRoomDatasource.save(modelRoom).getOrThrow().toInt()
             headerMotoMecRoomDatasource.setSend(idHeader).getOrThrow()
+            id
         }
 
     override suspend fun setIdStop(id: Int): EmptyResult =
@@ -222,6 +229,21 @@ class IMotoMecRepository @Inject constructor(
     override suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec> =
         call(getClassAndMethod()) {
             itemMotoMecRoomDatasource.getLastByIdHeader(idHeader).getOrThrow().roomModelToEntity()
+        }
+
+    override suspend fun setNroEquipImplement(entity: Implement): EmptyResult =
+        call(getClassAndMethod()) {
+            if(entity.pos == 1) implementSharedPreferencesDatasource.clean().getOrThrow()
+            implementSharedPreferencesDatasource.add(entity.entityToSharedPreferencesModel()).getOrThrow()
+        }
+
+    override suspend fun saveImplement(idItem: Int): EmptyResult =
+        call(getClassAndMethod()) {
+            val modelSharedPreferencesList = implementSharedPreferencesDatasource.list().getOrThrow()
+            val modelRoomList = modelSharedPreferencesList.map { it.sharedPreferencesModelToEntity() }.map{ it.entityToRoomModel(idItem) }
+            for(modelRoom in modelRoomList){
+                implementRoomDatasource.save(modelRoom).getOrThrow()
+            }
         }
 
 }

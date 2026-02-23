@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARE_PREFERENCES_TABLE_EQUIP
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_EQUIP
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -19,7 +19,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
     suspend fun get(): Result<EquipSharedPreferencesModel?> =
         result(getClassAndMethod()) {
             val string = sharedPreferences.getString(
-                BASE_SHARE_PREFERENCES_TABLE_EQUIP,
+                BASE_SHARED_PREFERENCES_TABLE_EQUIP,
                 null
             )
             if(string.isNullOrEmpty())
@@ -34,7 +34,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             sharedPreferences.edit {
                 putString(
-                    BASE_SHARE_PREFERENCES_TABLE_EQUIP,
+                    BASE_SHARED_PREFERENCES_TABLE_EQUIP,
                     Gson().toJson(model)
                 )
             }

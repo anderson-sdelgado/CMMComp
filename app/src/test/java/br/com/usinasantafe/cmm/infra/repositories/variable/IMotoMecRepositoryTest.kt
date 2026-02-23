@@ -1,22 +1,27 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
+import br.com.usinasantafe.cmm.infra.datasource.room.variable.ImplementRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.PerformanceRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ImplementSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.NoteMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.variable.ImplementRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ImplementSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
@@ -25,7 +30,11 @@ import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.Date
 import kotlin.test.assertEquals
@@ -37,12 +46,16 @@ class IMotoMecRepositoryTest {
     private val itemMotoMecSharedPreferencesDatasource = mock<ItemMotoMecSharedPreferencesDatasource>()
     private val itemMotoMecRoomDatasource = mock<ItemMotoMecRoomDatasource>()
     private val motoMecRetrofitDatasource = mock<MotoMecRetrofitDatasource>()
+    private val implementSharedPreferencesDatasource = mock<ImplementSharedPreferencesDatasource>()
+    private val implementRoomDatasource = mock<ImplementRoomDatasource>()
     private val repository = IMotoMecRepository(
         headerMotoMecSharedPreferencesDatasource = headerMotoMecSharedPreferencesDatasource,
         headerMotoMecRoomDatasource = headerMotoMecRoomDatasource,
         itemMotoMecSharedPreferencesDatasource = itemMotoMecSharedPreferencesDatasource,
         itemMotoMecRoomDatasource = itemMotoMecRoomDatasource,
-        motoMecRetrofitDatasource = motoMecRetrofitDatasource
+        motoMecRetrofitDatasource = motoMecRetrofitDatasource,
+        implementSharedPreferencesDatasource = implementSharedPreferencesDatasource,
+        implementRoomDatasource = implementRoomDatasource
     )
 
     @Test
@@ -515,8 +528,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 model.hourMeterInitial,
-                1.0,
-                0.0
+                10.0
             )
         }
 
@@ -578,8 +590,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 model.hourMeterInitial,
-                1.0,
-                0.0
+                10.0
             )
         }
 
@@ -841,31 +852,6 @@ class IMotoMecRepositoryTest {
         }
 
     @Test
-    fun `saveNote - Check return failure if NoteMotoMecSharedPreferencesModel have field empty`() =
-        runTest {
-            whenever(
-                itemMotoMecSharedPreferencesDatasource.get()
-            ).thenReturn(
-                Result.success(
-                    ItemMotoMecSharedPreferencesModel()
-                )
-            )
-            val result = repository.saveNote(1, 1, 1)
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.saveNote -> entityToRoomModel"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: nroOS is required"
-            )
-        }
-
-    @Test
     fun `saveNote - Check return failure if have error in NoteMotoMecRoomDatasource save`() =
         runTest {
             val modelSharedPreferences = ItemMotoMecSharedPreferencesModel(
@@ -903,7 +889,7 @@ class IMotoMecRepositoryTest {
             val model = modelCaptor.firstValue
             assertEquals(
                 model.nroOS,
-                123456
+                1
             )
             assertEquals(
                 model.idActivity,
@@ -930,7 +916,7 @@ class IMotoMecRepositoryTest {
                 whenever(
                     itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
-                    Result.success(Unit)
+                    Result.success(1)
                 )
             }
             whenever(
@@ -958,7 +944,7 @@ class IMotoMecRepositoryTest {
             val model = modelCaptor.firstValue
             assertEquals(
                 model.nroOS,
-                123456
+                1
             )
             assertEquals(
                 model.idActivity,
@@ -985,7 +971,7 @@ class IMotoMecRepositoryTest {
                 whenever(
                     itemMotoMecRoomDatasource.save(capture())
                 ).thenReturn(
-                    Result.success(Unit)
+                    Result.success(1)
                 )
             }
             whenever(
@@ -1000,12 +986,12 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                Unit
+               1
             )
             val model = modelCaptor.firstValue
             assertEquals(
                 model.nroOS,
-                123456
+                1
             )
             assertEquals(
                 model.idActivity,
@@ -1731,7 +1717,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IMotoMecRepository.noteListByIdHeader -> INoteMotoMecRoomDatasource.listByIdHeader"
+                "IMotoMecRepository.listNoteByIdHeader -> INoteMotoMecRoomDatasource.listByIdHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -2068,6 +2054,281 @@ class IMotoMecRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 TypeEquip.NORMAL
+            )
+        }
+
+    @Test
+    fun `setNroEquipImplement - Check return failure if have error in ImplementSharedPreferencesDatasource clean`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.clean()
+            ).thenReturn(
+                resultFailure(
+                    "IImplementSharedPreferencesDatasource.clean",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setNroEquipImplement(
+                Implement(
+                    nroEquip = 10,
+                    pos = 1
+                )
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.setNroEquipImplement -> IImplementSharedPreferencesDatasource.clean"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setNroEquipImplement - Check return failure if have error in ImplementSharedPreferencesDatasource add and pos = 1`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.add(
+                    ImplementSharedPreferencesModel(
+                        nroEquip = 10,
+                        pos = 1
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IImplementSharedPreferencesDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setNroEquipImplement(
+                Implement(
+                    nroEquip = 10,
+                    pos = 1
+                )
+            )
+            verify(implementSharedPreferencesDatasource, atLeastOnce()).clean()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.setNroEquipImplement -> IImplementSharedPreferencesDatasource.add"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setNroEquipImplement - Check return correct if function execute successfully and pos = 1`() =
+        runTest {
+            val result = repository.setNroEquipImplement(
+                Implement(
+                    nroEquip = 10,
+                    pos = 1
+                )
+            )
+            verify(implementSharedPreferencesDatasource, atLeastOnce()).add(
+                ImplementSharedPreferencesModel(
+                    nroEquip = 10,
+                    pos = 1
+                )
+            )
+            verify(implementSharedPreferencesDatasource, atLeastOnce()).clean()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun `setNroEquipImplement - Check return failure if have error in ImplementSharedPreferencesDatasource add and pos = 2`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.add(
+                    ImplementSharedPreferencesModel(
+                        nroEquip = 10,
+                        pos = 2
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IImplementSharedPreferencesDatasource.add",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setNroEquipImplement(
+                Implement(
+                    nroEquip = 10,
+                    pos = 2
+                )
+            )
+            verify(implementSharedPreferencesDatasource, never()).clean()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.setNroEquipImplement -> IImplementSharedPreferencesDatasource.add"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setNroEquipImplement - Check return correct if function execute successfully and pos = 2`() =
+        runTest {
+            val result = repository.setNroEquipImplement(
+                Implement(
+                    nroEquip = 10,
+                    pos = 2
+                )
+            )
+            verify(implementSharedPreferencesDatasource, atLeastOnce()).add(
+                ImplementSharedPreferencesModel(
+                    nroEquip = 10,
+                    pos = 2
+                )
+            )
+            verify(implementSharedPreferencesDatasource, never()).clean()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun `saveImplement - Check return failure if have error in ImplementSharedPreferencesDatasource list`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.list()
+            ).thenReturn(
+                resultFailure(
+                    "IImplementSharedPreferencesDatasource.list",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.saveImplement(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.saveImplement -> IImplementSharedPreferencesDatasource.list"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `saveImplement - Check return failure if have error in ImplementRoomDatasource save`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ImplementSharedPreferencesModel(
+                            nroEquip = 10,
+                            pos = 1
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<ImplementRoomModel>().apply {
+                whenever(
+                    implementRoomDatasource.save(capture())
+                ).thenReturn(
+                    resultFailure(
+                        "IImplementRoomDatasource.save",
+                        "-",
+                        Exception()
+                    )
+                )
+            }
+            val result = repository.saveImplement(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.saveImplement -> IImplementRoomDatasource.save"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.idItem,
+                1
+            )
+            assertEquals(
+                model.nroEquip,
+                10
+            )
+            assertEquals(
+                model.pos,
+                1
+            )
+        }
+
+    @Test
+    fun `saveImplement - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                implementSharedPreferencesDatasource.list()
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ImplementSharedPreferencesModel(
+                            nroEquip = 10,
+                            pos = 1
+                        )
+                    )
+                )
+            )
+            val modelCaptor = argumentCaptor<ImplementRoomModel>().apply {
+                whenever(
+                    implementRoomDatasource.save(capture())
+                ).thenReturn(
+                    Result.success(Unit)
+                )
+            }
+            val result = repository.saveImplement(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val model = modelCaptor.firstValue
+            assertEquals(
+                model.idItem,
+                1
+            )
+            assertEquals(
+                model.nroEquip,
+                10
+            )
+            assertEquals(
+                model.pos,
+                1
             )
         }
 

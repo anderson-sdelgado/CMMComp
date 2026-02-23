@@ -13,7 +13,7 @@ class IItemMotoMecRoomDatasource @Inject constructor(
     private val itemMotoMecDao: ItemMotoMecDao
 ): ItemMotoMecRoomDatasource {
 
-    override suspend fun save(itemMotoMecRoomModel: ItemMotoMecRoomModel): EmptyResult =
+    override suspend fun save(itemMotoMecRoomModel: ItemMotoMecRoomModel): Result<Long> =
         result(getClassAndMethod()) {
             itemMotoMecDao.insert(itemMotoMecRoomModel)
         }

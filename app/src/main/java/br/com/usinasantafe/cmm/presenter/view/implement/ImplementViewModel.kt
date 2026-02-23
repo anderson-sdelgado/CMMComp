@@ -1,10 +1,10 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.implement
+package br.com.usinasantafe.cmm.presenter.view.implement
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroEquipImplement
+import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquipImplement
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -13,12 +13,10 @@ import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
-import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
-import br.com.usinasantafe.cmm.utils.handleFailure
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import br.com.usinasantafe.cmm.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -77,7 +75,7 @@ class ImplementViewModel @Inject constructor(
     }
 
     fun ret() = viewModelScope.launch {
-        updateState { copy(pos = 1) }
+        updateState { copy(pos = 1, nroEquip = "") }
     }
 
     private fun set() = viewModelScope.launch {
@@ -92,9 +90,8 @@ class ImplementViewModel @Inject constructor(
                 }
             }
             val check = hasEquipSecondary(state.nroEquip, TypeEquip.IMPLEMENT).getOrThrow()
-            if(check) {
-                setNroEquipImplement(state.nroEquip, state.pos).getOrThrow()
-            }
+            if(!check) return@runCatching false
+            setNroEquipImplement(state.nroEquip, state.pos).getOrThrow()
             if(state.pos == 1) {
                 updateState { copy(pos = 2, nroEquip = "") }
                 return@launch

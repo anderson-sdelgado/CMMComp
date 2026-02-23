@@ -65,4 +65,11 @@ object VariableRoomModule {
     fun provideCollection(database: DatabaseRoom): CollectionDao {
         return database.collectionDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideImplement(database: DatabaseRoom): ImplementDao {
+        return database.implementDao()
+    }
+
 }

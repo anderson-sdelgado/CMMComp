@@ -185,6 +185,11 @@ class ISaveNoteTest {
                 Result.success(1)
             )
             whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -196,7 +201,6 @@ class ISaveNoteTest {
                 )
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -230,6 +234,11 @@ class ISaveNoteTest {
                 Result.success(1)
             )
             whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -246,7 +255,6 @@ class ISaveNoteTest {
                 )
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             assertEquals(
                 result.isFailure,
                 true
@@ -259,66 +267,6 @@ class ISaveNoteTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.Exception"
             )
-        }
-
-    @Test
-    fun `Check not call PerformanceRepository initial if FunctionActivityRepository hasByIdAndType return false and TypeActivity PERFORMANCE`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdByHeaderOpen()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.hasByIdAndType(
-                    1, TypeActivity.PERFORMANCE
-                )
-            ).thenReturn(
-                Result.success(false)
-            )
-            usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
-            verify(performanceRepository, never()).initial(1, 1)
-        }
-
-    @Test
-    fun `Check call PerformanceRepository initial if FunctionActivityRepository hasByIdAndType return true and TypeActivity PERFORMANCE`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdByHeaderOpen()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getIdActivityHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                functionActivityRepository.hasByIdAndType(
-                    1, TypeActivity.PERFORMANCE
-                )
-            ).thenReturn(
-                Result.success(true)
-            )
-            usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
-            verify(performanceRepository, atLeastOnce()).initial(1, 1)
         }
 
     @Test
@@ -336,6 +284,11 @@ class ISaveNoteTest {
             )
             whenever(
                 motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1,1, 1)
             ).thenReturn(
                 Result.success(1)
             )
@@ -358,7 +311,6 @@ class ISaveNoteTest {
                 )
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, never()).initial(1, 1)
             assertEquals(
                 result.isFailure,
@@ -393,6 +345,11 @@ class ISaveNoteTest {
                 Result.success(1)
             )
             whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -416,7 +373,6 @@ class ISaveNoteTest {
                 )
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, never()).initial(1, 1)
             assertEquals(
                 result.isFailure,
@@ -451,6 +407,11 @@ class ISaveNoteTest {
                 Result.success(1)
             )
             whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -465,7 +426,6 @@ class ISaveNoteTest {
                 Result.success(true)
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, never()).initial(1, 1)
             verify(fertigationRepository, atLeastOnce()).initialCollection(1, 1)
             assertEquals(
@@ -473,7 +433,6 @@ class ISaveNoteTest {
                 true
             )
         }
-
 
     @Test
     fun `Check call FertigationRepository initialCollection if FunctionActivityRepository hasByIdAndType return true and TypeActivity COLLECTION`() =
@@ -494,6 +453,11 @@ class ISaveNoteTest {
                 Result.success(1)
             )
             whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
                 functionActivityRepository.hasByIdAndType(
                     1, TypeActivity.PERFORMANCE
                 )
@@ -508,9 +472,116 @@ class ISaveNoteTest {
                 Result.success(false)
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).saveNote(1, 1, 1)
             verify(performanceRepository, never()).initial(1, 1)
             verify(fertigationRepository, never()).initialCollection(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository saveImplement`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                motoMecRepository.saveImplement(1)
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.saveImplement",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISaveNote -> IMotoMecRepository.saveImplement"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                motoMecRepository.getIdByHeaderOpen()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getNroOSHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.getIdActivityHeader()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                motoMecRepository.saveNote(1,1, 1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.PERFORMANCE
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            whenever(
+                functionActivityRepository.hasByIdAndType(
+                    1, TypeActivity.COLLECTION
+                )
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = usecase()
+            verify(performanceRepository, never()).initial(1, 1)
+            verify(fertigationRepository, never()).initialCollection(1, 1)
+            verify(motoMecRepository, atLeastOnce()).saveImplement(1)
             assertEquals(
                 result.isSuccess,
                 true

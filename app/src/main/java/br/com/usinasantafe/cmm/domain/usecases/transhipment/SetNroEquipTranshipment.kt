@@ -30,7 +30,6 @@ class ISetNroEquipTranshipment @Inject constructor(
             }.getOrElse { e ->
                 throw Exception(::toLong.name, e)
             }
-
             motoMecRepository.setNroEquipTranshipmentNote(nroEquipLong).getOrThrow()
             saveNote().getOrThrow()
 
