@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
+import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdate
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.lib.Errors
@@ -25,10 +25,10 @@ class QuestionUpdateCheckListViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val checkUpdateCheckList = mock<CheckUpdateCheckList>()
+    private val checkUpdate = mock<CheckUpdate>()
     private val updateTableItemCheckListByNroEquip = mock<UpdateTableItemCheckListByNroEquip>()
     private val viewModel = QuestionUpdateCheckListViewModel(
-        checkUpdateCheckList = checkUpdateCheckList,
+        checkUpdate = checkUpdate,
         updateTableItemCheckListByNroEquip = updateTableItemCheckListByNroEquip
     )
 
@@ -36,7 +36,7 @@ class QuestionUpdateCheckListViewModelTest {
     fun `checkUpdate - Check return failure if have error in CheckUpdateCheckList`() =
         runTest {
             whenever(
-                checkUpdateCheckList()
+                checkUpdate()
             ).thenReturn(
                 resultFailure(
                     context = "CheckUpdateCheckList",
@@ -44,7 +44,7 @@ class QuestionUpdateCheckListViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.checkUpdate()
+            viewModel.check()
             assertEquals(
                 viewModel.uiState.value.status.flagDialog,
                 true
@@ -63,11 +63,11 @@ class QuestionUpdateCheckListViewModelTest {
     fun `checkUpdate - Check return false if CheckUpdateCheckList return true`() =
         runTest {
             whenever(
-                checkUpdateCheckList()
+                checkUpdate()
             ).thenReturn(
                 Result.success(true)
             )
-            viewModel.checkUpdate()
+            viewModel.check()
             assertEquals(
                 viewModel.uiState.value.flagCheckUpdate,
                 false

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquipImplement
+import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -45,7 +45,7 @@ class ImplementViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val updateTableEquip: UpdateTableEquip,
     private val hasEquipSecondary: HasEquipSecondary,
-    private val setNroEquipImplement: SetNroEquipImplement
+    private val setNroEquip: SetNroEquip
 ) : ViewModel() {
 
     private val flowApp: Int = savedStateHandle[FLOW_APP_ARG]!!
@@ -91,7 +91,7 @@ class ImplementViewModel @Inject constructor(
             }
             val check = hasEquipSecondary(state.nroEquip, TypeEquip.IMPLEMENT).getOrThrow()
             if(!check) return@runCatching false
-            setNroEquipImplement(state.nroEquip, state.pos).getOrThrow()
+            setNroEquip(state.nroEquip, state.pos).getOrThrow()
             if(state.pos == 1) {
                 updateState { copy(pos = 2, nroEquip = "") }
                 return@launch

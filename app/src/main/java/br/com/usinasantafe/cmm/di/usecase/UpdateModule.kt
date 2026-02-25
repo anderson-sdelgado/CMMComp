@@ -66,4 +66,13 @@ interface UpdateModule {
     @Binds
     @Singleton
     fun bindUpdateTablePressure(usecase: IUpdateTablePressure): UpdateTablePressure
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableComponent(usecase: IUpdateTableComponent): UpdateTableComponent
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableService(usecase: IUpdateTableService): UpdateTableService
+
 }

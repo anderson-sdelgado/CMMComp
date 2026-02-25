@@ -13,6 +13,6 @@ interface ImplementModule {
 
     @Binds
     @Singleton
-    fun bindSetNroEquipImplement(usecase: ISetNroEquipImplement): SetNroEquipImplement
+    fun bindSetNroEquipImplement(usecase: ISetNroEquip): SetNroEquip
 
 }

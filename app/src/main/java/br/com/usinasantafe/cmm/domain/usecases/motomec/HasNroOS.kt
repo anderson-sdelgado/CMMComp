@@ -8,6 +8,9 @@ import br.com.usinasantafe.cmm.utils.CheckNetwork
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.stringToDouble
+import br.com.usinasantafe.cmm.utils.tryCatch
+import com.google.common.primitives.UnsignedBytes.toInt
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 import kotlin.onFailure
@@ -36,14 +39,17 @@ class IHasNroOS @Inject constructor(
                 rOSActivityRepository.deleteAll().getOrThrow()
                 osRepository.deleteAll().getOrThrow()
             }
-            val checkNroOS = osRepository.hasByNroOS(nroOS = nroOS.toInt()).getOrThrow()
+            val nroOSInt = tryCatch(::toInt.name) {
+                nroOS.toInt()
+            }
+            val checkNroOS = osRepository.hasByNroOS(nroOS = nroOSInt).getOrThrow()
             if(checkNroOS) return@call true
             if(!checkNetwork.isConnected()) {
                 motoMecRepository.setStatusConHeader(false).getOrThrow()
                 return@call true
             }
             val token = getToken().getOrThrow()
-            val resultGetListOSWeb = osRepository.listByNroOS(token, nroOS.toInt())
+            val resultGetListOSWeb = osRepository.listByNroOS(token, nroOSInt)
             resultGetListOSWeb.onFailure {
                 if (it.cause is SocketTimeoutException) {
                     motoMecRepository.setStatusConHeader(false).getOrThrow()
@@ -55,7 +61,7 @@ class IHasNroOS @Inject constructor(
             if(osList.isEmpty()) return@call false
             val resultGetListROSActivity = rOSActivityRepository.listByNroOS(
                 token = token,
-                nroOS = nroOS.toInt()
+                nroOS = nroOSInt
             )
             resultGetListROSActivity.onFailure {
                 if (it.cause is SocketTimeoutException) {

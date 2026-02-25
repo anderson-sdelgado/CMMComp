@@ -49,7 +49,7 @@ fun QuestionUpdateCheckListScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.checkUpdate()
+                viewModel.check()
             }
 
             QuestionUpdateCheckListContent(

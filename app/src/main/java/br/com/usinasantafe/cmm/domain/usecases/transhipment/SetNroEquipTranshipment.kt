@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.tryCatch
 import com.google.common.primitives.UnsignedInts.toLong
 import javax.inject.Inject
 
@@ -25,10 +26,8 @@ class ISetNroEquipTranshipment @Inject constructor(
         flowApp: FlowApp
     ): EmptyResult =
         call(getClassAndMethod()) {
-            val nroEquipLong = runCatching {
+            val nroEquipLong = tryCatch(::toLong.name) {
                 nroEquip.toLong()
-            }.getOrElse { e ->
-                throw Exception(::toLong.name, e)
             }
             motoMecRepository.setNroEquipTranshipmentNote(nroEquipLong).getOrThrow()
             saveNote().getOrThrow()

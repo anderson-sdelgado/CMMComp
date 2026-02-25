@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class IFinishNoteMechanicalTest {
 
     private val mechanicRepository = mock<MechanicRepository>()
-    private val usecase = IFinishNoteMechanic(
+    private val usecase = IFinishNote(
         mechanicRepository = mechanicRepository
     )
 

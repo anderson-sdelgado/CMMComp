@@ -9,8 +9,8 @@ import br.com.usinasantafe.cmm.domain.usecases.composting.HasWill
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpenMechanic
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpen
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNote
 import br.com.usinasantafe.cmm.domain.usecases.cec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
@@ -65,11 +65,11 @@ class MenuNoteViewModelTest {
     private val listItemMenu = mock<ListItemMenu>()
     private val getDescrEquip = mock<GetDescrEquip>()
     private val hasNoteMotoMec = mock<HasNoteMotoMec>()
-    private val hasNoteOpenMechanic = mock<HasNoteOpenMechanic>()
+    private val hasNoteOpen = mock<HasNoteOpen>()
     private val getFlowEquip = mock<GetFlowEquip>()
     private val getStatusTranshipment = mock<GetStatusTranshipment>()
     private val getTypeLastNote = mock<GetTypeLastNote>()
-    private val finishNoteMechanic = mock<FinishNoteMechanic>()
+    private val finishNote = mock<FinishNote>()
     private val setNote = mock<SetNote>()
     private val setDatePreCEC = mock<SetDatePreCEC>()
     private val hasCouplingTrailer = mock<HasCouplingTrailer>()
@@ -82,11 +82,11 @@ class MenuNoteViewModelTest {
         listItemMenu = listItemMenu,
         getDescrEquip = getDescrEquip,
         hasNoteMotoMec = hasNoteMotoMec,
-        hasNoteOpenMechanic = hasNoteOpenMechanic,
+        hasNoteOpen = hasNoteOpen,
         getFlowEquip = getFlowEquip,
         getStatusTranshipment = getStatusTranshipment,
         getTypeLastNote = getTypeLastNote,
-        finishNoteMechanic = finishNoteMechanic,
+        finishNote = finishNote,
         setNote = setNote,
         setDatePreCEC = setDatePreCEC,
         hasCouplingTrailer = hasCouplingTrailer,
@@ -362,7 +362,7 @@ class MenuNoteViewModelTest {
     fun `onDialogCheck - Check return failure if have error in FinishNoteMechanical and Pair is FINISH_MECHANICAL`() =
         runTest {
             whenever(
-                finishNoteMechanic()
+                finishNote()
             ).thenReturn(
                 resultFailure(
                     context = "FinishNoteMechanical",
@@ -387,7 +387,7 @@ class MenuNoteViewModelTest {
     fun `onDialogCheck - Check return true if FinishNoteMechanical execute successfully and Pair is FINISH_MECHANICAL`() =
         runTest {
             whenever(
-                finishNoteMechanic()
+                finishNote()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -563,7 +563,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 resultFailure(
                     context = "CheckHasNoteOpenMechanic",
@@ -617,7 +617,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 resultFailure(
                     context = "CheckHasNoteOpenMechanic",
@@ -627,7 +627,7 @@ class MenuNoteViewModelTest {
             )
             viewModel.menuList("pmm")
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 Result.success(true)
             )
@@ -676,7 +676,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 resultFailure(
                     context = "CheckHasNoteOpenMechanic",
@@ -730,7 +730,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 Result.success(false)
             )
@@ -780,7 +780,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 Result.success(true)
             )
@@ -1200,7 +1200,7 @@ class MenuNoteViewModelTest {
                 )
             )
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 resultFailure(
                     context = "CheckHasNoteOpenMechanic",
@@ -1210,7 +1210,7 @@ class MenuNoteViewModelTest {
             )
             viewModel.menuList("pmm")
             whenever(
-                hasNoteOpenMechanic()
+                hasNoteOpen()
             ).thenReturn(
                 Result.success(false)
             )
@@ -2380,7 +2380,7 @@ class MenuNoteViewModelTest {
         function: Pair<Int, String> = 1 to WORK
     ) {
         whenever(
-            hasNoteOpenMechanic()
+            hasNoteOpen()
         ).thenReturn(
             Result.success(false)
         )

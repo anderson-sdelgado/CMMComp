@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
-import kotlin.collections.get
 
 @ExperimentalCoroutinesApi
 class StopListNoteViewModelTest {
@@ -73,29 +72,33 @@ class StopListNoteViewModelTest {
             assertEquals(
                 result[0],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(1f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(1f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 StopListNoteState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    ),
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "StopListNoteViewModel.updateAllDatabase -> UpdateTableRActivityStop -> java.lang.NullPointerException"
             )
         }
@@ -160,56 +163,66 @@ class StopListNoteViewModelTest {
             assertEquals(
                 result[0],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(1f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(1f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(2f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(2f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(3f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(3f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(4f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(4f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[4],
                 StopListNoteState(
-                    errors = Errors.UPDATE,
-                    flagDialog = true,
-                    flagFailure = true,
-                    failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException",
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException",
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "StopListNoteViewModel.updateAllDatabase -> UpdateTableStop -> java.lang.NullPointerException"
             )
         }
@@ -279,74 +292,88 @@ class StopListNoteViewModelTest {
             assertEquals(
                 result[0],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(1f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(1f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[1],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(2f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(2f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[2],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_r_activity_stop",
-                    currentProgress = percentage(3f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_r_activity_stop",
+                        currentProgress = percentage(3f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[3],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(4f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(4f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[4],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.CLEAN,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(5f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.CLEAN,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(5f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[5],
                 StopListNoteState(
-                    flagProgress = true,
-                    levelUpdate = LevelUpdate.SAVE,
-                    tableUpdate = "tb_stop",
-                    currentProgress = percentage(6f, 7f)
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.SAVE,
+                        tableUpdate = "tb_stop",
+                        currentProgress = percentage(6f, 7f)
+                    )
                 )
             )
             assertEquals(
                 result[6],
                 StopListNoteState(
-                    flagDialog = true,
-                    flagProgress = false,
-                    flagFailure = false,
-                    levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                    currentProgress = 1f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = false,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
                 )
             )
             viewModel.updateDatabase()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.levelUpdate,
+                viewModel.uiState.value.status.levelUpdate,
                 LevelUpdate.FINISH_UPDATE_COMPLETED
             )
         }
@@ -363,17 +390,17 @@ class StopListNoteViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.stopList()
+            viewModel.list()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "StopListNoteViewModel.stopList -> GetStopList -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
         }
@@ -393,8 +420,8 @@ class StopListNoteViewModelTest {
                     )
                 )
             )
-            viewModel.stopList()
-            val list = viewModel.uiState.value.stopList
+            viewModel.list()
+            val list = viewModel.uiState.value.list
             assertEquals(
                 list.size,
                 1
@@ -426,15 +453,15 @@ class StopListNoteViewModelTest {
             )
             viewModel.setIdStop(1)
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.failure,
+                viewModel.uiState.value.status.failure,
                 "StopListNoteViewModel.setIdStop -> SetIdStopNote -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagFailure,
+                viewModel.uiState.value.status.flagFailure,
                 true
             )
         }
@@ -481,9 +508,9 @@ class StopListNoteViewModelTest {
                     )
                 )
             )
-            viewModel.stopList()
+            viewModel.list()
             viewModel.onFieldChanged("MANU")
-            val list = viewModel.uiState.value.stopList
+            val list = viewModel.uiState.value.list
             assertEquals(
                 list.size,
                 1

@@ -36,6 +36,7 @@ class INozzleRoomDatasourceTest {
 
     @After
     fun tearDown() {
+        db.clearAllTables()
         db.close()
     }
 

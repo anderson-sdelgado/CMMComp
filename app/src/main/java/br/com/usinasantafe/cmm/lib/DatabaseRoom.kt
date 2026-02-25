@@ -28,6 +28,8 @@ import java.util.Date
         ROSActivityRoomModel::class,
         RItemMenuStopRoomModel::class,
         TurnRoomModel::class,
+        ComponentRoomModel::class,
+        ServiceRoomModel::class,
         HeaderMotoMecRoomModel::class,
         ItemMotoMecRoomModel::class,
         HeaderCheckListRoomModel::class,
@@ -37,7 +39,7 @@ import java.util.Date
         CompoundCompostingRoomModel::class,
         PerformanceRoomModel::class,
         CollectionRoomModel::class,
-        ImplementRoomModel::class
+        ImplementRoomModel::class,
     ],
     version = VERSION_DB, exportSchema = true,
 )
@@ -59,6 +61,8 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun rItemMenuStopDao(): RItemMenuStopDao
     abstract fun stopDao(): StopDao
     abstract fun turnDao(): TurnDao
+    abstract fun componentDao(): ComponentDao
+    abstract fun serviceDao(): ServiceDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao
     abstract fun noteMotoMecDao(): ItemMotoMecDao
     abstract fun headerCheckListDao(): HeaderCheckListDao

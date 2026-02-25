@@ -107,4 +107,18 @@ object StableRoomModule {
         return database.pressureDao()
     }
 
+    @Provides
+    @Singleton
+    fun provideComponentDao(database: DatabaseRoom): ComponentDao {
+        return database.componentDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideServiceDao(database: DatabaseRoom): ServiceDao {
+        return database.serviceDao()
+    }
+
+
+
 }

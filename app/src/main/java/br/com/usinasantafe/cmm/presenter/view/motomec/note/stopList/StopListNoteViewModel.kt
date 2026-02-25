@@ -10,7 +10,11 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonState
+import br.com.usinasantafe.cmm.utils.UiStateWithStatus
+import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.onFailureUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,41 +26,15 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class StopListNoteState(
-    val stopList: List<StopScreenModel> = emptyList(),
-    val flagDialog: Boolean = false,
+    val list: List<StopScreenModel> = emptyList(),
     val field: String = "",
     val flagFilter: Boolean = false,
-    val failure: String = "",
     val flagAccess: Boolean = false,
-    val flagFailure: Boolean = false,
-    val errors: Errors = Errors.FIELD_EMPTY,
-    val flagProgress: Boolean = false,
-    val currentProgress: Float = 0.0f,
-    val levelUpdate: LevelUpdate? = null,
-    val tableUpdate: String = "",
-)
+    override val status: UpdateStatusState = UpdateStatusState()
+) : UiStateWithStatus<StopListNoteState> {
 
-fun UpdateStatusState.toStop(
-    classAndMethod: String,
-    current: StopListNoteState
-): StopListNoteState {
-
-    val failMsg = failure.takeIf { it.isNotEmpty() }
-        ?.let { "$classAndMethod -> $it" }
-        ?: ""
-
-    if (failMsg.isNotEmpty()) Timber.e(failMsg)
-
-    return current.copy(
-        flagDialog = flagDialog,
-        flagFailure = flagFailure,
-        errors = errors,
-        failure = failMsg,
-        flagProgress = flagProgress,
-        currentProgress = currentProgress,
-        levelUpdate = levelUpdate,
-        tableUpdate = tableUpdate
-    )
+    override fun copyWithStatus(status: UpdateStatusState): StopListNoteState =
+        copy(status = status)
 }
 
 @HiltViewModel
@@ -70,66 +48,42 @@ class StopListNoteViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(StopListNoteState())
     val uiState = _uiState.asStateFlow()
 
-    fun setCloseDialog() {
-        _uiState.update {
-            it.copy(flagDialog = false)
-        }
+    private fun updateState(block: StopListNoteState.() -> StopListNoteState) {
+        _uiState.update(block)
     }
 
-    fun stopList() = viewModelScope.launch {
+    fun setCloseDialog() = updateState { copy(status = status.copy(flagDialog = false)) }
+
+    fun list() = viewModelScope.launch {
         if(!uiState.value.flagFilter) {
-            val result = listStop()
-            result.onFailure {
-                handleFailure(it)
-                return@launch
+            runCatching {
+                listStop().getOrThrow()
             }
-            val list = result.getOrNull()!!
-            _uiState.update {
-                it.copy(
-                    stopList = list
-                )
-            }
+                .onSuccess { updateState { copy(list = it) } }
+                .onFailureUpdate(getClassAndMethod(), ::updateState)
         }
     }
 
     fun setIdStop(id: Int) = viewModelScope.launch {
-        val result = setIdStopNote(id)
-        result.onFailure {
-            handleFailure(it)
-            return@launch
+        runCatching {
+            setIdStopNote(id).getOrThrow()
         }
-        _uiState.update {
-            it.copy(
-                flagAccess = true
-            )
-        }
+            .onSuccess { updateState { copy(flagAccess = true) } }
+            .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
     fun onFieldChanged(field: String) {
         val fieldUpper = field.uppercase()
         if(fieldUpper.isNotEmpty()){
-            val stopListFilter = _uiState.value.stopList.filter {
+            val stopListFilter = _uiState.value.list.filter {
                 it.descr.contains(fieldUpper)
             }
-            _uiState.update {
-                it.copy(
-                    stopList = stopListFilter,
-                    flagFilter = true
-                )
-            }
+            updateState { copy(list = stopListFilter, flagFilter = true) }
         } else {
-            _uiState.update {
-                it.copy(
-                    flagFilter = false
-                )
-            }
-            stopList()
+            updateState { copy(flagFilter = false) }
+            list()
         }
-        _uiState.update {
-            it.copy(
-                field = fieldUpper
-            )
-        }
+        updateState { copy(field = fieldUpper) }
     }
 
     fun updateDatabase() = viewModelScope.launch {
@@ -140,78 +94,13 @@ class StopListNoteViewModel @Inject constructor(
         }
     }
 
-    private suspend fun Flow<UpdateStatusState>.collectUpdateStep(
-        classAndMethod: String,
-        emitState: suspend (StopListNoteState) -> Unit
-    ): Boolean {
-        var ok = true
-        collect { result ->
-            val newState = result.toStop(classAndMethod, _uiState.value)
-            emitState(newState)
-            if (newState.flagFailure) {
-                ok = false
-                return@collect
-            }
-        }
-        return ok
-    }
-
-    fun updateAllDatabase(): Flow<StopListNoteState> = flow {
-        val size = 7f
-
-        val steps = listOf(
-            updateTableRActivityStop(size, 1f),
-            updateTableStop(size, 2f),
+    suspend fun updateAllDatabase(): Flow<StopListNoteState> =
+        executeUpdateSteps(
+            steps = listOf(updateTableRActivityStop(7f, 1f), updateTableStop(7f, 2f)),
+            getState = { _uiState.value },
+            getStatus = { it.status },
+            copyStateWithStatus = { state, status -> state.copy(status = status) },
+            classAndMethod = getClassAndMethod(),
         )
-
-        for (step in steps) {
-            val ok = step.collectUpdateStep(getClassAndMethod()) { emit(it) }
-            if (!ok) return@flow
-        }
-
-
-        emit(
-            _uiState.value.copy(
-                flagDialog = true,
-                flagProgress = false,
-                flagFailure = false,
-                levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
-                currentProgress = 1f,
-            )
-        )
-    }
-
-    private fun handleFailure(
-        message: String,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): StopListNoteState {
-        val failMsg = "${getClassAndMethod()} -> $message"
-        Timber.e(failMsg)
-
-        val newState = _uiState.value.copy(
-            flagDialog = true,
-            flagFailure = true,
-            failure = failMsg,
-            errors = errors,
-            flagProgress = false,
-            currentProgress = 1f
-        )
-
-        if (!emit) {
-            _uiState.value = newState
-        }
-
-        return newState
-    }
-
-    private fun handleFailure(
-        throwable: Throwable,
-        errors: Errors = Errors.EXCEPTION,
-        emit: Boolean = false
-    ): StopListNoteState {
-        val msg = "${throwable.message} -> ${throwable.cause}"
-        return handleFailure(msg, errors, emit)
-    }
 
 }

@@ -2,9 +2,9 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList
 
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
+import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItem
+import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItem
+import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItem
 import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,20 +22,20 @@ class ItemCheckListViewModelTest {
     @get:Rule
     val mainCoroutineRule = MainCoroutineRule()
 
-    private val getItemCheckList = mock<GetItemCheckList>()
-    private val setRespItemCheckList = mock<SetRespItemCheckList>()
-    private val delLastRespItemCheckList = mock<DelLastRespItemCheckList>()
+    private val getItem = mock<GetItem>()
+    private val setRespItem = mock<SetRespItem>()
+    private val delLastRespItem = mock<DelLastRespItem>()
     private val viewModel = ItemCheckListViewModel(
-        getItemCheckList = getItemCheckList,
-        setRespItemCheckList = setRespItemCheckList,
-        delLastRespItemCheckList = delLastRespItemCheckList
+        getItem = getItem,
+        setRespItem = setRespItem,
+        delLastRespItem = delLastRespItem
     )
 
     @Test
     fun `get - Check return failure if have error in GetItemCheckList and pos is initial`() =
         runTest { //
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 resultFailure(
                     context = "GetItemCheckList",
@@ -58,7 +58,7 @@ class ItemCheckListViewModelTest {
     fun `get - Check return failure if have error in GetItemCheckList and pos is 3`() =
         runTest { //
             whenever(
-                getItemCheckList(3)
+                getItem(3)
             ).thenReturn(
                 resultFailure(
                     context = "GetItemCheckList",
@@ -81,7 +81,7 @@ class ItemCheckListViewModelTest {
     fun `get - Check return true if GetItemCheckList execute successfully and pos is initial`() =
         runTest {
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -109,7 +109,7 @@ class ItemCheckListViewModelTest {
     fun `get - Check return true if GetItemCheckList execute successfully and pos is 3`() =
         runTest {
             whenever(
-                getItemCheckList(3)
+                getItem(3)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -137,7 +137,7 @@ class ItemCheckListViewModelTest {
     fun `ret - Check pos if pos is initial`() =
         runTest {
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -170,7 +170,7 @@ class ItemCheckListViewModelTest {
     fun `ret - Check return failure if have error in DelLastRespItemCheckList and pos is 3 `() =
         runTest {
             whenever(
-                getItemCheckList(3)
+                getItem(3)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -180,7 +180,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                delLastRespItemCheckList()
+                delLastRespItem()
             ).thenReturn(
                 resultFailure(
                     context = "DelLastRespItemCheckList",
@@ -217,7 +217,7 @@ class ItemCheckListViewModelTest {
     fun `ret - Check return correct if DelLastRespItemCheckList execute successfully and pos is 3 `() =
         runTest {
             whenever(
-                getItemCheckList(2)
+                getItem(2)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -227,7 +227,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                getItemCheckList(3)
+                getItem(3)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -237,7 +237,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                delLastRespItemCheckList()
+                delLastRespItem()
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -273,7 +273,7 @@ class ItemCheckListViewModelTest {
     fun `set - Check return failure if have error in SetRespItemCheckList`() =
         runTest { //
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -283,7 +283,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                setRespItemCheckList(
+                setRespItem(
                     pos = 1,
                     id = 1,
                     option = OptionRespCheckList.ACCORDING
@@ -323,7 +323,7 @@ class ItemCheckListViewModelTest {
     fun `set - Check set next if SetRespItemCheckList execute successfully and return is true`() =
         runTest {
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -333,7 +333,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                getItemCheckList(2)
+                getItem(2)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -343,7 +343,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                setRespItemCheckList(
+                setRespItem(
                     pos = 1,
                     id = 1,
                     option = OptionRespCheckList.ACCORDING
@@ -383,7 +383,7 @@ class ItemCheckListViewModelTest {
     fun `set - Check finish if SetRespItemCheckList execute successfully and return is false`() =
         runTest {
             whenever(
-                getItemCheckList(1)
+                getItem(1)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -393,7 +393,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                getItemCheckList(2)
+                getItem(2)
             ).thenReturn(
                 Result.success(
                     ItemCheckListModel(
@@ -403,7 +403,7 @@ class ItemCheckListViewModelTest {
                 )
             )
             whenever(
-                setRespItemCheckList(
+                setRespItem(
                     pos = 1,
                     id = 1,
                     option = OptionRespCheckList.ACCORDING

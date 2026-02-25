@@ -22,7 +22,7 @@ class IGetItemCheckListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: IGetItemCheckList
+    lateinit var usecase: IGetItem
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

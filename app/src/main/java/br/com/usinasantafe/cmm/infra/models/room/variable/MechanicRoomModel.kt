@@ -26,8 +26,8 @@ fun Mechanic.entityToRoomModel(): MechanicRoomModel {
         MechanicRoomModel(
             id = this.id,
             idHeader = this.idHeader!!,
-            os = this.os!!,
-            item = this.item!!,
+            os = this.nroOS!!,
+            item = this.seqItem!!,
             dateHourInitial = this.dateHourInitial,
             dateHourFinish = this.dateHourFinish,
         )

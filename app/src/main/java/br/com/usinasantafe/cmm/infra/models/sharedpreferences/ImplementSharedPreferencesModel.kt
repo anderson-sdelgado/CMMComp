@@ -3,8 +3,8 @@ package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 
 data class ImplementSharedPreferencesModel(
-    var nroEquip: Long,
-    var pos: Int,
+    val nroEquip: Long,
+    val pos: Int,
 )
 
 fun ImplementSharedPreferencesModel.sharedPreferencesModelToEntity(): Implement {

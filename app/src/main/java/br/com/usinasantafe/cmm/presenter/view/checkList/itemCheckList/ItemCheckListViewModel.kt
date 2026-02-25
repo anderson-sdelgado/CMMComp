@@ -2,10 +2,9 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItemCheckList
-import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItemCheckList
-import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItem
+import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItem
+import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItem
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureHandled
@@ -27,9 +26,9 @@ data class ItemCheckListState(
 
 @HiltViewModel
 class ItemCheckListViewModel @Inject constructor(
-    private val getItemCheckList: GetItemCheckList,
-    private val setRespItemCheckList: SetRespItemCheckList,
-    private val delLastRespItemCheckList: DelLastRespItemCheckList
+    private val getItem: GetItem,
+    private val setRespItem: SetRespItem,
+    private val delLastRespItem: DelLastRespItem
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ItemCheckListState())
@@ -47,7 +46,7 @@ class ItemCheckListViewModel @Inject constructor(
     fun get(pos: Int = 1) =
         viewModelScope.launch {
             runCatching {
-                getItemCheckList(pos).getOrThrow()
+                getItem(pos).getOrThrow()
             }
                 .onSuccess { model -> updateState { copy(pos = pos, id = model.id, descr = model.descr) } }
                 .onFailureHandled(getClassAndMethod(), ::onError)
@@ -56,7 +55,7 @@ class ItemCheckListViewModel @Inject constructor(
     fun ret() = viewModelScope.launch {
         runCatching {
             if(state.pos == 1) return@launch
-            delLastRespItemCheckList().getOrThrow()
+            delLastRespItem().getOrThrow()
         }
             .onSuccess { get(pos = state.pos - 1) }
             .onFailureHandled(getClassAndMethod(), ::onError)
@@ -65,7 +64,7 @@ class ItemCheckListViewModel @Inject constructor(
     fun set(option: OptionRespCheckList) =
         viewModelScope.launch {
             runCatching {
-                val check = setRespItemCheckList(
+                val check = setRespItem(
                     pos = state.pos,
                     id = state.id,
                     option = option

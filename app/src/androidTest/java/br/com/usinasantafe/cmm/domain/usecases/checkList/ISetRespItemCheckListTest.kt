@@ -25,7 +25,7 @@ class ISetRespItemCheckListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: SetRespItemCheckList
+    lateinit var usecase: SetRespItem
 
     @Inject
     lateinit var itemRespCheckListSharedPreferencesDatasource: ItemRespCheckListSharedPreferencesDatasource

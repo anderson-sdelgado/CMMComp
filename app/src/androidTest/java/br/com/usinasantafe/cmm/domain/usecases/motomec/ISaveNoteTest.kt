@@ -3,12 +3,15 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.CollectionDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
+import br.com.usinasantafe.cmm.external.room.dao.variable.ImplementDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ImplementSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ImplementSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -34,6 +37,9 @@ class ISaveNoteTest {
     lateinit var headerMotoMecSharedPreferencesDatasource: HeaderMotoMecSharedPreferencesDatasource
 
     @Inject
+    lateinit var implementSharedPreferencesDatasource: ImplementSharedPreferencesDatasource
+
+    @Inject
     lateinit var headerMotoMecDao: HeaderMotoMecDao
 
     @Inject
@@ -48,6 +54,8 @@ class ISaveNoteTest {
     @Inject
     lateinit var functionActivityDao: FunctionActivityDao
 
+    @Inject
+    lateinit var implementDao: ImplementDao
 
     @Before
     fun init() {
@@ -306,7 +314,7 @@ class ISaveNoteTest {
         }
 
     @Test
-    fun check_insert_item_moto_mec_room_and_insert_performance_and_collection() =
+    fun check_insert_item_moto_mec_room_and_insert_performance_and_collection_and_not_implement() =
         runTest {
             headerMotoMecSharedPreferencesDatasource.save(
                 HeaderMotoMecSharedPreferencesModel(
@@ -417,6 +425,177 @@ class ISaveNoteTest {
             assertEquals(
                 collection.value,
                 null
+            )
+            val listImplement = implementDao.all()
+            assertEquals(
+                listImplement.size,
+                0
+            )
+        }
+
+    @Test
+    fun check_insert_item_moto_mec_room_and_insert_performance_and_collection_and_implement() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    id = 1,
+                    nroOS = 123456,
+                    idActivity = 1
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19759,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10000.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            functionActivityDao.insertAll(
+                listOf(
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 1,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.PERFORMANCE
+                    ),
+                    FunctionActivityRoomModel(
+                        idFunctionActivity = 2,
+                        idActivity = 1,
+                        typeActivity = TypeActivity.COLLECTION
+                    )
+                )
+            )
+            implementSharedPreferencesDatasource.add(
+                ImplementSharedPreferencesModel(
+                    nroEquip = 10,
+                    pos = 1
+                )
+            )
+            implementSharedPreferencesDatasource.add(
+                ImplementSharedPreferencesModel(
+                    nroEquip = 20,
+                    pos = 2
+                )
+            )
+            val listBefore = itemMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
+            val result = usecase()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = itemMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val item = listAfter[0]
+            assertEquals(
+                item.idHeader,
+                1
+            )
+            assertEquals(
+                item.nroOS,
+                123456
+            )
+            assertEquals(
+                item.idActivity,
+                1
+            )
+            assertEquals(
+                item.idStop,
+                null
+            )
+            val listPerformance = performanceDao.all()
+            assertEquals(
+                listPerformance.size,
+                1
+            )
+            val performance = listPerformance[0]
+            assertEquals(
+                performance.id,
+                1
+            )
+            assertEquals(
+                performance.nroOS,
+                123456
+            )
+            assertEquals(
+                performance.idHeader,
+                1
+            )
+            assertEquals(
+                performance.value,
+                null
+            )
+            val listCollection = collectionDao.all()
+            assertEquals(
+                listCollection.size,
+                1
+            )
+            val collection = listCollection[0]
+            assertEquals(
+                collection.id,
+                1
+            )
+            assertEquals(
+                collection.nroOS,
+                123456
+            )
+            assertEquals(
+                collection.idHeader,
+                1
+            )
+            assertEquals(
+                collection.value,
+                null
+            )
+            val listImplement = implementDao.all()
+            assertEquals(
+                listImplement.size,
+                2
+            )
+            val implement1 = listImplement[0]
+            assertEquals(
+                implement1.id,
+                1
+            )
+            assertEquals(
+                implement1.idItem,
+                1
+            )
+            assertEquals(
+                implement1.nroEquip,
+                10
+            )
+            assertEquals(
+                implement1.pos,
+                1
+            )
+            val implement2 = listImplement[1]
+            assertEquals(
+                implement2.id,
+                2
+            )
+            assertEquals(
+                implement2.idItem,
+                1
+            )
+            assertEquals(
+                implement2.nroEquip,
+                20
+            )
+            assertEquals(
+                implement2.pos,
+                2
             )
         }
 

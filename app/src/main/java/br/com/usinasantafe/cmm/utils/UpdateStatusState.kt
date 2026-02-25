@@ -16,6 +16,7 @@ data class UpdateStatusState(
     val currentProgress: Float = 0.0f,
     val levelUpdate: LevelUpdate? = null,
     val tableUpdate: String = "",
+    val flagStopFlow: Boolean = false
 )
 
 suspend fun Flow<UpdateStatusState>.collectUpdateStep(
@@ -115,6 +116,49 @@ suspend fun FlowCollector<UpdateStatusState>.emitProgress(
     )
 }
 
+suspend fun FlowCollector<UpdateStatusState>.emitProgressOS(
+    count: Float = 1f,
+    sizeAll: Float = 1f,
+    level: LevelUpdate,
+    table: String,
+    flagProgress: Boolean = true,
+    flagStopFlow: Boolean = false
+) {
+    val step = when(level){
+        LevelUpdate.CHECK_CONNECTION -> 1f
+        LevelUpdate.RECOVERY -> 2f
+        LevelUpdate.CLEAN -> 3f
+        LevelUpdate.SAVE -> 4f
+        else -> 0f
+    }
+    emit(
+        UpdateStatusState(
+            flagProgress = flagProgress,
+            currentProgress = updatePercentage(step, count, sizeAll),
+            tableUpdate = table,
+            levelUpdate = level,
+            flagStopFlow = flagStopFlow
+        )
+    )
+}
+
+suspend fun FlowCollector<UpdateStatusState>.emitProgressOSError(
+    errors: Errors,
+) {
+    emit(
+        UpdateStatusState(
+            flagProgress = true,
+            errors = errors,
+            flagDialog = true,
+            flagFailure = true,
+            failure = "",
+            currentProgress = 1f,
+            levelUpdate = null
+        )
+    )
+}
+
+
 suspend fun FlowCollector<UpdateStatusState>.emitFailure(
     failure: String,
 ) {
@@ -137,18 +181,29 @@ fun <STATE> executeUpdateSteps(
     getStatus: (STATE) -> UpdateStatusState,
     copyStateWithStatus: (STATE, UpdateStatusState) -> STATE,
     classAndMethod: String,
-    flagUpdateConfig: Boolean = false
+    flagUpdateConfig: Boolean = false,
+    flagCheckOS: Boolean = false
 ): Flow<STATE> = flow {
+
+    var stopFlow = false
+    var levelUpdate: LevelUpdate? = null
 
     for (step in steps) {
         val ok = step.collectUpdateStep(
             classAndMethod = classAndMethod,
             currentStatus = getStatus(getState())
         ) { status ->
+            if (status.flagStopFlow) {
+                stopFlow = true
+                levelUpdate = status.levelUpdate
+            }
             val newState = copyStateWithStatus(getState(), status)
             emit(newState)
         }
         if (!ok) return@flow
+
+        if (stopFlow) break
+
     }
 
     if (!flagUpdateConfig) {
@@ -157,6 +212,18 @@ fun <STATE> executeUpdateSteps(
             flagProgress = false,
             flagFailure = false,
             levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+            currentProgress = 1f,
+        )
+        val finalState = copyStateWithStatus(getState(), finalStatus)
+        emit(finalState)
+    }
+
+    if(flagCheckOS){
+        val finalStatus = getStatus(getState()).copy(
+            flagDialog = false,
+            flagProgress = false,
+            flagFailure = false,
+            levelUpdate = levelUpdate,
             currentProgress = 1f,
         )
         val finalState = copyStateWithStatus(getState(), finalStatus)

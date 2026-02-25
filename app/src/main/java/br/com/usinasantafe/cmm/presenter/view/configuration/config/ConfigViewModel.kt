@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.domain.usecases.config.SendDataConfig
 import br.com.usinasantafe.cmm.domain.usecases.config.SetFinishUpdateAllTable
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableColab
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableComponent
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
@@ -19,10 +20,12 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTablePressure
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
@@ -60,6 +63,7 @@ class ConfigViewModel @Inject constructor(
     private val saveDataConfig: SaveDataConfig,
     private val updateTableActivity: UpdateTableActivity,
     private val updateTableColab: UpdateTableColab,
+    private val updateTableComponent: UpdateTableComponent,
     private val updateTableEquip: UpdateTableEquip,
     private val updateTableFunctionActivity: UpdateTableFunctionActivity,
     private val updateTableFunctionStop: UpdateTableFunctionStop,
@@ -70,6 +74,7 @@ class ConfigViewModel @Inject constructor(
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
     private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
+    private val updateTableService: UpdateTableService,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
     private val setFinishUpdateAllTable: SetFinishUpdateAllTable
@@ -239,22 +244,24 @@ class ConfigViewModel @Inject constructor(
         )
 
     private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
-        val size = sizeUpdate(14f)
+        val size = sizeUpdate(QTD_TABLE)
         return listOf(
             updateTableActivity(size, 1f),
             updateTableColab(size, 2f),
-            updateTableEquip(size, 3f),
-            updateTableFunctionActivity(size, 4f),
-            updateTableFunctionStop(size, 5f),
-            updateTableItemCheckListByNroEquip(size, 6f),
-            updateTableItemMenu(size, 7f),
-            updateTableNozzle(size, 8f),
-            updateTablePressure(size, 9f),
-            updateTableRActivityStop(size, 10f),
-            updateTableREquipActivityByIdEquip(size, 11f),
-            updateTableRItemMenuStop(size, 12f),
-            updateTableStop(size, 13f),
-            updateTableTurn(size, 14f)
+            updateTableComponent(size, 3f),
+            updateTableEquip(size, 4f),
+            updateTableFunctionActivity(size, 5f),
+            updateTableFunctionStop(size, 6f),
+            updateTableItemCheckListByNroEquip(size, 7f),
+            updateTableItemMenu(size, 8f),
+            updateTableNozzle(size, 9f),
+            updateTablePressure(size, 10f),
+            updateTableRActivityStop(size, 11f),
+            updateTableREquipActivityByIdEquip(size, 12f),
+            updateTableRItemMenuStop(size, 13f),
+            updateTableService(size, 14f),
+            updateTableStop(size, 15f),
+            updateTableTurn(size, 16f)
         )
     }
 

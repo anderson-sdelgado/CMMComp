@@ -19,7 +19,7 @@ class IDelLastRespItemCheckListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: DelLastRespItemCheckList
+    lateinit var usecase: DelLastRespItem
 
     @Inject
     lateinit var itemRespCheckListSharedPreferencesdatasource: ItemRespCheckListSharedPreferencesDatasource

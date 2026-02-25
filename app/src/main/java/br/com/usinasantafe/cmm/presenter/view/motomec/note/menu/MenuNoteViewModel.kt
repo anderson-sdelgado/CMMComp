@@ -9,8 +9,8 @@ import br.com.usinasantafe.cmm.domain.usecases.composting.HasCompostingInputLoad
 import br.com.usinasantafe.cmm.domain.usecases.composting.GetFlowComposting
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNoteMotoMec
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListItemMenu
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpenMechanic
-import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNoteMechanic
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.HasNoteOpen
+import br.com.usinasantafe.cmm.domain.usecases.mechanic.FinishNote
 import br.com.usinasantafe.cmm.domain.usecases.cec.HasCouplingTrailer
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetTypeLastNote
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
@@ -78,11 +78,11 @@ class MenuNoteViewModel @Inject constructor(
     private val listItemMenu: ListItemMenu,
     private val getDescrEquip: GetDescrEquip,
     private val hasNoteMotoMec: HasNoteMotoMec,
-    private val hasNoteOpenMechanic: HasNoteOpenMechanic,
+    private val hasNoteOpen: HasNoteOpen,
     private val getFlowEquip: GetFlowEquip,
     private val getStatusTranshipment: GetStatusTranshipment,
     private val getTypeLastNote: GetTypeLastNote,
-    private val finishNoteMechanic: FinishNoteMechanic,
+    private val finishNote: FinishNote,
     private val setNote: SetNote,
     private val setDatePreCEC: SetDatePreCEC,
     private val hasCouplingTrailer: HasCouplingTrailer,
@@ -179,7 +179,7 @@ class MenuNoteViewModel @Inject constructor(
                 return@runCatching false
             }
             if (function.second != FINISH_MECHANICAL) {
-                val check = hasNoteOpenMechanic().getOrThrow()
+                val check = hasNoteOpen().getOrThrow()
                 if (check) {
                     handleFailure(getClassAndMethod(), Errors.NOTE_MECHANICAL_OPEN, ::onError)
                     return@runCatching false
@@ -395,7 +395,7 @@ class MenuNoteViewModel @Inject constructor(
 
     private suspend fun handleFinishMechanical() {
         runCatching {
-            val check = hasNoteOpenMechanic().getOrThrow()
+            val check = hasNoteOpen().getOrThrow()
             if (!check) {
                 handleFailure(getClassAndMethod(), Errors.NOTE_MECHANICAL_OPEN, ::onError)
                 return@runCatching
@@ -447,7 +447,7 @@ class MenuNoteViewModel @Inject constructor(
     }
 
     private suspend fun handleFinishMechanicalDialog() {
-        finishNoteMechanic()
+        finishNote()
             .onSuccess { onSuccess(TypeMsg.NOTE_FINISH_MECHANICAL) }
             .onFailureHandled(getClassAndMethod(), ::onError)
     }

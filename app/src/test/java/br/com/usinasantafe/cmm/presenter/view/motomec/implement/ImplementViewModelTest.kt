@@ -3,7 +3,7 @@ package br.com.usinasantafe.cmm.presenter.view.motomec.implement
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.domain.usecases.common.HasEquipSecondary
-import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquipImplement
+import br.com.usinasantafe.cmm.domain.usecases.implement.SetNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableEquip
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -35,7 +35,7 @@ class ImplementViewModelTest {
 
     private val updateTableEquip = mock<UpdateTableEquip>()
     private val hasEquipSecondary = mock<HasEquipSecondary>()
-    private val setNroEquipImplement = mock<SetNroEquipImplement>()
+    private val setNroEquip = mock<SetNroEquip>()
 
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
@@ -47,7 +47,7 @@ class ImplementViewModelTest {
         savedStateHandle = savedStateHandle,
         updateTableEquip = updateTableEquip,
         hasEquipSecondary = hasEquipSecondary,
-        setNroEquipImplement = setNroEquipImplement
+        setNroEquip = setNroEquip
     )
 
     @Test
@@ -379,7 +379,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -437,7 +437,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -483,7 +483,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -534,7 +534,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -577,7 +577,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -651,7 +651,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -713,7 +713,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -729,7 +729,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "700",
                     pos = 2
                 )
@@ -795,7 +795,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "2200",
                     pos = 1
                 )
@@ -811,7 +811,7 @@ class ImplementViewModelTest {
                 Result.success(true)
             )
             whenever(
-                setNroEquipImplement(
+                setNroEquip(
                     nroEquip = "700",
                     pos = 2
                 )

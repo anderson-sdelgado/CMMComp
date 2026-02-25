@@ -22,11 +22,11 @@ fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String
 fun errors(errors: Errors, failure: String, value: String = "", hourMeter: String = "", hourMeterOld: String = ""): String {
     return when (errors) {
         Errors.FIELD_EMPTY -> {
-            if(value.isEmpty()) return stringResource(
+            if(!value.isEmpty()) return stringResource(
                 id = R.string.text_field_empty,
                 value
             )
-            return stringResource(id = R.string.text_field_empty_config)
+            stringResource(id = R.string.text_field_empty_config)
         }
         Errors.UPDATE -> stringResource(
             id = R.string.text_update_failure,

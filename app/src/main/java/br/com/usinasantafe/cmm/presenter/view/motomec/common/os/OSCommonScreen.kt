@@ -106,8 +106,7 @@ fun OSCommonContent(
         }
 
         if(flagDialog) {
-            val value = stringResource(id = R.string.text_title_os)
-            val text = errors(errors, failure, value)
+            val text = errors(errors, failure, stringResource(id = R.string.text_title_os))
             AlertDialogSimpleDesign(
                 text = text,
                 setCloseDialog = setCloseDialog,
@@ -232,7 +231,7 @@ fun OSCommonPagePreviewMsgFailure() {
 
 @Preview(showBackground = true)
 @Composable
-fun OSCommonPagePreviewNroOSNonExistent() {
+fun OSCommonPagePreviewMsgNonExistent() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(

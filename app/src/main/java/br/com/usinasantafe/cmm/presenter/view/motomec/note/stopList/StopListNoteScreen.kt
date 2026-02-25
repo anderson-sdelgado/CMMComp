@@ -37,6 +37,9 @@ import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 const val TAG_FILTER_TEXT_FIELD_STOP_LIST_SCREEN = "tag_filter_text_field_stop_list_screen"
 
@@ -51,25 +54,18 @@ fun StopListNoteScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.stopList()
+                viewModel.list()
             }
 
             StopListNoteContent(
-                stopList = uiState.stopList,
+                stopList = uiState.list,
                 setIdStop = viewModel::setIdStop,
                 field = uiState.field,
                 onFieldChanged = viewModel::onFieldChanged,
                 updateDatabase = viewModel::updateDatabase,
-                flagFailure = uiState.flagFailure,
-                errors = uiState.errors,
-                failure = uiState.failure,
-                flagProgress = uiState.flagProgress,
-                currentProgress = uiState.currentProgress,
-                levelUpdate = uiState.levelUpdate,
-                tableUpdate = uiState.tableUpdate,
                 flagAccess = uiState.flagAccess,
-                flagDialog = uiState.flagDialog,
                 setCloseDialog = viewModel::setCloseDialog,
+                status = uiState.status,
                 onNavActivityList = onNavActivityList,
                 onNavMenuNote = onNavMenuNote,
                 modifier = Modifier.padding(innerPadding)
@@ -85,16 +81,9 @@ fun StopListNoteContent(
     field: String,
     onFieldChanged: (String) -> Unit,
     updateDatabase: () -> Unit,
-    flagFailure: Boolean,
-    errors: Errors,
-    failure: String,
-    flagProgress: Boolean,
-    levelUpdate: LevelUpdate?,
-    tableUpdate: String,
-    currentProgress: Float,
     flagAccess: Boolean,
-    flagDialog: Boolean,
     setCloseDialog: () -> Unit,
+    status: UpdateStatusState,
     onNavActivityList: () -> Unit,
     onNavMenuNote: () -> Unit,
     modifier: Modifier = Modifier
@@ -169,51 +158,12 @@ fun StopListNoteContent(
         }
         BackHandler {}
 
-        if (flagDialog) {
-            val text = if (flagFailure) {
-                when(errors) {
-                    Errors.UPDATE -> stringResource(
-                        id = R.string.text_update_failure,
-                        failure
-                    )
-                    else -> stringResource(
-                        id = R.string.text_failure,
-                        failure
-                    )
-                }
-            } else {
-                when(levelUpdate){
-                    LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                    LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                    LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                    LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                    LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                    LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                    LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                    null -> failure
-                }
-            }
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog)
         }
 
-        if (flagProgress) {
-            val msgProgress = when(levelUpdate){
-                LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
-                LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)
-                LevelUpdate.SAVE -> stringResource(id = R.string.text_msg_save, tableUpdate)
-                LevelUpdate.GET_TOKEN -> stringResource(id = R.string.text_msg_get_token)
-                LevelUpdate.SAVE_TOKEN -> stringResource(id = R.string.text_msg_save_token)
-                LevelUpdate.FINISH_UPDATE_INITIAL -> stringResource(id = R.string.text_msg_finish_update_initial)
-                LevelUpdate.FINISH_UPDATE_COMPLETED -> stringResource(id = R.string.text_msg_finish_update_completed)
-                null -> failure
-            }
-            AlertDialogProgressDesign(
-                currentProgress = currentProgress,
-                msgProgress = msgProgress
-            )
+        if (status.flagProgress) {
+            ProgressUpdate(status)
         }
 
     }
@@ -245,15 +195,17 @@ fun StopListNotePagePreview() {
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.FIELD_EMPTY,
-                failure = "",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
                 flagAccess = false,
-                flagDialog = false,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
                 setCloseDialog = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -285,15 +237,17 @@ fun StopListNoteScreenPagePreviewWithFailureUpdate() {
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
                 flagAccess = false,
-                flagDialog = true,
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true,
+                ),
                 setCloseDialog = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -325,15 +279,17 @@ fun StopListNoteScreenPagePreviewWithProgressUpdate() {
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
-                flagFailure = false,
-                errors = Errors.UPDATE,
-                failure = "Failure",
-                flagProgress = true,
-                levelUpdate = LevelUpdate.RECOVERY,
-                tableUpdate = "tb_stop",
-                currentProgress = 0.33333f,
                 flagAccess = false,
-                flagDialog = false,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_stop",
+                    currentProgress = 0.33333f,
+                    flagDialog = false,
+                ),
                 setCloseDialog = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -365,15 +321,17 @@ fun StopListNoteScreenPagePreviewWithFailureError() {
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
-                flagFailure = true,
-                errors = Errors.EXCEPTION,
-                failure = "Failure",
-                flagProgress = false,
-                levelUpdate = null,
-                tableUpdate = "",
-                currentProgress = 0f,
                 flagAccess = false,
-                flagDialog = true,
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true,
+                ),
                 setCloseDialog = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},

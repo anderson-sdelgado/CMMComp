@@ -57,7 +57,6 @@ class OSCommonViewModel @Inject constructor(
 
     fun setCloseDialog() = updateState { copy(flagDialog = false) }
 
-
     fun setTextField(
         text: String,
         typeButton: TypeButton
@@ -65,18 +64,9 @@ class OSCommonViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(nroOS = addTextField(nroOS, text)) }
             TypeButton.CLEAN -> updateState { copy(nroOS = clearTextField(nroOS)) }
-            TypeButton.OK -> validateAndSet()
+            TypeButton.OK -> set()
             TypeButton.UPDATE -> {}
         }
-    }
-
-
-    private fun validateAndSet() {
-        if (state.nroOS.isBlank()) {
-            handleFailure(getClassAndMethod(), Errors.FIELD_EMPTY, ::onError)
-            return
-        }
-        set()
     }
 
     fun get() = viewModelScope.launch {
@@ -91,16 +81,22 @@ class OSCommonViewModel @Inject constructor(
 
     private fun set() = viewModelScope.launch {
         runCatching {
+            if (state.nroOS.isBlank()) {
+                handleFailure(getClassAndMethod(), Errors.FIELD_EMPTY, ::onError)
+                return@launch
+            }
             updateState { copy(flagProgress = true, msgProgress = MSG_CHECK_OS) }
             val check = hasNroOS(nroOS = uiState.value.nroOS, flowApp = uiState.value.flowApp).getOrThrow()
             if(!check){
-                onError("", Errors.INVALID)
+                handleFailure(getClassAndMethod(), Errors.INVALID, ::onError)
                 return@launch
             }
             setNroOS(nroOS = uiState.value.nroOS, flowApp = uiState.value.flowApp).getOrThrow()
-        }.onSuccess {
-            updateState { copy(flagAccess = true, flagDialog = false, flagProgress = false) }
-        }.onFailureHandled(getClassAndMethod(), ::onError)
+        }
+            .onSuccess {
+                updateState { copy(flagAccess = true, flagDialog = false, flagProgress = false) }
+            }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private fun onError(failure: String, error: Errors = Errors.EXCEPTION) = updateState {

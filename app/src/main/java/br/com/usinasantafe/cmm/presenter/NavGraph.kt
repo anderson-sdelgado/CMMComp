@@ -43,7 +43,7 @@ import br.com.usinasantafe.cmm.presenter.Routes.MOTOR_PUMP_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
-import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentScreen
 import br.com.usinasantafe.cmm.presenter.view.performance.performance.PerformanceScreen
 import br.com.usinasantafe.cmm.presenter.view.performance.performanceList.PerformanceListScreen
@@ -233,7 +233,7 @@ fun NavigationGraph(
         }
 
         composable(MOTOR_PUMP_ROUTE) {
-            MotorPumpScreen(
+            MotorPumpFertigationScreen(
                 onNavHourMeter = {
                     navActions.navigateToHourMeterHeader()
                 },

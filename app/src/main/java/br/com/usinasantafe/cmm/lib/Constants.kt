@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.lib
 const val BASE_SHARED_PREFERENCES = "cmm"
 const val BASE_DB = "cmm.db"
 const val VERSION_DB = 999
+const val QTD_TABLE = 16f
 
 const val BASE_SHARED_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
@@ -18,6 +19,7 @@ const val BASE_SHARED_PREFERENCES_TABLE_IMPLEMENT_LIST = "implement_list"
 
 const val TB_ACTIVITY = "tb_activity"
 const val TB_COLAB = "tb_colab"
+const val TB_COMPONENT = "tb_component"
 const val TB_EQUIP = "tb_equip"
 const val TB_FUNCTION_ACTIVITY = "tb_function_activity"
 const val TB_FUNCTION_STOP = "tb_function_stop"
@@ -30,6 +32,7 @@ const val TB_R_ACTIVITY_STOP = "tb_r_activity_stop"
 const val TB_R_EQUIP_ACTIVITY = "tb_r_equip_activity"
 const val TB_R_OS_ACTIVITY = "tb_r_os_activity"
 const val TB_R_ITEM_MENU_STOP  = "tb_r_item_menu_stop"
+const val TB_SERVICE = "tb_service"
 const val TB_STOP = "tb_stop"
 const val TB_TURN = "tb_turn"
 
@@ -43,10 +46,12 @@ const val TB_COMPOUND_COMPOSTING = "tb_compound_composting"
 const val TB_PERFORMANCE = "tb_performance"
 const val TB_COLLECTION = "tb_collection"
 const val TB_IMPLEMENT = "tb_implement"
+const val TB_ITEM_OS_MECHANIC = "tb_item_os_mechanic"
 
 
 const val WEB_ALL_ACTIVITY = "activity.php"
 const val WEB_ALL_COLAB = "colab.php"
+const val WEB_ALL_COMPONENT = "component.php"
 const val WEB_ALL_EQUIP = "equip.php"
 const val WEB_ALL_FUNCTION_ACTIVITY = "function-activity.php"
 const val WEB_ALL_FUNCTION_STOP = "function-stop.php"
@@ -57,6 +62,7 @@ const val WEB_ALL_PRESSURE = "pressure.php"
 const val WEB_ALL_R_ACTIVITY_STOP = "r-activity-stop.php"
 const val WEB_ALL_R_OS_ACTIVITY = "r-os-activity.php"
 const val WEB_ALL_R_ITEM_MENU_STOP = "r-item-menu-stop.php"
+const val WEB_ALL_SERVICE = "service.php"
 const val WEB_ALL_STOP = "stop.php"
 const val WEB_ALL_TURN = "turn.php"
 

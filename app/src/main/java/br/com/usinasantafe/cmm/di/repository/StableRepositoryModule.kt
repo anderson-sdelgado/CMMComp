@@ -76,4 +76,16 @@ interface StableRepositoryModule {
     @Singleton
     fun bindPressureRepository(repository: IPressureRepository): PressureRepository
 
+    @Binds
+    @Singleton
+    fun bindComponentRepository(repository: IComponentRepository): ComponentRepository
+
+    @Binds
+    @Singleton
+    fun bindServiceRepository(repository: IServiceRepository): ServiceRepository
+
+    @Binds
+    @Singleton
+    fun bindItemOSMechanicRepository(repository: IItemOSMechanicRepository): ItemOSMechanicRepository
+
 }

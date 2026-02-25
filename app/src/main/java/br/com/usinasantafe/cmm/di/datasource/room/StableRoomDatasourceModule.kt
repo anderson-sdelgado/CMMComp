@@ -76,4 +76,12 @@ interface StableRoomDatasourceModule {
     @Singleton
     fun bindPressureRoomDatasource(dataSource: IPressureRoomDatasource): PressureRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindComponentRoomDatasource(dataSource: IComponentRoomDatasource): ComponentRoomDatasource
+
+    @Binds
+    @Singleton
+    fun bindServiceRoomDatasource(dataSource: IServiceRoomDatasource): ServiceRoomDatasource
+
 }

@@ -120,4 +120,16 @@ object StableRetrofitModule {
         @DefaultRetrofit retrofit: Retrofit
     ): PressureApi = retrofit.create(PressureApi::class.java)
 
+    @Provides
+    @Singleton
+    fun serviceApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ServiceApi = retrofit.create(ServiceApi::class.java)
+
+    @Provides
+    @Singleton
+    fun componentApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ComponentApi = retrofit.create(ComponentApi::class.java)
+
 }

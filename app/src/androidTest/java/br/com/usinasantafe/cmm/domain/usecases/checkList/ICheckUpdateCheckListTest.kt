@@ -1,14 +1,10 @@
 package br.com.usinasantafe.cmm.domain.usecases.checkList
 
-import br.com.usinasantafe.cmm.di.external.BaseUrlModuleTest
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.junit.Rule
 import org.junit.Test
 import javax.inject.Inject
@@ -20,7 +16,7 @@ class ICheckUpdateCheckListTest {
     val hiltRule = HiltAndroidRule(this)
 
     @Inject
-    lateinit var usecase: CheckUpdateCheckList
+    lateinit var usecase: CheckUpdate
 
     @Inject
     lateinit var configSharedPreferencesDatasource: ConfigSharedPreferencesDatasource

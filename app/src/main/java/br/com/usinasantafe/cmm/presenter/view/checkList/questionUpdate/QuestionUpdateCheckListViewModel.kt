@@ -2,7 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdateCheckList
+import br.com.usinasantafe.cmm.domain.usecases.checkList.CheckUpdate
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
@@ -29,7 +29,7 @@ data class QuestionUpdateCheckListState(
 
 @HiltViewModel
 class QuestionUpdateCheckListViewModel @Inject constructor(
-    private val checkUpdateCheckList: CheckUpdateCheckList,
+    private val checkUpdate: CheckUpdate,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip
 ) : ViewModel() {
 
@@ -42,9 +42,9 @@ class QuestionUpdateCheckListViewModel @Inject constructor(
 
     fun setCloseDialog()  = updateState { copy(status = status.copy(flagDialog = false)) }
 
-    fun checkUpdate() = viewModelScope.launch {
+    fun check() = viewModelScope.launch {
         runCatching {
-            checkUpdateCheckList().getOrThrow()
+            checkUpdate().getOrThrow()
         }
             .onSuccess { check -> updateState { copy(flagCheckUpdate = !check, flagAccess = !check) } }
             .onFailureUpdate(getClassAndMethod(), ::updateState)

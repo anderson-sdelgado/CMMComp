@@ -246,7 +246,7 @@ class IUpdateTableActivityTest {
         }
 
     private val resultActivityRetrofit = """
-                [{"idActivity":1,"codActivity":10,"descrActivity":"MANUTENCAO PREVENTIVA"}]
+                [{"id":1,"cod":10,"descr":"MANUTENCAO PREVENTIVA"}]
             """.trimIndent()
 
     private suspend fun initialRegister() {
