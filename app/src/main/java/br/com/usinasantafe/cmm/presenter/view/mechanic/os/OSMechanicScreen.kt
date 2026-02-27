@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.errors
@@ -26,6 +27,8 @@ import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
@@ -75,35 +78,38 @@ fun OSMechanicContent(
                 id = R.string.text_title_os
             )
         )
-//        TextFieldDesign(
-//            value = nroOS
-//        )
-//        Spacer(modifier = Modifier.padding(vertical = 8.dp))
-//        ButtonsGenericNumeric(
-//            setActionButton = setTextField,
-//            flagUpdate = false
-//        )
-//        BackHandler {
-//            onNavMenuNote()
-//        }
-//
-//        if(flagDialog) {
-//            val text = errors(errors, failure, stringResource(id = R.string.text_title_os))
-//            AlertDialogSimpleDesign(
-//                text = text,
-//                setCloseDialog = setCloseDialog,
-//            )
-//        }
-//
-//        if (flagProgress) AlertDialogProgressIndeterminateDesign(msgProgress)
-//
-//    }
-//
-//    LaunchedEffect(flagAccess) {
-//        if(flagAccess) {
-////            if(flagItemList) onNavItemList() else onNavInputItem()
-//        }
+        TextFieldDesign(
+            value = nroOS
+        )
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
+        ButtonsGenericNumeric(
+            setActionButton = setTextField,
+            flagUpdate = false
+        )
+        BackHandler {
+            onNavMenuNote()
+        }
+
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog)
+        }
+
+        if (status.flagProgress) {
+            ProgressUpdate(status)
+        }
+
     }
+
+    LaunchedEffect(flagAccess) {
+        if(flagAccess) {
+            if(status.flagFailure){
+                onNavInputItem()
+            } else {
+                onNavItemList()
+            }
+        }
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -116,7 +122,45 @@ fun OSMechanicPagePreview() {
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                status = UpdateStatusState(),
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
+                onNavMenuNote = {},
+                onNavItemList = {},
+                onNavInputItem = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSMechanicPagePreviewWithData() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSMechanicContent(
+                nroOS = "123456",
+                setTextField = { _, _ -> },
+                setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = false,
+                ),
                 onNavMenuNote = {},
                 onNavItemList = {},
                 onNavInputItem = {},
@@ -132,11 +176,20 @@ fun OSMechanicPagePreviewWithProgress() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSMechanicContent(
-                nroOS = "",
+                nroOS = "123456",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                status = UpdateStatusState(),
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CHECK_CONNECTION,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = 0.1f,
+                    flagDialog = false
+                ),
                 onNavMenuNote = {},
                 onNavItemList = {},
                 onNavInputItem = {},
@@ -152,11 +205,20 @@ fun OSMechanicPagePreviewMsgFieldEmpty() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSMechanicContent(
-                nroOS = "",
+                nroOS = "123456",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                status = UpdateStatusState(),
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                    flagDialog = true,
+                ),
                 onNavMenuNote = {},
                 onNavItemList = {},
                 onNavInputItem = {},
@@ -172,7 +234,7 @@ fun OSMechanicPagePreviewMsgFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSMechanicContent(
-                nroOS = "",
+                nroOS = "123456",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
@@ -192,7 +254,7 @@ fun OSMechanicPagePreviewMsgNonExistent() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSMechanicContent(
-                nroOS = "",
+                nroOS = "123456",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,

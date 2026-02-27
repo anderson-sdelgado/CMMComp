@@ -22,8 +22,6 @@ import javax.inject.Inject
 interface CheckNroOS {
     suspend operator fun invoke(
         nroOS: String,
-        sizeAll: Float,
-        count: Float
     ): Flow<UpdateStatusState>
 }
 
@@ -36,14 +34,12 @@ class ICheckNroOS @Inject constructor(
 
     override suspend fun invoke(
         nroOS: String,
-        sizeAll: Float,
-        count: Float
     ): Flow<UpdateStatusState> = flow {
         flowCall(getClassAndMethod()) {
 
-            emitProgressOS(count, sizeAll, LevelUpdate.CHECK_CONNECTION, TB_ITEM_OS_MECHANIC)
+            emitProgressOS(LevelUpdate.CHECK_CONNECTION, TB_ITEM_OS_MECHANIC)
             if (!checkNetwork.isConnected()) {
-                emitProgressOSError(errors = Errors.FAILURE_CONNECTION)
+                emitProgressOSError(errors = Errors.FAILURE_CONNECTION, checkDialog = false)
                 return@flowCall
             }
             val nroOSInt = tryCatch(::toInt.name) {
@@ -52,12 +48,12 @@ class ICheckNroOS @Inject constructor(
             val idEquip = equipRepository.getIdEquipMain().getOrThrow()
             val token = getToken().getOrThrow()
 
-            emitProgressOS(count, sizeAll, LevelUpdate.RECOVERY, TB_ITEM_OS_MECHANIC)
+            emitProgressOS(LevelUpdate.RECOVERY, TB_ITEM_OS_MECHANIC)
             val resultList =
                 itemOSMechanicRepository.listByIdEquipAndNroOS(token, idEquip, nroOSInt)
             resultList.onFailure {
                 if (it.cause is SocketTimeoutException){
-                    emitProgressOSError(errors = Errors.TIME_OUT)
+                    emitProgressOSError(errors = Errors.TIME_OUT, checkDialog = false)
                     return@flowCall
                 }
                 throw it
@@ -68,10 +64,10 @@ class ICheckNroOS @Inject constructor(
                 return@flowCall
             }
 
-            emitProgressOS(count,sizeAll, LevelUpdate.CLEAN, TB_ITEM_OS_MECHANIC)
+            emitProgressOS(LevelUpdate.CLEAN, TB_ITEM_OS_MECHANIC)
             itemOSMechanicRepository.deleteAll().getOrThrow()
 
-            emitProgressOS(count, sizeAll, LevelUpdate.SAVE, TB_ITEM_OS_MECHANIC)
+            emitProgressOS(LevelUpdate.SAVE, TB_ITEM_OS_MECHANIC)
             itemOSMechanicRepository.addAll(list).getOrThrow()
         }
 

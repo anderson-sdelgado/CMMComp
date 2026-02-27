@@ -15,7 +15,7 @@ interface OSApi {
     suspend fun all(@Header("Authorization") auth: String): Response<List<OSRetrofitModel>>
 
     @POST(WEB_OS_LIST_BY_NRO_OS)
-    suspend fun getListByNroOS(
+    suspend fun listByNroOS(
         @Header("Authorization") auth: String,
         @Body nroOS: Int
     ): Response<List<OSRetrofitModel>>

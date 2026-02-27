@@ -46,7 +46,7 @@ class IOSRepository @Inject constructor(
         nroOS: Int
     ): Result<List<OS>> =
         call(getClassAndMethod()) {
-            val modelList = osRetrofitDatasource.getListByNroOS(token, nroOS).getOrThrow()
+            val modelList = osRetrofitDatasource.listByNroOS(token, nroOS).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
         }
 

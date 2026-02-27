@@ -287,7 +287,7 @@ class IOSRepositoryTest {
     fun `getListByNroOS - Check return failure if have error in OSRetrofitDatasource getListByNroOS`() =
         runTest {
             whenever(
-                osRetrofitDatasource.getListByNroOS(
+                osRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -320,7 +320,7 @@ class IOSRepositoryTest {
     fun `getListByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
         runTest {
             whenever(
-                osRetrofitDatasource.getListByNroOS(
+                osRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )
@@ -345,7 +345,7 @@ class IOSRepositoryTest {
     fun `getListByNroOS - Check return list if OSRetrofitDatasource getListByNroOS return list`() =
         runTest {
             whenever(
-                osRetrofitDatasource.getListByNroOS(
+                osRetrofitDatasource.listByNroOS(
                     token = "token",
                     nroOS = 123456
                 )

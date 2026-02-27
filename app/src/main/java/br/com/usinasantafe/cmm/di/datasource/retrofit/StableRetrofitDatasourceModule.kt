@@ -84,4 +84,7 @@ interface StableRetrofitDatasourceModule {
     @Singleton
     fun bindServiceRetrofitDatasource(dataSource: IServiceRetrofitDatasource): ServiceRetrofitDatasource
 
+    @Binds
+    @Singleton
+    fun bindItemOSMechanicRetrofitDatasource(dataSource: IItemOSMechanicRetrofitDatasource): ItemOSMechanicRetrofitDatasource
 }

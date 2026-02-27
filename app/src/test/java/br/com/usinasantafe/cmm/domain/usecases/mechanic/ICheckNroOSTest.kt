@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
+import br.com.usinasantafe.cmm.domain.entities.stable.ItemOSMechanic
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ItemOSMechanicRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
@@ -9,7 +10,6 @@ import br.com.usinasantafe.cmm.utils.CheckNetwork
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.utils.updatePercentage
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
@@ -39,10 +39,9 @@ class ICheckNroOSTest {
             ).thenReturn(
                 false
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 2
             )
             assertEquals(
@@ -51,15 +50,15 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
                 list[1],
                 UpdateStatusState(
-                    flagProgress = true,
+                    flagProgress = false,
                     errors = Errors.FAILURE_CONNECTION,
-                    flagDialog = true,
+                    flagDialog = false,
                     flagFailure = true,
                     failure = "",
                     currentProgress = 1f,
@@ -76,10 +75,9 @@ class ICheckNroOSTest {
             ).thenReturn(
                 true
             )
-            val result = usecase("2DFASF2DSFAS00", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2DFASF2DSFAS00").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 2
             )
             assertEquals(
@@ -88,7 +86,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -122,10 +120,9 @@ class ICheckNroOSTest {
                     cause = Exception()
                 )
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 2
             )
             assertEquals(
@@ -134,7 +131,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -173,10 +170,9 @@ class ICheckNroOSTest {
                     cause = Exception()
                 )
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 2
             )
             assertEquals(
@@ -185,7 +181,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -229,10 +225,9 @@ class ICheckNroOSTest {
                     SocketTimeoutException()
                 )
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 3
             )
             assertEquals(
@@ -241,7 +236,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -250,15 +245,15 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(2f, 1f, 7f)
+                    currentProgress = updatePercentage(2f, 1f, 5f)
                 )
             )
             assertEquals(
                 list[2],
                 UpdateStatusState(
-                    flagProgress = true,
+                    flagProgress = false,
                     errors = Errors.TIME_OUT,
-                    flagDialog = true,
+                    flagDialog = false,
                     flagFailure = true,
                     failure = "",
                     currentProgress = 1f,
@@ -294,10 +289,9 @@ class ICheckNroOSTest {
                     Exception()
                 )
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 3
             )
             assertEquals(
@@ -306,7 +300,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -315,7 +309,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(2f, 1f, 7f)
+                    currentProgress = updatePercentage(2f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -331,7 +325,6 @@ class ICheckNroOSTest {
                 )
             )
         }
-
 
     @Test
     fun `Check return failure INVALID_VALUE if ItemOSMechanicRepository listByIdEquipAndNroOS return empty`() =
@@ -356,10 +349,9 @@ class ICheckNroOSTest {
             ).thenReturn(
                 Result.success(emptyList())
             )
-            val result = usecase("2200", sizeAll = 7f, count = 1f)
-            val list = result.toList()
+            val list = usecase("2200").toList()
             assertEquals(
-                result.count(),
+                list.count(),
                 3
             )
             assertEquals(
@@ -368,7 +360,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.CHECK_CONNECTION,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(1f, 1f, 7f)
+                    currentProgress = updatePercentage(1f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -377,7 +369,7 @@ class ICheckNroOSTest {
                     flagProgress = true,
                     levelUpdate = LevelUpdate.RECOVERY,
                     tableUpdate = "tb_item_os_mechanic",
-                    currentProgress = updatePercentage(2f, 1f, 7f)
+                    currentProgress = updatePercentage(2f, 1f, 5f)
                 )
             )
             assertEquals(
@@ -390,6 +382,280 @@ class ICheckNroOSTest {
                     failure = "",
                     currentProgress = 1f,
                     levelUpdate = null
+                )
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in ItemOSMechanicRepository deleteAll`() =
+        runTest {
+
+            whenever(
+                checkNetwork.isConnected()
+            ).thenReturn(
+                true
+            )
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                itemOSMechanicRepository.listByIdEquipAndNroOS("token", 1, 2200)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemOSMechanic(
+                            id = 1,
+                            nroOS = 2200,
+                            seqItem = 1,
+                            idServ = 1,
+                            idComp = 1
+                        )
+                    )
+                )
+            )
+            whenever(
+                itemOSMechanicRepository.deleteAll()
+            ).thenReturn(
+                resultFailure(
+                    "IItemOSMechanicRepository.deleteAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val list = usecase("2200").toList()
+            assertEquals(
+                list.count(),
+                4
+            )
+            assertEquals(
+                list[0],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CHECK_CONNECTION,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(1f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[1],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(2f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[2],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(3f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[3],
+                UpdateStatusState(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ICheckNroOS -> IItemOSMechanicRepository.deleteAll -> java.lang.Exception",
+                    currentProgress = 1f,
+                    levelUpdate = null
+                )
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in ItemOSMechanicRepository addAll`() =
+        runTest {
+
+            whenever(
+                checkNetwork.isConnected()
+            ).thenReturn(
+                true
+            )
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                itemOSMechanicRepository.listByIdEquipAndNroOS("token", 1, 2200)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemOSMechanic(
+                            id = 1,
+                            nroOS = 2200,
+                            seqItem = 1,
+                            idServ = 1,
+                            idComp = 1
+                        )
+                    )
+                )
+            )
+            whenever(
+                itemOSMechanicRepository.addAll(
+                    listOf(
+                        ItemOSMechanic(
+                            id = 1,
+                            nroOS = 2200,
+                            seqItem = 1,
+                            idServ = 1,
+                            idComp = 1
+                        )
+                    )
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IItemOSMechanicRepository.addAll",
+                    "-",
+                    Exception()
+                )
+            )
+            val list = usecase("2200").toList()
+            assertEquals(
+                list.count(),
+                5
+            )
+            assertEquals(
+                list[0],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CHECK_CONNECTION,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(1f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[1],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(2f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[2],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(3f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[3],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(4f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[4],
+                UpdateStatusState(
+                    flagProgress = true,
+                    errors = Errors.UPDATE,
+                    flagDialog = true,
+                    flagFailure = true,
+                    failure = "ICheckNroOS -> IItemOSMechanicRepository.addAll -> java.lang.Exception",
+                    currentProgress = 1f,
+                    levelUpdate = null
+                )
+            )
+        }
+
+    @Test
+    fun `Check emit if process execute successfully`() =
+        runTest {
+
+            whenever(
+                checkNetwork.isConnected()
+            ).thenReturn(
+                true
+            )
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                getToken()
+            ).thenReturn(
+                Result.success("token")
+            )
+            whenever(
+                itemOSMechanicRepository.listByIdEquipAndNroOS("token", 1, 2200)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemOSMechanic(
+                            id = 1,
+                            nroOS = 2200,
+                            seqItem = 1,
+                            idServ = 1,
+                            idComp = 1
+                        )
+                    )
+                )
+            )
+            val list = usecase("2200").toList()
+            assertEquals(
+                list.count(),
+                4
+            )
+            assertEquals(
+                list[0],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CHECK_CONNECTION,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(1f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[1],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(2f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[2],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CLEAN,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(3f, 1f, 5f)
+                )
+            )
+            assertEquals(
+                list[3],
+                UpdateStatusState(
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.SAVE,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = updatePercentage(4f, 1f, 5f)
                 )
             )
         }

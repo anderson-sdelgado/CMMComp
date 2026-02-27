@@ -84,4 +84,7 @@ interface StableRoomDatasourceModule {
     @Singleton
     fun bindServiceRoomDatasource(dataSource: IServiceRoomDatasource): ServiceRoomDatasource
 
+    @Binds
+    @Singleton
+    fun bindItemOSMechanicRoomDatasource(dataSource: IItemOSMechanicRoomDatasource): ItemOSMechanicRoomDatasource
 }

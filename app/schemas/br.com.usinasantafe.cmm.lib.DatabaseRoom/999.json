@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "93f21b92d76f28c1f4e44b9e69b0025a",
+    "identityHash": "dd81619f56ae5bf7f4cf7c5c65534dcb",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -641,6 +641,50 @@
         "foreignKeys": []
       },
       {
+        "tableName": "tb_item_os_mechanic",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `seqItem` INTEGER NOT NULL, `idServ` INTEGER NOT NULL, `idComp` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "seqItem",
+            "columnName": "seqItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idServ",
+            "columnName": "idServ",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idComp",
+            "columnName": "idComp",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "tb_header_moto_mec",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `regOperator` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `typeEquip` TEXT NOT NULL, `idTurn` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idActivity` INTEGER NOT NULL, `flowComposting` TEXT, `hourMeterInitial` REAL NOT NULL, `hourMeterFinish` REAL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `statusCon` INTEGER NOT NULL, `statusSend` TEXT NOT NULL, `status` TEXT NOT NULL, `idServ` INTEGER, `idEquipMotorPump` INTEGER, PRIMARY KEY(`id`))",
         "fields": [
@@ -1246,7 +1290,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '93f21b92d76f28c1f4e44b9e69b0025a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dd81619f56ae5bf7f4cf7c5c65534dcb')"
     ]
   }
 }

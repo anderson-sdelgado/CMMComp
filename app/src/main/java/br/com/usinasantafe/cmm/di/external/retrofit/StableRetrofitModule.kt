@@ -132,4 +132,10 @@ object StableRetrofitModule {
         @DefaultRetrofit retrofit: Retrofit
     ): ComponentApi = retrofit.create(ComponentApi::class.java)
 
+    @Provides
+    @Singleton
+    fun itemOSMechanicApiRetrofit(
+        @DefaultRetrofit retrofit: Retrofit
+    ): ItemOSMechanicApi = retrofit.create(ItemOSMechanicApi::class.java)
+
 }

@@ -138,7 +138,7 @@ class IColabRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have error`() =
+    fun `listAll - Check return failure if have error`() =
         runTest {
             whenever(
                 colabRetrofitDatasource.listAll("token")
@@ -165,7 +165,7 @@ class IColabRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return true if function execute successfully`() =
+    fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 ColabRetrofitModel(

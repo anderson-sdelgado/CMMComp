@@ -30,6 +30,7 @@ import java.util.Date
         TurnRoomModel::class,
         ComponentRoomModel::class,
         ServiceRoomModel::class,
+        ItemOSMechanicRoomModel::class,
         HeaderMotoMecRoomModel::class,
         ItemMotoMecRoomModel::class,
         HeaderCheckListRoomModel::class,
@@ -63,6 +64,7 @@ abstract class DatabaseRoom : RoomDatabase() {
     abstract fun turnDao(): TurnDao
     abstract fun componentDao(): ComponentDao
     abstract fun serviceDao(): ServiceDao
+    abstract fun itemOSMechanicDao(): ItemOSMechanicDao
     abstract fun headerMotoMecDao(): HeaderMotoMecDao
     abstract fun noteMotoMecDao(): ItemMotoMecDao
     abstract fun headerCheckListDao(): HeaderCheckListDao

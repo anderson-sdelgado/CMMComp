@@ -23,4 +23,8 @@ interface MechanicModule {
     @Singleton
     fun bindCheckNroOS(usecase: ICheckNroOS): CheckNroOS
 
+    @Binds
+    @Singleton
+    fun bindSetNroOS(usecase: ISetNroOS): SetNroOS
+
 }

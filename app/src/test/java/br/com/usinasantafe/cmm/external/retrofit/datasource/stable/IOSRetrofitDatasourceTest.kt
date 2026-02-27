@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 class IOSRetrofitDatasourceTest {
 
     @Test
-    fun `recoverAll - Check return failure if token is invalid`() =
+    fun `listAll - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -30,18 +30,18 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IOSRetrofitDatasource.recoverAll"
             )
             assertEquals(
-                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
             server.shutdown()
         }
 
     @Test
-    fun `recoverAll - Check return failure if have Error 404`() =
+    fun `listAll - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -59,18 +59,18 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.recoverAll",
-                result.exceptionOrNull()!!.message
+                result.exceptionOrNull()!!.message,
+                "IOSRetrofitDatasource.recoverAll"
             )
             assertEquals(
-                NullPointerException().toString(),
-                result.exceptionOrNull()!!.cause.toString()
+                result.exceptionOrNull()!!.cause.toString(),
+                        NullPointerException().toString()
             )
             server.shutdown()
         }
 
     @Test
-    fun `recoverAll - Check return correct`() =
+    fun `listAll - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -114,7 +114,7 @@ class IOSRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if token is invalid`() =
+    fun `listByNroOS - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -126,7 +126,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -146,7 +146,7 @@ class IOSRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if have Error 404`() =
+    fun `listtByNroOS - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -158,7 +158,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
@@ -178,7 +178,7 @@ class IOSRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return list empty`() =
+    fun `listByNroOS - Check return list empty`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -190,17 +190,17 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )
             assertEquals(
+                result.isSuccess,
                 true,
-                result.isSuccess
             )
             assertEquals(
                 Result.success(
-                    emptyList<OSRetrofitModel>()
+                    emptyList()
                 ),
                 result
             )
@@ -208,7 +208,7 @@ class IOSRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return list`() =
+    fun `listByNroOS - Check return list`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -220,7 +220,7 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.getListByNroOS(
+            val result = datasource.listByNroOS(
                 token = "token",
                 nroOS = 123456
             )

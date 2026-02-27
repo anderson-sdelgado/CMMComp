@@ -54,23 +54,19 @@ class OperatorHeaderViewModel @Inject constructor(
         when (typeButton) {
             TypeButton.NUMERIC -> updateState { copy(regColab = addTextField(regColab, text)) }
             TypeButton.CLEAN -> updateState { copy(regColab = clearTextField(regColab)) }
-            TypeButton.OK -> validateAndSet()
+            TypeButton.OK -> set()
             TypeButton.UPDATE -> {
                 viewModelScope.launch { updateAllDatabase().collect { _uiState.value = it } }
             }
         }
     }
 
-    private fun validateAndSet() {
-        if (state.regColab.isBlank()) {
-            updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
-            return
-        }
-        set()
-    }
-
     private fun set() = viewModelScope.launch {
         runCatching {
+            if (state.regColab.isBlank()) {
+                updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
+                return@launch
+            }
             val check = hasRegColab(uiState.value.regColab).getOrThrow()
             if (check) setRegOperator(uiState.value.regColab).getOrThrow()
             check

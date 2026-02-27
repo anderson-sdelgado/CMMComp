@@ -119,6 +119,10 @@ object StableRoomModule {
         return database.serviceDao()
     }
 
-
+    @Provides
+    @Singleton
+    fun provideItemOSMechanicDao(database: DatabaseRoom): ItemOSMechanicDao {
+        return database.itemOSMechanicDao()
+    }
 
 }

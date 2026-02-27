@@ -105,4 +105,5 @@
     <string name="text_close_collection_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RECOLHIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
     <string name="text_title_collection">RECOLHIMENTO</string>
     <string name="text_title_implement">IMPLEMENTO %1$s</string>
+    <string name="text_msg_check_os">Checando se existe Itens de Manutenção da OS digitada na Base de Dados.</string>
 </resources>

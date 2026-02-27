@@ -240,7 +240,7 @@ class ConfigViewModel @Inject constructor(
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
             classAndMethod = getClassAndMethod(),
-            flagUpdateConfig = true
+            flagUpdateFinish = false
         )
 
     private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {

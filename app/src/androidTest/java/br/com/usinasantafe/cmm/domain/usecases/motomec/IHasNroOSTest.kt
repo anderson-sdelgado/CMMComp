@@ -26,7 +26,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 @HiltAndroidTest
-class ICheckNroOSTest {
+class IHasNroOSTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
