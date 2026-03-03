@@ -17,7 +17,7 @@ class ICheckClosePerformance @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> =
         call(getClassAndMethod()) {
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val check = !performanceRepository.hasByIdHeaderAndValueNull(id).getOrThrow()
             if(check) motoMecRepository.finishHeader().getOrThrow()
             return@call check

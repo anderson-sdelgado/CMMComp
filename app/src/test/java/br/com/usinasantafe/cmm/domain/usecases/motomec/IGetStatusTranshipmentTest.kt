@@ -23,7 +23,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -50,7 +50,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return failure if have error in MotoMecRepository hasNoteByIdHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -82,7 +82,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return StatusTranshipment WITHOUT_NOTE if function execute successfully and return false`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -106,7 +106,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return failure if have error in MotoMecRepository getNoteLastByIdHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -143,7 +143,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return  StatusTranshipment WITHOUT_NOTE if function execute successfully and last Note is type WORK`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -178,7 +178,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return  StatusTranshipment TIME_INVALID if function execute successfully and idEquipTrans is not null and last dateHour note minor than dateHour now minus 10 minutes`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -216,7 +216,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return  StatusTranshipment OK if function execute successfully and idEquipTrans is null and last dateHour note minor than dateHour now minus 10 minutes`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -253,7 +253,7 @@ class IGetStatusTranshipmentTest {
     fun `Check return  StatusTranshipment OK if function execute successfully and idEquipTrans is not null and last dateHour note greater than dateHour now minus 10 minutes`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

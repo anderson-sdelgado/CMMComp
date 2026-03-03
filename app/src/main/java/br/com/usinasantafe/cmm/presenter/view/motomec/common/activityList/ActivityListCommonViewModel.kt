@@ -62,7 +62,7 @@ class ActivityListCommonViewModel @Inject constructor(
             .onFailureUpdate(getClassAndMethod(), ::updateState)
     }
 
-    fun setId(id: Int) = viewModelScope.launch {
+    fun set(id: Int) = viewModelScope.launch {
         runCatching {
             setIdActivityCommon(
                 id = id,

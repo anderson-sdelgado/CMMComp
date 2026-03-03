@@ -30,7 +30,7 @@ class IListHistoryTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -57,7 +57,7 @@ class IListHistoryTest {
     fun `Check return failure if have error in MotoMecRepository noteList`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -102,7 +102,7 @@ class IListHistoryTest {
                 )
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -152,7 +152,7 @@ class IListHistoryTest {
                 )
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -215,7 +215,7 @@ class IListHistoryTest {
                 )
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

@@ -23,7 +23,7 @@ class ISaveNote @Inject constructor(
     override suspend fun invoke(): Result<Unit> =
         call(getClassAndMethod()) {
 
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val idHeader = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
             val idActivity = motoMecRepository.getIdActivityHeader().getOrThrow()
 

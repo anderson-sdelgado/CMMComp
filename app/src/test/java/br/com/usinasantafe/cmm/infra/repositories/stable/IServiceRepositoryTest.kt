@@ -203,4 +203,79 @@ class IServiceRepositoryTest {
             )
         }
 
+    @Test
+    fun `getById - Check return failure if have error in ServiceRoomDatasource getById`() =
+        runTest {
+            whenever(
+                serviceRoomDatasource.getById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IServiceRoomDatasource.getById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IServiceRepository.getById -> IServiceRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully with data`() =
+        runTest {
+            whenever(
+                serviceRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(
+                    ServiceRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "Service 1"
+                    )
+                )
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Service(
+                    id = 1,
+                    cod = 10,
+                    descr = "Service 1"
+                )
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully without data`() =
+        runTest {
+            whenever(
+                serviceRoomDatasource.getById(1)
+            ).thenReturn(
+                Result.success(null)
+            )
+            val result = repository.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
 }

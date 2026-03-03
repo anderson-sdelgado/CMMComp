@@ -48,4 +48,7 @@ interface SharedPreferencesDatasourceModule {
     @Singleton
     fun bindImplementSharedPreferencesDatasource(dataSource: IImplementSharedPreferencesDatasource): ImplementSharedPreferencesDatasource
 
+    @Binds
+    @Singleton
+    fun bindMechanicSharedPreferencesDatasource(dataSource: IMechanicSharedPreferencesDatasource): MechanicSharedPreferencesDatasource
 }

@@ -52,7 +52,7 @@ class ISetHourMeter @Inject constructor(
 
             motoMecRepository.setHourMeterFinishHeader(value).getOrThrow()
 
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val check = performanceRepository.hasByIdHeader(id).getOrThrow()
             if(check) return@call FlowApp.PERFORMANCE
 

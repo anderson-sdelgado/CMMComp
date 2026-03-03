@@ -20,4 +20,9 @@ class IServiceRoomDatasource @Inject constructor(
         result(getClassAndMethod()) {
             serviceDao.deleteAll()
         }
+
+    override suspend fun getById(id: Int): Result<ServiceRoomModel?> =
+        result(getClassAndMethod()) {
+            serviceDao.getById(id)
+        }
 }

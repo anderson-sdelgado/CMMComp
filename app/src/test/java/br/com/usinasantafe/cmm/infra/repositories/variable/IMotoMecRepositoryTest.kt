@@ -2,24 +2,20 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
-import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.retrofit.variable.MotoMecRetrofitDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.HeaderMotoMecRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ImplementRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.ItemMotoMecRoomDatasource
-import br.com.usinasantafe.cmm.infra.datasource.room.variable.PerformanceRoomDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ImplementSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.HeaderMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.NoteMotoMecRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.roomModelToRetrofitModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ImplementRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ImplementSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
@@ -30,7 +26,6 @@ import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.never
@@ -652,7 +647,7 @@ class IMotoMecRepositoryTest {
                     cause = Exception()
                 )
             )
-            val result = repository.getIdByHeaderOpen()
+            val result = repository.getIdHeaderPointing()
             assertEquals(
                 result.isFailure,
                 true
@@ -675,7 +670,7 @@ class IMotoMecRepositoryTest {
             ).thenReturn(
                 Result.success(1)
             )
-            val result = repository.getIdByHeaderOpen()
+            val result = repository.getIdHeaderPointing()
             assertEquals(
                 result.isSuccess,
                 true

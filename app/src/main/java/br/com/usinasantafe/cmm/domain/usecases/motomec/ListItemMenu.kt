@@ -72,7 +72,7 @@ class IListItemMenu @Inject constructor(
     private suspend fun pmmList(): Result<List<ItemMenuModel>> =
         call(getClassAndMethod()) {
 
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val idHeader = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val list: MutableList<Pair<Int, String>> = mutableListOf()
 
             // ADD ITEM_NORMAL

@@ -21,3 +21,11 @@ fun token(
     token = Strings.padStart(str, 32, '0')
     return "Bearer $token"
 }
+
+data class Token(
+    val number: Long,
+    val version: String,
+    val nroEquip: Long,
+    val app: String,
+    val idServ: Int,
+)

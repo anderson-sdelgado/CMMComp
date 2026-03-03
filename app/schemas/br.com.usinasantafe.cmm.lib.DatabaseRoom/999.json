@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "dd81619f56ae5bf7f4cf7c5c65534dcb",
+    "identityHash": "dc3cf9865e35d295351ce9b7d7ce0d6d",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -642,11 +642,17 @@
       },
       {
         "tableName": "tb_item_os_mechanic",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `seqItem` INTEGER NOT NULL, `idServ` INTEGER NOT NULL, `idComp` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `idEquip` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `seqItem` INTEGER NOT NULL, `idServ` INTEGER NOT NULL, `idComp` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "idEquip",
+            "columnName": "idEquip",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -1000,7 +1006,7 @@
       },
       {
         "tableName": "tb_mechanic",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `os` INTEGER NOT NULL, `item` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `idHeader` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `seqItem` INTEGER NOT NULL, `dateHourInitial` INTEGER NOT NULL, `dateHourFinish` INTEGER, `status` TEXT NOT NULL, `statusSend` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -1015,14 +1021,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "os",
-            "columnName": "os",
+            "fieldPath": "nroOS",
+            "columnName": "nroOS",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "item",
-            "columnName": "item",
+            "fieldPath": "seqItem",
+            "columnName": "seqItem",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -1290,7 +1296,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dd81619f56ae5bf7f4cf7c5c65534dcb')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dc3cf9865e35d295351ce9b7d7ce0d6d')"
     ]
   }
 }

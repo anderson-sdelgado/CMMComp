@@ -25,7 +25,7 @@ class IListHistory @Inject constructor(
 
     override suspend fun invoke(): Result<List<ItemHistoryScreenModel>> =
         call(getClassAndMethod()) {
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val listNoteList = motoMecRepository.listNoteByIdHeader(id).getOrThrow()
             listNoteList.map { item ->
                 val function = if(item.idStop == null) {

@@ -25,7 +25,7 @@ class ICheckCloseCollectionTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -52,7 +52,7 @@ class ICheckCloseCollectionTest {
     fun `Check return failure if have error in MotoMecRepository hasPerformanceByIdHeaderAndValueNull`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -84,7 +84,7 @@ class ICheckCloseCollectionTest {
     fun `Check return false and execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return true`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -109,7 +109,7 @@ class ICheckCloseCollectionTest {
     fun `Check return true and not execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return false`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

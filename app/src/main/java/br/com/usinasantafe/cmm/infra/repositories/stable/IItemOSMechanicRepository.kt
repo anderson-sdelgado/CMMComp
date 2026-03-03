@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ItemOSMechanicRe
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ItemOSMechanicRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -35,6 +36,15 @@ class IItemOSMechanicRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = itemOSMechanicRetrofitDatasource.listByIdEquipAndNroOS(token, nroOS, idEquip).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun listByIdEquipAndNroOS(
+        idEquip: Int,
+        nroOS: Int
+    ): Result<List<ItemOSMechanic>> =
+        call(getClassAndMethod()) {
+            val modelList = itemOSMechanicRoomDatasource.listByIdEquipAndNroOS(idEquip, nroOS).getOrThrow()
+            modelList.map { it.roomModelToEntity() }
         }
 
 }

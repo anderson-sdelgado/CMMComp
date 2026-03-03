@@ -14,7 +14,7 @@ const val BASE_SHARED_PREFERENCES_TABLE_PRE_CEC = "pre_cec"
 const val BASE_SHARED_PREFERENCES_TABLE_TRAILER_LIST = "trailer_list"
 const val BASE_SHARED_PREFERENCES_TABLE_EQUIP = "equip"
 const val BASE_SHARED_PREFERENCES_TABLE_IMPLEMENT_LIST = "implement_list"
-
+const val BASE_SHARED_PREFERENCES_TABLE_MECHANIC = "mechanic"
 
 
 const val TB_ACTIVITY = "tb_activity"

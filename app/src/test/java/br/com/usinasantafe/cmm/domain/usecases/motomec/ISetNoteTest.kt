@@ -1,13 +1,11 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.RItemMenuStopRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.ECM
 import br.com.usinasantafe.cmm.lib.ITEM_NORMAL
-import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.atLeastOnce
@@ -79,7 +77,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -122,7 +120,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -170,7 +168,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -223,7 +221,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -272,7 +270,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -321,7 +319,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -379,7 +377,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -438,7 +436,7 @@ class ISetNoteTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -482,7 +480,7 @@ class ISetNoteTest {
                 Result.success(null)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

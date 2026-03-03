@@ -12,4 +12,9 @@ interface ItemOSMechanicRepository {
         idEquip: Int,
         nroOS: Int
     ): Result<List<ItemOSMechanic>>
+
+    suspend fun listByIdEquipAndNroOS(
+        idEquip: Int,
+        nroOS: Int
+    ): Result<List<ItemOSMechanic>>
 }

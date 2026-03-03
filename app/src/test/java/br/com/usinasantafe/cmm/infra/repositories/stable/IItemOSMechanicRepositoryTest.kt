@@ -29,6 +29,7 @@ class IItemOSMechanicRepositoryTest {
             val roomModelList = listOf(
                 ItemOSMechanicRoomModel(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -38,6 +39,7 @@ class IItemOSMechanicRepositoryTest {
             val entityList = listOf(
                 ItemOSMechanic(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -74,6 +76,7 @@ class IItemOSMechanicRepositoryTest {
             val roomModelList = listOf(
                 ItemOSMechanicRoomModel(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -83,6 +86,7 @@ class IItemOSMechanicRepositoryTest {
             val entityList = listOf(
                 ItemOSMechanic(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -171,11 +175,12 @@ class IItemOSMechanicRepositoryTest {
         }
 
     @Test
-    fun `listByIdEquipAndNroOS - Check return true if function execute successfully`() =
+    fun `listByIdEquipAndNroOS - Check return true if function execute successfully - Retrofit`() =
         runTest {
             val retrofitModelList = listOf(
                 ItemOSMechanicRetrofitModelInput(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -183,6 +188,7 @@ class IItemOSMechanicRepositoryTest {
                 ),
                 ItemOSMechanicRetrofitModelInput(
                     id = 2,
+                    idEquip = 1,
                     nroOS = 2,
                     seqItem = 2,
                     idServ = 2,
@@ -192,6 +198,7 @@ class IItemOSMechanicRepositoryTest {
             val entityList = listOf(
                 ItemOSMechanic(
                     id = 1,
+                    idEquip = 1,
                     nroOS = 1,
                     seqItem = 1,
                     idServ = 1,
@@ -199,6 +206,7 @@ class IItemOSMechanicRepositoryTest {
                 ),
                 ItemOSMechanic(
                     id = 2,
+                    idEquip = 1,
                     nroOS = 2,
                     seqItem = 2,
                     idServ = 2,
@@ -220,6 +228,72 @@ class IItemOSMechanicRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 entityList
+            )
+        }
+
+    @Test
+    fun `listByIdEquipAndNroOS - Check return failure if have error in ItemOSMechanicRoomDatasource listByIdEquipAndNroOS`() =
+        runTest {
+            whenever(
+                itemOSMechanicRoomDatasource.listByIdEquipAndNroOS(1, 1)
+            ).thenReturn(
+                resultFailure(
+                    "IItemOSMechanicRoomDatasource.listByIdEquipAndNroOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.listByIdEquipAndNroOS(1, 1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IItemOSMechanicRepository.listByIdEquipAndNroOS -> IItemOSMechanicRoomDatasource.listByIdEquipAndNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `listByIdEquipAndNroOS - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                itemOSMechanicRoomDatasource.listByIdEquipAndNroOS(1, 1)
+            ).thenReturn(
+                Result.success(
+                    listOf(
+                        ItemOSMechanicRoomModel(
+                            id = 1,
+                            idEquip = 1,
+                            nroOS = 1,
+                            seqItem = 1,
+                            idServ = 1,
+                            idComp = 1
+                        )
+                    )
+                )
+            )
+            val result = repository.listByIdEquipAndNroOS(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    ItemOSMechanic(
+                        id = 1,
+                        idEquip = 1,
+                        nroOS = 1,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    )
+                )
             )
         }
 

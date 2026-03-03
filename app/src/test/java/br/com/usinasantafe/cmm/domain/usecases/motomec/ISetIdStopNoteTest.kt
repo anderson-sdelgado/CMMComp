@@ -1,10 +1,8 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
-import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
@@ -29,7 +27,7 @@ class ISetIdStopNoteTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -56,7 +54,7 @@ class ISetIdStopNoteTest {
     fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -88,7 +86,7 @@ class ISetIdStopNoteTest {
     fun `Check return failure if have error in NoteMotoMecRepository setIdStop`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -125,7 +123,7 @@ class ISetIdStopNoteTest {
     fun `Check return failure if have error in MotoMecRepository getNroOSHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -163,7 +161,7 @@ class ISetIdStopNoteTest {
     fun `Check return failure if have error in NoteMotoMecRepository save`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -206,7 +204,7 @@ class ISetIdStopNoteTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

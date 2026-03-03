@@ -22,7 +22,7 @@ interface MotoMecRepository {
     suspend fun getIdEquipHeader(): Result<Int>
     suspend fun saveHeader(hourMeterInitial: Double): EmptyResult
     suspend fun hasHeaderOpen(): Result<Boolean>
-    suspend fun getIdByHeaderOpen(): Result<Int>
+    suspend fun getIdHeaderPointing(): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
     suspend fun finishHeader(): EmptyResult
     suspend fun hasHeaderSend(): Result<Boolean>

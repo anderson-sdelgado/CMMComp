@@ -1,15 +1,12 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
-import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.transhipment.ISetNroEquipTranshipment
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.TypeActivity
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.atLeastOnce
-import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
@@ -226,7 +223,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -267,7 +264,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -313,7 +310,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -344,7 +341,7 @@ class ISetNroEquipTranshipmentTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

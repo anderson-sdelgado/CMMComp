@@ -792,24 +792,24 @@ class MenuNoteScreenTest {
         mechanicDao.insert(
             MechanicRoomModel(
                 idHeader = 1,
-                os = 123456,
-                item = 1,
+                nroOS = 123456,
+                seqItem = 1,
                 dateHourFinish = null
             )
         )
         mechanicDao.insert(
             MechanicRoomModel(
                 idHeader = 2,
-                os = 123456,
-                item = 1,
+                nroOS = 123456,
+                seqItem = 1,
                 dateHourFinish = null
             )
         )
         mechanicDao.insert(
             MechanicRoomModel(
                 idHeader = 1,
-                os = 123456,
-                item = 1,
+                nroOS = 123456,
+                seqItem = 1,
                 dateHourFinish = Date()
             )
         )

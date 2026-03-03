@@ -173,6 +173,51 @@ fun ItemPerformanceListDesign(
 }
 
 @Composable
+fun ItemOSMechanicListDesign(
+    id: Int = 0,
+    seq: Int,
+    service: String,
+    component: String,
+    font: Int = 22,
+    padding: Int = 8,
+    setActionItem: () -> Unit
+) {
+    return  Column(
+        modifier = Modifier
+            .testTag("item_list_$id")
+            .padding(vertical = padding.dp)
+            .clickable {
+                setActionItem()
+            }
+    ) {
+        Text(
+            textAlign = TextAlign.Left,
+            text = stringResource(
+                id = R.string.text_item_service,
+                "$seq - $service"
+            ),
+            style = TextStyle(
+                fontSize = font.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+        Text(
+            textAlign = TextAlign.Left,
+            text = stringResource(
+                id = R.string.text_item_component,
+                component
+            ),
+            style = TextStyle(
+                fontSize = font.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 fun TitleDesign(
     text: String,
     font: Int = 30,

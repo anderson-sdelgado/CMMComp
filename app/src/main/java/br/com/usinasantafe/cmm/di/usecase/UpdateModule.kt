@@ -75,4 +75,8 @@ interface UpdateModule {
     @Singleton
     fun bindUpdateTableService(usecase: IUpdateTableService): UpdateTableService
 
+    @Binds
+    @Singleton
+    fun bindUpdateTableItemOSMechanic(usecase: IUpdateTableItemOSMechanicByIdEquipAndNroOS): UpdateTableItemOSMechanicByIdEquipAndNroOS
+
 }

@@ -16,7 +16,7 @@ class IGetTypeLastNote @Inject constructor(
 
     override suspend fun invoke(): Result<TypeNote?> =
         call(getClassAndMethod()) {
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val check = motoMecRepository.hasNoteByIdHeader(id).getOrThrow()
             if (!check) return@call null
             val noteLast = motoMecRepository.getNoteLastByIdHeader(id).getOrThrow()

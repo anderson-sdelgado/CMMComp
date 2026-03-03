@@ -19,7 +19,7 @@ import javax.inject.Inject
 import kotlin.test.assertEquals
 
 @HiltAndroidTest
-class ISetNroOSCommonTest {
+class ISetNroOSTest {
 
     @get:Rule
     val hiltRule = HiltAndroidRule(this)

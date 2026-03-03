@@ -17,7 +17,7 @@ class IGetStatusTranshipment @Inject constructor(
 
     override suspend fun invoke(): Result<StatusTranshipment> =
         call(getClassAndMethod()) {
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val check = motoMecRepository.hasNoteByIdHeader(id).getOrThrow()
             if (!check) return@call StatusTranshipment.WITHOUT_NOTE
             val noteLast = motoMecRepository.getNoteLastByIdHeader(id).getOrThrow()

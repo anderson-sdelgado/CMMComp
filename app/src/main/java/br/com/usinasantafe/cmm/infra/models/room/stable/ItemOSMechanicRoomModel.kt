@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.lib.TB_ITEM_OS_MECHANIC
 data class ItemOSMechanicRoomModel(
     @PrimaryKey
     val id: Int,
+    val idEquip: Int,
     val nroOS: Int,
     val seqItem: Int,
     val idServ: Int,
@@ -19,6 +20,7 @@ fun ItemOSMechanicRoomModel.roomModelToEntity(): ItemOSMechanic {
     return with(this){
         ItemOSMechanic(
             id = this.id,
+            idEquip = this.idEquip,
             nroOS = this.nroOS,
             seqItem = this.seqItem,
             idServ = this.idServ,
@@ -31,6 +33,7 @@ fun ItemOSMechanic.entityToRoomModel(): ItemOSMechanicRoomModel {
     return with(this) {
         ItemOSMechanicRoomModel(
             id = this.id,
+            idEquip = this.idEquip,
             nroOS = this.nroOS,
             seqItem = this.seqItem,
             idServ = this.idServ,

@@ -27,4 +27,12 @@ interface MechanicModule {
     @Singleton
     fun bindSetNroOS(usecase: ISetNroOS): SetNroOS
 
+    @Binds
+    @Singleton
+    fun bindListItemOS(usecase: IListItemOS): ListItemOS
+
+    @Binds
+    @Singleton
+    fun bindSetSeqItem(usecase: ISetSeqItem): SetSeqItem
+
 }

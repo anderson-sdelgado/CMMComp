@@ -6,4 +6,5 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 interface ComponentRoomDatasource {
     suspend fun addAll(list: List<ComponentRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun getById(id: Int) : Result<ComponentRoomModel?>
 }

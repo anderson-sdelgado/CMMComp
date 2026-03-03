@@ -19,7 +19,7 @@ class IHasNoteMotoMecTest {
     fun `Check return failure if have error in headerMotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRepository.getIdByHeaderOpen",
@@ -46,7 +46,7 @@ class IHasNoteMotoMecTest {
     fun `Check return failure if have error in NoteMotoMecRepository checkNoteByIdHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -78,7 +78,7 @@ class IHasNoteMotoMecTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

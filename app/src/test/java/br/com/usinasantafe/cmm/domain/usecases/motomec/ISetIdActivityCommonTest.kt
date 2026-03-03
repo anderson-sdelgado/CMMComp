@@ -168,7 +168,7 @@ class ISetIdActivityCommonTest {
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
-            verify(motoMecRepository, never()).getIdByHeaderOpen()
+            verify(motoMecRepository, never()).getIdHeaderPointing()
             assertEquals(
                 result.isSuccess,
                 true
@@ -188,7 +188,7 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -224,7 +224,7 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -265,7 +265,7 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -311,7 +311,7 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

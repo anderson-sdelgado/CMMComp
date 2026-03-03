@@ -18,7 +18,7 @@ class IListPerformance @Inject constructor(
 
     override suspend fun invoke(): Result<List<ItemValueOSScreenModel>> =
         call(getClassAndMethod()) {
-            val id = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val list = performanceRepository.listByIdHeader(id).getOrThrow()
             list.map {
                 ItemValueOSScreenModel(

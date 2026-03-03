@@ -18,4 +18,10 @@ interface ItemOSMechanicDao {
     @Query("SELECT * FROM $TB_ITEM_OS_MECHANIC")
     suspend fun all(): List<ItemOSMechanicRoomModel>
 
+    @Query("SELECT * FROM $TB_ITEM_OS_MECHANIC WHERE idEquip = :idEquip AND nroOS = :nroOS")
+    suspend fun listByIdEquipAndNroOS(
+        idEquip: Int,
+        nroOS: Int
+    ): List<ItemOSMechanicRoomModel>
+
 }

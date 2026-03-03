@@ -21,4 +21,9 @@ class IComponentRoomDatasource @Inject constructor(
         result(getClassAndMethod()) {
             componentDao.deleteAll()
         }
+
+    override suspend fun getById(id: Int): Result<ComponentRoomModel?> =
+        result(getClassAndMethod()) {
+            componentDao.getById(id)
+        }
 }

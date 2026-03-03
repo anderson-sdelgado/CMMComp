@@ -52,6 +52,7 @@ class IItemOSMechanicRoomDatasourceTest {
                 listOf(
                     ItemOSMechanicRoomModel(
                         id = 1,
+                        idEquip = 1,
                         nroOS = 1,
                         seqItem = 1,
                         idServ = 1,
@@ -59,6 +60,7 @@ class IItemOSMechanicRoomDatasourceTest {
                     ),
                     ItemOSMechanicRoomModel(
                         id = 1,
+                        idEquip = 1,
                         nroOS = 1,
                         seqItem = 1,
                         idServ = 1,
@@ -97,6 +99,7 @@ class IItemOSMechanicRoomDatasourceTest {
                 listOf(
                     ItemOSMechanicRoomModel(
                         id = 1,
+                        idEquip = 1,
                         nroOS = 1,
                         seqItem = 1,
                         idServ = 1,
@@ -104,6 +107,7 @@ class IItemOSMechanicRoomDatasourceTest {
                     ),
                     ItemOSMechanicRoomModel(
                         id = 2,
+                        idEquip = 1,
                         nroOS = 2,
                         seqItem = 2,
                         idServ = 2,
@@ -175,6 +179,7 @@ class IItemOSMechanicRoomDatasourceTest {
                 listOf(
                     ItemOSMechanicRoomModel(
                         id = 1,
+                        idEquip = 1,
                         nroOS = 1,
                         seqItem = 1,
                         idServ = 1,
@@ -200,6 +205,105 @@ class IItemOSMechanicRoomDatasourceTest {
             assertEquals(
                 qtdAfter,
                 0
+            )
+        }
+
+    @Test
+    fun `listByIdEquipAndNroOS - Check return empty list if not have row`() =
+        runTest {
+            val result = datasource.listByIdEquipAndNroOS(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdEquipAndNroOS - Check return list empty if not have data fielded`() =
+        runTest {
+            itemOSMechanicDao.insertAll(
+                listOf(
+                    ItemOSMechanicRoomModel(
+                        id = 1,
+                        idEquip = 2,
+                        nroOS = 1,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    ),
+                    ItemOSMechanicRoomModel(
+                        id = 2,
+                        idEquip = 1,
+                        nroOS = 2,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    )
+                )
+            )
+            val result = datasource.listByIdEquipAndNroOS(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                emptyList()
+            )
+        }
+
+    @Test
+    fun `listByIdEquipAndNroOS - Check return list if have data fielded`() =
+        runTest {
+            itemOSMechanicDao.insertAll(
+                listOf(
+                    ItemOSMechanicRoomModel(
+                        id = 1,
+                        idEquip = 2,
+                        nroOS = 1,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    ),
+                    ItemOSMechanicRoomModel(
+                        id = 2,
+                        idEquip = 1,
+                        nroOS = 2,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    ),
+                    ItemOSMechanicRoomModel(
+                        id = 3,
+                        idEquip = 1,
+                        nroOS = 1,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    )
+                )
+            )
+            val result = datasource.listByIdEquipAndNroOS(1, 1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                listOf(
+                    ItemOSMechanicRoomModel(
+                        id = 3,
+                        idEquip = 1,
+                        nroOS = 1,
+                        seqItem = 1,
+                        idServ = 1,
+                        idComp = 1
+                    )
+                )
             )
         }
 

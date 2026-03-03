@@ -9,6 +9,7 @@ data class ItemOSMechanicRetrofitModelOutput(
 
 data class ItemOSMechanicRetrofitModelInput(
     val id: Int,
+    val idEquip: Int,
     val nroOS: Int,
     val seqItem: Int,
     val idServ: Int,
@@ -19,6 +20,7 @@ fun ItemOSMechanicRetrofitModelInput.retrofitModelToEntity(): ItemOSMechanic {
     return with(this) {
         ItemOSMechanic(
             id = this.id,
+            idEquip = this.idEquip,
             nroOS = this.nroOS,
             seqItem = this.seqItem,
             idServ = this.idServ,

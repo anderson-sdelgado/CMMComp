@@ -412,6 +412,7 @@ class ICheckNroOSTest {
                     listOf(
                         ItemOSMechanic(
                             id = 1,
+                            idEquip = 1,
                             nroOS = 2200,
                             seqItem = 1,
                             idServ = 1,
@@ -501,6 +502,7 @@ class ICheckNroOSTest {
                     listOf(
                         ItemOSMechanic(
                             id = 1,
+                            idEquip = 1,
                             nroOS = 2200,
                             seqItem = 1,
                             idServ = 1,
@@ -514,6 +516,7 @@ class ICheckNroOSTest {
                     listOf(
                         ItemOSMechanic(
                             id = 1,
+                            idEquip = 1,
                             nroOS = 2200,
                             seqItem = 1,
                             idServ = 1,
@@ -609,6 +612,7 @@ class ICheckNroOSTest {
                     listOf(
                         ItemOSMechanic(
                             id = 1,
+                            idEquip = 1,
                             nroOS = 2200,
                             seqItem = 1,
                             idServ = 1,

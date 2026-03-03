@@ -41,7 +41,7 @@ fun ItemMotoMec.entityToRoomModel(
             nroOS = nroOS,
             idActivity = idActivity,
             idStop = this.idStop,
-            statusCon = this.statusCon.required("statusCon"),
+            statusCon = ::statusCon.required(),
             dateHour = dateHour,
             nroEquipTranshipment = this.nroEquipTranshipment,
             idNozzle = this.idNozzle,

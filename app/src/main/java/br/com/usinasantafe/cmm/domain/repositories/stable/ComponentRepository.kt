@@ -7,4 +7,5 @@ interface ComponentRepository {
     suspend fun addAll(list: List<Component>): EmptyResult
     suspend fun deleteAll(): EmptyResult
     suspend fun listAll(token: String): Result<List<Component>>
+    suspend fun getById(id: Int): Result<Component?>
 }

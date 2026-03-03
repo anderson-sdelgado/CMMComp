@@ -21,7 +21,7 @@ class IGetTypeLastNoteTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -48,7 +48,7 @@ class IGetTypeLastNoteTest {
     fun `Check return failure if have error in MotoMecRepository hasNoteByIdHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -80,7 +80,7 @@ class IGetTypeLastNoteTest {
     fun `Check return null if MotoMecRepository hasNoteByIdHeader return false`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -104,7 +104,7 @@ class IGetTypeLastNoteTest {
     fun `Check return failure if have error in MotoMecRepository getNoteLastByIdHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -141,7 +141,7 @@ class IGetTypeLastNoteTest {
     fun `Check return TypeNote WORK if noteLast idStop is null`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -172,7 +172,7 @@ class IGetTypeLastNoteTest {
     fun `Check return TypeNote STOP if noteLast idStop is not null`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

@@ -32,7 +32,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -59,7 +59,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in MotoMecRepository getNroOSHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -91,7 +91,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in MotoMecRepository getIdActivityHeader`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -128,7 +128,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in MotoMecRepository saveNote`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -170,7 +170,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType and TypeActivity PERFORMANCE`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -219,7 +219,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in PerformanceRepository insertInitialPerformance`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -273,7 +273,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in FunctionActivityRepository hasByIdAndType and TypeActivity COLLECTION`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -330,7 +330,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in FertigationRepository initialCollection`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -392,7 +392,7 @@ class ISaveNoteTest {
     fun `Check not call FertigationRepository initialCollection if FunctionActivityRepository hasByIdAndType return false and TypeActivity COLLECTION`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -438,7 +438,7 @@ class ISaveNoteTest {
     fun `Check call FertigationRepository initialCollection if FunctionActivityRepository hasByIdAndType return true and TypeActivity COLLECTION`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -484,7 +484,7 @@ class ISaveNoteTest {
     fun `Check return failure if have error in MotoMecRepository saveImplement`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )
@@ -545,7 +545,7 @@ class ISaveNoteTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 Result.success(1)
             )

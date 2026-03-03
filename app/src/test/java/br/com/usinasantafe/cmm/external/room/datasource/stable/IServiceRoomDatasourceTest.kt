@@ -147,4 +147,64 @@ class IServiceRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check return null if not have data with id fielded`() =
+        runTest {
+            serviceDao.insertAll(
+                listOf(
+                    ServiceRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                )
+            )
+            val qtdBefore = serviceDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
+    @Test
+    fun `getById - Check return data if have data with id fielded`() =
+        runTest {
+            serviceDao.insertAll(
+                listOf(
+                    ServiceRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                )
+            )
+            val qtdBefore = serviceDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                ServiceRoomModel(
+                    id = 1,
+                    cod = 10,
+                    descr = "TESTE",
+                )
+            )
+        }
+
 }

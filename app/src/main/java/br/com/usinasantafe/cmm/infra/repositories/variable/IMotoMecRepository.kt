@@ -107,7 +107,7 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecRoomDatasource.checkOpen().getOrThrow()
         }
 
-    override suspend fun getIdByHeaderOpen(): Result<Int> =
+    override suspend fun getIdHeaderPointing(): Result<Int> =
         call(getClassAndMethod()) {
             headerMotoMecSharedPreferencesDatasource.getId().getOrThrow()
         }

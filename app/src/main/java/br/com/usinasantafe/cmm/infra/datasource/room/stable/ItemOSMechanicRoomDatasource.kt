@@ -6,4 +6,8 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 interface ItemOSMechanicRoomDatasource {
     suspend fun addAll(list: List<ItemOSMechanicRoomModel>): EmptyResult
     suspend fun deleteAll(): EmptyResult
+    suspend fun listByIdEquipAndNroOS(
+        idEquip: Int,
+        nroOS: Int
+    ): Result<List<ItemOSMechanicRoomModel>>
 }

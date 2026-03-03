@@ -91,6 +91,7 @@ class IItemOSMechanicRetrofitDatasourceTest {
                     listOf(
                         ItemOSMechanicRetrofitModelInput(
                             id = 1,
+                            idEquip = 1,
                             nroOS = 10,
                             seqItem = 1,
                             idServ = 10,
@@ -102,7 +103,7 @@ class IItemOSMechanicRetrofitDatasourceTest {
         }
 
     private val resultItemOSMechanicRetrofit = """
-        [{"id":1,"nroOS":10,"seqItem":1,"idServ":10,"idComp":1}]
+        [{"id":1,"idEquip":1,"nroOS":10,"seqItem":1,"idServ":10,"idComp":1}]
     """.trimIndent()
     
 }

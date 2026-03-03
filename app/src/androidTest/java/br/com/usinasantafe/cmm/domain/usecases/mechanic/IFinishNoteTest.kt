@@ -54,8 +54,8 @@ class IFinishNoteTest {
             mechanicDao.insert(
                 MechanicRoomModel(
                     idHeader = 1,
-                    os = 123456,
-                    item = 1,
+                    nroOS = 123456,
+                    seqItem = 1,
                     dateHourFinish = null
                 )
             )
@@ -79,11 +79,11 @@ class IFinishNoteTest {
                 1
             )
             assertEquals(
-                model.os,
+                model.nroOS,
                 123456
             )
             assertEquals(
-                model.item,
+                model.seqItem,
                 1
             )
             assertNotNull(

@@ -62,24 +62,24 @@ class IMechanicRoomDatasourceTest {
             mechanicDao.insert(
                 MechanicRoomModel(
                     idHeader = 1,
-                    os = 123456,
-                    item = 1,
+                    nroOS = 123456,
+                    seqItem = 1,
                     dateHourFinish = null
                 )
             )
             mechanicDao.insert(
                 MechanicRoomModel(
                     idHeader = 2,
-                    os = 123456,
-                    item = 1,
+                    nroOS = 123456,
+                    seqItem = 1,
                     dateHourFinish = null
                 )
             )
             mechanicDao.insert(
                 MechanicRoomModel(
                     idHeader = 1,
-                    os = 123456,
-                    item = 1,
+                    nroOS = 123456,
+                    seqItem = 1,
                     dateHourFinish = Date()
                 )
             )
@@ -118,13 +118,13 @@ class IMechanicRoomDatasourceTest {
         }
 
     @Test
-    fun `setFinishNote - Check alter date`() =
+    fun `setFinishNote - Check alter date finish`() =
         runTest {
             mechanicDao.insert(
                 MechanicRoomModel(
                     idHeader = 1,
-                    os = 123456,
-                    item = 1,
+                    nroOS = 123456,
+                    seqItem = 1,
                     dateHourFinish = null
                 )
             )
@@ -148,11 +148,11 @@ class IMechanicRoomDatasourceTest {
                 1
             )
             assertEquals(
-                model.os,
+                model.nroOS,
                 123456
             )
             assertEquals(
-                model.item,
+                model.seqItem,
                 1
             )
             assertNotNull(
@@ -161,6 +161,45 @@ class IMechanicRoomDatasourceTest {
             assertEquals(
                 model.status,
                 Status.FINISH
+            )
+        }
+
+    @Test
+    fun `save - Check insert data`() =
+        runTest {
+            val listBefore = mechanicDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
+            val result = datasource.save(
+                MechanicRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                    seqItem = 2
+                )
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = mechanicDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val model = listAfter[0]
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.seqItem,
+                2
             )
         }
 }

@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.external.room.datasource.variable
 
 import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
 import br.com.usinasantafe.cmm.infra.datasource.room.variable.MechanicRoomDatasource
+import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -24,6 +25,11 @@ class IMechanicRoomDatasource @Inject constructor(
             model.dateHourFinish = Date()
             model.status = Status.FINISH
             mechanicDao.update(model)
+        }
+
+    override suspend fun save(model: MechanicRoomModel): EmptyResult =
+        result(getClassAndMethod()) {
+            mechanicDao.insert(model)
         }
 
 }

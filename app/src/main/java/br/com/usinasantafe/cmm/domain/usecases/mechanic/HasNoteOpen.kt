@@ -17,7 +17,7 @@ class IHasNoteOpen @Inject constructor(
 
     override suspend fun invoke(): Result<Boolean> =
         call(getClassAndMethod()) {
-            val idHeader = motoMecRepository.getIdByHeaderOpen().getOrThrow()
+            val idHeader = motoMecRepository.getIdHeaderPointing().getOrThrow()
             mechanicRepository.hasNoteOpenByIdHeader(idHeader).getOrThrow()
         }
 

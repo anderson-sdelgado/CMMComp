@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.utils.Token
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.required
@@ -23,13 +24,15 @@ class IGetToken @Inject constructor(
             val entity = configRepository.get().getOrThrow()
             val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
             tryCatch("token") {
-                token(
-                    app = entity.app.required("app"),
-                    idServ = entity.idServ.required("idServ"),
-                    nroEquip = nroEquip,
-                    number = entity.number.required("number"),
-                    version = entity.version.required("version")
-                )
+                with(entity) {
+                    token(
+                        app = ::app.required(),
+                        idServ = ::idServ.required(),
+                        nroEquip = nroEquip,
+                        number = ::number.required(),
+                        version = ::version.required(),
+                    )
+                }
             }
         }
 

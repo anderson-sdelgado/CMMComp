@@ -283,7 +283,7 @@ class ActivityListCommonViewModelTest {
                 )
             )
             val viewModel = createViewModel()
-            viewModel.setId(1)
+            viewModel.set(1)
             assertEquals(
                 viewModel.uiState.value.status.flagDialog,
                 true
@@ -312,7 +312,7 @@ class ActivityListCommonViewModelTest {
                 )
             )
             val viewModel = createViewModel()
-            viewModel.setId(1)
+            viewModel.set(1)
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true

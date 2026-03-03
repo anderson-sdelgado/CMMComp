@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ServiceRetrofitD
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ServiceRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -31,5 +32,11 @@ class IServiceRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = serviceRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun getById(id: Int): Result<Service?> =
+        call(getClassAndMethod()) {
+            val model = serviceRoomDatasource.getById(id).getOrThrow()
+            model?.roomModelToEntity()
         }
 }

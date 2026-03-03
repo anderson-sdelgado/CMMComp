@@ -1,4 +1,6 @@
 package br.com.usinasantafe.cmm.utils
 
-fun <T> T?.required(field: String): T =
-    this ?: throw NullPointerException("$field is required")
+import kotlin.reflect.KProperty0
+
+fun <T> KProperty0<T?>.required(): T =
+    get() ?: throw NullPointerException("$name is required")

@@ -38,15 +38,15 @@ data class HeaderMotoMecRoomModel(
 fun HeaderMotoMec.entityToRoomModel(hourMeterInitial: Double): HeaderMotoMecRoomModel {
     return HeaderMotoMecRoomModel(
         id = id,
-        regOperator = regOperator.required("regOperator"),
-        idEquip = idEquip.required("idEquip"),
-        typeEquip = typeEquip.required("typeEquip"),
-        idTurn = idTurn.required("idTurn"),
-        nroOS = nroOS.required("nroOS"),
-        idActivity = idActivity.required("idActivity"),
+        regOperator = ::regOperator.required(),
+        idEquip = ::idEquip.required(),
+        typeEquip = ::typeEquip.required(),
+        idTurn = ::idTurn.required(),
+        nroOS = ::nroOS.required(),
+        idActivity = ::idActivity.required(),
         hourMeterInitial = hourMeterInitial,
         flowComposting = flowComposting,
-        statusCon = statusCon.required("statusCon"),
+        statusCon = ::statusCon.required(),
         idEquipMotorPump = idEquipMotorPump
     )
 }

@@ -22,4 +22,12 @@ class IItemOSMechanicRoomDatasource @Inject constructor(
             itemOSMechanicDao.deleteAll()
         }
 
+    override suspend fun listByIdEquipAndNroOS(
+        idEquip: Int,
+        nroOS: Int
+    ): Result<List<ItemOSMechanicRoomModel>> =
+        result(getClassAndMethod()) {
+            itemOSMechanicDao.listByIdEquipAndNroOS(idEquip, nroOS)
+        }
+
 }

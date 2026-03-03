@@ -53,7 +53,7 @@ fun ActivityListCommonScreen(
             ActivityListCommonScreenContent(
                 flowApp = uiState.flowApp,
                 list = uiState.list,
-                setId = viewModel::setId,
+                set = viewModel::set,
                 updateDatabase = viewModel::updateDatabase,
                 flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -74,7 +74,7 @@ fun ActivityListCommonScreen(
 fun ActivityListCommonScreenContent(
     flowApp: FlowApp,
     list: List<Activity>,
-    setId: (Int) -> Unit,
+    set: (Int) -> Unit,
     updateDatabase: () -> Unit,
     flagAccess: Boolean,
     setCloseDialog: () -> Unit,
@@ -102,9 +102,9 @@ fun ActivityListCommonScreenContent(
         ) {
             items(list) { activity ->
                 ItemListDesign(
-                    text = activity.descr,
+                    text = "${activity.cod} - ${activity.descr}",
                     setActionItem = {
-                        setId(activity.id)
+                        set(activity.id)
                     },
                     font = 26
                 )
@@ -181,7 +181,7 @@ fun ActivityListCommonPagePreviewWithData() {
                         descr = "ATIVIDADE 1"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -223,7 +223,7 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                         descr = "ATIVIDADE 1"
                     )
                 ),
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -266,7 +266,7 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
                     )
                 ),
 
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},
@@ -309,7 +309,7 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
                     )
                 ),
 
-                setId = {},
+                set = {},
                 updateDatabase = {},
                 flagAccess = false,
                 setCloseDialog = {},

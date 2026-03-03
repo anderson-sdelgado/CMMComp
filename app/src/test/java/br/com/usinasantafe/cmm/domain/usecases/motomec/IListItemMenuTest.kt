@@ -71,7 +71,7 @@ class IListItemMenuTest {
         runTest {
             wheneverRegister(1)
             whenever(
-                motoMecRepository.getIdByHeaderOpen()
+                motoMecRepository.getIdHeaderPointing()
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.getIdByHeaderOpen",
@@ -846,7 +846,7 @@ class IListItemMenuTest {
         if(level == 1) return
 
         whenever(
-            motoMecRepository.getIdByHeaderOpen()
+            motoMecRepository.getIdHeaderPointing()
         ).thenReturn(
             Result.success(1)
         )

@@ -18,4 +18,7 @@ interface ServiceDao {
     @Query("SELECT * FROM $TB_SERVICE")
     suspend fun all(): List<ServiceRoomModel>
 
+    @Query("SELECT * FROM $TB_SERVICE WHERE id = :id")
+    suspend fun getById(id: Int): ServiceRoomModel?
+
 }

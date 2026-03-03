@@ -147,4 +147,64 @@ class IComponentRoomDatasourceTest {
             )
         }
 
+    @Test
+    fun `getById - Check return null if not have data with id fielded`() =
+        runTest {
+            componentDao.insertAll(
+                listOf(
+                    ComponentRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                )
+            )
+            val qtdBefore = componentDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                null
+            )
+        }
+
+    @Test
+    fun `getById - Check return data if have data with id fielded`() =
+        runTest {
+            componentDao.insertAll(
+                listOf(
+                    ComponentRoomModel(
+                        id = 1,
+                        cod = 10,
+                        descr = "TESTE",
+                    ),
+                )
+            )
+            val qtdBefore = componentDao.all().size
+            assertEquals(
+                qtdBefore,
+                1
+            )
+            val result = datasource.getById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                ComponentRoomModel(
+                    id = 1,
+                    cod = 10,
+                    descr = "TESTE",
+                )
+            )
+        }
+
 }

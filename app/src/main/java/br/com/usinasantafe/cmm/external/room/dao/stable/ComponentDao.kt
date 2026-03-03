@@ -18,4 +18,7 @@ interface ComponentDao {
     @Query("SELECT * FROM $TB_COMPONENT")
     suspend fun all(): List<ComponentRoomModel>
 
+    @Query("SELECT * FROM $TB_COMPONENT WHERE id = :id")
+    suspend fun getById(id: Int): ComponentRoomModel?
+
 }

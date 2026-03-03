@@ -106,4 +106,7 @@
     <string name="text_title_collection">RECOLHIMENTO</string>
     <string name="text_title_implement">IMPLEMENTO %1$s</string>
     <string name="text_msg_check_os">Checando se existe Itens de Manutenção da OS digitada na Base de Dados.</string>
+    <string name="text_item_component">COMPONENTE: %1$s</string>
+    <string name="text_item_service">SEQ.: %1$s</string>
+    <string name="text_title_item_os_mechanic">ITEM(S) DA OS</string>
 </resources>

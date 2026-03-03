@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.retrofit.stable.ComponentRetrofi
 import br.com.usinasantafe.cmm.infra.datasource.room.stable.ComponentRoomDatasource
 import br.com.usinasantafe.cmm.infra.models.retrofit.stable.retrofitModelToEntity
 import br.com.usinasantafe.cmm.infra.models.room.stable.entityToRoomModel
+import br.com.usinasantafe.cmm.infra.models.room.stable.roomModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -31,6 +32,12 @@ class IComponentRepository @Inject constructor(
         call(getClassAndMethod()) {
             val modelList = componentRetrofitDatasource.listAll(token).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
+        }
+
+    override suspend fun getById(id: Int): Result<Component?> =
+        call(getClassAndMethod()) {
+            val model = componentRoomDatasource.getById(id).getOrThrow()
+            model?.roomModelToEntity()
         }
 
 }
