@@ -19,6 +19,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.presenter.model.ItemOSMechanicModel
 import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
@@ -32,6 +33,8 @@ import br.com.usinasantafe.cmm.utils.UpdateStatusState
 @Composable
 fun ItemListMechanicScreen(
     viewModel: ItemListMechanicViewModel = hiltViewModel(),
+    onNavOS: () -> Unit,
+    onNavMenu: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -48,6 +51,8 @@ fun ItemListMechanicScreen(
                 flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
                 status = uiState.status,
+                onNavOS = onNavOS,
+                onNavMenu = onNavMenu,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -62,6 +67,8 @@ fun ItemListMechanicContent(
     updateDatabase: () -> Unit,
     setCloseDialog: () -> Unit,
     status: UpdateStatusState,
+    onNavOS: () -> Unit,
+    onNavMenu: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -88,9 +95,9 @@ fun ItemListMechanicContent(
                 )
             }
         }
-        ButtonMaxWidth(R.string.text_pattern_update) { }
+        ButtonMaxWidth(R.string.text_pattern_update, updateDatabase)
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        ButtonMaxWidth(R.string.text_pattern_return) { }
+        ButtonMaxWidth(R.string.text_pattern_return, onNavOS)
         BackHandler {}
 
         if (status.flagDialog) {
@@ -102,10 +109,9 @@ fun ItemListMechanicContent(
         }
     }
 
-
     LaunchedEffect(flagAccess) {
         if (flagAccess) {
-
+            onNavMenu()
         }
     }
 }
@@ -131,6 +137,8 @@ fun ItemListMechanicPagePreviewWithEmptyList() {
                     tableUpdate = "",
                     flagDialog = false,
                 ),
+                onNavOS = {},
+                onNavMenu = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -164,9 +172,115 @@ fun ItemListMechanicPagePreviewWithData() {
                     tableUpdate = "",
                     flagDialog = false,
                 ),
+                onNavOS = {},
+                onNavMenu = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
     }
+}
 
+@Preview(showBackground = true)
+@Composable
+fun ItemListMechanicPagePreviewWithFailureUpdate() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            ItemListMechanicContent(
+                list = listOf(
+                    ItemOSMechanicModel(
+                        seq = 1,
+                        service = "SERVIÇO 1",
+                        component = "COMPONENTE 1"
+                    )
+                ),
+                set = {},
+                updateDatabase = {},
+                flagAccess = false,
+                setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = false,
+                    currentProgress = 0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = true,
+                ),
+                onNavOS = {},
+                onNavMenu = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ItemListMechanicPagePreviewWithProgressUpdate() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            ItemListMechanicContent(
+                list = listOf(
+                    ItemOSMechanicModel(
+                        seq = 1,
+                        service = "SERVIÇO 1",
+                        component = "COMPONENTE 1"
+                    )
+                ),
+                set = {},
+                updateDatabase = {},
+                flagAccess = false,
+                setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = false,
+                    errors = Errors.UPDATE,
+                    failure = "Failure",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_item_os_mechanic",
+                    currentProgress = 0.3333f,
+                    flagDialog = false,
+                ),
+                onNavOS = {},
+                onNavMenu = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ItemListMechanicPagePreviewWithFailureError() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            ItemListMechanicContent(
+                list = listOf(
+                    ItemOSMechanicModel(
+                        seq = 1,
+                        service = "SERVIÇO 1",
+                        component = "COMPONENTE 1"
+                    )
+                ),
+                set = {},
+                updateDatabase = {},
+                flagAccess = false,
+                setCloseDialog = {},
+                status = UpdateStatusState(
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    failure = "Failure",
+                    flagProgress = false,
+                    currentProgress = 0f,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    flagDialog = true,
+                ),
+                onNavOS = {},
+                onNavMenu = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.common.activityList
+package br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
@@ -12,18 +12,16 @@ import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonState
-import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonViewModel
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 @ExperimentalCoroutinesApi
 class ActivityListCommonViewModelTest {
@@ -202,7 +200,7 @@ class ActivityListCommonViewModelTest {
         }
 
     @Test
-    fun `activityList - Check return failure if have error in GetActivityList`() =
+    fun `list - Check return failure if have error in GetActivityList`() =
         runTest {
             whenever(
                 listActivity()
@@ -230,7 +228,7 @@ class ActivityListCommonViewModelTest {
         }
 
     @Test
-    fun `activityList - Check return correct if function execute successfully`() =
+    fun `list - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 listActivity()
@@ -268,7 +266,7 @@ class ActivityListCommonViewModelTest {
         }
     
     @Test
-    fun `setIdActivity - Check return failure if have error in SetIdActivityCommon - HEADER_DEFAULT`() =
+    fun `set - Check return failure if have error in SetIdActivityCommon - HEADER_DEFAULT`() =
         runTest {
             whenever(
                 setIdActivityCommon(
@@ -299,7 +297,7 @@ class ActivityListCommonViewModelTest {
         }
 
     @Test
-    fun `setIdActivity - Check return correct if function execute successfully - HEADER_DEFAULT`() =
+    fun `set - Check return correct if function execute successfully - HEADER_DEFAULT`() =
         runTest {
             whenever(
                 setIdActivityCommon(

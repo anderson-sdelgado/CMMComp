@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.utils
 
 import br.com.usinasantafe.cmm.lib.ERROR_FIELD_EMPTY
 import br.com.usinasantafe.cmm.lib.ERROR_HEADER_WITHOUT_NOTE
+import br.com.usinasantafe.cmm.lib.ERROR_INVALID_VALUE
 import br.com.usinasantafe.cmm.lib.ERROR_NEED_COUPLING_TRAILER
 import br.com.usinasantafe.cmm.lib.ERROR_NEED_UNCOUPLING_TRAILER
 import br.com.usinasantafe.cmm.lib.ERROR_NOTE_MECHANIC
@@ -97,7 +98,8 @@ fun <T> handleFailure(
     classAndMethod: String,
     block: (String) -> T,
 ) {
-    val failure = "${error.message} -> ${error.cause.toString()}"
+    val cause = if(error.cause != null) " -> ${error.cause.toString()}" else ""
+    val failure = "${error.message}$cause"
     handleFailure(failure, classAndMethod, block)
 }
 
@@ -149,6 +151,7 @@ fun failure(error: Errors): String {
         Errors.NEED_UNCOUPLING_TRAILER -> ERROR_NEED_UNCOUPLING_TRAILER
         Errors.NEED_COUPLING_TRAILER -> ERROR_NEED_COUPLING_TRAILER
         Errors.WITHOUT_NOTE -> ERROR_WITHOUT_NOTE
-        else -> ""
+        Errors.INVALID_VALUE -> ERROR_INVALID_VALUE
+        else -> error.toString()
     }
 }

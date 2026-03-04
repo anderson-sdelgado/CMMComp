@@ -109,4 +109,5 @@
     <string name="text_item_component">COMPONENTE: %1$s</string>
     <string name="text_item_service">SEQ.: %1$s</string>
     <string name="text_title_item_os_mechanic">ITEM(S) DA OS</string>
+    <string name="text_title_sequence">NÚMERO DO ITEM</string>
 </resources>

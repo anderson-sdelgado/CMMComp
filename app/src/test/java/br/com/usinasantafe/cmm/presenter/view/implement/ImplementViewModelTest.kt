@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.implement
+package br.com.usinasantafe.cmm.presenter.view.implement
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule

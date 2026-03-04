@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.mechanic
 
+import br.com.usinasantafe.cmm.external.room.dao.variable.MechanicDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IMechanicSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
@@ -27,6 +28,9 @@ class ISetSeqItemTest {
 
     @Inject
     lateinit var mechanicSharedPreferencesDatasource: IMechanicSharedPreferencesDatasource
+
+    @Inject
+    lateinit var mechanicDao: MechanicDao
 
     @Before
     fun setUp() {
@@ -87,10 +91,33 @@ class ISetSeqItemTest {
                     nroOS = 123456
                 )
             )
+            val listBefore = mechanicDao.all()
+            assertEquals(
+                listBefore.size,
+                0
+            )
             val result = usecase(1)
             assertEquals(
                 result.isSuccess,
                 true
+            )
+            val listAfter = mechanicDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val model = listAfter[0]
+            assertEquals(
+                model.idHeader,
+                1
+            )
+            assertEquals(
+                model.nroOS,
+                123456
+            )
+            assertEquals(
+                model.seqItem,
+                1
             )
         }
 
