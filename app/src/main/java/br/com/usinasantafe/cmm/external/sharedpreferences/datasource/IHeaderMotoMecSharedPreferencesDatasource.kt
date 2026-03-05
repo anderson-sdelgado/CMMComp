@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
 
 class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
@@ -59,7 +60,7 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getTypeEquip(): Result<TypeEquip> =
         result(getClassAndMethod()) {
-            get().getOrThrow().typeEquip!!
+            get().getOrThrow()::typeEquip.required()
         }
 
     override suspend fun setIdTurn(idTurn: Int): EmptyResult =
@@ -85,12 +86,12 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getNroOS(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().nroOS!!
+            get().getOrThrow()::nroOS.required()
         }
 
     override suspend fun getIdEquip(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().idEquip!!
+            get().getOrThrow()::idEquip.required()
         }
 
     override suspend fun clean(): EmptyResult =
@@ -112,17 +113,17 @@ class IHeaderMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getIdActivity(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().idActivity!!
+            get().getOrThrow()::idActivity.required()
         }
 
     override suspend fun getStatusCon(): Result<Boolean> =
         result(getClassAndMethod()) {
-            get().getOrThrow().statusCon!!
+            get().getOrThrow()::statusCon.required()
         }
 
     override suspend fun getId(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().id!!
+            get().getOrThrow()::id.required()
         }
 
     override suspend fun setId(id: Int): EmptyResult =

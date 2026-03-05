@@ -3,6 +3,7 @@ package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
+import br.com.usinasantafe.cmm.utils.required
 import java.util.Date
 
 data class ConfigSharedPreferencesModel(
@@ -38,12 +39,12 @@ fun ConfigSharedPreferencesModel.sharedPreferencesModelToEntity(): Config {
 fun Config.entityToSharedPreferencesModel(): ConfigSharedPreferencesModel {
     return with(this) {
         ConfigSharedPreferencesModel(
-            number = number!!,
-            password = password!!,
-            checkMotoMec = checkMotoMec!!,
-            idServ = idServ!!,
-            version = version!!,
-            app = app!!,
+            number = ::number.required(),
+            password = ::password.required(),
+            checkMotoMec = ::checkMotoMec.required(),
+            idServ = ::idServ.required(),
+            version = ::version.required(),
+            app = ::app.required(),
             statusSend = statusSend,
             flagUpdate = flagUpdate,
             idTurnCheckListLast = idTurnLastCheckList,

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel
+import br.com.usinasantafe.cmm.utils.required
 
 data class RespItemCheckListRetrofitModelOutput(
     val id: Int,
@@ -17,10 +18,10 @@ data class RespItemCheckListRetrofitModelInput(
 fun ItemRespCheckListRoomModel.roomModelToRetrofitModel(): RespItemCheckListRetrofitModelOutput {
     return with(this){
         RespItemCheckListRetrofitModelOutput(
-            id = this.id!!,
-            idHeader = this.idHeader,
-            idItem = this.idItem,
-            option = this.option.ordinal + 1
+            id = ::id.required(),
+            idHeader = idHeader,
+            idItem = idItem,
+            option = option.ordinal + 1
         )
     }
 }

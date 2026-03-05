@@ -15,6 +15,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesM
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.call
+import br.com.usinasantafe.cmm.utils.required
 import javax.inject.Inject
 
 class ICheckListRepository @Inject constructor(
@@ -84,11 +85,13 @@ class ICheckListRepository @Inject constructor(
             val list = headerCheckListRoomDatasource.listBySend().getOrThrow()
             val modelRetrofitList =
                 list.map {
-                    val respItemRoomList = itemRespCheckListRoomDatasource.listByIdHeader(it.id!!).getOrThrow()
-                    it.roomModelToRetrofitModel(
-                        number = number,
-                        respItemList = respItemRoomList.map { resp -> resp.roomModelToRetrofitModel() }
-                    )
+                    with(it){
+                        val respItemRoomList = itemRespCheckListRoomDatasource.listByIdHeader(::id.required()).getOrThrow()
+                        it.roomModelToRetrofitModel(
+                            number = number,
+                            respItemList = respItemRoomList.map { resp -> resp.roomModelToRetrofitModel() }
+                        )
+                    }
                 }
             val headerCheckListRetrofitList = checkListRetrofitDatasource.send(
                 token = token,

@@ -969,4 +969,50 @@ class IEquipRepositoryTest {
             )
         }
 
+    @Test
+    fun `getNroById - Check return failure if have error in EquipRoomDatasource getNroById`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getNroById(1)
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRoomDatasource.getNroById",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getNroById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.getNroById -> IEquipRoomDatasource.getNroById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getNroById - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipRoomDatasource.getNroById(1)
+            ).thenReturn(
+                Result.success(200)
+            )
+            val result = repository.getNroById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                200
+            )
+        }
+
 }

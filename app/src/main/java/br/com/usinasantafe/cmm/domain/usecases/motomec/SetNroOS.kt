@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.tryCatch
 import com.google.common.primitives.UnsignedBytes.toInt
 import javax.inject.Inject
 
@@ -24,10 +25,8 @@ class ISetNroOS @Inject constructor(
         flowApp: FlowApp
     ): EmptyResult =
         call(getClassAndMethod()) {
-            val nroOSInt = runCatching {
+            val nroOSInt = tryCatch(::toInt.name) {
                 nroOS.toInt()
-            }.getOrElse { e ->
-                throw Exception(::toInt.name, e)
             }
             motoMecRepository.setNroOSHeader(nroOSInt).getOrThrow()
         }

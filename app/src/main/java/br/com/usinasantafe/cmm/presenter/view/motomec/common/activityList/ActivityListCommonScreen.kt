@@ -22,7 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
@@ -101,7 +101,7 @@ fun ActivityListCommonScreenContent(
                 .weight(1f),
         ) {
             items(list) { activity ->
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = "${activity.cod} - ${activity.descr}",
                     setActionItem = {
                         set(activity.id)

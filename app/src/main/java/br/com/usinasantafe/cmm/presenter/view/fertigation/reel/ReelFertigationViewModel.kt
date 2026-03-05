@@ -1,9 +1,7 @@
-package br.com.usinasantafe.cmm.presenter.view.fertigation.reelList
+package br.com.usinasantafe.cmm.presenter.view.fertigation.reel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,35 +10,27 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-data class ReelListFertigationState(
-    val list: List<ItemDefaultScreenModel> = emptyList(),
+data class ReelFertigationState(
     val flagAccess: Boolean = false,
     val flagDialog: Boolean = false,
     val failure: String = "",
-    val errors: Errors = Errors.FIELD_EMPTY,
 )
 
 @HiltViewModel
-class ReelListFertigationViewModel @Inject constructor(
+class ReelFertigationViewModel @Inject constructor(
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ReelListFertigationState())
+    private val _uiState = MutableStateFlow(ReelFertigationState())
     val uiState = _uiState.asStateFlow()
 
     private val state get() = uiState.value
 
-    private fun updateState(block: ReelListFertigationState.() -> ReelListFertigationState) {
+    private fun updateState(block: ReelFertigationState.() -> ReelFertigationState) {
         _uiState.update(block)
     }
 
     fun setCloseDialog() = updateState { copy(flagDialog = false) }
 
-    fun list() = viewModelScope.launch {
 
-    }
-
-    fun set(id: Int) {
-
-    }
 
 }

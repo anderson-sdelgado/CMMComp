@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.presenter.model
 
-data class ItemCheckListModel(
+data class ItemDefaultScreenModel(
     val id: Int,
     val descr: String
 )

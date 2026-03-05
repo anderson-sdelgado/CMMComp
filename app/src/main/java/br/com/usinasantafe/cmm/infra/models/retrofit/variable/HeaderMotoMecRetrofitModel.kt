@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.utils.required
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -36,29 +37,29 @@ fun HeaderMotoMecRoomModel.roomModelToRetrofitModel(
 ): HeaderMotoMecRetrofitModelOutput {
     return with(this) {
         HeaderMotoMecRetrofitModelOutput(
-            id = this.id!!,
-            regOperator = this.regOperator,
-            idEquip = this.idEquip,
-            typeEquip = this.typeEquip.ordinal + 1,
-            idTurn = this.idTurn,
-            nroOS = this.nroOS,
-            idActivity = this.idActivity,
-            hourMeterInitial = this.hourMeterInitial,
-            hourMeterFinish = this.hourMeterFinish,
+            id = ::id.required(),
+            regOperator = regOperator,
+            idEquip = idEquip,
+            typeEquip = typeEquip.ordinal + 1,
+            idTurn = idTurn,
+            nroOS = nroOS,
+            idActivity = idActivity,
+            hourMeterInitial = hourMeterInitial,
+            hourMeterFinish = hourMeterFinish,
             dateHourInitial = SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
                 Locale.Builder().setLanguage("pt").setRegion("BR").build()
-            ).format(this.dateHourInitial),
-            dateHourFinish = if(this.dateHourFinish == null) null else SimpleDateFormat(
+            ).format(dateHourInitial),
+            dateHourFinish = if(dateHourFinish == null) null else SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
                 Locale.Builder().setLanguage("pt").setRegion("BR").build()
             ).format(
-                this.dateHourFinish!!
+                ::dateHourFinish.required()
             ),
-            status = this.status.ordinal + 1,
-            statusCon = if (this.statusCon) 1 else 0,
+            status = status.ordinal + 1,
+            statusCon = if (statusCon) 1 else 0,
             number = number,
-            idEquipMotorPump = this.idEquipMotorPump,
+            idEquipMotorPump = idEquipMotorPump,
             noteMotoMecList = noteMotoMecList
         )
     }

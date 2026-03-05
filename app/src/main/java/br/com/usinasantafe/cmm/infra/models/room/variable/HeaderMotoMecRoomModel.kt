@@ -33,6 +33,7 @@ data class HeaderMotoMecRoomModel(
     var status: Status = Status.OPEN,
     var idServ: Int? = null,
     val idEquipMotorPump: Int? = null,
+    var idHeaderMain: Int? = null,
 )
 
 fun HeaderMotoMec.entityToRoomModel(hourMeterInitial: Double): HeaderMotoMecRoomModel {

@@ -31,4 +31,5 @@ interface EquipRepository {
         typeEquip: TypeEquip
     ): Result<Boolean>
     suspend fun getIdByNro(nroEquip: Long): Result<Int>
+    suspend fun getNroById(idEquip: Int): Result<Long>
 }

@@ -2326,5 +2326,51 @@ class IMotoMecRepositoryTest {
                 1
             )
         }
+    
+    @Test
+    fun `getIdHeaderByIdEquipAndOpen - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByIdEquipAndOpen`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByIdEquipAndOpen(1)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecRoomDatasource.getIdByIdEquipAndOpen",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdHeaderByIdEquipAndOpen(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getIdHeaderByIdEquipAndOpen -> IHeaderMotoMecRoomDatasource.getIdByIdEquipAndOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdHeaderByIdEquipAndOpen - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByIdEquipAndOpen(1)
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getIdHeaderByIdEquipAndOpen(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
 
 }

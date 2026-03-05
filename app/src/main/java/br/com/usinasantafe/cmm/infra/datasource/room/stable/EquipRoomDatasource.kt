@@ -13,4 +13,5 @@ interface EquipRoomDatasource {
         typeEquip: TypeEquip
     ): Result<Boolean>
     suspend fun getIdByNro(nro: Long): Result<Int>
+    suspend fun getNroById(id: Int): Result<Long>
 }

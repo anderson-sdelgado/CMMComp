@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
 import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
@@ -21,6 +22,7 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.call
+import br.com.usinasantafe.cmm.utils.required
 import javax.inject.Inject
 import kotlin.getOrThrow
 
@@ -112,6 +114,11 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecSharedPreferencesDatasource.getId().getOrThrow()
         }
 
+    override suspend fun getIdHeaderByIdEquipAndOpen(idEquip: Int): Result<Int> =
+        call(getClassAndMethod()) {
+            headerMotoMecRoomDatasource.getIdByIdEquipAndOpen(idEquip).getOrThrow()
+        }
+
     override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult =
         call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.setHourMeterFinish(hourMeter).getOrThrow()
@@ -188,11 +195,13 @@ class IMotoMecRepository @Inject constructor(
             val resultListHeaderSend = headerMotoMecRoomDatasource.listSend().getOrThrow()
             val modelRetrofitList =
                 resultListHeaderSend.map {
-                    val noteMotoMecList = itemMotoMecRoomDatasource.listByIdHeaderAndSend(it.id!!).getOrThrow()
-                    it.roomModelToRetrofitModel(
-                        number = number,
-                        noteMotoMecList = noteMotoMecList.map { note -> note.roomModelToRetrofitModel() }
-                    )
+                    with(it){
+                        val noteMotoMecList = itemMotoMecRoomDatasource.listByIdHeaderAndSend(::id.required()).getOrThrow()
+                        it.roomModelToRetrofitModel(
+                            number = number,
+                            noteMotoMecList = noteMotoMecList.map { note -> note.roomModelToRetrofitModel() }
+                        )
+                    }
                 }
             val headerMotoMecRetrofitList = motoMecRetrofitDatasource.send(
                 token = token,
@@ -245,5 +254,9 @@ class IMotoMecRepository @Inject constructor(
                 implementRoomDatasource.save(modelRoom).getOrThrow()
             }
         }
+
+    override suspend fun listHeaderSec(idHeader: Int): Result<List<HeaderMotoMec>> {
+        TODO("Not yet implemented")
+    }
 
 }

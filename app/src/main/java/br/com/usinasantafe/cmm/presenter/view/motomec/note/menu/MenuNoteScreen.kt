@@ -25,7 +25,7 @@ import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogCheckDesign
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.CERTIFICATE
@@ -223,7 +223,7 @@ fun MenuNoteContent(
                 .weight(1f),
         ) {
             items(itemList) { item ->
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = item.descr,
                     setActionItem = {
                         setSelection(item.id)

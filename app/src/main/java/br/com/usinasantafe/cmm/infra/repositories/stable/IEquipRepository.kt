@@ -117,5 +117,9 @@ class IEquipRepository @Inject constructor(
             equipRoomDatasource.getIdByNro(nroEquip).getOrThrow()
         }
 
+    override suspend fun getNroById(idEquip: Int): Result<Long> =
+        call(getClassAndMethod()) {
+            equipRoomDatasource.getNroById(idEquip).getOrThrow()
+        }
 
 }

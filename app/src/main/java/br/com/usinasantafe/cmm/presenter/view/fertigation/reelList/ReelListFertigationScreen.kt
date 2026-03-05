@@ -1,21 +1,62 @@
 package br.com.usinasantafe.cmm.presenter.view.fertigation.reelList
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.lib.Errors
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
+import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
+import br.com.usinasantafe.cmm.presenter.theme.MsgErrors
 
 @Composable
-fun ReelListFertigationScreen() {
+fun ReelListFertigationScreen(
+    viewModel: ReelListFertigationViewModel = hiltViewModel(),
+    onNavMenuNote: () -> Unit,
+    onNavReel: () -> Unit
+) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+            LaunchedEffect(Unit) {
+                viewModel.list()
+            }
+
             ReelListFertigationContent(
+                list = uiState.list,
+                set = viewModel::set,
+                setCloseDialog = viewModel::setCloseDialog,
+                flagAccess = uiState.flagAccess,
+                flagDialog = uiState.flagDialog,
+                failure = uiState.failure,
+                errors = uiState.errors,
+                onNavMenuNote = onNavMenuNote,
+                onNavReel = onNavReel,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -24,22 +65,147 @@ fun ReelListFertigationScreen() {
 
 @Composable
 fun ReelListFertigationContent(
+    list: List<ItemDefaultScreenModel>,
+    set: (Int) -> Unit,
+    setCloseDialog: () -> Unit,
+    flagAccess: Boolean,
+    flagDialog: Boolean,
+    failure: String,
+    errors: Errors,
+    onNavMenuNote: () -> Unit,
+    onNavReel: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .padding(16.dp)
     ) {
-        TitleDesign(text = "")
+        TitleDesign(
+            text = stringResource(
+                id = R.string.text_title_reel_list
+            )
+        )
+        if (list.isEmpty()) {
+            Column(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(
+                        id = R.string.text_msg_no_data_performance
+                    ),
+                    textAlign = TextAlign.Center,
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f),
+            ) {
+                items(list) {
+                    ItemDefaultListDesign(
+                        text = it.descr,
+                        setActionItem = {
+                            set(it.id)
+                        },
+                        id = it.id,
+                        padding = 6
+                    )
+                }
+            }
+        }
+        ButtonMaxWidth(R.string.text_pattern_insert, onNavReel)
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        ButtonMaxWidth(R.string.text_pattern_return, onNavMenuNote)
+
+        if (flagDialog) {
+            MsgErrors(errors, setCloseDialog, failure)
+        }
+    }
+
+    LaunchedEffect(flagAccess) {
+        if (flagAccess) {
+            onNavMenuNote()
+        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ReelListFertigationPagePreview() {
+fun ReelListFertigationPagePreviewEmptyList() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             ReelListFertigationContent(
+                list = emptyList(),
+                set = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = false,
+                failure = "",
+                errors = Errors.FIELD_EMPTY,
+                onNavMenuNote = {},
+                onNavReel = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReelListFertigationPagePreviewWithData() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            ReelListFertigationContent(
+                list = listOf(
+                    ItemDefaultScreenModel(
+                        id = 1,
+                        descr = "2200"
+                    )
+                ),
+                set = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = false,
+                failure = "",
+                errors = Errors.FIELD_EMPTY,
+                onNavMenuNote = {},
+                onNavReel = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ReelListFertigationPagePreviewFailure() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            ReelListFertigationContent(
+                list = listOf(
+                    ItemDefaultScreenModel(
+                        id = 1,
+                        descr = "2200"
+                    )
+                ),
+                set = {},
+                setCloseDialog = {},
+                flagAccess = false,
+                flagDialog = true,
+                failure = "Failure",
+                errors = Errors.EXCEPTION,
+                onNavMenuNote = {},
+                onNavReel = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

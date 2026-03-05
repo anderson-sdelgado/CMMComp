@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.functionListPMM
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.required
 import java.text.SimpleDateFormat
 import java.util.Locale
 import javax.inject.Inject
@@ -28,27 +29,29 @@ class IListHistory @Inject constructor(
             val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
             val listNoteList = motoMecRepository.listNoteByIdHeader(id).getOrThrow()
             listNoteList.map { item ->
-                val function = if(item.idStop == null) {
-                    functionListPMM.find { it.second == WORK }!!
-                } else {
-                    functionListPMM.find { it.second == STOP }!!
+                with(item) {
+                    val function = if (idStop == null) {
+                        functionListPMM.find { it.second == WORK }!!
+                    } else {
+                        functionListPMM.find { it.second == STOP }!!
+                    }
+                    val descr = if (idStop != null) {
+                        stopRepository.getById(::idStop.required()).getOrThrow().descrStop
+                    } else {
+                        activityRepository.getById(::idActivity.required()).getOrThrow().descr
+                    }
+                    val dateHour = SimpleDateFormat(
+                        "dd/MM/yyyy HH:mm",
+                        Locale.Builder().setLanguage("pt").setRegion("BR").build()
+                    ).format(dateHour)
+                    ItemHistoryScreenModel(
+                        id = ::id.required(),
+                        function = function,
+                        descr = descr,
+                        dateHour = dateHour,
+                        detail = ""
+                    )
                 }
-                val descr = if(item.idStop != null) {
-                    stopRepository.getById(item.idStop!!).getOrThrow().descrStop
-                } else {
-                    activityRepository.getById(item.idActivity!!).getOrThrow().descr
-                }
-                val dateHour = SimpleDateFormat(
-                    "dd/MM/yyyy HH:mm",
-                    Locale.Builder().setLanguage("pt").setRegion("BR").build()
-                ).format(item.dateHour)
-                ItemHistoryScreenModel(
-                    id = item.id!!,
-                    function = function,
-                    descr = descr,
-                    dateHour = dateHour,
-                    detail = ""
-                )
             }
         }
 

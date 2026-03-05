@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.tryCatch
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import com.google.common.primitives.UnsignedInts.toLong
 import javax.inject.Inject
 
 interface SendDataConfig {
@@ -30,11 +31,11 @@ class ISendDataConfig @Inject constructor(
     ): Result<Config> =
         call(getClassAndMethod()) {
 
-            val numberLong = tryCatch("number.toLong") {
+            val numberLong = tryCatch(::toLong.name) {
                 number.toLong()
             }
 
-            val nroEquipLong = tryCatch("nroEquip.toLong") {
+            val nroEquipLong = tryCatch(::toLong.name) {
                 nroEquip.toLong()
             }
 

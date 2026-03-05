@@ -28,13 +28,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
-import br.com.usinasantafe.cmm.lib.errors
 import br.com.usinasantafe.cmm.presenter.model.ItemValueOSScreenModel
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemPerformanceListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemValueOSListDesign
+import br.com.usinasantafe.cmm.presenter.theme.MsgErrors
 
 @Composable
 fun PerformanceListScreen(
@@ -120,7 +119,7 @@ fun PerformanceListContent(
                     .weight(1f),
             ) {
                 items(list) { item ->
-                    ItemPerformanceListDesign(
+                    ItemValueOSListDesign(
                         nroOS = item.nroOS,
                         value = item.value,
                         setActionItem = { onNavPerformance(item.id) },
@@ -137,20 +136,16 @@ fun PerformanceListContent(
         BackHandler {}
 
         if (flagDialog) {
-            val text = errors(errors, failure)
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog
-            )
+            MsgErrors(errors, setCloseDialog, failure)
         }
-
-        LaunchedEffect(flagAccess) {
-            if (flagAccess) {
-                onNavSplash()
-            }
-        }
-
     }
+
+    LaunchedEffect(flagAccess) {
+        if (flagAccess) {
+            onNavSplash()
+        }
+    }
+
 
 }
 

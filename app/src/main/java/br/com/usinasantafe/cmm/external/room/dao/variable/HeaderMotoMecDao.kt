@@ -33,4 +33,7 @@ interface HeaderMotoMecDao {
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE status = :status")
     suspend fun getByStatus(status: Status): HeaderMotoMecRoomModel
 
+    @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE idEquip = :idEquip AND status = :status")
+    suspend fun getByIdEquipAndStatus(idEquip: Int, status: Status): HeaderMotoMecRoomModel
+
 }

@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
+import br.com.usinasantafe.cmm.utils.required
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -22,16 +23,16 @@ data class NoteMotoMecRetrofitModelInput(
 fun ItemMotoMecRoomModel.roomModelToRetrofitModel(): NoteMotoMecRetrofitModelOutput {
     return with(this) {
         NoteMotoMecRetrofitModelOutput(
-            id = this.id!!,
-            idHeader = this.idHeader,
-            nroOS = this.nroOS,
-            idActivity = this.idActivity,
-            idStop = this.idStop,
+            id = ::id.required(),
+            idHeader = idHeader,
+            nroOS = nroOS,
+            idActivity = idActivity,
+            idStop = idStop,
             dateHour = SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
                 Locale.Builder().setLanguage("pt").setRegion("BR").build()
-            ).format(this.dateHour),
-            statusCon = if (this.statusCon) 1 else 0,
+            ).format(dateHour),
+            statusCon = if (statusCon) 1 else 0,
         )
     }
 }

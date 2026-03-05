@@ -12,6 +12,7 @@ import java.util.Date
 import javax.inject.Inject
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
 
 class IConfigSharedPreferencesDatasource @Inject constructor(
@@ -93,7 +94,7 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getDateCheckListLast(): Result<Date> =
         result(getClassAndMethod()) {
-            get().getOrThrow()!!.dateLastCheckList!!
+            get().getOrThrow()!!::dateLastCheckList.required()
         }
 
 }

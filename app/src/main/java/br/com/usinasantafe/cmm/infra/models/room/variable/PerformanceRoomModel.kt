@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.Performance
 import br.com.usinasantafe.cmm.lib.TB_PERFORMANCE
+import br.com.usinasantafe.cmm.utils.required
 import java.util.Date
 
 @Entity(tableName = TB_PERFORMANCE)
@@ -19,11 +20,11 @@ data class PerformanceRoomModel(
 fun PerformanceRoomModel.roomModelToEntity(): Performance {
     return with(this) {
         Performance(
-            id = this.id!!,
-            idHeader = this.idHeader,
-            nroOS = this.nroOS,
-            value = this.value,
-            dateHour = this.dateHour
+            id = ::id.required(),
+            idHeader = idHeader,
+            nroOS = nroOS,
+            value = value,
+            dateHour = dateHour
         )
     }
 }

@@ -51,5 +51,12 @@ interface FertigationModule {
     @Singleton
     fun bindSetCollection(usecase: ISetCollection): SetCollection
 
+    @Binds
+    @Singleton
+    fun bindListHeaderSec(usecase: IListHeaderSec): ListHeaderSec
+
+    @Binds
+    @Singleton
+    fun bindSetHeaderSec(usecase: ISetHeaderSec): SetHeaderSec
 
 }

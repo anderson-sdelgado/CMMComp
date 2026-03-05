@@ -36,6 +36,7 @@ class IEquipRoomDatasourceTest {
 
     @After
     fun tearDown() {
+        db.clearAllTables()
         db.close()
     }
 
@@ -410,6 +411,49 @@ class IEquipRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 20
+            )
+        }
+
+    @Test
+    fun `getNroById - Check return failure if not have data`() =
+        runTest {
+            val result = datasource.getNroById(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRoomDatasource.getNroById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel.getNro()\""
+            )
+        }
+
+    @Test
+    fun `getNroById - Check return correct if function execute successfully`() =
+        runTest {
+            equipDao.insertAll(
+                listOf(
+                    EquipRoomModel(
+                        id = 1,
+                        nro = 10,
+                        codClass = 20,
+                        descrClass = "TRATOR",
+                        typeEquip = TypeEquip.NORMAL
+                    )
+                )
+            )
+            val result = datasource.getNroById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                10
             )
         }
 

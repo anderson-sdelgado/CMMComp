@@ -28,15 +28,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
-import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressDesign
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
 import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
@@ -59,7 +57,7 @@ fun StopListNoteScreen(
 
             StopListNoteContent(
                 stopList = uiState.list,
-                setIdStop = viewModel::setIdStop,
+                set = viewModel::set,
                 field = uiState.field,
                 onFieldChanged = viewModel::onFieldChanged,
                 updateDatabase = viewModel::updateDatabase,
@@ -76,8 +74,8 @@ fun StopListNoteScreen(
 
 @Composable
 fun StopListNoteContent(
-    stopList: List<StopScreenModel>,
-    setIdStop: (Int) -> Unit,
+    stopList: List<ItemDefaultScreenModel>,
+    set: (Int) -> Unit,
     field: String,
     onFieldChanged: (String) -> Unit,
     updateDatabase: () -> Unit,
@@ -125,10 +123,10 @@ fun StopListNoteContent(
                 .weight(1f)
         ) {
             items(stopList) {
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = it.descr,
                     setActionItem = {
-                        setIdStop(it.id)
+                        set(it.id)
                     },
                     id = it.id,
                     padding = 6
@@ -182,16 +180,16 @@ fun StopListNotePagePreview() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             StopListNoteContent(
                 stopList = listOf(
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "10 - PARADA 1"
                     ),
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "20 - PARADA 2"
                     )
                 ),
-                setIdStop = {},
+                set = {},
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
@@ -224,16 +222,16 @@ fun StopListNoteScreenPagePreviewWithFailureUpdate() {
         ) { innerPadding ->
             StopListNoteContent(
                 stopList = listOf(
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "10 - PARADA 1"
                     ),
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "20 - PARADA 2"
                     )
                 ),
-                setIdStop = {},
+                set = {},
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
@@ -266,16 +264,16 @@ fun StopListNoteScreenPagePreviewWithProgressUpdate() {
         ) { innerPadding ->
             StopListNoteContent(
                 stopList = listOf(
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "10 - PARADA 1"
                     ),
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "20 - PARADA 2"
                     )
                 ),
-                setIdStop = {},
+                set = {},
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},
@@ -308,16 +306,16 @@ fun StopListNoteScreenPagePreviewWithFailureError() {
         ) { innerPadding ->
             StopListNoteContent(
                 stopList = listOf(
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "10 - PARADA 1"
                     ),
-                    StopScreenModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "20 - PARADA 2"
                     )
                 ),
-                setIdStop = {},
+                set = {},
                 field = "",
                 onFieldChanged = {},
                 updateDatabase = {},

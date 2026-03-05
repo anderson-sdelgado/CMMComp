@@ -7,10 +7,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdStopNote
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
-import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
-import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonState
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -19,14 +16,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 data class StopListNoteState(
-    val list: List<StopScreenModel> = emptyList(),
+    val list: List<ItemDefaultScreenModel> = emptyList(),
     val field: String = "",
     val flagFilter: Boolean = false,
     val flagAccess: Boolean = false,
@@ -64,7 +59,7 @@ class StopListNoteViewModel @Inject constructor(
         }
     }
 
-    fun setIdStop(id: Int) = viewModelScope.launch {
+    fun set(id: Int) = viewModelScope.launch {
         runCatching {
             setIdStopNote(id).getOrThrow()
         }

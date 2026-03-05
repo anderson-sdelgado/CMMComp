@@ -26,7 +26,7 @@ import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.presenter.view.configuration.initial.InitialMenuViewModel
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.StatusSend
 
@@ -91,7 +91,7 @@ fun InitialMenuContent(
                 .weight(1f)
         ) {
             item {
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = stringResource(
                         id = R.string.text_item_note
                     ),
@@ -100,7 +100,7 @@ fun InitialMenuContent(
                 )
             }
             item {
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = stringResource(
                         id = R.string.text_item_config
                     ),
@@ -109,7 +109,7 @@ fun InitialMenuContent(
                 )
             }
             item {
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = stringResource(
                         id = R.string.text_item_out
                     ),

@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderMotoMec
 import br.com.usinasantafe.cmm.domain.entities.variable.Implement
 import br.com.usinasantafe.cmm.domain.entities.variable.ItemMotoMec
 import br.com.usinasantafe.cmm.utils.EmptyResult
@@ -23,6 +24,7 @@ interface MotoMecRepository {
     suspend fun saveHeader(hourMeterInitial: Double): EmptyResult
     suspend fun hasHeaderOpen(): Result<Boolean>
     suspend fun getIdHeaderPointing(): Result<Int>
+    suspend fun getIdHeaderByIdEquipAndOpen(idEquip: Int): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
     suspend fun finishHeader(): EmptyResult
     suspend fun hasHeaderSend(): Result<Boolean>
@@ -50,4 +52,5 @@ interface MotoMecRepository {
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun setNroEquipImplement(entity: Implement): EmptyResult
     suspend fun saveImplement(idItem: Int): EmptyResult
+    suspend fun listHeaderSec(idHeader: Int): Result<List<HeaderMotoMec>>
 }

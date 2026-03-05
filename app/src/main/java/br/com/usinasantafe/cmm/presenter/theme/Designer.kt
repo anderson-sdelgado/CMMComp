@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.STOP
 import br.com.usinasantafe.cmm.lib.WORK
 import br.com.usinasantafe.cmm.lib.errors
@@ -39,7 +40,7 @@ import br.com.usinasantafe.cmm.lib.msg
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
-fun ItemListDesign(
+fun ItemDefaultListDesign(
     id: Int = 0,
     text: String,
     font: Int = 22,
@@ -128,7 +129,7 @@ fun ItemHistoryListDesign(
 }
 
 @Composable
-fun ItemPerformanceListDesign(
+fun ItemValueOSListDesign(
     id: Int = 0,
     nroOS: Int,
     value: Double?,
@@ -580,3 +581,13 @@ fun ProgressUpdate(status : UpdateStatusState){
         msgProgress = msgProgress
     )
 }
+
+@Composable
+fun MsgErrors(errors: Errors, setCloseDialog: () -> Unit, failure: String){
+    val text = errors(errors, failure)
+    AlertDialogSimpleDesign(
+        text = text,
+        setCloseDialog = setCloseDialog,
+    )
+}
+

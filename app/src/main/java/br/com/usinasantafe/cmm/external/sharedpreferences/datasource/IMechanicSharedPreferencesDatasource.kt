@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.MechanicSharedPref
 import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_MECHANIC
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
 import com.google.gson.Gson
 import javax.inject.Inject
@@ -54,7 +55,7 @@ class IMechanicSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getNroOS(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().nroOS!!
+            get().getOrThrow()::nroOS.required()
         }
 
 }

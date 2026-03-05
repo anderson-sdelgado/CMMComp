@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.lib.TB_EQUIP
 import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.utils.required
 
 @Entity(tableName = TB_EQUIP)
 data class EquipRoomModel (
@@ -31,11 +32,11 @@ fun EquipRoomModel.roomModelToEntity(): Equip {
 fun Equip.entityToRoomModel(): EquipRoomModel {
     return with(this){
         EquipRoomModel(
-            id = this.id,
-            nro = this.nro,
-            codClass = this.codClass,
-            descrClass = this.descrClass,
-            typeEquip = this.typeEquip!!
+            id = id,
+            nro = nro,
+            codClass = codClass,
+            descrClass = descrClass,
+            typeEquip = ::typeEquip.required()
         )
     }
 }

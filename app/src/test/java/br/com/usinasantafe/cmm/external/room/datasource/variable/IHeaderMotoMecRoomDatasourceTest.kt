@@ -40,6 +40,7 @@ class IHeaderMotoMecRoomDatasourceTest {
 
     @After
     fun tearDown() {
+        db.clearAllTables()
         db.close()
     }
 
@@ -167,7 +168,7 @@ class IHeaderMotoMecRoomDatasourceTest {
     @Test
     fun `getId - Check return failure if table is empty`() =
         runTest {
-            val result = datasource.getId()
+            val result = datasource.getIdByOpen()
             assertEquals(
                 result.isFailure,
                 true
@@ -198,7 +199,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.getId()
+            val result = datasource.getIdByOpen()
             assertEquals(
                 result.isSuccess,
                 true
@@ -459,7 +460,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                emptyList<HeaderMotoMecRoomModel>()
+                emptyList()
             )
         }
 
@@ -821,6 +822,80 @@ class IHeaderMotoMecRoomDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 FlowComposting.INPUT
+            )
+        }
+
+    @Test
+    fun `getIdByIdEquipAndOpen - Check return failure if not have header with idEquip and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result = datasource.getIdByIdEquipAndOpen(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getIdByIdEquipAndOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"this.receiver\" is null"
+            )
+        }
+
+    @Test
+    fun `getIdByIdEquipAndOpen - Check return correct if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.getIdByIdEquipAndOpen(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                2
             )
         }
 }

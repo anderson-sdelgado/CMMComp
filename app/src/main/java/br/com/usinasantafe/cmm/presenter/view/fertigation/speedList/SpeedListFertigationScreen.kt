@@ -25,7 +25,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
-import br.com.usinasantafe.cmm.presenter.theme.ItemListDesign
+import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
 import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
@@ -86,7 +86,7 @@ fun SpeedListFertigationContent(
                 .weight(1f),
         ) {
             items(list) { item ->
-                ItemListDesign(
+                ItemDefaultListDesign(
                     text = "${item.speed}",
                     setActionItem = {
                         set(item.speed)

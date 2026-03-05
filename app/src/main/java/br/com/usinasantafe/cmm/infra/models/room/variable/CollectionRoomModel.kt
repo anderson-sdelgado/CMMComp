@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import br.com.usinasantafe.cmm.domain.entities.variable.Collection
 import br.com.usinasantafe.cmm.lib.TB_COLLECTION
+import br.com.usinasantafe.cmm.utils.required
 import java.util.Date
 
 @Entity(tableName = TB_COLLECTION)
@@ -19,11 +20,11 @@ data class CollectionRoomModel(
 fun CollectionRoomModel.roomModelToEntity(): Collection {
     return with(this) {
         Collection(
-            id = this.id!!,
-            idHeader = this.idHeader,
-            nroOS = this.nroOS,
-            value = this.value,
-            dateHour = this.dateHour
+            id = ::id.required(),
+            idHeader = idHeader,
+            nroOS = nroOS,
+            value = value,
+            dateHour = dateHour
         )
     }
 }

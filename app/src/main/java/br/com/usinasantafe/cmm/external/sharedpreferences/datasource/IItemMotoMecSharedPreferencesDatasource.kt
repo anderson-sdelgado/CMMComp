@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import javax.inject.Inject
 import androidx.core.content.edit
 import br.com.usinasantafe.cmm.utils.EmptyResult
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
 
 class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
@@ -71,7 +72,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getIdNozzle(): Result<Int> =
         result(getClassAndMethod()) {
-            get().getOrThrow().idNozzle!!
+            get().getOrThrow()::idNozzle.required()
         }
 
     override suspend fun setValuePressure(value: Double): EmptyResult =
@@ -83,7 +84,7 @@ class IItemMotoMecSharedPreferencesDatasource @Inject constructor(
 
     override suspend fun getValuePressure(): Result<Double> =
         result(getClassAndMethod()) {
-            get().getOrThrow().valuePressure!!
+            get().getOrThrow()::valuePressure.required()
         }
 
     override suspend fun setSpeedPressure(speed: Int): EmptyResult =

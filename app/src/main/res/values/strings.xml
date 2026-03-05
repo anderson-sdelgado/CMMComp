@@ -110,4 +110,7 @@
     <string name="text_item_service">SEQ.: %1$s</string>
     <string name="text_title_item_os_mechanic">ITEM(S) DA OS</string>
     <string name="text_title_sequence">NÚMERO DO ITEM</string>
+    <string name="text_title_reel_list">CARRETEL(IS)</string>
+    <string name="text_msg_no_data_list_reel">NÃO CONTÉM CARRETEL(IS) APONTADOS.</string>
+    <string name="text_pattern_insert">INSERIR</string>
 </resources>

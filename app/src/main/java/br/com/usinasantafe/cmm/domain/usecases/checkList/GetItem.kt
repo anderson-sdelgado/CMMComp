@@ -6,13 +6,13 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ItemCheckListRepositor
 import br.com.usinasantafe.cmm.domain.repositories.stable.TurnRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.CheckListRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
-import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.call
 import javax.inject.Inject
 
 interface GetItem {
-    suspend operator fun invoke(pos: Int): Result<ItemCheckListModel>
+    suspend operator fun invoke(pos: Int): Result<ItemDefaultScreenModel>
 }
 
 class IGetItem @Inject constructor(
@@ -23,7 +23,7 @@ class IGetItem @Inject constructor(
     private val turnRepository: TurnRepository
 ): GetItem {
 
-    override suspend fun invoke(pos: Int): Result<ItemCheckListModel> =
+    override suspend fun invoke(pos: Int): Result<ItemDefaultScreenModel> =
         call(getClassAndMethod()) {
             if(pos == 1) {
                 val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
@@ -41,7 +41,7 @@ class IGetItem @Inject constructor(
             val idCheckList = equipRepository.getIdCheckList().getOrThrow()
             val list = itemCheckListRepository.listByIdCheckList(idCheckList).getOrThrow()
             val entity = list[pos - 1]
-            ItemCheckListModel(
+            ItemDefaultScreenModel(
                 id = entity.idItemCheckList,
                 descr = entity.descrItemCheckList
             )

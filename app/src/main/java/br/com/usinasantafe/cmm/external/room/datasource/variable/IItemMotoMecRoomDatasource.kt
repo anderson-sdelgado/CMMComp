@@ -60,7 +60,7 @@ class IItemMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun getLastByIdHeader(idHeader: Int): Result<ItemMotoMecRoomModel> =
         result(getClassAndMethod()) {
-            itemMotoMecDao.getLastByIdHeader(idHeader) ?: throw Exception("Not has data")
+            itemMotoMecDao.getLastByIdHeader(idHeader) ?: throw NullPointerException("Not has data")
         }
 
 }

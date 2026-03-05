@@ -7,8 +7,9 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 interface HeaderMotoMecRoomDatasource {
     suspend fun save(headerMotoMecRoomModel: HeaderMotoMecRoomModel): Result<Long>
     suspend fun getOpen(): Result<HeaderMotoMecRoomModel>
+    suspend fun getIdByIdEquipAndOpen(idEquip: Int): Result<Int>
     suspend fun checkOpen(): Result<Boolean>
-    suspend fun getId(): Result<Int>
+    suspend fun getIdByOpen(): Result<Int>
     suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult
     suspend fun finish(): EmptyResult
     suspend fun hasSend(): Result<Boolean>

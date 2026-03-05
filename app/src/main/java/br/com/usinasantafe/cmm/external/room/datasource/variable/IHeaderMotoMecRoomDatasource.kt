@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
 import java.util.Date
 import javax.inject.Inject
@@ -28,14 +29,21 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.getByStatus(Status.OPEN)
         }
 
+    override suspend fun getIdByIdEquipAndOpen(idEquip: Int): Result<Int> =
+        result(getClassAndMethod()) {
+            val model = headerMotoMecDao.getByIdEquipAndStatus(idEquip, Status.OPEN)
+            model::id.required()
+        }
+
     override suspend fun checkOpen(): Result<Boolean> =
         result(getClassAndMethod()) {
             headerMotoMecDao.countByStatus(Status.OPEN) > 0
         }
 
-    override suspend fun getId(): Result<Int> =
+    override suspend fun getIdByOpen(): Result<Int> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByStatus(Status.OPEN).id!!
+            val model = headerMotoMecDao.getByStatus(Status.OPEN)
+            model::id.required()
         }
 
     override suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult =
@@ -100,7 +108,7 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
     override suspend fun getFlowComposting(): Result<FlowComposting> =
         result(getClassAndMethod()) {
             val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
-            roomModel.flowComposting ?: throw Exception("flowComposting is null")
+            roomModel::flowComposting.required()
         }
 
 }

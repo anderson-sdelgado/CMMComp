@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.retrofit.variable
 
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
+import br.com.usinasantafe.cmm.utils.required
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -26,14 +27,14 @@ fun HeaderCheckListRoomModel.roomModelToRetrofitModel(
 ): HeaderCheckListRetrofitModelOutput{
     return with(this) {
         HeaderCheckListRetrofitModelOutput(
-            id = this.id!!,
-            nroEquip = this.nroEquip,
-            regOperator = this.regOperator,
-            nroTurn = this.nroTurn,
+            id = ::id.required(),
+            nroEquip = nroEquip,
+            regOperator = regOperator,
+            nroTurn = nroTurn,
             dateHour = SimpleDateFormat(
                 "dd/MM/yyyy HH:mm",
                 Locale.Builder().setLanguage("pt").setRegion("BR").build()
-            ).format(this.dateHour),
+            ).format(dateHour),
             number = number,
             respItemList = respItemList
         )

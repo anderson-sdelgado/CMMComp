@@ -70,7 +70,7 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
         result(getClassAndMethod()) {
             val model = get().getOrThrow()!!
             model.hourMeter = hourMeter
-            val resultSave = save(model).getOrThrow()
+            save(model).getOrThrow()
         }
 
     override suspend fun getTypeEquip(): Result<TypeEquip> =

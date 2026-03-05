@@ -7,9 +7,9 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.ListStop
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdStopNote
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
-import br.com.usinasantafe.cmm.presenter.model.StopScreenModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -379,7 +379,7 @@ class StopListNoteViewModelTest {
         }
 
     @Test
-    fun `stopList - Check return failure if have error in GetStopList`() =
+    fun `list - Check return failure if have error in GetStopList`() =
         runTest {
             whenever(
                 listStop()
@@ -406,14 +406,14 @@ class StopListNoteViewModelTest {
         }
 
     @Test
-    fun `stopList - Check return correct if function execute successfully`() =
+    fun `list - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 listStop()
             ).thenReturn(
                 Result.success(
                     listOf(
-                        StopScreenModel(
+                        ItemDefaultScreenModel(
                             id = 1,
                             descr = "20 - PARADA REFEICAO"
                         )
@@ -438,7 +438,7 @@ class StopListNoteViewModelTest {
         }
 
     @Test
-    fun `setIdStop - Check return failure if have error in SetIdStopNote`() =
+    fun `set - Check return failure if have error in SetIdStopNote`() =
         runTest {
             whenever(
                 setIdStopNote(
@@ -451,7 +451,7 @@ class StopListNoteViewModelTest {
                     cause = Exception()
                 )
             )
-            viewModel.setIdStop(1)
+            viewModel.set(1)
             assertEquals(
                 viewModel.uiState.value.status.flagDialog,
                 true
@@ -467,7 +467,7 @@ class StopListNoteViewModelTest {
         }
 
     @Test
-    fun `setIdStop - Check return correct if function execute successfully`() =
+    fun `set - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 setIdStopNote(
@@ -478,7 +478,7 @@ class StopListNoteViewModelTest {
                     Unit
                 )
             )
-            viewModel.setIdStop(1)
+            viewModel.set(1)
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
@@ -493,15 +493,15 @@ class StopListNoteViewModelTest {
             ).thenReturn(
                 Result.success(
                     listOf(
-                        StopScreenModel(
+                        ItemDefaultScreenModel(
                             id = 1,
                             descr = "20 - PARADA REFEICAO"
                         ),
-                        StopScreenModel(
+                        ItemDefaultScreenModel(
                             id = 2,
                             descr = "160 - MANUTENCAO"
                         ),
-                        StopScreenModel(
+                        ItemDefaultScreenModel(
                             id = 3,
                             descr = "250 - CHUVA"
                         )

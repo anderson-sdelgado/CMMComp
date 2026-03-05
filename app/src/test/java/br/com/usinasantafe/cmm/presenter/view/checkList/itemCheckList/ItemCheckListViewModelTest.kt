@@ -5,7 +5,7 @@ import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.checkList.DelLastRespItem
 import br.com.usinasantafe.cmm.domain.usecases.checkList.GetItem
 import br.com.usinasantafe.cmm.domain.usecases.checkList.SetRespItem
-import br.com.usinasantafe.cmm.presenter.model.ItemCheckListModel
+import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -84,7 +84,7 @@ class ItemCheckListViewModelTest {
                 getItem(1)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "test",
                     )
@@ -112,7 +112,7 @@ class ItemCheckListViewModelTest {
                 getItem(3)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 3,
                         descr = "test 3",
                     )
@@ -140,7 +140,7 @@ class ItemCheckListViewModelTest {
                 getItem(1)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "test 1",
                     )
@@ -173,7 +173,7 @@ class ItemCheckListViewModelTest {
                 getItem(3)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 3,
                         descr = "test 3",
                     )
@@ -220,7 +220,7 @@ class ItemCheckListViewModelTest {
                 getItem(2)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "test 2",
                     )
@@ -230,7 +230,7 @@ class ItemCheckListViewModelTest {
                 getItem(3)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 3,
                         descr = "test 3",
                     )
@@ -276,7 +276,7 @@ class ItemCheckListViewModelTest {
                 getItem(1)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "test 1",
                     )
@@ -326,7 +326,7 @@ class ItemCheckListViewModelTest {
                 getItem(1)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "test 1",
                     )
@@ -336,7 +336,7 @@ class ItemCheckListViewModelTest {
                 getItem(2)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "test 2",
                     )
@@ -386,7 +386,7 @@ class ItemCheckListViewModelTest {
                 getItem(1)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 1,
                         descr = "test 1",
                     )
@@ -396,7 +396,7 @@ class ItemCheckListViewModelTest {
                 getItem(2)
             ).thenReturn(
                 Result.success(
-                    ItemCheckListModel(
+                    ItemDefaultScreenModel(
                         id = 2,
                         descr = "test 2",
                     )
