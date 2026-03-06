@@ -21,19 +21,30 @@ interface HeaderMotoMecDao {
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC")
     suspend fun all(): List<HeaderMotoMecRoomModel>
 
-    @Query("SELECT COUNT(id) FROM $TB_HEADER_MOTO_MEC WHERE status = :status")
-    suspend fun countByStatus(status: Status): Int
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_HEADER_MOTO_MEC WHERE status <> :status)")
+    suspend fun countByDiffStatus(status: Status): Boolean
 
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE statusSend = :statusSend")
     suspend fun listByStatusSend(statusSend: StatusSend): List<HeaderMotoMecRoomModel>
 
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE id = :id")
-    suspend fun get(id: Int): HeaderMotoMecRoomModel
-
-    @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE status = :status")
-    suspend fun getByStatus(status: Status): HeaderMotoMecRoomModel
+    suspend fun getById(id: Int): HeaderMotoMecRoomModel
 
     @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE idEquip = :idEquip AND status = :status")
-    suspend fun getByIdEquipAndStatus(idEquip: Int, status: Status): HeaderMotoMecRoomModel
+    suspend fun getByIdEquipAndOpen(idEquip: Int, status: Status = Status.OPEN): HeaderMotoMecRoomModel
 
+    @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE idHeader = :idHeader AND status <> :status")
+    suspend fun listByIdHeader(idHeader: Int, status: Status = Status.FINISH): List<HeaderMotoMecRoomModel>
+
+    @Query("UPDATE $TB_HEADER_MOTO_MEC SET status = :statusClose WHERE status <> :statusFinish")
+    suspend fun updateAllNotFinishToClose(statusClose: Status = Status.CLOSE, statusFinish: Status = Status.FINISH)
+
+    @Query("UPDATE $TB_HEADER_MOTO_MEC SET status = :statusOpen WHERE idEquip = :idEquip")
+    suspend fun updateStatusOpenByIdEquip(idEquip: Int, statusOpen: Status = Status.OPEN)
+
+    @Query("UPDATE $TB_HEADER_MOTO_MEC SET status = :statusOpen WHERE id = :id")
+    suspend fun updateStatusOpenById(id: Int, statusOpen: Status = Status.OPEN)
+
+    @Query("SELECT * FROM $TB_HEADER_MOTO_MEC WHERE status = :status")
+    suspend fun getByStatusOpen(status: Status = Status.OPEN): HeaderMotoMecRoomModel
 }

@@ -8,7 +8,8 @@ import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeEquip
 
 interface MotoMecRepository {
-    suspend fun refreshHeaderOpen(): EmptyResult
+    suspend fun openHeaderByIdEquip(idEquip: Int): EmptyResult
+    suspend fun openHeaderById(id: Int): EmptyResult
     suspend fun setRegOperatorHeader(regOperator: Int): EmptyResult
     suspend fun setDataEquipHeader(
         idEquip: Int,
@@ -22,7 +23,7 @@ interface MotoMecRepository {
     suspend fun getIdActivityHeader(): Result<Int>
     suspend fun getIdEquipHeader(): Result<Int>
     suspend fun saveHeader(hourMeterInitial: Double): EmptyResult
-    suspend fun hasHeaderOpen(): Result<Boolean>
+    suspend fun hasHeaderOpenOrClose(): Result<Boolean>
     suspend fun getIdHeaderPointing(): Result<Int>
     suspend fun getIdHeaderByIdEquipAndOpen(idEquip: Int): Result<Int>
     suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult
@@ -52,5 +53,5 @@ interface MotoMecRepository {
     suspend fun getNoteLastByIdHeader(idHeader: Int): Result<ItemMotoMec>
     suspend fun setNroEquipImplement(entity: Implement): EmptyResult
     suspend fun saveImplement(idItem: Int): EmptyResult
-    suspend fun listHeaderSec(idHeader: Int): Result<List<HeaderMotoMec>>
+    suspend fun listHeaderSecByIdHeader(idHeader: Int): Result<List<HeaderMotoMec>>
 }

@@ -33,7 +33,7 @@ data class HeaderMotoMecRoomModel(
     var status: Status = Status.OPEN,
     var idServ: Int? = null,
     val idEquipMotorPump: Int? = null,
-    var idHeaderMain: Int? = null,
+    var idHeader: Int? = null,
 )
 
 fun HeaderMotoMec.entityToRoomModel(hourMeterInitial: Double): HeaderMotoMecRoomModel {
@@ -48,6 +48,21 @@ fun HeaderMotoMec.entityToRoomModel(hourMeterInitial: Double): HeaderMotoMecRoom
         hourMeterInitial = hourMeterInitial,
         flowComposting = flowComposting,
         statusCon = ::statusCon.required(),
+        idEquipMotorPump = idEquipMotorPump
+    )
+}
+
+fun HeaderMotoMecRoomModel.roomModelToEntity(): HeaderMotoMec {
+    return HeaderMotoMec(
+        id = id,
+        regOperator = regOperator,
+        idEquip = idEquip,
+        typeEquip = typeEquip,
+        idTurn = idTurn,
+        nroOS = nroOS,
+        idActivity = idActivity,
+        statusCon = statusCon,
+        flowComposting = flowComposting,
         idEquipMotorPump = idEquipMotorPump
     )
 }

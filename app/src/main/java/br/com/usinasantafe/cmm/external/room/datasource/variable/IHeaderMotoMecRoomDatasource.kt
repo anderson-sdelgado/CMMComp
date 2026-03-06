@@ -24,38 +24,43 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.insert(headerMotoMecRoomModel)
         }
 
-    override suspend fun getOpen(): Result<HeaderMotoMecRoomModel> =
+    override suspend fun getByIdEquipAndOpen(idEquip: Int): Result<HeaderMotoMecRoomModel> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByStatus(Status.OPEN)
+            headerMotoMecDao.getByIdEquipAndOpen(idEquip)
+        }
+
+    override suspend fun getById(id: Int): Result<HeaderMotoMecRoomModel> =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.getById(id)
         }
 
     override suspend fun getIdByIdEquipAndOpen(idEquip: Int): Result<Int> =
         result(getClassAndMethod()) {
-            val model = headerMotoMecDao.getByIdEquipAndStatus(idEquip, Status.OPEN)
+            val model = headerMotoMecDao.getByIdEquipAndOpen(idEquip)
             model::id.required()
         }
 
-    override suspend fun checkOpen(): Result<Boolean> =
+    override suspend fun checkOpenOrClose(): Result<Boolean> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.countByStatus(Status.OPEN) > 0
+            headerMotoMecDao.countByDiffStatus(Status.FINISH)
         }
 
     override suspend fun getIdByOpen(): Result<Int> =
         result(getClassAndMethod()) {
-            val model = headerMotoMecDao.getByStatus(Status.OPEN)
+            val model = headerMotoMecDao.getByStatusOpen()
             model::id.required()
         }
 
     override suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult =
         result(getClassAndMethod()) {
-            val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            val roomModel = headerMotoMecDao.getByStatusOpen()
             roomModel.hourMeterFinish = hourMeter
             headerMotoMecDao.update(roomModel)
         }
 
     override suspend fun finish(): EmptyResult =
         result(getClassAndMethod()) {
-            val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            val roomModel = headerMotoMecDao.getByStatusOpen()
             roomModel.status = Status.FINISH
             roomModel.statusSend = StatusSend.SEND
             roomModel.dateHourFinish = Date()
@@ -74,7 +79,7 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun getStatusCon(): Result<Boolean> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByStatus(Status.OPEN).statusCon
+            headerMotoMecDao.getByStatusOpen().statusCon
         }
 
     override suspend fun setSent(
@@ -82,7 +87,7 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
         idServ: Int
     ): EmptyResult =
         result(getClassAndMethod()) {
-            val model = headerMotoMecDao.get(id)
+            val model = headerMotoMecDao.getById(id)
             model.idServ = idServ
             model.statusSend = StatusSend.SENT
             headerMotoMecDao.update(model)
@@ -90,25 +95,45 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun setSend(id: Int): EmptyResult =
         result(getClassAndMethod()) {
-            val model = headerMotoMecDao.get(id)
+            val model = headerMotoMecDao.getById(id)
             model.statusSend = StatusSend.SEND
             headerMotoMecDao.update(model)
         }
 
     override suspend fun getIdTurn(): Result<Int> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByStatus(Status.OPEN).idTurn
+            headerMotoMecDao.getByStatusOpen().idTurn
         }
 
     override suspend fun getRegOperator(): Result<Int> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByStatus(Status.OPEN).regOperator
+            headerMotoMecDao.getByStatusOpen().regOperator
         }
 
     override suspend fun getFlowComposting(): Result<FlowComposting> =
         result(getClassAndMethod()) {
-            val roomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            val roomModel = headerMotoMecDao.getByStatusOpen()
             roomModel::flowComposting.required()
+        }
+
+    override suspend fun listByIdHeader(idHeader: Int): Result<List<HeaderMotoMecRoomModel>> =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.listByIdHeader(idHeader)
+        }
+
+    override suspend fun updateAllNotFinishToClose(): EmptyResult =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.updateAllNotFinishToClose()
+        }
+
+    override suspend fun updateStatusOpenByIdEquip(idEquip: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.updateStatusOpenByIdEquip(idEquip)
+        }
+
+    override suspend fun updateStatusOpenById(id: Int): EmptyResult =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.updateStatusOpenById(id)
         }
 
 }

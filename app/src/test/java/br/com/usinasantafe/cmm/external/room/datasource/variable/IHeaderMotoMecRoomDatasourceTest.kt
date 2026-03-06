@@ -117,7 +117,7 @@ class IHeaderMotoMecRoomDatasourceTest {
     @Test
     fun `checkOpen - Check return false if not have header open`() =
         runTest {
-            val result = datasource.checkOpen()
+            val result = datasource.checkOpenOrClose()
             assertEquals(
                 result.isSuccess,
                 true
@@ -144,7 +144,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkOpen()
+            val result = datasource.checkOpenOrClose()
             assertEquals(
                 result.isSuccess,
                 true
@@ -175,11 +175,11 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.getId"
+                "IHeaderMotoMecRoomDatasource.getIdByOpen"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"this.receiver\" is null"
             )
         }
 
@@ -290,7 +290,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.setStatus(br.com.usinasantafe.cmm.utils.Status)\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.setStatus(br.com.usinasantafe.cmm.lib.Status)\" because \"roomModel\" is null"
             )
         }
 
@@ -419,7 +419,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getStatusCon()\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getStatusCon()\""
             )
         }
 
@@ -668,11 +668,11 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.getIdTurnByHeaderOpen"
+                "IHeaderMotoMecRoomDatasource.getIdTurn"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getIdTurn()\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getIdTurn()\""
             )
         }
 
@@ -713,11 +713,11 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.getRegOperatorOpen"
+                "IHeaderMotoMecRoomDatasource.getRegOperator"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getRegOperator()\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getRegOperator()\""
             )
         }
 
@@ -762,7 +762,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getFlowComposting()\" because \"roomModel\" is null"
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getFlowComposting()\" because \"this.receiver\" is null"
             )
         }
 
@@ -793,7 +793,7 @@ class IHeaderMotoMecRoomDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception: flowComposting is null"
+                "java.lang.NullPointerException: flowComposting is required"
             )
         }
 
@@ -898,4 +898,105 @@ class IHeaderMotoMecRoomDatasourceTest {
                 2
             )
         }
+
+    @Test
+    fun `listByIdHeader - Check return empty list if not have header with id and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 123465,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            val result = datasource.listByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val modelList = result.getOrNull()!!
+            assertEquals(
+                modelList.size,
+                0
+            )
+        }
+
+    @Test
+    fun `listByIdHeader - Check return list if have header with id and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 123465,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 123465,
+                    idEquip = 1000,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    idHeader = 1
+                )
+            )
+            val result = datasource.listByIdHeader(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val modelList = result.getOrNull()!!
+            assertEquals(
+                modelList.size,
+                1
+            )
+            val entity = modelList[0]
+            assertEquals(
+                entity.idHeader,
+                1
+            )
+            assertEquals(
+                entity.regOperator,
+                123465
+            )
+            assertEquals(
+                entity.idEquip,
+                1000
+            )
+            assertEquals(
+                entity.idTurn,
+                1
+            )
+            assertEquals(
+                entity.nroOS,
+                123456
+            )
+            assertEquals(
+                entity.idActivity,
+                1
+            )
+            assertEquals(
+                entity.hourMeterInitial,
+                10.0,
+                0.0
+            )
+        }
+
 }

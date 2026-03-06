@@ -286,7 +286,7 @@ class ISetNroEquipTranshipmentTest {
                 itemMotoMecRoomModel.idHeader,
                 1
             )
-            val headerMotoMecRoomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            val headerMotoMecRoomModel = headerMotoMecDao.getByStatusOpen(Status.OPEN)
             assertEquals(
                 headerMotoMecRoomModel.nroOS,
                 123456

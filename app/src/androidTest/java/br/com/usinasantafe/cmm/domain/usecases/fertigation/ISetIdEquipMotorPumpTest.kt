@@ -194,7 +194,7 @@ class ISetIdEquipMotorPumpTest {
                 headerSharedPreferencesModel.id,
                 1
             )
-            val headerRoomModel = headerMotoMecDao.getByStatus(Status.OPEN)
+            val headerRoomModel = headerMotoMecDao.getByStatusOpen(Status.OPEN)
             assertEquals(
                 headerRoomModel.idEquipMotorPump,
                 20

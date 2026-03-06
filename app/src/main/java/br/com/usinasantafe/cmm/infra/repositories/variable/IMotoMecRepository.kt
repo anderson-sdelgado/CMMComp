@@ -36,9 +36,19 @@ class IMotoMecRepository @Inject constructor(
     private val implementRoomDatasource: ImplementRoomDatasource
 ): MotoMecRepository {
 
-    override suspend fun refreshHeaderOpen(): EmptyResult =
+    override suspend fun openHeaderByIdEquip(idEquip: Int): EmptyResult =
         call(getClassAndMethod()) {
-            val model = headerMotoMecRoomDatasource.getOpen().getOrThrow()
+            headerMotoMecRoomDatasource.updateAllNotFinishToClose().getOrThrow()
+            headerMotoMecRoomDatasource.updateStatusOpenByIdEquip(idEquip).getOrThrow()
+            val model = headerMotoMecRoomDatasource.getByIdEquipAndOpen(idEquip).getOrThrow()
+            headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
+        }
+
+    override suspend fun openHeaderById(id: Int): EmptyResult =
+        call(getClassAndMethod()) {
+            headerMotoMecRoomDatasource.updateAllNotFinishToClose().getOrThrow()
+            headerMotoMecRoomDatasource.updateStatusOpenById(id).getOrThrow()
+            val model = headerMotoMecRoomDatasource.getById(id).getOrThrow()
             headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
         }
 
@@ -104,9 +114,9 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecSharedPreferencesDatasource.setId(id.toInt()).getOrThrow()
         }
 
-    override suspend fun hasHeaderOpen(): Result<Boolean> =
+    override suspend fun hasHeaderOpenOrClose(): Result<Boolean> =
         call(getClassAndMethod()) {
-            headerMotoMecRoomDatasource.checkOpen().getOrThrow()
+            headerMotoMecRoomDatasource.checkOpenOrClose().getOrThrow()
         }
 
     override suspend fun getIdHeaderPointing(): Result<Int> =
@@ -255,8 +265,10 @@ class IMotoMecRepository @Inject constructor(
             }
         }
 
-    override suspend fun listHeaderSec(idHeader: Int): Result<List<HeaderMotoMec>> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun listHeaderSecByIdHeader(idHeader: Int): Result<List<HeaderMotoMec>> =
+        call(getClassAndMethod()) {
+            val modelRoomList = headerMotoMecRoomDatasource.listByIdHeader(idHeader).getOrThrow()
+            modelRoomList.map { it.roomModelToEntity() }
+        }
 
 }

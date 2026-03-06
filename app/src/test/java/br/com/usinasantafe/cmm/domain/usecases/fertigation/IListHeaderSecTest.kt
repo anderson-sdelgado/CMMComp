@@ -93,7 +93,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 resultFailure(
                     "IMotoMecRepository.listHeaderSec",
@@ -130,7 +130,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 Result.success(emptyList())
             )
@@ -159,7 +159,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -205,7 +205,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -253,7 +253,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 Result.success(
                     listOf(
@@ -297,7 +297,7 @@ class IListHeaderSecTest {
                 Result.success(1)
             )
             whenever(
-                motoMecRepository.listHeaderSec(1)
+                motoMecRepository.listHeaderSecByIdHeader(1)
             ).thenReturn(
                 Result.success(
                     listOf(

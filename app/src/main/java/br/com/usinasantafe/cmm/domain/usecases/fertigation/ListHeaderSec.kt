@@ -21,7 +21,7 @@ class IListHeaderSec @Inject constructor(
         call(getClassAndMethod()) {
             val idEquipMain = equipRepository.getIdEquipMain().getOrThrow()
             val idHeaderMain = motoMecRepository.getIdHeaderByIdEquipAndOpen(idEquipMain).getOrThrow()
-            val listHeaderSec = motoMecRepository.listHeaderSec(idHeaderMain).getOrThrow()
+            val listHeaderSec = motoMecRepository.listHeaderSecByIdHeader(idHeaderMain).getOrThrow()
             listHeaderSec.map {
                 with(it){
                     val nroEquip = equipRepository.getNroById(::idEquip.required()).getOrThrow()
