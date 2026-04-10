@@ -37,9 +37,11 @@ import kotlin.test.assertEquals
 
 class IMotoMecRepositoryTest {
 
-    private val headerMotoMecSharedPreferencesDatasource = mock<HeaderMotoMecSharedPreferencesDatasource>()
+    private val headerMotoMecSharedPreferencesDatasource =
+        mock<HeaderMotoMecSharedPreferencesDatasource>()
     private val headerMotoMecRoomDatasource = mock<HeaderMotoMecRoomDatasource>()
-    private val itemMotoMecSharedPreferencesDatasource = mock<ItemMotoMecSharedPreferencesDatasource>()
+    private val itemMotoMecSharedPreferencesDatasource =
+        mock<ItemMotoMecSharedPreferencesDatasource>()
     private val itemMotoMecRoomDatasource = mock<ItemMotoMecRoomDatasource>()
     private val motoMecRetrofitDatasource = mock<MotoMecRetrofitDatasource>()
     private val implementSharedPreferencesDatasource = mock<ImplementSharedPreferencesDatasource>()
@@ -561,7 +563,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-               Unit
+                Unit
             )
             val model = modelCaptor.firstValue
             assertEquals(
@@ -594,7 +596,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderOpen - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderOpen`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkOpenOrClose()
+                headerMotoMecRoomDatasource.hasByOpenOrClose()
             ).thenReturn(
                 resultFailure(
                     context = "IHeaderMotoMecRoomDatasource.checkHeaderOpen",
@@ -621,7 +623,7 @@ class IMotoMecRepositoryTest {
     fun `checkHeaderOpen - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.checkOpenOrClose()
+                headerMotoMecRoomDatasource.hasByOpenOrClose()
             ).thenReturn(
                 Result.success(true)
             )
@@ -773,7 +775,7 @@ class IMotoMecRepositoryTest {
                 Unit
             )
         }
-    
+
     @Test
     fun `checkHeaderSend - Check return failure if have error in HeaderMotoMecRoomDatasource checkHeaderSend`() =
         runTest {
@@ -982,7 +984,7 @@ class IMotoMecRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-               1
+                1
             )
             val model = modelCaptor.firstValue
             assertEquals(
@@ -1931,6 +1933,7 @@ class IMotoMecRepositoryTest {
                 "java.lang.Exception"
             )
         }
+
     @Test
     fun `getNoteLastByIdHeader - Check return correct if function execute successfully`() =
         runTest {
@@ -2327,7 +2330,7 @@ class IMotoMecRepositoryTest {
                 1
             )
         }
-    
+
     @Test
     fun `getIdHeaderByIdEquipAndOpen - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByIdEquipAndOpen`() =
         runTest {
@@ -2474,7 +2477,7 @@ class IMotoMecRepositoryTest {
     fun `openHeaderByIdEquip - Check return failure if have error in HeaderMotoMecRoomDatasource updateAllNotFinishToClose`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.updateAllNotFinishToClose()
+                headerMotoMecRoomDatasource.updateOpenToClose()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRoomDatasource.updateAllNotFinishToClose",
@@ -2510,7 +2513,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderByIdEquip(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             assertEquals(
                 result.isFailure,
                 true
@@ -2538,7 +2541,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderByIdEquip(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenByIdEquip(1)
             assertEquals(
                 result.isFailure,
@@ -2596,7 +2599,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderByIdEquip(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenByIdEquip(1)
             assertEquals(
                 result.isFailure,
@@ -2634,7 +2637,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderByIdEquip(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenByIdEquip(1)
             verify(headerMotoMecSharedPreferencesDatasource, atLeastOnce()).save(
                 HeaderMotoMecSharedPreferencesModel(
@@ -2659,7 +2662,7 @@ class IMotoMecRepositoryTest {
     fun `openHeaderById - Check return failure if have error in HeaderMotoMecRoomDatasource updateAllNotFinishToClose`() =
         runTest {
             whenever(
-                headerMotoMecRoomDatasource.updateAllNotFinishToClose()
+                headerMotoMecRoomDatasource.updateOpenToClose()
             ).thenReturn(
                 resultFailure(
                     "IHeaderMotoMecRoomDatasource.updateAllNotFinishToClose",
@@ -2695,7 +2698,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderById(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             assertEquals(
                 result.isFailure,
                 true
@@ -2723,7 +2726,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderById(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenById(1)
             assertEquals(
                 result.isFailure,
@@ -2781,7 +2784,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderById(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenById(1)
             assertEquals(
                 result.isFailure,
@@ -2819,7 +2822,7 @@ class IMotoMecRepositoryTest {
                 )
             )
             val result = repository.openHeaderById(1)
-            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateAllNotFinishToClose()
+            verify(headerMotoMecRoomDatasource, atLeastOnce()).updateOpenToClose()
             verify(headerMotoMecRoomDatasource, atLeastOnce()).updateStatusOpenById(1)
             verify(headerMotoMecSharedPreferencesDatasource, atLeastOnce()).save(
                 HeaderMotoMecSharedPreferencesModel(
@@ -2839,5 +2842,50 @@ class IMotoMecRepositoryTest {
             )
         }
 
+    @Test
+    fun `getIdHeaderByIdEquipAndNotFinish - Check return failure if have error in HeaderMotoMecRoomDatasource getIdByIdEquipAndNotFinish`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByIdEquipAndNotFinish(1)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderMotoMecRoomDatasource.getIdByIdEquipAndNotFinish",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getIdHeaderByIdEquipAndNotFinish(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IMotoMecRepository.getIdHeaderByIdEquipAndNotFinish -> IHeaderMotoMecRoomDatasource.getIdByIdEquipAndNotFinish"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getIdHeaderByIdEquipAndNotFinish - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                headerMotoMecRoomDatasource.getIdByIdEquipAndNotFinish(1)
+            ).thenReturn(
+                Result.success(10)
+            )
+            val result = repository.getIdHeaderByIdEquipAndNotFinish(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                10
+            )
+        }
 
 }

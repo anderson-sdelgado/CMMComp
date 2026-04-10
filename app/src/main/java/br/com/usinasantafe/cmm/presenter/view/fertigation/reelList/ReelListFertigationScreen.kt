@@ -50,6 +50,7 @@ fun ReelListFertigationScreen(
             ReelListFertigationContent(
                 list = uiState.list,
                 set = viewModel::set,
+                ret = viewModel::ret,
                 setCloseDialog = viewModel::setCloseDialog,
                 flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
@@ -67,6 +68,7 @@ fun ReelListFertigationScreen(
 fun ReelListFertigationContent(
     list: List<ItemDefaultScreenModel>,
     set: (Int) -> Unit,
+    ret: () -> Unit,
     setCloseDialog: () -> Unit,
     flagAccess: Boolean,
     flagDialog: Boolean,
@@ -95,7 +97,7 @@ fun ReelListFertigationContent(
             ) {
                 Text(
                     text = stringResource(
-                        id = R.string.text_msg_no_data_performance
+                        id = R.string.text_msg_no_data_list_reel
                     ),
                     textAlign = TextAlign.Center,
                     style = TextStyle(
@@ -125,7 +127,7 @@ fun ReelListFertigationContent(
         }
         ButtonMaxWidth(R.string.text_pattern_insert, onNavReel)
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        ButtonMaxWidth(R.string.text_pattern_return, onNavMenuNote)
+        ButtonMaxWidth(R.string.text_pattern_return, ret)
 
         if (flagDialog) {
             MsgErrors(errors, setCloseDialog, failure)
@@ -147,6 +149,7 @@ fun ReelListFertigationPagePreviewEmptyList() {
             ReelListFertigationContent(
                 list = emptyList(),
                 set = {},
+                ret = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
@@ -173,6 +176,7 @@ fun ReelListFertigationPagePreviewWithData() {
                     )
                 ),
                 set = {},
+                ret = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = false,
@@ -199,6 +203,7 @@ fun ReelListFertigationPagePreviewFailure() {
                     )
                 ),
                 set = {},
+                ret = {},
                 setCloseDialog = {},
                 flagAccess = false,
                 flagDialog = true,

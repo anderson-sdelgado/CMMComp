@@ -5,7 +5,6 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.external.room.dao.variable.CollectionDao
 import br.com.usinasantafe.cmm.infra.models.room.variable.CollectionRoomModel
-import br.com.usinasantafe.cmm.infra.models.room.variable.PerformanceRoomModel
 import br.com.usinasantafe.cmm.lib.DatabaseRoom
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -174,9 +173,9 @@ class ICollectionRoomDatasourceTest {
         }
 
     @Test
-    fun `hasByIdHeaderAndValueNull - Check return false if not have data in table`() =
+    fun `hasByValueNull - Check return false if not have data in table`() =
         runTest {
-            val result = datasource.hasByIdHeaderAndValueNull(1)
+            val result = datasource.hasByValueNull()
             assertEquals(
                 result.isSuccess,
                 true
@@ -188,54 +187,7 @@ class ICollectionRoomDatasourceTest {
         }
 
     @Test
-    fun `hasByIdHeaderAndValueNull - Check return false if not have idHeader fielded in table`() =
-        runTest {
-            collectionDao.insert(
-                CollectionRoomModel(
-                    idHeader = 1,
-                    nroOS = 12345,
-                )
-            )
-            val result = datasource.hasByIdHeaderAndValueNull(2)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                false
-            )
-        }
-
-    @Test
-    fun `hasByIdHeaderAndValueNull - Check return false if not have idHeader and value fielded in table`() =
-        runTest {
-            collectionDao.insert(
-                CollectionRoomModel(
-                    idHeader = 1,
-                    nroOS = 123456,
-                )
-            )
-            collectionDao.insert(
-                CollectionRoomModel(
-                    idHeader = 2,
-                    nroOS = 123789,
-                    value = 10.0
-                )
-            )
-            val result = datasource.hasByIdHeaderAndValueNull(2)
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                false
-            )
-        }
-
-    @Test
-    fun `hasByIdHeaderAndValueNull - Check return true if have idHeader and value fielded in table`() =
+    fun `hasByValueNull - Check return true if have idHeader and value fielded in table`() =
         runTest {
             collectionDao.insert(
                 CollectionRoomModel(
@@ -256,7 +208,46 @@ class ICollectionRoomDatasourceTest {
                     nroOS = 456789,
                 )
             )
-            val result = datasource.hasByIdHeaderAndValueNull(2)
+            val result = datasource.hasByValueNull()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `hasByValueNull - Check return true if have idHeader and value fielded in table in several notes`() =
+        runTest {
+            collectionDao.insert(
+                CollectionRoomModel(
+                    idHeader = 1,
+                    nroOS = 123456,
+                )
+            )
+            collectionDao.insert(
+                CollectionRoomModel(
+                    idHeader = 2,
+                    nroOS = 123789,
+                    value = 10.0
+                )
+            )
+            collectionDao.insert(
+                CollectionRoomModel(
+                    idHeader = 2,
+                    nroOS = 456789,
+                )
+            )
+            collectionDao.insert(
+                CollectionRoomModel(
+                    idHeader = 3,
+                    nroOS = 456789,
+                )
+            )
+            val result = datasource.hasByValueNull()
             assertEquals(
                 result.isSuccess,
                 true

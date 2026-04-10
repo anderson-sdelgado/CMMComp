@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +31,8 @@ data class OperatorHeaderState(
 
     override fun copyWithStatus(status: UpdateStatusState): OperatorHeaderState =
         copy(status = status)
-    }
+
+}
 
 @HiltViewModel
 class OperatorHeaderViewModel @Inject constructor(
@@ -64,7 +66,7 @@ class OperatorHeaderViewModel @Inject constructor(
     private fun set() = viewModelScope.launch {
         runCatching {
             if (state.regColab.isBlank()) {
-                updateState { withFailure(getClassAndMethod(), "Field Empty!", Errors.FIELD_EMPTY) }
+                updateState { withFailure(getClassAndMethod(), Errors.FIELD_EMPTY) }
                 return@launch
             }
             val check = hasRegColab(uiState.value.regColab).getOrThrow()

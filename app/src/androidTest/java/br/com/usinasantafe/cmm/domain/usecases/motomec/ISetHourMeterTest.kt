@@ -147,7 +147,7 @@ class ISetHourMeterTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                FlowApp.REEL_FERT
+                FlowApp.NOTE_REEL_FERT
             )
             val list = headerMotoMecDao.all()
             assertEquals(

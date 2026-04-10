@@ -68,12 +68,12 @@ fun MenuNoteScreen(
     viewModel: MenuNoteViewModel = hiltViewModel(),
     onNavOS: () -> Unit,
     onNavActivityList: () -> Unit,
-    onNavMeasure: () -> Unit,
+    onNavHourMeter: () -> Unit,
     onNavListReel: () -> Unit,
     onNavPerformanceList: () -> Unit,
     onNavTranshipment: () -> Unit,
     onNavImplement: () -> Unit,
-    onNavFertigationList: () -> Unit,
+    onNavCollectionList: () -> Unit,
     onNavOSMechanical: () -> Unit,
     onNavEquipTire: (flowTire: FlowTire) -> Unit,
     onNavMenuCertificate: () -> Unit,
@@ -123,19 +123,19 @@ fun MenuNoteScreen(
                                 when(item.function.second){
                                     WORK -> {
                                         when(uiState.flowEquipNote){
-                                            FlowEquipNote.MAIN -> onNavMeasure()
-                                            FlowEquipNote.SECONDARY -> onNavListReel()
+                                            FlowEquipNote.MAIN -> onNavHourMeter() //ok
+                                            FlowEquipNote.SECONDARY -> onNavListReel() //ok
                                         }
                                     }
-                                    STOP -> onNavActivityList()
-                                    PERFORMANCE -> onNavPerformanceList()
-                                    TRANSHIPMENT -> onNavTranshipment()
-                                    HOSE_COLLECTION -> onNavFertigationList()
-                                    IMPLEMENT -> onNavImplement()
-                                    NOTE_MECHANICAL -> onNavOSMechanical()
+                                    STOP -> onNavActivityList() //ok
+                                    PERFORMANCE -> onNavPerformanceList() //ok
+                                    TRANSHIPMENT -> onNavTranshipment() //ok
+                                    HOSE_COLLECTION -> onNavCollectionList() //ok
+                                    IMPLEMENT -> onNavImplement() //ok
+                                    NOTE_MECHANICAL -> onNavOSMechanical() //ok
                                     TIRE_INFLATION -> onNavEquipTire(FlowTire.INFLATION)
                                     TIRE_CHANGE -> onNavEquipTire(FlowTire.CHANGE)
-                                    REEL -> onNavListReel()
+                                    REEL -> onNavListReel() //ok
                                     HISTORY -> onNavHistory()
                                 }
                             }
@@ -170,7 +170,7 @@ fun MenuNoteScreen(
                         }
                     } else {
                         when(uiState.flowEquipNote){
-                            FlowEquipNote.MAIN -> onNavMeasure()
+                            FlowEquipNote.MAIN -> onNavHourMeter()
                             FlowEquipNote.SECONDARY -> onNavListReel()
                         }
                     }
@@ -282,6 +282,7 @@ fun MenuNoteContent(
                     Errors.NEED_COUPLING_TRAILER -> stringResource(id = R.string.text_msg_need_coupling_trailer)
                     Errors.WITHOUT_NOTE,
                     Errors.LAST_NOTE_WORK -> stringResource(id = R.string.text_msg_without_note_stop)
+                    Errors.INVALID_CLOSE_COLLECTION -> stringResource(id = R.string.text_msg_close_collection_invalid)
                     else -> stringResource(
                         id = R.string.text_failure,
                         removeRepeatedCalls(failure)

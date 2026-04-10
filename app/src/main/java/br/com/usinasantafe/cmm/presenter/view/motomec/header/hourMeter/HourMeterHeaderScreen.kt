@@ -104,7 +104,7 @@ fun HourMeterHeaderContent(
             when(flowApp){
                 FlowApp.HEADER_INITIAL -> onNavActivityList()
                 FlowApp.HEADER_FINISH -> onNavMenuNote()
-                FlowApp.REEL_FERT -> onNavMotorPump()
+                FlowApp.NOTE_REEL_FERT -> onNavMotorPump()
                 else -> {}
             }
 

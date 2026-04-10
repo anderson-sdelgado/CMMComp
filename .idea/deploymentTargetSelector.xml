@@ -13,6 +13,22 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
+      <SelectionState runConfigName="check_return_failure_if_have_error_in_CECRepository_get()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_false_if_dateExitMill_is_null()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_true_if_dateFieldArrival_is_not_null_and_dateFieldArrival_not_is_null()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="check_return_false_if_dateFieldArrival_is_not_null_and_dateFieldArrival_is_null()">
+        <option name="selectionMode" value="DROPDOWN" />
+        <DialogSelection />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

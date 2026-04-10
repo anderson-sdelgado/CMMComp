@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.lib.ECM
@@ -67,7 +67,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC()
+                    HeaderPreCEC()
                 )
             )
             val result = usecase(
@@ -96,7 +96,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC()
+                    HeaderPreCEC()
                 )
             )
             val result = usecase(
@@ -125,7 +125,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date()
                     )
                 )
@@ -156,7 +156,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date()
                     )
                 )
@@ -187,7 +187,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date(),
                         dateFieldArrival = Date()
                     )
@@ -219,7 +219,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date(),
                         dateFieldArrival = Date()
                     )
@@ -251,7 +251,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC()
+                    HeaderPreCEC()
                 )
             )
             whenever(
@@ -293,7 +293,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date()
                     )
                 )
@@ -337,7 +337,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date(),
                         dateFieldArrival = Date()
                     )
@@ -382,7 +382,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC()
+                    HeaderPreCEC()
                 )
             )
             whenever(
@@ -416,7 +416,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date()
                     )
                 )
@@ -452,7 +452,7 @@ class ISetDatePreCECTest {
                 cecRepository.get()
             ).thenReturn(
                 Result.success(
-                    PreCEC(
+                    HeaderPreCEC(
                         dateExitMill = Date(),
                         dateFieldArrival = Date()
                     )

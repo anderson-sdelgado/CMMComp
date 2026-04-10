@@ -16,7 +16,6 @@ interface ListActivity {
 }
 
 class IListActivity @Inject constructor(
-    private val equipRepository: EquipRepository,
     private val motoMecRepository: MotoMecRepository,
     private val rEquipActivityRepository: REquipActivityRepository,
     private val osRepository: OSRepository,
@@ -26,12 +25,12 @@ class IListActivity @Inject constructor(
 
     override suspend fun invoke(): Result<List<Activity>> =
         call(getClassAndMethod()) {
-            val idEquip = equipRepository.getIdEquipMain().getOrThrow()
+            val idEquip = motoMecRepository.getIdEquipHeader().getOrThrow()
             val rEquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip).getOrThrow()
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
             val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
             val check = osRepository.hasByNroOS(nroOS).getOrThrow()
-            if (!check) {
+            if (check) {
                 val idOS = osRepository.getByNroOS(nroOS).getOrThrow().idOS
                 val rOSActivityList = rOSActivityRepository.listByIdOS(idOS).getOrThrow()
                 val idActivityOSList = rOSActivityList.map { it.idActivity }

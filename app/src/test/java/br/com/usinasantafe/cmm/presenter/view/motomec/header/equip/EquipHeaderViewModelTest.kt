@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.MainCoroutineRule
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetDescrEquip
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdEquip
-import br.com.usinasantafe.cmm.presenter.view.motomec.header.equip.EquipHeaderViewModel
+import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipHeaderViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*

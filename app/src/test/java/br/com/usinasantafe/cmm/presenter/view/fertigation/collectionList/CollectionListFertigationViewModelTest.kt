@@ -2,9 +2,7 @@ package br.com.usinasantafe.cmm.presenter.view.fertigation.collectionList
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
-import br.com.usinasantafe.cmm.domain.usecases.fertigation.CheckCloseCollection
 import br.com.usinasantafe.cmm.domain.usecases.fertigation.ListCollection
-import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.presenter.model.ItemValueOSScreenModel
@@ -25,15 +23,13 @@ class CollectionListFertigationViewModelTest {
     val mainCoroutineRule = MainCoroutineRule()
 
     private val listCollection = mock<ListCollection>()
-    private val checkCloseCollection = mock<CheckCloseCollection>()
     private val viewModel = CollectionListFertigationViewModel(
         savedStateHandle = SavedStateHandle(
             mapOf(
-                Args.FLOW_APP_ARG to FlowApp.REEL_FERT.ordinal,
+                Args.FLOW_APP_ARG to FlowApp.NOTE_REEL_FERT.ordinal,
             )
         ),
-        listCollection = listCollection,
-        checkCloseCollection = checkCloseCollection
+        listCollection = listCollection
     )
 
     @Test
@@ -64,7 +60,7 @@ class CollectionListFertigationViewModelTest {
         }
 
     @Test
-    fun `list - Check return true if listCollection execute successfully`() =
+    fun `list - Check return list if listCollection execute successfully`() =
         runTest {
             whenever(
                 listCollection()
@@ -92,76 +88,4 @@ class CollectionListFertigationViewModelTest {
             )
         }
 
-    @Test
-    fun `checkClose - Check return failure if have error in CheckCloseCollection`() =
-        runTest {
-            whenever(
-                checkCloseCollection()
-            ).thenReturn(
-                resultFailure(
-                    context = "CheckCloseCollection",
-                    message = "-",
-                    cause = Exception()
-                )
-            )
-            viewModel.checkClose()
-            assertEquals(
-                viewModel.uiState.value.flagDialog,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "CollectionListViewModel.checkClose -> CheckCloseCollection -> java.lang.Exception"
-            )
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                false
-            )
-            assertEquals(
-                viewModel.uiState.value.errors,
-                Errors.EXCEPTION
-            )
-        }
-
-    @Test
-    fun `checkClose - Check return failure if CheckCloseCollection return false`() =
-        runTest {
-            whenever(
-                checkCloseCollection()
-            ).thenReturn(
-                Result.success(false)
-            )
-            viewModel.checkClose()
-            assertEquals(
-                viewModel.uiState.value.flagDialog,
-                true
-            )
-            assertEquals(
-                viewModel.uiState.value.failure,
-                "CollectionListViewModel.checkClose -> "
-            )
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                false
-            )
-            assertEquals(
-                viewModel.uiState.value.errors,
-                Errors.INVALID_CLOSE_COLLECTION
-            )
-        }
-
-    @Test
-    fun `checkClose - Check return true if CheckCloseCollection return true`() =
-        runTest {
-            whenever(
-                checkCloseCollection()
-            ).thenReturn(
-                Result.success(true)
-            )
-            viewModel.checkClose()
-            assertEquals(
-                viewModel.uiState.value.flagAccess,
-                true
-            )
-        }
 }

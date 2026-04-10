@@ -643,7 +643,7 @@ class MenuNoteScreenTest {
             MenuNoteScreen(
                 onNavOS = {},
                 onNavActivityList = {},
-                onNavMeasure = {},
+                onNavHourMeter = {},
                 onNavListReel = {},
                 onNavProduct = {},
                 onNavWill = {},
@@ -658,7 +658,7 @@ class MenuNoteScreenTest {
                 onNavUncouplingTrailer = {},
                 onNavInfoLoadingCompound = {},
                 onNavInfoLocalSugarcaneLoading = {},
-                onNavFertigationList = {}
+                onNavCollectionList = {}
             )
         }
     }

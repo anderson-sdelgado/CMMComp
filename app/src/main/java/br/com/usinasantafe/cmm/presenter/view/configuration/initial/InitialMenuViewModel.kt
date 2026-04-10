@@ -45,7 +45,6 @@ class InitialMenuViewModel @Inject constructor(
             }.onFailureHandled(getClassAndMethod(), ::onError)
         }
 
-
     fun checkAccess() = viewModelScope.launch {
         runCatching {
             checkAccessInitial().getOrThrow()

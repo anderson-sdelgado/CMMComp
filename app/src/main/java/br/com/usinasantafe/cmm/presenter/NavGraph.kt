@@ -28,22 +28,44 @@ import br.com.usinasantafe.cmm.presenter.view.checkList.itemCheckList.ItemCheckL
 import br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate.QuestionUpdateCheckListScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.password.PasswordScreen
-import br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList.ActivityListCommonScreen
-import br.com.usinasantafe.cmm.presenter.view.motomec.header.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipHeaderScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.hourMeter.HourMeterHeaderScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderScreen
-import br.com.usinasantafe.cmm.presenter.view.motomec.common.os.OSCommonScreen
+import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.turnList.TurnListHeaderScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.note.menu.MenuNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.note.stopList.StopListNoteScreen
 import br.com.usinasantafe.cmm.presenter.view.splash.SplashScreen
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
+import br.com.usinasantafe.cmm.presenter.Routes.COLLECTION_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.COLLECTION_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.IMPLEMENTATION_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.INPUT_ITEM_MECHANIC_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.ITEM_LIST_MECHANIC_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.MOTOR_PUMP_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.NOZZLE_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.OS_MECHANIC_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.PRESSURE_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.REEL_LIST_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.REEL_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.SPEED_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.view.fertigation.collection.CollectionFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.collectionList.CollectionListFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.nozzleList.NozzleListFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.pressureList.PressureListFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.reel.ReelFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.reelList.ReelListFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.fertigation.speedList.SpeedListFertigationScreen
+import br.com.usinasantafe.cmm.presenter.view.implement.ImplementScreen
+import br.com.usinasantafe.cmm.presenter.view.mechanic.inputItem.InputItemMechanicScreen
+import br.com.usinasantafe.cmm.presenter.view.mechanic.itemList.ItemListMechanicScreen
+import br.com.usinasantafe.cmm.presenter.view.mechanic.os.OSMechanicScreen
 import br.com.usinasantafe.cmm.presenter.view.transhipment.TranshipmentScreen
 import br.com.usinasantafe.cmm.presenter.view.performance.performance.PerformanceScreen
 import br.com.usinasantafe.cmm.presenter.view.performance.performanceList.PerformanceListScreen
@@ -198,7 +220,15 @@ fun NavigationGraph(
                         flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!
                     )
                 },
-                onNavNozzleList = {}
+                onNavNozzleList = {
+                    navActions.navigateToNozzleList()
+                },
+                onNavReel = {
+                    navActions.navigateToReel()
+                },
+                onNavReelList = {
+                    navActions.navigateToReelList()
+                }
             )
         }
 
@@ -225,7 +255,7 @@ fun NavigationGraph(
                     navActions.navigateToMotorPump()
                 },
                 onNavListPerformance = {
-                    navActions.navigatePerformanceList(
+                    navActions.navigateToPerformanceList(
                         flowApp = FlowApp.HEADER_FINISH.ordinal
                     )
                 }
@@ -259,7 +289,7 @@ fun NavigationGraph(
                         flowApp = FlowApp.NOTE_STOP.ordinal
                     )
                 },
-                onNavMeasure = {
+                onNavHourMeter = {
                     navActions.navigateToHourMeterHeader(
                         flowApp = FlowApp.HEADER_FINISH.ordinal
                     )
@@ -270,23 +300,33 @@ fun NavigationGraph(
                     )
                 },
                 onNavPerformanceList = {
-                    navActions.navigatePerformanceList(
+                    navActions.navigateToPerformanceList(
                         flowApp = FlowApp.PERFORMANCE.ordinal
                     )
                 },
-                onNavListReel = {},
-                onNavTrailer = {},
-                onNavFertigationList = {},
-                onNavMenuCertificate = {},
-                onNavImplement = {},
-                onNavOSMechanical = {},
+                onNavListReel = {
+                    navActions.navigateToReelList()
+                },
+                onNavCollectionList = {
+                    navActions.navigateToCollectionList(
+                        flowApp = FlowApp.COLLECTION.ordinal
+                    )
+                },
+                onNavImplement = {
+                    navActions.navigateToImplement()
+                },
+                onNavOSMechanical = {
+                    navActions.navigateToOSMechanic()
+                },
                 onNavEquipTire = {},
+                onNavMenuCertificate = {},
+                onNavTrailer = {},
                 onNavInfoLocalSugarcaneLoading = {},
                 onNavUncouplingTrailer = {},
-                onNavHistory = {},
                 onNavProduct = {},
                 onNavWill = {},
-                onNavInfoLoadingCompound = {}
+                onNavInfoLoadingCompound = {},
+                onNavHistory = {}
             )
         }
 
@@ -336,7 +376,7 @@ fun NavigationGraph(
                     navActions.navigateToMenuNote()
                 },
                 onNavPerformance = {
-                    navActions.navigatePerformance(
+                    navActions.navigateToPerformance(
                         flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
                         id = it
                     )
@@ -356,14 +396,12 @@ fun NavigationGraph(
         ){ entry ->
             PerformanceScreen(
                 onNavPerformanceList = {
-                    navActions.navigatePerformanceList(
+                    navActions.navigateToPerformanceList(
                         flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
                     )
                 }
             )
         }
-
-        ////////////////////////////////////////////////////////////////////
 
         ////////////////////////////////////////////////////////////////////
 
@@ -386,6 +424,162 @@ fun NavigationGraph(
         }
 
         ////////////////////////////////////////////////////////////////////
+
+        /////////////////////// Reel Fertigation ///////////////////////////
+
+        composable(REEL_LIST_ROUTE){
+            ReelListFertigationScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavReel = {
+                    navActions.navigateToReel()
+                }
+            )
+        }
+
+        composable(REEL_ROUTE){
+            ReelFertigationScreen(
+                onNavReelList = {
+                    navActions.navigateToReelList()
+                },
+                onNavActivityList = {
+                    navActions.navigateToActivityListCommon(
+                        flowApp = FlowApp.HEADER_INITIAL_REEL_FERT.ordinal
+                    )
+                }
+            )
+        }
+
+        composable(
+            COLLECTION_LIST_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType }
+            )
+        ){ entry ->
+            CollectionListFertigationScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavCollection = {
+                    navActions.navigateToCollection(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
+                        id = it
+                    )
+                },
+                onNavSplash = {
+                    navActions.navigateToSplash()
+                }
+            )
+        }
+
+        composable(
+            COLLECTION_ROUTE,
+            arguments = listOf(
+                navArgument(FLOW_APP_ARG) { type = NavType.IntType },
+                navArgument(ID_ARG) { type = NavType.IntType }
+            )
+        ){ entry ->
+            CollectionFertigationScreen(
+                onNavCollectionList = {
+                    navActions.navigateToCollectionList(
+                        flowApp = entry.arguments?.getInt(FLOW_APP_ARG)!!,
+                    )
+                }
+            )
+        }
+
+        composable(NOZZLE_LIST_ROUTE){
+            NozzleListFertigationScreen(
+                onNavActivityList = {
+                    navActions.navigateToActivityListCommon(
+                        flowApp = FlowApp.NOTE_REEL_FERT.ordinal
+                    )
+                },
+                onNavPressureList = {
+                    navActions.navigateToPressureList()
+                },
+            )
+        }
+
+        composable(PRESSURE_LIST_ROUTE){
+            PressureListFertigationScreen(
+                onNavNozzleList = {
+                    navActions.navigateToNozzleList()
+                },
+                onNavSpeedList = {
+                    navActions.navigateToSpeedList()
+                }
+            )
+        }
+
+        composable(SPEED_LIST_ROUTE){
+            SpeedListFertigationScreen(
+                onNavPressureList = {
+                    navActions.navigateToPressureList()
+                },
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                }
+            )
+        }
+
+        ///////////////////////////////////////////////////////////////////
+
+        ////////////////////////// Implement //////////////////////////////
+
+        composable(IMPLEMENTATION_ROUTE){
+            ImplementScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavHourMeter = {
+                    navActions.navigateToHourMeterHeader()
+                }
+            )
+        }
+
+        ///////////////////////////////////////////////////////////////////
+
+        /////////////////////////// Mechanic //////////////////////////////
+
+        composable(OS_MECHANIC_ROUTE){
+            OSMechanicScreen(
+                onNavMenuNote = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavItemList = {
+                    navActions.navigateToItemListMechanic()
+                },
+                onNavInputItem = {
+                    navActions.navigateToInputItemMechanic()
+                }
+            )
+        }
+
+        composable(ITEM_LIST_MECHANIC_ROUTE){
+            ItemListMechanicScreen(
+                onNavMenu = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavOS = {
+                    navActions.navigateToOSMechanic()
+                }
+            )
+        }
+
+        composable(INPUT_ITEM_MECHANIC_ROUTE){
+            InputItemMechanicScreen(
+                onNavMenu = {
+                    navActions.navigateToMenuNote()
+                },
+                onNavOS = {
+                    navActions.navigateToOSMechanic()
+                }
+            )
+        }
+
+        ///////////////////////////////////////////////////////////////////
 
     }
 

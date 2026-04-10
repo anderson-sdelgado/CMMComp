@@ -11,7 +11,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlagUpdate
-import br.com.usinasantafe.cmm.presenter.view.motomec.header.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipHeaderScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

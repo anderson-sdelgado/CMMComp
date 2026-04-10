@@ -115,9 +115,9 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkOpen - Check return false if not have header open`() =
+    fun `hasByOpenOrClose - Check return false if not have header open`() =
         runTest {
-            val result = datasource.checkOpenOrClose()
+            val result = datasource.hasByOpenOrClose()
             assertEquals(
                 result.isSuccess,
                 true
@@ -129,7 +129,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkOpen - Check return true if have header open`() =
+    fun `hasByOpenOrClose - Check return true if have header open`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -144,7 +144,7 @@ class IHeaderMotoMecRoomDatasourceTest {
                     statusCon = true
                 )
             )
-            val result = datasource.checkOpenOrClose()
+            val result = datasource.hasByOpenOrClose()
             assertEquals(
                 result.isSuccess,
                 true
@@ -166,7 +166,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getId - Check return failure if table is empty`() =
+    fun `getIdByOpen - Check return failure if table is empty`() =
         runTest {
             val result = datasource.getIdByOpen()
             assertEquals(
@@ -184,7 +184,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `getId - Check return correct if function execute successfully`() =
+    fun `getIdByOpen - Check return correct if function execute successfully`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -277,73 +277,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `finish - Check return failure if not have header open`() =
-        runTest {
-            val result = datasource.finish()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "IHeaderMotoMecRoomDatasource.finish"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.setStatus(br.com.usinasantafe.cmm.lib.Status)\" because \"roomModel\" is null"
-            )
-        }
-
-    @Test
-    fun `finish  - Check data alter if function execute successfully`() =
-        runTest {
-            headerMotoMecDao.insert(
-                HeaderMotoMecRoomModel(
-                    regOperator = 123465,
-                    idEquip = 1,
-                    typeEquip = TypeEquip.NORMAL,
-                    idTurn = 1,
-                    nroOS = 1,
-                    idActivity = 1,
-                    hourMeterInitial = 10.0,
-                    hourMeterFinish = 20.0,
-                    dateHourInitial = Date(1748359002),
-                    statusCon = true
-                )
-            )
-            val listBefore = headerMotoMecDao.all()
-            assertEquals(
-                listBefore.size,
-                1
-            )
-            val modelBefore = listBefore[0]
-            assertEquals(
-                modelBefore.status,
-                Status.OPEN
-            )
-            val result = datasource.finish()
-            assertEquals(
-                result.isSuccess,
-                true
-            )
-            assertEquals(
-                result.getOrNull()!!,
-                Unit
-            )
-            val listAfter = headerMotoMecDao.all()
-            assertEquals(
-                listAfter.size,
-                1
-            )
-            val modelAfter = listAfter[0]
-            assertEquals(
-                modelAfter.status,
-                Status.FINISH
-            )
-        }
-    
-    @Test
-    fun `checkSend - Check return false if not have header to send`() =
+    fun `hasSend - Check return false if not have header to send`() =
         runTest {
             val result = datasource.hasSend()
             assertEquals(
@@ -357,7 +291,7 @@ class IHeaderMotoMecRoomDatasourceTest {
         }
 
     @Test
-    fun `checkSend - Check return true if not have header to send`() =
+    fun `hasSend - Check return true if not have header to send`() =
         runTest {
             headerMotoMecDao.insert(
                 HeaderMotoMecRoomModel(
@@ -996,6 +930,799 @@ class IHeaderMotoMecRoomDatasourceTest {
                 entity.hourMeterInitial,
                 10.0,
                 0.0
+            )
+        }
+
+    @Test
+    fun `getByIdEquipAndOpen - Check return failure if not have header with idEquip and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result = datasource.getByIdEquipAndOpen(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getByIdEquipAndOpen"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"this.receiver\" is null"
+            )
+        }
+
+    @Test
+    fun `getByIdEquipAndOpen - Check return correct if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.getByIdEquipAndOpen(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                HeaderMotoMecRoomModel(
+                    id = 2,
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+        }
+
+    @Test
+    fun `getById - Check return failure if not have header with id and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getById"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"this.receiver\" is null"
+            )
+        }
+
+    @Test
+    fun `getById - Check return correct if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.getById(2)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                HeaderMotoMecRoomModel(
+                    id = 2,
+                    regOperator = 19859,
+                    idEquip = 1,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+        }
+
+    @Test
+    fun `updateOpenToClose - Check update data if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 40,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            val listBefore = headerMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                4
+            )
+            val modelBefore1 = listBefore[0]
+            assertEquals(
+                modelBefore1.idEquip,
+                10
+            )
+            assertEquals(
+                modelBefore1.status,
+                Status.CLOSE
+            )
+            val modelBefore2 = listBefore[1]
+            assertEquals(
+                modelBefore2.idEquip,
+                20
+            )
+            assertEquals(
+                modelBefore2.status,
+                Status.OPEN
+            )
+            val modelBefore3 = listBefore[2]
+            assertEquals(
+                modelBefore3.idEquip,
+                30
+            )
+            assertEquals(
+                modelBefore3.status,
+                Status.FINISH
+            )
+            val modelBefore4 = listBefore[3]
+            assertEquals(
+                modelBefore4.idEquip,
+                40
+            )
+            assertEquals(
+                modelBefore4.status,
+                Status.OPEN
+            )
+            val result = datasource.updateOpenToClose()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                4
+            )
+            val modelAfter1 = listAfter[0]
+            assertEquals(
+                modelAfter1.idEquip,
+                10
+            )
+            assertEquals(
+                modelAfter1.status,
+                    Status.CLOSE
+            )
+            val modelAfter2 = listAfter[1]
+            assertEquals(
+                modelAfter2.idEquip,
+                20
+            )
+            assertEquals(
+                modelAfter2.status,
+                Status.CLOSE
+            )
+            val modelAfter3 = listAfter[2]
+            assertEquals(
+                modelAfter3.idEquip,
+                30
+            )
+            assertEquals(
+                modelAfter3.status,
+                Status.FINISH
+            )
+            val modelAfter4 = listAfter[3]
+            assertEquals(
+                modelAfter4.idEquip,
+                40
+            )
+            assertEquals(
+                modelAfter4.status,
+                Status.CLOSE
+            )
+        }
+
+    @Test
+    fun `updateStatusOpenByIdEquip - Check update data if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 40,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result1 = datasource.updateStatusOpenByIdEquip(30)
+            assertEquals(
+                result1.isSuccess,
+                true
+            )
+            val result2 = datasource.updateStatusOpenByIdEquip(40)
+            assertEquals(
+                result2.isSuccess,
+                true
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                4
+            )
+            val modelAfter1 = listAfter[0]
+            assertEquals(
+                modelAfter1.idEquip,
+                10
+            )
+            assertEquals(
+                modelAfter1.status,
+                Status.CLOSE
+            )
+            val modelAfter2 = listAfter[1]
+            assertEquals(
+                modelAfter2.idEquip,
+                20
+            )
+            assertEquals(
+                modelAfter2.status,
+                Status.CLOSE
+            )
+            val modelAfter3 = listAfter[2]
+            assertEquals(
+                modelAfter3.idEquip,
+                30
+            )
+            assertEquals(
+                modelAfter3.status,
+                Status.FINISH
+            )
+            val modelAfter4 = listAfter[3]
+            assertEquals(
+                modelAfter4.idEquip,
+                40
+            )
+            assertEquals(
+                modelAfter4.status,
+                Status.OPEN
+            )
+        }
+
+    @Test
+    fun `updateStatusOpenById - Check update data if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 40,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result = datasource.updateStatusOpenById(1)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                4
+            )
+            val modelAfter1 = listAfter[0]
+            assertEquals(
+                modelAfter1.id,
+                1
+            )
+            assertEquals(
+                modelAfter1.idEquip,
+                10
+            )
+            assertEquals(
+                modelAfter1.status,
+                Status.OPEN
+            )
+            val modelAfter2 = listAfter[1]
+            assertEquals(
+                modelAfter2.id,
+                2
+            )
+            assertEquals(
+                modelAfter2.idEquip,
+                20
+            )
+            assertEquals(
+                modelAfter2.status,
+                Status.CLOSE
+            )
+            val modelAfter3 = listAfter[2]
+            assertEquals(
+                modelAfter3.id,
+                3
+            )
+            assertEquals(
+                modelAfter3.idEquip,
+                30
+            )
+            assertEquals(
+                modelAfter3.status,
+                Status.FINISH
+            )
+            val modelAfter4 = listAfter[3]
+            assertEquals(
+                modelAfter4.id,
+                4
+            )
+            assertEquals(
+                modelAfter4.idEquip,
+                40
+            )
+            assertEquals(
+                modelAfter4.status,
+                Status.CLOSE
+            )
+        }
+
+    @Test
+    fun `getIdByIdEquipAndNotFinish - Check return failure if not have header with id and open fielded`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            val result = datasource.getIdByIdEquipAndNotFinish(30)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHeaderMotoMecRoomDatasource.getIdByIdEquipAndNotFinish"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Cannot invoke \"br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()\" because \"this.receiver\" is null"
+            )
+        }
+
+    @Test
+    fun `updateStatusOpenById - Check return id if function execute successfully and header is CLOSE`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            val result = datasource.getIdByIdEquipAndNotFinish(30)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                2
+            )
+        }
+
+    @Test
+    fun `updateStatusOpenById - Check return id if function execute successfully and header is OPEN`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            val result = datasource.getIdByIdEquipAndNotFinish(30)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                3
+            )
+        }
+
+    @Test
+    fun `finish  - Check data alter if function execute successfully`() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.CLOSE
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 30,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.FINISH
+                )
+            )
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 40,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    dateHourInitial = Date(1748359002),
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+
+            val result = datasource.finish()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                4
+            )
+            val modelAfter1 = listAfter[0]
+            assertEquals(
+                modelAfter1.idEquip,
+                10
+            )
+            assertEquals(
+                modelAfter1.status,
+                Status.FINISH
+            )
+            val modelAfter2 = listAfter[1]
+            assertEquals(
+                modelAfter2.idEquip,
+                20
+            )
+            assertEquals(
+                modelAfter2.status,
+                Status.FINISH
+            )
+            val modelAfter3 = listAfter[2]
+            assertEquals(
+                modelAfter3.idEquip,
+                30
+            )
+            assertEquals(
+                modelAfter3.status,
+                Status.FINISH
+            )
+            val modelAfter4 = listAfter[3]
+            assertEquals(
+                modelAfter4.idEquip,
+                40
+            )
+            assertEquals(
+                modelAfter4.status,
+                Status.FINISH
             )
         }
 

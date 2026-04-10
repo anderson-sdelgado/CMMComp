@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList
+package br.com.usinasantafe.cmm.presenter.view.common.activityList
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -41,6 +41,8 @@ fun ActivityListCommonScreen(
     onNavMenuNote: () -> Unit,
     onNavTranshipment: () -> Unit,
     onNavNozzleList: () -> Unit,
+    onNavReel: () -> Unit,
+    onNavReelList: () -> Unit,
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -64,6 +66,8 @@ fun ActivityListCommonScreen(
                 onNavMenuNote = onNavMenuNote,
                 onNavTranshipment = onNavTranshipment,
                 onNavNozzleList = onNavNozzleList,
+                onNavReel = onNavReel,
+                onNavReelList = onNavReelList,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -85,6 +89,8 @@ fun ActivityListCommonScreenContent(
     onNavMenuNote: () -> Unit,
     onNavTranshipment: () -> Unit,
     onNavNozzleList: () -> Unit,
+    onNavReel: () -> Unit,
+    onNavReelList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -127,8 +133,8 @@ fun ActivityListCommonScreenContent(
                     FlowApp.HEADER_INITIAL,
                     FlowApp.NOTE_WORK -> onNavOS()
                     FlowApp.NOTE_STOP -> onNavMenuNote()
-                    FlowApp.TRANSHIPMENT -> onNavTranshipment()
-                    FlowApp.REEL_FERT -> onNavNozzleList()
+                    FlowApp.HEADER_INITIAL_REEL_FERT -> onNavReel()
+                    FlowApp.NOTE_REEL_FERT -> onNavNozzleList()
                     else -> {}
                 }
             },
@@ -158,6 +164,9 @@ fun ActivityListCommonScreenContent(
                 FlowApp.HEADER_INITIAL -> onNavHourMeter()
                 FlowApp.NOTE_WORK -> onNavMenuNote()
                 FlowApp.NOTE_STOP -> onNavStopList()
+                FlowApp.TRANSHIPMENT -> onNavTranshipment()
+                FlowApp.NOTE_REEL_FERT -> onNavNozzleList()
+                FlowApp.HEADER_INITIAL_REEL_FERT -> onNavReelList()
                 else -> {}
             }
         }
@@ -201,6 +210,8 @@ fun ActivityListCommonPagePreviewWithData() {
                 onNavMenuNote = {},
                 onNavTranshipment = {},
                 onNavNozzleList = {},
+                onNavReel = {},
+                onNavReelList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -243,6 +254,8 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                 onNavMenuNote = {},
                 onNavTranshipment = {},
                 onNavNozzleList = {},
+                onNavReel = {},
+                onNavReelList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -286,6 +299,8 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
                 onNavMenuNote = {},
                 onNavTranshipment = {},
                 onNavNozzleList = {},
+                onNavReel = {},
+                onNavReelList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -329,6 +344,8 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
                 onNavMenuNote = {},
                 onNavTranshipment = {},
                 onNavNozzleList = {},
+                onNavReel = {},
+                onNavReelList = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

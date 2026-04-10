@@ -9,7 +9,8 @@ interface HeaderMotoMecRoomDatasource {
     suspend fun getByIdEquipAndOpen(idEquip: Int): Result<HeaderMotoMecRoomModel>
     suspend fun getById(id: Int): Result<HeaderMotoMecRoomModel>
     suspend fun getIdByIdEquipAndOpen(idEquip: Int): Result<Int>
-    suspend fun checkOpenOrClose(): Result<Boolean>
+    suspend fun getIdByIdEquipAndNotFinish(idEquip: Int): Result<Int>
+    suspend fun hasByOpenOrClose(): Result<Boolean>
     suspend fun getIdByOpen(): Result<Int>
     suspend fun setHourMeterFinish(hourMeter: Double): EmptyResult
     suspend fun finish(): EmptyResult
@@ -27,7 +28,7 @@ interface HeaderMotoMecRoomDatasource {
     suspend fun getRegOperator(): Result<Int>
     suspend fun getFlowComposting(): Result<FlowComposting>
     suspend fun listByIdHeader(idHeader: Int): Result<List<HeaderMotoMecRoomModel>>
-    suspend fun updateAllNotFinishToClose(): EmptyResult
+    suspend fun updateOpenToClose(): EmptyResult
     suspend fun updateStatusOpenByIdEquip(idEquip: Int): EmptyResult
     suspend fun updateStatusOpenById(id: Int): EmptyResult
 }

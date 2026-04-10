@@ -25,8 +25,8 @@ interface CollectionDao {
     @Query("SELECT EXISTS(SELECT * FROM $TB_COLLECTION WHERE idHeader = :idHeader AND nroOS = :nroOS)")
     suspend fun hasByIdHeaderAndNroOS(idHeader: Int, nroOS: Int): Boolean
 
-    @Query("SELECT EXISTS(SELECT * FROM $TB_COLLECTION WHERE idHeader = :idHeader AND value is null)")
-    suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Boolean
+    @Query("SELECT EXISTS(SELECT * FROM $TB_COLLECTION WHERE value is null)")
+    suspend fun hasByValueNull(): Boolean
 
     @Query("SELECT * FROM $TB_COLLECTION WHERE id = :id")
     suspend fun getById(id: Int): CollectionRoomModel

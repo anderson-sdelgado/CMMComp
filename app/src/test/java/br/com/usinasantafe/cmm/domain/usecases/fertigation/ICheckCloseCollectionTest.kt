@@ -1,34 +1,28 @@
 package br.com.usinasantafe.cmm.domain.usecases.fertigation
 
 import br.com.usinasantafe.cmm.domain.repositories.variable.FertigationRepository
-import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
-import org.mockito.kotlin.atLeastOnce
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ICheckCloseCollectionTest {
 
-    private val motoMecRepository = mock<MotoMecRepository>()
     private val fertigationRepository = mock<FertigationRepository>()
-    private val usecase = ICheckCloseCollection(
-        motoMecRepository = motoMecRepository,
+    private val usecase = IHasCloseCollection(
         fertigationRepository = fertigationRepository
     )
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen`() =
+    fun `Check return failure if have error in MotoMecRepository hasCollectionByIdHeaderListAndValueNull`() =
         runTest {
             whenever(
-                motoMecRepository.getIdHeaderPointing()
+                fertigationRepository.hasCollectionByValueNull()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "IMotoMecRepository.hasCollectionByValueNull",
                     "-",
                     Exception()
                 )
@@ -40,39 +34,7 @@ class ICheckCloseCollectionTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICheckCloseCollection -> IMotoMecRepository.getIdByHeaderOpen"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
-            )
-        }
-
-    @Test
-    fun `Check return failure if have error in MotoMecRepository hasPerformanceByIdHeaderAndValueNull`() =
-        runTest {
-            whenever(
-                motoMecRepository.getIdHeaderPointing()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                fertigationRepository.hasCollectionByIdHeaderAndValueNull(1)
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.hasPerformanceByIdHeaderAndValueNull",
-                    "-",
-                    Exception()
-                )
-            )
-            val result = usecase()
-            assertEquals(
-                result.isFailure,
-                true
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ICheckCloseCollection -> IMotoMecRepository.hasPerformanceByIdHeaderAndValueNull"
+                "ICheckCloseCollection -> IMotoMecRepository.hasCollectionByValueNull"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -84,17 +46,11 @@ class ICheckCloseCollectionTest {
     fun `Check return false and execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return true`() =
         runTest {
             whenever(
-                motoMecRepository.getIdHeaderPointing()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                fertigationRepository.hasCollectionByIdHeaderAndValueNull(1)
+                fertigationRepository.hasCollectionByValueNull()
             ).thenReturn(
                 Result.success(true)
             )
             val result = usecase()
-            verify(motoMecRepository, never()).finishHeader()
             assertEquals(
                 result.isSuccess,
                 true
@@ -109,17 +65,11 @@ class ICheckCloseCollectionTest {
     fun `Check return true and not execute finishHeader if PerformanceRepository hasByIdHeaderAndValueNull return false`() =
         runTest {
             whenever(
-                motoMecRepository.getIdHeaderPointing()
-            ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                fertigationRepository.hasCollectionByIdHeaderAndValueNull(1)
+                fertigationRepository.hasCollectionByValueNull()
             ).thenReturn(
                 Result.success(false)
             )
             val result = usecase()
-            verify(motoMecRepository, atLeastOnce()).finishHeader()
             assertEquals(
                 result.isSuccess,
                 true

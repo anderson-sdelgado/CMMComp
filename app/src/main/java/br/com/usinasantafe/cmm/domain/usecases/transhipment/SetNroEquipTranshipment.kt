@@ -31,7 +31,6 @@ class ISetNroEquipTranshipment @Inject constructor(
             }
             motoMecRepository.setNroEquipTranshipmentNote(nroEquipLong).getOrThrow()
             saveNote().getOrThrow()
-
         }
 
 }

@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.header.equip
+package br.com.usinasantafe.cmm.presenter.view.common.equip
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement

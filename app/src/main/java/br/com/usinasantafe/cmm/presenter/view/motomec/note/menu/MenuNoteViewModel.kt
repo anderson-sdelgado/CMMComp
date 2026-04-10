@@ -17,6 +17,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.transhipment.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
 import br.com.usinasantafe.cmm.domain.usecases.cec.UncouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.HasCloseCollection
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
 import br.com.usinasantafe.cmm.lib.CHECK_WILL
@@ -89,7 +90,8 @@ class MenuNoteViewModel @Inject constructor(
     private val getFlowComposting: GetFlowComposting,
     private val hasCompostingInputLoadSentOpen: HasCompostingInputLoadSentOpen,
     private val hasWill: HasWill,
-    private val uncouplingTrailer: UncouplingTrailer
+    private val uncouplingTrailer: UncouplingTrailer,
+    private val hasCloseCollection: HasCloseCollection
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MenuNoteState())
@@ -110,7 +112,7 @@ class MenuNoteViewModel @Inject constructor(
             updateState { copy(flavorApp = flavor.uppercase()) }
             val list = listItemMenu(flavor.uppercase()).getOrThrow()
             if (list.isEmpty()) {
-                handleFailure(getClassAndMethod(), Errors.EXCEPTION, ::onError, "listItemMenu -> EmptyList!")
+                handleFailure(getClassAndMethod(), Errors.LIST_EMPTY, ::onError)
             }
             list
         }
@@ -136,9 +138,14 @@ class MenuNoteViewModel @Inject constructor(
 
     fun onButtonReturn() = viewModelScope.launch {
         runCatching {
-            val check = hasNoteMotoMec().getOrThrow()
-            if (!check) {
+            val hasNote = hasNoteMotoMec().getOrThrow()
+            if (!hasNote) {
                 handleFailure(getClassAndMethod(), Errors.HEADER_EMPTY, ::onError)
+                return@launch
+            }
+            val hasCollection = hasCloseCollection().getOrThrow()
+            if (!hasCollection) {
+                handleFailure(getClassAndMethod(), Errors.INVALID_CLOSE_COLLECTION, ::onError)
                 return@launch
             }
         }
@@ -160,7 +167,7 @@ class MenuNoteViewModel @Inject constructor(
     fun setSelection(id: Int) = viewModelScope.launch {
         val item = _uiState.value.menuList.find { it.id == id }
         if (item == null) {
-            handleFailure("Item with id = $id not found in menuList", getClassAndMethod(), ::onError)
+            handleFailure( getClassAndMethod(), Errors.EXCEPTION, ::onError, "Item with id = $id not found in menuList")
             return@launch
         }
         _uiState.update { it.copy(idSelection = item.id) }
@@ -175,7 +182,7 @@ class MenuNoteViewModel @Inject constructor(
         runCatching {
             val function = functionListPMM.find { it.first == item.function.first }
             if (function == null) {
-                handleFailure("idFunction = ${item.function.first} not found in functionListPMM", getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.EXCEPTION, ::onError, "idFunction = ${item.function.first} not found in functionListPMM")
                 return@runCatching false
             }
             if (function.second != FINISH_MECHANICAL) {
@@ -206,7 +213,7 @@ class MenuNoteViewModel @Inject constructor(
         runCatching {
             val type = typeListECM.find { it.first == item.type.first }
             if (type == null) {
-                handleFailure("idType = ${item.type.first} not found in typeListECM", getClassAndMethod(), ::onError)
+                handleFailure(getClassAndMethod(), Errors.EXCEPTION, ::onError, "idType = ${item.type.first} not found in typeListECM")
                 return
             }
             when (type.second) {
@@ -249,8 +256,8 @@ class MenuNoteViewModel @Inject constructor(
             }
             if (type == null) {
                 when (flow) {
-                    FlowComposting.INPUT -> handleFailure( "idType = ${item.type.first} not found in typeListPCOMPInput", getClassAndMethod(), ::onError)
-                    FlowComposting.COMPOUND -> handleFailure( "idType = ${item.type.first} not found in typeListPCOMPCompound", getClassAndMethod(), ::onError)
+                    FlowComposting.INPUT -> handleFailure( getClassAndMethod(), Errors.EXCEPTION, ::onError, "idType = ${item.type.first} not found in typeListPCOMPInput")
+                    FlowComposting.COMPOUND -> handleFailure( getClassAndMethod(), Errors.EXCEPTION, ::onError,  "idType = ${item.type.first} not found in typeListPCOMPCompound")
                 }
                 return
             }
@@ -425,7 +432,6 @@ class MenuNoteViewModel @Inject constructor(
                 handleFailure(throwable, getClassAndMethod(), ::onError)
             }
             .getOrDefault(false)
-
     }
 
     private suspend fun handleImplement(item: ItemMenuModel): Boolean {
@@ -443,7 +449,6 @@ class MenuNoteViewModel @Inject constructor(
                 handleFailure(throwable, getClassAndMethod(), ::onError)
             }
             .getOrDefault(false)
-
     }
 
     private suspend fun handleFinishMechanicalDialog() {

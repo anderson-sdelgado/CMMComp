@@ -1,12 +1,14 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.FunctionActivity
+import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeActivity
+import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.mockito.Mockito.mock
@@ -22,11 +24,13 @@ class ISetIdActivityCommonTest {
     private val startWorkManager = mock<StartWorkManager>()
     private val functionActivityRepository = mock<FunctionActivityRepository>()
     private val saveNote = mock<SaveNote>()
+    private val equipRepository = mock<EquipRepository>()
     private val usecase = ISetIdActivityCommon(
         motoMecRepository = motoMecRepository,
         startWorkManager = startWorkManager,
         functionActivityRepository = functionActivityRepository,
-        saveNote = saveNote
+        saveNote = saveNote,
+        equipRepository = equipRepository
     )
 
     @Test
@@ -36,7 +40,7 @@ class ISetIdActivityCommonTest {
                 motoMecRepository.setIdActivityHeader(1)
             ).thenReturn(
                 resultFailure(
-                    "IHeaderMotoMecRepository.setIdActivity",
+                    "IMotoMecRepository.setIdActivityNote",
                     "-",
                     Exception()
                 )
@@ -51,7 +55,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IHeaderMotoMecRepository.setIdActivity"
+                "ISetIdActivityCommon -> IMotoMecRepository.setIdActivityNote"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -80,6 +84,15 @@ class ISetIdActivityCommonTest {
     @Test
     fun `Check return failure if have error in MotoMecRepository setIdActivityNote - FlowApp NOTE_STOP`() =
         runTest {
+            whenever(
+                motoMecRepository.setIdActivityHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.setIdActivityNote",
+                    "-",
+                    Exception()
+                )
+            )
             val result = usecase(
                 id = 1,
                 flowApp = FlowApp.NOTE_STOP
@@ -113,6 +126,174 @@ class ISetIdActivityCommonTest {
             assertEquals(
                 result.getOrNull()!!,
                 FlowApp.NOTE_STOP
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository setIdActivityHeader - FlowApp HEADER_INITIAL_REEL_FERT`() =
+        runTest {
+            whenever(
+                motoMecRepository.setIdActivityHeader(1)
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.setIdActivityHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.setIdActivityHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in EquipRepository getIdEquipMain - FlowApp HEADER_INITIAL_REEL_FERT`() =
+        runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                resultFailure(
+                    "IEquipRepository.getIdEquipMain",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IEquipRepository.getIdEquipMain"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository getIdHeaderByIdEquipAndNotFinish- FlowApp HEADER_INITIAL_REEL_FERT`() =
+        runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
+            whenever(
+                motoMecRepository.getIdHeaderByIdEquipAndNotFinish(10)
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.getIdHeaderByIdEquipAndNotFinish",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.getIdHeaderByIdEquipAndNotFinish"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in MotoMecRepository saveHeader - FlowApp HEADER_INITIAL_REEL_FERT`() =
+        runTest {
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
+            whenever(
+                motoMecRepository.getIdHeaderByIdEquipAndNotFinish(10)
+            ).thenReturn(
+                Result.success(3)
+            )
+            whenever(
+                motoMecRepository.saveHeader(0.0, 3)
+            ).thenReturn(
+                resultFailure(
+                    "IMotoMecRepository.saveHeader",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.saveHeader"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return correct if function execute successfully - FlowApp HEADER_INITIAL_REEL_FERT`() =
+        runTest {
+
+            whenever(
+                equipRepository.getIdEquipMain()
+            ).thenReturn(
+                Result.success(10)
+            )
+            whenever(
+                motoMecRepository.getIdHeaderByIdEquipAndNotFinish(10)
+            ).thenReturn(
+                Result.success(3)
+            )
+            val result = usecase(
+                id = 1,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
+            verify(motoMecRepository, atLeastOnce()).saveHeader(0.0, 3)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowApp.HEADER_INITIAL_REEL_FERT
             )
         }
 
@@ -180,7 +361,7 @@ class ISetIdActivityCommonTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getIdByHeaderOpen - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in MotoMecRepository getTypeEquipHeader - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
                 functionActivityRepository.listById(1)
@@ -188,10 +369,10 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdHeaderPointing()
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
                 resultFailure(
-                    "IMotoMecRepository.getIdByHeaderOpen",
+                    "IMotoMecRepository.getTypeEquipHeader",
                     "-",
                     Exception()
                 )
@@ -207,7 +388,7 @@ class ISetIdActivityCommonTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.getIdByHeaderOpen"
+                "ISetIdActivityCommon -> IMotoMecRepository.getTypeEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -216,7 +397,7 @@ class ISetIdActivityCommonTest {
         }
 
     @Test
-    fun `Check return failure if have error in MotoMecRepository getNroOSHeader - FlowApp NOTE_WORK`() =
+    fun `Check return FlowApp NOTE_REEL_FERT if function execute successfully and type equip is NOTE_REEL_FERT - FlowApp NOTE_WORK`() =
         runTest {
             whenever(
                 functionActivityRepository.listById(1)
@@ -224,18 +405,9 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdHeaderPointing()
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                resultFailure(
-                    "IMotoMecRepository.getNroOSHeader",
-                    "-",
-                    Exception()
-                )
+                Result.success(TypeEquip.REEL_FERT)
             )
             val result = usecase(
                 id = 1,
@@ -243,16 +415,12 @@ class ISetIdActivityCommonTest {
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
             assertEquals(
-                result.isFailure,
+                result.isSuccess,
                 true
             )
             assertEquals(
-                result.exceptionOrNull()!!.message,
-                "ISetIdActivityCommon -> IMotoMecRepository.getNroOSHeader"
-            )
-            assertEquals(
-                result.exceptionOrNull()!!.cause.toString(),
-                "java.lang.Exception"
+                result.getOrNull()!!,
+                FlowApp.NOTE_REEL_FERT
             )
         }
 
@@ -265,14 +433,9 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdHeaderPointing()
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
-                Result.success(1)
-            )
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(1)
+                Result.success(TypeEquip.NORMAL)
             )
             whenever(
                 saveNote()
@@ -311,20 +474,23 @@ class ISetIdActivityCommonTest {
                 Result.success(emptyList())
             )
             whenever(
-                motoMecRepository.getIdHeaderPointing()
+                motoMecRepository.getTypeEquipHeader()
             ).thenReturn(
-                Result.success(1)
+                Result.success(TypeEquip.NORMAL)
             )
-            whenever(
-                motoMecRepository.getNroOSHeader()
-            ).thenReturn(
-                Result.success(1)
-            )
-            usecase(
+            val result = usecase(
                 id = 1,
                 flowApp = FlowApp.NOTE_WORK
             )
             verify(motoMecRepository, atLeastOnce()).setIdActivityHeader(1)
             verify(saveNote, atLeastOnce()).invoke()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowApp.NOTE_WORK
+            )
         }
 }

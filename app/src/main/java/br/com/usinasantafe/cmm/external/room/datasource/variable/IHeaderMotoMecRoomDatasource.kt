@@ -26,12 +26,16 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun getByIdEquipAndOpen(idEquip: Int): Result<HeaderMotoMecRoomModel> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getByIdEquipAndOpen(idEquip)
+            val model = headerMotoMecDao.getByIdEquipAndOpen(idEquip)
+            model::id.required()
+            model
         }
 
     override suspend fun getById(id: Int): Result<HeaderMotoMecRoomModel> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.getById(id)
+            val model = headerMotoMecDao.getById(id)
+            model::id.required()
+            model
         }
 
     override suspend fun getIdByIdEquipAndOpen(idEquip: Int): Result<Int> =
@@ -40,9 +44,15 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             model::id.required()
         }
 
-    override suspend fun checkOpenOrClose(): Result<Boolean> =
+    override suspend fun getIdByIdEquipAndNotFinish(idEquip: Int): Result<Int> =
         result(getClassAndMethod()) {
-            headerMotoMecDao.countByDiffStatus(Status.FINISH)
+            val model = headerMotoMecDao.getByIdEquipAndNotFinish(idEquip)
+            model::id.required()
+        }
+
+    override suspend fun hasByOpenOrClose(): Result<Boolean> =
+        result(getClassAndMethod()) {
+            headerMotoMecDao.hasByDiffStatus(Status.FINISH)
         }
 
     override suspend fun getIdByOpen(): Result<Int> =
@@ -60,11 +70,13 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
 
     override suspend fun finish(): EmptyResult =
         result(getClassAndMethod()) {
-            val roomModel = headerMotoMecDao.getByStatusOpen()
-            roomModel.status = Status.FINISH
-            roomModel.statusSend = StatusSend.SEND
-            roomModel.dateHourFinish = Date()
-            headerMotoMecDao.update(roomModel)
+            val list = headerMotoMecDao.listByNotFinish()
+            for(model in list){
+                model.status = Status.FINISH
+                model.statusSend = StatusSend.SEND
+                model.dateHourFinish = Date()
+                headerMotoMecDao.update(model)
+            }
         }
 
     override suspend fun hasSend(): Result<Boolean> =
@@ -121,9 +133,9 @@ class IHeaderMotoMecRoomDatasource @Inject constructor(
             headerMotoMecDao.listByIdHeader(idHeader)
         }
 
-    override suspend fun updateAllNotFinishToClose(): EmptyResult =
+    override suspend fun updateOpenToClose(): EmptyResult =
         result(getClassAndMethod()) {
-            headerMotoMecDao.updateAllNotFinishToClose()
+            headerMotoMecDao.updateOpenToClose()
         }
 
     override suspend fun updateStatusOpenByIdEquip(idEquip: Int): EmptyResult =

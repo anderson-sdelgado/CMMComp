@@ -45,7 +45,7 @@ interface FertigationModule {
 
     @Binds
     @Singleton
-    fun bindCheckCloseCollection(usecase: ICheckCloseCollection): CheckCloseCollection
+    fun bindCheckCloseCollection(usecase: IHasCloseCollection): HasCloseCollection
 
     @Binds
     @Singleton
@@ -57,6 +57,14 @@ interface FertigationModule {
 
     @Binds
     @Singleton
-    fun bindSetHeaderSec(usecase: ISetHeaderSec): SetHeaderSec
+    fun bindSetHeaderPointing(usecase: ISetHeaderPointing): SetHeaderPointing
+
+    @Binds
+    @Singleton
+    fun bindSetHeaderEquipMain(usecase: ISetHeaderEquipMain): SetHeaderEquipMain
+
+    @Binds
+    @Singleton
+    fun bindSetNroEquipReel(usecase: ISetNroEquipReel): SetNroEquipReel
 
 }

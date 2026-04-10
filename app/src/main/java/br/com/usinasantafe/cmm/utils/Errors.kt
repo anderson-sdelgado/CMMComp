@@ -64,16 +64,6 @@ fun failure(classAndMethod: String, error: Throwable) : String {
 }
 
 fun removeRepeatedCalls(path: String): String {
-//    val items = path.split(" -> ")
-//    val counts = items.groupingBy { it }.eachCount()
-//
-//    val list = items
-//        .filter { counts[it] == 1 }
-//        .joinToString(" -> ")
-//
-//    val ret = list
-//
-//    return ret
     return path
         .split(" -> ")
         .asReversed()

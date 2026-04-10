@@ -38,7 +38,7 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun openHeaderByIdEquip(idEquip: Int): EmptyResult =
         call(getClassAndMethod()) {
-            headerMotoMecRoomDatasource.updateAllNotFinishToClose().getOrThrow()
+            headerMotoMecRoomDatasource.updateOpenToClose().getOrThrow()
             headerMotoMecRoomDatasource.updateStatusOpenByIdEquip(idEquip).getOrThrow()
             val model = headerMotoMecRoomDatasource.getByIdEquipAndOpen(idEquip).getOrThrow()
             headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
@@ -46,7 +46,7 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun openHeaderById(id: Int): EmptyResult =
         call(getClassAndMethod()) {
-            headerMotoMecRoomDatasource.updateAllNotFinishToClose().getOrThrow()
+            headerMotoMecRoomDatasource.updateOpenToClose().getOrThrow()
             headerMotoMecRoomDatasource.updateStatusOpenById(id).getOrThrow()
             val model = headerMotoMecRoomDatasource.getById(id).getOrThrow()
             headerMotoMecSharedPreferencesDatasource.save(model.roomModelToSharedPreferences()).getOrThrow()
@@ -101,12 +101,12 @@ class IMotoMecRepository @Inject constructor(
             headerMotoMecSharedPreferencesDatasource.getIdEquip().getOrThrow()
         }
 
-    override suspend fun saveHeader(hourMeterInitial: Double): EmptyResult =
+    override suspend fun saveHeader(hourMeterInitial: Double, idHeader: Int?): EmptyResult =
         call(getClassAndMethod()) {
             val modelSharedPreferences = headerMotoMecSharedPreferencesDatasource.get().getOrThrow()
             val entity = modelSharedPreferences.sharedPreferencesModelToEntity()
             val modelRoom = runCatching {
-                entity.entityToRoomModel(hourMeterInitial)
+                entity.entityToRoomModel(hourMeterInitial, idHeader)
             }.getOrElse { e ->
                 throw Exception(entity::entityToRoomModel.name, e)
             }
@@ -116,7 +116,7 @@ class IMotoMecRepository @Inject constructor(
 
     override suspend fun hasHeaderOpenOrClose(): Result<Boolean> =
         call(getClassAndMethod()) {
-            headerMotoMecRoomDatasource.checkOpenOrClose().getOrThrow()
+            headerMotoMecRoomDatasource.hasByOpenOrClose().getOrThrow()
         }
 
     override suspend fun getIdHeaderPointing(): Result<Int> =
@@ -127,6 +127,11 @@ class IMotoMecRepository @Inject constructor(
     override suspend fun getIdHeaderByIdEquipAndOpen(idEquip: Int): Result<Int> =
         call(getClassAndMethod()) {
             headerMotoMecRoomDatasource.getIdByIdEquipAndOpen(idEquip).getOrThrow()
+        }
+
+    override suspend fun getIdHeaderByIdEquipAndNotFinish(idEquip: Int): Result<Int> =
+        call(getClassAndMethod()) {
+            headerMotoMecRoomDatasource.getIdByIdEquipAndNotFinish(idEquip).getOrThrow()
         }
 
     override suspend fun setHourMeterFinishHeader(hourMeter: Double): EmptyResult =

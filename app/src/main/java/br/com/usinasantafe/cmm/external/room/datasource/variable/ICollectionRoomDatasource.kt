@@ -21,9 +21,9 @@ class ICollectionRoomDatasource @Inject constructor(
             if (!resultHas) collectionDao.insert(model)
         }
 
-    override suspend fun hasByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+    override suspend fun hasByValueNull(): Result<Boolean> =
         result(getClassAndMethod()){
-            collectionDao.hasByIdHeaderAndValueNull(idHeader)
+            collectionDao.hasByValueNull()
         }
 
     override suspend fun listByIdHeader(idHeader: Int): Result<List<CollectionRoomModel>> =

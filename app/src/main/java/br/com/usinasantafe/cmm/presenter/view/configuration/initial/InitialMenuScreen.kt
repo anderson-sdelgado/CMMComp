@@ -223,3 +223,45 @@ fun InitialMenuPagePreviewSend() {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun InitialMenuPagePreviewException() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            InitialMenuContent(
+                statusSend = StatusSend.STARTED,
+                flagDialog = true,
+                setCloseDialog = {},
+                flagFailure = true,
+                flagAccess = false,
+                failure = "Failure",
+                onCheckAccess = {},
+                onNavPassword = {},
+                onNavOperator = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun InitialMenuPagePreviewBlocked() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            InitialMenuContent(
+                statusSend = StatusSend.STARTED,
+                flagDialog = true,
+                setCloseDialog = {},
+                flagFailure = true,
+                flagAccess = false,
+                failure = "",
+                onCheckAccess = {},
+                onNavPassword = {},
+                onNavOperator = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}

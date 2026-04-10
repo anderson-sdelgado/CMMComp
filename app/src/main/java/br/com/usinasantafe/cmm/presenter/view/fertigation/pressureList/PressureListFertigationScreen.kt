@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.theme.ButtonMaxWidth
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.ItemDefaultListDesign
@@ -105,16 +106,7 @@ fun PressureListFertigationContent(
             )
         }
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        Button(
-            onClick = onNavNozzleList,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            TextButtonDesign(
-                text = stringResource(
-                    id = R.string.text_pattern_return
-                )
-            )
-        }
+        ButtonMaxWidth(R.string.text_pattern_return) { onNavNozzleList() }
         BackHandler {}
 
         if (status.flagDialog) {

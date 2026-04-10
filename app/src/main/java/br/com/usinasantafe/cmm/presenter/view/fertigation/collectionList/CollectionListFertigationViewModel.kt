@@ -3,7 +3,6 @@ package br.com.usinasantafe.cmm.presenter.view.fertigation.collectionList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import br.com.usinasantafe.cmm.domain.usecases.fertigation.CheckCloseCollection
 import br.com.usinasantafe.cmm.domain.usecases.fertigation.ListCollection
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -32,7 +31,6 @@ data class CollectionListFertigationState(
 class CollectionListFertigationViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val listCollection: ListCollection,
-    private val checkCloseCollection: CheckCloseCollection,
 ) : ViewModel() {
 
     private val flowApp: Int = savedStateHandle[FLOW_APP_ARG]!!
@@ -53,18 +51,6 @@ class CollectionListFertigationViewModel @Inject constructor(
             listCollection().getOrThrow()
         }
             .onSuccess { updateState { copy(list = it) } }
-            .onFailureHandled(getClassAndMethod(), ::onError)
-    }
-
-    fun checkClose() = viewModelScope.launch {
-        runCatching {
-            val check = checkCloseCollection().getOrThrow()
-            if(!check) {
-                handleFailure(getClassAndMethod(), Errors.INVALID_CLOSE_COLLECTION, ::onError)
-                return@launch
-            }
-        }
-            .onSuccess { updateState { copy(flagAccess = true) } }
             .onFailureHandled(getClassAndMethod(), ::onError)
     }
 

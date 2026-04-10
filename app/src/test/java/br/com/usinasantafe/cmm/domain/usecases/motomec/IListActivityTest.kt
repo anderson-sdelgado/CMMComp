@@ -6,16 +6,15 @@ import br.com.usinasantafe.cmm.domain.entities.stable.REquipActivity
 import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
-import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
+import kotlin.test.assertEquals
 
 class IListActivityTest {
 
@@ -24,10 +23,8 @@ class IListActivityTest {
     private val activityRepository= mock<ActivityRepository>()
     private val rOSActivityRepository = mock<ROSActivityRepository>()
     private val rEquipActivityRepository = mock<REquipActivityRepository>()
-    private val equipRepository = mock<EquipRepository>()
 
     private val usecase = IListActivity(
-        equipRepository = equipRepository,
         motoMecRepository = motoMecRepository,
         osRepository = osRepository,
         activityRepository = activityRepository,
@@ -77,13 +74,13 @@ class IListActivityTest {
     )
 
     @Test
-    fun `Check return failure if have error in ConfigRepository get`() =
+    fun `Check return failure if have error in MotoMecRepository getIdEquipHeader`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 resultFailure(
-                    context = "EquipRepository.getIdEquipMain",
+                    context = "MotoMecRepository.getIdEquipHeader",
                     message = "-",
                     cause = Exception()
                 )
@@ -95,7 +92,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> EquipRepository.getIdEquipMain"
+                "IListActivity -> MotoMecRepository.getIdEquipHeader"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -104,10 +101,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in REquipActivityRepository getListByIdEquip`() =
+    fun `Check return failure if have error in REquipActivityRepository listByIdEquip`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -136,10 +133,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in HeaderMotoMecRepository getNroOS`() =
+    fun `Check return failure if have error in MotoMecRepository getNroOSHeader`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -173,10 +170,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in OSRepository getListByNroOS`() =
+    fun `Check return failure if have error in OSRepository hasByNroOS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -217,10 +214,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in ActivityRepository getListByListId without OS`() =
+    fun `Check return failure if have error in ActivityRepository listByIdList without OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -241,14 +238,12 @@ class IListActivityTest {
             ).thenReturn(
                 Result.success(false)
             )
-            val idList = rEquipActivityList.map { it.idActivity }
+            val idActivityEquipList = rEquipActivityList.map { it.idActivity }
             whenever(
-                activityRepository.listByIdList(
-                    idList = idList
-                )
+                activityRepository.listByIdList(idActivityEquipList)
             ).thenReturn(
                 resultFailure(
-                    context = "ActivityRepository.getListByListId",
+                    context = "ActivityRepository.listByIdList",
                     message = "-",
                     cause = Exception()
                 )
@@ -260,7 +255,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> ActivityRepository.getListByListId"
+                "IListActivity -> ActivityRepository.listByIdList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -269,10 +264,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return list if function execute successfully without OS`() =
+    fun `Check return correct if function execute successfully without OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -293,23 +288,21 @@ class IListActivityTest {
             ).thenReturn(
                 Result.success(false)
             )
-            val idList = rEquipActivityList.map { it.idActivity }
+            val idActivityEquipList = rEquipActivityList.map { it.idActivity }
             whenever(
-                activityRepository.listByIdList(
-                    idList = idList
-                )
+                activityRepository.listByIdList(idActivityEquipList)
             ).thenReturn(
                 Result.success(
                     listOf(
                         Activity(
                             id = 1,
                             cod = 1,
-                            descr = "Atividade 1"
+                            descr = "Activity 1"
                         ),
                         Activity(
                             id = 2,
                             cod = 2,
-                            descr = "Atividade 2"
+                            descr = "Activity 2"
                         ),
                     )
                 )
@@ -319,48 +312,28 @@ class IListActivityTest {
                 result.isSuccess,
                 true
             )
-            val list = result.getOrNull()!!
             assertEquals(
-                list.size,
-                2
-            )
-            val entity1 = list[0]
-            assertEquals(
-                entity1.id,
-                1
-            )
-            assertEquals(
-                entity1.cod,
-                1
-            )
-            assertEquals(
-                entity1.descr,
-                "Atividade 1"
-            )
-            val entity2 = list[1]
-            assertEquals(
-                entity2.id,
-                2
-            )
-            assertEquals(
-                entity2.cod,
-                2
-            )
-            assertEquals(
-                entity2.descr,
-                "Atividade 2"
-            )
-            assertEquals(
-                idList,
-                listOf(1, 2, 3, 4)
+                result.getOrNull()!!,
+                listOf(
+                    Activity(
+                        id = 1,
+                        cod = 1,
+                        descr = "Activity 1"
+                    ),
+                    Activity(
+                        id = 2,
+                        cod = 2,
+                        descr = "Activity 2"
+                    ),
+                )
             )
         }
 
     @Test
-    fun `Check return failure if have error in OSRepository getByNroOS`() =
+    fun `Check return failure if have error in OSRepository getByNroOS with OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -382,9 +355,7 @@ class IListActivityTest {
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(
-                    nroOS = 123456
-                )
+                osRepository.getByNroOS(123456)
             ).thenReturn(
                 resultFailure(
                     context = "OSRepository.getByNroOS",
@@ -399,7 +370,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> getByNroOS"
+                "IListActivity -> OSRepository.getByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -408,10 +379,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in ROSActivityRepository getListByIdOS with OS`() =
+    fun `Check return failure if have error in ROSActivityRepository listByIdOS with OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -433,28 +404,24 @@ class IListActivityTest {
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(
-                    nroOS = 123456
-                )
+                osRepository.getByNroOS(123456)
             ).thenReturn(
                 Result.success(
-                        OS(
-                            idOS = 1,
-                            nroOS = 123456,
-                            idEquip = 1,
-                            idLibOS = 1,
-                            idPropAgr = 1,
-                            areaOS = 0.0
-                        )
+                    OS(
+                        idOS = 10,
+                        nroOS = 123456,
+                        idEquip = 1,
+                        idLibOS = 1,
+                        idPropAgr = 1,
+                        areaOS = 0.0
+                    )
                 )
             )
             whenever(
-                rOSActivityRepository.listByIdOS(
-                    idOS = 1
-                )
+                rOSActivityRepository.listByIdOS(10)
             ).thenReturn(
                 resultFailure(
-                    context = "ROSActivityRepository.getListByIdOS",
+                    context = "ROSActivityRepository.listByIdOS",
                     message = "-",
                     cause = Exception()
                 )
@@ -466,7 +433,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> ROSActivityRepository.getListByIdOS"
+                "IListActivity -> ROSActivityRepository.listByIdOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -475,10 +442,10 @@ class IListActivityTest {
         }
 
     @Test
-    fun `Check return failure if have error in ActivityRepository getListByListId with OS`() =
+    fun `Check return failure if have error in ActivityRepository getListByListId without OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -491,6 +458,13 @@ class IListActivityTest {
                 motoMecRepository.getNroOSHeader()
             ).thenReturn(
                 Result.success(123456)
+            )
+            whenever(
+                osRepository.hasByNroOS(
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 osRepository.getByNroOS(
@@ -524,7 +498,7 @@ class IListActivityTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "ActivityRepository.getListByListId",
+                    context = "ActivityRepository.listByIdList",
                     message = "-",
                     cause = Exception()
                 )
@@ -536,7 +510,7 @@ class IListActivityTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IListActivity -> ActivityRepository.getListByListId"
+                "IListActivity -> ActivityRepository.listByIdList"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -560,7 +534,7 @@ class IListActivityTest {
     fun `Check return list if function execute successfully with OS`() =
         runTest {
             whenever(
-                equipRepository.getIdEquipMain()
+                motoMecRepository.getIdEquipHeader()
             ).thenReturn(
                 Result.success(1)
             )
@@ -573,6 +547,13 @@ class IListActivityTest {
                 motoMecRepository.getNroOSHeader()
             ).thenReturn(
                 Result.success(123456)
+            )
+            whenever(
+                osRepository.hasByNroOS(
+                    nroOS = 123456
+                )
+            ).thenReturn(
+                Result.success(true)
             )
             whenever(
                 osRepository.getByNroOS(
@@ -610,12 +591,12 @@ class IListActivityTest {
                         Activity(
                             id = 1,
                             cod = 1,
-                            descr = "Atividade 1"
+                            descr = "Activity 1"
                         ),
                         Activity(
                             id = 2,
                             cod = 2,
-                            descr = "Atividade 2"
+                            descr = "Activity 2"
                         ),
                     )
                 )
@@ -641,7 +622,7 @@ class IListActivityTest {
             )
             assertEquals(
                 entity1.descr,
-                "Atividade 1"
+                "Activity 1"
             )
             val entity2 = list[1]
             assertEquals(
@@ -654,7 +635,7 @@ class IListActivityTest {
             )
             assertEquals(
                 entity2.descr,
-                "Atividade 2"
+                "Activity 2"
             )
             assertEquals(
                 idActivityEquipList,
@@ -669,7 +650,5 @@ class IListActivityTest {
                 listOf(1, 2)
             )
         }
-
-
 
 }

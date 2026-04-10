@@ -17,6 +17,7 @@ import br.com.usinasantafe.cmm.domain.usecases.motomec.GetFlowEquip
 import br.com.usinasantafe.cmm.domain.usecases.transhipment.GetStatusTranshipment
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNote
 import br.com.usinasantafe.cmm.domain.usecases.cec.UncouplingTrailer
+import br.com.usinasantafe.cmm.domain.usecases.fertigation.HasCloseCollection
 import br.com.usinasantafe.cmm.presenter.model.ItemMenuModel
 import br.com.usinasantafe.cmm.lib.FIELD_ARRIVAL
 import br.com.usinasantafe.cmm.lib.CHECK_WILL
@@ -77,7 +78,7 @@ class MenuNoteViewModelTest {
     private val hasCompostingInputLoadSentOpen = mock<HasCompostingInputLoadSentOpen>()
     private val hasWill = mock<HasWill>()
     private val uncouplingTrailer = mock<UncouplingTrailer>()
-
+    private val hasCloseCollection = mock<HasCloseCollection>()
     private val viewModel = MenuNoteViewModel(
         listItemMenu = listItemMenu,
         getDescrEquip = getDescrEquip,
@@ -93,7 +94,8 @@ class MenuNoteViewModelTest {
         getFlowComposting = getFlowComposting,
         hasCompostingInputLoadSentOpen = hasCompostingInputLoadSentOpen,
         hasWill = hasWill,
-        uncouplingTrailer = uncouplingTrailer
+        uncouplingTrailer = uncouplingTrailer,
+        hasCloseCollection = hasCloseCollection
     )
 
     @Test
@@ -138,11 +140,11 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.menuList -> listItemMenu -> EmptyList!"
+                "MenuNoteViewModel.menuList -> LIST_EMPTY"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.EXCEPTION
+                Errors.LIST_EMPTY
             )
         }
 
@@ -294,13 +296,13 @@ class MenuNoteViewModelTest {
         }
 
     @Test
-    fun `onButtonReturn - Check return failure if have error in CheckHasNote`() =
+    fun `onButtonReturn - Check return failure if have error in HasNoteMotoMec`() =
         runTest {
             whenever(
                 hasNoteMotoMec()
             ).thenReturn(
                 resultFailure(
-                    context = "CheckHasNote",
+                    context = "HasNoteMotoMec",
                     message = "-",
                     cause = Exception()
                 )
@@ -312,7 +314,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.failure,
-                "MenuNoteViewModel.onButtonReturn -> CheckHasNote -> java.lang.Exception"
+                "MenuNoteViewModel.onButtonReturn -> HasNoteMotoMec -> java.lang.Exception"
             )
             assertEquals(
                 viewModel.uiState.value.errors,
@@ -321,7 +323,7 @@ class MenuNoteViewModelTest {
         }
 
     @Test
-    fun `onButtonReturn - Check return failure if checkHasNoteMotoMec return false`() =
+    fun `onButtonReturn - Check return failure if HasNoteMotoMec return false`() =
         runTest {
             whenever(
                 hasNoteMotoMec()
@@ -344,10 +346,75 @@ class MenuNoteViewModelTest {
         }
 
     @Test
-    fun `onButtonReturn - Check return true if CheckHasNoteMotoMec execute successfully and return true`() =
+    fun `onButtonReturn - Check return failure if have error in HasCloseCollection`() =
         runTest {
             whenever(
                 hasNoteMotoMec()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                hasCloseCollection()
+            ).thenReturn(
+                resultFailure(
+                    context = "HasCloseCollection",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            viewModel.onButtonReturn()
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.onButtonReturn -> HasCloseCollection -> java.lang.Exception"
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.EXCEPTION
+            )
+        }
+
+    @Test
+    fun `onButtonReturn - Check return failure if HasCloseCollection return false`() =
+        runTest {
+            whenever(
+                hasNoteMotoMec()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                hasCloseCollection()
+            ).thenReturn(
+                Result.success(false)
+            )
+            viewModel.onButtonReturn()
+            assertEquals(
+                viewModel.uiState.value.flagDialog,
+                true
+            )
+            assertEquals(
+                viewModel.uiState.value.failure,
+                "MenuNoteViewModel.onButtonReturn -> INVALID_CLOSE_COLLECTION"
+            )
+            assertEquals(
+                viewModel.uiState.value.errors,
+                Errors.INVALID_CLOSE_COLLECTION
+            )
+        }
+
+    @Test
+    fun `onButtonReturn - Check return TRUE if HasCloseCollection and return false`() =
+        runTest {
+            whenever(
+                hasNoteMotoMec()
+            ).thenReturn(
+                Result.success(true)
+            )
+            whenever(
+                hasCloseCollection()
             ).thenReturn(
                 Result.success(true)
             )
@@ -355,6 +422,10 @@ class MenuNoteViewModelTest {
             assertEquals(
                 viewModel.uiState.value.flagAccess,
                 true
+            )
+            assertEquals(
+                viewModel.uiState.value.idSelection,
+                null
             )
         }
 
@@ -488,7 +559,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.INVALID
+                Errors.EXCEPTION
             )
         }
 
@@ -533,7 +604,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.INVALID
+                Errors.EXCEPTION
             )
         }
 
@@ -1241,7 +1312,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.INVALID
+                Errors.EXCEPTION
             )
         }
 
@@ -1971,7 +2042,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.INVALID
+                Errors.EXCEPTION
             )
         }
 
@@ -2000,7 +2071,7 @@ class MenuNoteViewModelTest {
             )
             assertEquals(
                 viewModel.uiState.value.errors,
-                Errors.INVALID
+                Errors.EXCEPTION
             )
         }
 

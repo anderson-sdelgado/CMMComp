@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
-import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import java.util.Date
 
 data class PreCECSharedPreferencesModel(
@@ -21,20 +21,12 @@ data class PreCECSharedPreferencesModel(
     var nroTurn: Int? = null
 )
 
-fun PreCECSharedPreferencesModel.sharedPreferencesModelToEntity(): PreCEC {
+fun PreCECSharedPreferencesModel.sharedPreferencesModelToEntity(): HeaderPreCEC {
     return with(this) {
-        PreCEC(
+        HeaderPreCEC(
             nroEquip = nroEquip,
             libEquip = libEquip,
             regColab = regColab,
-            nroTrailer1 = nroTrailer1,
-            libTrailer1 = libTrailer1,
-            nroTrailer2 = nroTrailer2,
-            libTrailer2 = libTrailer2,
-            nroTrailer3 = nroTrailer3,
-            libTrailer3 = libTrailer3,
-            nroTrailer4 = nroTrailer4,
-            libTrailer4 = libTrailer4,
             dateExitMill = dateExitMill,
             dateFieldArrival = dateFieldArrival,
             dateExitField = dateExitField,
@@ -43,20 +35,12 @@ fun PreCECSharedPreferencesModel.sharedPreferencesModelToEntity(): PreCEC {
     }
 }
 
-fun PreCEC.entityToSharedPreferencesModel(): PreCECSharedPreferencesModel {
+fun HeaderPreCEC.entityToSharedPreferencesModel(): PreCECSharedPreferencesModel {
     return with(this) {
         PreCECSharedPreferencesModel(
             nroEquip = nroEquip,
             libEquip = libEquip,
             regColab = regColab,
-            nroTrailer1 = nroTrailer1,
-            libTrailer1 = libTrailer1,
-            nroTrailer2 = nroTrailer2,
-            libTrailer2 = libTrailer2,
-            nroTrailer3 = nroTrailer3,
-            libTrailer3 = libTrailer3,
-            nroTrailer4 = nroTrailer4,
-            libTrailer4 = libTrailer4,
             dateExitMill = dateExitMill,
             dateFieldArrival = dateFieldArrival,
             dateExitField = dateExitField,

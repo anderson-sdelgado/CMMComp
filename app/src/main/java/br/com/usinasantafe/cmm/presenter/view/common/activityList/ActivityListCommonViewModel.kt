@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.common.activityList
+package br.com.usinasantafe.cmm.presenter.view.common.activityList
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -31,6 +31,7 @@ data class ActivityListCommonState(
 
     override fun copyWithStatus(status: UpdateStatusState): ActivityListCommonState =
         copy(status = status)
+
 }
 
 @HiltViewModel

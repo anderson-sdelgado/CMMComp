@@ -4,13 +4,16 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.PerformanceDao
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ItemMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.FunctionActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -48,6 +51,9 @@ class ISetIdActivityCommonTest {
 
     @Inject
     lateinit var functionActivityDao: FunctionActivityDao
+
+    @Inject
+    lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource
 
     @Before
     fun setUp() {
@@ -245,6 +251,326 @@ class ISetIdActivityCommonTest {
                 true
             )
         }
+
+    @Test
+    fun check_return_failure_if_equip_shared_preferences_is_empty_header_initial_reel_fert() =
+        runTest {
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idActivity = 1
+                )
+            )
+            val resultHeaderGetBefore = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetBefore.isSuccess,
+                true
+            )
+            val modelHeaderBefore = resultHeaderGetBefore.getOrNull()!!
+            assertEquals(
+                modelHeaderBefore.idActivity,
+                1
+            )
+            val resultNoteGetBefore = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetBefore.isSuccess,
+                true
+            )
+            val result = usecase(
+                id = 2,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IEquipRepository.getIdEquipMain -> IEquipSharedPreferencesDatasource.getId"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+            val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetAfter.isSuccess,
+                true
+            )
+            val modelHeaderAfter = resultHeaderGetAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                2
+            )
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetAfter.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun check_return_failure_if_header_moto_mec_room_is_empty_header_initial_reel_fert() =
+        runTest {
+            equipSharedPreferencesDatasource.save(
+                EquipSharedPreferencesModel(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "CAMINHAO",
+                    codTurnEquip = 1,
+                    idCheckList = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 10000.0,
+                    classify = 20,
+                    flagMechanic = false,
+                    flagTire = false
+                )
+            )
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idActivity = 1
+                )
+            )
+            val result = usecase(
+                id = 2,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.getIdHeaderByIdEquipAndNotFinish -> IHeaderMotoMecRoomDatasource.getIdByIdEquipAndNotFinish"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: Attempt to invoke virtual method 'java.lang.Integer br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel.getId()' on a null object reference"
+            )
+            val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetAfter.isSuccess,
+                true
+            )
+            val modelHeaderAfter = resultHeaderGetAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                2
+            )
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetAfter.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun check_return_failure_if_header_moto_mec_shared_preferences_has_missing_data_header_initial_reel_fert() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            equipSharedPreferencesDatasource.save(
+                EquipSharedPreferencesModel(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "CAMINHAO",
+                    codTurnEquip = 1,
+                    idCheckList = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 10000.0,
+                    classify = 20,
+                    flagMechanic = false,
+                    flagTire = false
+                )
+            )
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idActivity = 1
+                )
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val modelAfter = listAfter.first()
+            assertEquals(
+                modelAfter.idEquip,
+                10
+            )
+            val result = usecase(
+                id = 2,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ISetIdActivityCommon -> IMotoMecRepository.saveHeader -> entityToRoomModel"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException: regOperator is required"
+            )
+            val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetAfter.isSuccess,
+                true
+            )
+            val modelHeaderAfter = resultHeaderGetAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                2
+            )
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetAfter.isSuccess,
+                true
+            )
+            val listBefore = headerMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                1
+            )
+        }
+
+    @Test
+    fun check_return_FlowApp_HEADER_INITIAL_REEL_FERT_if_process_execute_success_header_initial_reel_fert() =
+        runTest {
+            headerMotoMecDao.insert(
+                HeaderMotoMecRoomModel(
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    statusCon = true,
+                    status = Status.OPEN
+                )
+            )
+            equipSharedPreferencesDatasource.save(
+                EquipSharedPreferencesModel(
+                    id = 10,
+                    nro = 2200,
+                    codClass = 1,
+                    descrClass = "CAMINHAO",
+                    codTurnEquip = 1,
+                    idCheckList = 2,
+                    typeEquip = TypeEquip.NORMAL,
+                    hourMeter = 10000.0,
+                    classify = 20,
+                    flagMechanic = false,
+                    flagTire = false
+                )
+            )
+            headerMotoMecSharedPreferencesDatasource.save(
+                HeaderMotoMecSharedPreferencesModel(
+                    idActivity = 1,
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.REEL_FERT,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    statusCon = true,
+                )
+            )
+            val listAfter = headerMotoMecDao.all()
+            assertEquals(
+                listAfter.size,
+                1
+            )
+            val modelAfter = listAfter.first()
+            assertEquals(
+                modelAfter.idEquip,
+                10
+            )
+            val result = usecase(
+                id = 2,
+                flowApp = FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                FlowApp.HEADER_INITIAL_REEL_FERT
+            )
+            val resultHeaderGetAfter = headerMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultHeaderGetAfter.isSuccess,
+                true
+            )
+            val modelHeaderAfter = resultHeaderGetAfter.getOrNull()!!
+            assertEquals(
+                modelHeaderAfter.idActivity,
+                2
+            )
+            val resultNoteGetAfter = itemMotoMecSharedPreferencesDatasource.get()
+            assertEquals(
+                resultNoteGetAfter.isSuccess,
+                true
+            )
+            val listBefore = headerMotoMecDao.all()
+            assertEquals(
+                listBefore.size,
+                2
+            )
+            val model1 = listBefore[0]
+            assertEquals(
+                model1,
+                HeaderMotoMecRoomModel(
+                    id = 1,
+                    regOperator = 19859,
+                    idEquip = 10,
+                    typeEquip = TypeEquip.NORMAL,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    idActivity = 1,
+                    hourMeterInitial = 10.0,
+                    statusCon = true,
+                    status = Status.OPEN
+                ).copy(
+                    dateHourInitial = model1.dateHourInitial,
+                )
+            )
+            val model2 = listBefore[1]
+            assertEquals(
+                model2,
+                HeaderMotoMecRoomModel(
+                    id = 2,
+                    hourMeterInitial = 0.0,
+                    status = Status.OPEN,
+                    idActivity = 2,
+                    regOperator = 19859,
+                    idEquip = 20,
+                    typeEquip = TypeEquip.REEL_FERT,
+                    idTurn = 1,
+                    nroOS = 123456,
+                    statusCon = true,
+                    idHeader = 1
+                ).copy(
+                    dateHourInitial = model2.dateHourInitial,
+                )
+            )
+        }
+
     @Test
     fun check_return_false_if_function_activity_have_transhipment_note_work() =
         runTest {

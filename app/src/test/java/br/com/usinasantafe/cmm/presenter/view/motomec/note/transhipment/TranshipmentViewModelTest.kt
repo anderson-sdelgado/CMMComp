@@ -329,7 +329,7 @@ class TranshipmentViewModelTest {
         }
 
     @Test
-    fun `setTextField - Check return false if not have reg in table`() =
+    fun `setTextField - Check return false if not have nroEquip in table`() =
         runTest {
             whenever(
                 hasEquipSecondary(

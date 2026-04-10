@@ -96,13 +96,12 @@
     <string name="text_title_performance">RENDIMENTO</string>
     <string name="text_title_os_value">OS: %1$s</string>
     <string name="text_msg_value_invalid">VALOR INFORMADO MAIS ALTO DO QUE O PERMITIDO PRA OS. VALOR VERIFIQUE O VALOR DIGITADO.</string>
-    <string name="text_close_performance_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RENDIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
+    <string name="text_msg_close_performance_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RENDIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
     <string name="text_title_nozzle">BOCAL</string>
     <string name="text_title_pressure">PRESSÃO</string>
     <string name="text_title_speed">VELOCIDADE</string>
     <string name="text_title_collection_list">RECOLHIMENTO(S)</string>
     <string name="text_msg_no_data_collection">NÃO CONTÉM RECOLHIMENTO ADICIONADO.</string>
-    <string name="text_close_collection_invalid">POR FAVOR, ADICIONE O(S) VALOR(ES) DE RECOLHIMENTO DE CADA \"OS\" PARA FECHAR O BOLETIM.</string>
     <string name="text_title_collection">RECOLHIMENTO</string>
     <string name="text_title_implement">IMPLEMENTO %1$s</string>
     <string name="text_msg_check_os">Checando se existe Itens de Manutenção da OS digitada na Base de Dados.</string>
@@ -113,4 +112,11 @@
     <string name="text_title_reel_list">CARRETEL(IS)</string>
     <string name="text_msg_no_data_list_reel">NÃO CONTÉM CARRETEL(IS) APONTADOS.</string>
     <string name="text_pattern_insert">INSERIR</string>
+    <string name="text_title_reel">CARRETEL</string>
+    <string name="text_msg_close_collection_invalid">POR FAVOR! ADICIONE VALORES DE RECOLHIMENTOS DE MANGUEIRAS EM TODAS O.S. PARA PODER ENCERRAR O BOLETIM!</string>
+    <string name="text_title_initial_menu_certificate">CERTIFICADO</string>
+    <string name="text_item_initial_pre_cec">APONTAR CERTIFICADO</string>
+    <string name="text_item_historical_pre_cec">HISTÓRICO DE VIAGEM</string>
+    <string name="text_item_historical_cec">HISTÓRICO DE CERTIFICADO</string>
+    <string name="text_blocked_access_certificated">É NECESSÁRIO A INSERÇÃO DO HORARIO DE SAÍDA DA USINA E/OU DE CHEGADA AO CAMPO.</string>
 </resources>

@@ -42,7 +42,7 @@ class ISetHourMeter @Inject constructor(
 
             if(flowApp == FlowApp.HEADER_INITIAL) {
                 val typeEquip = motoMecRepository.getTypeEquipHeader().getOrThrow()
-                if(typeEquip == TypeEquip.REEL_FERT) return@call FlowApp.REEL_FERT
+                if(typeEquip == TypeEquip.REEL_FERT) return@call FlowApp.NOTE_REEL_FERT
                 motoMecRepository.saveHeader(value).getOrThrow()
                 startWorkManager()
                 val check = checkOpenCheckList().getOrThrow()
@@ -53,8 +53,8 @@ class ISetHourMeter @Inject constructor(
             motoMecRepository.setHourMeterFinishHeader(value).getOrThrow()
 
             val id = motoMecRepository.getIdHeaderPointing().getOrThrow()
-            val check = performanceRepository.hasByIdHeader(id).getOrThrow()
-            if(check) return@call FlowApp.PERFORMANCE
+            val checkPerformance = performanceRepository.hasByIdHeader(id).getOrThrow()
+            if(checkPerformance) return@call FlowApp.PERFORMANCE
 
             motoMecRepository.finishHeader().getOrThrow()
 

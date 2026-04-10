@@ -61,9 +61,9 @@ class IFertigationRepository @Inject constructor(
             ).getOrThrow()
         }
 
-    override suspend fun hasCollectionByIdHeaderAndValueNull(idHeader: Int): Result<Boolean> =
+    override suspend fun hasCollectionByValueNull(): Result<Boolean> =
         call(getClassAndMethod()) {
-            collectionRoomDatasource.hasByIdHeaderAndValueNull(idHeader).getOrThrow()
+            collectionRoomDatasource.hasByValueNull().getOrThrow()
         }
 
     override suspend fun listCollectionByIdHeader(idHeader: Int): Result<List<Collection>> =

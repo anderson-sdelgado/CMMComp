@@ -12,6 +12,8 @@ import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonState
+import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonViewModel
 import br.com.usinasantafe.cmm.utils.percentage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf

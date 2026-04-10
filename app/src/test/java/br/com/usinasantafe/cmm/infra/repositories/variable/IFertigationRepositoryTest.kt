@@ -340,25 +340,25 @@ class IFertigationRepositoryTest {
         }
 
     @Test
-    fun `hasByIdHeaderAndValueNull - Check return failure if have error in CollectionRoomDatasource hasByIdHeaderAndValueNull`() =
+    fun `hasCollectionByValueNull - Check return failure if have error in CollectionRoomDatasource hasCollectionByIdHeaderListAndValueNull`() =
         runTest {
             whenever(
-                collectionRoomDatasource.hasByIdHeaderAndValueNull(1)
+                collectionRoomDatasource.hasByValueNull()
             ).thenReturn(
                 resultFailure(
-                    "ICollectionRoomDatasource.hasByIdHeaderAndValueNull",
+                    "ICollectionRoomDatasource.hasByValueNull",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.hasCollectionByIdHeaderAndValueNull(1)
+            val result = repository.hasCollectionByValueNull()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IFertigationRepository.hasCollectionByIdHeaderAndValueNull -> ICollectionRoomDatasource.hasByIdHeaderAndValueNull"
+                "IFertigationRepository.hasCollectionByValueNull -> ICollectionRoomDatasource.hasByValueNull"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -367,14 +367,14 @@ class IFertigationRepositoryTest {
         }
 
     @Test
-    fun `hasByIdHeaderAndValueNull - Check return correct if function execute successfully`() =
+    fun `hasByValueNull - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                collectionRoomDatasource.hasByIdHeaderAndValueNull(1)
+                collectionRoomDatasource.hasByValueNull()
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.hasCollectionByIdHeaderAndValueNull(1)
+            val result = repository.hasCollectionByValueNull()
             assertEquals(
                 result.isSuccess,
                 true

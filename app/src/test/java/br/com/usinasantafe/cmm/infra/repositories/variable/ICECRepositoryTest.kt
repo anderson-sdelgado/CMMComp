@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
@@ -69,7 +69,7 @@ class ICECRepositoryTest {
             )
             assertEquals(
                 result.getOrNull()!!,
-                PreCEC(
+                HeaderPreCEC(
                     libEquip = 1,
                     nroEquip = 2
                 )

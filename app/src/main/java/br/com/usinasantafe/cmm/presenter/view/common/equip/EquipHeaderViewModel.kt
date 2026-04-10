@@ -1,4 +1,4 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.header.equip
+package br.com.usinasantafe.cmm.presenter.view.common.equip
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

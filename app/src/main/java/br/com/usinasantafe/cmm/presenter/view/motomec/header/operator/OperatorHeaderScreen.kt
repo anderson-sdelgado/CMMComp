@@ -197,7 +197,7 @@ fun OperatorHeaderPagePreviewUpdate() {
                     flagFailure = false,
                     errors = Errors.FIELD_EMPTY,
                     levelUpdate = LevelUpdate.RECOVERY,
-                    tableUpdate = "colab",
+                    tableUpdate = "tb_colab",
                     flagProgress = true,
                     currentProgress = 0.3333334f,
                 ),

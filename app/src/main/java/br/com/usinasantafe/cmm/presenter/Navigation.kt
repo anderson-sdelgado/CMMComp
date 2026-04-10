@@ -18,9 +18,20 @@ import br.com.usinasantafe.cmm.presenter.Screens.STOP_LIST_NOTE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TURN_LIST_HEADER_SCREEN
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
+import br.com.usinasantafe.cmm.presenter.Screens.COLLECTION_LIST_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.COLLECTION_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.IMPLEMENTATION_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.INPUT_ITEM_MECHANIC_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.ITEM_LIST_MECHANIC_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.MOTOR_PUMP_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.NOZZLE_LIST_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.OS_MECHANIC_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.PERFORMANCE_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.PERFORMANCE_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.PRESSURE_LIST_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.REEL_LIST_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.REEL_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.SPEED_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TRANSHIPMENT_NOTE_SCREEN
 
 object Screens {
@@ -42,6 +53,17 @@ object Screens {
     const val PERFORMANCE_LIST_SCREEN = "performanceListScreen"
     const val PERFORMANCE_SCREEN = "performanceScreen"
     const val MOTOR_PUMP_SCREEN = "motorPumpScreen"
+    const val REEL_LIST_SCREEN = "reelListScreen"
+    const val REEL_SCREEN = "reelScreen"
+    const val COLLECTION_LIST_SCREEN = "collectionListScreen"
+    const val COLLECTION_SCREEN = "collectionScreen"
+    const val NOZZLE_LIST_SCREEN = "nozzleListScreen"
+    const val PRESSURE_LIST_SCREEN = "pressureListScreen"
+    const val SPEED_LIST_SCREEN = "speedListScreen"
+    const val IMPLEMENTATION_SCREEN = "implementationScreen"
+    const val OS_MECHANIC_SCREEN = "osMechanicScreen"
+    const val ITEM_LIST_MECHANIC_SCREEN = "itemListMechanicScreen"
+    const val INPUT_ITEM_MECHANIC_SCREEN = "inputItemMechanicScreen"
 }
 
 object Args {
@@ -68,6 +90,17 @@ object Routes {
     const val PERFORMANCE_LIST_ROUTE = "$PERFORMANCE_LIST_SCREEN/{$FLOW_APP_ARG}"
     const val PERFORMANCE_ROUTE = "$PERFORMANCE_SCREEN/{$FLOW_APP_ARG}/{$ID_ARG}"
     const val MOTOR_PUMP_ROUTE = MOTOR_PUMP_SCREEN
+    const val REEL_LIST_ROUTE = REEL_LIST_SCREEN
+    const val REEL_ROUTE = REEL_SCREEN
+    const val COLLECTION_LIST_ROUTE = "$COLLECTION_LIST_SCREEN/{$FLOW_APP_ARG}"
+    const val COLLECTION_ROUTE = "$COLLECTION_SCREEN/{$FLOW_APP_ARG}/{$ID_ARG}"
+    const val NOZZLE_LIST_ROUTE = NOZZLE_LIST_SCREEN
+    const val PRESSURE_LIST_ROUTE = PRESSURE_LIST_SCREEN
+    const val SPEED_LIST_ROUTE = SPEED_LIST_SCREEN
+    const val IMPLEMENTATION_ROUTE = IMPLEMENTATION_SCREEN
+    const val OS_MECHANIC_ROUTE = OS_MECHANIC_SCREEN
+    const val ITEM_LIST_MECHANIC_ROUTE = ITEM_LIST_MECHANIC_SCREEN
+    const val INPUT_ITEM_MECHANIC_ROUTE = INPUT_ITEM_MECHANIC_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -155,13 +188,13 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("$TRANSHIPMENT_NOTE_SCREEN/${flowApp}")
     }
 
-    fun navigatePerformanceList(
+    fun navigateToPerformanceList(
         flowApp: Int
     ) {
         navController.navigate("$PERFORMANCE_LIST_SCREEN/${flowApp}")
     }
 
-    fun navigatePerformance(
+    fun navigateToPerformance(
         flowApp: Int,
         id: Int
     ) {
@@ -181,5 +214,66 @@ class NavigationActions(private val navController: NavHostController) {
     }
 
     ////////////////////////////////////////////////////////////////////
+
+    /////////////////////// Reel Fertigation ///////////////////////////
+
+    fun navigateToReelList() {
+        navController.navigate(REEL_LIST_SCREEN)
+    }
+
+    fun navigateToReel() {
+        navController.navigate(REEL_SCREEN)
+    }
+
+    fun navigateToCollectionList(
+        flowApp: Int
+    ) {
+        navController.navigate("$COLLECTION_LIST_SCREEN/${flowApp}")
+    }
+
+    fun navigateToCollection(
+        flowApp: Int,
+        id: Int
+    ) {
+        navController.navigate("$COLLECTION_SCREEN/${flowApp}/{$id}")
+    }
+
+    fun navigateToNozzleList() {
+        navController.navigate(NOZZLE_LIST_SCREEN)
+    }
+
+    fun navigateToPressureList() {
+        navController.navigate(PRESSURE_LIST_SCREEN)
+    }
+
+    fun navigateToSpeedList() {
+        navController.navigate(SPEED_LIST_SCREEN)
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    ////////////////////////// Implement //////////////////////////////
+
+    fun navigateToImplement() {
+        navController.navigate(IMPLEMENTATION_SCREEN)
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    ////////////////////////// Mechanic ///////////////////////////////
+
+    fun navigateToOSMechanic() {
+        navController.navigate(OS_MECHANIC_SCREEN)
+    }
+
+    fun navigateToItemListMechanic() {
+        navController.navigate(ITEM_LIST_MECHANIC_SCREEN)
+    }
+
+    fun navigateToInputItemMechanic() {
+        navController.navigate(INPUT_ITEM_MECHANIC_SCREEN)
+    }
+
+    ///////////////////////////////////////////////////////////////////
 
 }

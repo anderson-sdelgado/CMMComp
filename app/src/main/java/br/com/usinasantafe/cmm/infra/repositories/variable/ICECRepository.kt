@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.infra.repositories.variable
 
-import br.com.usinasantafe.cmm.domain.entities.variable.PreCEC
+import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
@@ -15,7 +15,7 @@ class ICECRepository @Inject constructor(
     private val preCECSharedPreferencesDatasource: PreCECSharedPreferencesDatasource,
     private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
 ): CECRepository {
-    override suspend fun get(): Result<PreCEC> =
+    override suspend fun get(): Result<HeaderPreCEC> =
         call(getClassAndMethod()) {
             preCECSharedPreferencesDatasource.get()
                 .getOrThrow()

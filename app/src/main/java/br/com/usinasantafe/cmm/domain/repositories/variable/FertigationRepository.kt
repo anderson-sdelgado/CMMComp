@@ -11,7 +11,7 @@ interface FertigationRepository {
     suspend fun getValuePressure(): Result<Double>
     suspend fun setSpeedPressure(speed: Int): EmptyResult
     suspend fun initialCollection(nroOS: Int, idHeader: Int): Result<Unit>
-    suspend fun hasCollectionByIdHeaderAndValueNull(idHeader: Int): Result<Boolean>
+    suspend fun hasCollectionByValueNull(): Result<Boolean>
     suspend fun listCollectionByIdHeader(idHeader: Int): Result<List<Collection>>
     suspend fun updateCollection(id: Int, value: Double): EmptyResult
 }

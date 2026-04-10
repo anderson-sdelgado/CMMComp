@@ -51,17 +51,13 @@ fun CollectionListFertigationScreen(
             }
 
             CollectionListFertigationContent(
-                flowApp = uiState.flowApp,
                 list = uiState.list,
-                checkClose = viewModel::checkClose,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagAccess = uiState.flagAccess,
                 flagDialog = uiState.flagDialog,
                 failure = uiState.failure,
                 errors = uiState.errors,
                 onNavMenuNote = onNavMenuNote,
                 onNavCollection = onNavCollection,
-                onNavSplash = onNavSplash,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -70,17 +66,13 @@ fun CollectionListFertigationScreen(
 
 @Composable
 fun CollectionListFertigationContent(
-    flowApp: FlowApp,
     list: List<ItemValueOSScreenModel>,
-    checkClose: () -> Unit,
     setCloseDialog: () -> Unit,
-    flagAccess: Boolean,
     flagDialog: Boolean,
     failure: String,
     errors: Errors,
     onNavMenuNote: () -> Unit,
     onNavCollection: (id: Int) -> Unit,
-    onNavSplash: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -128,21 +120,11 @@ fun CollectionListFertigationContent(
                 }
             }
         }
-        if (flowApp == FlowApp.HEADER_FINISH) {
-            ButtonMaxWidth(R.string.text_button_finish_header) { checkClose() }
-            Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        }
         ButtonMaxWidth(R.string.text_pattern_return) { onNavMenuNote() }
         BackHandler {}
 
         if (flagDialog) {
             MsgErrors(errors, setCloseDialog, failure)
-        }
-
-        LaunchedEffect(flagAccess) {
-            if (flagAccess) {
-                onNavSplash()
-            }
         }
 
     }
@@ -154,17 +136,13 @@ fun CollectionListFertigationPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CollectionListFertigationContent(
-                flowApp = FlowApp.REEL_FERT,
                 list = emptyList(),
-                checkClose = {},
                 setCloseDialog = {},
-                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 errors = Errors.FIELD_EMPTY,
                 onNavMenuNote = {},
                 onNavCollection = {},
-                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -177,7 +155,6 @@ fun CollectionListFertigationPagePreviewWithData() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CollectionListFertigationContent(
-                flowApp = FlowApp.REEL_FERT,
                 list = listOf(
                     ItemValueOSScreenModel(
                         id = 1,
@@ -190,15 +167,12 @@ fun CollectionListFertigationPagePreviewWithData() {
                         value = 10.0
                     )
                 ),
-                checkClose = {},
                 setCloseDialog = {},
-                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 errors = Errors.FIELD_EMPTY,
                 onNavMenuNote = {},
                 onNavCollection = {},
-                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -211,7 +185,6 @@ fun CollectionListFertigationPagePreviewWithDataAndButtonFinish() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CollectionListFertigationContent(
-                flowApp = FlowApp.HEADER_FINISH,
                 list = listOf(
                     ItemValueOSScreenModel(
                         id = 1,
@@ -224,15 +197,12 @@ fun CollectionListFertigationPagePreviewWithDataAndButtonFinish() {
                         value = 10.0
                     )
                 ),
-                checkClose = {},
                 setCloseDialog = {},
-                flagAccess = false,
                 flagDialog = false,
                 failure = "",
                 errors = Errors.FIELD_EMPTY,
                 onNavMenuNote = {},
                 onNavCollection = {},
-                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -245,7 +215,6 @@ fun CollectionListFertigationPagePreviewFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CollectionListFertigationContent(
-                flowApp = FlowApp.HEADER_FINISH,
                 list = listOf(
                     ItemValueOSScreenModel(
                         id = 1,
@@ -259,14 +228,11 @@ fun CollectionListFertigationPagePreviewFailure() {
                     )
                 ),
                 setCloseDialog = {},
-                checkClose = {},
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
                 errors = Errors.EXCEPTION,
                 onNavMenuNote = {},
                 onNavCollection = {},
-                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -279,7 +245,6 @@ fun CollectionListFertigationPagePreviewInvalid() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             CollectionListFertigationContent(
-                flowApp = FlowApp.HEADER_FINISH,
                 list = listOf(
                     ItemValueOSScreenModel(
                         id = 1,
@@ -293,14 +258,11 @@ fun CollectionListFertigationPagePreviewInvalid() {
                     )
                 ),
                 setCloseDialog = {},
-                checkClose = {},
-                flagAccess = false,
                 flagDialog = true,
                 failure = "Failure",
                 errors = Errors.INVALID_CLOSE_COLLECTION,
                 onNavMenuNote = {},
                 onNavCollection = {},
-                onNavSplash = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
