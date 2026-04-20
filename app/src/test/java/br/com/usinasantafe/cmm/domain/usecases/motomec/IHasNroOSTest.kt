@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.entities.stable.ROSActivity
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
 import br.com.usinasantafe.cmm.utils.CheckNetwork
@@ -23,12 +24,14 @@ class IHasNroOSTest {
     private val rOSActivityRepository = mock<ROSActivityRepository>()
     private val getToken = mock<GetToken>()
     private val motoMecRepository = mock<MotoMecRepository>()
+    private val configRepository = mock<ConfigRepository>()
     private val usecase = IHasNroOS(
         checkNetwork = checkNetwork,
         osRepository = osRepository,
         rOSActivityRepository = rOSActivityRepository,
         getToken = getToken,
-        motoMecRepository = motoMecRepository
+        motoMecRepository = motoMecRepository,
+        configRepository = configRepository
     )
 
     @Test
@@ -484,11 +487,10 @@ class IHasNroOSTest {
                     listOf(
                         OS(
                             idOS = 1,
-                            idEquip = 1,
                             idPropAgr = 1,
                             areaOS = 0.0,
                             nroOS = 123456,
-                            idLibOS = 1
+                            idReleaseOS = 1
                         )
                     )
                 )
@@ -551,11 +553,10 @@ class IHasNroOSTest {
                     listOf(
                         OS(
                             idOS = 1,
-                            idEquip = 1,
                             idPropAgr = 1,
                             areaOS = 0.0,
                             nroOS = 123456,
-                            idLibOS = 1
+                            idReleaseOS = 1
                         )
                     )
                 )
@@ -612,11 +613,10 @@ class IHasNroOSTest {
                     listOf(
                         OS(
                             idOS = 1,
-                            idEquip = 1,
                             idPropAgr = 1,
                             areaOS = 0.0,
                             nroOS = 1,
-                            idLibOS = 1
+                            idReleaseOS = 1
                         )
                     )
                 )
@@ -646,11 +646,10 @@ class IHasNroOSTest {
                 osRepository.add(
                     OS(
                         idOS = 1,
-                        idEquip = 1,
                         idPropAgr = 1,
                         areaOS = 0.0,
                         nroOS = 1,
-                        idLibOS = 1
+                        idReleaseOS = 1
                     )
                 )
             ).thenReturn(
@@ -706,11 +705,10 @@ class IHasNroOSTest {
                     listOf(
                         OS(
                             idOS = 1,
-                            idEquip = 1,
                             idPropAgr = 1,
                             areaOS = 0.0,
                             nroOS = 1,
-                            idLibOS = 1
+                            idReleaseOS = 1
                         )
                     )
                 )
@@ -740,11 +738,10 @@ class IHasNroOSTest {
                 osRepository.add(
                     OS(
                         idOS = 1,
-                        idEquip = 1,
                         idPropAgr = 1,
                         areaOS = 0.0,
                         nroOS = 1,
-                        idLibOS = 1
+                        idReleaseOS = 1
                     )
                 )
             ).thenReturn(
@@ -818,11 +815,10 @@ class IHasNroOSTest {
                     listOf(
                         OS(
                             idOS = 1,
-                            idEquip = 1,
                             idPropAgr = 1,
                             areaOS = 0.0,
                             nroOS = 1,
-                            idLibOS = 1
+                            idReleaseOS = 1
                         )
                     )
                 )
@@ -852,11 +848,10 @@ class IHasNroOSTest {
                 osRepository.add(
                     OS(
                         idOS = 1,
-                        idEquip = 1,
                         idPropAgr = 1,
                         areaOS = 0.0,
                         nroOS = 1,
-                        idLibOS = 1
+                        idReleaseOS = 1
                     )
                 )
             ).thenReturn(

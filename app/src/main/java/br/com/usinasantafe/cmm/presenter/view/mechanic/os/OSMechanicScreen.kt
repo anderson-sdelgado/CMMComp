@@ -17,18 +17,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
 import br.com.usinasantafe.cmm.lib.Errors
-import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.lib.errors
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressIndeterminateDesign
-import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
-import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.presenter.theme.Progress
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
@@ -95,7 +90,7 @@ fun OSMechanicContent(
         }
 
         if (status.flagProgress) {
-            ProgressUpdate(status)
+            Progress(status)
         }
 
     }

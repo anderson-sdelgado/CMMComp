@@ -1,8 +1,9 @@
-package br.com.usinasantafe.cmm.domain.usecases.motomec
+package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.usecases.motomec.SaveNote
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -33,7 +34,7 @@ class ISetIdActivityCommon @Inject constructor(
         call(getClassAndMethod()) {
 
             motoMecRepository.setIdActivityHeader(id).getOrThrow()
-            if((flowApp == FlowApp.HEADER_INITIAL) || (flowApp == FlowApp.NOTE_STOP)) return@call flowApp
+            if((flowApp == FlowApp.HEADER_INITIAL) || (flowApp == FlowApp.NOTE_STOP) || (flowApp == FlowApp.PRE_CEC)) return@call flowApp
 
             if(flowApp == FlowApp.HEADER_INITIAL_REEL_FERT){
                 val idEquip = equipRepository.getIdEquipMain().getOrThrow()

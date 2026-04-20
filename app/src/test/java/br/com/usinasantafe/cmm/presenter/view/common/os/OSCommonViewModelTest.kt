@@ -1,16 +1,18 @@
-package br.com.usinasantafe.cmm.presenter.view.motomec.common.os
+package br.com.usinasantafe.cmm.presenter.view.common.os
 
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.MainCoroutineRule
+import br.com.usinasantafe.cmm.domain.usecases.config.GetApp
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableOS
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableROSActivity
 import br.com.usinasantafe.cmm.presenter.Args
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeButton
-import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -29,6 +31,9 @@ class OSCommonViewModelTest {
     private val hasNroOS = mock<HasNroOS>()
     private val setNroOS = mock<SetNroOS>()
     private val getNroOSHeader = mock<GetNroOSHeader>()
+    private val getApp = mock<GetApp>()
+    private val updateTableOS = mock<UpdateTableOS>()
+    private val updateTableROSActivity = mock<UpdateTableROSActivity>()
     private fun createViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(
             mapOf(
@@ -39,7 +44,10 @@ class OSCommonViewModelTest {
         savedStateHandle,
         hasNroOS = hasNroOS,
         setNroOS = setNroOS,
-        getNroOSHeader = getNroOSHeader
+        getNroOSHeader = getNroOSHeader,
+        getApp = getApp,
+        updateTableOS = updateTableOS,
+        updateTableROSActivity = updateTableROSActivity
     )
 
     @Test
@@ -92,11 +100,11 @@ class OSCommonViewModelTest {
             TypeButton.OK
         )
         assertEquals(
-            viewModel.uiState.value.flagDialog,
+            viewModel.uiState.value.status.flagDialog,
             true
         )
         assertEquals(
-            viewModel.uiState.value.errors,
+            viewModel.uiState.value.status.errors,
             Errors.FIELD_EMPTY
         )
     }
@@ -126,19 +134,19 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OSCommonViewModel.setTextField -> OSCommonViewModel.validateAndSet -> OSCommonViewModel.setNroOS -> ICheckNroOS -> java.lang.Exception"
+                viewModel.uiState.value.status.failure,
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.set -> ICheckNroOS -> java.lang.Exception"
                 )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
         }
@@ -164,15 +172,15 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.INVALID
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -213,19 +221,19 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OSCommonViewModel.setTextField -> OSCommonViewModel.validateAndSet -> OSCommonViewModel.setNroOS -> ISetNroOS -> java.lang.Exception"
+                viewModel.uiState.value.status.failure,
+                "OSCommonViewModel.setTextField -> OSCommonViewModel.set -> ISetNroOS -> java.lang.Exception"
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
         }
@@ -256,11 +264,11 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 false
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
                 )
             assertEquals(
@@ -282,8 +290,7 @@ class OSCommonViewModelTest {
             )
             whenever(
                 setNroOS(
-                    nroOS = "123456",
-                    flowApp = FlowApp.NOTE_WORK
+                    nroOS = "123456"
                 )
             ).thenReturn(
                 Result.success(Unit)
@@ -304,11 +311,11 @@ class OSCommonViewModelTest {
                 TypeButton.OK
             )
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 false
             )
             assertEquals(
-                viewModel.uiState.value.flagProgress,
+                viewModel.uiState.value.status.flagProgress,
                 false
             )
             assertEquals(
@@ -318,7 +325,7 @@ class OSCommonViewModelTest {
         }
 
     @Test
-    fun `getNroOS - Check return failure if have error in GetNroOSHeader`() =
+    fun `start - Check return failure if have error in GetNroOSHeader`() =
         runTest {
             whenever(
                 getNroOSHeader()
@@ -336,23 +343,23 @@ class OSCommonViewModelTest {
                     )
                 )
             )
-            viewModel.get()
+            viewModel.start()
             assertEquals(
-                viewModel.uiState.value.flagDialog,
+                viewModel.uiState.value.status.flagDialog,
                 true
             )
             assertEquals(
-                viewModel.uiState.value.errors,
+                viewModel.uiState.value.status.errors,
                 Errors.EXCEPTION
             )
             assertEquals(
-                viewModel.uiState.value.failure,
-                "OSCommonViewModel.getNroOS -> IGetNroOSHeader -> java.lang.Exception"
+                viewModel.uiState.value.status.failure,
+                "OSCommonViewModel.start -> IGetNroOSHeader -> java.lang.Exception"
             )
         }
 
     @Test
-    fun `getNrOS - Check return correct if function execute successfully`() =
+    fun `start - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 getNroOSHeader()
@@ -366,7 +373,7 @@ class OSCommonViewModelTest {
                     )
                 )
             )
-            viewModel.get()
+            viewModel.start()
             assertEquals(
                 viewModel.uiState.value.nroOS,
                 "10000"

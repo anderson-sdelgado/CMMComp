@@ -9,6 +9,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.EquipMainRetrofitMod
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelInput
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.ConfigRetrofitModelOutput
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -68,7 +69,7 @@ class IConfigRepositoryTest {
                         checkMotoMec = true,
                         idServ = 1,
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         statusSend = StatusSend.SENT
                     )
                 )
@@ -146,7 +147,7 @@ class IConfigRepositoryTest {
                 number = 16997417840,
                 nroEquip = 310,
                 version = "1.00",
-                app = "PMM"
+                app = App.PMM,
             )
             whenever(
                 configRetrofitDatasource.recoverToken(
@@ -203,7 +204,7 @@ class IConfigRepositoryTest {
                 number = 16997417840,
                 nroEquip = 310,
                 version = "1.00",
-                app = "PMM"
+                app = App.PMM,
             )
             whenever(
                 configRetrofitDatasource.recoverToken(
@@ -247,7 +248,7 @@ class IConfigRepositoryTest {
                         number = 16997417840,
                         password = "12345",
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         checkMotoMec = false,
                         idServ = 1
                     )
@@ -264,7 +265,7 @@ class IConfigRepositoryTest {
                     number = 16997417840,
                     password = "12345",
                     version = "1.00",
-                    app = "PMM",
+                    app = App.PMM,
                     nroEquip = 310,
                     checkMotoMec = false,
                     idServ = 1
@@ -294,7 +295,7 @@ class IConfigRepositoryTest {
                         password = "12345",
                         checkMotoMec = true,
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         idServ = 1,
                     )
                 )
@@ -307,7 +308,7 @@ class IConfigRepositoryTest {
                     password = "12345",
                     checkMotoMec = true,
                     version = "1.00",
-                    app = "PMM",
+                    app = App.PMM,
                     idServ = 1,
                     nroEquip = 310,
                 )

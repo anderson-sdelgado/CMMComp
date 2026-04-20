@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -28,7 +29,7 @@ class ISaveDataConfigTest {
                 number = "16997417840a",
                 password = "12345",
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 checkMotoMec = false,
                 idServ = 1,
                 equip = Equip(
@@ -68,7 +69,7 @@ class ISaveDataConfigTest {
                         number = 16997417840,
                         password = "12345",
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         checkMotoMec = false,
                         idServ = 1,
                     )
@@ -84,7 +85,7 @@ class ISaveDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 checkMotoMec = false,
                 idServ = 1,
                 equip = Equip(
@@ -124,7 +125,7 @@ class ISaveDataConfigTest {
                         number = 16997417840,
                         password = "12345",
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         nroEquip = 310,
                         checkMotoMec = false,
                         idServ = 1,
@@ -160,7 +161,7 @@ class ISaveDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 checkMotoMec = false,
                 idServ = 1,
                 equip = Equip(
@@ -200,7 +201,7 @@ class ISaveDataConfigTest {
                         number = 16997417840,
                         password = "12345",
                         version = "1.00",
-                        app = "PMM",
+                        app = App.PMM,
                         nroEquip = 310,
                         checkMotoMec = false,
                         idServ = 1
@@ -232,7 +233,7 @@ class ISaveDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 checkMotoMec = false,
                 idServ = 1,
                 equip = Equip(

@@ -79,4 +79,12 @@ interface UpdateModule {
     @Singleton
     fun bindUpdateTableItemOSMechanic(usecase: IUpdateTableItemOSMechanicByIdEquipAndNroOS): UpdateTableItemOSMechanicByIdEquipAndNroOS
 
+    @Binds
+    @Singleton
+    fun bindUpdateTableOS(usecase: IUpdateTableOS): UpdateTableOS
+
+    @Binds
+    @Singleton
+    fun bindUpdateTableROSActivity(usecase: IUpdateTableROSActivity): UpdateTableROSActivity
+
 }

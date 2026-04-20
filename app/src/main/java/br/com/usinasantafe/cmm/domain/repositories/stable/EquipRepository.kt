@@ -13,6 +13,7 @@ interface EquipRepository {
     suspend fun saveEquipMain(entity: Equip): EmptyResult
     suspend fun getIdEquipMain(): Result<Int>
     suspend fun getNroEquipMain(): Result<Long>
+    suspend fun getCodClass(): Result<Int>
     suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String>

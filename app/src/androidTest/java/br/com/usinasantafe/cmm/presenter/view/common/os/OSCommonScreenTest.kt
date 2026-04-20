@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.presenter.view.common.os
 
+import android.annotation.SuppressLint
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -8,13 +9,17 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.lifecycle.SavedStateHandle
 import br.com.usinasantafe.cmm.HiltTestActivity
+import br.com.usinasantafe.cmm.domain.usecases.config.GetApp
 import br.com.usinasantafe.cmm.domain.usecases.motomec.SetNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.HasNroOS
 import br.com.usinasantafe.cmm.domain.usecases.motomec.GetNroOSHeader
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableOS
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableROSActivity
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -49,6 +54,15 @@ class OSCommonScreenTest {
 
     @Inject
     lateinit var getNroOSHeader: GetNroOSHeader
+
+    @Inject
+    lateinit var getApp: GetApp
+
+    @Inject
+    lateinit var updateTableOS: UpdateTableOS
+
+    @Inject
+    lateinit var updateTableROSActivity: UpdateTableROSActivity
 
     @Test
     fun check_open() =
@@ -134,6 +148,7 @@ class OSCommonScreenTest {
         }
 
 
+    @SuppressLint("ViewModelConstructorInComposable")
     private fun setContent(
         flowApp: FlowApp = FlowApp.HEADER_INITIAL
     ) {
@@ -147,7 +162,10 @@ class OSCommonScreenTest {
                     ),
                     hasNroOS = hasNroOS,
                     setNroOS = setNroOS,
-                    getNroOSHeader = getNroOSHeader
+                    getNroOSHeader = getNroOSHeader,
+                    getApp = getApp,
+                    updateTableOS = updateTableOS,
+                    updateTableROSActivity = updateTableROSActivity
                 ),
                 onNavTurn = {},
                 onNavActivityList = {},
@@ -167,7 +185,7 @@ class OSCommonScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

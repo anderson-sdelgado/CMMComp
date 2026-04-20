@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.variable.entityToRetrofitMo
 import br.com.usinasantafe.cmm.infra.models.retrofit.variable.retrofitToEntity
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.entityToSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -80,5 +81,9 @@ class IConfigRepository @Inject constructor(
         call(getClassAndMethod()) {
             configSharedPreferencesDatasource.getDateCheckListLast().getOrThrow()
         }
+
+    override suspend fun getApp(): Result<App> {
+        TODO("Not yet implemented")
+    }
 
 }

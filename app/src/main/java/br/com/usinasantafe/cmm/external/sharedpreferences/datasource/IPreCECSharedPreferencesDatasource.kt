@@ -50,6 +50,13 @@ class IPreCECSharedPreferencesDatasource @Inject constructor(
             save(model).getOrThrow()
         }
 
+    override suspend fun setNroEquip(nroEquip: Long): EmptyResult =
+        result(getClassAndMethod()) {
+            val model = get().getOrThrow()
+            model.nroEquip = nroEquip
+            save(model).getOrThrow()
+        }
+
     suspend fun save(model: PreCECSharedPreferencesModel): EmptyResult =
         result(getClassAndMethod()) {
             sharedPreferences.edit {

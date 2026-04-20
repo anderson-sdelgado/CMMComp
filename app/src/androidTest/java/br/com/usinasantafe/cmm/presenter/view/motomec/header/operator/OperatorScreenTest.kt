@@ -12,6 +12,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.ColabDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.ColabRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -225,7 +226,7 @@ class OperatorScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

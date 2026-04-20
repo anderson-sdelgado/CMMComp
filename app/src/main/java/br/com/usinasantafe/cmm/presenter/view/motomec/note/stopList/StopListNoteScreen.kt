@@ -36,7 +36,7 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.presenter.model.ItemDefaultScreenModel
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
-import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.presenter.theme.Progress
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 const val TAG_FILTER_TEXT_FIELD_STOP_LIST_SCREEN = "tag_filter_text_field_stop_list_screen"
@@ -161,7 +161,7 @@ fun StopListNoteContent(
         }
 
         if (status.flagProgress) {
-            ProgressUpdate(status)
+            Progress(status)
         }
 
     }

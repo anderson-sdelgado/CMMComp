@@ -55,6 +55,11 @@ class IEquipRepository @Inject constructor(
             equipSharedPreferencesDatasource.getNro().getOrThrow()
         }
 
+    override suspend fun getCodClass(): Result<Int> =
+        call(getClassAndMethod()) {
+            equipSharedPreferencesDatasource.getCodClass().getOrThrow()
+        }
+
     override suspend fun getDescrByIdEquip(
         idEquip: Int
     ): Result<String> =

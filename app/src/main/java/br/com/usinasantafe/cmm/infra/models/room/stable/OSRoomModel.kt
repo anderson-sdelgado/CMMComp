@@ -10,10 +10,9 @@ data class OSRoomModel (
     @PrimaryKey
     val idOS: Int,
     val nroOS: Int,
-    val idLibOS: Int,
-    val idPropAgr: Int,
-    val areaOS: Double,
-    val idEquip: Int,
+    val idReleaseOS: Int? = null,
+    val idPropAgr: Int? = null,
+    val areaOS: Double? = null,
 )
 
 fun OSRoomModel.roomModelToEntity(): OS {
@@ -21,10 +20,9 @@ fun OSRoomModel.roomModelToEntity(): OS {
         OS(
             idOS = this.idOS,
             nroOS = this.nroOS,
-            idLibOS = this.idLibOS,
+            idReleaseOS = this.idReleaseOS,
             idPropAgr = this.idPropAgr,
-            areaOS = this.areaOS,
-            idEquip = this.idEquip
+            areaOS = this.areaOS
         )
     }
 }
@@ -34,10 +32,9 @@ fun OS.entityToRoomModel(): OSRoomModel {
         OSRoomModel(
             idOS = this.idOS,
             nroOS = this.nroOS,
-            idLibOS = this.idLibOS,
+            idReleaseOS = this.idReleaseOS,
             idPropAgr = this.idPropAgr,
-            areaOS = this.areaOS,
-            idEquip = this.idEquip
+            areaOS = this.areaOS
         )
     }
 }

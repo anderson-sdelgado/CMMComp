@@ -17,6 +17,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_NO_ALERT_DIALOG_CHECK
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
@@ -244,7 +245,7 @@ class HeaderFinishFlowTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

@@ -18,19 +18,22 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableNozzle
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableOS
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTablePressure
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableROSActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.model.ConfigModel
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.lib.TypeEquip
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -68,14 +71,10 @@ class ConfigViewModelTest {
     private val updateTableService = mock<UpdateTableService>()
     private val updateTableNozzle = mock<UpdateTableNozzle>()
     private val updateTablePressure = mock<UpdateTablePressure>()
+    private val updateTableOS = mock<UpdateTableOS>()
+    private val updateTableROSActivity = mock<UpdateTableROSActivity>()
     private val setFinishUpdateAllTable = mock<SetFinishUpdateAllTable>()
-    private val sizeAll = (QTD_TABLE * 3) + 1f
-    private val tableList = listOf(
-        "tb_activity", "tb_colab", "tb_component", "tb_equip", "tb_function_activity",
-        "tb_function_stop", "tb_item_check_list", "tb_item_menu", "tb_nozzle", "tb_pressure",
-        "tb_r_activity_stop", "tb_r_equip_activity", "tb_r_item_menu_stop", "tb_service",
-        "tb_stop", "tb_turn"
-    )
+    private var tableList = mutableListOf<String>()
 
     private val viewModel = ConfigViewModel(
         getConfigInternal = getConfigInternal,
@@ -97,7 +96,9 @@ class ConfigViewModelTest {
         updateTableService = updateTableService,
         updateTableNozzle = updateTableNozzle,
         updateTablePressure = updateTablePressure,
-        setFinishUpdateAllTable = setFinishUpdateAllTable
+        setFinishUpdateAllTable = setFinishUpdateAllTable,
+        updateTableOS = updateTableOS,
+        updateTableROSActivity = updateTableROSActivity
     )
 
     @Test
@@ -236,7 +237,7 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00"
                 )
             ).thenReturn(
@@ -261,8 +262,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.GET_TOKEN,
@@ -276,8 +278,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         errors = Errors.TOKEN,
                         flagDialog = true,
@@ -302,7 +305,7 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00"
                 )
             ).thenReturn(
@@ -329,7 +332,7 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
                     checkMotoMec = true,
                     idServ = 1,
@@ -369,8 +372,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.GET_TOKEN,
@@ -384,8 +388,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE_TOKEN,
@@ -399,8 +404,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         errors = Errors.TOKEN,
                         flagDialog = true,
@@ -425,7 +431,7 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00"
                 )
             ).thenReturn(
@@ -452,7 +458,7 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
                     checkMotoMec = true,
                     idServ = 1,
@@ -488,8 +494,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.GET_TOKEN,
@@ -503,8 +510,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.SAVE_TOKEN,
@@ -518,8 +526,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagProgress = true,
                         levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
@@ -535,7 +544,7 @@ class ConfigViewModelTest {
             val qtdBefore = 0f
             whenever(
                 updateTableActivity(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -544,7 +553,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -566,7 +575,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -591,7 +600,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableColab(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -600,7 +609,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -623,7 +632,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_colab",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -648,7 +657,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableComponent(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -657,7 +666,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_component",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -680,7 +689,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_component",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -705,7 +714,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableEquip(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -714,7 +723,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -737,7 +746,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_equip",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -762,7 +771,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableFunctionActivity(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -771,7 +780,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         flagProgress = true,
@@ -795,7 +804,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -820,7 +829,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableFunctionStop(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -829,7 +838,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -852,7 +861,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_function_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -877,7 +886,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableItemCheckListByNroEquip(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -886,7 +895,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         flagProgress = true,
@@ -910,7 +919,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_check_list",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -935,7 +944,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableItemMenu(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -944,7 +953,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -967,7 +976,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_item_menu",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -992,7 +1001,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableNozzle(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1001,7 +1010,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_nozzle",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1024,7 +1033,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_nozzle",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1049,7 +1058,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTablePressure(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1058,7 +1067,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_pressure",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1081,7 +1090,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_pressure",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1106,7 +1115,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRActivityStop(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1115,7 +1124,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1138,7 +1147,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_activity_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1163,7 +1172,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableREquipActivityByIdEquip(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1172,7 +1181,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1195,7 +1204,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_equip_activity",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1219,7 +1228,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableRItemMenuStop(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1228,7 +1237,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1251,7 +1260,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_r_item_menu_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1275,7 +1284,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableService(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1284,7 +1293,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_service",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1),viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1307,7 +1316,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_service",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1331,7 +1340,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableStop(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1340,7 +1349,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1363,7 +1372,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_stop",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1387,7 +1396,7 @@ class ConfigViewModelTest {
             wheneverSuccess(qtdBefore)
             whenever(
                 updateTableTurn(
-                    sizeAll = sizeAll,
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
                     count = (qtdBefore + 1)
                 )
             ).thenReturn(
@@ -1396,7 +1405,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     ),
                     UpdateStatusState(
                         errors = Errors.UPDATE,
@@ -1419,7 +1428,7 @@ class ConfigViewModelTest {
                         flagProgress = true,
                         levelUpdate = LevelUpdate.RECOVERY,
                         tableUpdate = "tb_turn",
-                        currentProgress = percentage(((qtdBefore * 3) + 1), sizeAll)
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
                     )
                 )
             )
@@ -1437,14 +1446,169 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return failure if have error in SetCheckUpdateAllTable`() =
+    fun `update - Check updateAllDatabase execute correctly - PMM`() =
+        runTest {
+            val qtdBefore = 16f
+            wheneverSuccess(qtdBefore)
+            val result = viewModel.updateAllDatabase().toList()
+            val qtd = sizeUpdate(qtdBefore) - 1f
+            assertEquals(
+                result.count(),
+                qtd.toInt()
+            )
+            checkResultUpdate(qtdBefore, result)
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableOS - ECM`() =
+        runTest {
+            val qtdBefore = 16f
+            viewModel.setConfigMain("1.00", "ECM")
+            wheneverSuccess(qtdBefore)
+            whenever(
+                updateTableOS(
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_os",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
+                    ),
+                    UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanOS -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateECM(qtdBefore, result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_os",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
+                    )
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanOS -> java.lang.NullPointerException",
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return failure if have error in UpdateTableROSActivity - ECM`() =
+        runTest {
+            val qtdBefore = 17f
+            viewModel.setConfigMain("1.00", "ECM")
+            wheneverSuccess(qtdBefore)
+            whenever(
+                updateTableROSActivity(
+                    sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable),
+                    count = (qtdBefore + 1)
+                )
+            ).thenReturn(
+                flowOf(
+                    UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_os_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
+                    ),
+                    UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "CleanROSActivity -> java.lang.NullPointerException",
+                    )
+                )
+            )
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((qtdBefore * 3) + 2).toInt()
+            )
+            checkResultUpdateECM(qtdBefore, result)
+            assertEquals(
+                result[(qtdBefore * 3).toInt()],
+                ConfigState(
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        flagProgress = true,
+                        levelUpdate = LevelUpdate.RECOVERY,
+                        tableUpdate = "tb_r_os_activity",
+                        currentProgress = percentage(((qtdBefore * 3) + 1), viewModel.uiState.value.qtdTable)
+                    )
+                )
+            )
+            assertEquals(
+                result[((qtdBefore * 3) + 1).toInt()],
+                ConfigState(
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        errors = Errors.UPDATE,
+                        flagDialog = true,
+                        flagFailure = true,
+                        failure = "ConfigViewModel.updateAllDatabase -> CleanROSActivity -> java.lang.NullPointerException",
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check updateAllDatabase execute correctly - ECM`() =
+        runTest {
+            val qtdBefore = 18f
+            viewModel.setConfigMain("1.00", "ECM")
+            wheneverSuccess(qtdBefore)
+            val result = viewModel.updateAllDatabase().toList()
+            val qtd = sizeUpdate(qtdBefore) - 1f
+            assertEquals(
+                result.count(),
+                qtd.toInt()
+            )
+            checkResultUpdateECM(qtdBefore, result)
+        }
+
+    @Test
+    fun `update - Check return failure if have error in SetCheckUpdateAllTable - PMM`() =
         runTest {
             whenever(
                 sendDataConfig(
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00"
                 )
             ).thenReturn(
@@ -1467,32 +1631,6 @@ class ConfigViewModelTest {
                     )
                 )
             )
-            whenever(
-                saveDataConfig(
-                    number = "16997417840",
-                    password = "12345",
-                    app = "pmm",
-                    version = "1.00",
-                    checkMotoMec = true,
-                    idServ = 1,
-                    equip = Equip(
-                        id = 10,
-                        nro = 2200,
-                        codClass = 1,
-                        descrClass = "TRATOR",
-                        codTurnEquip = 1,
-                        idCheckList = 1,
-                        typeEquip = TypeEquip.NORMAL,
-                        hourMeter = 5000.0,
-                        classify = 1,
-                        flagMechanic = true,
-                        flagTire = true
-                    )
-                )
-            ).thenReturn(
-                Result.success(Unit)
-            )
-            wheneverSuccess(99f)
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -1509,10 +1647,11 @@ class ConfigViewModelTest {
                 version = "1.00",
                 app = "pmm"
             )
+            wheneverSuccess(17f)
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3)).toInt()
+                ((16f * 3)).toInt()
             )
             checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
@@ -1523,8 +1662,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         errors = Errors.EXCEPTION,
                         flagFailure = true,
@@ -1540,14 +1680,14 @@ class ConfigViewModelTest {
         }
 
     @Test
-    fun `update - Check return correct if function execute successfully`() =
+    fun `update - Check return correct if function execute successfully - PMM`() =
         runTest {
             whenever(
                 sendDataConfig(
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00"
                 )
             ).thenReturn(
@@ -1574,7 +1714,7 @@ class ConfigViewModelTest {
                 saveDataConfig(
                     number = "16997417840",
                     password = "12345",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
                     checkMotoMec = true,
                     idServ = 1,
@@ -1595,7 +1735,6 @@ class ConfigViewModelTest {
             ).thenReturn(
                 Result.success(Unit)
             )
-            wheneverSuccess(99f)
             whenever(
                 setFinishUpdateAllTable()
             ).thenReturn(
@@ -1608,10 +1747,11 @@ class ConfigViewModelTest {
                 version = "1.00",
                 app = "pmm"
             )
+            wheneverSuccess(17f)
             val result = viewModel.updateAllDatabase().toList()
             assertEquals(
                 result.count(),
-                ((QTD_TABLE * 3)).toInt()
+                ((16f * 3)).toInt()
             )
             checkResultUpdateAll(result)
             viewModel.onSaveAndUpdate()
@@ -1622,8 +1762,9 @@ class ConfigViewModelTest {
                     number = "16997417840",
                     password = "12345",
                     nroEquip = "310",
-                    app = "pmm",
+                    app = App.PMM,
                     version = "1.00",
+                    qtdTable = 16f,
                     status = UpdateStatusState(
                         flagDialog = true,
                         flagProgress = true,
@@ -1635,12 +1776,22 @@ class ConfigViewModelTest {
             )
         }
 
+    ///////////////////////////////////////////////////////////////////////////////////////
+
     private fun wheneverSuccess(posTable: Float) =
         runTest {
             var contUpdate = 0f
             var contWhenever = 0f
 
-            val updateFunctions = listOf<
+            val sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable)
+            tableList = mutableListOf(
+                "tb_activity", "tb_colab", "tb_component", "tb_equip", "tb_function_activity",
+                "tb_function_stop", "tb_item_check_list", "tb_item_menu", "tb_nozzle", "tb_pressure",
+                "tb_r_activity_stop", "tb_r_equip_activity", "tb_r_item_menu_stop", "tb_service",
+                "tb_stop", "tb_turn"
+            )
+
+            val updateFunctions = mutableListOf<
                     suspend (Float, Float) -> Flow<UpdateStatusState>
                     >(
                 { sizeAll, count -> updateTableActivity(sizeAll, count) },
@@ -1660,6 +1811,13 @@ class ConfigViewModelTest {
                 { sizeAll, count -> updateTableStop(sizeAll, count) },
                 { sizeAll, count -> updateTableTurn(sizeAll, count) }
             )
+
+            if (viewModel.uiState.value.app == App.ECM) {
+                updateFunctions.add { sizeAll, count -> updateTableOS(sizeAll, count) }
+                updateFunctions.add { sizeAll, count -> updateTableROSActivity(sizeAll, count) }
+                tableList.add("tb_os")
+                tableList.add("tb_r_os_activity")
+            }
 
             for(func in updateFunctions) {
                 whenever(
@@ -1695,6 +1853,7 @@ class ConfigViewModelTest {
 
     private fun checkResultUpdate(posTable: Float, result: List<ConfigState>) =
         runTest {
+            val sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable)
             var contUpdate = 0f
             var cont = 0
             for(table in tableList) {
@@ -1736,9 +1895,63 @@ class ConfigViewModelTest {
             }
         }
 
+    private fun checkResultUpdateECM(posTable: Float, result: List<ConfigState>) =
+        runTest {
+            val sizeAll = sizeUpdate(viewModel.uiState.value.qtdTable)
+            var contUpdate = 0f
+            var cont = 0
+            for(table in tableList) {
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        app = App.ECM,
+                        version = "1.00",
+                        qtdTable = 18f,
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.RECOVERY,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        app = App.ECM,
+                        version = "1.00",
+                        qtdTable = 18f,
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.CLEAN,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                assertEquals(
+                    result[cont++],
+                    ConfigState(
+                        app = App.ECM,
+                        version = "1.00",
+                        qtdTable = 18f,
+                        status = UpdateStatusState(
+                            flagProgress = true,
+                            levelUpdate = LevelUpdate.SAVE,
+                            tableUpdate = table,
+                            currentProgress = percentage(cont.toFloat(), sizeAll)
+                        )
+                    )
+                )
+                ++contUpdate
+                if(posTable == contUpdate) break
+            }
+        }
 
     private fun checkResultUpdateAll(result: List<ConfigState>) =
         runTest {
+            val qtd = viewModel.uiState.value.qtdTable
+            val sizeAll = sizeUpdate(qtd)
             var contUpdate = 0f
             var cont = 0
             for(table in tableList) {
@@ -1748,8 +1961,9 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = "pmm",
+                        app = App.PMM,
                         version = "1.00",
+                        qtdTable = qtd,
                         status = UpdateStatusState(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.RECOVERY,
@@ -1764,8 +1978,9 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = "pmm",
+                        app = App.PMM,
                         version = "1.00",
+                        qtdTable = qtd,
                         status = UpdateStatusState(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.CLEAN,
@@ -1780,8 +1995,9 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = "pmm",
+                        app = App.PMM,
                         version = "1.00",
+                        qtdTable = qtd,
                         status = UpdateStatusState(
                             flagProgress = true,
                             levelUpdate = LevelUpdate.SAVE,

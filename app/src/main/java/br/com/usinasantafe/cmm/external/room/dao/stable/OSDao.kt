@@ -19,7 +19,7 @@ interface OSDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_OS")
-    suspend fun listAll(): List<OSRoomModel>
+    suspend fun all(): List<OSRoomModel>
 
     @Query("SELECT count(*) FROM $TB_OS WHERE nroOS = :nroOS")
     suspend fun checkNroOS(nroOS: Int): Int

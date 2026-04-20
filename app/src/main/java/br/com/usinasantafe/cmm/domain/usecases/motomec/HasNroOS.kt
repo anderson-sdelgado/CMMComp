@@ -2,8 +2,10 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
+import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.CheckNetwork
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.utils.call
@@ -27,7 +29,8 @@ class IHasNroOS @Inject constructor(
     private val osRepository: OSRepository,
     private val rOSActivityRepository: ROSActivityRepository,
     private val getToken: GetToken,
-    private val motoMecRepository: MotoMecRepository
+    private val motoMecRepository: MotoMecRepository,
+    private val configRepository: ConfigRepository
 ): HasNroOS {
 
     override suspend fun invoke(
@@ -35,7 +38,10 @@ class IHasNroOS @Inject constructor(
         flowApp: FlowApp
     ): Result<Boolean> =
         call(getClassAndMethod()) {
-            if(flowApp == FlowApp.HEADER_INITIAL){
+
+            val app = configRepository.getApp().getOrThrow()
+
+            if((flowApp == FlowApp.HEADER_INITIAL) && (app != App.ECM)){
                 rOSActivityRepository.deleteAll().getOrThrow()
                 osRepository.deleteAll().getOrThrow()
             }
@@ -43,6 +49,7 @@ class IHasNroOS @Inject constructor(
                 nroOS.toInt()
             }
             val checkNroOS = osRepository.hasByNroOS(nroOS = nroOSInt).getOrThrow()
+            if(app == App.ECM) return@call checkNroOS
             if(checkNroOS) return@call true
             if(!checkNetwork.isConnected()) {
                 motoMecRepository.setStatusConHeader(false).getOrThrow()

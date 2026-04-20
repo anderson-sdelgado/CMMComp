@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -18,4 +19,5 @@ interface ConfigRepository {
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
     suspend fun getIdTurnCheckListLast(): Result<Int?>
     suspend fun getDateCheckListLast(): Result<Date>
+    suspend fun getApp(): Result<App>
 }

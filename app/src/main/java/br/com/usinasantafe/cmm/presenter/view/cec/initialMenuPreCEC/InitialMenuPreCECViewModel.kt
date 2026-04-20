@@ -35,8 +35,9 @@ class InitialMenuPreCECViewModel @Inject constructor(
     fun checkAccess() = viewModelScope.launch {
         runCatching {
             checkAccessCertificate().getOrThrow()
-        }.onSuccess { updateState { copy(flagDialog = !it, flagAccess = it) }
-        }.onFailureHandled(getClassAndMethod(), ::onError)
+        }
+            .onSuccess { updateState { copy(flagDialog = !it, flagAccess = it) } }
+            .onFailureHandled(getClassAndMethod(), ::onError)
     }
 
     private fun onError(failure: String) = updateState { copy(flagDialog = true, failure = failure) }

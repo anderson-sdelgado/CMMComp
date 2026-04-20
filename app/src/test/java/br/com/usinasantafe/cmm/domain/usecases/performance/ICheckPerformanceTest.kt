@@ -201,8 +201,7 @@ class ICheckPerformanceTest {
                     OS(
                         idOS = 1,
                         nroOS = 123456,
-                        idEquip = 1,
-                        idLibOS = 1,
+                        idReleaseOS = 1,
                         idPropAgr = 1,
                         areaOS = 100.0
                     )
@@ -239,8 +238,7 @@ class ICheckPerformanceTest {
                     OS(
                         idOS = 1,
                         nroOS = 123456,
-                        idEquip = 1,
-                        idLibOS = 1,
+                        idReleaseOS = 1,
                         idPropAgr = 1,
                         areaOS = 100.0
                     )

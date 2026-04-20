@@ -16,16 +16,18 @@ import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableFunctionStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemCheckListByNroEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableItemMenu
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableNozzle
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableOS
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTablePressure
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRActivityStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableREquipActivityByIdEquip
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableRItemMenuStop
+import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableROSActivity
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableService
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableStop
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableTurn
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
-import br.com.usinasantafe.cmm.lib.QTD_TABLE
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.percentage
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
@@ -47,8 +49,9 @@ data class ConfigState(
     val password: String = "",
     val nroEquip: String = "",
     val checkMotoMec: Boolean = true,
-    val app: String = "",
+    val app: App = App.PMM,
     val version: String = "",
+    val qtdTable: Float = 0f,
     override val status: UpdateStatusState = UpdateStatusState()
 ) : UiStateWithStatus<ConfigState> {
 
@@ -69,11 +72,13 @@ class ConfigViewModel @Inject constructor(
     private val updateTableFunctionStop: UpdateTableFunctionStop,
     private val updateTableItemCheckListByNroEquip: UpdateTableItemCheckListByNroEquip,
     private val updateTableItemMenu: UpdateTableItemMenu,
+    private val updateTableOS: UpdateTableOS,
     private val updateTableNozzle: UpdateTableNozzle,
     private val updateTablePressure: UpdateTablePressure,
     private val updateTableRActivityStop: UpdateTableRActivityStop,
     private val updateTableREquipActivityByIdEquip: UpdateTableREquipActivityByIdEquip,
     private val updateTableRItemMenuStop: UpdateTableRItemMenuStop,
+    private val updateTableROSActivity: UpdateTableROSActivity,
     private val updateTableService: UpdateTableService,
     private val updateTableStop: UpdateTableStop,
     private val updateTableTurn: UpdateTableTurn,
@@ -99,7 +104,7 @@ class ConfigViewModel @Inject constructor(
     fun onCheckMotoMecChanged(v: Boolean) = updateState { copy(checkMotoMec = v) }
 
     fun setConfigMain(version: String, app: String) = updateState {
-        copy(version = version, app = app)
+        copy(version = version, app = App.valueOf(app.uppercase()), qtdTable = if(App.valueOf(app.uppercase()) == App.ECM) 18f else 16f )
     }
 
     fun returnDataConfig() = viewModelScope.launch {
@@ -243,26 +248,31 @@ class ConfigViewModel @Inject constructor(
             flagUpdateFinish = false
         )
 
-    private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
-        val size = sizeUpdate(QTD_TABLE)
-        return listOf(
-            updateTableActivity(size, 1f),
-            updateTableColab(size, 2f),
-            updateTableComponent(size, 3f),
-            updateTableEquip(size, 4f),
-            updateTableFunctionActivity(size, 5f),
-            updateTableFunctionStop(size, 6f),
-            updateTableItemCheckListByNroEquip(size, 7f),
-            updateTableItemMenu(size, 8f),
-            updateTableNozzle(size, 9f),
-            updateTablePressure(size, 10f),
-            updateTableRActivityStop(size, 11f),
-            updateTableREquipActivityByIdEquip(size, 12f),
-            updateTableRItemMenuStop(size, 13f),
-            updateTableService(size, 14f),
-            updateTableStop(size, 15f),
-            updateTableTurn(size, 16f)
-        )
+    suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
+        val sizeAll = sizeUpdate(uiState.value.qtdTable)
+        val list = mutableListOf<Flow<UpdateStatusState>>()
+        var count = 0f
+        list.add(updateTableActivity(sizeAll, ++count))
+        list.add(updateTableColab(sizeAll, ++count))
+        list.add(updateTableComponent(sizeAll, ++count))
+        list.add(updateTableEquip(sizeAll, ++count))
+        list.add(updateTableFunctionActivity(sizeAll, ++count))
+        list.add(updateTableFunctionStop(sizeAll, ++count))
+        list.add(updateTableItemCheckListByNroEquip(sizeAll, ++count))
+        list.add(updateTableItemMenu(sizeAll, ++count))
+        list.add(updateTableNozzle(sizeAll, ++count))
+        list.add(updateTablePressure(sizeAll, ++count))
+        list.add(updateTableRActivityStop(sizeAll, ++count))
+        list.add(updateTableREquipActivityByIdEquip(sizeAll, ++count))
+        list.add(updateTableRItemMenuStop(sizeAll, ++count))
+        list.add(updateTableService(sizeAll, ++count))
+        list.add(updateTableStop(sizeAll, ++count))
+        list.add(updateTableTurn(sizeAll, ++count))
+        if (uiState.value.app == App.ECM) {
+            list.add(updateTableOS(sizeAll, ++count))
+            list.add(updateTableROSActivity(sizeAll, ++count))
+        }
+        return list
     }
 
 }

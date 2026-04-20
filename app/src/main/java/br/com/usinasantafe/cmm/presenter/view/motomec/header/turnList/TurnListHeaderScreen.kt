@@ -28,7 +28,7 @@ import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
-import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.presenter.theme.Progress
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
@@ -123,7 +123,7 @@ fun TurnListHeaderContent(
         }
 
         if (status.flagProgress) {
-            ProgressUpdate(status)
+            Progress(status)
         }
 
     }

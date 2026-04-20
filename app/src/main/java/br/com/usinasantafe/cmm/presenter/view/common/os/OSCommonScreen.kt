@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogProgressIndeterminateDesign
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
@@ -23,9 +24,14 @@ import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.FlowApp
+import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.lib.errors
+import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
+import br.com.usinasantafe.cmm.presenter.theme.Progress
+import br.com.usinasantafe.cmm.presenter.theme.ProgressIndeterminate
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
+import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
 @Composable
 fun OSCommonScreen(
@@ -39,20 +45,17 @@ fun OSCommonScreen(
             val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                viewModel.get()
+                viewModel.start()
             }
 
             OSCommonContent(
                 flowApp = uiState.flowApp,
+                app = uiState.app,
                 nroOS = uiState.nroOS,
                 setTextField = viewModel::setTextField,
                 flagAccess = uiState.flagAccess,
                 setCloseDialog = viewModel::setCloseDialog,
-                flagDialog = uiState.flagDialog,
-                failure = uiState.failure,
-                errors = uiState.errors,
-                flagProgress = uiState.flagProgress,
-                msgProgress = uiState.msgProgress,
+                status = uiState.status,
                 onNavTurn = onNavTurn,
                 onNavActivityList = onNavActivityList,
                 onNavMenuNote = onNavMenuNote,
@@ -66,15 +69,12 @@ fun OSCommonScreen(
 @Composable
 fun OSCommonContent(
     flowApp: FlowApp,
+    app: App,
     nroOS: String,
     setTextField: (String, TypeButton) -> Unit,
-    setCloseDialog: () -> Unit,
     flagAccess: Boolean,
-    flagDialog: Boolean,
-    failure: String,
-    errors: Errors,
-    flagProgress: Boolean,
-    msgProgress: String,
+    setCloseDialog: () -> Unit,
+    status: UpdateStatusState,
     onNavTurn: () -> Unit,
     onNavActivityList: () -> Unit,
     onNavMenuNote: () -> Unit,
@@ -95,7 +95,7 @@ fun OSCommonContent(
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         ButtonsGenericNumeric(
             setActionButton = setTextField,
-            flagUpdate = false
+            flagUpdate = (app == App.ECM)
         )
         BackHandler {
             when(flowApp){
@@ -105,25 +105,19 @@ fun OSCommonContent(
             }
         }
 
-        if(flagDialog) {
-            val text = errors(errors, failure, stringResource(id = R.string.text_title_os))
-            AlertDialogSimpleDesign(
-                text = text,
-                setCloseDialog = setCloseDialog,
-            )
+        if (status.flagDialog) {
+            MsgUpdate(status = status, setCloseDialog = setCloseDialog, value = stringResource(id = R.string.text_title_os))
         }
 
-        if (flagProgress) AlertDialogProgressIndeterminateDesign(msgProgress)
+        if (status.flagProgress) {
+            if(app == App.ECM) ProgressIndeterminate(status) else Progress(status)
+        }
 
     }
 
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
-            when(flowApp){
-                FlowApp.HEADER_INITIAL,
-                FlowApp.NOTE_WORK -> onNavActivityList()
-                else -> {}
-            }
+            onNavActivityList()
         }
     }
 
@@ -136,15 +130,52 @@ fun OSCommonPagePreview() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(
                 flowApp = FlowApp.HEADER_INITIAL,
+                app = App.PMM,
                 nroOS = "123456",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = false,
-                failure = "",
-                errors = Errors.FIELD_EMPTY,
-                flagProgress = false,
-                msgProgress = "",
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
+                onNavTurn = {},
+                onNavActivityList = {},
+                onNavMenuNote = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSCommonPagePreviewECM() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSCommonContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                app = App.ECM,
+                nroOS = "123456",
+                setTextField = { _, _ -> },
+                setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavTurn = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -161,15 +192,21 @@ fun OSCommonPagePreviewWithProgress() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(
                 flowApp = FlowApp.HEADER_INITIAL,
+                app = App.PMM,
                 nroOS = "",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = false,
-                failure = "",
-                errors = Errors.FIELD_EMPTY,
-                flagProgress = true,
-                msgProgress = "Checando número da OS",
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = true,
+                    levelUpdate = LevelUpdate.CHECK_OS,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavTurn = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -186,15 +223,21 @@ fun OSCommonPagePreviewMsgFieldEmpty() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(
                 flowApp = FlowApp.HEADER_INITIAL,
+                app = App.PMM,
                 nroOS = "",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = true,
-                failure = "",
-                errors = Errors.FIELD_EMPTY,
-                flagProgress = false,
-                msgProgress = "",
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    failure = "",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavTurn = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -211,15 +254,21 @@ fun OSCommonPagePreviewMsgFailure() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(
                 flowApp = FlowApp.HEADER_INITIAL,
+                app = App.PMM,
                 nroOS = "",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = true,
-                failure = "Failure",
-                errors = Errors.EXCEPTION,
-                flagProgress = false,
-                msgProgress = "",
+                status = UpdateStatusState(
+                    flagDialog = true,
+                    flagFailure = true,
+                    errors = Errors.EXCEPTION,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
                 onNavTurn = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},
@@ -236,15 +285,52 @@ fun OSCommonPagePreviewMsgNonExistent() {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             OSCommonContent(
                 flowApp = FlowApp.HEADER_INITIAL,
+                app = App.PMM,
                 nroOS = "",
                 setTextField = { _, _ -> },
                 setCloseDialog = {},
                 flagAccess = false,
-                flagDialog = true,
-                failure = "Failure",
-                errors = Errors.INVALID,
-                flagProgress = false,
-                msgProgress = "",
+                status = UpdateStatusState(
+                    flagDialog = true,
+                    flagFailure = true,
+                    errors = Errors.INVALID,
+                    failure = "Failure",
+                    flagProgress = false,
+                    levelUpdate = null,
+                    tableUpdate = "",
+                    currentProgress = 0f,
+                ),
+                onNavTurn = {},
+                onNavActivityList = {},
+                onNavMenuNote = {},
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun OSCommonPagePreviewUpdate() {
+    CMMTheme {
+        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            OSCommonContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                app = App.ECM,
+                nroOS = "",
+                setTextField = { _, _ -> },
+                setCloseDialog = {},
+                flagAccess = false,
+                status = UpdateStatusState(
+                    flagDialog = false,
+                    failure = "",
+                    flagFailure = false,
+                    errors = Errors.FIELD_EMPTY,
+                    levelUpdate = LevelUpdate.RECOVERY,
+                    tableUpdate = "tb_os",
+                    flagProgress = true,
+                    currentProgress = 0.3333334f,
+                ),
                 onNavTurn = {},
                 onNavActivityList = {},
                 onNavMenuNote = {},

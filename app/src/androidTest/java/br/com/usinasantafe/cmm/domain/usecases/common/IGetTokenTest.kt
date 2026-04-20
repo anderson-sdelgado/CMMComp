@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import br.com.usinasantafe.cmm.utils.token
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -58,7 +59,7 @@ class IGetTokenTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "PMM",
+                    app = App.PMM,
                     idServ = 1,
                     checkMotoMec = true,
                     version = "1.00",
@@ -86,7 +87,7 @@ class IGetTokenTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "PMM",
+                    app = App.PMM,
                     idServ = 1,
                     checkMotoMec = true,
                     version = "1.00",

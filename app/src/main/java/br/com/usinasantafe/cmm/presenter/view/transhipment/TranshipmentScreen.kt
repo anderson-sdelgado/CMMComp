@@ -24,7 +24,7 @@ import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.MsgUpdate
-import br.com.usinasantafe.cmm.presenter.theme.ProgressUpdate
+import br.com.usinasantafe.cmm.presenter.theme.Progress
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 
@@ -89,7 +89,7 @@ fun TranshipmentContent(
         }
 
         if (status.flagProgress) {
-            ProgressUpdate(status)
+            Progress(status)
         }
     }
 

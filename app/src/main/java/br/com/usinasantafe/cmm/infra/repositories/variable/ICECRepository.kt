@@ -47,4 +47,9 @@ class ICECRepository @Inject constructor(
             trailerSharedPreferencesDatasource.clean().getOrThrow()
         }
 
+    override suspend fun setNroEquip(nroEquip: Long): EmptyResult =
+        call(getClassAndMethod()) {
+            preCECSharedPreferencesDatasource.setNroEquip(nroEquip).getOrThrow()
+        }
+
 }

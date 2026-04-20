@@ -11,8 +11,7 @@ import javax.inject.Inject
 
 interface SetNroOS {
     suspend operator fun invoke(
-        nroOS: String,
-        flowApp: FlowApp = FlowApp.HEADER_INITIAL
+        nroOS: String
     ): EmptyResult
 }
 
@@ -21,8 +20,7 @@ class ISetNroOS @Inject constructor(
 ): SetNroOS {
 
     override suspend fun invoke(
-        nroOS: String,
-        flowApp: FlowApp
+        nroOS: String
     ): EmptyResult =
         call(getClassAndMethod()) {
             val nroOSInt = tryCatch(::toInt.name) {

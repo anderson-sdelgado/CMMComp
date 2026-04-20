@@ -149,4 +149,38 @@ class IPreCECSharedPreferencesDatasourceTest {
                 Date(1764861924000)
             )
         }
+
+    @Test
+    fun `setNroEquip - Check return data`() =
+        runTest {
+            val resultGetBefore = datasource.get()
+            assertEquals(
+                resultGetBefore.isSuccess,
+                true
+            )
+            val modelBefore = resultGetBefore.getOrNull()!!
+            assertEquals(
+                modelBefore.nroEquip,
+                null
+            )
+            val result = datasource.setNroEquip(2200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                Unit
+            )
+            val resultGetAfter = datasource.get()
+            assertEquals(
+                resultGetAfter.isSuccess,
+                true
+            )
+            val modelAfter = resultGetAfter.getOrNull()!!
+            assertEquals(
+                modelAfter.nroEquip,
+                2200
+            )
+        }
 }

@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -291,7 +292,7 @@ class IUpdateTableRActivityStopTest {
     private suspend fun initialRegister() {
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
-                app = "CMM",
+                app = App.PMM,
                 idServ = 1,
                 number = 16997417840,
                 version = "1.0",

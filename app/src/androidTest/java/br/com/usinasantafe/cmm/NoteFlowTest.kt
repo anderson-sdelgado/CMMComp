@@ -25,6 +25,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -338,7 +339,7 @@ class NoteFlowTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

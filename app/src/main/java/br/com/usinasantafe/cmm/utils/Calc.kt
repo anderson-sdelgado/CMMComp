@@ -8,6 +8,6 @@ fun percentage(count: Float, size: Float): Float {
     return (count / size)
 }
 
-fun sizeUpdate(qtdTable: Float): Float {
+fun sizeUpdate(qtdTable: Float = 1f): Float {
     return (qtdTable * 3) + 1f
 }

@@ -30,7 +30,7 @@ class ICheckPerformance @Inject constructor(
             val check = osRepository.hasByNroOS(nroOS).getOrThrow()
             if(!check) return@call valueInput <= 150.0
             val valueBD = osRepository.getByNroOS(nroOS).getOrThrow().areaOS
-            return@call valueInput <= valueBD
+            return@call valueInput <= valueBD!!
         }
 
 }

@@ -19,6 +19,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.RActivityStopRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.StopRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ItemMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.WEB_ALL_R_ACTIVITY_STOP
@@ -468,7 +469,7 @@ class StopListNoteScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

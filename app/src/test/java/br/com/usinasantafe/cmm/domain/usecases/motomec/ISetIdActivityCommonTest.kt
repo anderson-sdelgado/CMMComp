@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.FunctionActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
+import br.com.usinasantafe.cmm.domain.usecases.common.ISetIdActivityCommon
 import br.com.usinasantafe.cmm.lib.StartWorkManager
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.TypeActivity

@@ -11,6 +11,7 @@ import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,7 +68,7 @@ class SpeedListFertigationViewModel @Inject constructor(
 
     suspend fun updateAllDatabase(): Flow<SpeedListFertigationState> =
         executeUpdateSteps(
-            steps = listOf(updateTablePressure(4f, 1f)),
+            steps = listOf(updateTablePressure(sizeUpdate())),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },

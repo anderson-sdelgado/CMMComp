@@ -1,5 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.motomec
 
+import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
 import br.com.usinasantafe.cmm.external.room.dao.stable.FunctionActivityDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.external.room.dao.variable.ItemMotoMecDao

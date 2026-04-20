@@ -23,4 +23,12 @@ interface CECModule {
     @Singleton
     fun bindUncouplingTrailer(usecase: IUncouplingTrailer): UncouplingTrailer
 
+    @Binds
+    @Singleton
+    fun bindSetNroEquipPreCEC(usecase: ISetNroEquipPreCEC): SetNroEquipPreCEC
+
+    @Binds
+    @Singleton
+    fun bindCheckAccessCertificate(usecase: ICheckAccessCertificate): CheckAccessCertificate
+
 }

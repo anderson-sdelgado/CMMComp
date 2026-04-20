@@ -5,19 +5,17 @@ import br.com.usinasantafe.cmm.domain.entities.stable.OS
 data class OSRetrofitModel(
     val idOS: Int,
     val nroOS: Int,
-    val idLibOS: Int,
-    val idPropAgr: Int,
-    val areaOS: Double,
-    val idEquip: Int,
+    val idReleaseOS: Int? = null,
+    val idPropAgr: Int? = null,
+    val areaOS: Double? = null,
 )
 
 fun OSRetrofitModel.retrofitModelToEntity(): OS {
     return OS(
         idOS = this.idOS,
         nroOS = this.nroOS,
-        idLibOS = this.idLibOS,
+        idReleaseOS = this.idReleaseOS,
         idPropAgr = this.idPropAgr,
         areaOS = this.areaOS,
-        idEquip = this.idEquip
     )
 }

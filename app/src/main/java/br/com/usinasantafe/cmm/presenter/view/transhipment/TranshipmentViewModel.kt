@@ -18,6 +18,7 @@ import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import br.com.usinasantafe.cmm.utils.withFailure
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -99,7 +100,7 @@ class TranshipmentViewModel @Inject constructor(
 
     suspend fun updateAllDatabase(): Flow<TranshipmentState> =
         executeUpdateSteps(
-            steps = listOf(updateTableEquip(4f, 1f)),
+            steps = listOf(updateTableEquip(sizeUpdate())),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },

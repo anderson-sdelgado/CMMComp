@@ -125,10 +125,9 @@ class ICheckPerformanceTest {
                 OSRoomModel(
                     idOS = 1,
                     nroOS = 123456,
-                    idLibOS = 1,
+                    idReleaseOS = 1,
                     idPropAgr = 1,
-                    areaOS = 100.0,
-                    idEquip = 1
+                    areaOS = 100.0
                 )
             )
             val result = usecase(1, "50,0")
@@ -156,10 +155,9 @@ class ICheckPerformanceTest {
                 OSRoomModel(
                     idOS = 1,
                     nroOS = 123456,
-                    idLibOS = 1,
+                    idReleaseOS = 1,
                     idPropAgr = 1,
-                    areaOS = 100.0,
-                    idEquip = 1
+                    areaOS = 100.0
                 )
             )
             val result = usecase(1, "250,0")

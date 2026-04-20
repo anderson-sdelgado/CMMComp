@@ -22,7 +22,7 @@ fun Config.entityToRetrofitModel(): ConfigRetrofitModelOutput {
     return ConfigRetrofitModelOutput(
             number = ::number.required(),
             version = version!!,
-            app = app!!,
+            app = app!!.name,
             nroEquip = ::nroEquip.required()
         )
 }

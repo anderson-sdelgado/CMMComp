@@ -23,16 +23,20 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.com.usinasantafe.cmm.R
+import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
 import br.com.usinasantafe.cmm.presenter.theme.TextButtonDesign
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 
 @Composable
-fun EquipHeaderScreen(
-    viewModel: EquipHeaderViewModel = hiltViewModel(),
+fun EquipCommonScreen(
+    viewModel: EquipCommonViewModel = hiltViewModel(),
     onNavOperator: () -> Unit,
-    onNavTurnList: () -> Unit
+    onNavTurnList: () -> Unit,
+    onNavInitialMenuPreCEC: () -> Unit,
+    onNavOS: () -> Unit,
+    onNavMsgNumberTrailer: () -> Unit
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -42,7 +46,9 @@ fun EquipHeaderScreen(
                 viewModel.get()
             }
 
-            EquipHeaderContent(
+            EquipCommonContent(
+                flowApp = uiState.flowApp,
+                checkClass = uiState.checkClass,
                 description = uiState.description,
                 set = viewModel::set,
                 setCloseDialog = viewModel::setCloseDialog,
@@ -51,6 +57,9 @@ fun EquipHeaderScreen(
                 failure = uiState.failure,
                 onNavRegOperator = onNavOperator,
                 onNavTurnList = onNavTurnList,
+                onNavInitialMenuPreCEC = onNavInitialMenuPreCEC,
+                onNavOS = onNavOS,
+                onNavMsgNumberTrailer = onNavMsgNumberTrailer,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -58,7 +67,9 @@ fun EquipHeaderScreen(
 }
 
 @Composable
-fun EquipHeaderContent(
+fun EquipCommonContent(
+    flowApp: FlowApp,
+    checkClass: Boolean?,
     description: String,
     set: () -> Unit,
     setCloseDialog: () -> Unit,
@@ -67,6 +78,9 @@ fun EquipHeaderContent(
     failure: String,
     onNavRegOperator: () -> Unit,
     onNavTurnList: () -> Unit,
+    onNavInitialMenuPreCEC: () -> Unit,
+    onNavOS: () -> Unit,
+    onNavMsgNumberTrailer: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -98,7 +112,9 @@ fun EquipHeaderContent(
             horizontalArrangement = Arrangement.Center,
         ) {
             Button(
-                onClick = onNavRegOperator,
+                onClick = {
+                    if(flowApp == FlowApp.HEADER_INITIAL) onNavRegOperator() else onNavInitialMenuPreCEC()
+                },
                 modifier = Modifier.weight(1f)
             ) {
                 TextButtonDesign(
@@ -118,8 +134,7 @@ fun EquipHeaderContent(
                 )
             }
         }
-        BackHandler {
-        }
+        BackHandler {}
 
         if(flagDialog) {
             AlertDialogSimpleDesign(
@@ -133,7 +148,11 @@ fun EquipHeaderContent(
 
     LaunchedEffect(flagAccess) {
         if(flagAccess) {
-            onNavTurnList()
+            if(flowApp == FlowApp.HEADER_INITIAL) {
+                onNavTurnList()
+            } else {
+                if(checkClass!!) onNavOS() else onNavMsgNumberTrailer()
+            }
         }
     }
 
@@ -141,10 +160,12 @@ fun EquipHeaderContent(
 
 @Preview(showBackground = true)
 @Composable
-fun EquipHeaderPagePreview() {
+fun EquipCommonPagePreview() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            EquipHeaderContent(
+            EquipCommonContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                checkClass = true,
                 description = "200 - TRATOR",
                 set = {},
                 setCloseDialog = {},
@@ -153,6 +174,9 @@ fun EquipHeaderPagePreview() {
                 failure = "Failure",
                 onNavRegOperator = {},
                 onNavTurnList = {},
+                onNavInitialMenuPreCEC = {},
+                onNavOS = {},
+                onNavMsgNumberTrailer = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -162,10 +186,12 @@ fun EquipHeaderPagePreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun EquipHeaderPagePreviewMsgFailure() {
+fun EquipCommonPagePreviewMsgFailure() {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            EquipHeaderContent(
+            EquipCommonContent(
+                flowApp = FlowApp.HEADER_INITIAL,
+                checkClass = true,
                 description = "200 - TRATOR",
                 set = {},
                 setCloseDialog = {},
@@ -174,6 +200,9 @@ fun EquipHeaderPagePreviewMsgFailure() {
                 failure = "Failure",
                 onNavRegOperator = {},
                 onNavTurnList = {},
+                onNavInitialMenuPreCEC = {},
+                onNavOS = {},
+                onNavMsgNumberTrailer = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

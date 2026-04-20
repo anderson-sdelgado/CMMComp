@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.R
 @Composable
 fun msg(levelUpdate: LevelUpdate?, failure: String, tableUpdate: String): String {
     return when(levelUpdate){
+        LevelUpdate.CHECK_OS -> stringResource(id = R.string.text_msg_check_os_moto_mec)
         LevelUpdate.CHECK_CONNECTION -> stringResource(id = R.string.text_msg_check_os)
         LevelUpdate.RECOVERY -> stringResource(id = R.string.text_msg_recovery, tableUpdate)
         LevelUpdate.CLEAN -> stringResource(id = R.string.text_msg_clean, tableUpdate)

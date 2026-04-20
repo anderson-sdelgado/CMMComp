@@ -9,4 +9,5 @@ interface PreCECSharedPreferencesDatasource {
     suspend fun setDateExitMill(date: Date): EmptyResult
     suspend fun setDateFieldArrival(date: Date): EmptyResult
     suspend fun setDateExitField(date: Date): EmptyResult
+    suspend fun setNroEquip(nroEquip: Long): EmptyResult
 }

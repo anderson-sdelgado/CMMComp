@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.FlowEquipNote
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -58,7 +59,7 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -86,7 +87,7 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -115,7 +116,7 @@ class IGetFlowEquipTest {
         runTest {
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",

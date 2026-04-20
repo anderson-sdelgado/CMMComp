@@ -15,6 +15,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.turnList.TurnListHeaderScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
@@ -208,7 +209,7 @@ class TurnListScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

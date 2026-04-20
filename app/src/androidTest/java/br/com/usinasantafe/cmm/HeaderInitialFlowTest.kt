@@ -24,6 +24,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.theme.TAG_BUTTON_OK_ALERT_DIALOG_SIMPLE
 import br.com.usinasantafe.cmm.lib.FlagUpdate
@@ -404,7 +405,7 @@ class HeaderInitialFlowTest {
         composeTestRule.onNodeWithText("ATIVIDADE")
             .assertIsDisplayed()
 
-        val osList = osDao.listAll()
+        val osList = osDao.all()
         assertEquals(
             osList.size,
             1
@@ -415,7 +416,7 @@ class HeaderInitialFlowTest {
             123456
         )
         assertEquals(
-            os.idLibOS,
+            os.idReleaseOS,
             10
         )
         assertEquals(
@@ -423,15 +424,11 @@ class HeaderInitialFlowTest {
             20
         )
         assertEquals(
-            os.areaOS,
+            os.areaOS!!,
             150.75,
             0.0
         )
-        assertEquals(
-            os.idEquip,
-            30
-        )
-        val rOSActivityList = rOSActivityDao.listAll()
+        val rOSActivityList = rOSActivityDao.all()
         assertEquals(
             rOSActivityList.size,
             1
@@ -611,7 +608,7 @@ class HeaderInitialFlowTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

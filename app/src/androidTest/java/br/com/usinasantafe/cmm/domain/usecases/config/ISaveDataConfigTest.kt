@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -58,7 +59,7 @@ class ISaveDataConfigTest {
             val result = usecase(
                 number = "16997417840",
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
@@ -109,7 +110,7 @@ class ISaveDataConfigTest {
             )
             assertEquals(
                 config.app,
-                "PMM"
+                    App.PMM
                 )
             assertEquals(
                 config.version,
@@ -123,7 +124,7 @@ class ISaveDataConfigTest {
             val result = usecase(
                 number = "16997417840",
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,

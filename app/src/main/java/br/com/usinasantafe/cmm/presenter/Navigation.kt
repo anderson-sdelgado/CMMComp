@@ -21,6 +21,7 @@ import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
 import br.com.usinasantafe.cmm.presenter.Screens.COLLECTION_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.COLLECTION_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.IMPLEMENTATION_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.INITIAL_MENU_PRE_CEC_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.INPUT_ITEM_MECHANIC_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.ITEM_LIST_MECHANIC_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.MOTOR_PUMP_SCREEN
@@ -35,7 +36,7 @@ import br.com.usinasantafe.cmm.presenter.Screens.SPEED_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TRANSHIPMENT_NOTE_SCREEN
 
 object Screens {
-    const val SPLASH_SCREEN = "splash"
+    const val SPLASH_SCREEN = "splashScreen"
     const val INITIAL_MENU_SCREEN = "initialMenuScreen"
     const val PASSWORD_SCREEN = "passwordScreen"
     const val CONFIG_SCREEN = "configScreen"
@@ -64,6 +65,7 @@ object Screens {
     const val OS_MECHANIC_SCREEN = "osMechanicScreen"
     const val ITEM_LIST_MECHANIC_SCREEN = "itemListMechanicScreen"
     const val INPUT_ITEM_MECHANIC_SCREEN = "inputItemMechanicScreen"
+    const val INITIAL_MENU_PRE_CEC_SCREEN = "initialMenuPreCECScreen"
 }
 
 object Args {
@@ -101,6 +103,7 @@ object Routes {
     const val OS_MECHANIC_ROUTE = OS_MECHANIC_SCREEN
     const val ITEM_LIST_MECHANIC_ROUTE = ITEM_LIST_MECHANIC_SCREEN
     const val INPUT_ITEM_MECHANIC_ROUTE = INPUT_ITEM_MECHANIC_SCREEN
+    const val INITIAL_MENU_PRE_CEC_ROUTE = "$INITIAL_MENU_PRE_CEC_SCREEN/{$FLOW_APP_ARG}"
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -143,16 +146,18 @@ class NavigationActions(private val navController: NavHostController) {
         navController.navigate("${ACTIVITY_LIST_COMMON_SCREEN}/${flowApp}")
     }
 
+    fun navigateToEquipCommon(
+        flowApp: Int = FlowApp.HEADER_INITIAL.ordinal
+    ) {
+        navController.navigate("${EQUIP_HEADER_SCREEN}/${flowApp}")
+    }
+
     ////////////////////////////////////////////////////////////////////
 
     ////////////////////////// Header //////////////////////////////////
 
     fun navigateToOperatorHeader() {
         navController.navigate(OPERATOR_HEADER_SCREEN)
-    }
-
-    fun navigateToEquipHeader() {
-        navController.navigate(EQUIP_HEADER_SCREEN)
     }
 
     fun navigateToTurnListHeader() {
@@ -272,6 +277,14 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToInputItemMechanic() {
         navController.navigate(INPUT_ITEM_MECHANIC_SCREEN)
+    }
+
+    ///////////////////////////////////////////////////////////////////
+
+    ///////////////////////////// CEC /////////////////////////////////
+
+    fun navigateToInitialMenuPreCEC() {
+        navController.navigate(INITIAL_MENU_PRE_CEC_SCREEN)
     }
 
     ///////////////////////////////////////////////////////////////////

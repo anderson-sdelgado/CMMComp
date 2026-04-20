@@ -20,6 +20,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.ROSActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -260,7 +261,7 @@ class ActivityListCommonScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )
@@ -331,18 +332,16 @@ class ActivityListCommonScreenTest {
                 OSRoomModel(
                     idOS = 1,
                     nroOS = 123456,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 ),
                 OSRoomModel(
                     idOS = 2,
                     nroOS = 456789,
-                    idLibOS = 11,
+                    idReleaseOS = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0,
-                    idEquip = 31
+                    areaOS = 100.0
                 )
             )
         )

@@ -13,7 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.Int
 import kotlin.test.assertEquals
 
 @RunWith(RobolectricTestRunner::class)
@@ -42,7 +41,7 @@ class IOSRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -52,18 +51,16 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     ),
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
@@ -79,7 +76,7 @@ class IOSRoomDatasourceTest {
                 result.exceptionOrNull()!!.cause.toString(),
                 "android.database.sqlite.SQLiteConstraintException: Cannot execute for last inserted row ID"
             )
-            val qtdAfter = osDao.listAll().size
+            val qtdAfter = osDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -89,7 +86,7 @@ class IOSRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -99,18 +96,16 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     ),
                     OSRoomModel(
                         idOS = 2,
                         nroOS = 67890,
-                        idLibOS = 11,
+                        idReleaseOS = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0,
-                        idEquip = 31
+                        areaOS = 100.0
                     )
                 )
             )
@@ -122,7 +117,7 @@ class IOSRoomDatasourceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val list = osDao.listAll()
+            val list = osDao.all()
             assertEquals(
                 list.size,
                 2
@@ -137,7 +132,7 @@ class IOSRoomDatasourceTest {
                 12345
             )
             assertEquals(
-                entity1.idLibOS,
+                entity1.idReleaseOS,
                 10
             )
             assertEquals(
@@ -145,13 +140,9 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                entity1.areaOS,
+                entity1.areaOS!!,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                entity1.idEquip,
-                30
             )
             val entity2 = list[1]
             assertEquals(
@@ -163,7 +154,7 @@ class IOSRoomDatasourceTest {
                 67890
             )
             assertEquals(
-                entity2.idLibOS,
+                entity2.idReleaseOS,
                 11
             )
             assertEquals(
@@ -171,13 +162,9 @@ class IOSRoomDatasourceTest {
                 21
             )
             assertEquals(
-                entity2.areaOS,
+                entity2.areaOS!!,
                 100.0,
                 0.0
-            )
-            assertEquals(
-                entity2.idEquip,
-                31
             )
         }
 
@@ -189,14 +176,13 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -210,7 +196,7 @@ class IOSRoomDatasourceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val qtdAfter = osDao.listAll().size
+            val qtdAfter = osDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -225,14 +211,13 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -256,14 +241,13 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 123456,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -287,14 +271,13 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
-            val qtdBefore = osDao.listAll().size
+            val qtdBefore = osDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -303,10 +286,9 @@ class IOSRoomDatasourceTest {
                 OSRoomModel(
                     idOS = 2,
                     nroOS = 67890,
-                    idLibOS = 11,
+                    idReleaseOS = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0,
-                    idEquip = 31
+                    areaOS = 100.0
                 )
             )
             assertEquals(
@@ -317,7 +299,7 @@ class IOSRoomDatasourceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val list = osDao.listAll()
+            val list = osDao.all()
             assertEquals(
                 list.size,
                 2
@@ -332,7 +314,7 @@ class IOSRoomDatasourceTest {
                 12345
             )
             assertEquals(
-                model1.idLibOS,
+                model1.idReleaseOS,
                 10
             )
             assertEquals(
@@ -340,13 +322,9 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                model1.areaOS,
+                model1.areaOS!!,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                model1.idEquip,
-                30
             )
             val model2 = list[1]
             assertEquals(
@@ -358,7 +336,7 @@ class IOSRoomDatasourceTest {
                 67890
             )
             assertEquals(
-                model2.idLibOS,
+                model2.idReleaseOS,
                 11
             )
             assertEquals(
@@ -366,13 +344,9 @@ class IOSRoomDatasourceTest {
                 21
             )
             assertEquals(
-                model2.areaOS,
+                model2.areaOS!!,
                 100.0,
                 0.0
-            )
-            assertEquals(
-                model2.idEquip,
-                31
             )
         }
 
@@ -398,18 +372,16 @@ class IOSRoomDatasourceTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 123456,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     ),
                     OSRoomModel(
                         idOS = 2,
                         nroOS = 456789,
-                        idLibOS = 11,
+                        idReleaseOS = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0,
-                        idEquip = 31
+                        areaOS = 100.0
                     )
                 )
             )
@@ -428,7 +400,7 @@ class IOSRoomDatasourceTest {
                 123456
             )
             assertEquals(
-                model.idLibOS,
+                model.idReleaseOS,
                 10
             )
             assertEquals(
@@ -436,13 +408,9 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                model.areaOS,
+                model.areaOS!!,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                model.idEquip,
-                30
             )
         }
 }

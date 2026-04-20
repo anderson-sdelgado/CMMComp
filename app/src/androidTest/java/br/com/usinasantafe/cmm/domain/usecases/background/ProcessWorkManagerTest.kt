@@ -13,6 +13,7 @@ import br.com.usinasantafe.cmm.external.room.dao.variable.HeaderMotoMecDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.ProcessWorkManager
 import br.com.usinasantafe.cmm.lib.Status
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -77,7 +78,7 @@ class ProcessWorkManagerTest {
 
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
-                app = "CMM",
+                app = App.PMM,
                 idServ = 1,
                 number = 16997417840,
                 version = "1.0",
@@ -110,7 +111,7 @@ class ProcessWorkManagerTest {
 
         configSharedPreferencesDatasource.save(
             ConfigSharedPreferencesModel(
-                app = "CMM",
+                app = App.PMM,
                 idServ = 1,
                 number = 16997417840,
                 version = "1.0",

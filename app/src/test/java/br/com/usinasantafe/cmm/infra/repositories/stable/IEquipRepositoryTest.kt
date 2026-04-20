@@ -1015,4 +1015,50 @@ class IEquipRepositoryTest {
             )
         }
 
+    @Test
+    fun `getCodClass - Check return failure if have error in EquipSharedPreferencesDatasource getCodClass`() =
+        runTest {
+            whenever(
+                equipSharedPreferencesDatasource.getCodClass()
+            ).thenReturn(
+                resultFailure(
+                    "IEquipSharedPreferencesDatasource.getCodClass",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getCodClass()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IEquipRepository.getCodClass -> IEquipSharedPreferencesDatasource.getCodClass"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getCodClass - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                equipSharedPreferencesDatasource.getCodClass()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.getCodClass()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
+            )
+        }
+
 }

@@ -10,8 +10,9 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.EquipDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
-import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipCommonScreen
 import br.com.usinasantafe.cmm.utils.waitUntilTimeout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -74,9 +75,12 @@ class EquipScreenTest {
 
     private fun setContent() {
         composeTestRule.setContent {
-            EquipHeaderScreen(
+            EquipCommonScreen(
                 onNavOperator = {},
-                onNavTurnList = {}
+                onNavTurnList = {},
+                onNavInitialMenuPreCEC = {},
+                onNavOS = {},
+                onNavMsgNumberTrailer = {}
             )
         }
     }
@@ -92,7 +96,7 @@ class EquipScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

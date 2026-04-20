@@ -16,7 +16,7 @@ import javax.inject.Inject
 interface UpdateTablePressure {
     suspend operator fun invoke(
         sizeAll: Float,
-        count: Float
+        count: Float = 1f
     ): Flow<UpdateStatusState>
 }
 

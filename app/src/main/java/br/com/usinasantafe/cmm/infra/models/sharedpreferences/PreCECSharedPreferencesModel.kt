@@ -4,7 +4,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import java.util.Date
 
 data class PreCECSharedPreferencesModel(
-    var nroEquip: Int? = null,
+    var nroEquip: Long? = null,
     var libEquip: Int? = null,
     var regColab: Long? = null,
     var nroTrailer1: Int? = null,
@@ -25,7 +25,7 @@ fun PreCECSharedPreferencesModel.sharedPreferencesModelToEntity(): HeaderPreCEC 
     return with(this) {
         HeaderPreCEC(
             nroEquip = nroEquip,
-            libEquip = libEquip,
+            releaseEquip = libEquip,
             regColab = regColab,
             dateExitMill = dateExitMill,
             dateFieldArrival = dateFieldArrival,
@@ -39,7 +39,7 @@ fun HeaderPreCEC.entityToSharedPreferencesModel(): PreCECSharedPreferencesModel 
     return with(this) {
         PreCECSharedPreferencesModel(
             nroEquip = nroEquip,
-            libEquip = libEquip,
+            libEquip = releaseEquip,
             regColab = regColab,
             dateExitMill = dateExitMill,
             dateFieldArrival = dateFieldArrival,

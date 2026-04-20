@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 class IROSActivityRetrofitDatasourceTest {
 
     @Test
-    fun `recoverAll - Check return failure if token is invalid`() =
+    fun `listAll - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -30,7 +30,7 @@ class IROSActivityRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IROSActivityRetrofitDatasource.recoverAll",
+                "IROSActivityRetrofitDatasource.listAll",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -41,7 +41,7 @@ class IROSActivityRetrofitDatasourceTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have Error 404`() =
+    fun `listAll - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -60,7 +60,7 @@ class IROSActivityRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IROSActivityRetrofitDatasource.recoverAll",
+                "IROSActivityRetrofitDatasource.listAll",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -72,12 +72,12 @@ class IROSActivityRetrofitDatasourceTest {
 
 
     @Test
-    fun `recoverAll - Check return correct`() =
+    fun `listAll - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultROSAtivRetrofit)
+                MockResponse().setBody(resultROSActivityRetrofit)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
@@ -109,7 +109,7 @@ class IROSActivityRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if token is invalid`() =
+    fun `listByNroOS - Check return failure if token is invalid`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -130,7 +130,7 @@ class IROSActivityRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IROSActivityRetrofitDatasource.getListByNroOS",
+                "IROSActivityRetrofitDatasource.listByNroOS",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -141,7 +141,7 @@ class IROSActivityRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if have Error 404`() =
+    fun `listByNroOS - Check return failure if have Error 404`() =
         runTest {
             val server = MockWebServer()
             server.start()
@@ -162,7 +162,7 @@ class IROSActivityRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IROSActivityRetrofitDatasource.getListByNroOS",
+                "IROSActivityRetrofitDatasource.listByNroOS",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
@@ -173,12 +173,12 @@ class IROSActivityRetrofitDatasourceTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return correct`() =
+    fun `listByNroOS - Check return correct`() =
         runTest {
             val server = MockWebServer()
             server.start()
             server.enqueue(
-                MockResponse().setBody(resultROSAtivRetrofitOne)
+                MockResponse().setBody(resultROSActivityRetrofitOne)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
@@ -207,16 +207,16 @@ class IROSActivityRetrofitDatasourceTest {
             server.shutdown()
         }
 
-    private val resultROSAtivRetrofit = """
+    private val resultROSActivityRetrofit = """
         [
-          {"idROSAtiv":1,"idOS":12345,"idAtiv":10},
-          {"idROSAtiv":2,"idOS":67890,"idAtiv":11}
+          {"idOS":12345,"idActivity":10},
+          {"idOS":67890,"idActivity":11}
         ]
     """.trimIndent()
 
-    private val resultROSAtivRetrofitOne = """
+    private val resultROSActivityRetrofitOne = """
         [
-          {"idROSAtiv":1,"idOS":12345,"idAtiv":10}
+          {"idOS":12345,"idActivity":10}
         ]
     """.trimIndent()
 }

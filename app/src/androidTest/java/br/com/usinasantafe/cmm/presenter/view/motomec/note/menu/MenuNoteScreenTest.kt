@@ -25,6 +25,7 @@ import br.com.usinasantafe.cmm.infra.models.room.variable.MechanicRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderMotoMecSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlowComposting
 import br.com.usinasantafe.cmm.lib.TypeActivity
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -675,7 +676,7 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
@@ -833,7 +834,7 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,
@@ -901,7 +902,7 @@ class MenuNoteScreenTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,

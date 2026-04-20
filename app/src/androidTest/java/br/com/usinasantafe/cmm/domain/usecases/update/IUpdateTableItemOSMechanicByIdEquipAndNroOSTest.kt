@@ -8,6 +8,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPre
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.MechanicSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -158,7 +159,7 @@ class IUpdateTableItemOSMechanicByIdEquipAndNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -219,7 +220,7 @@ class IUpdateTableItemOSMechanicByIdEquipAndNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -294,7 +295,7 @@ class IUpdateTableItemOSMechanicByIdEquipAndNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -368,7 +369,7 @@ class IUpdateTableItemOSMechanicByIdEquipAndNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -466,7 +467,7 @@ class IUpdateTableItemOSMechanicByIdEquipAndNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 

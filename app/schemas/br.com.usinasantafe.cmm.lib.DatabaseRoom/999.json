@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "ec1f4943a6ecb752f3a631812f92cd39",
+    "identityHash": "d8ca215b0e0a594cd54d7a0a151aff74",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -286,7 +286,7 @@
       },
       {
         "tableName": "tb_os",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idLibOS` INTEGER NOT NULL, `idPropAgr` INTEGER NOT NULL, `areaOS` REAL NOT NULL, `idEquip` INTEGER NOT NULL, PRIMARY KEY(`idOS`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idReleaseOS` INTEGER, `idPropAgr` INTEGER, `areaOS` REAL, PRIMARY KEY(`idOS`))",
         "fields": [
           {
             "fieldPath": "idOS",
@@ -301,28 +301,22 @@
             "notNull": true
           },
           {
-            "fieldPath": "idLibOS",
-            "columnName": "idLibOS",
+            "fieldPath": "idReleaseOS",
+            "columnName": "idReleaseOS",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "idPropAgr",
             "columnName": "idPropAgr",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "areaOS",
             "columnName": "areaOS",
             "affinity": "REAL",
-            "notNull": true
-          },
-          {
-            "fieldPath": "idEquip",
-            "columnName": "idEquip",
-            "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -1302,7 +1296,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ec1f4943a6ecb752f3a631812f92cd39')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8ca215b0e0a594cd54d7a0a151aff74')"
     ]
   }
 }

@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -310,7 +311,7 @@ class ISendMotoMecTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,

@@ -3,7 +3,6 @@ package br.com.usinasantafe.cmm.lib
 const val BASE_SHARED_PREFERENCES = "cmm"
 const val BASE_DB = "cmm.db"
 const val VERSION_DB = 999
-const val QTD_TABLE = 16f
 
 const val BASE_SHARED_PREFERENCES_TABLE_CONFIG = "config"
 const val BASE_SHARED_PREFERENCES_TABLE_HEADER_MOTO_MEC = "header_moto_mec"
@@ -132,8 +131,6 @@ const val WAITING_ALLOCATION = "AGUARDANDO_ALOCACAO"
 const val EXIT_LOADING = "SAIDA_CARREGAMENTO"
 const val EXIT_UNLOADING = "SAIDA_DESCARREGAMENTO"
 const val UNLOADING_COMPOUND = "CARREGAMENTO_COMPOSTO"
-
-const val MSG_CHECK_OS = "Verificando OS no Web Service"
 
 const val ERROR_HEADER_WITHOUT_NOTE = "Header without note!"
 const val ERROR_TIME_INVALID = "Time invalid!"

@@ -6,6 +6,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.ItemRespCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -260,7 +261,7 @@ class ISendCheckListTest {
             ConfigSharedPreferencesModel(
                 number = 16997417840,
                 password = "12345",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00",
                 checkMotoMec = false,
                 idServ = 1,

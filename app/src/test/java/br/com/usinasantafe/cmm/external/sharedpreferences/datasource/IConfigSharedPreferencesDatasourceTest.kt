@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.test.core.app.ApplicationProvider
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import kotlinx.coroutines.test.runTest
@@ -39,7 +40,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -78,7 +79,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -120,7 +121,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -158,7 +159,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT,
                 flagUpdate = FlagUpdate.UPDATED
             )
@@ -201,7 +202,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT
             )
             datasource.save(data)
@@ -225,7 +226,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT,
                 idTurnCheckListLast = 1,
             )
@@ -268,7 +269,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT,
                 dateLastCheckList = Date(1750857777000)
             )
@@ -293,7 +294,7 @@ class IConfigSharedPreferencesDatasourceTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.00",
-                app = "PMM",
+                app = App.PMM,
                 statusSend = StatusSend.SENT,
                 dateLastCheckList = Date(1750857777000)
             )

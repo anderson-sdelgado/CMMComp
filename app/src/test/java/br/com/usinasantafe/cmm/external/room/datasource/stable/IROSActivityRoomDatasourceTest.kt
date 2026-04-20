@@ -41,7 +41,7 @@ class IROSActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check failure if have row repeated`() =
         runTest {
-            val qtdBefore = rOSActivityDao.listAll().size
+            val qtdBefore = rOSActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -77,7 +77,7 @@ class IROSActivityRoomDatasourceTest {
     @Test
     fun `addAll - Check success if have row is correct`() =
         runTest {
-            val qtdBefore = rOSActivityDao.listAll().size
+            val qtdBefore = rOSActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 0
@@ -104,7 +104,7 @@ class IROSActivityRoomDatasourceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val list = rOSActivityDao.listAll()
+            val list = rOSActivityDao.all()
             assertEquals(
                 list.size,
                 2
@@ -149,7 +149,7 @@ class IROSActivityRoomDatasourceTest {
                     )
                 )
             )
-            val qtdBefore = rOSActivityDao.listAll().size
+            val qtdBefore = rOSActivityDao.all().size
             assertEquals(
                 qtdBefore,
                 1
@@ -163,7 +163,7 @@ class IROSActivityRoomDatasourceTest {
                 result.getOrNull()!!,
                 Unit
             )
-            val qtdAfter = rOSActivityDao.listAll().size
+            val qtdAfter = rOSActivityDao.all().size
             assertEquals(
                 qtdAfter,
                 0
@@ -201,7 +201,7 @@ class IROSActivityRoomDatasourceTest {
                     )
                 )
             )
-            val qtdAll = rOSActivityDao.listAll().size
+            val qtdAll = rOSActivityDao.all().size
             assertEquals(
                 qtdAll,
                 2

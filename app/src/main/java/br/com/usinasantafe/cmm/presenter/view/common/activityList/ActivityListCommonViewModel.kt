@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.usecases.motomec.ListActivity
-import br.com.usinasantafe.cmm.domain.usecases.motomec.SetIdActivityCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.update.UpdateTableActivity
 import br.com.usinasantafe.cmm.presenter.Args.FLOW_APP_ARG
 import br.com.usinasantafe.cmm.lib.FlowApp
@@ -14,6 +14,7 @@ import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,7 +85,7 @@ class ActivityListCommonViewModel @Inject constructor(
 
     suspend fun updateAllDatabase(): Flow<ActivityListCommonState> =
         executeUpdateSteps(
-            steps = listOf(updateTableActivity(4f, 1f)),
+            steps = listOf(updateTableActivity(sizeUpdate())),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },

@@ -1,5 +1,7 @@
 package br.com.usinasantafe.cmm.di.usecase
 
+import br.com.usinasantafe.cmm.domain.usecases.common.ISetIdActivityCommon
+import br.com.usinasantafe.cmm.domain.usecases.common.SetIdActivityCommon
 import br.com.usinasantafe.cmm.domain.usecases.motomec.*
 import dagger.Binds
 import dagger.Module
@@ -73,7 +75,7 @@ interface MotoMecModule {
 
     @Binds
     @Singleton
-    fun bindSetIdEquip(usecase: ISetIdEquip): SetIdEquip
+    fun bindSetIdEquipMotoMec(usecase: ISetIdEquipMotoMec): SetIdEquipMotoMec
 
     @Binds
     @Singleton

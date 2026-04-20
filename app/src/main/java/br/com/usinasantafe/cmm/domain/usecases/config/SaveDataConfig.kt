@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.Equip
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -16,7 +17,7 @@ interface SaveDataConfig {
         number: String,
         password: String,
         version: String,
-        app: String,
+        app: App,
         checkMotoMec: Boolean,
         idServ: Int,
         equip: Equip,
@@ -32,7 +33,7 @@ class ISaveDataConfig @Inject constructor(
         number: String,
         password: String,
         version: String,
-        app: String,
+        app: App,
         checkMotoMec: Boolean,
         idServ: Int,
         equip: Equip
@@ -45,7 +46,7 @@ class ISaveDataConfig @Inject constructor(
                 number = numberLong,
                 password = password,
                 version = version,
-                app = app.uppercase(),
+                app = app,
                 checkMotoMec = checkMotoMec,
                 idServ = idServ
             )

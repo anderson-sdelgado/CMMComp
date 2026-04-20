@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.models.room.stable.EquipRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -63,7 +64,7 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -95,7 +96,7 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -134,7 +135,7 @@ class IListTurnTest {
         runTest {
             val resultSave = configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",

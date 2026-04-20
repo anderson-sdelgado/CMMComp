@@ -8,10 +8,13 @@ import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.TypeButton
 import br.com.usinasantafe.cmm.presenter.theme.addTextField
 import br.com.usinasantafe.cmm.presenter.theme.clearTextField
+import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonState
+import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderState
 import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.UpdateStatusState
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -68,7 +71,7 @@ class OSMechanicViewModel @Inject constructor(
                     setNroOS(state.nroOS).fold(
                         onSuccess = {
                             emit(
-                                state.copy(
+                            state.copy(
                                     flagAccess = true,
                                     status = state.status.copy(
                                         flagProgress = false

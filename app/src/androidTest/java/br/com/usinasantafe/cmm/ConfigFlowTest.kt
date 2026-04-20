@@ -22,6 +22,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IEquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NRO_EQUIP_TEXT_FIELD_CONFIG_SCREEN
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.TAG_NUMBER_TEXT_FIELD_CONFIG_SCREEN
@@ -433,7 +434,7 @@ class ConfigFlowTest {
         )
         assertEquals(
             config.app,
-            "PMM"
+            App.PMM
         )
 
         val resultGetEquip = equipSharedPreferencesDatasource.get()

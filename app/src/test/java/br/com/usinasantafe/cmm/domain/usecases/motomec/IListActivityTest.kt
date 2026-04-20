@@ -410,8 +410,7 @@ class IListActivityTest {
                     OS(
                         idOS = 10,
                         nroOS = 123456,
-                        idEquip = 1,
-                        idLibOS = 1,
+                        idReleaseOS = 1,
                         idPropAgr = 1,
                         areaOS = 0.0
                     )
@@ -475,8 +474,7 @@ class IListActivityTest {
                     OS(
                         idOS = 1,
                         nroOS = 123456,
-                        idEquip = 1,
-                        idLibOS = 1,
+                        idReleaseOS = 1,
                         idPropAgr = 1,
                         areaOS = 0.0
                     )
@@ -564,8 +562,7 @@ class IListActivityTest {
                     OS(
                         idOS = 1,
                         nroOS = 123456,
-                        idEquip = 1,
-                        idLibOS = 1,
+                        idReleaseOS = 1,
                         idPropAgr = 1,
                         areaOS = 0.0
                     )

@@ -138,8 +138,7 @@ class ISetNroOSTest {
                 ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "123456"
             )
             assertEquals(
                 result.isFailure,
@@ -192,8 +191,7 @@ class ISetNroOSTest {
                 ItemMotoMecSharedPreferencesModel()
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "123456"
             )
             assertEquals(
                 result.isSuccess,
@@ -258,8 +256,7 @@ class ISetNroOSTest {
                 123456
             )
             val result = usecase(
-                nroOS = "456789",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "456789"
             )
             assertEquals(
                 result.isSuccess,

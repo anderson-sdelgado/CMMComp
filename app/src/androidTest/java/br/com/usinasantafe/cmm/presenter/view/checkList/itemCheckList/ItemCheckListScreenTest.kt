@@ -21,6 +21,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.ItemCheckListRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.variable.HeaderMotoMecRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -401,7 +402,7 @@ class ItemCheckListScreenTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

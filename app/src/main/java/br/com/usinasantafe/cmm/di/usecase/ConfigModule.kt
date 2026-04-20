@@ -39,4 +39,8 @@ interface ConfigModule {
     @Singleton
     fun bindSetStatusSend(usecase: ISetStatusSend): SetStatusSend
 
+    @Binds
+    @Singleton
+    fun bindGetApp(usecase: IGetApp): GetApp
+
 }

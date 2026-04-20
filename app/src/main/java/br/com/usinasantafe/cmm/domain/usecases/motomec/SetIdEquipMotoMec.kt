@@ -7,14 +7,14 @@ import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import javax.inject.Inject
 
-interface SetIdEquip {
+interface SetIdEquipMotoMec {
     suspend operator fun invoke(): EmptyResult
 }
 
-class ISetIdEquip @Inject constructor(
+class ISetIdEquipMotoMec @Inject constructor(
     private val motoMecRepository: MotoMecRepository,
     private val equipRepository: EquipRepository
-): SetIdEquip {
+): SetIdEquipMotoMec {
 
     override suspend fun invoke(): EmptyResult =
         call(getClassAndMethod()) {

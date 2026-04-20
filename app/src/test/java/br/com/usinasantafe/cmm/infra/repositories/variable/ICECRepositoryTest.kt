@@ -8,6 +8,8 @@ import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPrefer
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.util.Date
 import kotlin.test.Test
@@ -70,7 +72,7 @@ class ICECRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 HeaderPreCEC(
-                    libEquip = 1,
+                    releaseEquip = 1,
                     nroEquip = 2
                 )
             )
@@ -306,5 +308,42 @@ class ICECRepositoryTest {
             )
         }
 
+    @Test
+    fun `setNroEquip - Check return failure if have error in PreCECSharedPreferencesDatasource setNroEquip`() =
+        runTest {
+            whenever(
+                preCECSharedPreferencesDatasource.setNroEquip(2200)
+            ).thenReturn(
+                resultFailure(
+                    "IPreCECSharedPreferencesDatasource.setNroEquip",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setNroEquip(2200)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.setNroEquip -> IPreCECSharedPreferencesDatasource.setNroEquip"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setNroEquip - Check return correct if function execute successfully`() =
+        runTest {
+            val result = repository.setNroEquip(2200)
+            verify(preCECSharedPreferencesDatasource, atLeastOnce()).setNroEquip(2200)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+        }
 
 }

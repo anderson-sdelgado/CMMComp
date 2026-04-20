@@ -5,6 +5,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.Errors
 import br.com.usinasantafe.cmm.lib.LevelUpdate
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -190,7 +191,7 @@ class ICheckNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -268,7 +269,7 @@ class ICheckNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -349,7 +350,7 @@ class ICheckNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -427,7 +428,7 @@ class ICheckNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
 
@@ -523,7 +524,7 @@ class ICheckNroOSTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "CMM",
+                    app = App.PMM,
                 )
             )
             val list = usecase("2200").toList()

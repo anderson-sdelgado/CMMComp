@@ -23,6 +23,7 @@ import br.com.usinasantafe.cmm.external.room.dao.stable.StopDao
 import br.com.usinasantafe.cmm.external.room.dao.stable.TurnDao
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.lib.TypeActivity
@@ -1254,7 +1255,7 @@ class ConfigScreenTest {
                     checkMotoMec = true,
                     idServ = 1,
                     version = "1.0",
-                    app = "ECM",
+                    app = App.PMM,
                     statusSend = StatusSend.STARTED,
                     flagUpdate = FlagUpdate.OUTDATED
                 )

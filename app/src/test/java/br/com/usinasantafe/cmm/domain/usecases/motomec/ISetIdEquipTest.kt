@@ -14,7 +14,7 @@ class ISetIdEquipTest {
 
     private val motoMecRepository = mock<MotoMecRepository>()
     private val equipRepository = mock<EquipRepository>()
-    private val usecase = ISetIdEquip(
+    private val usecase = ISetIdEquipMotoMec(
         motoMecRepository = motoMecRepository,
         equipRepository = equipRepository
     )

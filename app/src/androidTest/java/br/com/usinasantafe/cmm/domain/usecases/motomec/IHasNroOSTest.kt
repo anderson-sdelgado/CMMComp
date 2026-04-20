@@ -7,6 +7,7 @@ import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPr
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderMotoMecSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.room.stable.OSRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlowApp
 import br.com.usinasantafe.cmm.lib.WEB_OS_LIST_BY_NRO_OS
 import br.com.usinasantafe.cmm.lib.WEB_R_OS_ACTIVITY_LIST_BY_NRO_OS
@@ -71,10 +72,9 @@ class IHasNroOSTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 123456,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
@@ -101,10 +101,9 @@ class IHasNroOSTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 123456,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             )
@@ -154,7 +153,7 @@ class IHasNroOSTest {
             hiltRule.inject()
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -196,7 +195,7 @@ class IHasNroOSTest {
             hiltRule.inject()
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -242,7 +241,7 @@ class IHasNroOSTest {
             hiltRule.inject()
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -280,7 +279,7 @@ class IHasNroOSTest {
             hiltRule.inject()
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -324,7 +323,7 @@ class IHasNroOSTest {
             hiltRule.inject()
             configSharedPreferencesDatasource.save(
                 ConfigSharedPreferencesModel(
-                    app = "CMM",
+                    app = App.PMM,
                     idServ = 1,
                     number = 16997417840,
                     version = "1.0",
@@ -344,7 +343,7 @@ class IHasNroOSTest {
                 result.getOrNull()!!,
                 true
             )
-            val osList = osDao.listAll()
+            val osList = osDao.all()
             assertEquals(
                 osList.size,
                 1
@@ -355,7 +354,7 @@ class IHasNroOSTest {
                 123456
             )
             assertEquals(
-                os.idLibOS,
+                os.idReleaseOS,
                 10
             )
             assertEquals(
@@ -363,15 +362,11 @@ class IHasNroOSTest {
                 20
             )
             assertEquals(
-                os.areaOS,
+                os.areaOS!!,
                 150.75,
                 0.0
             )
-            assertEquals(
-                os.idEquip,
-                30
-            )
-            val rOSActivityList = rOSActivityDao.listAll()
+            val rOSActivityList = rOSActivityDao.all()
             assertEquals(
                 rOSActivityList.size,
                 1

@@ -28,20 +28,18 @@ class IOSRepositoryTest {
                 OSRoomModel(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             val entityList = listOf(
                 OS(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             whenever(
@@ -75,20 +73,18 @@ class IOSRepositoryTest {
                 OSRoomModel(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             val entityList = listOf(
                 OS(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             whenever(
@@ -154,7 +150,7 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return failure if have error`() =
+    fun `listAll - Check return failure if have error`() =
         runTest {
             whenever(
                 osRetrofitDatasource.listAll("token")
@@ -181,42 +177,38 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `recoverAll - Check return true if function execute successfully`() =
+    fun `listAll - Check return true if function execute successfully`() =
         runTest {
             val retrofitModelList = listOf(
                 OSRetrofitModel(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 ),
                 OSRetrofitModel(
                     idOS = 2,
                     nroOS = 67890,
-                    idLibOS = 11,
+                    idReleaseOS = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0,
-                    idEquip = 31
+                    areaOS = 100.0
                 )
             )
             val entityList = listOf(
                 OS(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 ),
                 OS(
                     idOS = 2,
                     nroOS = 67890,
-                    idLibOS = 11,
+                    idReleaseOS = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0,
-                    idEquip = 31
+                    areaOS = 100.0
                 )
             )
             whenever(
@@ -284,7 +276,7 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return failure if have error in OSRetrofitDatasource getListByNroOS`() =
+    fun `listByNroOS - Check return failure if have error in OSRetrofitDatasource getListByNroOS`() =
         runTest {
             whenever(
                 osRetrofitDatasource.listByNroOS(
@@ -293,7 +285,7 @@ class IOSRepositoryTest {
                 )
             ).thenReturn(
                 resultFailure(
-                    "IOSRetrofitDatasource.getListByNroOS",
+                    "IOSRetrofitDatasource.listByNroOS",
                     "-",
                     Exception()
                 )
@@ -308,7 +300,7 @@ class IOSRepositoryTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRepository.getListByNroOS -> IOSRetrofitDatasource.getListByNroOS"
+                "IOSRepository.listByNroOS -> IOSRetrofitDatasource.listByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -317,7 +309,7 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
+    fun `listByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
         runTest {
             whenever(
                 osRetrofitDatasource.listByNroOS(
@@ -342,7 +334,7 @@ class IOSRepositoryTest {
         }
 
     @Test
-    fun `getListByNroOS - Check return list if OSRetrofitDatasource getListByNroOS return list`() =
+    fun `listByNroOS - Check return list if OSRetrofitDatasource getListByNroOS return list`() =
         runTest {
             whenever(
                 osRetrofitDatasource.listByNroOS(
@@ -355,18 +347,16 @@ class IOSRepositoryTest {
                         OSRetrofitModel(
                             idOS = 1,
                             nroOS = 12345,
-                            idLibOS = 10,
+                            idReleaseOS = 10,
                             idPropAgr = 20,
-                            areaOS = 50.5,
-                            idEquip = 30
+                            areaOS = 50.5
                         ),
                         OSRetrofitModel(
                             idOS = 2,
                             nroOS = 67890,
-                            idLibOS = 11,
+                            idReleaseOS = 11,
                             idPropAgr = 21,
-                            areaOS = 100.0,
-                            idEquip = 31
+                            areaOS = 100.0
                         ),
                     )
                 )
@@ -394,7 +384,7 @@ class IOSRepositoryTest {
                 12345
             )
             assertEquals(
-                entity1.idLibOS,
+                entity1.idReleaseOS,
                 10
             )
             assertEquals(
@@ -402,13 +392,9 @@ class IOSRepositoryTest {
                 20
                 )
             assertEquals(
-                entity1.areaOS,
+                entity1.areaOS!!,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                entity1.idEquip,
-                30
             )
             val entity2 = list[1]
             assertEquals(
@@ -420,7 +406,7 @@ class IOSRepositoryTest {
                 67890
             )
             assertEquals(
-                entity2.idLibOS,
+                entity2.idReleaseOS,
                 11
             )
             assertEquals(
@@ -428,7 +414,7 @@ class IOSRepositoryTest {
                 21
             )
             assertEquals(
-                entity2.areaOS,
+                entity2.areaOS!!,
                 100.0,
                 0.0
             )
@@ -442,10 +428,9 @@ class IOSRepositoryTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             ).thenReturn(
@@ -459,10 +444,9 @@ class IOSRepositoryTest {
                 OS(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             assertEquals(
@@ -487,10 +471,9 @@ class IOSRepositoryTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 12345,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 30
+                        areaOS = 50.5
                     )
                 )
             ).thenReturn(
@@ -500,10 +483,9 @@ class IOSRepositoryTest {
                 OS(
                     idOS = 1,
                     nroOS = 12345,
-                    idLibOS = 10,
+                    idReleaseOS = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5,
-                    idEquip = 30
+                    areaOS = 50.5
                 )
             )
             assertEquals(
@@ -553,10 +535,9 @@ class IOSRepositoryTest {
                     OSRoomModel(
                         idOS = 1,
                         nroOS = 123456,
-                        idLibOS = 10,
+                        idReleaseOS = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5,
-                        idEquip = 3
+                        areaOS = 50.5
                     )
                 )
             )
@@ -575,7 +556,7 @@ class IOSRepositoryTest {
                 123456
             )
             assertEquals(
-                entity.idLibOS,
+                entity.idReleaseOS,
                 10
             )
             assertEquals(
@@ -583,13 +564,9 @@ class IOSRepositoryTest {
                 20
             )
             assertEquals(
-                entity.areaOS,
+                entity.areaOS!!,
                 50.5,
                 0.0
-            )
-            assertEquals(
-                entity.idEquip,
-                3
             )
         }
 

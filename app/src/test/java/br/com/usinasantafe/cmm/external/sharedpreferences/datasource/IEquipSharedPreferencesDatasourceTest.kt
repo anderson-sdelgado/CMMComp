@@ -30,7 +30,7 @@ class IEquipSharedPreferencesDatasourceTest {
     }
 
     @Test
-    fun `Check get and save`() =
+    fun `get - Check execute process correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -99,7 +99,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getDescr return correct`() =
+    fun `getDescr - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -127,7 +127,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getCodTurnEquip return correct`() =
+    fun `getCodTurnEquip - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -155,7 +155,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getHourMeter return correct`() =
+    fun `getHourMeter - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -183,7 +183,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check updateHourMeter execute successfully`() =
+    fun `updateHourMeter - Check if process execute correctly`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -229,7 +229,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getTypeEquip return correct`() =
+    fun `getTypeEquip - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -257,7 +257,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getIdCheckList return correct`() =
+    fun `getIdCheckList - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -285,7 +285,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getFlagMechanic return correct`() =
+    fun `getFlagMechanic - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -313,7 +313,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getFlagTire return correct`() =
+    fun `getFlagTire - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 10,
@@ -341,7 +341,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getId return correct`() =
+    fun `getId - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 100,
@@ -369,7 +369,7 @@ class IEquipSharedPreferencesDatasourceTest {
         }
 
     @Test
-    fun `Check getNro return correct`() =
+    fun `getNro - Check return correct`() =
         runTest {
             val data = EquipSharedPreferencesModel(
                 id = 100,
@@ -393,6 +393,34 @@ class IEquipSharedPreferencesDatasourceTest {
             assertEquals(
                 result.getOrNull()!!,
                 2200
+            )
+        }
+
+    @Test
+    fun `getCodClass - Check  return correct`() =
+        runTest {
+            val data = EquipSharedPreferencesModel(
+                id = 100,
+                nro = 2200,
+                codClass = 1,
+                descrClass = "TRATOR",
+                codTurnEquip = 5,
+                idCheckList = 10,
+                typeEquip = TypeEquip.NORMAL,
+                hourMeter = 5000.0,
+                classify = 1,
+                flagMechanic = true,
+                flagTire = true
+            )
+            datasource.save(data)
+            val result = datasource.getCodClass()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                1
             )
         }
 }

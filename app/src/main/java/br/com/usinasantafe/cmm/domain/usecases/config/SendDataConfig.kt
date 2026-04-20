@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.call
 import br.com.usinasantafe.cmm.utils.tryCatch
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
@@ -13,7 +14,7 @@ interface SendDataConfig {
         number: String,
         password: String,
         nroEquip: String,
-        app: String,
+        app: App,
         version: String,
     ): Result<Config>
 }
@@ -26,7 +27,7 @@ class ISendDataConfig @Inject constructor(
         number: String,
         password: String,
         nroEquip: String,
-        app: String,
+        app: App,
         version: String,
     ): Result<Config> =
         call(getClassAndMethod()) {
@@ -43,7 +44,7 @@ class ISendDataConfig @Inject constructor(
                 number = numberLong,
                 password = password,
                 nroEquip = nroEquipLong,
-                app = app.uppercase(),
+                app = app,
                 version = version
             )
             configRepository.send(entity).getOrThrow()

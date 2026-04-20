@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.models.sharedpreferences
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import br.com.usinasantafe.cmm.utils.required
@@ -12,7 +13,7 @@ data class ConfigSharedPreferencesModel(
     var checkMotoMec: Boolean,
     var idServ: Int,
     var version: String,
-    var app: String,
+    var app: App,
     var statusSend: StatusSend = StatusSend.STARTED,
     var flagUpdate: FlagUpdate = FlagUpdate.OUTDATED,
     var idTurnCheckListLast: Int? = null,

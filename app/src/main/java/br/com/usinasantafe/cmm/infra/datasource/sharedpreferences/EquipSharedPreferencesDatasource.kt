@@ -9,6 +9,7 @@ interface EquipSharedPreferencesDatasource {
     suspend fun getId(): Result<Int>
     suspend fun getNro(): Result<Long>
     suspend fun getDescr(): Result<String>
+    suspend fun getCodClass(): Result<Int>
     suspend fun getCodTurnEquip(): Result<Int>
     suspend fun getHourMeter(): Result<Double>
     suspend fun updateHourMeter(hourMeter: Double): EmptyResult

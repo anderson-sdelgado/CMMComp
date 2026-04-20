@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.config
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.TypeEquip
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -59,7 +60,7 @@ class ISendDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 nroEquip = "310",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00"
             )
             assertEquals(
@@ -100,7 +101,7 @@ class ISendDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 nroEquip = "310",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00"
             )
             assertEquals(
@@ -130,7 +131,7 @@ class ISendDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 nroEquip = "310",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00"
             )
             assertEquals(
@@ -160,7 +161,7 @@ class ISendDataConfigTest {
                 number = "16997417840a",
                 password = "12345",
                 nroEquip = "310",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00"
             )
             assertEquals(
@@ -188,7 +189,7 @@ class ISendDataConfigTest {
                 number = "16997417840",
                 password = "12345",
                 nroEquip = "310",
-                app = "PMM",
+                app = App.PMM,
                 version = "1.00"
             )
             assertEquals(

@@ -4,6 +4,7 @@ import br.com.usinasantafe.cmm.domain.entities.variable.Config
 import br.com.usinasantafe.cmm.utils.resultFailure
 import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.token
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -51,7 +52,7 @@ class IGetTokenTest {
     fun `Check return failure if have error in EquipRepository getNroEquipMain`() =
         runTest {
             val config = Config(
-                app = "PMM",
+                app = App.PMM,
                 idServ = 1,
                 nroEquip = 1,
                 number = 1
@@ -89,7 +90,7 @@ class IGetTokenTest {
     fun `Check return failure if get return config with field empty`() =
         runTest {
             val config = Config(
-                app = "PMM",
+                app = App.PMM,
                 idServ = 1,
                 nroEquip = 1,
                 number = 1
@@ -123,7 +124,7 @@ class IGetTokenTest {
     fun `Check return correct if function execute successfully`() =
         runTest {
             val config = Config(
-                app = "PMM",
+                app = App.PMM,
                 idServ = 1,
                 nroEquip = 1,
                 number = 1,

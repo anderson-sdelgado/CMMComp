@@ -24,6 +24,7 @@ import br.com.usinasantafe.cmm.infra.models.room.stable.REquipActivityRoomModel
 import br.com.usinasantafe.cmm.infra.models.room.stable.TurnRoomModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.presenter.MainActivity
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.OptionRespCheckList
@@ -401,7 +402,7 @@ class CheckListFlowTest {
                 checkMotoMec = true,
                 idServ = 1,
                 version = "1.0",
-                app = "PMM",
+                app = App.PMM,
                 flagUpdate = FlagUpdate.UPDATED
             )
         )

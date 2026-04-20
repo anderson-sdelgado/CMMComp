@@ -16,7 +16,7 @@ interface ROSActivityDao {
     suspend fun deleteAll()
 
     @Query("SELECT * FROM $TB_R_OS_ACTIVITY")
-    suspend fun listAll(): List<ROSActivityRoomModel>
+    suspend fun all(): List<ROSActivityRoomModel>
 
     @Query("SELECT * FROM $TB_R_OS_ACTIVITY WHERE idOS = :idOS")
     suspend fun listByIdOS(idOS: Int): List<ROSActivityRoomModel>

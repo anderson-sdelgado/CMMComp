@@ -6,16 +6,29 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 import kotlin.test.assertEquals
 
 class IOSRetrofitDatasourceTest {
 
+    private lateinit var server: MockWebServer
+
+    @Before
+    fun setup() {
+        server = MockWebServer();
+        server.start()
+    }
+
+    @After
+    fun tearDown() {
+        server.shutdown()
+    }
+
     @Test
     fun `listAll - Check return failure if token is invalid`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
                 MockResponse().setBody("{ error : Authorization header is missing }")
             )
@@ -31,20 +44,17 @@ class IOSRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRetrofitDatasource.recoverAll"
+                "IOSRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                 "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$"
             )
-            server.shutdown()
         }
 
     @Test
     fun `listAll - Check return failure if have Error 404`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
                 MockResponse().setResponseCode(404)
             )
@@ -60,22 +70,19 @@ class IOSRetrofitDatasourceTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IOSRetrofitDatasource.recoverAll"
+                "IOSRetrofitDatasource.listAll"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
                         NullPointerException().toString()
             )
-            server.shutdown()
         }
 
     @Test
-    fun `listAll - Check return correct`() =
+    fun `listAll - Check return correct - PMM`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
-                MockResponse().setBody(resultOSRetrofit)
+                MockResponse().setBody(resultOSRetrofitPMM)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
@@ -93,31 +100,48 @@ class IOSRetrofitDatasourceTest {
                         OSRetrofitModel(
                             idOS = 1,
                             nroOS = 12345,
-                            idLibOS = 10,
                             idPropAgr = 20,
-                            areaOS = 150.75,
-                            idEquip = 30
-                        ),
-                        OSRetrofitModel(
-                            idOS = 2,
-                            nroOS = 67890,
-                            idLibOS = 11,
-                            idPropAgr = 21,
-                            areaOS = 200.0,
-                            idEquip = 31
+                            areaOS = 150.75
                         )
                     )
                 ),
                 result
             )
-            server.shutdown()
+        }
+
+    @Test
+    fun `listAll - Check return correct - ECM`() =
+        runTest {
+            server.enqueue(
+                MockResponse().setBody(resultOSRetrofitECM)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("").toString()
+            )
+            val service = retrofit.create(OSApi::class.java)
+            val datasource = IOSRetrofitDatasource(service, service)
+            val result = datasource.listAll("TOKEN")
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                Result.success(
+                    listOf(
+                        OSRetrofitModel(
+                            idOS = 1,
+                            nroOS = 12345,
+                            idReleaseOS = 10
+                        )
+                    )
+                ),
+                result
+            )
         }
 
     @Test
     fun `listByNroOS - Check return failure if token is invalid`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
                 MockResponse().setBody("{ error : Authorization header is missing }")
             )
@@ -135,21 +159,18 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.getListByNroOS",
+                "IOSRetrofitDatasource.listByNroOS",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
                 "java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path \$",
                 result.exceptionOrNull()!!.cause.toString()
             )
-            server.shutdown()
         }
 
     @Test
-    fun `listtByNroOS - Check return failure if have Error 404`() =
+    fun `listByNroOS - Check return failure if have Error 404`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
                 MockResponse().setResponseCode(404)
             )
@@ -167,21 +188,18 @@ class IOSRetrofitDatasourceTest {
                 result.isFailure
             )
             assertEquals(
-                "IOSRetrofitDatasource.getListByNroOS",
+                "IOSRetrofitDatasource.listByNroOS",
                 result.exceptionOrNull()!!.message
             )
             assertEquals(
                 NullPointerException().toString(),
                 result.exceptionOrNull()!!.cause.toString()
             )
-            server.shutdown()
         }
 
     @Test
     fun `listByNroOS - Check return list empty`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
                 MockResponse().setBody(resultOSRetrofitEmptyList)
             )
@@ -204,16 +222,13 @@ class IOSRetrofitDatasourceTest {
                 ),
                 result
             )
-            server.shutdown()
         }
 
     @Test
-    fun `listByNroOS - Check return list`() =
+    fun `listByNroOS - Check return list - PMM`() =
         runTest {
-            val server = MockWebServer()
-            server.start()
             server.enqueue(
-                MockResponse().setBody(resultOSRetrofitOne)
+                MockResponse().setBody(resultOSRetrofitPMM)
             )
             val retrofit = provideRetrofitTest(
                 server.url("").toString()
@@ -234,32 +249,61 @@ class IOSRetrofitDatasourceTest {
                         OSRetrofitModel(
                             idOS = 1,
                             nroOS = 12345,
-                            idLibOS = 10,
                             idPropAgr = 20,
-                            areaOS = 150.75,
-                            idEquip = 30
+                            areaOS = 150.75
                         )
                     )
                 ),
                 result
             )
-            server.shutdown()
         }
 
-    private val resultOSRetrofit = """
-        [
-          {"idOS":1,"nroOS":12345,"idLibOS":10,"idProprAgr":20,"areaProgrOS":150.75,"tipoOS":1,"idEquip":30},
-          {"idOS":2,"nroOS":67890,"idLibOS":11,"idProprAgr":21,"areaProgrOS":200.0,"tipoOS":2,"idEquip":31}
-        ]
-    """.trimIndent()
+    @Test
+    fun `listByNroOS - Check return list - ECM`() =
+        runTest {
+            server.enqueue(
+                MockResponse().setBody(resultOSRetrofitECM)
+            )
+            val retrofit = provideRetrofitTest(
+                server.url("").toString()
+            )
+            val service = retrofit.create(OSApi::class.java)
+            val datasource = IOSRetrofitDatasource(service, service)
+            val result = datasource.listByNroOS(
+                token = "token",
+                nroOS = 123456
+            )
+            assertEquals(
+                true,
+                result.isSuccess
+            )
+            assertEquals(
+                Result.success(
+                    listOf(
+                        OSRetrofitModel(
+                            idOS = 1,
+                            nroOS = 12345,
+                            idReleaseOS = 10
+                        )
+                    )
+                ),
+                result
+            )
+        }
 
     private val resultOSRetrofitEmptyList = """
         []
     """.trimIndent()
 
-    private val resultOSRetrofitOne = """
+    private val resultOSRetrofitPMM = """
         [
-          {"idOS":1,"nroOS":12345,"idLibOS":10,"idProprAgr":20,"areaProgrOS":150.75,"tipoOS":1,"idEquip":30}
+          {"idOS":1,"nroOS":12345,"idPropAgr":20,"areaOS":150.75}
+        ]
+    """.trimIndent()
+
+    private val resultOSRetrofitECM = """
+        [
+          {"idOS":1,"nroOS":12345,"idReleaseOS":10}
         ]
     """.trimIndent()
 

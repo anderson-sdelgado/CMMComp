@@ -2,6 +2,7 @@ package br.com.usinasantafe.cmm.domain.usecases.common
 
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.ConfigSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -66,7 +67,7 @@ class ICheckAccessInitialTest {
                     password = "12345",
                     checkMotoMec = true,
                     idServ = 1,
-                    app = "PMM",
+                    app = App.PMM,
                     version = "1.00",
                     flagUpdate = FlagUpdate.UPDATED
                 )

@@ -56,6 +56,11 @@ class IEquipSharedPreferencesDatasource @Inject constructor(
             "${model.nro} - ${model.descrClass}"
         }
 
+    override suspend fun getCodClass(): Result<Int> =
+        result(getClassAndMethod()) {
+            get().getOrThrow()!!.codClass
+        }
+
     override suspend fun getCodTurnEquip(): Result<Int> =
         result(getClassAndMethod()) {
             get().getOrThrow()!!.codTurnEquip

@@ -574,7 +574,15 @@ fun MsgUpdate(status : UpdateStatusState, setCloseDialog: () -> Unit, value: Str
 }
 
 @Composable
-fun ProgressUpdate(status : UpdateStatusState){
+fun ProgressIndeterminate(status : UpdateStatusState){
+    val msgProgress = msg(status.levelUpdate, status.failure, status.tableUpdate)
+    AlertDialogProgressIndeterminateDesign(
+        msgProgress = msgProgress
+    )
+}
+
+@Composable
+fun Progress(status : UpdateStatusState){
     val msgProgress = msg(status.levelUpdate, status.failure, status.tableUpdate)
     AlertDialogProgressDesign(
         currentProgress = status.currentProgress,

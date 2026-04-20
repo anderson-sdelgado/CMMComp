@@ -29,7 +29,7 @@ import br.com.usinasantafe.cmm.presenter.view.checkList.questionUpdate.QuestionU
 import br.com.usinasantafe.cmm.presenter.view.configuration.config.ConfigScreen
 import br.com.usinasantafe.cmm.presenter.view.configuration.password.PasswordScreen
 import br.com.usinasantafe.cmm.presenter.view.common.activityList.ActivityListCommonScreen
-import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipHeaderScreen
+import br.com.usinasantafe.cmm.presenter.view.common.equip.EquipCommonScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.hourMeter.HourMeterHeaderScreen
 import br.com.usinasantafe.cmm.presenter.view.motomec.header.operator.OperatorHeaderScreen
 import br.com.usinasantafe.cmm.presenter.view.common.os.OSCommonScreen
@@ -42,6 +42,7 @@ import br.com.usinasantafe.cmm.presenter.Args.ID_ARG
 import br.com.usinasantafe.cmm.presenter.Routes.COLLECTION_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.COLLECTION_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.IMPLEMENTATION_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.INITIAL_MENU_PRE_CEC_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.INPUT_ITEM_MECHANIC_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.ITEM_LIST_MECHANIC_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.MOTOR_PUMP_ROUTE
@@ -54,6 +55,7 @@ import br.com.usinasantafe.cmm.presenter.Routes.REEL_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.REEL_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.SPEED_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
+import br.com.usinasantafe.cmm.presenter.view.cec.initialMenuPreCEC.InitialMenuPreCECScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.collection.CollectionFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.collectionList.CollectionListFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpFertigationScreen
@@ -146,18 +148,28 @@ fun NavigationGraph(
                     navActions.navigateToInitialMenu()
                 },
                 onNavEquip = {
-                    navActions.navigateToEquipHeader()
+                    navActions.navigateToEquipCommon()
                 }
             )
         }
 
         composable(EQUIP_HEADER_ROUTE) {
-            EquipHeaderScreen(
+            EquipCommonScreen(
                 onNavOperator = {
                     navActions.navigateToOperatorHeader()
                 },
                 onNavTurnList = {
                     navActions.navigateToTurnListHeader()
+                },
+                onNavInitialMenuPreCEC = {
+                    navActions.navigateToInitialMenuPreCEC()
+                },
+                onNavOS = {
+                    navActions.navigateToOSCommon(
+                        flowApp = FlowApp.PRE_CEC.ordinal
+                    )
+                },
+                onNavMsgNumberTrailer = {
                 }
             )
         }
@@ -165,7 +177,7 @@ fun NavigationGraph(
         composable(TURN_LIST_HEADER_ROUTE) {
             TurnListHeaderScreen(
                 onNavEquip = {
-                    navActions.navigateToEquipHeader()
+                    navActions.navigateToEquipCommon()
                 },
                 onNavOS = {
                     navActions.navigateToOSCommon()
@@ -319,7 +331,9 @@ fun NavigationGraph(
                     navActions.navigateToOSMechanic()
                 },
                 onNavEquipTire = {},
-                onNavMenuCertificate = {},
+                onNavMenuCertificate = {
+                    navActions.navigateToInitialMenuPreCEC()
+                },
                 onNavTrailer = {},
                 onNavInfoLocalSugarcaneLoading = {},
                 onNavUncouplingTrailer = {},
@@ -576,6 +590,22 @@ fun NavigationGraph(
                 onNavOS = {
                     navActions.navigateToOSMechanic()
                 }
+            )
+        }
+
+        ///////////////////////////////////////////////////////////////////
+
+        ///////////////////////////// CEC /////////////////////////////////
+
+        composable(INITIAL_MENU_PRE_CEC_ROUTE) {
+            InitialMenuPreCECScreen(
+                onNavEquip = {
+                    navActions.navigateToEquipCommon(
+                        flowApp = FlowApp.PRE_CEC.ordinal
+                    )
+                },
+                onNavHistoricalPreCEC = {},
+                onNavHistoricalCEC = {},
             )
         }
 

@@ -20,8 +20,7 @@ class ISetNroOSCommonTest {
     fun `Check return failure if value of field is incorrect - FlowApp HEADER_DEFAULT`() =
         runTest {
             val result = usecase(
-                nroOS = "19759a",
-                flowApp = FlowApp.HEADER_INITIAL
+                nroOS = "19759a"
             )
             assertEquals(
                 result.isFailure,
@@ -50,8 +49,7 @@ class ISetNroOSCommonTest {
                 )
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.HEADER_INITIAL
+                nroOS = "123456"
             )
             assertEquals(
                 result.isFailure,
@@ -76,8 +74,7 @@ class ISetNroOSCommonTest {
                 Result.success(Unit)
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.HEADER_INITIAL
+                nroOS = "123456"
             )
             assertEquals(
                 result.isSuccess,
@@ -102,8 +99,7 @@ class ISetNroOSCommonTest {
                 )
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "123456"
             )
             assertEquals(
                 result.isFailure,
@@ -128,8 +124,7 @@ class ISetNroOSCommonTest {
                 Result.success(Unit)
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "123456"
             )
             assertEquals(
                 result.isFailure,
@@ -154,8 +149,7 @@ class ISetNroOSCommonTest {
                 Result.success(Unit)
             )
             val result = usecase(
-                nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                nroOS = "123456"
             )
             assertEquals(
                 result.isSuccess,

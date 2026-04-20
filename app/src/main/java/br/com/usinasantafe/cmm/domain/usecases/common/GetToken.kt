@@ -26,7 +26,7 @@ class IGetToken @Inject constructor(
             tryCatch("token") {
                 with(entity) {
                     token(
-                        app = ::app.required(),
+                        app = ::app.required().name,
                         idServ = ::idServ.required(),
                         nroEquip = nroEquip,
                         number = ::number.required(),

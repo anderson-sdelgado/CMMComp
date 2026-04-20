@@ -11,4 +11,5 @@ interface CECRepository {
     suspend fun setDateExitField(date: Date): EmptyResult
     suspend fun hasCouplingTrailer(): Result<Boolean>
     suspend fun uncouplingTrailer(): EmptyResult
+    suspend fun setNroEquip(nroEquip: Long): EmptyResult
 }

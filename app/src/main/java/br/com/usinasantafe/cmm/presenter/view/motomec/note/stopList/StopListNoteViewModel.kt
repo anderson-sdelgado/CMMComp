@@ -12,6 +12,7 @@ import br.com.usinasantafe.cmm.utils.UiStateWithStatus
 import br.com.usinasantafe.cmm.utils.executeUpdateSteps
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.onFailureUpdate
+import br.com.usinasantafe.cmm.utils.sizeUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -91,11 +92,18 @@ class StopListNoteViewModel @Inject constructor(
 
     suspend fun updateAllDatabase(): Flow<StopListNoteState> =
         executeUpdateSteps(
-            steps = listOf(updateTableRActivityStop(7f, 1f), updateTableStop(7f, 2f)),
+            steps = listUpdate(),
             getState = { _uiState.value },
             getStatus = { it.status },
             copyStateWithStatus = { state, status -> state.copy(status = status) },
             classAndMethod = getClassAndMethod(),
         )
 
+    private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
+        val size = sizeUpdate(2f)
+        return listOf(
+            updateTableRActivityStop(size, 1f),
+            updateTableStop(size, 2f)
+        )
+    }
 }

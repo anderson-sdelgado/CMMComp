@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.Equip
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
 import java.util.Date
@@ -12,7 +13,7 @@ data class Config(
     var checkMotoMec: Boolean? = true,
     var idServ: Int? = null,
     var version: String? = null,
-    var app: String? = null,
+    var app: App? = null,
     var statusSend: StatusSend = StatusSend.STARTED,
     val flagUpdate: FlagUpdate = FlagUpdate.OUTDATED,
     val equip: Equip? = null,
