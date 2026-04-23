@@ -21,11 +21,11 @@ class IOSRetrofitDatasource @Inject constructor(
             osApiDefault.all(token).body()!!
         }
 
-    override suspend fun listByNroOS(
+    override suspend fun listByNro(
         token: String,
-        nroOS: Int
+        nro: Int
     ): Result<List<OSRetrofitModel>> =
         result(getClassAndMethod()) {
-            osApiShortTimeout.listByNroOS(token, nroOS).body()!!
+            osApiShortTimeout.listByNroOS(token, nro).body()!!
         }
 }

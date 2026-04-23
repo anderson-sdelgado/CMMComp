@@ -4,8 +4,8 @@ import br.com.usinasantafe.cmm.infra.models.retrofit.stable.OSRetrofitModel
 
 interface OSRetrofitDatasource {
     suspend fun listAll(token: String): Result<List<OSRetrofitModel>>
-    suspend fun listByNroOS(
+    suspend fun listByNro(
         token: String,
-        nroOS: Int
+        nro: Int
     ): Result<List<OSRetrofitModel>>
 }

@@ -26,20 +26,20 @@ class IOSRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 OSRoomModel(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             val entityList = listOf(
                 OS(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             whenever(
@@ -71,20 +71,20 @@ class IOSRepositoryTest {
         runTest {
             val roomModelList = listOf(
                 OSRoomModel(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             val entityList = listOf(
                 OS(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             whenever(
@@ -181,34 +181,34 @@ class IOSRepositoryTest {
         runTest {
             val retrofitModelList = listOf(
                 OSRetrofitModel(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 ),
                 OSRetrofitModel(
-                    idOS = 2,
-                    nroOS = 67890,
-                    idReleaseOS = 11,
+                    id = 2,
+                    nro = 67890,
+                    idRelease = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0
+                    area = 100.0
                 )
             )
             val entityList = listOf(
                 OS(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 ),
                 OS(
-                    idOS = 2,
-                    nroOS = 67890,
-                    idReleaseOS = 11,
+                    id = 2,
+                    nro = 67890,
+                    idRelease = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0
+                    area = 100.0
                 )
             )
             whenever(
@@ -233,7 +233,7 @@ class IOSRepositoryTest {
     fun `hasByNroOS - Check return failure if have error in OSRoomDatasource checkNroOS`() =
         runTest {
             whenever(
-                osRoomDatasource.hasByNroOS(123456)
+                osRoomDatasource.hasByNro(123456)
             ).thenReturn(
                 resultFailure(
                     "IOSRoomDatasource.hasByNroOS",
@@ -241,7 +241,7 @@ class IOSRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.hasByNroOS(123456)
+            val result = repository.hasByNro(123456)
             assertEquals(
                 result.isFailure,
                 true
@@ -260,11 +260,11 @@ class IOSRepositoryTest {
     fun `hasByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                osRoomDatasource.hasByNroOS(123456)
+                osRoomDatasource.hasByNro(123456)
             ).thenReturn(
                 Result.success(true)
             )
-            val result = repository.hasByNroOS(123456)
+            val result = repository.hasByNro(123456)
             assertEquals(
                 result.isSuccess,
                 true
@@ -279,9 +279,9 @@ class IOSRepositoryTest {
     fun `listByNroOS - Check return failure if have error in OSRetrofitDatasource getListByNroOS`() =
         runTest {
             whenever(
-                osRetrofitDatasource.listByNroOS(
+                osRetrofitDatasource.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 resultFailure(
@@ -290,9 +290,9 @@ class IOSRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.listByNroOS(
+            val result = repository.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 result.isFailure,
@@ -312,16 +312,16 @@ class IOSRepositoryTest {
     fun `listByNroOS - Check return list empty if OSRetrofitDatasource getListByNroOS return empty list`() =
         runTest {
             whenever(
-                osRetrofitDatasource.listByNroOS(
+                osRetrofitDatasource.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(emptyList())
             )
-            val result = repository.listByNroOS(
+            val result = repository.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 result.isSuccess,
@@ -337,33 +337,33 @@ class IOSRepositoryTest {
     fun `listByNroOS - Check return list if OSRetrofitDatasource getListByNroOS return list`() =
         runTest {
             whenever(
-                osRetrofitDatasource.listByNroOS(
+                osRetrofitDatasource.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 12345,
-                            idReleaseOS = 10,
+                            id = 1,
+                            nro = 12345,
+                            idRelease = 10,
                             idPropAgr = 20,
-                            areaOS = 50.5
+                            area = 50.5
                         ),
                         OSRetrofitModel(
-                            idOS = 2,
-                            nroOS = 67890,
-                            idReleaseOS = 11,
+                            id = 2,
+                            nro = 67890,
+                            idRelease = 11,
                             idPropAgr = 21,
-                            areaOS = 100.0
+                            area = 100.0
                         ),
                     )
                 )
             )
-            val result = repository.listByNroOS(
+            val result = repository.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 result.isSuccess,
@@ -376,15 +376,15 @@ class IOSRepositoryTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idOS,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.nroOS,
+                entity1.nro,
                 12345
             )
             assertEquals(
-                entity1.idReleaseOS,
+                entity1.idRelease,
                 10
             )
             assertEquals(
@@ -392,21 +392,21 @@ class IOSRepositoryTest {
                 20
                 )
             assertEquals(
-                entity1.areaOS!!,
+                entity1.area!!,
                 50.5,
                 0.0
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idOS,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.nroOS,
+                entity2.nro,
                 67890
             )
             assertEquals(
-                entity2.idReleaseOS,
+                entity2.idRelease,
                 11
             )
             assertEquals(
@@ -414,7 +414,7 @@ class IOSRepositoryTest {
                 21
             )
             assertEquals(
-                entity2.areaOS!!,
+                entity2.area!!,
                 100.0,
                 0.0
             )
@@ -426,11 +426,11 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.add(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             ).thenReturn(
@@ -442,11 +442,11 @@ class IOSRepositoryTest {
             )
             val result = repository.add(
                 OS(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             assertEquals(
@@ -469,11 +469,11 @@ class IOSRepositoryTest {
             whenever(
                 osRoomDatasource.add(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             ).thenReturn(
@@ -481,11 +481,11 @@ class IOSRepositoryTest {
             )
             val result = repository.add(
                 OS(
-                    idOS = 1,
-                    nroOS = 12345,
-                    idReleaseOS = 10,
+                    id = 1,
+                    nro = 12345,
+                    idRelease = 10,
                     idPropAgr = 20,
-                    areaOS = 50.5
+                    area = 50.5
                 )
             )
             assertEquals(
@@ -502,7 +502,7 @@ class IOSRepositoryTest {
     fun `getByNroOS - Check return failure if have error in OSRoomDatasource getByNroOS`() =
         runTest {
             whenever(
-                osRoomDatasource.getByNroOS(123456)
+                osRoomDatasource.getByNro(123456)
             ).thenReturn(
                 resultFailure(
                     "IOSRoomDatasource.getByNroOS",
@@ -510,7 +510,7 @@ class IOSRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getByNroOS(123456)
+            val result = repository.getByNro(123456)
             assertEquals(
                 result.isFailure,
                 true
@@ -529,34 +529,34 @@ class IOSRepositoryTest {
     fun `getByNroOS - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                osRoomDatasource.getByNroOS(123456)
+                osRoomDatasource.getByNro(123456)
             ).thenReturn(
                 Result.success(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
-            val result = repository.getByNroOS(123456)
+            val result = repository.getByNro(123456)
             assertEquals(
                 result.isSuccess,
                 true
             )
             val entity = result.getOrNull()!!
             assertEquals(
-                entity.idOS,
+                entity.id,
                 1
             )
             assertEquals(
-                entity.nroOS,
+                entity.nro,
                 123456
             )
             assertEquals(
-                entity.idReleaseOS,
+                entity.idRelease,
                 10
             )
             assertEquals(
@@ -564,9 +564,67 @@ class IOSRepositoryTest {
                 20
             )
             assertEquals(
-                entity.areaOS!!,
+                entity.area!!,
                 50.5,
                 0.0
+            )
+        }
+
+    @Test
+    fun `hasByNroOSAndIdRelease - Check return failure if have error in OSRoomDatasource hasByNroOSAndIdRelease`() =
+        runTest {
+            whenever(
+                osRoomDatasource.hasByNroAndIdRelease(
+                    nroOS = 123456,
+                    idRelease = 10
+                )
+            ).thenReturn(
+                resultFailure(
+                    "IOSRoomDatasource.hasByNroOSAndIdRelease",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.hasByNroAndIdRelease(
+                nroOS = 123456,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IOSRepository.hasByNroOSAndIdRelease -> IOSRoomDatasource.hasByNroOSAndIdRelease"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `hasByNroOSAndIdRelease - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                osRoomDatasource.hasByNroAndIdRelease(
+                    nroOS = 123456,
+                    idRelease = 10
+                )
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = repository.hasByNroAndIdRelease(
+                nroOS = 123456,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
             )
         }
 

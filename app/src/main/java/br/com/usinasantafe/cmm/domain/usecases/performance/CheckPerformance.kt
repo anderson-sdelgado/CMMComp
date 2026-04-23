@@ -27,9 +27,9 @@ class ICheckPerformance @Inject constructor(
         call(getClassAndMethod()) {
             val valueInput = tryCatch(::stringToDouble.name) { stringToDouble(value) }
             val nroOS = performanceRepository.getNroOSById(id).getOrThrow()
-            val check = osRepository.hasByNroOS(nroOS).getOrThrow()
+            val check = osRepository.hasByNro(nroOS).getOrThrow()
             if(!check) return@call valueInput <= 150.0
-            val valueBD = osRepository.getByNroOS(nroOS).getOrThrow().areaOS
+            val valueBD = osRepository.getByNro(nroOS).getOrThrow().area
             return@call valueInput <= valueBD!!
         }
 

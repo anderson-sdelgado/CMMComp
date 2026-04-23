@@ -2,9 +2,9 @@ package br.com.usinasantafe.cmm.external.sharedpreferences.datasource
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
-import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_PRE_CEC
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderPreCECSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.BASE_SHARED_PREFERENCES_TABLE_HEADER_PRE_CEC
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.getClassAndMethod
 import br.com.usinasantafe.cmm.utils.result
@@ -12,20 +12,30 @@ import com.google.gson.Gson
 import java.util.Date
 import javax.inject.Inject
 
-class IPreCECSharedPreferencesDatasource @Inject constructor(
+class IHeaderPreCECSharedPreferencesDatasource @Inject constructor(
     private val sharedPreferences: SharedPreferences
-): PreCECSharedPreferencesDatasource {
+): HeaderPreCECSharedPreferencesDatasource {
 
-    override suspend fun get(): Result<PreCECSharedPreferencesModel> =
+    suspend fun save(model: HeaderPreCECSharedPreferencesModel): EmptyResult =
+        result(getClassAndMethod()) {
+            sharedPreferences.edit {
+                putString(
+                    BASE_SHARED_PREFERENCES_TABLE_HEADER_PRE_CEC,
+                    Gson().toJson(model)
+                )
+            }
+        }
+
+    override suspend fun get(): Result<HeaderPreCECSharedPreferencesModel> =
         result(getClassAndMethod()) {
             val string = sharedPreferences.getString(
-                BASE_SHARED_PREFERENCES_TABLE_PRE_CEC,
+                BASE_SHARED_PREFERENCES_TABLE_HEADER_PRE_CEC,
                 null
             )
-            if(string.isNullOrEmpty()) return@result PreCECSharedPreferencesModel()
+            if(string.isNullOrEmpty()) return@result HeaderPreCECSharedPreferencesModel()
             Gson().fromJson(
                 string,
-                PreCECSharedPreferencesModel::class.java
+                HeaderPreCECSharedPreferencesModel::class.java
             )
         }
 
@@ -50,21 +60,24 @@ class IPreCECSharedPreferencesDatasource @Inject constructor(
             save(model).getOrThrow()
         }
 
-    override suspend fun setNroEquip(nroEquip: Long): EmptyResult =
+    override suspend fun setData(
+        nroEquip: Long,
+        regColab: Long,
+        nroTurn: Int
+    ): EmptyResult =
         result(getClassAndMethod()) {
             val model = get().getOrThrow()
             model.nroEquip = nroEquip
+            model.regColab = regColab
+            model.nroTurn = nroTurn
             save(model).getOrThrow()
         }
 
-    suspend fun save(model: PreCECSharedPreferencesModel): EmptyResult =
+    override suspend fun setIdRelease(idRelease: Int): EmptyResult =
         result(getClassAndMethod()) {
-            sharedPreferences.edit {
-                putString(
-                    BASE_SHARED_PREFERENCES_TABLE_PRE_CEC,
-                    Gson().toJson(model)
-                )
-            }
+            val model = get().getOrThrow()
+            model.idRelease = idRelease
+            save(model).getOrThrow()
         }
 
 }

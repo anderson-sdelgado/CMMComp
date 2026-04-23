@@ -36,17 +36,17 @@ class IOSRepository @Inject constructor(
             modelList.map { it.retrofitModelToEntity() }
         }
 
-    override suspend fun hasByNroOS(nroOS: Int): Result<Boolean> =
+    override suspend fun hasByNro(nro: Int): Result<Boolean> =
         call(getClassAndMethod()) {
-            osRoomDatasource.hasByNroOS(nroOS).getOrThrow()
+            osRoomDatasource.hasByNro(nro).getOrThrow()
         }
 
-    override suspend fun listByNroOS(
+    override suspend fun listByNro(
         token: String,
-        nroOS: Int
+        nro: Int
     ): Result<List<OS>> =
         call(getClassAndMethod()) {
-            val modelList = osRetrofitDatasource.listByNroOS(token, nroOS).getOrThrow()
+            val modelList = osRetrofitDatasource.listByNro(token, nro).getOrThrow()
             modelList.map { it.retrofitModelToEntity() }
         }
 
@@ -55,9 +55,17 @@ class IOSRepository @Inject constructor(
             osRoomDatasource.add(os.entityToRoomModel()).getOrThrow()
         }
 
-    override suspend fun getByNroOS(nroOS: Int): Result<OS> =
+    override suspend fun getByNro(nro: Int): Result<OS> =
         call(getClassAndMethod()) {
-            osRoomDatasource.getByNroOS(nroOS).getOrThrow().roomModelToEntity()
+            osRoomDatasource.getByNro(nro).getOrThrow().roomModelToEntity()
+        }
+
+    override suspend fun hasByNroAndIdRelease(
+        nroOS: Int,
+        idRelease: Int
+    ): Result<Boolean> =
+        call(getClassAndMethod()) {
+            osRoomDatasource.hasByNroAndIdRelease(nroOS, idRelease).getOrThrow()
         }
 
 }

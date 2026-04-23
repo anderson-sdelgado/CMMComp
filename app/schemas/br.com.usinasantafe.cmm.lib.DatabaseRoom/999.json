@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 999,
-    "identityHash": "d8ca215b0e0a594cd54d7a0a151aff74",
+    "identityHash": "5ce373768a6b4cbba3795b19ff60bc53",
     "entities": [
       {
         "tableName": "tb_activity",
@@ -286,23 +286,23 @@
       },
       {
         "tableName": "tb_os",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`idOS` INTEGER NOT NULL, `nroOS` INTEGER NOT NULL, `idReleaseOS` INTEGER, `idPropAgr` INTEGER, `areaOS` REAL, PRIMARY KEY(`idOS`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `nro` INTEGER NOT NULL, `idRelease` INTEGER, `idPropAgr` INTEGER, `area` REAL, PRIMARY KEY(`id`))",
         "fields": [
           {
-            "fieldPath": "idOS",
-            "columnName": "idOS",
+            "fieldPath": "id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "nroOS",
-            "columnName": "nroOS",
+            "fieldPath": "nro",
+            "columnName": "nro",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "idReleaseOS",
-            "columnName": "idReleaseOS",
+            "fieldPath": "idRelease",
+            "columnName": "idRelease",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -313,8 +313,8 @@
             "notNull": false
           },
           {
-            "fieldPath": "areaOS",
-            "columnName": "areaOS",
+            "fieldPath": "area",
+            "columnName": "area",
             "affinity": "REAL",
             "notNull": false
           }
@@ -322,7 +322,7 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "idOS"
+            "id"
           ]
         },
         "indices": [],
@@ -1296,7 +1296,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd8ca215b0e0a594cd54d7a0a151aff74')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5ce373768a6b4cbba3795b19ff60bc53')"
     ]
   }
 }

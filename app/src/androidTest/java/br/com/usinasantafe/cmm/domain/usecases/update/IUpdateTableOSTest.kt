@@ -233,15 +233,15 @@ class IUpdateTableOSTest {
             )
             val roomModel = roomModelList[0]
             assertEquals(
-                roomModel.idOS,
+                roomModel.id,
                 1
             )
             assertEquals(
-                roomModel.nroOS,
+                roomModel.nro,
                 12345
             )
             assertEquals(
-                roomModel.idReleaseOS,
+                roomModel.idRelease,
                 10
             )
             assertEquals(
@@ -249,7 +249,7 @@ class IUpdateTableOSTest {
                 null
             )
             assertEquals(
-                roomModel.areaOS,
+                roomModel.area,
                 null
             )
         }

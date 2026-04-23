@@ -255,7 +255,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateExitMill(any())
+                cecRepository.setDateExitMillHeaderPreCEC(any())
             ).thenReturn(
                 resultFailure(
                     "ICECRepository.setDateExitMill",
@@ -299,7 +299,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateFieldArrival(any())
+                cecRepository.setDateFieldArrivalHeaderPreCEC(any())
             ).thenReturn(
                 resultFailure(
                     "ICECRepository.setDateFieldArrival",
@@ -344,7 +344,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateExitField(any())
+                cecRepository.setDateExitFieldHeaderPreCEC(any())
             ).thenReturn(
                 resultFailure(
                     "ICECRepository.setDateExitArrival",
@@ -386,7 +386,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateExitMill(any())
+                cecRepository.setDateExitMillHeaderPreCEC(any())
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -422,7 +422,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateFieldArrival(any())
+                cecRepository.setDateFieldArrivalHeaderPreCEC(any())
             ).thenReturn(
                 Result.success(Unit)
             )
@@ -459,7 +459,7 @@ class ISetDatePreCECTest {
                 )
             )
             whenever(
-                cecRepository.setDateExitField(any())
+                cecRepository.setDateExitFieldHeaderPreCEC(any())
             ).thenReturn(
                 Result.success(Unit)
             )

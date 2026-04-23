@@ -45,7 +45,7 @@ class ITurnRepository @Inject constructor(
             modelList.map { it.roomModelToEntity() }
         }
 
-    override suspend fun getNroTurnByIdTurn(idTurn: Int): Result<Int> =
+    override suspend fun getNroById(idTurn: Int): Result<Int> =
         call(getClassAndMethod()) {
             turnRoomDatasource.getNroTurnByIdTurn(idTurn).getOrThrow()
         }

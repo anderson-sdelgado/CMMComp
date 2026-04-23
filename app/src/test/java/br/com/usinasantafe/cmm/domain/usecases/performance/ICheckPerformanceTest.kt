@@ -73,7 +73,7 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 resultFailure(
                     "IOSRepository.hasByNroOS",
@@ -105,7 +105,7 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 Result.success(false)
             )
@@ -129,7 +129,7 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 Result.success(false)
             )
@@ -153,12 +153,12 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(500)
+                osRepository.getByNro(500)
             ).thenReturn(
                 resultFailure(
                     "IOSRepository.getByNroOS",
@@ -190,20 +190,20 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(500)
+                osRepository.getByNro(500)
             ).thenReturn(
                 Result.success(
                     OS(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 1,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 1,
                         idPropAgr = 1,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )
@@ -227,20 +227,20 @@ class ICheckPerformanceTest {
                 Result.success(500)
             )
             whenever(
-                osRepository.hasByNroOS(500)
+                osRepository.hasByNro(500)
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(500)
+                osRepository.getByNro(500)
             ).thenReturn(
                 Result.success(
                     OS(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 1,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 1,
                         idPropAgr = 1,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )

@@ -307,7 +307,7 @@ class ITurnRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.getNroTurnByIdTurn(1)
+            val result = repository.getNroById(1)
             assertEquals(
                 result.isFailure,
                 true
@@ -330,7 +330,7 @@ class ITurnRepositoryTest {
             ).thenReturn(
                 Result.success(2)
             )
-            val result = repository.getNroTurnByIdTurn(1)
+            val result = repository.getNroById(1)
             assertEquals(
                 result.isSuccess,
                 true

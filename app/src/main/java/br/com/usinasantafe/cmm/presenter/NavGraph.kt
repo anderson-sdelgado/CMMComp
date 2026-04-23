@@ -53,9 +53,11 @@ import br.com.usinasantafe.cmm.presenter.Routes.PERFORMANCE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.PRESSURE_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.REEL_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.REEL_ROUTE
+import br.com.usinasantafe.cmm.presenter.Routes.RELEASE_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.SPEED_LIST_ROUTE
 import br.com.usinasantafe.cmm.presenter.Routes.TRANSHIPMENT_NOTE_ROUTE
 import br.com.usinasantafe.cmm.presenter.view.cec.initialMenuPreCEC.InitialMenuPreCECScreen
+import br.com.usinasantafe.cmm.presenter.view.cec.release.ReleaseScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.collection.CollectionFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.collectionList.CollectionListFertigationScreen
 import br.com.usinasantafe.cmm.presenter.view.fertigation.motorPump.MotorPumpFertigationScreen
@@ -240,6 +242,9 @@ fun NavigationGraph(
                 },
                 onNavReelList = {
                     navActions.navigateToReelList()
+                },
+                onNavRelease = {
+                    navActions.navigateToRelease()
                 }
             )
         }
@@ -606,6 +611,20 @@ fun NavigationGraph(
                 },
                 onNavHistoricalPreCEC = {},
                 onNavHistoricalCEC = {},
+            )
+        }
+
+        composable(RELEASE_ROUTE) {
+            ReleaseScreen(
+                onNavActivityList = {
+
+                },
+                onNavMsgTrailer = {
+
+                },
+                onNavCheckPreCEC = {
+
+                }
             )
         }
 

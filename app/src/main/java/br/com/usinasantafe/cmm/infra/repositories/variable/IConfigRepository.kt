@@ -82,8 +82,9 @@ class IConfigRepository @Inject constructor(
             configSharedPreferencesDatasource.getDateCheckListLast().getOrThrow()
         }
 
-    override suspend fun getApp(): Result<App> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getApp(): Result<App> =
+        call(getClassAndMethod()) {
+            configSharedPreferencesDatasource.getApp().getOrThrow()
+        }
 
 }

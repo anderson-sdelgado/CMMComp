@@ -10,7 +10,7 @@ interface TurnRepository {
     suspend fun listByCodTurnEquip(
         codTurnEquip: Int
     ): Result<List<Turn>>
-    suspend fun getNroTurnByIdTurn(
+    suspend fun getNroById(
         idTurn: Int
     ): Result<Int>
 }

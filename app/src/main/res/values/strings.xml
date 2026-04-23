@@ -120,4 +120,5 @@
     <string name="text_item_historical_cec">HISTÓRICO DE CERTIFICADO</string>
     <string name="text_blocked_access_certificated">É NECESSÁRIO A INSERÇÃO DO HORARIO DE SAÍDA DA USINA E/OU DE CHEGADA AO CAMPO.</string>
     <string name="text_msg_check_os_moto_mec">VERIFICANDO OS NO WEB SERVICE</string>
+    <string name="text_title_release">LIBERAÇÃO</string>
 </resources>

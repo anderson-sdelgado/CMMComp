@@ -49,18 +49,18 @@ class IOSRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -94,18 +94,18 @@ class IOSRoomDatasourceTest {
             val result = datasource.addAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 2,
-                        nroOS = 67890,
-                        idReleaseOS = 11,
+                        id = 2,
+                        nro = 67890,
+                        idRelease = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )
@@ -124,15 +124,15 @@ class IOSRoomDatasourceTest {
             )
             val entity1 = list[0]
             assertEquals(
-                entity1.idOS,
+                entity1.id,
                 1
             )
             assertEquals(
-                entity1.nroOS,
+                entity1.nro,
                 12345
             )
             assertEquals(
-                entity1.idReleaseOS,
+                entity1.idRelease,
                 10
             )
             assertEquals(
@@ -140,21 +140,21 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                entity1.areaOS!!,
+                entity1.area!!,
                 50.5,
                 0.0
             )
             val entity2 = list[1]
             assertEquals(
-                entity2.idOS,
+                entity2.id,
                 2
             )
             assertEquals(
-                entity2.nroOS,
+                entity2.nro,
                 67890
             )
             assertEquals(
-                entity2.idReleaseOS,
+                entity2.idRelease,
                 11
             )
             assertEquals(
@@ -162,7 +162,7 @@ class IOSRoomDatasourceTest {
                 21
             )
             assertEquals(
-                entity2.areaOS!!,
+                entity2.area!!,
                 100.0,
                 0.0
             )
@@ -174,11 +174,11 @@ class IOSRoomDatasourceTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -204,16 +204,16 @@ class IOSRoomDatasourceTest {
         }
 
     @Test
-    fun `checkNroOS - Check return false if not have nroOS in database`() =
+    fun `checkNro - Check return false if not have nroOS in database`() =
         runTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -222,7 +222,7 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.hasByNroOS(234567)
+            val result = datasource.hasByNro(234567)
             assertEquals(
                 result.isSuccess,
                 true
@@ -234,16 +234,16 @@ class IOSRoomDatasourceTest {
         }
 
     @Test
-    fun `checkNroOS - Check return true if have nroOS in database`() =
+    fun `checkNro - Check return true if have nroOS in database`() =
         runTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -252,7 +252,7 @@ class IOSRoomDatasourceTest {
                 qtdBefore,
                 1
             )
-            val result = datasource.hasByNroOS(123456)
+            val result = datasource.hasByNro(123456)
             assertEquals(
                 result.isSuccess,
                 true
@@ -269,11 +269,11 @@ class IOSRoomDatasourceTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 12345,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 12345,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -284,11 +284,11 @@ class IOSRoomDatasourceTest {
             )
             val result = datasource.add(
                 OSRoomModel(
-                    idOS = 2,
-                    nroOS = 67890,
-                    idReleaseOS = 11,
+                    id = 2,
+                    nro = 67890,
+                    idRelease = 11,
                     idPropAgr = 21,
-                    areaOS = 100.0
+                    area = 100.0
                 )
             )
             assertEquals(
@@ -306,15 +306,15 @@ class IOSRoomDatasourceTest {
             )
             val model1 = list[0]
             assertEquals(
-                model1.idOS,
+                model1.id,
                 1
             )
             assertEquals(
-                model1.nroOS,
+                model1.nro,
                 12345
             )
             assertEquals(
-                model1.idReleaseOS,
+                model1.idRelease,
                 10
             )
             assertEquals(
@@ -322,21 +322,21 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                model1.areaOS!!,
+                model1.area!!,
                 50.5,
                 0.0
             )
             val model2 = list[1]
             assertEquals(
-                model2.idOS,
+                model2.id,
                 2
             )
             assertEquals(
-                model2.nroOS,
+                model2.nro,
                 67890
             )
             assertEquals(
-                model2.idReleaseOS,
+                model2.idRelease,
                 11
             )
             assertEquals(
@@ -344,16 +344,16 @@ class IOSRoomDatasourceTest {
                 21
             )
             assertEquals(
-                model2.areaOS!!,
+                model2.area!!,
                 100.0,
                 0.0
             )
         }
 
     @Test
-    fun `getByNroOS - Check return list empty if not have data research`() =
+    fun `getByNro - Check return list empty if not have data research`() =
         runTest {
-            val result = datasource.getByNroOS(12345)
+            val result = datasource.getByNro(12345)
             assertEquals(
                 result.isSuccess,
                 true
@@ -365,42 +365,42 @@ class IOSRoomDatasourceTest {
         }
 
     @Test
-    fun `getByNroOS - Check return list if have data research`() =
+    fun `getByNro - Check return list if have data research`() =
         runTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 2,
-                        nroOS = 456789,
-                        idReleaseOS = 11,
+                        id = 2,
+                        nro = 456789,
+                        idRelease = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )
-            val result = datasource.getByNroOS(123456)
+            val result = datasource.getByNro(123456)
             assertEquals(
                 result.isSuccess,
                 true
             )
             val model = result.getOrNull()!!
             assertEquals(
-                model.idOS,
+                model.id,
                 1
             )
             assertEquals(
-                model.nroOS,
+                model.nro,
                 123456
             )
             assertEquals(
-                model.idReleaseOS,
+                model.idRelease,
                 10
             )
             assertEquals(
@@ -408,9 +408,120 @@ class IOSRoomDatasourceTest {
                 20
             )
             assertEquals(
-                model.areaOS!!,
+                model.area!!,
                 50.5,
                 0.0
             )
         }
+
+    @Test
+    fun `hasByNroAndIdRelease - Check return false if not have data research`() =
+        runTest {
+            val result = datasource.hasByNroAndIdRelease(
+                nroOS = 12345,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroAndIdRelease - Check return false if nro is different`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        id = 1,
+                        nro = 456789,
+                        idRelease = 10,
+                    ),
+                )
+            )
+            val result = datasource.hasByNroAndIdRelease(
+                nroOS = 123456,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroAndIdRelease - Check return false if idRelease is different`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        id = 1,
+                        nro = 456789,
+                        idRelease = 10,
+                    ),
+                    OSRoomModel(
+                        id = 2,
+                        nro = 123456,
+                        idRelease = 20,
+                    ),
+                )
+            )
+            val result = datasource.hasByNroAndIdRelease(
+                nroOS = 123456,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                false
+            )
+        }
+
+    @Test
+    fun `hasByNroAndIdRelease - Check return true if have data research`() =
+        runTest {
+            osDao.insertAll(
+                listOf(
+                    OSRoomModel(
+                        id = 1,
+                        nro = 456789,
+                        idRelease = 10,
+                    ),
+                    OSRoomModel(
+                        id = 2,
+                        nro = 123456,
+                        idRelease = 20,
+                    ),
+                    OSRoomModel(
+                        id = 3,
+                        nro = 123456,
+                        idRelease = 10,
+                    ),
+                )
+            )
+            val result = datasource.hasByNroAndIdRelease(
+                nroOS = 123456,
+                idRelease = 10
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull(),
+                true
+            )
+        }
+
 }

@@ -188,8 +188,8 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 resultFailure(
@@ -232,8 +232,8 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(false)
@@ -282,8 +282,8 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(false)
@@ -348,14 +348,14 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(123456)
+                osRepository.getByNro(123456)
             ).thenReturn(
                 resultFailure(
                     context = "OSRepository.getByNroOS",
@@ -397,22 +397,22 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(123456)
+                osRepository.getByNro(123456)
             ).thenReturn(
                 Result.success(
                     OS(
-                        idOS = 10,
-                        nroOS = 123456,
-                        idReleaseOS = 1,
+                        id = 10,
+                        nro = 123456,
+                        idRelease = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0
+                        area = 0.0
                     )
                 )
             )
@@ -459,24 +459,24 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(
-                    nroOS = 123456
+                osRepository.getByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     OS(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 1,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0
+                        area = 0.0
                     )
                 )
             )
@@ -547,24 +547,24 @@ class IListActivityTest {
                 Result.success(123456)
             )
             whenever(
-                osRepository.hasByNroOS(
-                    nroOS = 123456
+                osRepository.hasByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(true)
             )
             whenever(
-                osRepository.getByNroOS(
-                    nroOS = 123456
+                osRepository.getByNro(
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     OS(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 1,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0
+                        area = 0.0
                     )
                 )
             )

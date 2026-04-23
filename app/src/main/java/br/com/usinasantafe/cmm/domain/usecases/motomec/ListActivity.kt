@@ -2,7 +2,6 @@ package br.com.usinasantafe.cmm.domain.usecases.motomec
 
 import br.com.usinasantafe.cmm.domain.entities.stable.Activity
 import br.com.usinasantafe.cmm.domain.repositories.stable.ActivityRepository
-import br.com.usinasantafe.cmm.domain.repositories.stable.EquipRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.OSRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.REquipActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
@@ -29,9 +28,9 @@ class IListActivity @Inject constructor(
             val rEquipActivityList = rEquipActivityRepository.listByIdEquip(idEquip).getOrThrow()
             var idActivityEquipList = rEquipActivityList.map { it.idActivity }
             val nroOS = motoMecRepository.getNroOSHeader().getOrThrow()
-            val check = osRepository.hasByNroOS(nroOS).getOrThrow()
+            val check = osRepository.hasByNro(nroOS).getOrThrow()
             if (check) {
-                val idOS = osRepository.getByNroOS(nroOS).getOrThrow().idOS
+                val idOS = osRepository.getByNro(nroOS).getOrThrow().id
                 val rOSActivityList = rOSActivityRepository.listByIdOS(idOS).getOrThrow()
                 val idActivityOSList = rOSActivityList.map { it.idActivity }
                 idActivityEquipList = idActivityEquipList.intersect(idActivityOSList.toSet()).toList()

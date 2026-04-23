@@ -34,7 +34,7 @@ interface SharedPreferencesDatasourceModule {
 
     @Binds
     @Singleton
-    fun bindPreCECSharedPreferencesDatasource(dataSource: IPreCECSharedPreferencesDatasource): PreCECSharedPreferencesDatasource
+    fun bindHeaderPreCECSharedPreferencesDatasource(dataSource: IHeaderPreCECSharedPreferencesDatasource): HeaderPreCECSharedPreferencesDatasource
 
     @Binds
     @Singleton
@@ -51,4 +51,9 @@ interface SharedPreferencesDatasourceModule {
     @Binds
     @Singleton
     fun bindMechanicSharedPreferencesDatasource(dataSource: IMechanicSharedPreferencesDatasource): MechanicSharedPreferencesDatasource
+
+    @Binds
+    @Singleton
+    fun bindTrailerPreCECSharedPreferencesDatasource(dataSource: ITrailerPreCECSharedPreferencesDatasource): TrailerPreCECSharedPreferencesDatasource
+
 }

@@ -361,18 +361,18 @@ class IListActivityTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 2,
-                        nroOS = 456789,
-                        idReleaseOS = 11,
+                        id = 2,
+                        nro = 456789,
+                        idRelease = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )
@@ -454,18 +454,18 @@ class IListActivityTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 2,
-                        nroOS = 456789,
-                        idReleaseOS = 11,
+                        id = 2,
+                        nro = 456789,
+                        idRelease = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )
@@ -571,18 +571,18 @@ class IListActivityTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     ),
                     OSRoomModel(
-                        idOS = 2,
-                        nroOS = 456789,
-                        idReleaseOS = 11,
+                        id = 2,
+                        nro = 456789,
+                        idRelease = 11,
                         idPropAgr = 21,
-                        areaOS = 100.0
+                        area = 100.0
                     )
                 )
             )

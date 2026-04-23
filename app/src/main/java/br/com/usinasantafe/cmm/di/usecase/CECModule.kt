@@ -31,4 +31,12 @@ interface CECModule {
     @Singleton
     fun bindCheckAccessCertificate(usecase: ICheckAccessCertificate): CheckAccessCertificate
 
+    @Binds
+    @Singleton
+    fun bindCheckIdRelease(usecase: ICheckIdRelease): CheckIdRelease
+
+    @Binds
+    @Singleton
+    fun bindSetIdRelease(usecase: ISetIdRelease): SetIdRelease
+
 }

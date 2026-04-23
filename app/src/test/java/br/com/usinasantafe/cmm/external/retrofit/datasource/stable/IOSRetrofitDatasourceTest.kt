@@ -98,10 +98,10 @@ class IOSRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 12345,
+                            id = 1,
+                            nro = 12345,
                             idPropAgr = 20,
-                            areaOS = 150.75
+                            area = 150.75
                         )
                     )
                 ),
@@ -129,9 +129,9 @@ class IOSRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 12345,
-                            idReleaseOS = 10
+                            id = 1,
+                            nro = 12345,
+                            idRelease = 10
                         )
                     )
                 ),
@@ -150,9 +150,9 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.listByNroOS(
+            val result = datasource.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 true,
@@ -179,9 +179,9 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.listByNroOS(
+            val result = datasource.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 true,
@@ -208,9 +208,9 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.listByNroOS(
+            val result = datasource.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 result.isSuccess,
@@ -235,9 +235,9 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.listByNroOS(
+            val result = datasource.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 true,
@@ -247,10 +247,10 @@ class IOSRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 12345,
+                            id = 1,
+                            nro = 12345,
                             idPropAgr = 20,
-                            areaOS = 150.75
+                            area = 150.75
                         )
                     )
                 ),
@@ -269,9 +269,9 @@ class IOSRetrofitDatasourceTest {
             )
             val service = retrofit.create(OSApi::class.java)
             val datasource = IOSRetrofitDatasource(service, service)
-            val result = datasource.listByNroOS(
+            val result = datasource.listByNro(
                 token = "token",
-                nroOS = 123456
+                nro = 123456
             )
             assertEquals(
                 true,
@@ -281,9 +281,9 @@ class IOSRetrofitDatasourceTest {
                 Result.success(
                     listOf(
                         OSRetrofitModel(
-                            idOS = 1,
-                            nroOS = 12345,
-                            idReleaseOS = 10
+                            id = 1,
+                            nro = 12345,
+                            idRelease = 10
                         )
                     )
                 ),

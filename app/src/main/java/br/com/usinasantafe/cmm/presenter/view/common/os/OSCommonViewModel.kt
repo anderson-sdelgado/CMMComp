@@ -46,7 +46,7 @@ data class OSCommonState(
 
 @HiltViewModel
 class OSCommonViewModel @Inject constructor(
-    saveStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val hasNroOS: HasNroOS,
     private val setNroOS: SetNroOS,
     private val getNroOSHeader: GetNroOSHeader,
@@ -55,7 +55,7 @@ class OSCommonViewModel @Inject constructor(
     private val updateTableROSActivity: UpdateTableROSActivity
 ) : ViewModel() {
 
-    private val flowApp: Int = saveStateHandle[FLOW_APP_ARG]!!
+    private val flowApp: Int = savedStateHandle[FLOW_APP_ARG]!!
 
     private val _uiState = MutableStateFlow(OSCommonState())
     val uiState = _uiState.asStateFlow()
@@ -141,8 +141,8 @@ class OSCommonViewModel @Inject constructor(
     private suspend fun listUpdate() : List<Flow<UpdateStatusState>> {
         val size = sizeUpdate(2f)
         return listOf(
-            updateTableOS(size, 1f),
-            updateTableROSActivity(size, 2f)
+            updateTableROSActivity(size, 1f),
+            updateTableOS(size, 2f),
         )
     }
 }

@@ -145,7 +145,7 @@ class IGetItemTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.getNroTurnByIdTurn(1)
+                turnRepository.getNroById(1)
             ).thenReturn(
                 resultFailure(
                     "ITurnRepository.geNroTurnByIdTurn",
@@ -187,7 +187,7 @@ class IGetItemTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.getNroTurnByIdTurn(1)
+                turnRepository.getNroById(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -251,7 +251,7 @@ class IGetItemTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.getNroTurnByIdTurn(1)
+                turnRepository.getNroById(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -320,7 +320,7 @@ class IGetItemTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.getNroTurnByIdTurn(1)
+                turnRepository.getNroById(1)
             ).thenReturn(
                 Result.success(2)
             )
@@ -394,7 +394,7 @@ class IGetItemTest {
                 Result.success(1)
             )
             whenever(
-                turnRepository.getNroTurnByIdTurn(1)
+                turnRepository.getNroById(1)
             ).thenReturn(
                 Result.success(2)
             )

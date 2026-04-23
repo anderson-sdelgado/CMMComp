@@ -337,5 +337,47 @@ class IConfigSharedPreferencesDatasourceTest {
                 FlagUpdate.UPDATED
             )
         }
-    
+
+    @Test
+    fun `getApp - Check return failure if field is null`() =
+        runTest {
+            val result = datasource.getApp()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigSharedPreferencesDatasource.getApp"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.NullPointerException"
+            )
+        }
+
+    @Test
+    fun `getApp - Check return correct if function execute successfully`() =
+        runTest {
+            val data = ConfigSharedPreferencesModel(
+                number = 16997417840,
+                password = "123456",
+                checkMotoMec = true,
+                idServ = 1,
+                version = "1.00",
+                app = App.PMM,
+                statusSend = StatusSend.SENT,
+                idTurnCheckListLast = 1,
+            )
+            datasource.save(data)
+            val result = datasource.getApp()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                App.PMM
+            )
+        }
 }

@@ -123,11 +123,11 @@ class ICheckPerformanceTest {
             )
             osDao.insert(
                 OSRoomModel(
-                    idOS = 1,
-                    nroOS = 123456,
-                    idReleaseOS = 1,
+                    id = 1,
+                    nro = 123456,
+                    idRelease = 1,
                     idPropAgr = 1,
-                    areaOS = 100.0
+                    area = 100.0
                 )
             )
             val result = usecase(1, "50,0")
@@ -153,11 +153,11 @@ class ICheckPerformanceTest {
             )
             osDao.insert(
                 OSRoomModel(
-                    idOS = 1,
-                    nroOS = 123456,
-                    idReleaseOS = 1,
+                    id = 1,
+                    nro = 123456,
+                    idRelease = 1,
                     idPropAgr = 1,
-                    areaOS = 100.0
+                    area = 100.0
                 )
             )
             val result = usecase(1, "250,0")

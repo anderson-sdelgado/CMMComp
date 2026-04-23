@@ -21,9 +21,13 @@ interface OSDao {
     @Query("SELECT * FROM $TB_OS")
     suspend fun all(): List<OSRoomModel>
 
-    @Query("SELECT count(*) FROM $TB_OS WHERE nroOS = :nroOS")
-    suspend fun checkNroOS(nroOS: Int): Int
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_OS WHERE nro = :nro)")
+    suspend fun hasNro(nro: Int): Boolean
 
-    @Query("SELECT * FROM $TB_OS WHERE nroOS = :nroOS")
-    suspend fun getByNroOS(nroOS: Int): OSRoomModel
+    @Query("SELECT * FROM $TB_OS WHERE nro = :nro")
+    suspend fun getByNro(nro: Int): OSRoomModel
+
+    @Query("SELECT EXISTS(SELECT 1 FROM $TB_OS WHERE nro = :nro AND idRelease = :idRelease)")
+    suspend fun hasNroAndIdRelease(nro: Int, idRelease: Int): Boolean
+
 }

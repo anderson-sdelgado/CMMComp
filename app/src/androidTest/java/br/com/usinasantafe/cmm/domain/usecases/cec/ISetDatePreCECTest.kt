@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IPreCECSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
+import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderPreCECSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.ECM
 import br.com.usinasantafe.cmm.lib.EXIT_FIELD
 import br.com.usinasantafe.cmm.lib.EXIT_MILL
@@ -28,7 +28,7 @@ class ISetDatePreCECTest {
     lateinit var usecase: ISetDatePreCEC
 
     @Inject
-    lateinit var preCECSharedPreferencesDatasource: IPreCECSharedPreferencesDatasource
+    lateinit var preCECSharedPreferencesDatasource: IHeaderPreCECSharedPreferencesDatasource
 
     @Before
     fun setup() {
@@ -345,7 +345,7 @@ class ISetDatePreCECTest {
     private suspend fun register(level: Int) {
 
         preCECSharedPreferencesDatasource.save(
-            PreCECSharedPreferencesModel(
+            HeaderPreCECSharedPreferencesModel(
                 dateExitMill = Date()
             )
         )
@@ -353,7 +353,7 @@ class ISetDatePreCECTest {
         if(level == 1) return
 
         preCECSharedPreferencesDatasource.save(
-            PreCECSharedPreferencesModel(
+            HeaderPreCECSharedPreferencesModel(
                 dateExitMill = Date(),
                 dateFieldArrival = Date()
             )

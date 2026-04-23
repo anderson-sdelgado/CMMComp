@@ -6,10 +6,15 @@ import java.util.Date
 
 interface CECRepository {
     suspend fun get(): Result<HeaderPreCEC>
-    suspend fun setDateExitMill(date: Date): EmptyResult
-    suspend fun setDateFieldArrival(date: Date): EmptyResult
-    suspend fun setDateExitField(date: Date): EmptyResult
+    suspend fun setDateExitMillHeaderPreCEC(date: Date): EmptyResult
+    suspend fun setDateFieldArrivalHeaderPreCEC(date: Date): EmptyResult
+    suspend fun setDateExitFieldHeaderPreCEC(date: Date): EmptyResult
     suspend fun hasCouplingTrailer(): Result<Boolean>
     suspend fun uncouplingTrailer(): EmptyResult
-    suspend fun setNroEquip(nroEquip: Long): EmptyResult
+    suspend fun setDataHeaderPreCEC(
+        nroEquip: Long,
+        regColab: Long,
+        nroTurn: Int
+    ): EmptyResult
+    suspend fun setIdReleasePreCEC(idRelease: Int): Result<Boolean>
 }

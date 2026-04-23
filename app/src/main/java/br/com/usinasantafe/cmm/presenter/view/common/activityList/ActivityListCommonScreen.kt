@@ -43,6 +43,7 @@ fun ActivityListCommonScreen(
     onNavNozzleList: () -> Unit,
     onNavReel: () -> Unit,
     onNavReelList: () -> Unit,
+    onNavRelease: () -> Unit,
 ) {
     CMMTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -68,6 +69,7 @@ fun ActivityListCommonScreen(
                 onNavNozzleList = onNavNozzleList,
                 onNavReel = onNavReel,
                 onNavReelList = onNavReelList,
+                onNavRelease = onNavRelease,
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -91,6 +93,7 @@ fun ActivityListCommonScreenContent(
     onNavNozzleList: () -> Unit,
     onNavReel: () -> Unit,
     onNavReelList: () -> Unit,
+    onNavRelease: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -131,7 +134,8 @@ fun ActivityListCommonScreenContent(
             onClick = {
                 when(flowApp) {
                     FlowApp.HEADER_INITIAL,
-                    FlowApp.NOTE_WORK -> onNavOS()
+                    FlowApp.NOTE_WORK,
+                    FlowApp.PRE_CEC -> onNavOS()
                     FlowApp.NOTE_STOP -> onNavMenuNote()
                     FlowApp.HEADER_INITIAL_REEL_FERT -> onNavReel()
                     FlowApp.NOTE_REEL_FERT -> onNavNozzleList()
@@ -167,6 +171,7 @@ fun ActivityListCommonScreenContent(
                 FlowApp.TRANSHIPMENT -> onNavTranshipment()
                 FlowApp.NOTE_REEL_FERT -> onNavNozzleList()
                 FlowApp.HEADER_INITIAL_REEL_FERT -> onNavReelList()
+                FlowApp.PRE_CEC -> onNavRelease()
                 else -> {}
             }
         }
@@ -212,6 +217,7 @@ fun ActivityListCommonPagePreviewWithData() {
                 onNavNozzleList = {},
                 onNavReel = {},
                 onNavReelList = {},
+                onNavRelease = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -256,6 +262,7 @@ fun ActivityListCommonScreenPagePreviewWithFailureUpdate() {
                 onNavNozzleList = {},
                 onNavReel = {},
                 onNavReelList = {},
+                onNavRelease = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -301,6 +308,7 @@ fun ActivityListCommonScreenPagePreviewWithProgressUpdate() {
                 onNavNozzleList = {},
                 onNavReel = {},
                 onNavReelList = {},
+                onNavRelease = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }
@@ -346,6 +354,7 @@ fun ActivityListCommonScreenPagePreviewWithFailureError() {
                 onNavNozzleList = {},
                 onNavReel = {},
                 onNavReelList = {},
+                onNavRelease = {},
                 modifier = Modifier.padding(innerPadding)
             )
         }

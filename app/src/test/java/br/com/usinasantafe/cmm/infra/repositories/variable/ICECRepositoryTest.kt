@@ -2,9 +2,10 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import br.com.usinasantafe.cmm.utils.resultFailure
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerPreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderPreCECSharedPreferencesModel
 import kotlinx.coroutines.test.runTest
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.any
@@ -17,18 +18,20 @@ import kotlin.test.assertEquals
 
 class ICECRepositoryTest {
 
-    private val preCECSharedPreferencesDatasource = mock<PreCECSharedPreferencesDatasource>()
+    private val headerPreCECSharedPreferencesDatasource = mock<HeaderPreCECSharedPreferencesDatasource>()
     private val trailerSharedPreferencesDatasource = mock<TrailerSharedPreferencesDatasource>()
+    private val trailerPreCECSharedPreferencesDatasource = mock<TrailerPreCECSharedPreferencesDatasource>()
     private val repository = ICECRepository(
-        preCECSharedPreferencesDatasource = preCECSharedPreferencesDatasource,
-        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource
+        headerPreCECSharedPreferencesDatasource = headerPreCECSharedPreferencesDatasource,
+        trailerSharedPreferencesDatasource = trailerSharedPreferencesDatasource,
+        trailerPreCECSharedPreferencesDatasource = trailerPreCECSharedPreferencesDatasource
     )
 
     @Test
     fun `get - Check return failure if have error in PreCECSharedPreferencesDatasource get`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.get()
+                headerPreCECSharedPreferencesDatasource.get()
             ).thenReturn(
                 resultFailure(
                     "IPreCECSharedPreferencesDatasource.get",
@@ -55,11 +58,11 @@ class ICECRepositoryTest {
     fun `get - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.get()
+                headerPreCECSharedPreferencesDatasource.get()
             ).thenReturn(
                 Result.success(
-                    PreCECSharedPreferencesModel(
-                        libEquip = 1,
+                    HeaderPreCECSharedPreferencesModel(
+                        idRelease = 1,
                         nroEquip = 2
                     )
                 )
@@ -72,17 +75,17 @@ class ICECRepositoryTest {
             assertEquals(
                 result.getOrNull()!!,
                 HeaderPreCEC(
-                    releaseEquip = 1,
+                    idRelease = 1,
                     nroEquip = 2
                 )
             )
         }
 
     @Test
-    fun `setDateExitMill - Check return failure if have error in PreCECSharedPreferencesDatasource setDateExitMill`() =
+    fun `setDateExitMillHeaderPreCEC - Check return failure if have error in PreCECSharedPreferencesDatasource setDateExitMill`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateExitMill(any())
+                headerPreCECSharedPreferencesDatasource.setDateExitMill(any())
             ).thenReturn(
                 resultFailure(
                     "IPreCECSharedPreferencesDatasource.setDateExitMill",
@@ -90,7 +93,7 @@ class ICECRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.setDateExitMill(Date())
+            val result = repository.setDateExitMillHeaderPreCEC(Date())
             assertEquals(
                 result.isFailure,
                 true
@@ -106,14 +109,14 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setDateExitMill - Check return correct if function execute successfully`() =
+    fun `setDateExitMillHeaderPreCEC - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateExitMill(any())
+                headerPreCECSharedPreferencesDatasource.setDateExitMill(any())
             ).thenReturn(
                 Result.success(Unit)
             )
-            val result = repository.setDateExitMill(Date())
+            val result = repository.setDateExitMillHeaderPreCEC(Date())
             assertEquals(
                 result.isSuccess,
                 true
@@ -125,10 +128,10 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setDateFieldArrival - Check return failure if have error in PreCECSharedPreferencesDatasource setDateFieldArrival`() =
+    fun `setDateFieldArrivalHeaderPreCEC - Check return failure if have error in PreCECSharedPreferencesDatasource setDateFieldArrival`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateFieldArrival(any())
+                headerPreCECSharedPreferencesDatasource.setDateFieldArrival(any())
             ).thenReturn(
                 resultFailure(
                     "IPreCECSharedPreferencesDatasource.setDateFieldArrival",
@@ -136,7 +139,7 @@ class ICECRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.setDateFieldArrival(Date())
+            val result = repository.setDateFieldArrivalHeaderPreCEC(Date())
             assertEquals(
                 result.isFailure,
                 true
@@ -152,14 +155,14 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setDateFieldArrival - Check return correct if function execute successfully`() =
+    fun `setDateFieldArrivalHeaderPreCEC - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateFieldArrival(any())
+                headerPreCECSharedPreferencesDatasource.setDateFieldArrival(any())
             ).thenReturn(
                 Result.success(Unit)
             )
-            val result = repository.setDateFieldArrival(Date())
+            val result = repository.setDateFieldArrivalHeaderPreCEC(Date())
             assertEquals(
                 result.isSuccess,
                 true
@@ -171,10 +174,10 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setDateExitArrival - Check return failure if have error in PreCECSharedPreferencesDatasource setDateExitArrival`() =
+    fun `setDateExitArrivalHeaderPreCEC - Check return failure if have error in PreCECSharedPreferencesDatasource setDateExitArrival`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateExitField(any())
+                headerPreCECSharedPreferencesDatasource.setDateExitField(any())
             ).thenReturn(
                 resultFailure(
                     "IPreCECSharedPreferencesDatasource.setDateExitArrival",
@@ -182,7 +185,7 @@ class ICECRepositoryTest {
                     Exception()
                 )
             )
-            val result = repository.setDateExitField(Date())
+            val result = repository.setDateExitFieldHeaderPreCEC(Date())
             assertEquals(
                 result.isFailure,
                 true
@@ -198,14 +201,14 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setDateExitArrival - Check return correct if function execute successfully`() =
+    fun `setDateExitArrivalHeaderPreCEC - Check return correct if function execute successfully`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setDateExitField(any())
+                headerPreCECSharedPreferencesDatasource.setDateExitField(any())
             ).thenReturn(
                 Result.success(Unit)
             )
-            val result = repository.setDateExitField(Date())
+            val result = repository.setDateExitFieldHeaderPreCEC(Date())
             assertEquals(
                 result.isSuccess,
                 true
@@ -217,7 +220,7 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `hasCouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource has`() =
+    fun `hasCouplingTrailer - Check return failure if have error in TrailerSharedPreferencesDatasource has`() =
         runTest {
             whenever(
                 trailerSharedPreferencesDatasource.has()
@@ -244,7 +247,7 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `hasCouplingTrailerImplement - Check return correct if function execute successfully`() =
+    fun `hasCouplingTrailer - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 trailerSharedPreferencesDatasource.has()
@@ -263,7 +266,7 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `uncouplingTrailerImplement - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
+    fun `uncouplingTrailer - Check return failure if have error in TrailerSharedPreferencesDatasource clean`() =
         runTest {
             whenever(
                 trailerSharedPreferencesDatasource.clean()
@@ -290,7 +293,7 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `uncouplingTrailerImplement - Check return correct if function execute successfully`() =
+    fun `uncouplingTrailer - Check return correct if function execute successfully`() =
         runTest {
             whenever(
                 trailerSharedPreferencesDatasource.clean()
@@ -309,25 +312,25 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setNroEquip - Check return failure if have error in PreCECSharedPreferencesDatasource setNroEquip`() =
+    fun `setDataHeaderPreCEC - Check return failure if have error in PreCECSharedPreferencesDatasource setNroEquip`() =
         runTest {
             whenever(
-                preCECSharedPreferencesDatasource.setNroEquip(2200)
+                headerPreCECSharedPreferencesDatasource.setData(2200, 19759, 2)
             ).thenReturn(
                 resultFailure(
-                    "IPreCECSharedPreferencesDatasource.setNroEquip",
+                    "IPreCECSharedPreferencesDatasource.setData",
                     "-",
                     Exception()
                 )
             )
-            val result = repository.setNroEquip(2200)
+            val result = repository.setDataHeaderPreCEC(2200, 19759, 2)
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "ICECRepository.setNroEquip -> IPreCECSharedPreferencesDatasource.setNroEquip"
+                "ICECRepository.setData -> IPreCECSharedPreferencesDatasource.setData"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -336,12 +339,164 @@ class ICECRepositoryTest {
         }
 
     @Test
-    fun `setNroEquip - Check return correct if function execute successfully`() =
+    fun `setDataHeaderPreCEC - Check return correct if function execute successfully`() =
         runTest {
-            val result = repository.setNroEquip(2200)
-            verify(preCECSharedPreferencesDatasource, atLeastOnce()).setNroEquip(2200)
+            val result = repository.setDataHeaderPreCEC(2200, 19759, 2)
+            verify(headerPreCECSharedPreferencesDatasource, atLeastOnce())
+                .setData(2200, 19759, 2)
             assertEquals(
                 result.isSuccess,
+                true
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return failure if have error in TrailerPreCECSharedPreferencesDatasource count`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerPreCECSharedPreferencesDatasource.count",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.setIdReleasePreCEC -> ITrailerPreCECSharedPreferencesDatasource.count"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return failure if have error in HeaderPreCECSharedPreferencesDatasource setIdRelease and count is 0`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                Result.success(0)
+            )
+            whenever(
+                headerPreCECSharedPreferencesDatasource.setIdRelease(10_000)
+            ).thenReturn(
+                resultFailure(
+                    "IHeaderPreCECSharedPreferencesDatasource.setIdRelease",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.setIdReleasePreCEC -> IHeaderPreCECSharedPreferencesDatasource.setIdRelease"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return failure if have error in TrailerPreCECSharedPreferencesDatasource setIdRelease and count is 1`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                Result.success(1)
+            )
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.setIdRelease(10_000)
+            ).thenReturn(
+                resultFailure(
+                    "ITrailerPreCECSharedPreferencesDatasource.setIdRelease",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "ICECRepository.setIdReleasePreCEC -> ITrailerPreCECSharedPreferencesDatasource.setIdRelease"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return false if count is 0`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                Result.success(0)
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            verify(headerPreCECSharedPreferencesDatasource, atLeastOnce()).setIdRelease(10_000)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return false if count is 1`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                Result.success(1)
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            verify(trailerPreCECSharedPreferencesDatasource, atLeastOnce()).setIdRelease(10_000)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `setIdReleasePreCEC - Check return true if count is 4`() =
+        runTest {
+            whenever(
+                trailerPreCECSharedPreferencesDatasource.count()
+            ).thenReturn(
+                Result.success(4)
+            )
+            val result = repository.setIdReleasePreCEC(10_000)
+            verify(trailerPreCECSharedPreferencesDatasource, atLeastOnce()).setIdRelease(10_000)
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
                 true
             )
         }

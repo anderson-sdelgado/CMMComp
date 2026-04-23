@@ -29,7 +29,7 @@ class IGetItem @Inject constructor(
                 val nroEquip = equipRepository.getNroEquipMain().getOrThrow()
                 val regOperator = motoMecRepository.getRegOperatorHeader().getOrThrow()
                 val idTurn = motoMecRepository.getIdTurnHeader().getOrThrow()
-                val nroTurn = turnRepository.getNroTurnByIdTurn(idTurn).getOrThrow()
+                val nroTurn = turnRepository.getNroById(idTurn).getOrThrow()
                 checkListRepository.saveHeader(
                     HeaderCheckList(
                         nroEquip = nroEquip,

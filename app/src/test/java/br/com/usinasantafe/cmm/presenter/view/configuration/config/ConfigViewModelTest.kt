@@ -1776,6 +1776,182 @@ class ConfigViewModelTest {
             )
         }
 
+    @Test
+    fun `update - Check return failure if have error in SetCheckUpdateAllTable - ECM`() =
+        runTest {
+            whenever(
+                sendDataConfig(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = App.ECM,
+                    version = "1.00"
+                )
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        idServ = 1,
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
+                    )
+                )
+            )
+            whenever(
+                setFinishUpdateAllTable()
+            ).thenReturn(
+                resultFailure(
+                    "ISetFinishUpdateAllTable",
+                    "-",
+                    Exception()
+                )
+            )
+            viewModel.onNumberChanged("16997417840")
+            viewModel.onPasswordChanged("12345")
+            viewModel.onNroEquipChanged("310")
+            viewModel.setConfigMain(
+                version = "1.00",
+                app = "ecm"
+            )
+            wheneverSuccess(19f)
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((18f * 3)).toInt()
+            )
+            checkResultUpdateAll(result, App.ECM)
+            viewModel.onSaveAndUpdate()
+            val configState = viewModel.uiState.value
+            assertEquals(
+                configState,
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        errors = Errors.EXCEPTION,
+                        flagFailure = true,
+                        flagDialog = true,
+                        flagProgress = true,
+                        currentProgress = 1f,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_INITIAL,
+                        tableUpdate = "",
+                        failure = "ConfigViewModel.token -> ConfigViewModel.onSaveAndUpdate -> ISetFinishUpdateAllTable -> java.lang.Exception",
+                    )
+                )
+            )
+        }
+
+    @Test
+    fun `update - Check return correct if function execute successfully - ECM`() =
+        runTest {
+            whenever(
+                sendDataConfig(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = App.ECM,
+                    version = "1.00"
+                )
+            ).thenReturn(
+                Result.success(
+                    Config(
+                        idServ = 1,
+                        equip = Equip(
+                            id = 10,
+                            nro = 2200,
+                            codClass = 1,
+                            descrClass = "TRATOR",
+                            codTurnEquip = 1,
+                            idCheckList = 1,
+                            typeEquip = TypeEquip.NORMAL,
+                            hourMeter = 5000.0,
+                            classify = 1,
+                            flagMechanic = true,
+                            flagTire = true
+                        )
+                    )
+                )
+            )
+            whenever(
+                saveDataConfig(
+                    number = "16997417840",
+                    password = "12345",
+                    app = App.ECM,
+                    version = "1.00",
+                    checkMotoMec = true,
+                    idServ = 1,
+                    equip = Equip(
+                        id = 10,
+                        nro = 2200,
+                        codClass = 1,
+                        descrClass = "TRATOR",
+                        codTurnEquip = 1,
+                        idCheckList = 1,
+                        typeEquip = TypeEquip.NORMAL,
+                        hourMeter = 5000.0,
+                        classify = 1,
+                        flagMechanic = true,
+                        flagTire = true
+                    )
+                )
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            whenever(
+                setFinishUpdateAllTable()
+            ).thenReturn(
+                Result.success(Unit)
+            )
+            viewModel.onNumberChanged("16997417840")
+            viewModel.onPasswordChanged("12345")
+            viewModel.onNroEquipChanged("310")
+            viewModel.setConfigMain(
+                version = "1.00",
+                app = "ecm"
+            )
+            wheneverSuccess(19f)
+            val result = viewModel.updateAllDatabase().toList()
+            assertEquals(
+                result.count(),
+                ((18f * 3)).toInt()
+            )
+            checkResultUpdateAll(result, App.ECM)
+            viewModel.onSaveAndUpdate()
+            val configState = viewModel.uiState.value
+            assertEquals(
+                configState,
+                ConfigState(
+                    number = "16997417840",
+                    password = "12345",
+                    nroEquip = "310",
+                    app = App.ECM,
+                    version = "1.00",
+                    qtdTable = 18f,
+                    status = UpdateStatusState(
+                        flagDialog = true,
+                        flagProgress = true,
+                        flagFailure = false,
+                        levelUpdate = LevelUpdate.FINISH_UPDATE_COMPLETED,
+                        currentProgress = 1f,
+                    )
+                )
+            )
+        }
+
     ///////////////////////////////////////////////////////////////////////////////////////
 
     private fun wheneverSuccess(posTable: Float) =
@@ -1948,7 +2124,7 @@ class ConfigViewModelTest {
             }
         }
 
-    private fun checkResultUpdateAll(result: List<ConfigState>) =
+    private fun checkResultUpdateAll(result: List<ConfigState>, app: App = App.PMM) =
         runTest {
             val qtd = viewModel.uiState.value.qtdTable
             val sizeAll = sizeUpdate(qtd)
@@ -1961,7 +2137,7 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = App.PMM,
+                        app = app,
                         version = "1.00",
                         qtdTable = qtd,
                         status = UpdateStatusState(
@@ -1978,7 +2154,7 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = App.PMM,
+                        app = app,
                         version = "1.00",
                         qtdTable = qtd,
                         status = UpdateStatusState(
@@ -1995,7 +2171,7 @@ class ConfigViewModelTest {
                         number = "16997417840",
                         password = "12345",
                         nroEquip = "310",
-                        app = App.PMM,
+                        app = app,
                         version = "1.00",
                         qtdTable = qtd,
                         status = UpdateStatusState(

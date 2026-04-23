@@ -23,6 +23,7 @@ import br.com.usinasantafe.cmm.presenter.theme.AlertDialogSimpleDesign
 import br.com.usinasantafe.cmm.presenter.theme.ButtonsGenericNumeric
 import br.com.usinasantafe.cmm.presenter.theme.TitleDesign
 import br.com.usinasantafe.cmm.presenter.theme.CMMTheme
+import br.com.usinasantafe.cmm.presenter.theme.MsgErrors
 import br.com.usinasantafe.cmm.presenter.theme.TextFieldDesign
 
 @Composable
@@ -89,8 +90,7 @@ fun CollectionFertigationContent(
         }
 
         if(flagDialog) {
-            val text = errors(errors, failure)
-            AlertDialogSimpleDesign(text = text, setCloseDialog = setCloseDialog,)
+            MsgErrors(errors = errors, setCloseDialog = setCloseDialog, failure = failure)
         }
 
         LaunchedEffect(flagAccess) {

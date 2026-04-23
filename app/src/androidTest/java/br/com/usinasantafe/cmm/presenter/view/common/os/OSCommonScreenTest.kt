@@ -155,7 +155,7 @@ class OSCommonScreenTest {
         composeTestRule.setContent {
             OSCommonScreen(
                 viewModel = OSCommonViewModel(
-                    saveStateHandle = SavedStateHandle(
+                    savedStateHandle = SavedStateHandle(
                         mapOf(
                             FLOW_APP_ARG to flowApp.ordinal
                         )

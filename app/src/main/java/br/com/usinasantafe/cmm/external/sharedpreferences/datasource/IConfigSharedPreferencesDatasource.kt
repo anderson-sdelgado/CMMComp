@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import java.util.Date
 import javax.inject.Inject
 import androidx.core.content.edit
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.utils.required
 import br.com.usinasantafe.cmm.utils.result
@@ -95,6 +96,11 @@ class IConfigSharedPreferencesDatasource @Inject constructor(
     override suspend fun getDateCheckListLast(): Result<Date> =
         result(getClassAndMethod()) {
             get().getOrThrow()!!::dateLastCheckList.required()
+        }
+
+    override suspend fun getApp(): Result<App> =
+        result(getClassAndMethod()) {
+            get().getOrThrow()!!::app.required()
         }
 
 }

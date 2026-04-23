@@ -1,6 +1,7 @@
 package br.com.usinasantafe.cmm.infra.datasource.sharedpreferences
 
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.ConfigSharedPreferencesModel
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.EmptyResult
 import br.com.usinasantafe.cmm.lib.FlagUpdate
 import br.com.usinasantafe.cmm.lib.StatusSend
@@ -17,4 +18,5 @@ interface ConfigSharedPreferencesDatasource {
     suspend fun setStatusSend(statusSend: StatusSend): EmptyResult
     suspend fun getIdTurnCheckListLast(): Result<Int?>
     suspend fun getDateCheckListLast(): Result<Date>
+    suspend fun getApp(): Result<App>
 }

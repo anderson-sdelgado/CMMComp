@@ -668,4 +668,50 @@ class IConfigRepositoryTest {
             )
         }
 
+    @Test
+    fun `getApp - Check return failure if have error in ConfigSharedPreferencesDatasource getApp`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getApp()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigSharedPreferencesDatasource.getApp",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = repository.getApp()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IConfigRepository.getApp -> IConfigSharedPreferencesDatasource.getApp"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `getApp - Check return correct if function execute successfully`() =
+        runTest {
+            whenever(
+                configSharedPreferencesDatasource.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            val result = repository.getApp()
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                App.PMM
+            )
+        }
+
 }

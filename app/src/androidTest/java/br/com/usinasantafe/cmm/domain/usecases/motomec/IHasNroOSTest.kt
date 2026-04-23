@@ -70,11 +70,11 @@ class IHasNroOSTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -99,11 +99,11 @@ class IHasNroOSTest {
             osDao.insertAll(
                 listOf(
                     OSRoomModel(
-                        idOS = 1,
-                        nroOS = 123456,
-                        idReleaseOS = 10,
+                        id = 1,
+                        nro = 123456,
+                        idRelease = 10,
                         idPropAgr = 20,
-                        areaOS = 50.5
+                        area = 50.5
                     )
                 )
             )
@@ -350,11 +350,11 @@ class IHasNroOSTest {
             )
             val os = osList[0]
             assertEquals(
-                os.nroOS,
+                os.nro,
                 123456
             )
             assertEquals(
-                os.idReleaseOS,
+                os.idRelease,
                 10
             )
             assertEquals(
@@ -362,7 +362,7 @@ class IHasNroOSTest {
                 20
             )
             assertEquals(
-                os.areaOS!!,
+                os.area!!,
                 150.75,
                 0.0
             )

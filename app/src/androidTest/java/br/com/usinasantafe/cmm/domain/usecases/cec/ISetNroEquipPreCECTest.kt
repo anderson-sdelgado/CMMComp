@@ -1,6 +1,6 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderPreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.EquipSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.EquipSharedPreferencesModel
 import br.com.usinasantafe.cmm.lib.TypeEquip
@@ -23,7 +23,7 @@ class ISetNroEquipPreCECTest {
     lateinit var usecase: SetNroEquipPreCEC
 
     @Inject
-    lateinit var preCECSharedPreferencesDatasource: IPreCECSharedPreferencesDatasource
+    lateinit var preCECSharedPreferencesDatasource: IHeaderPreCECSharedPreferencesDatasource
 
     @Inject
     lateinit var equipSharedPreferencesDatasource: EquipSharedPreferencesDatasource

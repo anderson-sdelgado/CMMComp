@@ -2,7 +2,8 @@ package br.com.usinasantafe.cmm.infra.repositories.variable
 
 import br.com.usinasantafe.cmm.domain.entities.variable.HeaderPreCEC
 import br.com.usinasantafe.cmm.domain.repositories.variable.CECRepository
-import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.PreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.HeaderPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerPreCECSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.datasource.sharedpreferences.TrailerSharedPreferencesDatasource
 import br.com.usinasantafe.cmm.infra.models.sharedpreferences.sharedPreferencesModelToEntity
 import br.com.usinasantafe.cmm.utils.EmptyResult
@@ -12,29 +13,31 @@ import java.util.Date
 import javax.inject.Inject
 
 class ICECRepository @Inject constructor(
-    private val preCECSharedPreferencesDatasource: PreCECSharedPreferencesDatasource,
+    private val headerPreCECSharedPreferencesDatasource: HeaderPreCECSharedPreferencesDatasource,
     private val trailerSharedPreferencesDatasource: TrailerSharedPreferencesDatasource,
+    private val trailerPreCECSharedPreferencesDatasource: TrailerPreCECSharedPreferencesDatasource
 ): CECRepository {
+
     override suspend fun get(): Result<HeaderPreCEC> =
         call(getClassAndMethod()) {
-            preCECSharedPreferencesDatasource.get()
+            headerPreCECSharedPreferencesDatasource.get()
                 .getOrThrow()
                 .sharedPreferencesModelToEntity()
         }
 
-    override suspend fun setDateExitMill(date: Date): EmptyResult =
+    override suspend fun setDateExitMillHeaderPreCEC(date: Date): EmptyResult =
         call(getClassAndMethod()) {
-            preCECSharedPreferencesDatasource.setDateExitMill(date).getOrThrow()
+            headerPreCECSharedPreferencesDatasource.setDateExitMill(date).getOrThrow()
         }
 
-    override suspend fun setDateFieldArrival(date: Date): EmptyResult =
+    override suspend fun setDateFieldArrivalHeaderPreCEC(date: Date): EmptyResult =
         call(getClassAndMethod()) {
-            preCECSharedPreferencesDatasource.setDateFieldArrival(date).getOrThrow()
+            headerPreCECSharedPreferencesDatasource.setDateFieldArrival(date).getOrThrow()
         }
 
-    override suspend fun setDateExitField(date: Date): EmptyResult =
+    override suspend fun setDateExitFieldHeaderPreCEC(date: Date): EmptyResult =
         call(getClassAndMethod()) {
-            preCECSharedPreferencesDatasource.setDateExitField(date).getOrThrow()
+            headerPreCECSharedPreferencesDatasource.setDateExitField(date).getOrThrow()
         }
 
     override suspend fun hasCouplingTrailer(): Result<Boolean> =
@@ -47,9 +50,24 @@ class ICECRepository @Inject constructor(
             trailerSharedPreferencesDatasource.clean().getOrThrow()
         }
 
-    override suspend fun setNroEquip(nroEquip: Long): EmptyResult =
+    override suspend fun setDataHeaderPreCEC(
+        nroEquip: Long,
+        regColab: Long,
+        nroTurn: Int,
+    ): EmptyResult =
         call(getClassAndMethod()) {
-            preCECSharedPreferencesDatasource.setNroEquip(nroEquip).getOrThrow()
+            headerPreCECSharedPreferencesDatasource.setData(nroEquip, regColab, nroTurn).getOrThrow()
+        }
+
+    override suspend fun setIdReleasePreCEC(idRelease: Int): Result<Boolean> =
+        call(getClassAndMethod()) {
+            val count = trailerPreCECSharedPreferencesDatasource.count().getOrThrow()
+            if(count == 0) {
+                headerPreCECSharedPreferencesDatasource.setIdRelease(idRelease).getOrThrow()
+            } else {
+                trailerPreCECSharedPreferencesDatasource.setIdRelease(idRelease).getOrThrow()
+            }
+            (count == 4)
         }
 
 }

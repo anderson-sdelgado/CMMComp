@@ -1,7 +1,7 @@
 package br.com.usinasantafe.cmm.domain.usecases.cec
 
-import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IPreCECSharedPreferencesDatasource
-import br.com.usinasantafe.cmm.infra.models.sharedpreferences.PreCECSharedPreferencesModel
+import br.com.usinasantafe.cmm.external.sharedpreferences.datasource.IHeaderPreCECSharedPreferencesDatasource
+import br.com.usinasantafe.cmm.infra.models.sharedpreferences.HeaderPreCECSharedPreferencesModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
@@ -22,7 +22,7 @@ class ICheckAccessCertificateTest {
     lateinit var usecase: ICheckAccessCertificate
 
     @Inject
-    lateinit var preCECSharedPreferencesDatasource: IPreCECSharedPreferencesDatasource
+    lateinit var preCECSharedPreferencesDatasource: IHeaderPreCECSharedPreferencesDatasource
 
     @Before
     fun setup() {
@@ -77,7 +77,7 @@ class ICheckAccessCertificateTest {
     private suspend fun register(level: Int) {
 
         preCECSharedPreferencesDatasource.save(
-            PreCECSharedPreferencesModel(
+            HeaderPreCECSharedPreferencesModel(
                 dateExitMill = Date()
             )
         )
@@ -85,7 +85,7 @@ class ICheckAccessCertificateTest {
         if(level == 1) return
 
         preCECSharedPreferencesDatasource.save(
-            PreCECSharedPreferencesModel(
+            HeaderPreCECSharedPreferencesModel(
                 dateExitMill = Date(),
                 dateFieldArrival = Date()
             )

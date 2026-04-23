@@ -119,9 +119,9 @@ class IUpdateTableOSTest {
         runTest {
             val list = listOf(
                 OS(
-                    idOS = 12,
-                    nroOS = 123456,
-                    idReleaseOS = 1,
+                    id = 12,
+                    nro = 123456,
+                    idRelease = 1,
                 )
             )
             whenever(
@@ -189,9 +189,9 @@ class IUpdateTableOSTest {
         runTest {
             val list = listOf(
                 OS(
-                    idOS = 12,
-                    nroOS = 123456,
-                    idReleaseOS = 1,
+                    id = 12,
+                    nro = 123456,
+                    idRelease = 1,
                 )
             )
             whenever(

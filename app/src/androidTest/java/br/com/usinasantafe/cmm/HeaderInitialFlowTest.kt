@@ -412,11 +412,11 @@ class HeaderInitialFlowTest {
         )
         val os = osList[0]
         assertEquals(
-            os.nroOS,
+            os.nro,
             123456
         )
         assertEquals(
-            os.idReleaseOS,
+            os.idRelease,
             10
         )
         assertEquals(
@@ -424,7 +424,7 @@ class HeaderInitialFlowTest {
             20
         )
         assertEquals(
-            os.areaOS!!,
+            os.area!!,
             150.75,
             0.0
         )

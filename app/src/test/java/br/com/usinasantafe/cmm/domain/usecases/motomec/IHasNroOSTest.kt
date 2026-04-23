@@ -8,12 +8,16 @@ import br.com.usinasantafe.cmm.domain.repositories.stable.ROSActivityRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.ConfigRepository
 import br.com.usinasantafe.cmm.domain.repositories.variable.MotoMecRepository
 import br.com.usinasantafe.cmm.domain.usecases.common.GetToken
+import br.com.usinasantafe.cmm.lib.App
 import br.com.usinasantafe.cmm.utils.CheckNetwork
 import br.com.usinasantafe.cmm.lib.FlowApp
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.atLeastOnce
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import java.net.SocketTimeoutException
 
@@ -35,8 +39,134 @@ class IHasNroOSTest {
     )
 
     @Test
-    fun `Check return failure if have error in ROSActivityRepository deleteAll`() =
+    fun `Check return failure if have error in ConfigRepository getApp`() =
         runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                resultFailure(
+                    "IConfigRepository.getApp",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.HEADER_INITIAL
+            )
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHasNroOS -> IConfigRepository.getApp"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in OSRepository hasByNroOS - App ECM`() =
+        runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.ECM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
+            ).thenReturn(
+                resultFailure(
+                    "IOSRepository.hasByNroOS",
+                    "-",
+                    Exception()
+                )
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.HEADER_INITIAL
+            )
+            verify(rOSActivityRepository, never()).deleteAll()
+            verify(osRepository, never()).deleteAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHasNroOS -> IOSRepository.hasByNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return true if function execute successfully and hasByNroOS return true - App ECM`() =
+        runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.ECM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
+            ).thenReturn(
+                Result.success(true)
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.HEADER_INITIAL
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                true
+            )
+        }
+
+    @Test
+    fun `Check return false if function execute successfully and hasByNroOS return false - App ECM`() =
+        runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.ECM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
+            ).thenReturn(
+                Result.success(false)
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.HEADER_INITIAL
+            )
+            assertEquals(
+                result.isSuccess,
+                true
+            )
+            assertEquals(
+                result.getOrNull()!!,
+                false
+            )
+        }
+
+    @Test
+    fun `Check return failure if have error in ROSActivityRepository deleteAll - FlowApp HEADER_INITIAL and App PMM`() =
+        runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
             whenever(
                 rOSActivityRepository.deleteAll()
             ).thenReturn(
@@ -65,12 +195,12 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in OSActivityRepository deleteAll`() =
+    fun `Check return failure if have error in OSActivityRepository deleteAll - FlowApp HEADER_INITIAL and App PMM`() =
         runTest {
             whenever(
-                rOSActivityRepository.deleteAll()
+                configRepository.getApp()
             ).thenReturn(
-                Result.success(Unit)
+                Result.success(App.PMM)
             )
             whenever(
                 osRepository.deleteAll()
@@ -85,6 +215,7 @@ class IHasNroOSTest {
                 nroOS = "123456",
                 flowApp = FlowApp.HEADER_INITIAL
             )
+            verify(rOSActivityRepository, atLeastOnce()).deleteAll()
             assertEquals(
                 result.isFailure,
                 true
@@ -100,28 +231,35 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in OSRepository checkNroOS - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in OSRepository hasNroOS - FlowApp HEADER_INITIAL and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRepository.checkNroOS",
+                    context = "IOSRepository.hasNroOS",
                     message = "-",
                     cause = Exception()
                 )
             )
             val result = usecase(
                 nroOS = "123456",
-                flowApp = FlowApp.NOTE_WORK
+                flowApp = FlowApp.HEADER_INITIAL
             )
+            verify(rOSActivityRepository, atLeastOnce()).deleteAll()
+            verify(osRepository, atLeastOnce()).deleteAll()
             assertEquals(
                 result.isFailure,
                 true
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHasNroOS -> IOSRepository.checkNroOS"
+                "IHasNroOS -> IOSRepository.hasNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -130,13 +268,57 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return true if OSRepository checkNroOS is true - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in OSRepository hasNroOS - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
+            ).thenReturn(
+                resultFailure(
+                    context = "IOSRepository.hasNroOS",
+                    message = "-",
+                    cause = Exception()
+                )
+            )
+            val result = usecase(
+                nroOS = "123456",
+                flowApp = FlowApp.NOTE_WORK
+            )
+            verify(rOSActivityRepository, never()).deleteAll()
+            verify(osRepository, never()).deleteAll()
+            assertEquals(
+                result.isFailure,
+                true
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.message,
+                "IHasNroOS -> IOSRepository.hasNroOS"
+            )
+            assertEquals(
+                result.exceptionOrNull()!!.cause.toString(),
+                "java.lang.Exception"
+            )
+        }
+
+    @Test
+    fun `Check return true if OSRepository checkNroOS is true - FlowApp NOTE_WORK and App PMM`() =
+        runTest {
+            whenever(
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(true)
             )
+            verify(rOSActivityRepository, never()).deleteAll()
+            verify(osRepository, never()).deleteAll()
             val result = usecase(
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
@@ -152,10 +334,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if not have connection in network and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK`() =
+    fun `Check return failure if not have connection in network and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -177,6 +364,8 @@ class IHasNroOSTest {
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(rOSActivityRepository, never()).deleteAll()
+            verify(osRepository, never()).deleteAll()
             assertEquals(
                 result.isFailure,
                 true
@@ -192,10 +381,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return true if not have connection in network`() =
+    fun `Check return true if not have connection in network - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -204,15 +398,11 @@ class IHasNroOSTest {
             ).thenReturn(
                 false
             )
-            whenever(
-                motoMecRepository.setStatusConHeader(false)
-            ).thenReturn(
-                Result.success(Unit)
-            )
             val result = usecase(
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setStatusConHeader(false)
             assertEquals(
                 result.isSuccess,
                 true
@@ -224,10 +414,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in GetToken - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in GetToken - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -249,6 +444,7 @@ class IHasNroOSTest {
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, never()).setStatusConHeader(true)
             assertEquals(
                 result.isFailure,
                 true
@@ -264,10 +460,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in OSRepository getListByNroOS - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in OSRepository listByNroOS - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -282,13 +483,13 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRepository.getListByNroOS",
+                    context = "IOSRepository.listByNroOS",
                     message = "-",
                     cause = Exception()
                 )
@@ -303,7 +504,7 @@ class IHasNroOSTest {
             )
             assertEquals(
                 result.exceptionOrNull()!!.message,
-                "IHasNroOS -> IOSRepository.getListByNroOS"
+                "IHasNroOS -> IOSRepository.listByNroOS"
             )
             assertEquals(
                 result.exceptionOrNull()!!.cause.toString(),
@@ -312,10 +513,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if OSRepository getListByNroOS return SocketTimeoutException and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK`() =
+    fun `Check return failure if OSRepository listByNroOS return SocketTimeoutException and have error in MotoMecRepository setStatusConHeader - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -330,13 +536,13 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRepository.getListByNroOS",
+                    context = "IOSRepository.listByNroOS",
                     message = "-",
                     cause = SocketTimeoutException()
                 )
@@ -369,10 +575,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return true if OSRepository getListByNroOS return SocketTimeoutException - FlowApp NOTE_WORK`() =
+    fun `Check return true if OSRepository listByNroOS return SocketTimeoutException - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -387,26 +598,22 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 resultFailure(
-                    context = "IOSRepository.getListByNroOS",
+                    context = "IOSRepository.listByNroOS",
                     message = "-",
                     cause = SocketTimeoutException()
                 )
-            )
-            whenever(
-                motoMecRepository.setStatusConHeader(false)
-            ).thenReturn(
-                Result.success(Unit)
             )
             val result = usecase(
                 nroOS = "123456",
                 flowApp = FlowApp.NOTE_WORK
             )
+            verify(motoMecRepository, atLeastOnce()).setStatusConHeader(false)
             assertEquals(
                 result.isSuccess,
                 true
@@ -418,10 +625,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return false if return empty list in OSRepository getListByNroOS - FlowApp NOTE_WORK`() =
+    fun `Check return false if return empty list in OSRepository listByNroOS - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -436,9 +648,9 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
@@ -460,10 +672,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in ROSActivityRepository getListByNroOS - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in ROSActivityRepository listByNroOS - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -478,19 +695,19 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OS(
-                            idOS = 1,
+                            id = 1,
                             idPropAgr = 1,
-                            areaOS = 0.0,
-                            nroOS = 123456,
-                            idReleaseOS = 1
+                            area = 0.0,
+                            nro = 123456,
+                            idRelease = 1
                         )
                     )
                 )
@@ -526,10 +743,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return false if return empty list in ROSActivityRepository getListByNroOS - FlowApp NOTE_WORK`() =
+    fun `Check return false if return empty list in ROSActivityRepository listByNroOS - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -544,19 +766,19 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OS(
-                            idOS = 1,
+                            id = 1,
                             idPropAgr = 1,
-                            areaOS = 0.0,
-                            nroOS = 123456,
-                            idReleaseOS = 1
+                            area = 0.0,
+                            nro = 123456,
+                            idRelease = 1
                         )
                     )
                 )
@@ -586,10 +808,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in OSRepository add - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in OSRepository add - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -604,19 +831,19 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OS(
-                            idOS = 1,
+                            id = 1,
                             idPropAgr = 1,
-                            areaOS = 0.0,
-                            nroOS = 1,
-                            idReleaseOS = 1
+                            area = 0.0,
+                            nro = 1,
+                            idRelease = 1
                         )
                     )
                 )
@@ -645,11 +872,11 @@ class IHasNroOSTest {
             whenever(
                 osRepository.add(
                     OS(
-                        idOS = 1,
+                        id = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0,
-                        nroOS = 1,
-                        idReleaseOS = 1
+                        area = 0.0,
+                        nro = 1,
+                        idRelease = 1
                     )
                 )
             ).thenReturn(
@@ -678,10 +905,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return failure if have error in ROSActivityRepository addAll - FlowApp NOTE_WORK`() =
+    fun `Check return failure if have error in ROSActivityRepository addAll - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -696,19 +928,19 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OS(
-                            idOS = 1,
+                            id = 1,
                             idPropAgr = 1,
-                            areaOS = 0.0,
-                            nroOS = 1,
-                            idReleaseOS = 1
+                            area = 0.0,
+                            nro = 1,
+                            idRelease = 1
                         )
                     )
                 )
@@ -737,11 +969,11 @@ class IHasNroOSTest {
             whenever(
                 osRepository.add(
                     OS(
-                        idOS = 1,
+                        id = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0,
-                        nroOS = 1,
-                        idReleaseOS = 1
+                        area = 0.0,
+                        nro = 1,
+                        idRelease = 1
                     )
                 )
             ).thenReturn(
@@ -788,10 +1020,15 @@ class IHasNroOSTest {
         }
 
     @Test
-    fun `Check return correct if function execute successfully - FlowApp NOTE_WORK`() =
+    fun `Check return correct if function execute successfully - FlowApp NOTE_WORK and App PMM`() =
         runTest {
             whenever(
-                osRepository.hasByNroOS(123456)
+                configRepository.getApp()
+            ).thenReturn(
+                Result.success(App.PMM)
+            )
+            whenever(
+                osRepository.hasByNro(123456)
             ).thenReturn(
                 Result.success(false)
             )
@@ -806,19 +1043,19 @@ class IHasNroOSTest {
                 Result.success("token")
             )
             whenever(
-                osRepository.listByNroOS(
+                osRepository.listByNro(
                     token = "token",
-                    nroOS = 123456
+                    nro = 123456
                 )
             ).thenReturn(
                 Result.success(
                     listOf(
                         OS(
-                            idOS = 1,
+                            id = 1,
                             idPropAgr = 1,
-                            areaOS = 0.0,
-                            nroOS = 1,
-                            idReleaseOS = 1
+                            area = 0.0,
+                            nro = 1,
+                            idRelease = 1
                         )
                     )
                 )
@@ -847,11 +1084,11 @@ class IHasNroOSTest {
             whenever(
                 osRepository.add(
                     OS(
-                        idOS = 1,
+                        id = 1,
                         idPropAgr = 1,
-                        areaOS = 0.0,
-                        nroOS = 1,
-                        idReleaseOS = 1
+                        area = 0.0,
+                        nro = 1,
+                        idRelease = 1
                     )
                 )
             ).thenReturn(

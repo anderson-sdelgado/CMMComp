@@ -1,7 +1,6 @@
 package br.com.usinasantafe.cmm.domain.entities.variable
 
 data class TrailerPreCEC(
-    var pos: Int? = null,
-    var nroTrailer: Int? = null,
-    var releaseTrailer: Int? = null,
+    var nroEquip: Int? = null,
+    var idRelease: Int? = null,
 )

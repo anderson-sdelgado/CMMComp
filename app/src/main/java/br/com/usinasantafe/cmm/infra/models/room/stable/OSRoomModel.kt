@@ -8,21 +8,21 @@ import br.com.usinasantafe.cmm.lib.TB_OS // Import da constante do nome da tabel
 @Entity(tableName = TB_OS)
 data class OSRoomModel (
     @PrimaryKey
-    val idOS: Int,
-    val nroOS: Int,
-    val idReleaseOS: Int? = null,
+    val id: Int,
+    val nro: Int,
+    val idRelease: Int? = null,
     val idPropAgr: Int? = null,
-    val areaOS: Double? = null,
+    val area: Double? = null,
 )
 
 fun OSRoomModel.roomModelToEntity(): OS {
     return with(this){
         OS(
-            idOS = this.idOS,
-            nroOS = this.nroOS,
-            idReleaseOS = this.idReleaseOS,
+            id = this.id,
+            nro = this.nro,
+            idRelease = this.idRelease,
             idPropAgr = this.idPropAgr,
-            areaOS = this.areaOS
+            area = this.area
         )
     }
 }
@@ -30,11 +30,11 @@ fun OSRoomModel.roomModelToEntity(): OS {
 fun OS.entityToRoomModel(): OSRoomModel {
     return with(this){
         OSRoomModel(
-            idOS = this.idOS,
-            nroOS = this.nroOS,
-            idReleaseOS = this.idReleaseOS,
+            id = this.id,
+            nro = this.nro,
+            idRelease = this.idRelease,
             idPropAgr = this.idPropAgr,
-            areaOS = this.areaOS
+            area = this.area
         )
     }
 }

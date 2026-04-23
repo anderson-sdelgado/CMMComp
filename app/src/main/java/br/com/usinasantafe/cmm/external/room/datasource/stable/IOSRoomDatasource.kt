@@ -22,9 +22,9 @@ class IOSRoomDatasource @Inject constructor(
             osDao.deleteAll()
         }
 
-    override suspend fun hasByNroOS(nroOS: Int): Result<Boolean> =
+    override suspend fun hasByNro(nro: Int): Result<Boolean> =
         result(getClassAndMethod()) {
-            osDao.checkNroOS(nroOS) > 0
+            osDao.hasNro(nro)
         }
 
     override suspend fun add(model: OSRoomModel): EmptyResult =
@@ -32,9 +32,17 @@ class IOSRoomDatasource @Inject constructor(
             osDao.insert(model)
         }
 
-    override suspend fun getByNroOS(nroOS: Int): Result<OSRoomModel> =
+    override suspend fun getByNro(nro: Int): Result<OSRoomModel> =
         result(getClassAndMethod()) {
-            osDao.getByNroOS(nroOS)
+            osDao.getByNro(nro)
+        }
+
+    override suspend fun hasByNroAndIdRelease(
+        nroOS: Int,
+        idRelease: Int
+    ): Result<Boolean> =
+        result(getClassAndMethod()) {
+            osDao.hasNroAndIdRelease(nroOS, idRelease)
         }
 
 }

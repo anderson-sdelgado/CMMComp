@@ -32,6 +32,7 @@ import br.com.usinasantafe.cmm.presenter.Screens.PERFORMANCE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.PRESSURE_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.REEL_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.REEL_SCREEN
+import br.com.usinasantafe.cmm.presenter.Screens.RELEASE_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.SPEED_LIST_SCREEN
 import br.com.usinasantafe.cmm.presenter.Screens.TRANSHIPMENT_NOTE_SCREEN
 
@@ -66,6 +67,7 @@ object Screens {
     const val ITEM_LIST_MECHANIC_SCREEN = "itemListMechanicScreen"
     const val INPUT_ITEM_MECHANIC_SCREEN = "inputItemMechanicScreen"
     const val INITIAL_MENU_PRE_CEC_SCREEN = "initialMenuPreCECScreen"
+    const val RELEASE_SCREEN = "releaseScreen"
 }
 
 object Args {
@@ -104,6 +106,7 @@ object Routes {
     const val ITEM_LIST_MECHANIC_ROUTE = ITEM_LIST_MECHANIC_SCREEN
     const val INPUT_ITEM_MECHANIC_ROUTE = INPUT_ITEM_MECHANIC_SCREEN
     const val INITIAL_MENU_PRE_CEC_ROUTE = "$INITIAL_MENU_PRE_CEC_SCREEN/{$FLOW_APP_ARG}"
+    const val RELEASE_ROUTE = RELEASE_SCREEN
 }
 
 class NavigationActions(private val navController: NavHostController) {
@@ -285,6 +288,10 @@ class NavigationActions(private val navController: NavHostController) {
 
     fun navigateToInitialMenuPreCEC() {
         navController.navigate(INITIAL_MENU_PRE_CEC_SCREEN)
+    }
+
+    fun navigateToRelease() {
+        navController.navigate(RELEASE_SCREEN)
     }
 
     ///////////////////////////////////////////////////////////////////

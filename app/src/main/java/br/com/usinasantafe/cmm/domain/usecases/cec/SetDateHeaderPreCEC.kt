@@ -40,9 +40,9 @@ class ISetDatePreCEC @Inject constructor(
             }
 
             when(item.type.second) {
-                EXIT_MILL -> cecRepository.setDateExitMill(Date())
-                FIELD_ARRIVAL -> cecRepository.setDateFieldArrival(Date())
-                else -> cecRepository.setDateExitField(Date())
+                EXIT_MILL -> cecRepository.setDateExitMillHeaderPreCEC(Date())
+                FIELD_ARRIVAL -> cecRepository.setDateFieldArrivalHeaderPreCEC(Date())
+                else -> cecRepository.setDateExitFieldHeaderPreCEC(Date())
             }.getOrThrow()
 
             currentStatus
